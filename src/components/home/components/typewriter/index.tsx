@@ -3,7 +3,6 @@
 import styles from './index.module.scss';
 import { useEffect, useMemo, useState } from 'react';
 import browserUtils from '@/utils/browser-utils';
-import { Typography } from '@mui/material';
 import _fill from 'lodash/fill';
 import _forEach from 'lodash/forEach';
 import _random from 'lodash/random';
@@ -63,25 +62,13 @@ export default function Typewritter() {
     return delay + randomDelay;
   };
 
-  const getColorString = (idx: number) => {
-    if (idx === _size(Intros) - 1) {
-      return 'primary';
-    } else {
-      return 'textPrimary';
-    }
-  };
-
   return (
     <div className={styles.container}>
       {Intros.map((intro, idx) => (
-        <Typography
-          key={idx}
-          color={getColorString(idx)}
-          className={styles[`intro${idx + 1}`]}
-        >
+        <div key={idx} className={styles[`intro${idx + 1}`]}>
           {intro.substring(0, showedLength[idx])}
           {idx === showedLine && <span className={styles.cursor}>|</span>}
-        </Typography>
+        </div>
       ))}
     </div>
   );

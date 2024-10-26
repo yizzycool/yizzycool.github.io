@@ -6,8 +6,10 @@ const http = require('http');
 const https = require('https');
 
 const httpsOptions = {
-  key: fs.readFileSync(path.join(__dirname, '../misc/ssl/localhost-key.pem')),
-  cert: fs.readFileSync(path.join(__dirname, '../misc/ssl/localhost.pem')),
+  key: fs.readFileSync(
+    path.join(__dirname, '../certificates/localhost-key.pem')
+  ),
+  cert: fs.readFileSync(path.join(__dirname, '../certificates/localhost.pem')),
 };
 
 const app = express();
