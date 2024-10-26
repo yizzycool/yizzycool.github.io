@@ -1,0 +1,29 @@
+@import "@/styles/functions.module.scss";
+
+.appBar {
+  width: 100%;
+  height: 64px;
+  background-color: var(--glassmorphism-background-color);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0 !important;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoTitle {
+  margin: 0 0 0 20px;
+  font-size: 1.5rem;
+  white-space: nowrap;
+}
+
+.logoBlock {
+  display: flex;
+  align-items: center;
+}

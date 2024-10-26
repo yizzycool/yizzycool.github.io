@@ -1,0 +1,13 @@
+@import "@/styles/variables.module.scss";
+
+@mixin width-le($max-width) {
+  @media screen and (max-width: $max-width) {
+    @content;
+  }
+}
+
+@mixin width-ge($min-width) {
+  @media screen and (min-width: $min-width) {
+    @content;
+  }
+}

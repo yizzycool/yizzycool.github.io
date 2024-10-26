@@ -1,0 +1,48 @@
+.background {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-image: url('/assets/images/home/background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 65px 0 0;
+}
+
+.backgroundMask {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--home-page-backgound-mask-color);
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.flex {
+  height: 100%;
+}
+
+.flexItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mainImage {
+  width: 60%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 100px rgba(255, 255, 255, 0.3);
+
+  &:global {
+    animation: 1s fadeIn;
+  }
+}
