@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
+import '@/styles/keyframes.css';
 import 'animate.css';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import MuiThemeProvider from '@/components/mui/theme-provider';

@@ -1,0 +1,30 @@
+[
+  {
+    "jobTitle": "Senior Front-end Engineer",
+    "corpName": "Perfect Corp.",
+    "corpLink": "https://perfectcorp.com",
+    "duration": "Sep 2021 - Present",
+    "descriptions": [
+      {
+        "title": "Developed a B2C product - Online AI Photo Editor",
+        "items": [
+          "Developed and maintained UI of AI image editors and AI image generators with <b>Next.js</b>",
+          "Implemented <b>Responsive Web Design</b> across desktop, tablet, and mobile device"
+        ]
+      },
+      {
+        "title": "Developed on B2B products - AI Virtual Makeup",
+        "items": [
+          "Developed and customized UI of AI & AR beauty and skin tech solutions with <b>React</b>",
+          "Implemented <b>ADA</b> and <b>WCAG</b> standards to improve accessibility"
+        ]
+      },
+      {
+        "title": "[Backend] Implemented ETL process and deployed data warehouse",
+        "items": [
+          "Deployed data warehouse with <b>Kafka cluster on AWS EC2 instances</b>"
+        ]
+      }
+    ]
+  }
+]

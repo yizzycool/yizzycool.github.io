@@ -1,0 +1,121 @@
+@import "@/styles/functions.module.scss";
+
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 100%;
+  padding: 65px 0 40px;
+  overflow: hidden;
+}
+
+.containerFadeIn {
+  width: 100%;
+  height: 100%;
+
+  &:global {
+    animation: 500ms slightlyFadeInDown;
+  }
+}
+
+.containerFadeOut {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: translate3d(0, -10%, 0);
+
+  &:global {
+    animation: 500ms slightlyFadeOutUp;
+  }
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 25px 0;
+}
+
+.timeline {
+  width: fit-content;
+  margin: auto;
+
+  & li[class*="MuiTimelineItem-root"]::before {
+    flex: 0;
+    padding: 0;
+  }
+}
+
+.timelineContent {
+  padding: 6px 16px 6px 32px;
+
+  @include width-le($width-md) {
+    padding: 6px 16px 6px 16px;
+  }
+}
+
+.flexSpaceBetween {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @include width-le($width-md) {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 0 0 8px 0;
+  }
+}
+
+.positionTitle {
+  font-size: 1.5rem;
+}
+
+.corpName {
+  width: fit-content;
+  font-size: 1rem;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+}
+
+.externalIcon {
+  margin: 0 0 0 10px;
+  font-size: 1rem;
+}
+
+.duration {
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.paper {
+  margin: 20px 0 0;
+  padding: 20px;
+}
+
+.descBlock, .itemBlock {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.descBlock {
+  font-size: 1.1rem;
+} 
+
+.descItemsContainer {
+  padding: 0 0 0 20px;
+
+  @include width-le($width-md) {
+    padding: 0;
+  }
+}
+
+.itemBlock {
+  padding: 16px 0 0;
+}
+
+.workHistoryIcon {
+  font-size: 1rem;
+  margin: 0 20px 0 0;
+}
