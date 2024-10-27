@@ -1,7 +1,16 @@
 'use client';
 
+import type {} from '@mui/lab/themeAugmentation';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
-import { blue, grey, indigo } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
+import { Poppins } from 'next/font/google';
+
+const poppin = Poppins({
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export default function MuiThemeProvider({
   children,
@@ -19,6 +28,15 @@ export default function MuiThemeProvider({
       primary: {
         main: grey[50],
       },
+    },
+    typography: {
+      fontFamily: [
+        poppin.style.fontFamily,
+        '-apple-system',
+        '"Helvetica"',
+        '"Arial"',
+        'sans-serif',
+      ].join(','),
     },
   });
 
