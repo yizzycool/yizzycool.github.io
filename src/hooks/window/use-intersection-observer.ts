@@ -1,20 +1,21 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import _get from 'lodash/get';
 
 export default function useIntersectionObserver({
   rootSelector,
   rootMargin = '0px',
   threshold = 1.0,
   targetSelector,
-  callback,
 }: {
   rootSelector: string;
   rootMargin?: string;
   threshold?: number;
   targetSelector: string;
-  callback: IntersectionObserverCallback;
 }) {
+  const [hit, setHit] = useState(false);
+
   useEffect(() => {
     init();
   }, []);
@@ -32,5 +33,18 @@ export default function useIntersectionObserver({
     const observer = new IntersectionObserver(callback, options);
     const target = <Element>document.querySelector(targetSelector);
     observer.observe(target);
+  };
+
+  const callback = (entries: Array<any>, observer: IntersectionObserver) => {
+    const intersectionRatio = _get(entries, '0.intersectionRatio', 0);
+    if (intersectionRatio < threshold) {
+      setHit(false);
+    } else {
+      setHit(true);
+    }
+  };
+
+  return {
+    hit,
   };
 }

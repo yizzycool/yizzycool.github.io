@@ -1,7 +1,6 @@
 'use client';
 
 import styles from './index.module.scss';
-import { useState } from 'react';
 import useIntersectionObserver from '@/hooks/window/use-intersection-observer';
 import { Container, Divider, Link, Paper } from '@mui/material';
 import { OpenInNew, WorkHistory } from '@mui/icons-material';
@@ -13,37 +12,21 @@ import {
   TimelineItem,
   TimelineSeparator,
 } from '@mui/lab';
-import ExperienceData from './data//experiences.json';
+import ExperienceData from './data/experiences.json';
 import _get from 'lodash/get';
 
-const THRESHOLD = 0.2;
+const THRESHOLD = 0.3;
 
 export default function WorkExperience() {
-  const [showFadeIn, setShowFadeIn] = useState(false);
-
-  useIntersectionObserver({
+  const { hit } = useIntersectionObserver({
     rootSelector: 'body',
     targetSelector: '#work-experience',
     threshold: THRESHOLD,
-    callback: (entries, observer) => callback(entries, observer),
   });
-
-  const callback = (entries: Array<any>, observer: IntersectionObserver) => {
-    const intersectionRatio = _get(entries, '0.intersectionRatio', 0);
-    if (intersectionRatio < THRESHOLD) {
-      setShowFadeIn(false);
-    } else {
-      setShowFadeIn(true);
-    }
-  };
 
   return (
     <Container id="work-experience" maxWidth="xl" className={styles.container}>
-      <div
-        className={
-          showFadeIn ? styles.containerFadeIn : styles.containerFadeOut
-        }
-      >
+      <div className={hit ? styles.containerFadeIn : styles.containerFadeOut}>
         <Divider textAlign="center" className={styles.title}>
           Work Experience
         </Divider>

@@ -5,7 +5,7 @@
   z-index: 1;
   width: 100%;
   padding: 65px 0 40px;
-  overflow: hidden;
+  overflow: hidden; 
 }
 
 .containerFadeIn {
@@ -36,12 +36,17 @@
 
 .timeline {
   width: fit-content;
+  min-width: 880px;
   margin: auto;
 
   & li[class*="MuiTimelineItem-root"]::before {
     flex: 0;
     padding: 0;
   }
+}
+
+.timelineItem {
+  min-height: 150px;
 }
 
 .timelineContent {
@@ -65,56 +70,16 @@
   }
 }
 
-.positionTitle {
+.name {
   font-size: 1.5rem;
-}
-
-.corpName {
-  width: fit-content;
-  font-size: 1rem;
-  font-style: italic;
-  display: flex;
-  align-items: center;
-}
-
-.externalIcon {
-  margin: 0 0 0 10px;
-  font-size: 1rem;
 }
 
 .duration {
   font-size: 1rem;
   font-style: italic;
-}
-
-.paper {
-  margin: 20px 0 0;
-  padding: 20px;
-}
-
-.descBlock, .itemBlock {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.descBlock {
-  font-size: 1.1rem;
-} 
-
-.descItemsContainer {
-  padding: 0 0 0 20px;
+  margin: 0 0 0 20px;
 
   @include width-le($width-md) {
-    padding: 0;
+    margin: 0;
   }
-}
-
-.itemBlock {
-  padding: 16px 0 0;
-}
-
-.workHistoryIcon {
-  font-size: 1rem;
-  margin: 0 20px 0 0;
 }
