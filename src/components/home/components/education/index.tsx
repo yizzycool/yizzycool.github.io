@@ -31,7 +31,7 @@ export default function Education() {
         </Divider>
         <Timeline className={styles.timeline}>
           {EducationData.map((data, idx) => (
-            <TimelineItem key={idx} className={styles.timelineItem}>
+            <TimelineItem key={idx}>
               <TimelineSeparator>
                 <TimelineDot />
                 <TimelineConnector />
