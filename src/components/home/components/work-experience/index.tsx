@@ -19,7 +19,6 @@ const THRESHOLD = 0.3;
 
 export default function WorkExperience() {
   const { hit } = useIntersectionObserver({
-    rootSelector: 'body',
     targetSelector: '#work-experience',
     threshold: THRESHOLD,
   });

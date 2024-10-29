@@ -2,14 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import _get from 'lodash/get';
+import _isNull from 'lodash/isNull';
 
 export default function useIntersectionObserver({
-  rootSelector,
+  rootSelector = null,
   rootMargin = '0px',
   threshold = 1.0,
   targetSelector,
 }: {
-  rootSelector: string;
+  rootSelector?: string | null;
   rootMargin?: string;
   threshold?: number;
   targetSelector: string;
@@ -21,18 +22,21 @@ export default function useIntersectionObserver({
   }, []);
 
   const init = () => {
-    const options: {
-      root: Element | null;
-      rootMargin: string;
-      threshold: number;
-    } = {
-      root: document.querySelector(rootSelector),
-      rootMargin,
-      threshold,
-    };
-    const observer = new IntersectionObserver(callback, options);
-    const target = <Element>document.querySelector(targetSelector);
-    observer.observe(target);
+    // If `IntersectionObserver` not support, setHit to be true forever
+    if (!window?.IntersectionObserver) {
+      setHit(true);
+    } else {
+      const options: IntersectionObserverInit = {
+        root: _isNull(rootSelector)
+          ? rootSelector
+          : document.querySelector(rootSelector),
+        rootMargin,
+        threshold,
+      };
+      const observer = new IntersectionObserver(callback, options);
+      const target = <Element>document.querySelector(targetSelector);
+      observer.observe(target);
+    }
   };
 
   const callback = (entries: Array<any>, observer: IntersectionObserver) => {

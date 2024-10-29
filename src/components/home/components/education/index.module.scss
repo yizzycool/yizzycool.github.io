@@ -46,11 +46,7 @@
 }
 
 .timelineContent {
-  padding: 6px 16px 50px 32px;
-
-  @include width-le($width-md) {
-    padding: 6px 16px 50px 16px;
-  }
+  min-height: 150px;
 }
 
 .flexSpaceBetween {
