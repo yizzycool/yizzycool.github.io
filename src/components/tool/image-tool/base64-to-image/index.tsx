@@ -4,6 +4,7 @@ import type { ChangeEvent } from 'react';
 import styles from './index.module.scss';
 import { useEffect, useState } from 'react';
 import imageUtils from '@/utils/image-utils';
+import ErrorDialog from '@/components/dialog/error';
 import {
   Button,
   Checkbox,
@@ -20,15 +21,17 @@ type ImageInfo = {
   error: boolean;
 };
 
+const DefaultImageInfo: ImageInfo = {
+  image: null,
+  width: 0,
+  height: 0,
+  error: false,
+};
+
 export default function Base64ToImage() {
   const [autoUpdate, setAutoUpdate] = useState(true);
   const [base64, setBase64] = useState<string | null>(null);
-  const [imageInfo, setImageInfo] = useState<ImageInfo>({
-    image: null,
-    width: 0,
-    height: 0,
-    error: false,
-  });
+  const [imageInfo, setImageInfo] = useState<ImageInfo>(DefaultImageInfo);
 
   useEffect(() => {
     if (!autoUpdate) return;
@@ -71,7 +74,11 @@ export default function Base64ToImage() {
           }
           label="Auto Update"
         />
-        <Button variant="contained" className={styles.convertButton}>
+        <Button
+          variant="contained"
+          className={styles.convertButton}
+          onClick={transferToImage}
+        >
           Convert
         </Button>
       </div>
@@ -86,9 +93,20 @@ export default function Base64ToImage() {
         rows={10}
         label="Paste base64 string here"
       />
-      {imageInfo.error || _isNull(imageInfo.image) ? null : (
-        <img src={imageInfo.image.src} alt="result image" />
-      )}
+      <div className={styles.imageBlock}>
+        {!_isNull(imageInfo.image) && (
+          <img
+            className={styles.image}
+            src={imageInfo.image.src}
+            alt="result image"
+          />
+        )}
+      </div>
+      <ErrorDialog
+        open={imageInfo.error}
+        onClose={() => setImageInfo(DefaultImageInfo)}
+        errorString="Conversion Error!"
+      />
     </Container>
   );
 }
