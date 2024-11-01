@@ -25,9 +25,9 @@ export default function MuiThemeProvider({
       dark: true,
     },
     palette: {
-      primary: {
-        main: grey[50],
-      },
+      // primary: {
+      //   main: grey[50],
+      // },
     },
     typography: {
       fontFamily: [
