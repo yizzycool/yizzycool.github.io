@@ -13,6 +13,7 @@ import {
   TextField,
 } from '@mui/material';
 import _isNull from 'lodash/isNull';
+import _isEmpty from 'lodash/isEmpty';
 
 type ImageInfo = {
   image: HTMLImageElement | null;
@@ -40,6 +41,10 @@ export default function Base64ToImage() {
 
   const transferToImage = async () => {
     if (_isNull(base64)) return;
+    if (_isEmpty(base64)) {
+      setImageInfo(DefaultImageInfo);
+      return;
+    }
     try {
       const image = await imageUtils.newImageFromBase64(base64);
       const { width, height } = image;
