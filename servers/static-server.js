@@ -13,7 +13,21 @@ const httpsOptions = {
 };
 
 const app = express();
+
+// For debug info
 app.use(morgan('dev'));
+
+// Add file extension
+app.use((req, res, next) => {
+  const filePath = path.join(__dirname, '../out', `${req.originalUrl}.html`);
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      next(); // if any error occurred, go to next middleware handler
+    }
+  });
+});
+
+// Static file server
 app.use('/', express.static(path.join(__dirname, '../out')));
 
 const httpServer = http.createServer(app);
