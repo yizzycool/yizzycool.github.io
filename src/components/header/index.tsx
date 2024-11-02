@@ -16,16 +16,11 @@ export default function Header() {
             width="40"
             height="40"
             alt="Logo"
-            className={styles.logo}
           />
           <Typography
             color="textPrimary"
             component="div"
-            px={{
-              fontSize: '1.5rem',
-              fontWeight: '600',
-              whiteSpace: 'nowrap',
-            }}
+            className={styles.logoText}
           >
             Yizzy Peasy
           </Typography>
