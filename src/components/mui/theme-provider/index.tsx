@@ -28,6 +28,9 @@ export default function MuiThemeProvider({
       // primary: {
       //   main: grey[50],
       // },
+      header: {
+        main: grey[50],
+      },
     },
     typography: {
       fontFamily: [

@@ -8,7 +8,7 @@ import Settings from './components/settings';
 
 export default function Header() {
   return (
-    <AppBar position="fixed" className={styles.appBar}>
+    <AppBar position="fixed" color="header" className={styles.appBar}>
       <Container maxWidth="xl" className={styles.container}>
         <Link className={styles.logoBlock} href="/">
           <Image
@@ -16,11 +16,16 @@ export default function Header() {
             width="40"
             height="40"
             alt="Logo"
+            className={styles.logo}
           />
           <Typography
             color="textPrimary"
             component="div"
-            className={styles.logoTitle}
+            px={{
+              fontSize: '1.5rem',
+              fontWeight: '600',
+              whiteSpace: 'nowrap',
+            }}
           >
             Yizzy Peasy
           </Typography>

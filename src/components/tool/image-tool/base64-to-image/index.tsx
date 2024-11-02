@@ -88,7 +88,6 @@ export default function Base64ToImage() {
         </Button>
       </div>
       <TextField
-        className={styles.textArea}
         id="base64-to-image-textarea"
         onChange={onBase64StringChanged}
         autoFocus={true}

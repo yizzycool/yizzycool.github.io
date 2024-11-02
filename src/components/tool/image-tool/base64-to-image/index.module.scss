@@ -24,19 +24,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 40px 0 0;
+  margin: 40px 0 20px;
 
   @include width-le($width-md) {
-    margin: 20px 0 0;
+    margin: 20px 0;
   }
 }
 
 .convertButton {
   justify-self: flex-end;
-}
-
-.textArea {
-  margin: 20px 0 0;
 }
 
 .imageBlock {
