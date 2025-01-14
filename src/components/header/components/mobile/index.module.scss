@@ -1,0 +1,15 @@
+.logoBlock {
+  display: flex;
+  align-items: center;
+  
+  & > img {
+    display: block;
+  }
+}
+
+.logoText {
+  font-size: 1.5rem;
+  font-weight: 600;
+  white-space: nowrap;
+  margin: 0 0 0 20px;
+}

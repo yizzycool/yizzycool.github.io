@@ -1,33 +1,18 @@
 'use client';
 
 import styles from './index.module.scss';
-import Image from 'next/image';
-import Link from 'next/link';
-import { AppBar, Container, Typography } from '@mui/material';
-import Settings from './components/settings';
+import { AppBar, Container } from '@mui/material';
+import useWindowDevice from '@/hooks/window/use-window-device';
+import HeaderDesktop from './components/desktop';
+import HeaderMobile from './components/mobile';
 
 export default function Header() {
+  const { isPad } = useWindowDevice();
+
   return (
     <AppBar position="fixed" color="header" className={styles.appBar}>
       <Container maxWidth="xl" className={styles.container}>
-        <Link className={styles.logoBlock} href="/">
-          <Image
-            src="/assets/images/header/logo.png"
-            width="40"
-            height="40"
-            alt="Logo"
-          />
-          <Typography
-            color="textPrimary"
-            component="div"
-            className={styles.logoText}
-          >
-            Yizzy Peasy
-          </Typography>
-        </Link>
-        <div className={styles.rightBlock}>
-          <Settings />
-        </div>
+        {isPad ? <HeaderDesktop /> : <HeaderMobile />}
       </Container>
     </AppBar>
   );
