@@ -8,11 +8,13 @@ export default function useIntersectionObserver({
   rootSelector = null,
   rootMargin = '0px',
   threshold = 1.0,
+  once = true,
   targetSelector,
 }: {
   rootSelector?: string | null;
   rootMargin?: string;
   threshold?: number;
+  once?: boolean;
   targetSelector: string;
 }) {
   const [hit, setHit] = useState(false);
@@ -42,7 +44,9 @@ export default function useIntersectionObserver({
   const callback = (entries: Array<any>, observer: IntersectionObserver) => {
     const intersectionRatio = _get(entries, '0.intersectionRatio', 0);
     if (intersectionRatio < threshold) {
-      setHit(false);
+      if (!once) {
+        setHit(false);
+      }
     } else {
       setHit(true);
     }
