@@ -9,7 +9,8 @@ import _random from 'lodash/random';
 import _last from 'lodash/last';
 import _size from 'lodash/size';
 
-const Intros = ['Hi There', 'I am Yizzy', 'Front End Developer'];
+const Intros = ['Hi There', 'I am Yizzy', 'Front-end Developer'];
+
 const defaultShowedLength = _fill(Array(Intros.length), 0);
 
 export default function Typewritter() {

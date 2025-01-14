@@ -19,3 +19,12 @@
     transform: translate3d(0, -10%, 0);
   }
 }
+
+@keyframes flashCursor {
+  0%, 25%, 75%, 100% {
+    opacity: 1;
+  }
+  30%, 70% {
+    opacity: 0;
+  }
+}

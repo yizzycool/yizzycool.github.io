@@ -23,6 +23,11 @@
     font-size: 1.5rem;
     line-height: 2rem;
   }
+
+  &:after {
+    content: ".";
+    visibility: hidden;
+  }
 }
 
 .intro2 {
@@ -39,6 +44,11 @@
     font-size: 2rem;
     line-height: 2.5rem;
   }
+
+  &:after {
+    content: ".";
+    visibility: hidden;
+  }
 }
 
 .intro3 {
@@ -52,15 +62,19 @@
     font-size: 1.5rem;
     line-height: 1.5rem;
   }
+
+  &:after {
+    content: ".";
+    visibility: hidden;
+  }
 }
 
 .cursor {
   display: inline-block;
   width: 0;
-  padding: 0 0 0 10px;
   text-align: center;
 
   &:global {
-    animation: 2s flash infinite;
+    animation: 1s flashCursor infinite;
   }
 }
