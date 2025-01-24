@@ -6,24 +6,30 @@
     "duration": "Sep 2021 - Present",
     "descriptions": [
       {
-        "title": "Developed a B2C product - Online AI Photo Editor",
+        "title": "Online AI Photo Editor",
+        "tags": ["Next.js", "React", "B2C", "Front-end"],
         "items": [
           "Developed and maintained UI of AI image editors and AI image generators with <b>Next.js</b>",
           "Implemented <b>Responsive Web Design</b> across desktop, tablet, and mobile device"
-        ]
+        ],
+        "iconType": "pencil-square"
       },
       {
-        "title": "Developed on B2B products - AI Virtual Makeup",
+        "title": "AI Virtual Makeup",
+        "tags": ["React", "AR", "B2B", "Front-end"],
         "items": [
           "Developed and customized UI of AI & AR beauty and skin tech solutions with <b>React</b>",
           "Implemented <b>ADA</b> and <b>WCAG</b> standards to improve accessibility"
-        ]
+        ],
+        "iconType": "sparkles"
       },
       {
-        "title": "[Backend] Implemented ETL process and deployed data warehouse",
+        "title": "ETL - Data Transformation",
+        "tags": ["Kafka", "ETL", "Data Warehouse"],
         "items": [
           "Deployed data warehouse with <b>Kafka cluster on AWS EC2 instances</b>"
-        ]
+        ],
+        "iconType": "circle-stack"
       }
     ]
   }

@@ -1,25 +1,21 @@
-import styles from './index.module.scss';
 import Image from 'next/image';
 import Typewritter from '../typewriter';
-import { Container, Grid2 } from '@mui/material';
 
 export default function Intro() {
   return (
-    <div className={styles.background}>
-      <div className={styles.backgroundMask} />
-      <Container maxWidth="xl" className={styles.container}>
-        <Grid2
-          container
-          spacing={2}
-          direction={{ xs: 'column-reverse', md: 'row' }}
-          className={styles.flex}
-        >
-          <Grid2 size={{ xs: 12, md: 6 }} className={styles.flexItem}>
+    <div
+      className="relative h-full w-full bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: 'url("/assets/images/home/background.jpg")' }}
+    >
+      <div className="absolute left-0 top-0 z-0 h-full w-full bg-transparent dark:bg-neutral-800/70" />
+      <div className="relative z-[1] mx-auto px-4 h-full max-w-screen-2xl">
+        <div className="grid h-full w-full grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="order-last mx-auto w-[60%] text-center text-sky-950 lg:order-none lg:m-auto lg:text-left dark:text-white">
             <Typewritter />
-          </Grid2>
-          <Grid2 size={{ xs: 12, md: 6 }} className={styles.flexItem}>
+          </div>
+          <div className="m-auto w-fit">
             <Image
-              className={styles.mainImage}
+              className="m-auto w-[60%] rounded"
               width={1024}
               height={1024}
               src="/assets/images/home/avatar.png"
@@ -27,9 +23,9 @@ export default function Intro() {
               objectPosition="center"
               alt="main image"
             />
-          </Grid2>
-        </Grid2>
-      </Container>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

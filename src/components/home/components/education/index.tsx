@@ -1,16 +1,7 @@
 'use client';
 
-import styles from './index.module.scss';
 import useIntersectionObserver from '@/hooks/window/use-intersection-observer';
-import { Container, Divider } from '@mui/material';
-import {
-  Timeline,
-  TimelineConnector,
-  TimelineContent,
-  TimelineDot,
-  TimelineItem,
-  TimelineSeparator,
-} from '@mui/lab';
+import Image from 'next/image';
 import EducationData from './data/educations.json';
 import _get from 'lodash/get';
 
@@ -23,29 +14,50 @@ export default function Education() {
   });
 
   return (
-    <Container id="education" maxWidth="xl" className={styles.container}>
-      <div className={hit ? styles.containerFadeIn : styles.containerFadeOut}>
-        <Divider textAlign="center" className={styles.title}>
-          Education
-        </Divider>
-        <Timeline className={styles.timeline}>
-          {EducationData.map((data, idx) => (
-            <TimelineItem key={idx}>
-              <TimelineSeparator>
-                <TimelineDot />
-                <TimelineConnector />
-              </TimelineSeparator>
-              <TimelineContent className={styles.timelineContent}>
-                <div className={styles.flexSpaceBetween}>
-                  <div className={styles.name}>{data.name}</div>
-                  <div className={styles.duration}>{data.duration}</div>
-                </div>
-                <div className={styles.department}>{data.department}</div>
-              </TimelineContent>
-            </TimelineItem>
+    <div className="relative min-h-80 w-full border-t border-neutral-300 px-4 py-20 dark:border-neutral-500">
+      <Image
+        className="absolute inset-0 -z-[1] object-cover opacity-10 blur-sm"
+        src="/assets/images/home/meeting.jpg"
+        fill={true}
+        alt="background image"
+      />
+      <div id="education" className="mx-auto max-w-screen-xl px-4">
+        <div
+          data-hit={hit}
+          className="pt-40 data-[hit=true]:animate-slightly-fade-in-down"
+        >
+          <div className="text-5xl font-bold dark:text-white">Education</div>
+          {EducationData.map((data) => (
+            <div
+              key={data.name}
+              className="mt-20 border-t border-neutral-300 py-12 lg:grid lg:grid-cols-3 dark:border-neutral-500"
+            >
+              <div>{data.duration}</div>
+              <div className="col-span-2">
+                <div className="text-2xl font-bold">{data.name}</div>
+                <div className="mt-5">{data.department}</div>
+              </div>
+            </div>
           ))}
-        </Timeline>
+        </div>
       </div>
-    </Container>
+    </div>
   );
 }
+
+// function JobIcon({
+//   iconType,
+//   className = '',
+// }: {
+//   iconType: string;
+//   className: string;
+// }) {
+//   if (iconType === 'pencil-square') {
+//     return <PencilSquareIcon className={className} />;
+//   } else if (iconType === 'sparkles') {
+//     return <SparklesIcon className={className} />;
+//   } else if (iconType === 'circle-stack') {
+//     return <CircleStackIcon className={className} />;
+//   }
+//   return null;
+// }

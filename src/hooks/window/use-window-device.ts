@@ -1,24 +1,33 @@
-import variables from '@/styles/variables.module.scss';
+'use client';
+
 import { useEffect, useMemo, useState } from 'react';
 import _isNull from 'lodash/isNull';
 
+const BreakPoints = {
+  'width-sm': 640,
+  'width-md': 768,
+  'width-lg': 1024,
+  'width-xl': 1280,
+  'width-2xl': 1536,
+};
+
 export default function useWindowDevice() {
-  const [width, setWidth] = useState<number | null>(null);
+  const [width, setWidth] = useState<number | null>(0);
 
   const isDesktop = useMemo(() => {
-    return !_isNull(width) && width > parseInt(variables['width-lg']);
+    return !_isNull(width) && width >= BreakPoints['width-lg'];
   }, [width]);
 
   const isPad = useMemo(() => {
     return (
       !_isNull(width) &&
-      width <= parseInt(variables['width-lg']) &&
-      width > parseInt(variables['width-sm'])
+      width < BreakPoints['width-lg'] &&
+      width >= BreakPoints['width-sm']
     );
   }, [width]);
 
   const isMobile = useMemo(() => {
-    return !_isNull(width) && width <= parseInt(variables['width-sm']);
+    return !_isNull(width) && width < BreakPoints['width-sm'];
   }, [width]);
 
   useEffect(() => {

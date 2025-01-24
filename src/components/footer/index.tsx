@@ -1,25 +1,19 @@
-import styles from './index.module.scss';
-import { Container, Divider, Link } from '@mui/material';
-
 export default function Footer() {
   return (
-    <Container maxWidth="xl">
-      <Divider />
-      <footer className={styles.footer}>
+    <div className="mx-auto max-w-screen-2xl border-t border-slate-900/10 dark:border-slate-50/[0.06]">
+      <footer className="mx-auto flex w-full justify-center py-10 text-xs">
         <p>
           Designed & Developed by{' '}
-          <Link
+          <a
             href="https://www.linkedin.com/in/yizzy/"
-            underline="hover"
             target="_blank"
             rel="noreferrer"
-            color="info"
           >
             Yizzy Wu
-          </Link>{' '}
+          </a>{' '}
           &copy; 2024
         </p>
       </footer>
-    </Container>
+    </div>
   );
 }

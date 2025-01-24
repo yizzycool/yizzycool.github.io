@@ -1,6 +1,6 @@
 'use client';
 
-import styles from './index.module.scss';
+// import styles from './index.module.scss';
 import { useEffect, useMemo, useState } from 'react';
 import browserUtils from '@/utils/browser-utils';
 import _fill from 'lodash/fill';
@@ -64,11 +64,19 @@ export default function Typewritter() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className="w-full">
       {Intros.map((intro, idx) => (
-        <div key={idx} className={styles[`intro${idx + 1}`]}>
+        <div
+          key={idx}
+          data-line={idx + 1}
+          className="mt-2 text-2xl font-bold after:invisible after:content-['.'] data-[line=2]:text-4xl data-[line=3]:text-sky-500"
+        >
           {intro.substring(0, showedLength[idx])}
-          {idx === showedLine && <span className={styles.cursor}>|</span>}
+          {idx === showedLine && (
+            <span className="animate-flash-cursor inline-block w-0 text-center">
+              |
+            </span>
+          )}
         </div>
       ))}
     </div>

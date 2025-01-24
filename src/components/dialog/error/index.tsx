@@ -1,9 +1,11 @@
-import { Alert, AlertTitle, Dialog } from '@mui/material';
+import { MouseEventHandler } from 'react';
+import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
+import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 
 type Props = {
   errorString: string;
   open: boolean;
-  onClose: Function;
+  onClose: () => void;
 };
 
 export default function ErrorDialog({
@@ -11,15 +13,41 @@ export default function ErrorDialog({
   open,
   onClose = () => {},
 }: Props) {
-  const onDialogClose = () => onClose();
-  const onAlertClose = () => onClose();
+  const onDialogClose = (_: boolean): void => onClose();
+  const onClick: MouseEventHandler<HTMLButtonElement> = () => onClose();
 
   return (
-    <Dialog open={open} onClose={onDialogClose}>
-      <Alert variant="standard" severity="error" onClose={onAlertClose}>
-        <AlertTitle>Error</AlertTitle>
-        {errorString}
-      </Alert>
+    <Dialog
+      open={open}
+      as="div"
+      className="relative z-10 focus:outline-none"
+      onClose={onDialogClose}
+    >
+      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="flex min-h-full items-center justify-center p-4">
+          <DialogPanel
+            transition
+            className="data-[closed]:transform-[scale(95%)] w-full max-w-md rounded-xl bg-red-900/30 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:opacity-0"
+          >
+            <DialogTitle
+              as="h3"
+              className="flex items-center text-lg font-bold text-white"
+            >
+              <ExclamationCircleIcon className="mr-2 h-6 w-6 text-red-500" />
+              Error
+            </DialogTitle>
+            <p className="mt-2 text-sm/6 text-neutral-400">{errorString}</p>
+            <div className="mt-4 flex justify-end">
+              <Button
+                className="inline-flex items-center gap-2 rounded-md bg-rose-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-rose-600 data-[open]:bg-rose-700 data-[focus]:outline-1 data-[focus]:outline-white"
+                onClick={onClick}
+              >
+                OK
+              </Button>
+            </div>
+          </DialogPanel>
+        </div>
+      </div>
     </Dialog>
   );
 }

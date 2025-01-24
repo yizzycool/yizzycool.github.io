@@ -1,32 +1,28 @@
 'use client';
 
-import styles from './index.module.scss';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Typography } from '@mui/material';
-import Settings from '../settings';
+import Navigation from '../navigation';
+import ThemeSelector from '../theme-selector';
 
 export default function HeaderDesktop() {
   return (
-    <>
-      <Link className={styles.logoBlock} href="/">
+    <div className="flex items-center justify-between">
+      <Link className="flex items-center" href="/">
         <Image
           src="/assets/images/header/logo.png"
-          width="40"
-          height="40"
+          width="30"
+          height="30"
           alt="Logo"
         />
-        <Typography
-          color="textPrimary"
-          component="div"
-          className={styles.logoText}
-        >
-          Yizzy Peasy
-        </Typography>
+        <div className="ml-4 text-xl font-bold">Yizzy Peasy</div>
       </Link>
-      <div className={styles.rightBlock}>
-        <Settings />
+      <div className="flex flex-1 items-center justify-end px-4">
+        <Navigation />
       </div>
-    </>
+      <div className="flex items-center">
+        <ThemeSelector />
+      </div>
+    </div>
   );
 }
