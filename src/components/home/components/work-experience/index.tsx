@@ -30,7 +30,7 @@ export default function WorkExperience() {
       <div id="work-experience" className="mx-auto max-w-screen-xl px-4">
         <div
           data-hit={hit}
-          className="pt-40 data-[hit=true]:animate-slightly-fade-in-down"
+          className="pt-40 opacity-0 data-[hit=true]:animate-slightly-fade-in-down data-[hit=true]:opacity-100"
         >
           <div className="text-5xl font-bold dark:text-white">
             Work Experience

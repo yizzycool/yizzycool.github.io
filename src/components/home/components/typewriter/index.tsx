@@ -13,6 +13,8 @@ const Intros = ['Hi There', 'I am Yizzy', 'Front-end Developer'];
 
 const defaultShowedLength = _fill(Array(Intros.length), 0);
 
+let mounted = false;
+
 export default function Typewritter() {
   const [showedLine, setShowedLine] = useState(0);
   const [showedLength, setShowedLength] = useState(defaultShowedLength);
@@ -30,7 +32,12 @@ export default function Typewritter() {
 
   // Start typewritter effect
   useEffect(() => {
-    startTransition();
+    if (!mounted) {
+      mounted = true;
+      setTimeout(startTransition, 1000);
+    } else {
+      startTransition();
+    }
   }, [showedLength]);
 
   const startTransition = async () => {
@@ -73,7 +80,7 @@ export default function Typewritter() {
         >
           {intro.substring(0, showedLength[idx])}
           {idx === showedLine && (
-            <span className="animate-flash-cursor inline-block w-0 text-center">
+            <span className="inline-block w-0 animate-flash-cursor text-center">
               |
             </span>
           )}

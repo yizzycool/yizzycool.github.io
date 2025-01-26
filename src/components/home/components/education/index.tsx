@@ -24,7 +24,7 @@ export default function Education() {
       <div id="education" className="mx-auto max-w-screen-xl px-4">
         <div
           data-hit={hit}
-          className="pt-40 data-[hit=true]:animate-slightly-fade-in-down"
+          className="pt-40 opacity-0 data-[hit=true]:animate-slightly-fade-in-down data-[hit=true]:opacity-100"
         >
           <div className="text-5xl font-bold dark:text-white">Education</div>
           {EducationData.map((data) => (
