@@ -7,7 +7,7 @@ import ErrorDialog from '@/components/dialog/error';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import { Checkbox, Field, Label } from '@headlessui/react';
-import { CheckIcon } from '@heroicons/react/20/solid';
+import { CheckIcon, TrashIcon } from '@heroicons/react/20/solid';
 
 type ImageInfo = {
   image: HTMLImageElement | null;
@@ -25,7 +25,7 @@ const DefaultImageInfo: ImageInfo = {
 
 export default function Base64ToImage() {
   const [autoUpdate, setAutoUpdate] = useState(true);
-  const [base64, setBase64] = useState<string | null>(null);
+  const [base64, setBase64] = useState<string>('');
   const [imageInfo, setImageInfo] = useState<ImageInfo>(DefaultImageInfo);
 
   useEffect(() => {
@@ -61,6 +61,8 @@ export default function Base64ToImage() {
     setBase64(base64String);
   };
 
+  const onClearBase64 = () => setBase64('');
+
   return (
     <div className="mx-auto flex min-h-full max-w-screen-xl flex-col items-center px-5 pt-[68px]">
       <h1 className="mx-auto mt-10 text-3xl font-bold">
@@ -78,12 +80,21 @@ export default function Base64ToImage() {
           </Checkbox>
           <Label className="cursor-pointer">Auto Update</Label>
         </Field>
-        <button
-          className="items-center rounded-md bg-sky-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 hover:bg-sky-600"
-          onClick={transferToImage}
-        >
-          Convert
-        </button>
+        <div className="flex items-center">
+          <button
+            className="flex items-center rounded-md bg-red-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 hover:bg-red-600"
+            onClick={onClearBase64}
+          >
+            <TrashIcon className="mr-2 h-5 w-5 text-white" />
+            Clear
+          </button>
+          <button
+            className="ml-4 items-center rounded-md bg-sky-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 hover:bg-sky-600"
+            onClick={transferToImage}
+          >
+            Convert
+          </button>
+        </div>
       </div>
       {/* Textarea block */}
       <div className="mt-6 w-full">
@@ -93,6 +104,7 @@ export default function Base64ToImage() {
         <textarea
           id="base64-textarea"
           className="mt-2 h-[300px] w-full resize-none rounded-md bg-white/5 px-3 py-2 text-neutral-700 outline outline-2 outline-neutral-300 focus:outline-sky-600 dark:text-neutral-300"
+          value={base64}
           onChange={onBase64StringChanged}
         />
       </div>
