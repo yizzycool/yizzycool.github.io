@@ -110,49 +110,4 @@ export default function Base64ToImage() {
       />
     </div>
   );
-
-  // return (
-  //   <Container maxWidth="xl" className={styles.container}>
-  //     <h1 className={styles.title}>Base64 to Image Converter</h1>
-  //     <div className={styles.functionBlock}>
-  //       <FormControlLabel
-  //         control={
-  //           <Checkbox checked={autoUpdate} onChange={onAutoUpdateChecked} />
-  //         }
-  //         label="Auto Update"
-  //       />
-  //       <Button
-  //         variant="contained"
-  //         className={styles.convertButton}
-  //         onClick={transferToImage}
-  //       >
-  //         Convert
-  //       </Button>
-  //     </div>
-  //     <TextField
-  //       id="base64-to-image-textarea"
-  //       onChange={onBase64StringChanged}
-  //       autoFocus={true}
-  //       color="primary"
-  //       fullWidth={true}
-  //       multiline={true}
-  //       rows={10}
-  //       label="Paste base64 string here"
-  //     />
-  //     <div className={styles.imageBlock}>
-  //       {!_isNull(imageInfo.image) && (
-  //         <img
-  //           className={styles.image}
-  //           src={imageInfo.image.src}
-  //           alt="result image"
-  //         />
-  //       )}
-  //     </div>
-  //     <ErrorDialog
-  //       open={imageInfo.error}
-  //       onClose={() => setImageInfo(DefaultImageInfo)}
-  //       errorString="Conversion Error!"
-  //     />
-  //   </Container>
-  // );
 }
