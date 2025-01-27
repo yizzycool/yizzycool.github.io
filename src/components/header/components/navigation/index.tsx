@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
   Popover,
@@ -11,6 +12,14 @@ import { ChevronDownIcon, PhotoIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 
 export default function Navigation() {
+  const [body, setBody] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setBody(window.document.body);
+  }, []);
+
+  if (!body) return;
+
   return (
     <>
       {/* Tools */}
@@ -43,7 +52,7 @@ export default function Navigation() {
         </PopoverPanel>
         {createPortal(
           <PopoverBackdrop className="fixed inset-0 z-10 bg-transparent" />,
-          document.body
+          body
         )}
       </Popover>
     </>
