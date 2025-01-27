@@ -1,6 +1,12 @@
 'use client';
 
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
+import { createPortal } from 'react-dom';
+import {
+  Popover,
+  PopoverBackdrop,
+  PopoverButton,
+  PopoverPanel,
+} from '@headlessui/react';
 import { ChevronDownIcon, PhotoIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 
@@ -35,6 +41,10 @@ export default function Navigation() {
             </div>
           </div>
         </PopoverPanel>
+        {createPortal(
+          <PopoverBackdrop className="fixed inset-0 z-10 bg-transparent" />,
+          document.body
+        )}
       </Popover>
     </>
   );
