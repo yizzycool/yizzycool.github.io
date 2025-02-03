@@ -3,6 +3,7 @@
 import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 import imageUtils from '@/utils/image-utils';
+import Image from 'next/image';
 import ErrorDialog from '@/components/dialog/error';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
@@ -31,7 +32,8 @@ export default function Base64ToImage() {
   useEffect(() => {
     if (!autoUpdate) return;
     transferToImage();
-  }, [base64]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [base64, autoUpdate]);
 
   const transferToImage = async () => {
     if (_isNull(base64)) return;
@@ -44,6 +46,7 @@ export default function Base64ToImage() {
       const { width, height } = image;
       setImageInfo({ image, width, height, error: false });
     } catch (e) {
+      console.log('[ERROR] convert image:', e);
       setImageInfo({ image: null, width: 0, height: 0, error: true });
     }
   };
@@ -110,8 +113,14 @@ export default function Base64ToImage() {
       </div>
       {/* Image block */}
       <div className="mb-20 mt-6 flex w-full flex-col items-center">
-        {!_isNull(imageInfo.image) && (
-          <img className="" src={imageInfo.image.src} alt="result image" />
+        {!imageInfo.error && !_isNull(imageInfo.image) && (
+          <Image
+            width={0}
+            height={0}
+            className="w-full object-contain"
+            src={imageInfo.image.src}
+            alt="result image"
+          />
         )}
       </div>
       {/* Error dialog */}

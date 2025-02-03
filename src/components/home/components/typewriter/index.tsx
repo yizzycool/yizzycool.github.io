@@ -38,6 +38,7 @@ export default function Typewritter() {
     } else {
       startTransition();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showedLength]);
 
   const startTransition = async () => {

@@ -21,6 +21,7 @@ export default function useIntersectionObserver({
 
   useEffect(() => {
     init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const init = () => {
@@ -41,7 +42,10 @@ export default function useIntersectionObserver({
     }
   };
 
-  const callback = (entries: Array<any>, observer: IntersectionObserver) => {
+  const callback = (
+    entries: IntersectionObserverEntry[],
+    _observer: IntersectionObserver
+  ) => {
     const intersectionRatio = _get(entries, '0.intersectionRatio', 0);
     if (intersectionRatio < threshold) {
       if (!once) {
