@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import imageUtils from '@/utils/image-utils';
 import Image from 'next/image';
 import ErrorDialog from '@/components/dialog/error';
+import Title from '../../components/title';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import { Checkbox, Field, Label } from '@headlessui/react';
@@ -68,9 +69,7 @@ export default function Base64ToImage() {
 
   return (
     <div className="mx-auto flex min-h-full max-w-screen-xl flex-col items-center px-5 pt-[68px]">
-      <h1 className="mx-auto mt-10 text-3xl font-bold">
-        Base64 to Image Converter
-      </h1>
+      <Title>Base64 to Image Converter</Title>
       <div className="mt-8 flex w-full items-center justify-between">
         {/* Enable auto update or not */}
         <Field className="flex items-center gap-2">
