@@ -1,23 +1,12 @@
 'use client';
 
 import clsx from 'clsx';
-import { useEffect } from 'react';
+import useAiTranslator from '../../hooks/use-ai-translator';
+import useAiLanguageDetector from '../../hooks/use-ai-language-detector';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
-import { TranslatorApiSupportedStatus } from '../..';
 import ApiStatus from '../api-status';
 import _get from 'lodash/get';
 import _isNull from 'lodash/isNull';
-
-type WindowAi = {
-  ai?: {
-    translator?: object;
-    languageDetector?: object;
-  };
-};
-
-type windowTranslation = {
-  Translation?: object;
-};
 
 const ApiList = [
   {
@@ -32,40 +21,19 @@ const ApiList = [
   },
 ];
 
-export default function SupportTable({
-  apiSupportedStatus,
-  setApiSupportedStatus,
-}: {
-  apiSupportedStatus: TranslatorApiSupportedStatus;
-  setApiSupportedStatus: React.Dispatch<
-    React.SetStateAction<TranslatorApiSupportedStatus>
-  >;
-}) {
-  useEffect(() => {
-    // Detect API capability
-    setTimeout(() => {
-      checkTranslatorSupported();
-      checkLanguageDetectorSupported();
-    }, 500);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+export default function SupportTable() {
+  const { isSupported: isTranslatorSupported } = useAiTranslator();
+  const { isSupported: isLanguageDetectorSupported } = useAiLanguageDetector();
 
-  // To check if translator is supported
-  const checkTranslatorSupported = () => {
-    const ai = (window as unknown as WindowAi).ai;
-    const translation = (window as unknown as windowTranslation).Translation;
-    const translator = ai?.translator || translation;
-    setApiSupportedStatus((ps) => ({ ...ps, translator: !!translator }));
-  };
-
-  // To check if language detector is supported
-  const checkLanguageDetectorSupported = () => {
-    const ai = (window as unknown as WindowAi).ai;
-    const languageDetector = ai?.languageDetector;
-    setApiSupportedStatus((ps) => ({
-      ...ps,
-      languageDetector: !!languageDetector,
-    }));
+  const getCapability = (key: string) => {
+    switch (key) {
+      case ApiList[0].supportKey:
+        return isTranslatorSupported;
+      case ApiList[1].supportKey:
+        return isLanguageDetectorSupported;
+      default:
+        return false;
+    }
   };
 
   return (
@@ -92,9 +60,7 @@ export default function SupportTable({
             </td>
             <td className="p-4">
               <div
-                data-supported={JSON.stringify(
-                  _get(apiSupportedStatus, api.supportKey)
-                )}
+                data-supported={JSON.stringify(getCapability(api.supportKey))}
                 className={clsx(
                   'm-auto flex w-fit items-center justify-center rounded-md px-2 py-1 text-xs font-medium',
                   'data-[supported=null]:bg-gray-400/10 data-[supported=null]:text-gray-400',
@@ -102,10 +68,7 @@ export default function SupportTable({
                   'data-[supported=false]:bg-red-400/10 data-[supported=false]:text-red-400'
                 )}
               >
-                <ApiStatus
-                  supportStatus={apiSupportedStatus}
-                  supportKey={api.supportKey}
-                />
+                <ApiStatus isSupported={getCapability(api.supportKey)} />
               </div>
             </td>
           </tr>

@@ -1,19 +1,13 @@
 'use-client';
 
-import { TranslatorApiSupportedStatus } from '../..';
 import { CheckIcon, XMarkIcon } from '@heroicons/react/20/solid';
-import _get from 'lodash/get';
 import _isNull from 'lodash/isNull';
 
 export default function ApiStatus({
-  supportStatus,
-  supportKey,
+  isSupported,
 }: {
-  supportStatus: TranslatorApiSupportedStatus;
-  supportKey: string;
+  isSupported: boolean | null;
 }) {
-  const isSupported = _get(supportStatus, supportKey);
-
   return (
     <>
       {_isNull(isSupported) ? (
