@@ -1,3 +1,5 @@
+'use client';
+
 import { ChangeEvent, useRef, useState } from 'react';
 import useAiTranslator from '../../hooks/use-ai-translator';
 import useAiLanguageDetector from '../../hooks/use-ai-language-detector';
@@ -32,7 +34,7 @@ export default function Translator() {
   };
 
   return (
-    <div className="mt-10 flex justify-center gap-5 border-t border-neutral-700 px-10 pb-40 pt-10">
+    <div className="mt-10 flex flex-col justify-center gap-5 border-t border-neutral-700 px-10 pb-40 pt-10 md:flex-row">
       {/* Input */}
       <div className="flex-1">
         <textarea
