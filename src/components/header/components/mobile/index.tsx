@@ -73,7 +73,7 @@ export default function HeaderMobile() {
                           href="/tools/image-tool/base64-to-image"
                           className="block w-full rounded-lg px-5 py-2 hover:bg-neutral-800/10"
                         >
-                          Image64 to Image
+                          Base64 to Image
                         </Link>
                       </DisclosurePanel>
                     </Disclosure>
