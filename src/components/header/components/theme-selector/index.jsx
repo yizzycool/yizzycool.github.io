@@ -1,5 +1,6 @@
 'use client';
 
+import clsx from 'clsx';
 import { Fragment } from 'react';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import {
@@ -44,7 +45,14 @@ export default function ThemeSelector() {
       <MenuItems
         transition
         anchor="bottom end"
-        className="z-10 mt-5 w-36 origin-top-right rounded-md border border-neutral-800/20 bg-white p-1 text-sm/6 font-semibold transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 dark:border-white/20 dark:bg-neutral-800"
+        className={clsx(
+          'z-10 mt-5 w-36 origin-top-right rounded-md p-1 text-sm/6 font-semibold focus:outline-none',
+          'border border-neutral-800/20 dark:border-white/20',
+          'bg-white/95 dark:bg-neutral-800',
+          'transition duration-100 ease-out',
+          '[--anchor-gap:var(--spacing-1)]',
+          'data-[closed]:scale-95 data-[closed]:opacity-0'
+        )}
       >
         {Buttons.map((button, idx) => (
           <Fragment key={idx}>
