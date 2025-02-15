@@ -3,8 +3,11 @@
 import { ChangeEvent, useRef, useState } from 'react';
 import useAiTranslator from '../../hooks/use-ai-translator';
 import useAiLanguageDetector from '../../hooks/use-ai-language-detector';
+import LanguageSelector from '../language-selector';
+import SwitchButton from '../switch-button';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
+import _values from 'lodash/values';
 
 export default function Translator() {
   const [text, setText] = useState('');
@@ -12,7 +15,12 @@ export default function Translator() {
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const { isSupported: _isTranslatorSupported, translate } = useAiTranslator();
+  const {
+    isSupported: _isTranslatorSupported,
+    translate,
+    params,
+    setTranslatorLang,
+  } = useAiTranslator();
   const { isSupported: _isLanguageDetectorSupported } = useAiLanguageDetector();
 
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -33,10 +41,27 @@ export default function Translator() {
     }
   };
 
+  const switchSourceTargetLanguage = () => {
+    setTranslatorLang(params.targetLanguage, params.sourceLanguage);
+  };
+
+  const changeLanguage = (type: string, languageCode: string) => {
+    if (type === 'source') {
+      setTranslatorLang(languageCode, params.targetLanguage);
+    } else {
+      setTranslatorLang(params.sourceLanguage, languageCode);
+    }
+  };
+
   return (
     <div className="mt-10 flex flex-col justify-center gap-5 border-t border-neutral-700 px-10 pb-40 pt-10 md:flex-row">
       {/* Input */}
       <div className="flex-1">
+        <LanguageSelector
+          params={params}
+          type="source"
+          changeLanguage={changeLanguage}
+        />
         <textarea
           autoFocus
           className="block min-h-60 w-full flex-1 resize-none rounded-md border-none bg-transparent px-6 py-4 text-xl outline outline-neutral-400 focus:outline-sky-500"
@@ -45,7 +70,13 @@ export default function Translator() {
         />
       </div>
       {/* Output */}
-      <div className="flex-1">
+      <div className="relative flex-1">
+        <SwitchButton onSwitch={switchSourceTargetLanguage} />
+        <LanguageSelector
+          params={params}
+          type="target"
+          changeLanguage={changeLanguage}
+        />
         <div className="block min-h-60 w-full flex-1 rounded-md bg-neutral-500/50 px-6 py-4 text-left text-xl">
           {translation}
         </div>

@@ -1,5 +1,6 @@
 export type TranslatorInstance = {
   translate: (text: string) => Promise<string>;
+  destroy?: () => void;
 };
 
 type LanguageDetectResults = {
@@ -27,5 +28,6 @@ export type WindowAi = {
   };
   translation?: {
     createTranslator: (params: TranslatorParams) => Promise<TranslatorInstance>;
+    canTranslate: (params: TranslatorParams) => Promise<string>;
   };
 };
