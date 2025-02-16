@@ -4,13 +4,45 @@ import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
+  CloseButton,
   Popover,
   PopoverBackdrop,
   PopoverButton,
   PopoverPanel,
 } from '@headlessui/react';
-import { ChevronDownIcon, PhotoIcon } from '@heroicons/react/20/solid';
+import {
+  ChevronDownIcon,
+  PhotoIcon,
+  RocketLaunchIcon,
+} from '@heroicons/react/20/solid';
 import Link from 'next/link';
+
+const Tools = [
+  {
+    name: 'Image Tools',
+    items: [
+      {
+        name: 'Base64 to Image',
+        href: '/tools/image-tool/base64-to-image',
+        icon: {
+          component: PhotoIcon,
+        },
+      },
+    ],
+  },
+  {
+    name: 'Chrome AI APIs',
+    items: [
+      {
+        name: 'Translator',
+        href: '/tools/chrome-built-in-ai-api/translator',
+        icon: {
+          component: RocketLaunchIcon,
+        },
+      },
+    ],
+  },
+];
 
 export default function Navigation() {
   const [body, setBody] = useState<HTMLElement | null>(null);
@@ -40,7 +72,7 @@ export default function Navigation() {
           transition
           anchor="bottom end"
           className={clsx(
-            'z-10 mt-6 origin-top-right rounded-md px-4 py-2 text-sm/6 font-semibold',
+            'z-10 mt-6 origin-top-right rounded-md py-2 text-sm/6 font-semibold',
             'border border-neutral-800/20 dark:border-white/20',
             'bg-white/95 backdrop-blur-lg dark:bg-neutral-800',
             'focus:outline-none',
@@ -48,32 +80,31 @@ export default function Navigation() {
             'data-[closed]:scale-95 data-[closed]:opacity-0'
           )}
         >
-          <div
-            className={clsx(
-              'group flex rounded-lg px-4 py-4',
-              'hover:bg-gray-100 dark:hover:bg-neutral-700'
-            )}
-          >
+          {Tools.map((tool) => (
             <div
-              className={clsx(
-                'h-12 w-12 rounded-md p-2',
-                'bg-none dark:bg-neutral-700'
-              )}
+              key={tool.name}
+              className="flex p-4 pr-16 hover:bg-gray-100 dark:hover:bg-neutral-700"
             >
-              <PhotoIcon className="w-full group-hover:text-sky-500" />
-            </div>
-            <div className="ml-4">
-              <div className="font-bold text-gray-900 dark:text-gray-400">
-                Image Tools
+              <div className="w-full">
+                <div className="mb-4 text-sm font-bold text-gray-700 dark:text-gray-200">
+                  {tool.name}
+                </div>
+                {tool.items.map((item) => (
+                  <CloseButton
+                    as={Link}
+                    key={item.name}
+                    className="flex items-center text-gray-600 hover:text-sky-500 hover:underline dark:text-gray-50 dark:hover:text-sky-500"
+                    href={item.href}
+                  >
+                    <div className="mr-3 h-8 w-8 rounded border border-gray-300 p-1.5 dark:border-gray-500/50">
+                      <item.icon.component className="h-full w-full" />
+                    </div>
+                    {item.name}
+                  </CloseButton>
+                ))}
               </div>
-              <Link
-                className="text-gray-600 hover:underline dark:text-gray-300"
-                href="/tools/image-tool/base64-to-image"
-              >
-                Base64 to Image
-              </Link>
             </div>
-          </div>
+          ))}
         </PopoverPanel>
         {createPortal(
           <PopoverBackdrop className="fixed inset-0 z-10 bg-transparent" />,

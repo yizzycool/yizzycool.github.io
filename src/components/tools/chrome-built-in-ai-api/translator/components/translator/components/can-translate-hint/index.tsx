@@ -24,13 +24,12 @@ export default function CanTranslateHint({
   }, [params]);
 
   const bgClass = useMemo(() => {
-    if (canTranslate === '') return 'bg-neutral-500/50';
-    else if (canTranslate === 'after-download') return 'bg-sky-500/50';
+    if (canTranslate === 'after-download') return 'bg-sky-500/50';
     else if (canTranslate === 'no') return 'bg-red-500/50';
     return null;
   }, [canTranslate]);
 
-  if (canTranslate === 'readily') return null;
+  if (canTranslate === 'readily' || canTranslate === '') return null;
   return (
     <div
       className={clsx(
@@ -38,9 +37,7 @@ export default function CanTranslateHint({
         bgClass
       )}
     >
-      {canTranslate === '' ? (
-        'Initialize...'
-      ) : canTranslate === 'after-download' ? (
+      {canTranslate === 'after-download' ? (
         <>
           <div>Language model is downloading...</div>
           <div>Please wait a minute</div>

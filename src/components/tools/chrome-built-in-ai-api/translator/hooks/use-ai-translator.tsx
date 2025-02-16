@@ -11,8 +11,8 @@ import { useEffect, useState } from 'react';
 export default function useAiTranslator() {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
   const [params, setParams] = useState<TranslatorParams>({
-    sourceLanguage: '',
-    targetLanguage: '',
+    sourceLanguage: 'zh-Hant',
+    targetLanguage: 'en',
   });
   const [translator, setTranslator] = useState<TranslatorInstance | null>(null);
   const [canTranslate, setCanTranslate] =
