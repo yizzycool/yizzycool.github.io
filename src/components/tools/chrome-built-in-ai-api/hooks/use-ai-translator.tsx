@@ -5,7 +5,7 @@ import {
   TranslatorInstance,
   TranslatorParams,
   WindowAi,
-} from '../../types/types';
+} from '../types/types';
 import { useEffect, useState } from 'react';
 
 export default function useAiTranslator() {

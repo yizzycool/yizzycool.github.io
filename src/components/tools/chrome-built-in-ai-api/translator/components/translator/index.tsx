@@ -1,8 +1,7 @@
 'use client';
 
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import useAiTranslator from '../../hooks/use-ai-translator';
-import useAiLanguageDetector from '../../hooks/use-ai-language-detector';
+import useAiTranslator from '@/components/tools/chrome-built-in-ai-api/hooks/use-ai-translator';
 import LanguageSelector from './components/language-selector';
 import SwitchButton from './components/switch-button';
 import CanTranslateHint from './components/can-translate-hint';
@@ -23,7 +22,6 @@ export default function Translator() {
     setTranslatorLang,
     canTranslate,
   } = useAiTranslator();
-  const { isSupported: _isLanguageDetectorSupported } = useAiLanguageDetector();
 
   // If translator update to another language, auto translate to new language when translator is readily
   useEffect(() => {

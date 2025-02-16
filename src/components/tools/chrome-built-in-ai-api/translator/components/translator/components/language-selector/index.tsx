@@ -1,7 +1,7 @@
 'use client';
 
 import { MouseEvent, useState } from 'react';
-import useLanguageTagToHumanReadable from '@/components/tools/chrome-built-in-ai-api/translator/hooks/use-language-tag-to-human-readable';
+import useLanguageTagToHumanReadable from '@/components/tools/chrome-built-in-ai-api/hooks/use-language-tag-to-human-readable';
 import { Dialog } from '@headlessui/react';
 import { TranslatorParams } from '@/components/tools/chrome-built-in-ai-api/types/types';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';

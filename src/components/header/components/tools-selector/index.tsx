@@ -1,6 +1,10 @@
 'use client';
 
-import { PhotoIcon, RocketLaunchIcon } from '@heroicons/react/20/solid';
+import {
+  LanguageIcon,
+  PhotoIcon,
+  RocketLaunchIcon,
+} from '@heroicons/react/20/solid';
 import ToolsSelectorMobile from './components/mobile';
 import ToolsSelectorDesktop from './components/desktop';
 
@@ -23,6 +27,13 @@ export const Tools = [
       {
         name: 'Translator',
         href: '/tools/chrome-built-in-ai-api/translator',
+        icon: {
+          component: LanguageIcon,
+        },
+      },
+      {
+        name: 'Language Detector',
+        href: '/tools/chrome-built-in-ai-api/language-detector',
         icon: {
           component: RocketLaunchIcon,
         },

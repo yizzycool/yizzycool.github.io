@@ -62,7 +62,7 @@ export default function ToolsSelectorDesktop() {
                   <CloseButton
                     as={Link}
                     key={item.name}
-                    className="flex items-center text-gray-600 hover:text-sky-500 hover:underline dark:text-gray-50 dark:hover:text-sky-500"
+                    className="mt-2 flex items-center text-gray-600 hover:text-sky-500 hover:underline dark:text-gray-50 dark:hover:text-sky-500"
                     href={item.href}
                   >
                     <div className="mr-3 h-8 w-8 rounded border border-gray-300 p-1.5 dark:border-gray-500/50">

@@ -38,7 +38,7 @@ export default function ToolsSelectorMobile({
                 {tool.items.map((item) => (
                   <Link
                     key={item.name}
-                    className="flex items-center text-gray-600 hover:text-sky-500 hover:underline dark:text-gray-50 dark:hover:text-sky-500"
+                    className="mt-2 flex items-center text-gray-600 hover:text-sky-500 hover:underline dark:text-gray-50 dark:hover:text-sky-500"
                     href={item.href}
                     onClick={closeSidePanel}
                   >

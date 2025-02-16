@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { WindowAi } from '../../types/types';
+import { WindowAi } from '../types/types';
 
 export default function useAiLanguageDetector() {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
