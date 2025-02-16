@@ -4,19 +4,9 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import ThemeSelector from '../theme-selector';
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-} from '@headlessui/react';
-import {
-  Bars3Icon,
-  ChevronDownIcon,
-  XMarkIcon,
-} from '@heroicons/react/20/solid';
+import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/20/solid';
+import { ToolsSelectorMobile } from '../tools-selector';
 
 export default function HeaderMobile() {
   const [open, setOpen] = useState(false);
@@ -63,20 +53,10 @@ export default function HeaderMobile() {
                   </div>
                   <div className="relative mt-6 flex-1 px-2 sm:px-4">
                     {/* Tools */}
-                    <Disclosure as="div" className="">
-                      <DisclosureButton className="group flex w-full items-center justify-between rounded-lg px-3 py-2 data-[hover]:bg-neutral-800/10">
-                        <span className="text-sm/6 font-medium">Tools</span>
-                        <ChevronDownIcon className="size-5 group-data-[open]:rotate-180" />
-                      </DisclosureButton>
-                      <DisclosurePanel className="mt-2 text-sm/5">
-                        <Link
-                          href="/tools/image-tool/base64-to-image"
-                          className="block w-full rounded-lg px-5 py-2 hover:bg-neutral-800/10"
-                        >
-                          Base64 to Image
-                        </Link>
-                      </DisclosurePanel>
-                    </Disclosure>
+                    <ToolsSelectorMobile
+                      closeSidePanel={() => setOpen(false)}
+                    />
+                    {/* <ToolsSelectorMobile /> */}
                     {/* Divider */}
                     <div className="my-2 mt-5 border-t border-gray-600" />
                     {/* Theme Selector */}

@@ -10,41 +10,11 @@ import {
   PopoverButton,
   PopoverPanel,
 } from '@headlessui/react';
-import {
-  ChevronDownIcon,
-  PhotoIcon,
-  RocketLaunchIcon,
-} from '@heroicons/react/20/solid';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
+import { Tools } from '../..';
 
-const Tools = [
-  {
-    name: 'Image Tools',
-    items: [
-      {
-        name: 'Base64 to Image',
-        href: '/tools/image-tool/base64-to-image',
-        icon: {
-          component: PhotoIcon,
-        },
-      },
-    ],
-  },
-  {
-    name: 'Chrome AI APIs',
-    items: [
-      {
-        name: 'Translator',
-        href: '/tools/chrome-built-in-ai-api/translator',
-        icon: {
-          component: RocketLaunchIcon,
-        },
-      },
-    ],
-  },
-];
-
-export default function Navigation() {
+export default function ToolsSelectorDesktop() {
   const [body, setBody] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -52,7 +22,6 @@ export default function Navigation() {
   }, []);
 
   if (!body) return;
-
   return (
     <>
       {/* Tools */}

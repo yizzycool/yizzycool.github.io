@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import Navigation from '../navigation';
+import Navigation from './components/navigation';
 import ThemeSelector from '../theme-selector';
 
 export default function HeaderDesktop() {
