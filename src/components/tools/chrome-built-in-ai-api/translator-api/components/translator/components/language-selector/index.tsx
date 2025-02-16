@@ -5,7 +5,7 @@ import useLanguageTagToHumanReadable from '@/components/tools/chrome-built-in-ai
 import { Dialog } from '@headlessui/react';
 import { TranslatorParams } from '@/components/tools/chrome-built-in-ai-api/types/types';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import ISO6391 from '@/components/tools/chrome-built-in-ai-api/translator/data/iso-639-1';
+import ISO6391 from '@/components/tools/chrome-built-in-ai-api/translator-api/data/iso-639-1';
 
 export default function LanguageSelector({
   params,

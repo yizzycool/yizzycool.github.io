@@ -16,12 +16,12 @@ export type TranslatorInstance = {
   destroy: () => void;
 };
 
-type LanguageDetectResults = {
+export type LanguageDetectResults = {
   confidence: number;
   detectedLanguage: string;
 };
 
-type LanguageDetectorInstance = {
+export type LanguageDetectorInstance = {
   detect: (text: string) => Promise<Array<LanguageDetectResults>>;
 };
 

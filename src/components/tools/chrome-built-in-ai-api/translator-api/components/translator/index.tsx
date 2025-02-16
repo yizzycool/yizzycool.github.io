@@ -28,6 +28,7 @@ export default function Translator() {
     if (canTranslate === 'readily' && text) {
       translateString(text);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canTranslate]);
 
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {

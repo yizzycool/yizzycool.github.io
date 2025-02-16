@@ -26,6 +26,7 @@ export default function useAiTranslator() {
   useEffect(() => {
     if (!isSupported) return;
     setTranslatorLang();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSupported]);
 
   // To check if translator is supported

@@ -1,3 +1,3 @@
-import Translator from '@/components/tools/chrome-built-in-ai-api/translator';
+import TranslatorApi from '@/components/tools/chrome-built-in-ai-api/translator-api';
 
-export default Translator;
+export default TranslatorApi;

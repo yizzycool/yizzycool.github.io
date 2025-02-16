@@ -21,6 +21,7 @@ export default function CanTranslateHint({
     const source = languageTagToHumanReadable(params.sourceLanguage);
     const target = languageTagToHumanReadable(params.targetLanguage);
     return `"${source} <-> ${target}"`;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
 
   const bgClass = useMemo(() => {
