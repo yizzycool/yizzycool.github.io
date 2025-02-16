@@ -3,7 +3,7 @@
 export default function useLanguageTagToHumanReadable() {
   const languageTagToHumanReadable = (
     languageTag: string,
-    targetLanguage: string
+    targetLanguage: string | undefined = 'en'
   ): string | undefined => {
     if (!languageTag || !targetLanguage) return '';
     const displayNames = new Intl.DisplayNames([targetLanguage], {

@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  AiTranslatorCapilitiesResult,
   TranslatorInstance,
   TranslatorParams,
   WindowAi,
@@ -14,9 +15,8 @@ export default function useAiTranslator() {
     targetLanguage: '',
   });
   const [translator, setTranslator] = useState<TranslatorInstance | null>(null);
-  // const [canTranslate, setCanTranslate] = useState<
-  //   'readily' | 'after-download' | 'no' | ''
-  // >('');
+  const [canTranslate, setCanTranslate] =
+    useState<AiTranslatorCapilitiesResult>('');
 
   useEffect(() => {
     checkCapability();
@@ -35,46 +35,89 @@ export default function useAiTranslator() {
     setIsSupported(!!translator);
   };
 
+  const resetTranslator = () => {
+    setCanTranslate('');
+    setTranslator(null);
+  };
+
   const setTranslatorLang = async (
     sourceLanguage = 'zh-Hant',
     targetLanguage = 'en'
   ) => {
+    resetTranslator();
     // Destroy previous translator before get the new one
-    if (translator) {
-      translator.destroy?.();
-    }
+    if (translator) translator.destroy?.();
     setParams({ sourceLanguage, targetLanguage });
+    // If cannot translate for source-target pair, do nothing
+    const canTranslate = await isLanguagePairSupported(
+      sourceLanguage,
+      targetLanguage
+    );
+    if (canTranslate === 'no') return;
+    // Create new translator
     const _window = window as unknown as WindowAi;
     if (_window.ai?.translator) {
       // If window.ai.translator exists
+      console.log('[Translator: ai.translator]');
       const translator = await _window.ai.translator.create({
         sourceLanguage,
         targetLanguage,
       });
       setTranslator(translator);
+      loopCheckIfLanguagePairIsSupported(sourceLanguage, targetLanguage);
     } else if (_window.translation) {
       // If window.translation exists
+      console.log('[Translator: translation]');
       const translator = await _window.translation.createTranslator({
         sourceLanguage,
         targetLanguage,
       });
       setTranslator(translator);
+      loopCheckIfLanguagePairIsSupported(sourceLanguage, targetLanguage);
     }
   };
 
-  // const detectLanguageSupported = async (
-  //   sourceLanguage = '',
-  //   targetLanguage = ''
-  // ) => {
-  //   const _window = window as unknown as WindowAi;
-  //   const translator = _window.ai?.translator || _window.translation;
-  //   const canTranslate = await _window.translation.canTranslate({
-  //     sourceLanguage,
-  //     targetLanguage,
-  //   });
-  //   setCanTranslate(canTranslate);
-  //   return canTranslate;
-  // };
+  const isLanguagePairSupported = async (
+    sourceLanguage = '',
+    targetLanguage = ''
+  ): Promise<AiTranslatorCapilitiesResult> => {
+    const _window = window as unknown as WindowAi;
+    let canTranslate: AiTranslatorCapilitiesResult = '';
+    if (_window.ai?.translator) {
+      // If window.ai.translator exists
+      const capabilities = await _window.ai.translator.capabilities();
+      canTranslate = capabilities.languagePairAvailable(
+        sourceLanguage,
+        targetLanguage
+      );
+    } else if (_window.translation) {
+      // If window.translation exists
+      canTranslate = await _window.translation.canTranslate({
+        sourceLanguage,
+        targetLanguage,
+      });
+    }
+    if (canTranslate !== 'readily') {
+      setCanTranslate(canTranslate);
+    }
+    return canTranslate;
+  };
+
+  const loopCheckIfLanguagePairIsSupported = async (
+    sourceLanguage = '',
+    targetLanguage = ''
+  ): Promise<void> => {
+    const canTranslate = await isLanguagePairSupported(
+      sourceLanguage,
+      targetLanguage
+    );
+    setCanTranslate(canTranslate);
+    if (canTranslate === 'after-download') {
+      setTimeout(() => {
+        loopCheckIfLanguagePairIsSupported(sourceLanguage, targetLanguage);
+      }, 1000);
+    }
+  };
 
   const translate = async (text: string): Promise<string> => {
     if (!translator) return '';
@@ -87,5 +130,6 @@ export default function useAiTranslator() {
     translate,
     params,
     setTranslatorLang,
+    canTranslate,
   };
 }

@@ -1,21 +1,19 @@
 'use client';
 
 import { MouseEvent, useState } from 'react';
-import useLanguageTagToHumanReadable from '../../hooks/use-language-tag-to-human-readable';
+import useLanguageTagToHumanReadable from '@/components/tools/chrome-built-in-ai-api/translator/hooks/use-language-tag-to-human-readable';
 import { Dialog } from '@headlessui/react';
-import { TranslatorParams } from '../../../types/types';
+import { TranslatorParams } from '@/components/tools/chrome-built-in-ai-api/types/types';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import ISO6391 from '../../data/iso-639-1';
+import ISO6391 from '@/components/tools/chrome-built-in-ai-api/translator/data/iso-639-1';
 
 export default function LanguageSelector({
   params,
   type,
-  locale = 'zh-TW',
   changeLanguage = () => {},
 }: {
   params: TranslatorParams;
   type: 'source' | 'target';
-  locale?: string;
   changeLanguage: (type: string, languageCode: string) => void;
 }) {
   const [opened, setOpened] = useState(false);
@@ -24,7 +22,7 @@ export default function LanguageSelector({
   const { languageTagToHumanReadable } = useLanguageTagToHumanReadable();
 
   const languageCode = type === 'source' ? sourceLanguage : targetLanguage;
-  const language = languageTagToHumanReadable(languageCode, locale);
+  const language = languageTagToHumanReadable(languageCode);
 
   const openMenu = () => setOpened(true);
 
@@ -68,7 +66,7 @@ export default function LanguageSelector({
                   onLanguageClick(event, code)
                 }
               >
-                {languageTagToHumanReadable(code, locale)}
+                {languageTagToHumanReadable(code)}
               </button>
             ))}
           </div>

@@ -126,7 +126,7 @@ const ISO6391 = [
   'yi',
   'yo',
   'zh',
-  'zh-TW',
+  'zh-Hant',
   'zu',
 ];
 

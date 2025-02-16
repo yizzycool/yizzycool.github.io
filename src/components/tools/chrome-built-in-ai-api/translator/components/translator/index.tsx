@@ -1,10 +1,11 @@
 'use client';
 
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import useAiTranslator from '../../hooks/use-ai-translator';
 import useAiLanguageDetector from '../../hooks/use-ai-language-detector';
-import LanguageSelector from '../language-selector';
-import SwitchButton from '../switch-button';
+import LanguageSelector from './components/language-selector';
+import SwitchButton from './components/switch-button';
+import CanTranslateHint from './components/can-translate-hint';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _values from 'lodash/values';
@@ -20,10 +21,19 @@ export default function Translator() {
     translate,
     params,
     setTranslatorLang,
+    canTranslate,
   } = useAiTranslator();
   const { isSupported: _isLanguageDetectorSupported } = useAiLanguageDetector();
 
+  // If translator update to another language, auto translate to new language when translator is readily
+  useEffect(() => {
+    if (canTranslate === 'readily' && text) {
+      translateString(text);
+    }
+  }, [canTranslate]);
+
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    if (canTranslate !== 'readily') return;
     const text = e.target.value;
     setText(text);
     if (timerRef.current) {
@@ -62,12 +72,18 @@ export default function Translator() {
           type="source"
           changeLanguage={changeLanguage}
         />
-        <textarea
-          autoFocus
-          className="block min-h-60 w-full flex-1 resize-none rounded-md border-none bg-transparent px-6 py-4 text-xl outline outline-neutral-400 focus:outline-sky-500"
-          onChange={onChange}
-          value={text}
-        />
+        <div className="relative">
+          <textarea
+            autoFocus
+            className="block min-h-60 w-full flex-1 resize-none rounded-md border-none bg-transparent px-6 py-4 text-xl outline outline-neutral-400 focus:outline-sky-500"
+            onChange={onChange}
+            value={text}
+            disabled={
+              canTranslate === 'after-download' || canTranslate === 'no'
+            }
+          />
+          <CanTranslateHint params={params} canTranslate={canTranslate} />
+        </div>
       </div>
       {/* Output */}
       <div className="relative flex-1">

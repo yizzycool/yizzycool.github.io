@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import useAiTranslator from '../../hooks/use-ai-translator';
 import useAiLanguageDetector from '../../hooks/use-ai-language-detector';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
-import ApiStatus from '../api-status';
+import ApiStatus from './components/api-status';
 import _get from 'lodash/get';
 import _isNull from 'lodash/isNull';
 
