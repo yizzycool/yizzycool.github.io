@@ -13,7 +13,7 @@ export default function SwitchButton({
     <button
       className={clsx(
         'm-auto mb-5 block rotate-90 cursor-pointer',
-        'md:absolute md:-left-5 md:top-0'
+        'md:absolute md:-left-5 md:top-0 md:rotate-0'
       )}
       onClick={onSwitch}
     >
