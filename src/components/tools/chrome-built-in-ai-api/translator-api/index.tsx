@@ -3,8 +3,6 @@
 import Title from '../../components/title';
 import SupportTable from '../components/support-table';
 import Translator from './components/translator';
-import _get from 'lodash/get';
-import _isNull from 'lodash/isNull';
 
 export default function TranslatorApi() {
   return (

@@ -7,6 +7,7 @@ import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import ApiStatus from './components/api-status';
 import _get from 'lodash/get';
 import _isNull from 'lodash/isNull';
+import useAiSummarizer from '../../hooks/use-ai-summarizer';
 
 const ApiList = [
   {
@@ -19,11 +20,17 @@ const ApiList = [
     url: 'https://developer.chrome.com/docs/ai/language-detection',
     supportKey: 'languageDetector',
   },
+  {
+    name: 'AI Summarizer',
+    url: 'https://developer.chrome.com/docs/ai/summarizer-api',
+    supportKey: 'summarizer',
+  },
 ];
 
 export default function SupportTable() {
   const { isSupported: isTranslatorSupported } = useAiTranslator();
   const { isSupported: isLanguageDetectorSupported } = useAiLanguageDetector();
+  const { isSupported: isSummarizerSupported } = useAiSummarizer();
 
   const getCapability = (key: string) => {
     switch (key) {
@@ -31,6 +38,8 @@ export default function SupportTable() {
         return isTranslatorSupported;
       case ApiList[1].supportKey:
         return isLanguageDetectorSupported;
+      case ApiList[2].supportKey:
+        return isSummarizerSupported;
       default:
         return false;
     }

@@ -1,9 +1,10 @@
 'use client';
 
 import {
+  DocumentTextIcon,
   LanguageIcon,
   PhotoIcon,
-  RocketLaunchIcon,
+  SparklesIcon,
 } from '@heroicons/react/20/solid';
 import ToolsSelectorMobile from './components/mobile';
 import ToolsSelectorDesktop from './components/desktop';
@@ -38,7 +39,15 @@ export const Tools = [
         href: '/tools/chrome-built-in-ai-api/language-detector',
         desc: 'Enables AI-powered language detection for web apps.',
         icon: {
-          component: RocketLaunchIcon,
+          component: SparklesIcon,
+        },
+      },
+      {
+        name: 'Summarizer',
+        href: '/tools/chrome-built-in-ai-api/summarizer',
+        desc: 'Enables AI-powered text summarization for web apps.',
+        icon: {
+          component: DocumentTextIcon,
         },
       },
     ],

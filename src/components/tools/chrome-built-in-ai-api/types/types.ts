@@ -11,6 +11,10 @@ type AiTranslatorCapilities = {
   ) => AiTranslatorCapilitiesResult;
 };
 
+type AiSummarizerCapilities = {
+  available: AiTranslatorCapilitiesResult;
+};
+
 export type TranslatorInstance = {
   translate: (text: string) => Promise<string>;
   destroy: () => void;
@@ -25,6 +29,11 @@ export type LanguageDetectorInstance = {
   detect: (text: string) => Promise<Array<LanguageDetectResults>>;
 };
 
+export interface SummarizerInstance extends SummarizerParams {
+  summarize: (text: string) => Promise<string>;
+  destroy: () => void;
+}
+
 export type AiTranslatorMonitor = {
   addEventListener: (
     eventType: string,
@@ -38,6 +47,13 @@ export type TranslatorParams = {
   monitor?: (monitor: AiTranslatorMonitor) => void;
 };
 
+export type SummarizerParams = {
+  sharedContext: string;
+  type: 'key-points' | 'tl;dr' | 'teaser' | 'headline';
+  format: 'markdown' | 'plain-text';
+  length: 'short' | 'medium' | 'long';
+};
+
 export type WindowAi = {
   ai?: {
     translator?: {
@@ -46,6 +62,10 @@ export type WindowAi = {
     };
     languageDetector?: {
       create: () => Promise<LanguageDetectorInstance>;
+    };
+    summarizer?: {
+      create: (params?: SummarizerParams) => Promise<SummarizerInstance>;
+      capabilities: () => Promise<AiSummarizerCapilities>;
     };
   };
   translation?: {

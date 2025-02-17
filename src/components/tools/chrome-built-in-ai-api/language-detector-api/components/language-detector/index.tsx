@@ -47,7 +47,7 @@ export default function LanguageDetector() {
     <div className="mt-10 border-t border-neutral-700 px-10 pb-40 pt-10 text-left">
       {/* Input */}
       <div className="mb-4 text-xl font-bold">
-        Type some text to detect the language:
+        Type some text to detect the language
       </div>
       <textarea
         autoFocus
