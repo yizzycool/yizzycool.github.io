@@ -5,6 +5,7 @@ import useAiTranslator from '@/components/tools/chrome-built-in-ai-api/hooks/use
 import LanguageSelector from './components/language-selector';
 import SwitchButton from './components/switch-button';
 import CanTranslateHint from './components/can-translate-hint';
+import UnsupportedFeature from '../../../components/unsupported-feature';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _values from 'lodash/values';
@@ -15,13 +16,8 @@ export default function Translator() {
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const {
-    isSupported: _isTranslatorSupported,
-    translate,
-    params,
-    setTranslatorLang,
-    canTranslate,
-  } = useAiTranslator();
+  const { isSupported, translate, params, setTranslatorLang, canTranslate } =
+    useAiTranslator();
 
   // If translator update to another language, auto translate to new language when translator is readily
   useEffect(() => {
@@ -61,6 +57,12 @@ export default function Translator() {
       setTranslatorLang(params.sourceLanguage, languageCode);
     }
   };
+
+  if (_isNull(isSupported)) return null;
+
+  if (isSupported === false) {
+    return <UnsupportedFeature />;
+  }
 
   return (
     <div className="mt-10 flex flex-col justify-center gap-5 border-t border-neutral-700 px-10 pb-40 pt-10 md:flex-row">

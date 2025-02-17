@@ -15,6 +15,7 @@ export const Tools = [
       {
         name: 'Base64 to Image',
         href: '/tools/image-tool/base64-to-image',
+        desc: '',
         icon: {
           component: PhotoIcon,
         },
@@ -27,6 +28,7 @@ export const Tools = [
       {
         name: 'Translator',
         href: '/tools/chrome-built-in-ai-api/translator',
+        desc: 'Enables AI-powered text translation for web apps.',
         icon: {
           component: LanguageIcon,
         },
@@ -34,6 +36,7 @@ export const Tools = [
       {
         name: 'Language Detector',
         href: '/tools/chrome-built-in-ai-api/language-detector',
+        desc: 'Enables AI-powered language detection for web apps.',
         icon: {
           component: RocketLaunchIcon,
         },

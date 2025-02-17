@@ -32,8 +32,13 @@ export default function useAiTranslator() {
   // To check if translator is supported
   const checkCapability = () => {
     const _window = window as unknown as WindowAi;
-    const translator = _window.ai?.translator || _window.translation;
-    setIsSupported(!!translator);
+    if (_window.ai?.translator) {
+      setIsSupported(!!_window.ai.translator.capabilities);
+    } else if (_window.translation) {
+      setIsSupported(!!_window.translation.canTranslate);
+    } else {
+      setIsSupported(false);
+    }
   };
 
   const resetTranslator = () => {

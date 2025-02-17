@@ -4,6 +4,7 @@ import { ChangeEvent, useRef, useState } from 'react';
 import useAiLanguageDetector from '../../../hooks/use-ai-language-detector';
 import { LanguageDetectResults } from '../../../types/types';
 import BarChart from './components/bar-chart';
+import UnsupportedFeature from '../../../components/unsupported-feature';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _values from 'lodash/values';
@@ -16,8 +17,7 @@ export default function LanguageDetector() {
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const { isSupported: _isLanguageDetectorSupported, detect } =
-    useAiLanguageDetector();
+  const { isSupported, detect } = useAiLanguageDetector();
 
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
@@ -36,6 +36,12 @@ export default function LanguageDetector() {
       setResults(results);
     }
   };
+
+  if (_isNull(isSupported)) return null;
+
+  if (isSupported === false) {
+    return <UnsupportedFeature />;
+  }
 
   return (
     <div className="mt-10 border-t border-neutral-700 px-10 pb-40 pt-10 text-left">
