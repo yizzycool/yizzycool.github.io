@@ -7,7 +7,7 @@ import {
   WindowAi,
 } from '../types/types';
 
-export default function useAiLanguageDetector() {
+export default function useAiLanguageDetector({ createInstance = true } = {}) {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
   const [detector, setDetector] = useState<LanguageDetectorInstance | null>(
     null
@@ -18,8 +18,12 @@ export default function useAiLanguageDetector() {
   }, []);
 
   useEffect(() => {
-    if (!isSupported) return;
+    if (!isSupported || !createInstance) return;
     initLanguageDetector();
+
+    return () => {
+      detector?.destroy?.();
+    };
   }, [isSupported]);
 
   // To check if language detector is supported

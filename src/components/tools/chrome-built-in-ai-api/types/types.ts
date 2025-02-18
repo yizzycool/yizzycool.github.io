@@ -27,6 +27,7 @@ export type LanguageDetectResults = {
 
 export type LanguageDetectorInstance = {
   detect: (text: string) => Promise<Array<LanguageDetectResults>>;
+  destroy: () => void;
 };
 
 export interface SummarizerInstance extends SummarizerParams {

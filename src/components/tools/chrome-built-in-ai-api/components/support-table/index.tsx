@@ -28,9 +28,15 @@ const ApiList = [
 ];
 
 export default function SupportTable() {
-  const { isSupported: isTranslatorSupported } = useAiTranslator();
-  const { isSupported: isLanguageDetectorSupported } = useAiLanguageDetector();
-  const { isSupported: isSummarizerSupported } = useAiSummarizer();
+  const { isSupported: isTranslatorSupported } = useAiTranslator({
+    createInstance: false,
+  });
+  const { isSupported: isLanguageDetectorSupported } = useAiLanguageDetector({
+    createInstance: false,
+  });
+  const { isSupported: isSummarizerSupported } = useAiSummarizer({
+    createInstance: false,
+  });
 
   const getCapability = (key: string) => {
     switch (key) {

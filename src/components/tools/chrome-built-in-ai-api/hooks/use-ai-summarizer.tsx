@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { SummarizerInstance, WindowAi } from '../types/types';
 
-export default function useAiSummarizer() {
+export default function useAiSummarizer({ createInstance = true } = {}) {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
   const [summarizer, setSummarizer] = useState<SummarizerInstance | null>(null);
 
@@ -12,8 +12,12 @@ export default function useAiSummarizer() {
   }, []);
 
   useEffect(() => {
-    if (!isSupported) return;
+    if (!isSupported || !createInstance) return;
     initSummarizer();
+
+    return () => {
+      summarizer?.destroy?.();
+    };
   }, [isSupported]);
 
   // To check if language detector is supported

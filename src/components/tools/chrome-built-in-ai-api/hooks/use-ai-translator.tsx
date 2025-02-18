@@ -8,7 +8,7 @@ import {
 } from '../types/types';
 import { useEffect, useState } from 'react';
 
-export default function useAiTranslator() {
+export default function useAiTranslator({ createInstance = true } = {}) {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
   const [params, setParams] = useState<TranslatorParams>({
     sourceLanguage: 'zh-Hant',
@@ -24,8 +24,12 @@ export default function useAiTranslator() {
 
   // Init translator lang
   useEffect(() => {
-    if (!isSupported) return;
+    if (!isSupported || !createInstance) return;
     setTranslatorLang();
+
+    return () => {
+      translator?.destroy?.();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSupported]);
 
