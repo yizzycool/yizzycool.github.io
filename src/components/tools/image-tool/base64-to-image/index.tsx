@@ -1,15 +1,15 @@
 'use client';
 
 import type { ChangeEvent } from 'react';
-import { useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
 import imageUtils from '@/utils/image-utils';
 import Image from 'next/image';
 import ErrorDialog from '@/components/dialog/error';
+import { Checkbox, Field, Label } from '@headlessui/react';
+import { CheckIcon, TrashIcon } from '@heroicons/react/20/solid';
 import Title from '../../components/title';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
-import { Checkbox, Field, Label } from '@headlessui/react';
-import { CheckIcon, TrashIcon } from '@heroicons/react/20/solid';
 
 type ImageInfo = {
   image: HTMLImageElement | null;
@@ -30,20 +30,21 @@ export default function Base64ToImage() {
   const [base64, setBase64] = useState<string>('');
   const [imageInfo, setImageInfo] = useState<ImageInfo>(DefaultImageInfo);
 
-  useEffect(() => {
-    if (!autoUpdate) return;
-    transferToImage();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [base64, autoUpdate]);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const transferToImage = async () => {
-    if (_isNull(base64)) return;
-    if (_isEmpty(base64)) {
+  const transferToImage = async (base64String: string | undefined = base64) => {
+    if (_isNull(base64String)) return;
+    if (_isEmpty(base64String)) {
       setImageInfo(DefaultImageInfo);
       return;
     }
     try {
-      const image = await imageUtils.newImageFromBase64(base64);
+      const prefix = /^data:image\/[a-z]+;base64,/;
+      // If string does not start with 'data...', add prefix to it.
+      const transformedBase64 = prefix.test(base64String)
+        ? base64String
+        : `data:image/png;base64,${base64String}`;
+      const image = await imageUtils.newImageFromBase64(transformedBase64);
       const { width, height } = image;
       setImageInfo({ image, width, height, error: false });
     } catch (e) {
@@ -56,13 +57,12 @@ export default function Base64ToImage() {
 
   const onBase64StringChanged = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const base64String = event.target.value;
-    const prefix = /^data:image\/[a-z]+;base64,/;
-    if (prefix.test(base64String)) {
-      setBase64(base64String);
-    } else {
-      setBase64(`data:image/png;base64,${base64String}`);
-    }
     setBase64(base64String);
+    if (!autoUpdate) return;
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    timerRef.current = setTimeout(() => transferToImage(base64String), 500);
   };
 
   const onClearBase64 = () => setBase64('');
@@ -92,7 +92,7 @@ export default function Base64ToImage() {
           </button>
           <button
             className="ml-4 items-center rounded-md bg-sky-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 hover:bg-sky-600"
-            onClick={transferToImage}
+            onClick={() => transferToImage()}
           >
             Convert
           </button>
