@@ -16,7 +16,7 @@ const imageUtils = {
       img.onerror = () => reject(img);
       img.src = window.URL.createObjectURL(blob);
     });
-  }
-}
+  },
+};
 
 export default imageUtils;

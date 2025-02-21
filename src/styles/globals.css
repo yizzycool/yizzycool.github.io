@@ -4,10 +4,19 @@
 
 @layer utilities {
   .bg-mix-white-5 {
-    background-color: color-mix(in oklab, theme('colors.white') 5%, transparent);
+    background-color: color-mix(
+      in oklab,
+      theme('colors.white') 5%,
+      transparent
+    );
   }
+
   .bg-mix-black-5 {
-    background-color: color-mix(in oklab, theme('colors.black') 5%, transparent);
+    background-color: color-mix(
+      in oklab,
+      theme('colors.black') 5%,
+      transparent
+    );
   }
 }
 
