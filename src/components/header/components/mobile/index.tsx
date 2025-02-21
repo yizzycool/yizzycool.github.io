@@ -58,12 +58,9 @@ export default function HeaderMobile() {
                     />
                     {/* <ToolsSelectorMobile /> */}
                     {/* Divider */}
-                    <div className="my-2 mt-5 border-t border-gray-600" />
+                    <div className="my-2 mt-5 border-t border-gray-400/50 dark:border-gray-600" />
                     {/* Theme Selector */}
-                    <div className="flex items-center justify-between px-3 py-2">
-                      <div className="">Switch Theme</div>
-                      <ThemeSelector />
-                    </div>
+                    <ThemeSelector />
                   </div>
                 </div>
               </DialogPanel>

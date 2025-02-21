@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-type Theme = 'dark' | 'light' | 'system';
+export type Theme = 'dark' | 'light' | 'system';
 
 export default function useSwitchTheme() {
   const [theme, setTheme] = useState<Theme | null>(null);
