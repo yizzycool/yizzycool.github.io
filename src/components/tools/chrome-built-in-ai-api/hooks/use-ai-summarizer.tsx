@@ -5,6 +5,9 @@ import { SummarizerInstance, WindowAi } from '../types/types';
 
 export default function useAiSummarizer({ createInstance = true } = {}) {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
+  const [isPartialUnsupported, setIsPartialUnsupported] = useState<
+    boolean | null
+  >(null);
   const [summarizer, setSummarizer] = useState<SummarizerInstance | null>(null);
 
   useEffect(() => {
@@ -18,6 +21,7 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
     return () => {
       summarizer?.destroy?.();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSupported]);
 
   // To check if language detector is supported
@@ -30,8 +34,13 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
   const initSummarizer = async () => {
     const _window = window as unknown as WindowAi;
     if (_window.ai?.summarizer) {
-      const summarizer = await _window.ai.summarizer.create();
-      setSummarizer(summarizer);
+      try {
+        const summarizer = await _window.ai.summarizer.create();
+        setSummarizer(summarizer);
+        setIsPartialUnsupported(false);
+      } catch (_e) {
+        setIsPartialUnsupported(true);
+      }
     }
   };
 
@@ -48,6 +57,7 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
 
   return {
     isSupported,
+    isPartialUnsupported,
     summarize,
   };
 }

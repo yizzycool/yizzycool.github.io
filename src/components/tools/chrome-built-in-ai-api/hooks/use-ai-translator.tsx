@@ -15,6 +15,9 @@ export default function useAiTranslator({ createInstance = true } = {}) {
     targetLanguage: 'en',
   });
   const [translator, setTranslator] = useState<TranslatorInstance | null>(null);
+  const [isPartialUnsupported, setIsPartialUnsupported] = useState<
+    boolean | null
+  >(null);
   const [canTranslate, setCanTranslate] =
     useState<AiTranslatorCapilitiesResult>('');
 
@@ -67,23 +70,33 @@ export default function useAiTranslator({ createInstance = true } = {}) {
     // Create new translator
     const _window = window as unknown as WindowAi;
     if (_window.ai?.translator) {
-      // If window.ai.translator exists
-      console.log('[Translator: ai.translator]');
-      const translator = await _window.ai.translator.create({
-        sourceLanguage,
-        targetLanguage,
-      });
-      setTranslator(translator);
-      loopCheckIfLanguagePairIsSupported(sourceLanguage, targetLanguage);
+      try {
+        // If window.ai.translator exists
+        console.log('[Translator: ai.translator]');
+        const translator = await _window.ai.translator.create({
+          sourceLanguage,
+          targetLanguage,
+        });
+        setTranslator(translator);
+        setIsPartialUnsupported(false);
+        loopCheckIfLanguagePairIsSupported(sourceLanguage, targetLanguage);
+      } catch (_e) {
+        setIsPartialUnsupported(true);
+      }
     } else if (_window.translation) {
-      // If window.translation exists
-      console.log('[Translator: translation]');
-      const translator = await _window.translation.createTranslator({
-        sourceLanguage,
-        targetLanguage,
-      });
-      setTranslator(translator);
-      loopCheckIfLanguagePairIsSupported(sourceLanguage, targetLanguage);
+      try {
+        // If window.translation exists
+        console.log('[Translator: translation]');
+        const translator = await _window.translation.createTranslator({
+          sourceLanguage,
+          targetLanguage,
+        });
+        setTranslator(translator);
+        setIsPartialUnsupported(false);
+        loopCheckIfLanguagePairIsSupported(sourceLanguage, targetLanguage);
+      } catch (_e) {
+        setIsPartialUnsupported(true);
+      }
     }
   };
 
@@ -137,6 +150,7 @@ export default function useAiTranslator({ createInstance = true } = {}) {
 
   return {
     isSupported,
+    isPartialUnsupported,
     translate,
     params,
     setTranslatorLang,

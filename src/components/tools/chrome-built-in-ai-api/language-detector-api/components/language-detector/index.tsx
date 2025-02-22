@@ -4,7 +4,7 @@ import { ChangeEvent, useRef, useState } from 'react';
 import useAiLanguageDetector from '../../../hooks/use-ai-language-detector';
 import { LanguageDetectResults } from '../../../types/types';
 import BarChart from './components/bar-chart';
-import UnsupportedFeature from '../../../components/unsupported-feature';
+import OtherFeatures from '../../../components/other-features';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _values from 'lodash/values';
@@ -17,7 +17,7 @@ export default function LanguageDetector() {
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const { isSupported, detect } = useAiLanguageDetector();
+  const { isSupported, isPartialUnsupported, detect } = useAiLanguageDetector();
 
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
@@ -37,26 +37,35 @@ export default function LanguageDetector() {
     }
   };
 
-  if (_isNull(isSupported)) return null;
+  if (_isNull(isSupported) || _isNull(isPartialUnsupported)) return null;
 
-  if (isSupported === false) {
-    return <UnsupportedFeature />;
+  if (!isSupported) {
+    return <OtherFeatures type="unsupported" />;
+  }
+
+  if (isPartialUnsupported) {
+    return <OtherFeatures type="partialUnsupported" />;
   }
 
   return (
-    <div className="mt-10 border-t border-neutral-700 px-10 pb-40 pt-10 text-left">
-      {/* Input */}
-      <div className="mb-4 text-xl font-bold">
-        Type some text to detect the language
+    <>
+      <div className="mt-10 border-t border-neutral-700 px-10 pb-40 pt-10 text-left">
+        <div className="mx-auto max-w-screen-sm text-center">
+          {/* Input */}
+          <div className="mb-4 text-xl font-bold">
+            Type some text to detect the language
+          </div>
+          <textarea
+            autoFocus
+            className="block min-h-60 w-full flex-1 resize-none rounded-md border-none bg-transparent px-6 py-4 text-xl outline outline-neutral-400 focus:outline-sky-500"
+            onChange={onChange}
+            value={text}
+          />
+        </div>
+        {/* Output */}
+        <BarChart results={results} />
       </div>
-      <textarea
-        autoFocus
-        className="block min-h-60 w-full flex-1 resize-none rounded-md border-none bg-transparent px-6 py-4 text-xl outline outline-neutral-400 focus:outline-sky-500"
-        onChange={onChange}
-        value={text}
-      />
-      {/* Output */}
-      <BarChart results={results} />
-    </div>
+      <OtherFeatures type="discoverMore" />
+    </>
   );
 }

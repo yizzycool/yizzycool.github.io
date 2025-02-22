@@ -9,6 +9,9 @@ import {
 
 export default function useAiLanguageDetector({ createInstance = true } = {}) {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
+  const [isPartialUnsupported, setIsPartialUnsupported] = useState<
+    boolean | null
+  >(null);
   const [detector, setDetector] = useState<LanguageDetectorInstance | null>(
     null
   );
@@ -24,6 +27,7 @@ export default function useAiLanguageDetector({ createInstance = true } = {}) {
     return () => {
       detector?.destroy?.();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSupported]);
 
   // To check if language detector is supported
@@ -36,8 +40,13 @@ export default function useAiLanguageDetector({ createInstance = true } = {}) {
   const initLanguageDetector = async () => {
     const _window = window as unknown as WindowAi;
     if (_window.ai?.languageDetector) {
-      const detector = await _window.ai.languageDetector.create();
-      setDetector(detector);
+      try {
+        const detector = await _window.ai.languageDetector.create();
+        setDetector(detector);
+        setIsPartialUnsupported(false);
+      } catch (_e) {
+        setIsPartialUnsupported(true);
+      }
     }
   };
 
@@ -51,6 +60,7 @@ export default function useAiLanguageDetector({ createInstance = true } = {}) {
 
   return {
     isSupported,
+    isPartialUnsupported,
     detect,
   };
 }
