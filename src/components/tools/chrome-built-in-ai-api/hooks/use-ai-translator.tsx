@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  AiTranslatorCapilitiesResult,
+  AiApiCapilitiesResult,
   TranslatorInstance,
   TranslatorParams,
   WindowAi,
@@ -18,8 +18,7 @@ export default function useAiTranslator({ createInstance = true } = {}) {
   const [isPartialUnsupported, setIsPartialUnsupported] = useState<
     boolean | null
   >(null);
-  const [canTranslate, setCanTranslate] =
-    useState<AiTranslatorCapilitiesResult>('');
+  const [canTranslate, setCanTranslate] = useState<AiApiCapilitiesResult>('');
 
   useEffect(() => {
     checkCapability();
@@ -103,9 +102,9 @@ export default function useAiTranslator({ createInstance = true } = {}) {
   const isLanguagePairSupported = async (
     sourceLanguage = '',
     targetLanguage = ''
-  ): Promise<AiTranslatorCapilitiesResult> => {
+  ): Promise<AiApiCapilitiesResult> => {
     const _window = window as unknown as WindowAi;
-    let canTranslate: AiTranslatorCapilitiesResult = '';
+    let canTranslate: AiApiCapilitiesResult = '';
     if (_window.ai?.translator) {
       // If window.ai.translator exists
       const capabilities = await _window.ai.translator.capabilities();

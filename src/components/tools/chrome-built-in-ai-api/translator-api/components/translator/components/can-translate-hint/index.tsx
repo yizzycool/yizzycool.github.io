@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  AiTranslatorCapilitiesResult,
+  AiApiCapilitiesResult,
   TranslatorParams,
 } from '@/components/tools/chrome-built-in-ai-api/types/types';
 import clsx from 'clsx';
@@ -13,7 +13,7 @@ export default function CanTranslateHint({
   canTranslate,
 }: {
   params: TranslatorParams;
-  canTranslate: AiTranslatorCapilitiesResult;
+  canTranslate: AiApiCapilitiesResult;
 }) {
   const { languageTagToHumanReadable } = useLanguageTagToHumanReadable();
 

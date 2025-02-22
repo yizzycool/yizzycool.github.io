@@ -1,18 +1,21 @@
-export type AiTranslatorCapilitiesResult =
-  | 'readily'
-  | 'after-download'
-  | 'no'
-  | '';
+export type AiApiCapilitiesResult = 'readily' | 'after-download' | 'no' | '';
 
-type AiTranslatorCapilities = {
+type TranslatorCapilities = {
   languagePairAvailable: (
     sourceLanguage: string,
     targetLanguage: string
-  ) => AiTranslatorCapilitiesResult;
+  ) => AiApiCapilitiesResult;
 };
 
-type AiSummarizerCapilities = {
-  available: AiTranslatorCapilitiesResult;
+type SummarizerCapilities = {
+  available: AiApiCapilitiesResult;
+};
+
+type LanguageModelCapilities = {
+  available: AiApiCapilitiesResult;
+  defaultTemperature: number;
+  defaultTopK: number;
+  maxTopK: number;
 };
 
 export type TranslatorInstance = {
@@ -35,6 +38,17 @@ export interface SummarizerInstance extends SummarizerParams {
   destroy: () => void;
 }
 
+export interface LanguageModelInstance {
+  prompt: (text: string) => Promise<string>;
+  promptStreaming: (text: string) => Promise<Array<Promise<string>>>;
+  destroy: () => void;
+  maxTokens: number;
+  temperature: number;
+  tokensLeft: number;
+  tokensSoFar: number;
+  topK: number;
+}
+
 export type AiTranslatorMonitor = {
   addEventListener: (
     eventType: string,
@@ -55,24 +69,33 @@ export type SummarizerParams = {
   length?: 'short' | 'medium' | 'long';
 };
 
+export type LanguageModelParams = {
+  defaultTopK?: number;
+  maxTopK?: number;
+  defaultTemperature?: number;
+  maxTemperature?: number;
+};
+
 export type WindowAi = {
   ai?: {
     translator?: {
       create: (params: TranslatorParams) => Promise<TranslatorInstance>;
-      capabilities: () => Promise<AiTranslatorCapilities>;
+      capabilities: () => Promise<TranslatorCapilities>;
     };
     languageDetector?: {
       create: () => Promise<LanguageDetectorInstance>;
     };
     summarizer?: {
       create: (params?: SummarizerParams) => Promise<SummarizerInstance>;
-      capabilities: () => Promise<AiSummarizerCapilities>;
+      capabilities: () => Promise<SummarizerCapilities>;
+    };
+    languageModel?: {
+      create: (params?: LanguageModelParams) => Promise<LanguageModelInstance>;
+      capabilities: () => Promise<LanguageModelCapilities>;
     };
   };
   translation?: {
     createTranslator: (params: TranslatorParams) => Promise<TranslatorInstance>;
-    canTranslate: (
-      params: TranslatorParams
-    ) => Promise<AiTranslatorCapilitiesResult>;
+    canTranslate: (params: TranslatorParams) => Promise<AiApiCapilitiesResult>;
   };
 };
