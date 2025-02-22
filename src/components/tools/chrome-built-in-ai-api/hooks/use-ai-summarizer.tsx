@@ -1,7 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { SummarizerInstance, WindowAi } from '../types/types';
+import browserUtils from '@/utils/browser-utils';
+import { SummarizerInstance, SummarizerParams, WindowAi } from '../types/types';
+import _defaults from 'lodash/defaults';
+import _isNull from 'lodash/isNull';
+
+const Options: SummarizerParams = {
+  sharedContext: '',
+  type: 'key-points',
+  format: 'markdown',
+  length: 'medium',
+};
 
 export default function useAiSummarizer({ createInstance = true } = {}) {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
@@ -9,6 +19,7 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
     boolean | null
   >(null);
   const [summarizer, setSummarizer] = useState<SummarizerInstance | null>(null);
+  const [options, setOptions] = useState(Options);
 
   useEffect(() => {
     checkCapability();
@@ -35,8 +46,26 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
     const _window = window as unknown as WindowAi;
     if (_window.ai?.summarizer) {
       try {
-        const summarizer = await _window.ai.summarizer.create();
+        const summarizer = await _window.ai.summarizer.create(options);
         setSummarizer(summarizer);
+        setIsPartialUnsupported(false);
+      } catch (_e) {
+        setIsPartialUnsupported(true);
+      }
+    }
+  };
+
+  const updateSummarizer = async (options: SummarizerParams) => {
+    const _window = window as unknown as WindowAi;
+    if (_window.ai?.summarizer) {
+      try {
+        if (summarizer) summarizer?.destroy?.();
+        setSummarizer(null);
+        await browserUtils.sleep(500);
+        const newOptions = _defaults(options, Options);
+        const newSummarizer = await _window.ai.summarizer.create(newOptions);
+        setOptions(newOptions);
+        setSummarizer(newSummarizer);
         setIsPartialUnsupported(false);
       } catch (_e) {
         setIsPartialUnsupported(true);
@@ -58,6 +87,9 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
   return {
     isSupported,
     isPartialUnsupported,
+    options,
+    isOptionUpadting: _isNull(summarizer),
     summarize,
+    updateSummarizer,
   };
 }

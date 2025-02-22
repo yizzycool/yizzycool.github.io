@@ -4,6 +4,7 @@ import { ChangeEvent, useState } from 'react';
 import useAiSummarizer from '../../../hooks/use-ai-summarizer';
 import OtherFeatures from '../../../components/other-features';
 import Markdown from 'react-markdown';
+import SettingsPanel from './components/settings-panel';
 import { SparklesIcon } from '@heroicons/react/20/solid';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
@@ -13,7 +14,14 @@ export default function Summarizer() {
   const [result, setResult] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  const { isSupported, isPartialUnsupported, summarize } = useAiSummarizer();
+  const {
+    isSupported,
+    isPartialUnsupported,
+    options,
+    isOptionUpadting,
+    summarize,
+    updateSummarizer,
+  } = useAiSummarizer();
 
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
@@ -49,9 +57,26 @@ export default function Summarizer() {
     <>
       <div className="mt-10 border-t border-neutral-700 px-10 pb-40 pt-10 text-left">
         <div className="mx-auto max-w-screen-sm">
+          <SettingsPanel
+            options={options}
+            isOptionUpadting={isOptionUpadting}
+            updateSummarizer={updateSummarizer}
+          />
           {/* Input */}
-          <div className="mb-4 flex items-center justify-between text-xl font-bold">
-            Type some text to generate summarization
+          <div className="mb-4 mt-10 text-xl font-bold">Prompt</div>
+          <div className="relative">
+            <textarea
+              className="block min-h-60 w-full flex-1 resize-none rounded-md border-none bg-transparent px-6 py-4 text-lg outline outline-neutral-400 focus:outline-sky-500"
+              onChange={onChange}
+              value={text}
+            />
+            {isOptionUpadting && (
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-md bg-sky-500/20 px-4 backdrop-blur">
+                Update Summarizer...
+              </div>
+            )}
+          </div>
+          <div className="mt-8 text-right">
             <button
               className="relative ml-4 rounded-md bg-sky-700 p-4 py-2 text-base hover:bg-sky-700/80 disabled:bg-gray-500"
               onClick={() => detectString(text)}
@@ -69,12 +94,6 @@ export default function Summarizer() {
               ) : null}
             </button>
           </div>
-          <textarea
-            autoFocus
-            className="block min-h-60 w-full flex-1 resize-none rounded-md border-none bg-transparent px-6 py-4 text-lg outline outline-neutral-400 focus:outline-sky-500"
-            onChange={onChange}
-            value={text}
-          />
           {/* Output */}
           {!_isNull(result) && (
             <>

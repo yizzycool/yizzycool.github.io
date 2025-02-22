@@ -4,7 +4,7 @@ import type { ChangeEvent } from 'react';
 import { useRef, useState } from 'react';
 import imageUtils from '@/utils/image-utils';
 import Image from 'next/image';
-import ErrorDialog from '@/components/dialog/error';
+import ErrorDialog from '@/components/common/dialog/error';
 import { Checkbox, Field, Label } from '@headlessui/react';
 import { CheckIcon, TrashIcon } from '@heroicons/react/20/solid';
 import Title from '../../components/title';

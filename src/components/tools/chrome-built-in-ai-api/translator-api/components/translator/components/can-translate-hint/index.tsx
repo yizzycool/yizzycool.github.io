@@ -25,8 +25,8 @@ export default function CanTranslateHint({
   }, [params]);
 
   const bgClass = useMemo(() => {
-    if (canTranslate === 'after-download') return 'bg-sky-500/50';
-    else if (canTranslate === 'no') return 'bg-red-500/50';
+    if (canTranslate === 'after-download') return 'bg-sky-500/20';
+    else if (canTranslate === 'no') return 'bg-red-500/20';
     return null;
   }, [canTranslate]);
 

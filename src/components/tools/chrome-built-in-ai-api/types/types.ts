@@ -49,10 +49,10 @@ export type TranslatorParams = {
 };
 
 export type SummarizerParams = {
-  sharedContext: string;
-  type: 'key-points' | 'tl;dr' | 'teaser' | 'headline';
-  format: 'markdown' | 'plain-text';
-  length: 'short' | 'medium' | 'long';
+  sharedContext?: string;
+  type?: 'key-points' | 'tl;dr' | 'teaser' | 'headline';
+  format?: 'markdown' | 'plain-text';
+  length?: 'short' | 'medium' | 'long';
 };
 
 export type WindowAi = {
