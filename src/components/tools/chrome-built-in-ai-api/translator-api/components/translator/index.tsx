@@ -64,11 +64,13 @@ export default function Translator() {
     }
   };
 
-  if (_isNull(isSupported) || _isNull(isPartialUnsupported)) return null;
+  if (_isNull(isSupported)) return null;
 
   if (!isSupported) {
     return <OtherFeatures type="unsupported" />;
   }
+
+  if (_isNull(isPartialUnsupported)) return null;
 
   if (isPartialUnsupported) {
     return <OtherFeatures type="partialUnsupported" />;
