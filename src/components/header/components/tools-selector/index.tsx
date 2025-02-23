@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  DocumentTextIcon,
-  LanguageIcon,
-  PhotoIcon,
-  SparklesIcon,
-} from '@heroicons/react/20/solid';
+import { Bot, FileText, Image, Languages, Radar } from 'lucide-react';
 import ToolsSelectorMobile from './components/mobile';
 import ToolsSelectorDesktop from './components/desktop';
 
@@ -18,7 +13,7 @@ export const Tools = [
         href: '/tools/image-tool/base64-to-image',
         desc: '',
         icon: {
-          component: PhotoIcon,
+          component: Image,
         },
       },
     ],
@@ -31,7 +26,7 @@ export const Tools = [
         href: '/tools/chrome-built-in-ai-api/translator',
         desc: 'Enables AI-powered text translation for web apps.',
         icon: {
-          component: LanguageIcon,
+          component: Languages,
         },
       },
       {
@@ -39,7 +34,7 @@ export const Tools = [
         href: '/tools/chrome-built-in-ai-api/language-detector',
         desc: 'Enables AI-powered language detection for web apps.',
         icon: {
-          component: SparklesIcon,
+          component: Radar,
         },
       },
       {
@@ -47,7 +42,15 @@ export const Tools = [
         href: '/tools/chrome-built-in-ai-api/summarizer',
         desc: 'Enables AI-powered text summarization for web apps.',
         icon: {
-          component: DocumentTextIcon,
+          component: FileText,
+        },
+      },
+      {
+        name: 'Gemini Nano (Prompt API)',
+        href: '/tools/chrome-built-in-ai-api/prompt',
+        desc: 'Enables AI-powered text generation and understanding for web apps.',
+        icon: {
+          component: Bot,
         },
       },
     ],

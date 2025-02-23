@@ -10,7 +10,7 @@ import {
   PopoverButton,
   PopoverPanel,
 } from '@headlessui/react';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { Tools } from '../..';
 
@@ -35,7 +35,7 @@ export default function ToolsSelectorDesktop() {
           )}
         >
           Tools
-          <ChevronDownIcon className="size-5 transition-transform duration-200 group-data-[open]:rotate-180" />
+          <ChevronDown className="size-5 transition-transform duration-200 group-data-[open]:rotate-180" />
         </PopoverButton>
         <PopoverPanel
           transition

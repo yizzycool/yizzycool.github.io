@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import ThemeSelector from '../theme-selector';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/20/solid';
+import { Menu, X } from 'lucide-react';
 import { ToolsSelectorMobile } from '../tools-selector';
 
 export default function HeaderMobile() {
@@ -22,7 +22,7 @@ export default function HeaderMobile() {
         />
       </Link>
       <button className="h-9 w-9 p-1" onClick={() => setOpen(true)}>
-        <Bars3Icon className="w-full" />
+        <Menu className="w-full" />
       </button>
       <Dialog open={open} onClose={setOpen} className="relative z-10">
         <DialogBackdrop
@@ -44,11 +44,8 @@ export default function HeaderMobile() {
                       height="20"
                       alt="Logo"
                     />
-                    <button
-                      className="h-9 w-9 p-1"
-                      onClick={() => setOpen(false)}
-                    >
-                      <XMarkIcon aria-hidden="true" className="size-6" />
+                    <button className="p-1" onClick={() => setOpen(false)}>
+                      <X aria-hidden="true" className="size-6" />
                     </button>
                   </div>
                   <div className="relative mt-6 flex-1 px-2 sm:px-4">

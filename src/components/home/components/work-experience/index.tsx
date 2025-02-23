@@ -3,12 +3,7 @@
 import useIntersectionObserver from '@/hooks/window/use-intersection-observer';
 import ExperienceData from './data/experiences.json';
 import Image from 'next/image';
-import {
-  BuildingOffice2Icon,
-  CircleStackIcon,
-  PencilSquareIcon,
-  SparklesIcon,
-} from '@heroicons/react/20/solid';
+import { Building2, Layers, SquarePen, WandSparkles } from 'lucide-react';
 import _get from 'lodash/get';
 
 const THRESHOLD = 0.3;
@@ -40,7 +35,7 @@ export default function WorkExperience() {
               <div className="mt-2 text-xl">{data.jobTitle}</div>
               <div className="mt-2 text-base">{data.duration}</div>
               <div className="mt-2 flex items-center text-sm">
-                <BuildingOffice2Icon className="mr-2 h-5 w-5" />
+                <Building2 className="mr-2 h-5 w-5" />
                 <a
                   className="underline"
                   href={data.corpLink}
@@ -60,7 +55,7 @@ export default function WorkExperience() {
                     <div>
                       <JobIcon
                         iconType={desc.iconType}
-                        className="h-6 w-6 text-sky-600"
+                        className="mt-1 h-6 w-6 text-sky-600"
                       />
                     </div>
                     <div>
@@ -106,11 +101,11 @@ function JobIcon({
   className: string;
 }) {
   if (iconType === 'pencil-square') {
-    return <PencilSquareIcon className={className} />;
+    return <SquarePen className={className} />;
   } else if (iconType === 'sparkles') {
-    return <SparklesIcon className={className} />;
+    return <WandSparkles className={className} />;
   } else if (iconType === 'circle-stack') {
-    return <CircleStackIcon className={className} />;
+    return <Layers className={className} />;
   }
   return null;
 }

@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import { ChangeEvent } from 'react';
 import { Description, Field, Label, Select } from '@headlessui/react';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { ChevronDown } from 'lucide-react';
 
 export default function Selector({
   title,
@@ -45,8 +45,8 @@ export default function Selector({
             </option>
           ))}
         </Select>
-        <ChevronDownIcon
-          className="group pointer-events-none absolute right-2.5 top-2.5 size-4 fill-white/60"
+        <ChevronDown
+          className="group pointer-events-none absolute right-2.5 top-2.5 size-4"
           aria-hidden="true"
         />
       </div>

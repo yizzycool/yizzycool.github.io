@@ -6,7 +6,7 @@ import imageUtils from '@/utils/image-utils';
 import Image from 'next/image';
 import ErrorDialog from '@/components/common/dialog/error';
 import { Checkbox, Field, Label } from '@headlessui/react';
-import { CheckIcon, TrashIcon } from '@heroicons/react/20/solid';
+import { Check, Trash2 } from 'lucide-react';
 import Title from '../../components/title';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
@@ -76,18 +76,21 @@ export default function Base64ToImage() {
           <Checkbox
             checked={autoUpdate}
             onChange={onAutoUpdateChecked}
-            className="group block size-6 rounded-md bg-white/10 p-1 ring-1 ring-inset ring-black/30 data-[checked]:bg-white dark:ring-white/30"
+            className="group block size-6 rounded-md bg-white/10 p-1 outline-none ring-1 ring-inset ring-black/30 data-[checked]:bg-white dark:ring-white/30"
           >
-            <CheckIcon className="hidden size-4 fill-black group-data-[checked]:block" />
+            <Check
+              strokeWidth={4}
+              className="hidden size-4 stroke-black group-data-[checked]:block"
+            />
           </Checkbox>
           <Label className="cursor-pointer">Auto Update</Label>
         </Field>
         <div className="flex items-center">
           <button
-            className="flex items-center rounded-md bg-red-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 hover:bg-red-600"
+            className="flex items-center rounded-md bg-red-900 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 hover:bg-red-600"
             onClick={onClearBase64}
           >
-            <TrashIcon className="mr-2 h-5 w-5 text-white" />
+            <Trash2 className="mr-2 h-5 w-5 text-white" />
             Clear
           </button>
           <button

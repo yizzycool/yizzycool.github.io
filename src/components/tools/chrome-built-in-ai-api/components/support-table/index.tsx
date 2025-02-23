@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import useAiTranslator from '../../hooks/use-ai-translator';
 import useAiLanguageDetector from '../../hooks/use-ai-language-detector';
-import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
+import { ExternalLink } from 'lucide-react';
 import ApiStatus from './components/api-status';
 import _get from 'lodash/get';
 import _isNull from 'lodash/isNull';
@@ -70,7 +70,7 @@ export default function SupportTable() {
                 rel="noreferrer noopener"
               >
                 {api.name}
-                <ArrowTopRightOnSquareIcon className="ml-2 inline h-4 w-4" />
+                <ExternalLink className="ml-2 inline h-4 w-4" />
               </a>
             </td>
             <td className="p-4">

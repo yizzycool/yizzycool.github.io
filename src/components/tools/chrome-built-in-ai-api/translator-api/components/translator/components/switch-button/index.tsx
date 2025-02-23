@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import { MouseEventHandler } from 'react';
-import { ArrowsRightLeftIcon } from '@heroicons/react/20/solid';
+import { ArrowRightLeft } from 'lucide-react';
 
 export default function SwitchButton({
   onSwitch,
@@ -17,7 +17,7 @@ export default function SwitchButton({
       )}
       onClick={onSwitch}
     >
-      <ArrowsRightLeftIcon className="h-6 w-6" />
+      <ArrowRightLeft className="h-6 w-6" />
     </button>
   );
 }

@@ -5,7 +5,7 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from '@headlessui/react';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { Tools } from '../..';
 import clsx from 'clsx';
@@ -20,7 +20,7 @@ export default function ToolsSelectorMobile({
       <Disclosure as="div" className="">
         <DisclosureButton className="group flex w-full items-center justify-between rounded-lg px-3 py-2 data-[hover]:bg-neutral-800/10">
           <span className="text-sm/6 font-medium">Tools</span>
-          <ChevronDownIcon className="size-5 group-data-[open]:rotate-180" />
+          <ChevronDown className="size-5 group-data-[open]:rotate-180" />
         </DisclosureButton>
         <DisclosurePanel
           transition

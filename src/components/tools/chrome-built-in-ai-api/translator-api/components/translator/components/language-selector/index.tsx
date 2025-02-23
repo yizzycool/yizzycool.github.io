@@ -4,7 +4,7 @@ import { MouseEvent, useState } from 'react';
 import useLanguageTagToHumanReadable from '@/components/tools/chrome-built-in-ai-api/hooks/use-language-tag-to-human-readable';
 import { Dialog } from '@headlessui/react';
 import { TranslatorParams } from '@/components/tools/chrome-built-in-ai-api/types/types';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { ChevronDown } from 'lucide-react';
 import ISO6391 from '@/components/tools/chrome-built-in-ai-api/translator-api/data/iso-639-1';
 
 export default function LanguageSelector({
@@ -45,7 +45,7 @@ export default function LanguageSelector({
         onClick={openMenu}
       >
         {language}
-        <ChevronDownIcon className="ml-2 h-6 w-6" />
+        <ChevronDown className="ml-2 h-6 w-6" />
       </button>
       <Dialog
         open={opened}

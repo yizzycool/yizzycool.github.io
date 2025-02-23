@@ -1,6 +1,12 @@
 import { MouseEventHandler } from 'react';
-import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
-import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import {
+  Button,
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+  DialogTitle,
+} from '@headlessui/react';
+import { CircleAlert } from 'lucide-react';
 
 type Props = {
   errorString: string;
@@ -23,6 +29,7 @@ export default function ErrorDialog({
       className="relative z-10 focus:outline-none"
       onClose={onDialogClose}
     >
+      <DialogBackdrop className="fixed inset-0 bg-black/30 backdrop-blur" />
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div className="flex min-h-full items-center justify-center p-4">
           <DialogPanel
@@ -33,7 +40,7 @@ export default function ErrorDialog({
               as="h3"
               className="flex items-center text-lg font-bold text-white"
             >
-              <ExclamationCircleIcon className="mr-2 h-6 w-6 text-red-500" />
+              <CircleAlert className="mr-2 h-6 w-6 text-red-500" />
               Error
             </DialogTitle>
             <p className="mt-2 text-sm/6 text-neutral-400">{errorString}</p>

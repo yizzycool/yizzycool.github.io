@@ -5,7 +5,7 @@ import useAiSummarizer from '../../../hooks/use-ai-summarizer';
 import OtherFeatures from '../../../components/other-features';
 import Markdown from 'react-markdown';
 import SettingsPanel from './components/settings-panel';
-import { SparklesIcon } from '@heroicons/react/20/solid';
+import { Sparkles } from 'lucide-react';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 
@@ -88,8 +88,8 @@ export default function Summarizer() {
               {/* Loading */}
               {busy ? (
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <SparklesIcon className="absolute h-4 w-4 animate-ping" />
-                  <SparklesIcon className="h-4 w-4" />
+                  <Sparkles className="absolute h-4 w-4 animate-ping" />
+                  <Sparkles className="h-4 w-4" />
                 </div>
               ) : null}
             </button>

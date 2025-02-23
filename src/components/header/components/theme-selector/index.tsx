@@ -15,11 +15,7 @@ import {
   PopoverButton,
   PopoverPanel,
 } from '@headlessui/react';
-import {
-  ComputerDesktopIcon,
-  MoonIcon,
-  SunIcon,
-} from '@heroicons/react/24/outline';
+import { Moon, Sun, SunMoon } from 'lucide-react';
 import useSwitchTheme, { Theme } from './hooks/use-switch-theme';
 import { createPortal } from 'react-dom';
 
@@ -38,17 +34,17 @@ type SwitchButtons = Array<SwitchButtonSettings>;
 
 const Buttons: SwitchButtons = [
   {
-    component: SunIcon,
+    component: Sun,
     text: 'Light',
     theme: 'light',
   },
   {
-    component: MoonIcon,
+    component: Moon,
     text: 'Dark',
     theme: 'dark',
   },
   {
-    component: ComputerDesktopIcon,
+    component: SunMoon,
     text: 'System',
     theme: 'system',
   },
@@ -77,11 +73,11 @@ export default function ThemeSelector() {
       >
         <div className="mr-6 lg:hidden">Switch Theme</div>
         {theme === 'dark' ? (
-          <MoonIcon className="h-5 w-5" />
+          <Moon className="h-5 w-5" />
         ) : theme === 'light' ? (
-          <SunIcon className="h-5 w-5" />
+          <Sun className="h-5 w-5" />
         ) : (
-          <ComputerDesktopIcon className="h-5 w-5" />
+          <SunMoon className="h-5 w-5" />
         )}
       </PopoverButton>
       <PopoverPanel

@@ -1,6 +1,6 @@
 'use-client';
 
-import { CheckIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import { Check, X } from 'lucide-react';
 import _isNull from 'lodash/isNull';
 
 export default function ApiStatus({
@@ -14,12 +14,12 @@ export default function ApiStatus({
         'Detecting...'
       ) : isSupported ? (
         <>
-          <CheckIcon className="mr-1 inline h-3 w-3" />
+          <Check className="mr-1 inline h-3 w-3" />
           Yes
         </>
       ) : (
         <>
-          <XMarkIcon className="mr-1 inline h-3 w-3" />
+          <X className="mr-1 inline h-3 w-3" />
           No
         </>
       )}
