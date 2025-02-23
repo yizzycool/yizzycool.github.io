@@ -78,7 +78,7 @@ export default function Translator() {
 
   return (
     <>
-      <div className="mt-10 flex flex-col justify-center gap-5 border-t border-neutral-700 px-10 pb-40 pt-10 md:flex-row">
+      <div className="mt-10 flex flex-col justify-center gap-5 border-t border-neutral-700 px-10 pb-40 pt-20 md:flex-row">
         {/* Input */}
         <div className="flex-1">
           <LanguageSelector
@@ -89,7 +89,7 @@ export default function Translator() {
           <div className="relative">
             <textarea
               autoFocus
-              className="block min-h-60 w-full flex-1 resize-none rounded-md border-none bg-transparent px-6 py-4 text-xl outline outline-neutral-400 focus:outline-sky-500"
+              className="block min-h-60 w-full flex-1 resize-none rounded-md border border-neutral-400/50 bg-transparent px-6 py-4 text-xl focus:outline-none"
               onChange={onChange}
               value={text}
               disabled={
@@ -107,7 +107,7 @@ export default function Translator() {
             type="target"
             changeLanguage={changeLanguage}
           />
-          <div className="block min-h-60 w-full flex-1 rounded-md bg-neutral-500/50 px-6 py-4 text-left text-xl">
+          <div className="block min-h-60 w-full flex-1 rounded-md bg-neutral-400/20 px-6 py-4 text-left text-xl">
             {translation}
           </div>
         </div>

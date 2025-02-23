@@ -51,15 +51,15 @@ export default function LanguageDetector() {
 
   return (
     <>
-      <div className="mt-10 border-t border-neutral-700 px-10 pb-40 pt-10 text-left">
+      <div className="mt-10 border-t border-neutral-400/50 px-10 pb-40 pt-20 text-left">
         <div className="mx-auto max-w-screen-sm text-center">
           {/* Input */}
-          <div className="mb-4 text-xl font-bold">
+          <div className="mb-4 text-lg font-bold">
             Type some text to detect the language
           </div>
           <textarea
             autoFocus
-            className="block min-h-60 w-full flex-1 resize-none rounded-md border-none bg-transparent px-6 py-4 text-xl outline outline-neutral-400 focus:outline-sky-500"
+            className="block min-h-60 w-full flex-1 resize-none rounded-md border border-neutral-400/50 bg-transparent px-6 py-4 text-xl focus:outline-none"
             onChange={onChange}
             value={text}
           />

@@ -40,7 +40,7 @@ export interface SummarizerInstance extends SummarizerParams {
 
 export interface LanguageModelInstance {
   prompt: (text: string) => Promise<string>;
-  promptStreaming: (text: string) => Promise<Array<Promise<string>>>;
+  promptStreaming: (text: string) => ReadableStream;
   destroy: () => void;
   maxTokens: number;
   temperature: number;
@@ -74,6 +74,8 @@ export type LanguageModelParams = {
   maxTopK?: number;
   defaultTemperature?: number;
   maxTemperature?: number;
+  systemPrompt?: string;
+  initialPrompts?: Array<{ role: string; content: string }>;
 };
 
 export type WindowAi = {

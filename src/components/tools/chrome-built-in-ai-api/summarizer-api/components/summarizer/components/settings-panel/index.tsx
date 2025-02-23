@@ -52,7 +52,7 @@ export default function SettingsPanel({
 
   return (
     <div className="relative mb-4 rounded-md border border-neutral-700">
-      <div className="absolute left-0 top-0 -translate-y-1/2 translate-x-4 text-xl font-bold">
+      <div className="absolute left-0 top-0 -translate-y-1/2 translate-x-4 text-lg font-bold">
         Settings
       </div>
       <div className="p-4">

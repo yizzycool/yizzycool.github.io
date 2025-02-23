@@ -55,7 +55,7 @@ export default function Summarizer() {
 
   return (
     <>
-      <div className="mt-10 border-t border-neutral-700 px-10 pb-40 pt-10 text-left">
+      <div className="mt-10 border-t border-neutral-400/50 px-10 pb-40 pt-20 text-left">
         <div className="mx-auto max-w-screen-sm">
           <SettingsPanel
             options={options}
@@ -63,7 +63,7 @@ export default function Summarizer() {
             updateSummarizer={updateSummarizer}
           />
           {/* Input */}
-          <div className="mb-4 mt-10 text-xl font-bold">Prompt</div>
+          <div className="mb-4 mt-20 text-lg font-bold">Prompt</div>
           <div className="relative">
             <textarea
               className="block min-h-60 w-full flex-1 resize-none rounded-md border-none bg-transparent px-6 py-4 text-lg outline outline-neutral-400 focus:outline-sky-500"
