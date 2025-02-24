@@ -113,8 +113,13 @@ export default function Chat({
             <XIcon />
           </button>
           <div className="w-full flex-1 overflow-hidden pb-28">
-            <div className="h-full w-full overflow-y-auto p-12 pb-0">
-              <div className="mx-auto flex w-[90%] max-w-[600px] flex-col">
+            <div className="h-full w-full overflow-y-auto p-8 pb-0 md:p-12 md:pb-0">
+              <div
+                className={clsx(
+                  'mx-auto flex w-full max-w-[600px] flex-col md:w-[90%]',
+                  '[&_ul]:list-inside [&_ul]:list-disc'
+                )}
+              >
                 {results.map((result, idx) => (
                   <div key={`${result.role}-${idx}`}>
                     {result.role === 'user' ? (
