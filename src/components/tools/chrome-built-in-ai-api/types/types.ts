@@ -40,7 +40,7 @@ export interface SummarizerInstance extends SummarizerParams {
 
 export interface LanguageModelInstance {
   prompt: (text: string) => Promise<string>;
-  promptStreaming: (text: string) => ReadableStream;
+  promptStreaming: (text: string) => Array<Promise<string>>;
   destroy: () => void;
   maxTokens: number;
   temperature: number;

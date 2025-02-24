@@ -11,7 +11,8 @@ export default function Prompt() {
   const {
     isSupported,
     isPartialUnsupported,
-    prompt: _prompt,
+    // prompt: _prompt,
+    promptStreaming,
   } = useAiLanguageModel();
 
   if (_isNull(isSupported)) return null;
@@ -30,7 +31,7 @@ export default function Prompt() {
     <>
       <div className="mt-10 border-neutral-700 px-10 pt-20 text-left">
         <div className="mx-auto max-w-screen-sm text-center">
-          <Chat />
+          <Chat promptStreaming={promptStreaming} />
         </div>
       </div>
       <OtherFeatures type="discoverMore" />

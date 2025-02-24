@@ -46,13 +46,36 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
 
   const prompt = async (text: string): Promise<string | null> => {
     if (!session) return null;
-    const results = await session.prompt(text);
-    return results;
+    try {
+      const result = await session.prompt(text);
+      return result;
+    } catch (_e) {
+      return null;
+    }
+  };
+
+  const promptStreaming = async (
+    text: string,
+    callback: (chunk: string) => void
+  ): Promise<string | null> => {
+    if (!session) return null;
+    try {
+      let results = '';
+      const stream = await session.promptStreaming(text);
+      for await (const chunk of stream) {
+        callback(chunk);
+        results += chunk;
+      }
+      return results;
+    } catch (_e) {
+      return null;
+    }
   };
 
   return {
     isSupported,
     isPartialUnsupported,
     prompt,
+    promptStreaming,
   };
 }
