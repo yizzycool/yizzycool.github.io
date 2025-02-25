@@ -26,6 +26,7 @@ export default function Chat({
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState('');
   const [results, setResults] = useState<Array<PromptResult>>([]);
+  const [isComposing, setIsCompsing] = useState(false);
 
   const [reply, setReply] = useState('');
 
@@ -39,6 +40,7 @@ export default function Chat({
   };
 
   const onKeyDown = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (isComposing) return;
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
       setText('');
@@ -150,6 +152,8 @@ export default function Chat({
               onChange={onChange}
               value={text}
               onKeyDown={onKeyDown}
+              onCompositionStart={() => setIsCompsing(true)}
+              onCompositionEnd={() => setIsCompsing(false)}
             />
           </div>
         </DialogPanel>
