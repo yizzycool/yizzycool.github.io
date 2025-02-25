@@ -92,9 +92,11 @@ export default function Chat({
       <button
         className={clsx(
           'bg-gradient-to-r from-indigo-500/80 from-10% via-sky-500/80 via-30% to-emerald-500/80 to-90%',
-          'w-full rounded-lg p-4 text-lg font-bold transition-opacity duration-200 hover:opacity-90'
+          'w-full rounded-lg p-4 text-lg font-bold transition-opacity duration-200 hover:opacity-90',
+          'data-[active=true]:from-neutral-800'
         )}
         onClick={() => setIsOpen(true)}
+        data-active={isOpen}
       >
         Start New Chat
       </button>
@@ -103,7 +105,7 @@ export default function Chat({
         onClose={() => setIsOpen(false)}
         transition
         className={clsx(
-          'fixed inset-0 mt-[68px] flex w-screen items-center justify-center bg-black/30',
+          'fixed inset-0 mt-[68px] flex w-screen items-center justify-center bg-black/50',
           'data-[closed]:opacity-0'
         )}
       >
