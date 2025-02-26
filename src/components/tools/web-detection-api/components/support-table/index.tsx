@@ -1,10 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import useAiTranslator from '../../hooks/use-ai-translator';
-import useAiLanguageDetector from '../../hooks/use-ai-language-detector';
-import useAiSummarizer from '../../hooks/use-ai-summarizer';
-import useAiLanguageModel from '../../hooks/use-ai-language-model';
+import useFaceDetector from '../../hooks/use-face-detector';
 import { ExternalLink } from 'lucide-react';
 import ApiStatus from './components/api-status';
 import _get from 'lodash/get';
@@ -12,51 +9,21 @@ import _isNull from 'lodash/isNull';
 
 const ApiList = [
   {
-    name: 'AI Translator',
-    url: 'https://developer.chrome.com/docs/ai/translator-api',
-    supportKey: 'translator',
-  },
-  {
-    name: 'AI Language Detector',
-    url: 'https://developer.chrome.com/docs/ai/language-detection',
-    supportKey: 'languageDetector',
-  },
-  {
-    name: 'AI Summarizer',
-    url: 'https://developer.chrome.com/docs/ai/summarizer-api',
-    supportKey: 'summarizer',
-  },
-  {
-    name: 'AI Prompt (unstable)',
-    url: 'https://github.com/webmachinelearning/prompt-api',
-    supportKey: 'prompt',
+    name: 'Face Detector',
+    url: 'https://developer.chrome.com/docs/capabilities/shape-detection#facedetector',
+    supportKey: 'face-detector',
   },
 ];
 
 export default function SupportTable() {
-  const { isSupported: isTranslatorSupported } = useAiTranslator({
-    createInstance: false,
-  });
-  const { isSupported: isLanguageDetectorSupported } = useAiLanguageDetector({
-    createInstance: false,
-  });
-  const { isSupported: isSummarizerSupported } = useAiSummarizer({
-    createInstance: false,
-  });
-  const { isSupported: isLanguageModelSupported } = useAiLanguageModel({
+  const { isSupported: isFaceDetectorSupported } = useFaceDetector({
     createInstance: false,
   });
 
   const getCapability = (key: string) => {
     switch (key) {
       case ApiList[0].supportKey:
-        return isTranslatorSupported;
-      case ApiList[1].supportKey:
-        return isLanguageDetectorSupported;
-      case ApiList[2].supportKey:
-        return isSummarizerSupported;
-      case ApiList[3].supportKey:
-        return isLanguageModelSupported;
+        return isFaceDetectorSupported;
       default:
         return false;
     }

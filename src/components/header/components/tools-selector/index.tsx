@@ -1,6 +1,6 @@
 'use client';
 
-import { Bot, FileText, Image, Languages, Radar } from 'lucide-react';
+import { Bot, FileText, Image, Languages, Radar, ScanFace } from 'lucide-react';
 import ToolsSelectorMobile from './components/mobile';
 import ToolsSelectorDesktop from './components/desktop';
 
@@ -51,6 +51,19 @@ export const Tools = [
         desc: 'Enables AI-powered text generation and understanding for web apps.',
         icon: {
           component: Bot,
+        },
+      },
+    ],
+  },
+  {
+    name: 'Chrome Detector APIs',
+    items: [
+      {
+        name: 'Face Detector',
+        href: '/tools/web-detection-api/face-detector',
+        desc: 'Detect faces in real-time using Chrome’s built-in API.',
+        icon: {
+          component: ScanFace,
         },
       },
     ],
