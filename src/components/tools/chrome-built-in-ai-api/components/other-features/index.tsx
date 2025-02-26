@@ -28,7 +28,7 @@ export default function OtherFeatures({
   type: OtherFeatureTypeInfoKeys;
 }) {
   return (
-    <div className="m-auto mt-10 border-t border-neutral-400/50 px-5 pb-40 pt-20 text-center md:px-10">
+    <div className="m-auto mt-10 border-t border-neutral-400/50 px-5 py-20 text-center md:px-10">
       <div className="mx-auto max-w-screen-sm text-2xl font-bold">
         {TypeInfo[type].title}
       </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import SupportTable from '@/components/tools/chrome-built-in-ai-api/components/support-table';
 
 export default function Layout({
   children,
@@ -43,5 +44,10 @@ export default function Layout({
     };
   }, []);
 
-  return children;
+  return (
+    <>
+      {children}
+      <SupportTable />
+    </>
+  );
 }
