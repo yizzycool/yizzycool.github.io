@@ -2,12 +2,11 @@
 
 import { useEffect } from 'react';
 import SupportTable from '@/components/tools/chrome-built-in-ai-api/components/support-table';
+import DiscoverMoreFeatures from '@/components/tools/components/discover-more-features';
 
 export default function Layout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   // Insert Translator API / Language Detector API into <head>
   useEffect(() => {
     const head = document.querySelector('head');
@@ -47,6 +46,7 @@ export default function Layout({
   return (
     <>
       {children}
+      <DiscoverMoreFeatures type="chromeAiApi" />
       <SupportTable />
     </>
   );

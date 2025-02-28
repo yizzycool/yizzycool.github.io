@@ -5,7 +5,7 @@ import Title from '../../components/title';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import useAiSummarizer from '../hooks/use-ai-summarizer';
-import OtherFeatures from '../components/other-features';
+import Unsupported from '../../components/unsupported';
 import SettingsPanel from './components/settings-panel';
 import { Sparkles } from 'lucide-react';
 import Markdown from 'react-markdown';
@@ -23,6 +23,9 @@ export default function SummarizerApi() {
     summarize,
     updateSummarizer,
   } = useAiSummarizer();
+
+  const isLoading =
+    _isNull(isSupported) || (isSupported && _isNull(isPartialUnsupported));
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
@@ -45,10 +48,11 @@ export default function SummarizerApi() {
   return (
     <div className="mx-auto max-w-screen-2xl pt-[68px] text-center">
       <Title>Summarizer</Title>
-      {_isNull(isSupported) ? null : !isSupported ? (
-        <OtherFeatures type="unsupported" />
-      ) : _isNull(isPartialUnsupported) ? null : isPartialUnsupported ? (
-        <OtherFeatures type="partialUnsupported" />
+      {/* Summarizer */}
+      {isLoading ? null : !isSupported ? (
+        <Unsupported type="unsupported" />
+      ) : isPartialUnsupported ? (
+        <Unsupported type="partialUnsupported" />
       ) : (
         <>
           <div className="mt-10 px-10 pb-40 pt-20 text-left">
@@ -103,7 +107,6 @@ export default function SummarizerApi() {
               )}
             </div>
           </div>
-          <OtherFeatures type="discoverMore" />
         </>
       )}
     </div>

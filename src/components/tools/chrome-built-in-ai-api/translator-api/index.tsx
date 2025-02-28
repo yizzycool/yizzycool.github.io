@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 import useAiTranslator from '../hooks/use-ai-translator';
 import Title from '../../components/title';
-import OtherFeatures from '../components/other-features';
 import LanguageSelector from './components/language-selector';
 import CanTranslateHint from './components/can-translate-hint';
 import SwitchButton from './components/switch-button';
+import Unsupported from '../../components/unsupported';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _values from 'lodash/values';
@@ -25,6 +25,9 @@ export default function TranslatorApi() {
     setTranslatorLang,
     canTranslate,
   } = useAiTranslator();
+
+  const isLoading =
+    _isNull(isSupported) || (isSupported && _isNull(isPartialUnsupported));
 
   // If translator update to another language, auto translate to new language when translator is readily
   useEffect(() => {
@@ -68,11 +71,11 @@ export default function TranslatorApi() {
   return (
     <div className="mx-auto max-w-screen-2xl pt-[68px] text-center">
       <Title>Translator</Title>
-      {/* <Translator /> */}
-      {_isNull(isSupported) ? null : !isSupported ? (
-        <OtherFeatures type="unsupported" />
-      ) : _isNull(isPartialUnsupported) ? null : isPartialUnsupported ? (
-        <OtherFeatures type="partialUnsupported" />
+      {/* Translator */}
+      {isLoading ? null : !isSupported ? (
+        <Unsupported type="unsupported" />
+      ) : isPartialUnsupported ? (
+        <Unsupported type="partialUnsupported" />
       ) : (
         <>
           <div className="mt-10 flex flex-col justify-center gap-5 px-10 pb-40 pt-20 md:flex-row">
@@ -109,7 +112,6 @@ export default function TranslatorApi() {
               </div>
             </div>
           </div>
-          <OtherFeatures type="discoverMore" />
         </>
       )}
     </div>

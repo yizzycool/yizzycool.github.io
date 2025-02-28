@@ -5,7 +5,7 @@ import { useRef, useState } from 'react';
 import useAiLanguageDetector from '../hooks/use-ai-language-detector';
 import Title from '../../components/title';
 import BarChart from './components/bar-chart';
-import OtherFeatures from '../components/other-features';
+import Unsupported from '../../components/unsupported';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _values from 'lodash/values';
@@ -19,6 +19,9 @@ export default function LanguageDetectorApi() {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { isSupported, isPartialUnsupported, detect } = useAiLanguageDetector();
+
+  const isLoading =
+    _isNull(isSupported) || (isSupported && _isNull(isPartialUnsupported));
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
@@ -38,25 +41,14 @@ export default function LanguageDetectorApi() {
     }
   };
 
-  if (_isNull(isSupported)) return null;
-
-  if (!isSupported) {
-    return <OtherFeatures type="unsupported" />;
-  }
-
-  if (_isNull(isPartialUnsupported)) return null;
-
-  if (isPartialUnsupported) {
-    return <OtherFeatures type="partialUnsupported" />;
-  }
-
   return (
     <div className="mx-auto max-w-screen-2xl pt-[68px] text-center">
       <Title>Language Detector</Title>
-      {_isNull(isSupported) ? null : !isSupported ? (
-        <OtherFeatures type="unsupported" />
-      ) : _isNull(isPartialUnsupported) ? null : isPartialUnsupported ? (
-        <OtherFeatures type="partialUnsupported" />
+      {/* Language Detector */}
+      {isLoading ? null : !isSupported ? (
+        <Unsupported type="unsupported" />
+      ) : isPartialUnsupported ? (
+        <Unsupported type="partialUnsupported" />
       ) : (
         <>
           <div className="mt-10 px-10 pb-40 pt-20 text-left">
@@ -75,7 +67,6 @@ export default function LanguageDetectorApi() {
             {/* Output */}
             <BarChart results={results} />
           </div>
-          <OtherFeatures type="discoverMore" />
         </>
       )}
     </div>
