@@ -1,6 +1,6 @@
 'use client';
 
-import { ShieldAlert } from 'lucide-react';
+import { OctagonX } from 'lucide-react';
 import _get from 'lodash/get';
 
 export const TypeInfo = {
@@ -19,7 +19,7 @@ export type UnsupportedTypes = keyof typeof TypeInfo;
 export default function Unsupported({ type }: { type: UnsupportedTypes }) {
   return (
     <div className="mx-auto mt-10 max-w-screen-sm px-5 py-20 text-center">
-      <ShieldAlert className="mx-auto h-20 w-20 text-yellow-500" />
+      <OctagonX className="mx-auto h-20 w-20 text-yellow-500" />
       <div className="mt-10 text-xl font-bold">{TypeInfo[type].title}</div>
       <div className="mt-5">{TypeInfo[type].desc}</div>
     </div>
