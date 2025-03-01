@@ -6,6 +6,7 @@ import useAiLanguageDetector from '../hooks/use-ai-language-detector';
 import Title from '../../components/title';
 import BarChart from './components/bar-chart';
 import Unsupported from '../../components/unsupported';
+import LoadingSkeleton from '../components/loading-skeleton';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _values from 'lodash/values';
@@ -45,13 +46,15 @@ export default function LanguageDetectorApi() {
     <div className="mx-auto max-w-screen-2xl pt-[68px] text-center">
       <Title>Language Detector</Title>
       {/* Language Detector */}
-      {isLoading ? null : !isSupported ? (
+      {isLoading ? (
+        <LoadingSkeleton />
+      ) : !isSupported ? (
         <Unsupported type="unsupported" />
       ) : isPartialUnsupported ? (
         <Unsupported type="partialUnsupported" />
       ) : (
         <>
-          <div className="mt-10 px-10 pb-40 pt-20 text-left">
+          <div className="mt-10 px-5 pb-40 pt-20 text-left">
             <div className="mx-auto max-w-screen-sm text-center">
               {/* Input */}
               <div className="mb-4 text-lg font-bold">

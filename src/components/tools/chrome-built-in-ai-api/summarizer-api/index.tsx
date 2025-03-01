@@ -1,14 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import Title from '../../components/title';
-import _isNull from 'lodash/isNull';
-import _isEmpty from 'lodash/isEmpty';
 import useAiSummarizer from '../hooks/use-ai-summarizer';
+import Markdown from 'react-markdown';
+import { Sparkles } from 'lucide-react';
+import Title from '../../components/title';
 import Unsupported from '../../components/unsupported';
 import SettingsPanel from './components/settings-panel';
-import { Sparkles } from 'lucide-react';
-import Markdown from 'react-markdown';
+import LoadingSkeleton from '../components/loading-skeleton';
+import _isNull from 'lodash/isNull';
+import _isEmpty from 'lodash/isEmpty';
 
 export default function SummarizerApi() {
   const [text, setText] = useState('');
@@ -49,13 +50,15 @@ export default function SummarizerApi() {
     <div className="mx-auto max-w-screen-2xl pt-[68px] text-center">
       <Title>Summarizer</Title>
       {/* Summarizer */}
-      {isLoading ? null : !isSupported ? (
+      {isLoading ? (
+        <LoadingSkeleton />
+      ) : !isSupported ? (
         <Unsupported type="unsupported" />
       ) : isPartialUnsupported ? (
         <Unsupported type="partialUnsupported" />
       ) : (
         <>
-          <div className="mt-10 px-10 pb-40 pt-20 text-left">
+          <div className="mt-10 px-5 pb-40 pt-20 text-left">
             <div className="mx-auto max-w-screen-sm">
               <SettingsPanel
                 options={options}
