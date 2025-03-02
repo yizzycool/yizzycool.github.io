@@ -44,7 +44,7 @@ export default function useFaceDetector({ createInstance = true } = {}) {
   };
 
   const detect = async (
-    image: HTMLImageElement
+    image: HTMLImageElement | HTMLCanvasElement
   ): Promise<FaceDetectionResults | null> => {
     if (!detector) return null;
     const results = await detector.detect(image);
