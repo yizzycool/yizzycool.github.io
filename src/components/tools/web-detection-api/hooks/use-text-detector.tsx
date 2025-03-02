@@ -2,19 +2,17 @@
 
 import { useEffect, useState } from 'react';
 import {
-  BarcodeDetectionResults,
-  BarcodeDetectorInstance,
+  TextDetectionResults,
+  TextDetectorInstance,
   WindowDetector,
 } from '../types/types';
 
-export default function useBarcodeDetector({ createInstance = true } = {}) {
+export default function useTextDetector({ createInstance = true } = {}) {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
   const [isPartialUnsupported, setIsPartialUnsupported] = useState<
     boolean | null
   >(null);
-  const [detector, setDetector] = useState<BarcodeDetectorInstance | null>(
-    null
-  );
+  const [detector, setDetector] = useState<TextDetectorInstance | null>(null);
 
   useEffect(() => {
     checkCapability();
@@ -22,21 +20,21 @@ export default function useBarcodeDetector({ createInstance = true } = {}) {
 
   useEffect(() => {
     if (!isSupported || !createInstance) return;
-    initBarcodeDetector();
+    initTextDetector();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSupported]);
 
-  // To check if barcode detector is supported
+  // To check if text detector is supported
   const checkCapability = () => {
     const _window = window as unknown as WindowDetector;
-    setIsSupported(!!_window.BarcodeDetector);
+    setIsSupported(!!_window.TextDetector);
   };
 
-  const initBarcodeDetector = async () => {
+  const initTextDetector = async () => {
     const _window = window as unknown as WindowDetector;
-    if (_window.BarcodeDetector) {
+    if (_window.TextDetector) {
       try {
-        const detector = await new _window.BarcodeDetector();
+        const detector = await new _window.TextDetector();
         setDetector(detector);
         setIsPartialUnsupported(false);
       } catch (_e) {
@@ -47,7 +45,7 @@ export default function useBarcodeDetector({ createInstance = true } = {}) {
 
   const detect = async (
     image: HTMLImageElement | HTMLCanvasElement
-  ): Promise<BarcodeDetectionResults | null> => {
+  ): Promise<TextDetectionResults | null> => {
     if (!detector) return null;
     const results = await detector.detect(image);
     return results;

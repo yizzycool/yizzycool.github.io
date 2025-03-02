@@ -2,6 +2,7 @@
 
 import {
   Bot,
+  CaseUpper,
   FileText,
   Image,
   Languages,
@@ -80,6 +81,14 @@ export const Tools = [
         desc: 'Detect barcodes in real-time using Chrome’s built-in API.',
         icon: {
           component: QrCode,
+        },
+      },
+      {
+        name: 'Text Detector',
+        href: '/tools/web-detection-api/text-detector',
+        desc: 'Detect texts in real-time using Chrome’s built-in API.',
+        icon: {
+          component: CaseUpper,
         },
       },
     ],

@@ -38,6 +38,18 @@ export type BarcodeDetectorInstance = {
   ) => Promise<BarcodeDetectionResults>;
 };
 
+export type TextDetectionResults = Array<{
+  boundingBox: BoundingBox;
+  cornerPoints: Array<{ x: number; y: number }>;
+  rawValue: string;
+}>;
+
+export type TextDetectorInstance = {
+  detect: (
+    image: HTMLImageElement | HTMLCanvasElement
+  ) => Promise<TextDetectionResults>;
+};
+
 type BarcodeDetectorOptions = {
   formats: Array<string>;
 };
@@ -47,4 +59,5 @@ export type WindowDetector = {
   BarcodeDetector: new (
     options?: BarcodeDetectorOptions
   ) => BarcodeDetectorInstance;
+  TextDetector: new () => TextDetectorInstance;
 };

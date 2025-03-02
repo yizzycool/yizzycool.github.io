@@ -2,11 +2,12 @@
 
 import clsx from 'clsx';
 import useFaceDetector from '../../hooks/use-face-detector';
+import useBarcodeDetector from '../../hooks/use-barcode-detector';
+import useTextDetector from '../../hooks/use-text-detector';
 import { ExternalLink } from 'lucide-react';
 import ApiStatus from './components/api-status';
 import _get from 'lodash/get';
 import _isNull from 'lodash/isNull';
-import useBarcodeDetector from '../../hooks/use-barcode-detector';
 
 const ApiList = [
   {
@@ -19,6 +20,11 @@ const ApiList = [
     url: 'https://developer.mozilla.org/en-US/docs/Web/API/Barcode_Detection_API',
     supportKey: 'barcode-detector',
   },
+  {
+    name: 'Text Detector',
+    url: 'https://developer.chrome.com/docs/capabilities/shape-detection#textdetector',
+    supportKey: 'text-detector',
+  },
 ];
 
 export default function SupportTable() {
@@ -30,12 +36,18 @@ export default function SupportTable() {
     createInstance: false,
   });
 
+  const { isSupported: isTextDetectorSupported } = useTextDetector({
+    createInstance: false,
+  });
+
   const getCapability = (key: string) => {
     switch (key) {
       case ApiList[0].supportKey:
         return isFaceDetectorSupported;
       case ApiList[1].supportKey:
         return isBarcodeDetectorSupported;
+      case ApiList[2].supportKey:
+        return isTextDetectorSupported;
       default:
         return false;
     }
