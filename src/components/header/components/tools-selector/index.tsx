@@ -1,6 +1,14 @@
 'use client';
 
-import { Bot, FileText, Image, Languages, Radar, ScanFace } from 'lucide-react';
+import {
+  Bot,
+  FileText,
+  Image,
+  Languages,
+  QrCode,
+  Radar,
+  ScanFace,
+} from 'lucide-react';
 import ToolsSelectorMobile from './components/mobile';
 import ToolsSelectorDesktop from './components/desktop';
 
@@ -64,6 +72,14 @@ export const Tools = [
         desc: 'Detect faces in real-time using Chrome’s built-in API.',
         icon: {
           component: ScanFace,
+        },
+      },
+      {
+        name: 'Barcode Detector',
+        href: '/tools/web-detection-api/barcode-detector',
+        desc: 'Detect barcodes in real-time using Chrome’s built-in API.',
+        icon: {
+          component: QrCode,
         },
       },
     ],

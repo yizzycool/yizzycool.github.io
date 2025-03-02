@@ -2,17 +2,19 @@
 
 import { useEffect, useState } from 'react';
 import {
-  FaceDetectionResults,
-  FaceDetectorInstance,
+  BarcodeDetectionResults,
+  BarcodeDetectorInstance,
   WindowDetector,
 } from '../types/types';
 
-export default function useFaceDetector({ createInstance = true } = {}) {
+export default function useBarcodeDetector({ createInstance = true } = {}) {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
   const [isPartialUnsupported, setIsPartialUnsupported] = useState<
     boolean | null
   >(null);
-  const [detector, setDetector] = useState<FaceDetectorInstance | null>(null);
+  const [detector, setDetector] = useState<BarcodeDetectorInstance | null>(
+    null
+  );
 
   useEffect(() => {
     checkCapability();
@@ -20,21 +22,21 @@ export default function useFaceDetector({ createInstance = true } = {}) {
 
   useEffect(() => {
     if (!isSupported || !createInstance) return;
-    initFaceDetector();
+    initBarcodeDetector();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSupported]);
 
-  // To check if face detector is supported
+  // To check if barcode detector is supported
   const checkCapability = () => {
     const _window = window as unknown as WindowDetector;
     setIsSupported(!!_window.FaceDetector);
   };
 
-  const initFaceDetector = async () => {
+  const initBarcodeDetector = async () => {
     const _window = window as unknown as WindowDetector;
-    if (_window.FaceDetector) {
+    if (_window.BarcodeDetector) {
       try {
-        const detector = await new _window.FaceDetector();
+        const detector = await new _window.BarcodeDetector();
         setDetector(detector);
         setIsPartialUnsupported(false);
       } catch (_e) {
@@ -45,7 +47,7 @@ export default function useFaceDetector({ createInstance = true } = {}) {
 
   const detect = async (
     image: HTMLImageElement | HTMLCanvasElement
-  ): Promise<FaceDetectionResults | null> => {
+  ): Promise<BarcodeDetectionResults | null> => {
     if (!detector) return null;
     const results = await detector.detect(image);
     return results;

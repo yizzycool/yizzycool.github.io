@@ -1,6 +1,6 @@
 'use client';
 
-import { FaceDetectionResults } from '../../types/types';
+import { BoundingBox as BBox } from '../../types/types';
 import _isNull from 'lodash/isNull';
 import _map from 'lodash/map';
 import _round from 'lodash/round';
@@ -8,7 +8,9 @@ import _round from 'lodash/round';
 export default function BoundingBox({
   results,
 }: {
-  results: FaceDetectionResults | null;
+  results: Array<{
+    boundingBox: BBox;
+  }>;
 }) {
   if (_isNull(results)) return null;
 

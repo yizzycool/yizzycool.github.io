@@ -25,6 +25,26 @@ export type FaceDetectorInstance = {
   ) => Promise<FaceDetectionResults>;
 };
 
+export type BarcodeDetectionResults = Array<{
+  boundingBox: BoundingBox;
+  cornerPoints: Array<{ x: number; y: number }>;
+  format: string;
+  rawValue: string;
+}>;
+
+export type BarcodeDetectorInstance = {
+  detect: (
+    image: HTMLImageElement | HTMLCanvasElement
+  ) => Promise<BarcodeDetectionResults>;
+};
+
+type BarcodeDetectorOptions = {
+  formats: Array<string>;
+};
+
 export type WindowDetector = {
   FaceDetector: new () => FaceDetectorInstance;
+  BarcodeDetector: new (
+    options?: BarcodeDetectorOptions
+  ) => BarcodeDetectorInstance;
 };
