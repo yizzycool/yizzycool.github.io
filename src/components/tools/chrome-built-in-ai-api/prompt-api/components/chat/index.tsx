@@ -9,6 +9,7 @@ import { ChangeEvent, useRef, useState } from 'react';
 import _slice from 'lodash/slice';
 import _last from 'lodash/last';
 import _size from 'lodash/size';
+import _split from 'lodash/split';
 
 interface PromptResult {
   role: 'user' | 'assistant' | 'system';
@@ -76,15 +77,20 @@ export default function Chat({
     if (replyIndexRef.current >= replyTextQueueSizeRef.current) return;
     replyIndexRef.current += 1;
     setReply(replyTextQueueRef.current.slice(0, replyIndexRef.current));
-    timerRef.current = setTimeout(startShowReply, 10 + Math.random() * 20);
+    timerRef.current = setTimeout(startShowReply, Math.random() * 20);
   };
 
   const getLoadingCircle = (size: number) => {
     if (size !== 0 && size === replyIndexRef.current) return '';
-    return ` <span class="relative inline-flex size-5 ml-1 align-middle">
-        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-neutral-400 opacity-75"></span>
-        <span class="relative inline-flex size-5 rounded-full bg-neutral-500"></span>
-      </span>`;
+    const tripleBacktickCount = _split(reply, '```').length;
+    if (tripleBacktickCount % 2 === 0) return '';
+    return ` <span class="ignore-all-revert">
+        <span class="relative inline-flex size-5 ml-1 align-middle">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-neutral-400 opacity-75"></span>
+          <span class="relative inline-flex size-5 rounded-full bg-neutral-500"></span>
+        </span>
+      </span>
+      `;
   };
 
   return (
@@ -118,12 +124,7 @@ export default function Chat({
           </button>
           <div className="w-full flex-1 overflow-hidden pb-28">
             <div className="h-full w-full overflow-y-auto p-8 pb-0 md:p-12 md:pb-0">
-              <div
-                className={clsx(
-                  'mx-auto flex w-full max-w-[600px] flex-col md:w-[90%]',
-                  '[&_ul]:list-inside [&_ul]:list-disc'
-                )}
-              >
+              <div className="mx-auto flex w-full max-w-[600px] flex-col md:w-[90%]">
                 {results.map((result, idx) => (
                   <div key={`${result.role}-${idx}`}>
                     {result.role === 'user' ? (
@@ -132,9 +133,14 @@ export default function Chat({
                       </div>
                     ) : result.role === 'assistant' &&
                       idx !== _size(results) - 1 ? (
-                      <Markdown className="my-8">{result.content}</Markdown>
+                      <Markdown className="all-revert my-8">
+                        {result.content}
+                      </Markdown>
                     ) : result.role === 'assistant' ? (
-                      <Markdown className="my-8" rehypePlugins={[rehypeRaw]}>
+                      <Markdown
+                        className="all-revert my-8"
+                        rehypePlugins={[rehypeRaw]}
+                      >
                         {reply + getLoadingCircle(_size(result.content))}
                       </Markdown>
                     ) : null}
