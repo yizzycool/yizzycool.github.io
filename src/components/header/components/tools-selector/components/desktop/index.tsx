@@ -76,7 +76,7 @@ export default function ToolsSelectorDesktop() {
           ))}
         </PopoverPanel>
         {createPortal(
-          <PopoverBackdrop className="fixed inset-0 z-10 bg-transparent" />,
+          <PopoverBackdrop className="fixed inset-0 z-0 bg-transparent" />,
           body
         )}
       </Popover>
