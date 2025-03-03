@@ -88,7 +88,7 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
     isSupported,
     isPartialUnsupported,
     options,
-    isOptionUpadting: _isNull(summarizer),
+    isOptionUpdating: _isNull(summarizer),
     summarize,
     updateSummarizer,
   };

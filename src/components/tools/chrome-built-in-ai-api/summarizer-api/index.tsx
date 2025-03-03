@@ -20,7 +20,7 @@ export default function SummarizerApi() {
     isSupported,
     isPartialUnsupported,
     options,
-    isOptionUpadting,
+    isOptionUpdating,
     summarize,
     updateSummarizer,
   } = useAiSummarizer();
@@ -62,7 +62,7 @@ export default function SummarizerApi() {
             <div className="mx-auto max-w-screen-sm">
               <SettingsPanel
                 options={options}
-                isOptionUpadting={isOptionUpadting}
+                isOptionUpdating={isOptionUpdating}
                 updateSummarizer={updateSummarizer}
               />
               {/* Input */}
@@ -73,7 +73,7 @@ export default function SummarizerApi() {
                   onChange={onChange}
                   value={text}
                 />
-                {isOptionUpadting && (
+                {isOptionUpdating && (
                   <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-md bg-sky-500/20 px-4 backdrop-blur">
                     Update Summarizer...
                   </div>

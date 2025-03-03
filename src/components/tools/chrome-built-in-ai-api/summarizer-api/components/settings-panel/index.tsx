@@ -31,18 +31,18 @@ const Settings = [
 
 export default function SettingsPanel({
   options,
-  isOptionUpadting,
+  isOptionUpdating,
   updateSummarizer,
 }: {
   options: SummarizerParams;
-  isOptionUpadting: boolean;
+  isOptionUpdating: boolean;
   updateSummarizer: (settings: SummarizerParams) => void;
 }) {
   const [newOptions, setNewOptions] = useState(options);
 
   const buttonDisabled = useMemo(() => {
-    return _isEqual(options, newOptions) || isOptionUpadting;
-  }, [options, newOptions, isOptionUpadting]);
+    return _isEqual(options, newOptions) || isOptionUpdating;
+  }, [options, newOptions, isOptionUpdating]);
 
   const onChange = (key: string, value: string) => {
     setNewOptions((ps) => ({ ...ps, [key]: value }));
@@ -73,7 +73,7 @@ export default function SettingsPanel({
             onClick={onUpdate}
             disabled={buttonDisabled}
           >
-            {isOptionUpadting ? 'Updating...' : 'Update'}
+            {isOptionUpdating ? 'Updating...' : 'Update'}
           </button>
         </div>
       </div>
