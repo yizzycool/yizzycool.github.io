@@ -70,10 +70,8 @@ export type SummarizerParams = {
 };
 
 export type LanguageModelParams = {
-  defaultTopK?: number;
-  maxTopK?: number;
-  defaultTemperature?: number;
-  maxTemperature?: number;
+  topK?: number;
+  temperature?: number;
   systemPrompt?: string;
   initialPrompts?: Array<{ role: string; content: string }>;
 };
