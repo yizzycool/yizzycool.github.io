@@ -69,7 +69,7 @@ export default function SettingsPanel({
         ))}
         <div className="mt-8 text-right">
           <button
-            className="relative ml-4 rounded-md bg-sky-700 p-4 py-2 text-base hover:bg-sky-700/80 disabled:bg-gray-500"
+            className="relative ml-4 rounded-md bg-sky-700 p-4 py-2 text-base text-white hover:bg-sky-700/80 disabled:bg-gray-500"
             onClick={onUpdate}
             disabled={buttonDisabled}
           >
