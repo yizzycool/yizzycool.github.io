@@ -5,7 +5,7 @@ import rehypeRaw from 'rehype-raw';
 import Markdown from 'react-markdown';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { XIcon } from 'lucide-react';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import _slice from 'lodash/slice';
 import _last from 'lodash/last';
 import _size from 'lodash/size';
@@ -35,6 +35,12 @@ export default function Chat({
   const replyTextQueueSizeRef = useRef(0);
   const replyIndexRef = useRef(0);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (isOpen) return;
+    setText('');
+    setResults([]);
+  }, [isOpen]);
 
   const onChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);

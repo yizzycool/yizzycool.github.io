@@ -5,6 +5,7 @@ import Title from '../../components/title';
 import Chat from './components/chat';
 import Unsupported from '../../components/unsupported';
 import LoadingSkeleton from '../components/loading-skeleton';
+import SettingsPanel from './components/settings-panel';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _values from 'lodash/values';
@@ -13,8 +14,11 @@ export default function PromptApi() {
   const {
     isSupported,
     isPartialUnsupported,
+    options,
+    isOptionUpdating,
     // prompt: _prompt,
     promptStreaming,
+    updateLanguageModel,
   } = useAiLanguageModel();
 
   const isLoading =
@@ -32,8 +36,13 @@ export default function PromptApi() {
         <Unsupported type="partialUnsupported" />
       ) : (
         <>
-          <div className="mt-10 border-neutral-700 px-5 py-20 text-left">
-            <div className="mx-auto max-w-screen-sm text-center">
+          <div className="mx-auto mt-10 max-w-screen-sm border-neutral-700 px-5 py-20 text-left">
+            <SettingsPanel
+              options={options}
+              isOptionUpdating={isOptionUpdating}
+              updateLanguageModel={updateLanguageModel}
+            />
+            <div className="mt-20 flex items-center justify-center text-center">
               <Chat promptStreaming={promptStreaming} />
             </div>
           </div>

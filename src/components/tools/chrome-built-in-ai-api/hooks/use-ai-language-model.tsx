@@ -1,7 +1,20 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { LanguageModelInstance, WindowAi } from '../types/types';
+import {
+  LanguageModelInstance,
+  LanguageModelParams,
+  WindowAi,
+} from '../types/types';
+import browserUtils from '@/utils/browser-utils';
+import _isNull from 'lodash/isNull';
+import _defaults from 'lodash/defaults';
+
+const Options: LanguageModelParams = {
+  topK: 3,
+  temperature: 1,
+  systemPrompt: '',
+};
 
 export default function useAiLanguageModel({ createInstance = true } = {}) {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
@@ -9,6 +22,7 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
     boolean | null
   >(null);
   const [session, setSession] = useState<LanguageModelInstance | null>(null);
+  const [options, setOptions] = useState(Options);
 
   useEffect(() => {
     checkCapability();
@@ -37,6 +51,24 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
       try {
         const session = await _window.ai.languageModel.create({});
         setSession(session);
+        setIsPartialUnsupported(false);
+      } catch (_e) {
+        setIsPartialUnsupported(true);
+      }
+    }
+  };
+
+  const updateLanguageModel = async (options: LanguageModelParams) => {
+    const _window = window as unknown as WindowAi;
+    if (_window.ai?.languageModel) {
+      try {
+        if (session) session?.destroy?.();
+        setSession(null);
+        await browserUtils.sleep(500);
+        const newOptions = _defaults(options, Options);
+        const newSession = await _window.ai.languageModel.create(newOptions);
+        setOptions(newOptions);
+        setSession(newSession);
         setIsPartialUnsupported(false);
       } catch (_e) {
         setIsPartialUnsupported(true);
@@ -75,7 +107,10 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
   return {
     isSupported,
     isPartialUnsupported,
+    options,
+    isOptionUpdating: _isNull(session),
     prompt,
     promptStreaming,
+    updateLanguageModel,
   };
 }
