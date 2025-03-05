@@ -21,7 +21,8 @@
     "react-chartjs-2": "^5.3.0",
     "react-dom": "^18",
     "react-markdown": "^9.0.3",
-    "rehype-raw": "^7.0.0"
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.12",

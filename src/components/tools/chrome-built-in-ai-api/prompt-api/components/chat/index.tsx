@@ -1,8 +1,9 @@
 'use client';
 
 import clsx from 'clsx';
-import rehypeRaw from 'rehype-raw';
 import Markdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
+import remarkGfm from 'remark-gfm';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { XIcon } from 'lucide-react';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
@@ -139,13 +140,17 @@ export default function Chat({
                       </div>
                     ) : result.role === 'assistant' &&
                       idx !== _size(results) - 1 ? (
-                      <Markdown className="all-revert my-8">
+                      <Markdown
+                        className="all-revert my-8"
+                        remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
+                      >
                         {result.content}
                       </Markdown>
                     ) : result.role === 'assistant' ? (
                       <Markdown
                         className="all-revert my-8"
                         rehypePlugins={[rehypeRaw]}
+                        remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
                       >
                         {reply + getLoadingCircle(_size(result.content))}
                       </Markdown>
