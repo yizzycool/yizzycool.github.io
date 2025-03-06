@@ -109,7 +109,7 @@ export default function ThemeSelector() {
         ))}
       </PopoverPanel>
       {createPortal(
-        <PopoverBackdrop className="invisible fixed inset-0 z-10 bg-transparent lg:visible" />,
+        <PopoverBackdrop className="invisible fixed inset-0 z-0 bg-transparent lg:visible" />,
         body
       )}
     </Popover>
