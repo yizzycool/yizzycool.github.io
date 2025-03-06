@@ -76,6 +76,8 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
     }
   };
 
+  const clearLanguageModel = () => updateLanguageModel(options);
+
   const prompt = async (text: string): Promise<string | null> => {
     if (!session) return null;
     try {
@@ -112,5 +114,6 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
     prompt,
     promptStreaming,
     updateLanguageModel,
+    clearLanguageModel,
   };
 }

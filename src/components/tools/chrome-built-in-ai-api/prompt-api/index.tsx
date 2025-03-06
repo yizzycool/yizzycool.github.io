@@ -19,6 +19,7 @@ export default function PromptApi() {
     // prompt: _prompt,
     promptStreaming,
     updateLanguageModel,
+    clearLanguageModel,
   } = useAiLanguageModel();
 
   const isLoading =
@@ -43,7 +44,10 @@ export default function PromptApi() {
               updateLanguageModel={updateLanguageModel}
             />
             <div className="mt-20 flex items-center justify-center text-center">
-              <Chat promptStreaming={promptStreaming} />
+              <Chat
+                promptStreaming={promptStreaming}
+                clearLanguageModel={clearLanguageModel}
+              />
             </div>
           </div>
         </>

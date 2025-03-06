@@ -1,12 +1,21 @@
 'use client';
 
 import clsx from 'clsx';
-import Markdown from 'react-markdown';
+import Markdown, { ExtraProps } from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { XIcon } from 'lucide-react';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  ClassAttributes,
+  HTMLAttributes,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import _slice from 'lodash/slice';
 import _last from 'lodash/last';
 import _size from 'lodash/size';
@@ -19,11 +28,13 @@ interface PromptResult {
 
 export default function Chat({
   promptStreaming,
+  clearLanguageModel,
 }: {
   promptStreaming: (
     text: string,
     callback: (chunk: string) => void
   ) => Promise<string | null>;
+  clearLanguageModel: () => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState('');
@@ -41,6 +52,7 @@ export default function Chat({
     if (isOpen) return;
     setText('');
     setResults([]);
+    clearLanguageModel();
   }, [isOpen]);
 
   const onChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -93,8 +105,8 @@ export default function Chat({
     if (tripleBacktickCount % 2 === 0) return '';
     return ` <span class="ignore-all-revert">
         <span class="relative inline-flex size-5 ml-1 align-middle">
-          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-neutral-400 opacity-75"></span>
-          <span class="relative inline-flex size-5 rounded-full bg-neutral-500"></span>
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-neutral-100 dark:bg-neutral-400 opacity-75"></span>
+          <span class="relative inline-flex size-5 rounded-full bg-neutral-200 dark:bg-neutral-500"></span>
         </span>
       </span>
       `;
@@ -105,7 +117,7 @@ export default function Chat({
       <button
         className={clsx(
           'bg-gradient-to-r from-indigo-500/80 from-10% via-sky-500/80 via-30% to-emerald-500/80 to-90%',
-          'w-full rounded-lg p-4 text-lg font-bold transition-opacity duration-200 hover:opacity-90',
+          'w-full rounded-lg p-4 text-lg font-bold text-white transition-opacity duration-200 hover:opacity-90',
           'data-[active=true]:from-neutral-800'
         )}
         onClick={() => setIsOpen(true)}
@@ -119,7 +131,7 @@ export default function Chat({
         transition
         className={clsx(
           'fixed inset-0 mt-[68px] flex w-screen items-center justify-center bg-black/50',
-          'data-[closed]:opacity-0'
+          'text-white data-[closed]:opacity-0 dark:text-neutral-300'
         )}
       >
         <DialogPanel className="flex h-full w-full flex-col items-center space-y-4 backdrop-blur-lg">
@@ -143,6 +155,11 @@ export default function Chat({
                       <Markdown
                         className="all-revert my-8"
                         remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
+                        components={{
+                          code(props) {
+                            return Code(props);
+                          },
+                        }}
                       >
                         {result.content}
                       </Markdown>
@@ -151,6 +168,11 @@ export default function Chat({
                         className="all-revert my-8"
                         rehypePlugins={[rehypeRaw]}
                         remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
+                        components={{
+                          code(props) {
+                            return Code(props);
+                          },
+                        }}
                       >
                         {reply + getLoadingCircle(_size(result.content))}
                       </Markdown>
@@ -180,3 +202,26 @@ export default function Chat({
     </>
   );
 }
+
+const Code = (
+  props: ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement> & ExtraProps
+) => {
+  const { ref, children, className, node, ...rest } = props;
+  const match = /language-(\w+)/.exec(className || '');
+  return match ? (
+    // @ts-expect-error - known issue about react-syntax-highlighter
+    <SyntaxHighlighter
+      {...rest}
+      PreTag="div"
+      language={match[1]}
+      style={vscDarkPlus}
+      showLineNumbers={true}
+    >
+      {children}
+    </SyntaxHighlighter>
+  ) : (
+    <code {...rest} className={className}>
+      {children}
+    </code>
+  );
+};
