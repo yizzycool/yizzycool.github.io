@@ -16,10 +16,11 @@ export default function PromptApi() {
     isPartialUnsupported,
     options,
     isOptionUpdating,
+    session,
     // prompt: _prompt,
     promptStreaming,
     updateLanguageModel,
-    clearLanguageModel,
+    resetModelWithCustomOptions,
   } = useAiLanguageModel();
 
   const isLoading =
@@ -46,7 +47,8 @@ export default function PromptApi() {
             <div className="mt-20 flex items-center justify-center text-center">
               <Chat
                 promptStreaming={promptStreaming}
-                clearLanguageModel={clearLanguageModel}
+                resetModelWithCustomOptions={resetModelWithCustomOptions}
+                session={session}
               />
             </div>
           </div>

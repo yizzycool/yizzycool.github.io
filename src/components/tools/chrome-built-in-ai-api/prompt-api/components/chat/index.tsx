@@ -12,7 +12,6 @@ import {
   ChangeEvent,
   ClassAttributes,
   HTMLAttributes,
-  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -28,13 +27,15 @@ interface PromptResult {
 
 export default function Chat({
   promptStreaming,
-  clearLanguageModel,
+  resetModelWithCustomOptions,
+  session,
 }: {
   promptStreaming: (
     text: string,
     callback: (chunk: string) => void
   ) => Promise<string | null>;
-  clearLanguageModel: () => void;
+  resetModelWithCustomOptions: () => void;
+  session: AILanguageModel | null;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState('');
@@ -47,13 +48,6 @@ export default function Chat({
   const replyTextQueueSizeRef = useRef(0);
   const replyIndexRef = useRef(0);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    if (isOpen) return;
-    setText('');
-    setResults([]);
-    clearLanguageModel();
-  }, [isOpen]);
 
   const onChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
@@ -112,6 +106,15 @@ export default function Chat({
       `;
   };
 
+  const onOpen = () => setIsOpen(true);
+
+  const onClose = () => {
+    setIsOpen(false);
+    setText('');
+    setResults([]);
+    resetModelWithCustomOptions();
+  };
+
   return (
     <>
       <button
@@ -120,14 +123,14 @@ export default function Chat({
           'w-full rounded-lg p-4 text-lg font-bold text-white transition-opacity duration-200 hover:opacity-90',
           'data-[active=true]:from-neutral-800'
         )}
-        onClick={() => setIsOpen(true)}
+        onClick={onOpen}
         data-active={isOpen}
       >
-        Start New Chat
+        Start a Chat
       </button>
       <Dialog
         open={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={onClose}
         transition
         className={clsx(
           'fixed inset-0 mt-[68px] flex w-screen items-center justify-center bg-black/50',
@@ -135,12 +138,13 @@ export default function Chat({
         )}
       >
         <DialogPanel className="flex h-full w-full flex-col items-center space-y-4 backdrop-blur-lg">
-          <button
-            className="absolute right-0 top-0 p-4"
-            onClick={() => setIsOpen(false)}
-          >
+          <button className="absolute right-0 top-0 p-4" onClick={onClose}>
             <XIcon />
           </button>
+          <div className="absolute left-0 top-0 bg-neutral-700/20 px-4 py-2 text-xs">
+            <span className="hidden sm:inline">Tokens Left:</span>{' '}
+            {session?.tokensLeft}/{session?.maxTokens}
+          </div>
           <div className="w-full flex-1 overflow-hidden pb-28">
             <div className="h-full w-full overflow-y-auto p-8 pb-0 md:p-12 md:pb-0">
               <div className="mx-auto flex w-full max-w-[600px] flex-col md:w-[90%]">

@@ -28,6 +28,10 @@ interface AILanguageModel extends AIDestroyable {
   readonly topK: number;
   readonly temperature: number;
 
+  readonly tokensSoFar: number;
+  readonly maxTokens: number;
+  readonly tokensLeft: number;
+
   clone: (options?: AILanguageModelCloneOptions) => Promise<AILanguageModel>;
 }
 

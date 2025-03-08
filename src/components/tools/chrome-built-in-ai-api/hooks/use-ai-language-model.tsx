@@ -68,7 +68,7 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
     }
   };
 
-  const clearLanguageModel = () => updateLanguageModel(options);
+  const resetModelWithCustomOptions = () => updateLanguageModel(options);
 
   const prompt = async (text: string): Promise<string | null> => {
     if (!session) return null;
@@ -103,9 +103,10 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
     isPartialUnsupported,
     options,
     isOptionUpdating: _isNull(session),
+    session,
     prompt,
     promptStreaming,
     updateLanguageModel,
-    clearLanguageModel,
+    resetModelWithCustomOptions,
   };
 }
