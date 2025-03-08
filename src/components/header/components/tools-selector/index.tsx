@@ -6,6 +6,7 @@ import {
   FileText,
   Image,
   Languages,
+  PencilLine,
   QrCode,
   Radar,
   ScanFace,
@@ -52,6 +53,14 @@ export const Tools = [
         desc: 'Enables AI-powered text summarization for web apps.',
         icon: {
           component: FileText,
+        },
+      },
+      {
+        name: 'Writer',
+        href: '/tools/chrome-built-in-ai-api/writer',
+        desc: 'Enables AI-powered content creation for web apps.',
+        icon: {
+          component: PencilLine,
         },
       },
       {

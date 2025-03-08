@@ -34,7 +34,7 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSupported]);
 
-  // To check if language detector is supported
+  // To check if summarizer is supported
   const checkCapability = () => {
     const summarizer = window.ai?.summarizer;
     setIsSupported(!!summarizer?.capabilities);
