@@ -25,18 +25,29 @@ interface PromptResult {
   content: string;
 }
 
-export default function Chat({
-  promptStreaming,
-  resetModelWithCustomOptions,
-  session,
-}: {
+type Props = {
+  buttonText: string;
+  placeholder: string;
+
   promptStreaming: (
     text: string,
     callback: (chunk: string) => void
   ) => Promise<string | null>;
-  resetModelWithCustomOptions: () => void;
-  session: AILanguageModel | null;
-}) {
+
+  resetModelWithCustomOptions?: () => void;
+
+  session?: AILanguageModel | null | undefined;
+  isOptionUpdating?: boolean;
+};
+
+export default function Chat({
+  buttonText,
+  placeholder,
+  promptStreaming,
+  resetModelWithCustomOptions = () => {},
+  session,
+  isOptionUpdating = false,
+}: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState('');
   const [results, setResults] = useState<Array<PromptResult>>([]);
@@ -116,17 +127,19 @@ export default function Chat({
   };
 
   return (
-    <>
+    <div className="mt-20">
       <button
         className={clsx(
           'bg-gradient-to-r from-indigo-500/80 from-10% via-sky-500/80 via-30% to-emerald-500/80 to-90%',
           'w-full rounded-lg p-4 text-lg font-bold text-white transition-opacity duration-200 hover:opacity-90',
-          'data-[active=true]:from-neutral-800'
+          'data-[active=true]:from-neutral-800',
+          'data-[option-updating=true]:cursor-default data-[option-updating=true]:from-neutral-800'
         )}
         onClick={onOpen}
         data-active={isOpen}
+        data-option-updating={isOptionUpdating}
       >
-        Start a Chat
+        {isOptionUpdating ? 'Model Updating...' : buttonText}
       </button>
       <Dialog
         open={isOpen}
@@ -141,17 +154,20 @@ export default function Chat({
           <button className="absolute right-0 top-0 p-4" onClick={onClose}>
             <XIcon />
           </button>
-          <div className="absolute left-0 top-0 bg-neutral-700/20 px-4 py-2 text-xs">
-            <span className="hidden sm:inline">Tokens Left:</span>{' '}
-            {session?.tokensLeft}/{session?.maxTokens}
-          </div>
+          {!!(session as AILanguageModel)?.tokensLeft && (
+            <div className="absolute left-0 top-0 bg-neutral-700/20 px-4 py-2 text-xs">
+              <span className="hidden sm:inline">Tokens Left:</span>{' '}
+              {(session as AILanguageModel)?.tokensLeft}/
+              {(session as AILanguageModel)?.maxTokens}
+            </div>
+          )}
           <div className="w-full flex-1 overflow-hidden pb-28">
             <div className="h-full w-full overflow-y-auto p-8 pb-0 md:p-12 md:pb-0">
               <div className="mx-auto flex w-full max-w-[600px] flex-col md:w-[90%]">
                 {results.map((result, idx) => (
                   <div key={`${result.role}-${idx}`}>
                     {result.role === 'user' ? (
-                      <div className="ml-auto w-fit max-w-[60%] rounded-full bg-neutral-800 px-5 py-2">
+                      <div className="ml-auto w-fit max-w-[60%] rounded-xl bg-neutral-800 px-5 py-2">
                         {result.content}
                       </div>
                     ) : result.role === 'assistant' &&
@@ -189,7 +205,7 @@ export default function Chat({
           <div className="absolute bottom-4 left-1/2 w-[90%] max-w-[600px] -translate-x-1/2">
             <textarea
               autoFocus
-              placeholder="You can ask me anything!"
+              placeholder={placeholder}
               className={clsx(
                 'min-h-30 block w-full flex-1 resize-none rounded-xl border-none bg-neutral-800 px-6 py-4',
                 'outline-none focus:outline-none'
@@ -203,7 +219,7 @@ export default function Chat({
           </div>
         </DialogPanel>
       </Dialog>
-    </>
+    </div>
   );
 }
 

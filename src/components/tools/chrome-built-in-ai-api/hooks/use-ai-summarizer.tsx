@@ -80,12 +80,32 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
     }
   };
 
+  const summarizeStreaming = async (
+    text: string,
+    callback: (chunk: string) => void
+  ): Promise<string | null> => {
+    if (!summarizer) return null;
+    try {
+      let results = '';
+      const stream = await summarizer.summarizeStreaming(text);
+      for await (const chunk of stream) {
+        callback(chunk);
+        results += chunk;
+      }
+      return results;
+    } catch (e) {
+      console.log('summarize streaming error:', e);
+      return null;
+    }
+  };
+
   return {
     isSupported,
     isPartialUnsupported,
     options,
     isOptionUpdating: _isNull(summarizer),
     summarize,
+    summarizeStreaming,
     updateSummarizer,
   };
 }

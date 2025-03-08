@@ -2,10 +2,10 @@
 
 import useAiLanguageModel from '../hooks/use-ai-language-model';
 import Title from '../../components/title';
-import Chat from './components/chat';
 import Unsupported from '../../components/unsupported';
 import LoadingSkeleton from '../components/loading-skeleton';
 import SettingsPanel from './components/settings-panel';
+import Chat from '../components/chat';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _values from 'lodash/values';
@@ -44,13 +44,14 @@ export default function PromptApi() {
               isOptionUpdating={isOptionUpdating}
               updateLanguageModel={updateLanguageModel}
             />
-            <div className="mt-20 flex items-center justify-center text-center">
-              <Chat
-                promptStreaming={promptStreaming}
-                resetModelWithCustomOptions={resetModelWithCustomOptions}
-                session={session}
-              />
-            </div>
+            <Chat
+              buttonText="Start a Chat"
+              placeholder="You can ask me anything!"
+              promptStreaming={promptStreaming}
+              resetModelWithCustomOptions={resetModelWithCustomOptions}
+              session={session}
+              isOptionUpdating={isOptionUpdating}
+            />
           </div>
         </>
       )}

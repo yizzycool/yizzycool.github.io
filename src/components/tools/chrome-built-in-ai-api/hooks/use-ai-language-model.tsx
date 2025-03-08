@@ -75,7 +75,8 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
     try {
       const result = await session.prompt(text);
       return result;
-    } catch (_e) {
+    } catch (e) {
+      console.log('prompt error:', e);
       return null;
     }
   };
@@ -93,7 +94,8 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
         results += chunk;
       }
       return results;
-    } catch (_e) {
+    } catch (e) {
+      console.log('prompt streaming error:', e);
       return null;
     }
   };
