@@ -54,23 +54,11 @@ interface AISummarizerSummarizeOptions {
   context?: string;
 }
 
-enum AISummarizerType {
-  TDLR = 'tl;dr',
-  Teaser = 'teaser',
-  KeyPoints = 'key-points',
-  Headline = 'headline',
-}
+type AISummarizerType = 'tl;dr' | 'teaser' | 'key-points' | 'headline';
 
-enum AISummarizerFormat {
-  PlainText = 'plain-text',
-  Markdown = 'markdown',
-}
+type AISummarizerFormat = 'plain-text' | 'markdown';
 
-enum AISummarizerLength {
-  Short = 'short',
-  Medium = 'medium',
-  Long = 'long',
-}
+type AISummarizerLength = 'short' | 'medium' | 'long';
 
 interface AISummarizerCapabilities {
   available: AICapability;

@@ -51,18 +51,8 @@ interface AIRewriterRewriteOptions {
   signal?: AbortSignal;
 }
 
-enum AIRewriterTone {
-  AsIs = 'as-is',
-  MoreFormal = 'more-formal',
-  MoreCasual = 'more-casual',
-}
-enum AIRewriterFormat {
-  AsIs = 'as-is',
-  PlainText = 'plain-text',
-  Markdown = 'markdown',
-}
-enum AIRewriterLength {
-  AsIs = 'as-is',
-  Shorter = 'shorter',
-  Longer = 'longer',
-}
+type AIRewriterTone = 'as-is' | 'more-formal' | 'more-casual';
+
+type AIRewriterFormat = 'as-is' | 'plain-text' | 'markdown';
+
+type AIRewriterLength = 'as-is' | 'shorter' | 'longer';

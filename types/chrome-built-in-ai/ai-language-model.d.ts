@@ -80,17 +80,9 @@ interface AILanguageModelPromptDict {
   content: AILanguageModelPromptContent;
 }
 
-enum AILanguageModelPromptRole {
-  System = 'system',
-  User = 'user',
-  Assistant = 'assistant',
-}
+type AILanguageModelPromptRole = 'system' | 'user' | 'assistant';
 
-enum AILanguageModelPromptType {
-  Text = 'text',
-  Image = 'image',
-  Audio = 'audio',
-}
+type AILanguageModelPromptType = 'text' | 'image' | 'audio';
 
 type AILanguageModelPromptContent =
   | ImageBitmapSource

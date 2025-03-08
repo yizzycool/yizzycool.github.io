@@ -51,17 +51,8 @@ interface AIWriterWriteOptions {
   signal?: AbortSignal;
 }
 
-enum AIWriterTone {
-  Formal = 'formal',
-  Neutral = 'neutral',
-  Casual = 'casual',
-}
-enum AIWriterFormat {
-  PlainText = 'plain-text',
-  Markdown = 'markdown',
-}
-enum AIWriterLength {
-  Short = 'short',
-  Medium = 'medium',
-  Long = 'long',
-}
+type AIWriterTone = 'formal' | 'neutral' | 'casual';
+
+type AIWriterFormat = 'plain-text' | 'markdown';
+
+type AIWriterLength = 'short' | 'medium' | 'long';

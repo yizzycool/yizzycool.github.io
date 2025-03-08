@@ -7,9 +7,9 @@ import _isNull from 'lodash/isNull';
 
 const Options: AISummarizerCreateOptions = {
   sharedContext: '',
-  type: AISummarizerType.KeyPoints,
-  format: AISummarizerFormat.Markdown,
-  length: AISummarizerLength.Medium,
+  type: 'key-points',
+  format: 'markdown',
+  length: 'medium',
 };
 
 export default function useAiSummarizer({ createInstance = true } = {}) {

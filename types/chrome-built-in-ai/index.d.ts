@@ -17,18 +17,13 @@ interface AICreateMonitor extends EventTarget {
   ondownloadprogress: EventHandler;
 }
 
-enum AIAvailability {
-  Unavailable = 'unavailable',
-  Downloadable = 'downloadable',
-  Downloading = 'downloading',
-  Available = 'available',
-}
+type AIAvailability =
+  | 'unavailable'
+  | 'downloadable'
+  | 'downloading'
+  | 'available';
 
-enum AICapability {
-  No = 'no',
-  Readily = 'readily',
-  AfterDownload = 'after-download',
-}
+type AICapability = 'no' | 'readily' | 'after-download';
 
 interface AIDestroyable {
   destroy: () => void;
