@@ -5,6 +5,7 @@ import useAiTranslator from '../../hooks/use-ai-translator';
 import useAiLanguageDetector from '../../hooks/use-ai-language-detector';
 import useAiSummarizer from '../../hooks/use-ai-summarizer';
 import useAiWriter from '../../hooks/use-ai-writer';
+import useAiRewriter from '../../hooks/use-ai-rewriter';
 import useAiLanguageModel from '../../hooks/use-ai-language-model';
 import { ExternalLink } from 'lucide-react';
 import ApiStatus from './components/api-status';
@@ -33,6 +34,11 @@ const ApiList = [
     supportKey: 'summarizer',
   },
   {
+    name: 'AI Rewriter',
+    url: 'https://developer.chrome.com/docs/ai/built-in-apis#writer_and_rewriter_apis',
+    supportKey: 'summarizer',
+  },
+  {
     name: 'AI Prompt (unstable)',
     url: 'https://github.com/webmachinelearning/prompt-api',
     supportKey: 'prompt',
@@ -52,6 +58,9 @@ export default function SupportTable() {
   const { isSupported: isWriterSupported } = useAiWriter({
     createInstance: false,
   });
+  const { isSupported: isRewriterSupported } = useAiRewriter({
+    createInstance: false,
+  });
   const { isSupported: isLanguageModelSupported } = useAiLanguageModel({
     createInstance: false,
   });
@@ -67,6 +76,8 @@ export default function SupportTable() {
       case ApiList[3].supportKey:
         return isWriterSupported;
       case ApiList[4].supportKey:
+        return isRewriterSupported;
+      case ApiList[5].supportKey:
         return isLanguageModelSupported;
       default:
         return false;

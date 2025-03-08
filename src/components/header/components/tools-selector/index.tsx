@@ -7,6 +7,7 @@ import {
   Image,
   Languages,
   PencilLine,
+  PencilRuler,
   QrCode,
   Radar,
   ScanFace,
@@ -61,6 +62,14 @@ export const Tools = [
         desc: 'Enables AI-powered content creation for web apps.',
         icon: {
           component: PencilLine,
+        },
+      },
+      {
+        name: 'Rewriter',
+        href: '/tools/chrome-built-in-ai-api/rewriter',
+        desc: 'Enables AI-driven text revision for web apps.',
+        icon: {
+          component: PencilRuler,
         },
       },
       {
