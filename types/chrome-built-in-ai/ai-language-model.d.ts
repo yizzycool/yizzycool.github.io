@@ -3,7 +3,7 @@ interface AILanguageModelFactory {
   availability: (
     options?: AILanguageModelCreateCoreOptions
   ) => Promise<AIAvailability>;
-  params: () => Promise<AILanguageModelParams?>;
+  params: () => Promise<AILanguageModelParams | undefined>;
   capabilities: () => Promise<AILanguageModelCapabilities>;
 }
 
