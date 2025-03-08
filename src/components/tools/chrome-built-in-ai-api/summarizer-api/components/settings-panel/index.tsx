@@ -3,6 +3,7 @@
 import clsx from 'clsx';
 import { useMemo, useState } from 'react';
 import Selector from '@/components/common/selector';
+import Textarea from '@/components/common/textarea';
 import _isEqual from 'lodash/isEqual';
 
 const Settings = [
@@ -56,6 +57,14 @@ export default function SettingsPanel({
         Settings
       </div>
       <div className="p-4">
+        <div className="mt-8">
+          <Textarea
+            title="Shared Context"
+            desc="Enables shared context across multiple summarization requests"
+            placeholder="ex: An article from the magazine"
+            onChange={(value) => onChange('sharedContext', value)}
+          />
+        </div>
         {Settings.map((setting) => (
           <div key={setting.key} className="mt-8">
             <Selector
