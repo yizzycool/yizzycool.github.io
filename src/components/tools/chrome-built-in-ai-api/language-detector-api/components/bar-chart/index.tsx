@@ -1,6 +1,5 @@
 'use client';
 
-import { LanguageDetectResults } from '@/components/tools/chrome-built-in-ai-api/types/types';
 import { useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -48,7 +47,7 @@ const options = {
 export default function BarChart({
   results,
 }: {
-  results: Array<LanguageDetectResults> | null;
+  results: Array<LanguageDetectionResult> | null;
 }) {
   const { languageTagToHumanReadable } = useLanguageTagToHumanReadable();
 
@@ -68,6 +67,7 @@ export default function BarChart({
         },
       ],
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results]);
 
   if (_isNull(results) || _isNull(data)) return null;

@@ -1,6 +1,5 @@
 'use client';
 
-import { LanguageModelParams } from '../../../types/types';
 import { useMemo, useState } from 'react';
 import Textarea from '@/components/common/textarea';
 import Slider from '@/components/common/slider';
@@ -11,9 +10,9 @@ export default function SettingsPanel({
   isOptionUpdating,
   updateLanguageModel,
 }: {
-  options: LanguageModelParams;
+  options: AILanguageModelCreateOptions;
   isOptionUpdating: boolean;
-  updateLanguageModel: (settings: LanguageModelParams) => void;
+  updateLanguageModel: (settings: AILanguageModelCreateOptions) => void;
 }) {
   const [newOptions, setNewOptions] = useState(options);
 

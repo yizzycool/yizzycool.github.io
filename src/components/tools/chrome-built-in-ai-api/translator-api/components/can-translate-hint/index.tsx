@@ -1,9 +1,5 @@
 'use client';
 
-import {
-  AiApiCapilitiesResult,
-  TranslatorParams,
-} from '@/components/tools/chrome-built-in-ai-api/types/types';
 import clsx from 'clsx';
 import { useMemo } from 'react';
 import useLanguageTagToHumanReadable from '@/components/tools/chrome-built-in-ai-api/hooks/use-language-tag-to-human-readable';
@@ -12,8 +8,8 @@ export default function CanTranslateHint({
   params,
   canTranslate,
 }: {
-  params: TranslatorParams;
-  canTranslate: AiApiCapilitiesResult;
+  params: AITranslatorCreateOptions;
+  canTranslate: AICapability | '';
 }) {
   const { languageTagToHumanReadable } = useLanguageTagToHumanReadable();
 

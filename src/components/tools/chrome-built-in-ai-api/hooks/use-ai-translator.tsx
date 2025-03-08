@@ -1,24 +1,18 @@
 'use client';
 
-import {
-  AiApiCapilitiesResult,
-  TranslatorInstance,
-  TranslatorParams,
-  WindowAi,
-} from '../types/types';
 import { useEffect, useState } from 'react';
 
 export default function useAiTranslator({ createInstance = true } = {}) {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
-  const [params, setParams] = useState<TranslatorParams>({
+  const [params, setParams] = useState<AITranslatorCreateCoreOptions>({
     sourceLanguage: 'zh-Hant',
     targetLanguage: 'en',
   });
-  const [translator, setTranslator] = useState<TranslatorInstance | null>(null);
+  const [translator, setTranslator] = useState<AITranslator | null>(null);
   const [isPartialUnsupported, setIsPartialUnsupported] = useState<
     boolean | null
   >(null);
-  const [canTranslate, setCanTranslate] = useState<AiApiCapilitiesResult>('');
+  const [canTranslate, setCanTranslate] = useState<AICapability | ''>('');
 
   useEffect(() => {
     checkCapability();
@@ -37,14 +31,8 @@ export default function useAiTranslator({ createInstance = true } = {}) {
 
   // To check if translator is supported
   const checkCapability = () => {
-    const _window = window as unknown as WindowAi;
-    if (_window.ai?.translator) {
-      setIsSupported(!!_window.ai.translator.capabilities);
-    } else if (_window.translation) {
-      setIsSupported(!!_window.translation.canTranslate);
-    } else {
-      setIsSupported(false);
-    }
+    const translator = window.ai?.translator;
+    setIsSupported(!!translator?.capabilities);
   };
 
   const resetTranslator = () => {
@@ -67,26 +55,11 @@ export default function useAiTranslator({ createInstance = true } = {}) {
     );
     if (canTranslate === 'no') return;
     // Create new translator
-    const _window = window as unknown as WindowAi;
-    if (_window.ai?.translator) {
+    if (window.ai?.translator) {
       try {
         // If window.ai.translator exists
         console.log('[Translator: ai.translator]');
-        const translator = await _window.ai.translator.create({
-          sourceLanguage,
-          targetLanguage,
-        });
-        setTranslator(translator);
-        setIsPartialUnsupported(false);
-        loopCheckIfLanguagePairIsSupported(sourceLanguage, targetLanguage);
-      } catch (_e) {
-        setIsPartialUnsupported(true);
-      }
-    } else if (_window.translation) {
-      try {
-        // If window.translation exists
-        console.log('[Translator: translation]');
-        const translator = await _window.translation.createTranslator({
+        const translator = await window.ai.translator.create({
           sourceLanguage,
           targetLanguage,
         });
@@ -102,22 +75,15 @@ export default function useAiTranslator({ createInstance = true } = {}) {
   const isLanguagePairSupported = async (
     sourceLanguage = '',
     targetLanguage = ''
-  ): Promise<AiApiCapilitiesResult> => {
-    const _window = window as unknown as WindowAi;
-    let canTranslate: AiApiCapilitiesResult = '';
-    if (_window.ai?.translator) {
+  ): Promise<AICapability | ''> => {
+    let canTranslate: AICapability | '' = '';
+    if (window.ai?.translator) {
       // If window.ai.translator exists
-      const capabilities = await _window.ai.translator.capabilities();
+      const capabilities = await window.ai.translator.capabilities();
       canTranslate = capabilities.languagePairAvailable(
         sourceLanguage,
         targetLanguage
       );
-    } else if (_window.translation) {
-      // If window.translation exists
-      canTranslate = await _window.translation.canTranslate({
-        sourceLanguage,
-        targetLanguage,
-      });
     }
     if (canTranslate !== 'readily') {
       setCanTranslate(canTranslate);

@@ -2,15 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import browserUtils from '@/utils/browser-utils';
-import { SummarizerInstance, SummarizerParams, WindowAi } from '../types/types';
 import _defaults from 'lodash/defaults';
 import _isNull from 'lodash/isNull';
 
-const Options: SummarizerParams = {
+const Options: AISummarizerCreateOptions = {
   sharedContext: '',
-  type: 'key-points',
-  format: 'markdown',
-  length: 'medium',
+  type: AISummarizerType.KeyPoints,
+  format: AISummarizerFormat.Markdown,
+  length: AISummarizerLength.Medium,
 };
 
 export default function useAiSummarizer({ createInstance = true } = {}) {
@@ -18,7 +17,7 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
   const [isPartialUnsupported, setIsPartialUnsupported] = useState<
     boolean | null
   >(null);
-  const [summarizer, setSummarizer] = useState<SummarizerInstance | null>(null);
+  const [summarizer, setSummarizer] = useState<AISummarizer | null>(null);
   const [options, setOptions] = useState(Options);
 
   useEffect(() => {
@@ -37,16 +36,14 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
 
   // To check if language detector is supported
   const checkCapability = () => {
-    const _window = window as unknown as WindowAi;
-    const summarizer = _window.ai?.summarizer;
-    setIsSupported(!!summarizer && !!summarizer?.capabilities);
+    const summarizer = window.ai?.summarizer;
+    setIsSupported(!!summarizer?.capabilities);
   };
 
   const initSummarizer = async () => {
-    const _window = window as unknown as WindowAi;
-    if (_window.ai?.summarizer) {
+    if (window.ai?.summarizer) {
       try {
-        const summarizer = await _window.ai.summarizer.create(options);
+        const summarizer = await window.ai.summarizer.create(options);
         setSummarizer(summarizer);
         setIsPartialUnsupported(false);
       } catch (_e) {
@@ -55,15 +52,14 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
     }
   };
 
-  const updateSummarizer = async (options: SummarizerParams) => {
-    const _window = window as unknown as WindowAi;
-    if (_window.ai?.summarizer) {
+  const updateSummarizer = async (options: AISummarizerCreateOptions) => {
+    if (window.ai?.summarizer) {
       try {
         if (summarizer) summarizer?.destroy?.();
         setSummarizer(null);
         await browserUtils.sleep(500);
         const newOptions = _defaults(options, Options);
-        const newSummarizer = await _window.ai.summarizer.create(newOptions);
+        const newSummarizer = await window.ai.summarizer.create(newOptions);
         setOptions(newOptions);
         setSummarizer(newSummarizer);
         setIsPartialUnsupported(false);

@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react';
 import Selector from '@/components/common/selector';
-import { SummarizerParams } from '@/components/tools/chrome-built-in-ai-api/types/types';
 import _isEqual from 'lodash/isEqual';
 
 const Settings = [
@@ -34,9 +33,9 @@ export default function SettingsPanel({
   isOptionUpdating,
   updateSummarizer,
 }: {
-  options: SummarizerParams;
+  options: AISummarizerCreateOptions;
   isOptionUpdating: boolean;
-  updateSummarizer: (settings: SummarizerParams) => void;
+  updateSummarizer: (settings: AISummarizerCreateOptions) => void;
 }) {
   const [newOptions, setNewOptions] = useState(options);
 

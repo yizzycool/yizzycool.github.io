@@ -1,20 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-  LanguageDetectorInstance,
-  LanguageDetectResults,
-  WindowAi,
-} from '../types/types';
 
 export default function useAiLanguageDetector({ createInstance = true } = {}) {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
   const [isPartialUnsupported, setIsPartialUnsupported] = useState<
     boolean | null
   >(null);
-  const [detector, setDetector] = useState<LanguageDetectorInstance | null>(
-    null
-  );
+  const [detector, setDetector] = useState<AILanguageDetector | null>(null);
 
   useEffect(() => {
     checkCapability();
@@ -32,16 +25,14 @@ export default function useAiLanguageDetector({ createInstance = true } = {}) {
 
   // To check if language detector is supported
   const checkCapability = () => {
-    const _window = window as unknown as WindowAi;
-    const languageDetector = _window.ai?.languageDetector;
-    setIsSupported(!!languageDetector);
+    const languageDetector = window.ai?.languageDetector;
+    setIsSupported(!!languageDetector?.capabilities);
   };
 
   const initLanguageDetector = async () => {
-    const _window = window as unknown as WindowAi;
-    if (_window.ai?.languageDetector) {
+    if (window.ai?.languageDetector) {
       try {
-        const detector = await _window.ai.languageDetector.create();
+        const detector = await window.ai.languageDetector.create();
         setDetector(detector);
         setIsPartialUnsupported(false);
       } catch (_e) {
@@ -52,7 +43,7 @@ export default function useAiLanguageDetector({ createInstance = true } = {}) {
 
   const detect = async (
     text: string
-  ): Promise<Array<LanguageDetectResults> | null> => {
+  ): Promise<Array<LanguageDetectionResult> | null> => {
     if (!detector) return null;
     const results = await detector.detect(text);
     return results;

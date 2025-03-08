@@ -1,6 +1,5 @@
 'use client';
 
-import { LanguageDetectResults } from '../types/types';
 import { useRef, useState } from 'react';
 import useAiLanguageDetector from '../hooks/use-ai-language-detector';
 import Title from '../../components/title';
@@ -13,7 +12,7 @@ import _values from 'lodash/values';
 
 export default function LanguageDetectorApi() {
   const [text, setText] = useState('');
-  const [results, setResults] = useState<Array<LanguageDetectResults> | null>(
+  const [results, setResults] = useState<Array<LanguageDetectionResult> | null>(
     null
   );
 

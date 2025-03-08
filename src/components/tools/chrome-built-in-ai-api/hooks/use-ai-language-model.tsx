@@ -1,16 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-  LanguageModelInstance,
-  LanguageModelParams,
-  WindowAi,
-} from '../types/types';
 import browserUtils from '@/utils/browser-utils';
 import _isNull from 'lodash/isNull';
 import _defaults from 'lodash/defaults';
 
-const Options: LanguageModelParams = {
+const Options: AILanguageModelCreateOptions = {
   topK: 3,
   temperature: 1,
   systemPrompt: '',
@@ -21,7 +16,7 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
   const [isPartialUnsupported, setIsPartialUnsupported] = useState<
     boolean | null
   >(null);
-  const [session, setSession] = useState<LanguageModelInstance | null>(null);
+  const [session, setSession] = useState<AILanguageModel | null>(null);
   const [options, setOptions] = useState(Options);
 
   useEffect(() => {
@@ -40,16 +35,14 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
 
   // To check if language detector is supported
   const checkCapability = () => {
-    const _window = window as unknown as WindowAi;
-    const languageModel = _window.ai?.languageModel;
-    setIsSupported(!!languageModel);
+    const languageModel = window.ai?.languageModel;
+    setIsSupported(!!languageModel?.capabilities);
   };
 
   const initLanguageModel = async () => {
-    const _window = window as unknown as WindowAi;
-    if (_window.ai?.languageModel) {
+    if (window.ai?.languageModel) {
       try {
-        const session = await _window.ai.languageModel.create({});
+        const session = await window.ai.languageModel.create({});
         setSession(session);
         setIsPartialUnsupported(false);
       } catch (_e) {
@@ -58,15 +51,14 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
     }
   };
 
-  const updateLanguageModel = async (options: LanguageModelParams) => {
-    const _window = window as unknown as WindowAi;
-    if (_window.ai?.languageModel) {
+  const updateLanguageModel = async (options: AILanguageModelCreateOptions) => {
+    if (window.ai?.languageModel) {
       try {
         if (session) session?.destroy?.();
         setSession(null);
         await browserUtils.sleep(500);
         const newOptions = _defaults(options, Options);
-        const newSession = await _window.ai.languageModel.create(newOptions);
+        const newSession = await window.ai.languageModel.create(newOptions);
         setOptions(newOptions);
         setSession(newSession);
         setIsPartialUnsupported(false);

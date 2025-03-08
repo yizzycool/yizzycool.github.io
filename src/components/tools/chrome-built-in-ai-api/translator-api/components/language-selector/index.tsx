@@ -3,7 +3,6 @@
 import { MouseEvent, useState } from 'react';
 import useLanguageTagToHumanReadable from '@/components/tools/chrome-built-in-ai-api/hooks/use-language-tag-to-human-readable';
 import { Dialog } from '@headlessui/react';
-import { TranslatorParams } from '@/components/tools/chrome-built-in-ai-api/types/types';
 import { ChevronDown } from 'lucide-react';
 import ISO6391 from '@/components/tools/chrome-built-in-ai-api/translator-api/data/iso-639-1';
 
@@ -12,7 +11,7 @@ export default function LanguageSelector({
   type,
   changeLanguage = () => {},
 }: {
-  params: TranslatorParams;
+  params: AITranslatorCreateOptions;
   type: 'source' | 'target';
   changeLanguage: (type: string, languageCode: string) => void;
 }) {
