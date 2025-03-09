@@ -1,6 +1,8 @@
 interface AIWriterFactory {
   create: (options?: AIWriterCreateOptions) => Promise<AIWriter>;
-  availability: (options: AIWriterCreateCoreOptions) => Promise<AIAvailability>;
+  availability: (
+    options?: AIWriterCreateCoreOptions
+  ) => Promise<AIAvailability>;
 }
 
 interface AIWriter extends AIDestroyable {
