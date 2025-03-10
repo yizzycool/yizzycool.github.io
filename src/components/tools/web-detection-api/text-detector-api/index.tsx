@@ -1,6 +1,5 @@
 'use client';
 
-import { TextDetectionResults } from '../types/types';
 import { useMemo, useRef, useState } from 'react';
 import useTextDetector from '../hooks/use-text-detector';
 import useWebcam from '../hooks/use-webcam';
