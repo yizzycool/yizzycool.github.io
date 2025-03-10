@@ -1,14 +1,10 @@
+import clsx from 'clsx';
 import { Camera, FileImage, FilePlus, FileVideo } from 'lucide-react';
 import { useRef } from 'react';
 
-export default function Empty({
-  isEmpty = true,
-  disabled = {},
-  processImage = () => {},
-  processVideo = () => {},
-  processWebcam = () => {},
-}: {
+type Props = {
   isEmpty?: boolean;
+  isCameraOpened?: boolean;
   disabled?: {
     image?: boolean;
     video?: boolean;
@@ -17,7 +13,16 @@ export default function Empty({
   processImage?: (file: File | undefined) => void;
   processVideo?: (file: File | undefined) => void;
   processWebcam?: () => void;
-}) {
+};
+
+export default function Empty({
+  isEmpty = true,
+  isCameraOpened = false,
+  disabled = {},
+  processImage = () => {},
+  processVideo = () => {},
+  processWebcam = () => {},
+}: Props) {
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const videoInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -39,7 +44,7 @@ export default function Empty({
         <>
           <FilePlus className="h-12 w-12" />
           <div className="mt-4 font-bold">No Result</div>
-          <div className="mb-10 mt-2 text-neutral-700/50 dark:text-neutral-300/50">
+          <div className="mb-20 mt-2 text-neutral-700/50 dark:text-neutral-300/50">
             Get started by select a new image or video.
           </div>
         </>
@@ -82,11 +87,15 @@ export default function Empty({
       )}
       {!disabled.webcam && (
         <button
-          className="mt-4 flex items-center rounded-md bg-sky-700 px-4 py-2 hover:bg-sky-700/80"
+          className={clsx(
+            'mt-4 flex items-center rounded-md bg-sky-700 px-4 py-2 hover:bg-sky-700/80',
+            'data-[camera-opened=true]:bg-red-700 data-[camera-opened=true]:hover:bg-red-700/80'
+          )}
           onClick={processWebcam}
+          data-camera-opened={isCameraOpened}
         >
           <Camera className="mr-4 h-5 w-5" />
-          Detect with webcam
+          {isCameraOpened ? 'Close webcam' : 'Detect with webcam'}
         </button>
       )}
     </div>

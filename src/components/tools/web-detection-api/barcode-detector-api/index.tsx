@@ -10,17 +10,20 @@ import LoadingSkeleton from '../components/loading-skeleton';
 import Empty from '../components/empty';
 import Result, { Param } from '../components/result';
 import BoundingBox from '../components/bounding-box';
+import FlipCamera from '../components/flip-camera';
 import _isNull from 'lodash/isNull';
 import _map from 'lodash/map';
 import _fromPairs from 'lodash/fromPairs';
 import _isEmpty from 'lodash/isEmpty';
 
+const defaultParam: Param = {
+  type: '',
+  blob: null,
+  stream: null,
+};
+
 export default function BarcodeDetectorApi() {
-  const [param, setParam] = useState<Param>({
-    type: '',
-    blob: null,
-    stream: null,
-  });
+  const [param, setParam] = useState<Param>(defaultParam);
   const [results, setResults] = useState<BarcodeDetectionResults | null>(null);
 
   const resultRef = useRef<HTMLDivElement | null>(null);
@@ -31,7 +34,7 @@ export default function BarcodeDetectorApi() {
   const isLoading =
     _isNull(isSupported) || (isSupported && _isNull(isPartialUnsupported));
 
-  const { startCamera, stopCamera } = useWebcam();
+  const { isCameraOpened, startCamera, stopCamera, flipCamera } = useWebcam();
 
   const processImage = async (file: File | undefined) => {
     if (!file) return;
@@ -46,8 +49,18 @@ export default function BarcodeDetectorApi() {
   };
 
   const processWebcam = async () => {
-    stopCamera();
-    const stream = await startCamera();
+    if (isCameraOpened) {
+      setParam(defaultParam);
+      stopCamera();
+    } else {
+      stopCamera();
+      const stream = await startCamera('environment');
+      setParam({ type: 'webcam', blob: null, stream: stream });
+    }
+  };
+
+  const flipWebcam = async () => {
+    const stream = await flipCamera();
     setParam({ type: 'webcam', blob: null, stream: stream });
   };
 
@@ -60,7 +73,7 @@ export default function BarcodeDetectorApi() {
   const isAnyResult = !!param.type;
 
   const transformedResults = useMemo(() => {
-    if (_isNull(results)) return [];
+    if (_isNull(results) || !resultRef?.current) return [];
     const { clientWidth } = resultRef.current as HTMLDivElement;
     const { width } = canvasRef.current as HTMLCanvasElement;
     const ratio = clientWidth / width;
@@ -110,8 +123,8 @@ export default function BarcodeDetectorApi() {
                   onCanvasDraw={onCanvasDraw}
                 />
                 <BoundingBox results={transformedResults} />
+                {param.type === 'webcam' && <FlipCamera onClick={flipWebcam} />}
               </div>
-
               <div className="mb-4 mt-10 text-lg font-bold">
                 Detected barcode values
               </div>
@@ -131,6 +144,7 @@ export default function BarcodeDetectorApi() {
           )}
           <Empty
             isEmpty={!isAnyResult}
+            isCameraOpened={isCameraOpened}
             processImage={processImage}
             processVideo={processVideo}
             processWebcam={processWebcam}

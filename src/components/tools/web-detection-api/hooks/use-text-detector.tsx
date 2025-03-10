@@ -39,9 +39,13 @@ export default function useTextDetector({ createInstance = true } = {}) {
   const detect = async (
     image: HTMLImageElement | HTMLCanvasElement
   ): Promise<TextDetectionResults | null> => {
-    if (!detector) return null;
-    const results = await detector.detect(image);
-    return results;
+    try {
+      if (!detector) return null;
+      const results = await detector.detect(image);
+      return results;
+    } catch (_e) {
+      return null;
+    }
   };
 
   return {

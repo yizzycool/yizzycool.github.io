@@ -41,9 +41,13 @@ export default function useBarcodeDetector({ createInstance = true } = {}) {
   const detect = async (
     image: HTMLImageElement | HTMLCanvasElement
   ): Promise<BarcodeDetectionResults | null> => {
-    if (!detector) return null;
-    const results = await detector.detect(image);
-    return results;
+    try {
+      if (!detector) return null;
+      const results = await detector.detect(image);
+      return results;
+    } catch (_e) {
+      return null;
+    }
   };
 
   return {

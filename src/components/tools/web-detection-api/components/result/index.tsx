@@ -25,6 +25,15 @@ export default function ImageResult({
 
   const requestIdRef = useRef<number | null>(null);
 
+  // Clear requestIdRef before unmount
+  useEffect(() => {
+    return () => {
+      if (requestIdRef.current) {
+        cancelAnimationFrame(requestIdRef.current);
+      }
+    };
+  }, []);
+
   useEffect(() => {
     const resetRefs = () => {
       if (imageRef?.current) imageRef.current.src = '';
@@ -44,6 +53,11 @@ export default function ImageResult({
       if (!streamVideoRef?.current) return;
       resetRefs();
       streamVideoRef.current.srcObject = stream;
+    } else {
+      if (requestIdRef.current) {
+        cancelAnimationFrame(requestIdRef.current);
+        requestIdRef.current = null;
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param]);
