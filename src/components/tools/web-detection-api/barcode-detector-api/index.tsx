@@ -1,6 +1,5 @@
 'use client';
 
-import { BarcodeDetectionResults } from '../types/types';
 import { useMemo, useRef, useState } from 'react';
 import useBarcodeDetector from '../hooks/use-barcode-detector';
 import useWebcam from '../hooks/use-webcam';

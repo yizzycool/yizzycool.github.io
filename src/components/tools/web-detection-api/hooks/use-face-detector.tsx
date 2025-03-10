@@ -1,11 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-  FaceDetectionResults,
-  FaceDetectorInstance,
-  WindowDetector,
-} from '../types/types';
 
 export default function useFaceDetector({ createInstance = true } = {}) {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
@@ -26,15 +21,13 @@ export default function useFaceDetector({ createInstance = true } = {}) {
 
   // To check if face detector is supported
   const checkCapability = () => {
-    const _window = window as unknown as WindowDetector;
-    setIsSupported(!!_window.FaceDetector);
+    setIsSupported(!!window.FaceDetector);
   };
 
   const initFaceDetector = async () => {
-    const _window = window as unknown as WindowDetector;
-    if (_window.FaceDetector) {
+    if (window.FaceDetector) {
       try {
-        const detector = await new _window.FaceDetector();
+        const detector = await new window.FaceDetector();
         setDetector(detector);
         setIsPartialUnsupported(false);
       } catch (_e) {

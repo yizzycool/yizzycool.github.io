@@ -1,6 +1,5 @@
 'use client';
 
-import { BoundingBox as BBox } from '../../types/types';
 import _isNull from 'lodash/isNull';
 import _map from 'lodash/map';
 import _round from 'lodash/round';
@@ -9,7 +8,7 @@ export default function BoundingBox({
   results,
 }: {
   results: Array<{
-    boundingBox: BBox;
+    boundingBox: DetectedBoundingBox;
   }>;
 }) {
   if (_isNull(results)) return null;

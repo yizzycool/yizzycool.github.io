@@ -1,11 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-  TextDetectionResults,
-  TextDetectorInstance,
-  WindowDetector,
-} from '../types/types';
 
 export default function useTextDetector({ createInstance = true } = {}) {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
@@ -26,15 +21,13 @@ export default function useTextDetector({ createInstance = true } = {}) {
 
   // To check if text detector is supported
   const checkCapability = () => {
-    const _window = window as unknown as WindowDetector;
-    setIsSupported(!!_window.TextDetector);
+    setIsSupported(!!window.TextDetector);
   };
 
   const initTextDetector = async () => {
-    const _window = window as unknown as WindowDetector;
-    if (_window.TextDetector) {
+    if (window.TextDetector) {
       try {
-        const detector = await new _window.TextDetector();
+        const detector = await new window.TextDetector();
         setDetector(detector);
         setIsPartialUnsupported(false);
       } catch (_e) {

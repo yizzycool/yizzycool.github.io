@@ -1,11 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-  BarcodeDetectionResults,
-  BarcodeDetectorInstance,
-  WindowDetector,
-} from '../types/types';
 
 export default function useBarcodeDetector({ createInstance = true } = {}) {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
@@ -28,15 +23,13 @@ export default function useBarcodeDetector({ createInstance = true } = {}) {
 
   // To check if barcode detector is supported
   const checkCapability = () => {
-    const _window = window as unknown as WindowDetector;
-    setIsSupported(!!_window.BarcodeDetector);
+    setIsSupported(!!window.BarcodeDetector);
   };
 
   const initBarcodeDetector = async () => {
-    const _window = window as unknown as WindowDetector;
-    if (_window.BarcodeDetector) {
+    if (window.BarcodeDetector) {
       try {
-        const detector = await new _window.BarcodeDetector();
+        const detector = await new window.BarcodeDetector();
         setDetector(detector);
         setIsPartialUnsupported(false);
       } catch (_e) {

@@ -1,6 +1,5 @@
 'use client';
 
-import { FaceDetectionResults } from '../types/types';
 import { useMemo, useRef, useState } from 'react';
 import useFaceDetector from '../hooks/use-face-detector';
 import useWebcam from '../hooks/use-webcam';
