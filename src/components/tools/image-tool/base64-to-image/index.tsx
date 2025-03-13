@@ -65,7 +65,10 @@ export default function Base64ToImage() {
     timerRef.current = setTimeout(() => transferToImage(base64String), 500);
   };
 
-  const onClearBase64 = () => setBase64('');
+  const onClearBase64 = () => {
+    transferToImage('');
+    setBase64('');
+  };
 
   return (
     <div className="mx-auto flex min-h-full max-w-screen-xl flex-col items-center px-5 pt-[68px]">
@@ -87,7 +90,7 @@ export default function Base64ToImage() {
         </Field>
         <div className="flex items-center">
           <button
-            className="flex items-center rounded-md bg-red-900 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 hover:bg-red-600"
+            className="flex items-center rounded-md bg-red-800 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 hover:bg-red-600"
             onClick={onClearBase64}
           >
             <Trash2 className="mr-2 h-5 w-5 text-white" />
