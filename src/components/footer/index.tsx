@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <div className="mx-auto max-w-screen-2xl border-t border-slate-900/10 dark:border-slate-50/[0.06]">
+    <div className="mx-auto max-w-screen-2xl border-t border-neutral-400/20">
       <footer className="mx-auto flex w-full justify-center py-10 text-xs">
         <p>
           Designed & Developed by{' '}
