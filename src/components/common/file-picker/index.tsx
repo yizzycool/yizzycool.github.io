@@ -26,12 +26,12 @@ export default function FilePicker({
     return 'Choose a file';
   }, [type]);
 
-  const hint = useMemo(() => {
-    if (type === 'image') {
-      return 'or drop an image here';
-    }
-    return '';
-  }, [type]);
+  // const hint = useMemo(() => {
+  //   if (type === 'image') {
+  //     return 'or drop an image here';
+  //   }
+  //   return '';
+  // }, [type]);
 
   const accept = useMemo(() => {
     if (type === 'image') {
@@ -56,7 +56,7 @@ export default function FilePicker({
       <div className="mx-auto mt-8 w-fit rounded-full bg-sky-500/80 px-8 py-2 text-white transition-all group-hover:bg-sky-500/90">
         {desc}
       </div>
-      {hint && <div className="mt-4 font-bold">{hint}</div>}
+      {/* {hint && <div className="mt-4 font-bold">{hint}</div>} */}
       <input
         ref={inputRef}
         type="file"
