@@ -53,7 +53,7 @@ export default function Empty({
         <>
           <button
             onClick={() => imageInputRef.current?.click()}
-            className="mt-4 flex items-center rounded-md bg-sky-700 px-4 py-2 hover:bg-sky-700/80"
+            className="mt-4 flex items-center rounded-md bg-sky-700 px-4 py-2 text-white hover:bg-sky-700/80"
           >
             <FileImage className="mr-4 h-5 w-5" />
             Choose an image
@@ -71,7 +71,7 @@ export default function Empty({
         <>
           <button
             onClick={() => videoInputRef.current?.click()}
-            className="mt-4 flex items-center rounded-md bg-sky-700 px-4 py-2 hover:bg-sky-700/80"
+            className="mt-4 flex items-center rounded-md bg-sky-700 px-4 py-2 text-white hover:bg-sky-700/80"
           >
             <FileVideo className="mr-4 h-5 w-5" />
             Choose a video
@@ -88,7 +88,7 @@ export default function Empty({
       {!disabled.webcam && (
         <button
           className={clsx(
-            'mt-4 flex items-center rounded-md bg-sky-700 px-4 py-2 hover:bg-sky-700/80',
+            'mt-4 flex items-center rounded-md bg-sky-700 px-4 py-2 text-white hover:bg-sky-700/80',
             'data-[camera-opened=true]:bg-red-700 data-[camera-opened=true]:hover:bg-red-700/80'
           )}
           onClick={processWebcam}
