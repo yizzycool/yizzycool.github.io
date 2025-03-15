@@ -6,7 +6,46 @@ import Footer from '@/components/footer';
 
 export const metadata: Metadata = {
   title: 'Yizzy Peasy | Coding Life',
-  description: 'Frontend Engineer',
+  description:
+    'Focused on programming and frontend development, sharing technical articles and useful tools to help developers improve their skills and efficiency. Explore JavaScript, React, Next.js, TypeScript, and the latest frontend technologies!',
+  keywords: [
+    'Next.js',
+    'React',
+    'JavaScript',
+    'Frontend',
+    'Programming',
+    'Useful Tools',
+  ],
+  authors: [{ name: 'Yizzy Wu', url: 'https://yizzycool.github.io' }],
+  openGraph: {
+    title: 'Yizzy Peasy | Coding Life',
+    description:
+      'Focused on programming and frontend development, sharing technical articles and useful tools to help developers improve their skills and efficiency. Explore JavaScript, React, Next.js, TypeScript, and the latest frontend technologies!',
+    url: 'https://yizzycool.github.io',
+    siteName: 'Yizzy Peasy',
+    images: [
+      {
+        url: 'https://yizzycool.github.io/assets/images/home/avatar.png',
+        width: 600,
+        height: 600,
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({
