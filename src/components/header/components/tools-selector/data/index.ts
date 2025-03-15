@@ -28,6 +28,14 @@ export const Tools = [
           component: Image,
         },
       },
+      {
+        name: 'Image to Base64',
+        href: '/tools/image-tool/image-to-base64',
+        desc: '',
+        icon: {
+          component: Image,
+        },
+      },
     ],
   },
   {
