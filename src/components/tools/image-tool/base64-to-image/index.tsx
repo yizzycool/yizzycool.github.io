@@ -71,8 +71,8 @@ export default function Base64ToImage() {
   };
 
   return (
-    <div className="mx-auto flex min-h-full max-w-screen-xl flex-col items-center px-5 pt-[68px]">
-      <Title>Base64 Image Viewer</Title>
+    <div className="mx-auto flex min-h-full max-w-screen-xl flex-col items-center px-5 pt-[68px] lg:px-10">
+      <Title>Base64 to Image</Title>
       <div className="mt-8 flex w-full items-center justify-between">
         {/* Enable auto update or not */}
         <Field className="flex items-center gap-2">
@@ -105,8 +105,8 @@ export default function Base64ToImage() {
         </div>
       </div>
       {/* Textarea block */}
-      <div className="mt-6 w-full">
-        <label htmlFor="base64-textarea" className="block font-bold">
+      <div className="mt-8 w-full">
+        <label htmlFor="base64-textarea" className="mb-2 block font-bold">
           Paste the Base64 string below
         </label>
         <textarea
@@ -117,16 +117,19 @@ export default function Base64ToImage() {
         />
       </div>
       {/* Image block */}
-      <div className="mb-20 mt-6 flex w-full flex-col items-center">
-        {!imageInfo.error && !_isNull(imageInfo.image) && (
-          <Image
-            width={0}
-            height={0}
-            className="w-full object-contain"
-            src={imageInfo.image.src}
-            alt="result image"
-          />
-        )}
+      <div className="mb-20 mt-8 w-full">
+        <div className="mb-2 font-bold">Image</div>
+        <div className="flex h-[300px] w-full flex-col items-center rounded-md bg-neutral-500/20">
+          {!imageInfo.error && !_isNull(imageInfo.image) && (
+            <Image
+              width={0}
+              height={0}
+              className="h-full max-h-full w-full max-w-full object-contain"
+              src={imageInfo.image.src}
+              alt="result image"
+            />
+          )}
+        </div>
       </div>
       {/* Error dialog */}
       <ErrorDialog
