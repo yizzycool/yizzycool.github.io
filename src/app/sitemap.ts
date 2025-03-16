@@ -9,9 +9,9 @@ const getDate = () => new Date().toISOString().split('T')[0];
 
 const ToolsSitemap: MetadataRoute.Sitemap = _flatMap(Tools, (tool) =>
   _map(tool.items, (item) => ({
-    url: `https://yizzycool.github.io${item.href}`,
+    url: `https://yizzycool.github.io${item.href}/`,
     lastModified: getDate(),
-    changeFrequency: 'monthly',
+    changeFrequency: 'weekly',
     priority: 0.5,
   }))
 );
@@ -19,11 +19,10 @@ const ToolsSitemap: MetadataRoute.Sitemap = _flatMap(Tools, (tool) =>
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: 'https://yizzycool.github.io',
+      url: 'https://yizzycool.github.io/',
       lastModified: getDate(),
-      changeFrequency: 'yearly',
+      changeFrequency: 'monthly',
       priority: 1.0,
-      images: ['https://yizzycool.github.io/assets/images/home/avatar.png'],
     },
     ...ToolsSitemap,
   ];
