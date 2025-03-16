@@ -5,10 +5,12 @@ import _map from 'lodash/map';
 
 export const dynamic = 'force-static';
 
+const getDate = () => new Date().toISOString().split('T')[0];
+
 const ToolsSitemap: MetadataRoute.Sitemap = _flatMap(Tools, (tool) =>
   _map(tool.items, (item) => ({
     url: `https://yizzycool.github.io${item.href}`,
-    lastModified: new Date(),
+    lastModified: getDate(),
     changeFrequency: 'monthly',
     priority: 0.5,
   }))
@@ -18,9 +20,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: 'https://yizzycool.github.io',
-      lastModified: new Date(),
+      lastModified: getDate(),
       changeFrequency: 'yearly',
-      priority: 1,
+      priority: 1.0,
       images: ['https://yizzycool.github.io/assets/images/home/avatar.png'],
     },
     ...ToolsSitemap,
