@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Base64 to Image Converter',
+  title: 'Base64 to Image Converter – Decode & Restore Images Online',
   description:
-    'Paste your Base64 image code to instantly decode and display the image. Free Base64 to image converter, supporting PNG, JPG, and GIF. No downloads required—just paste and view!',
+    'Convert Base64-encoded text back to images with our free online tool. Supports PNG, JPG, and more. Fast, secure, and works in your browser. Try it now!',
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
