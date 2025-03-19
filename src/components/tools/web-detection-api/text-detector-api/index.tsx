@@ -5,7 +5,10 @@ import useTextDetector from '../hooks/use-text-detector';
 import useWebcam from '../hooks/use-webcam';
 import { Dot } from 'lucide-react';
 import Title from '../../components/title';
-import Unsupported from '../../components/unsupported';
+import Unsupported, {
+  UnsupportedApiTypes,
+  UnsupportedTypes,
+} from '../../components/unsupported';
 import LoadingSkeleton from '../components/loading-skeleton';
 import Empty from '../components/empty';
 import Result, { Param } from '../components/result';
@@ -108,14 +111,17 @@ export default function TextDetectorApi() {
 
   return (
     <div className="mx-auto pt-[68px] text-center">
-      <Title>Barcode Detector</Title>
+      <Title>Text Detector</Title>
       {/* <SupportTable /> */}
       {isLoading ? (
         <LoadingSkeleton />
       ) : !isSupported ? (
-        <Unsupported type="unsupported" />
+        <Unsupported
+          apiType={UnsupportedApiTypes.webDetectionApi}
+          type={UnsupportedTypes.unsupported}
+        />
       ) : isPartialUnsupported ? (
-        <Unsupported type="partialUnsupported" />
+        <Unsupported type={UnsupportedTypes.partialUnsupported} />
       ) : (
         <>
           {isAnyResult && (

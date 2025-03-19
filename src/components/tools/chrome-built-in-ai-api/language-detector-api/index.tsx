@@ -4,7 +4,10 @@ import { useRef, useState } from 'react';
 import useAiLanguageDetector from '../hooks/use-ai-language-detector';
 import Title from '../../components/title';
 import BarChart from './components/bar-chart';
-import Unsupported from '../../components/unsupported';
+import Unsupported, {
+  UnsupportedApiTypes,
+  UnsupportedTypes,
+} from '../../components/unsupported';
 import LoadingSkeleton from '../components/loading-skeleton';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
@@ -48,9 +51,12 @@ export default function LanguageDetectorApi() {
       {isLoading ? (
         <LoadingSkeleton />
       ) : !isSupported ? (
-        <Unsupported type="unsupported" />
+        <Unsupported
+          apiType={UnsupportedApiTypes.chromeLanguageDetectorApi}
+          type={UnsupportedTypes.unsupported}
+        />
       ) : isPartialUnsupported ? (
-        <Unsupported type="partialUnsupported" />
+        <Unsupported type={UnsupportedTypes.partialUnsupported} />
       ) : (
         <>
           <div className="mt-10 px-5 pb-40 pt-20 text-left">

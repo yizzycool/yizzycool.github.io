@@ -6,7 +6,10 @@ import Title from '../../components/title';
 import LanguageSelector from './components/language-selector';
 import CanTranslateHint from './components/can-translate-hint';
 import SwitchButton from './components/switch-button';
-import Unsupported from '../../components/unsupported';
+import Unsupported, {
+  UnsupportedApiTypes,
+  UnsupportedTypes,
+} from '../../components/unsupported';
 import LoadingSkeleton from '../components/loading-skeleton';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
@@ -76,9 +79,12 @@ export default function TranslatorApi() {
       {isLoading ? (
         <LoadingSkeleton />
       ) : !isSupported ? (
-        <Unsupported type="unsupported" />
+        <Unsupported
+          apiType={UnsupportedApiTypes.chromeTranslatorApi}
+          type={UnsupportedTypes.unsupported}
+        />
       ) : isPartialUnsupported ? (
-        <Unsupported type="partialUnsupported" />
+        <Unsupported type={UnsupportedTypes.partialUnsupported} />
       ) : (
         <>
           <div className="mt-10 flex flex-col justify-center gap-5 px-5 pb-40 pt-20 md:flex-row">

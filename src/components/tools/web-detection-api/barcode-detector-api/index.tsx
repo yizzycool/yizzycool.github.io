@@ -5,7 +5,10 @@ import useBarcodeDetector from '../hooks/use-barcode-detector';
 import useWebcam from '../hooks/use-webcam';
 import { Dot } from 'lucide-react';
 import Title from '../../components/title';
-import Unsupported from '../../components/unsupported';
+import Unsupported, {
+  UnsupportedApiTypes,
+  UnsupportedTypes,
+} from '../../components/unsupported';
 import LoadingSkeleton from '../components/loading-skeleton';
 import Empty from '../components/empty';
 import Result, { Param } from '../components/result';
@@ -108,9 +111,12 @@ export default function BarcodeDetectorApi() {
       {isLoading ? (
         <LoadingSkeleton />
       ) : !isSupported ? (
-        <Unsupported type="unsupported" />
+        <Unsupported
+          apiType={UnsupportedApiTypes.webDetectionApi}
+          type={UnsupportedTypes.unsupported}
+        />
       ) : isPartialUnsupported ? (
-        <Unsupported type="partialUnsupported" />
+        <Unsupported type={UnsupportedTypes.partialUnsupported} />
       ) : (
         <>
           {isAnyResult && (

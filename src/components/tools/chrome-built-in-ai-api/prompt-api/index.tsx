@@ -2,7 +2,10 @@
 
 import useAiLanguageModel from '../hooks/use-ai-language-model';
 import Title from '../../components/title';
-import Unsupported from '../../components/unsupported';
+import Unsupported, {
+  UnsupportedApiTypes,
+  UnsupportedTypes,
+} from '../../components/unsupported';
 import LoadingSkeleton from '../components/loading-skeleton';
 import SettingsPanel from './components/settings-panel';
 import Chat from '../components/chat';
@@ -33,9 +36,12 @@ export default function PromptApi() {
       {isLoading ? (
         <LoadingSkeleton />
       ) : !isSupported ? (
-        <Unsupported type="unsupported" />
+        <Unsupported
+          apiType={UnsupportedApiTypes.chromePromptApi}
+          type={UnsupportedTypes.unsupported}
+        />
       ) : isPartialUnsupported ? (
-        <Unsupported type="partialUnsupported" />
+        <Unsupported type={UnsupportedTypes.partialUnsupported} />
       ) : (
         <>
           <div className="mx-auto mt-10 max-w-screen-sm border-neutral-700 px-5 py-20 text-left">
