@@ -116,7 +116,7 @@ export default function BarcodeDetectorApi() {
           {isAnyResult && (
             <div className="mt-10 px-5">
               <div className="mb-4 text-lg font-bold">Detected Results</div>
-              <div ref={resultRef} className="relative mx-auto w-fit">
+              <div ref={resultRef} className="relative mx-auto h-fit w-fit">
                 <Result
                   canvasRef={canvasRef}
                   param={param}
