@@ -102,7 +102,7 @@ export default function FaceDetectorApi() {
   }, [results]);
 
   return (
-    <div className="mx-auto max-w-screen-2xl pt-[68px] text-center">
+    <div className="mx-auto pt-[68px] text-center">
       <Title>Face Detector</Title>
       {/* <SupportTable /> */}
       {isLoading ? (
@@ -116,7 +116,7 @@ export default function FaceDetectorApi() {
           {isAnyResult && (
             <div className="mt-10 px-5">
               <div className="mb-4 text-lg font-bold">Detected Results</div>
-              <div ref={resultRef} className="relative mx-auto w-fit">
+              <div ref={resultRef} className="relative mx-auto w-full">
                 <Result
                   canvasRef={canvasRef}
                   param={param}

@@ -133,7 +133,7 @@ export default function ImageResult({
 
   return (
     <>
-      <canvas ref={canvasRef} className="max-h-96 w-fit" />
+      <canvas ref={canvasRef} className="max-h-96 w-full" />
       <img
         ref={imageRef}
         className="absolute left-0 top-0 -z-10 opacity-0"

@@ -24,7 +24,7 @@ export default function RewriterApi() {
     _isNull(isSupported) || (isSupported && _isNull(isPartialUnsupported));
 
   return (
-    <div className="mx-auto max-w-screen-2xl pt-[68px] text-center">
+    <div className="mx-auto pt-[68px] text-center">
       <Title>Rewriter</Title>
       {/* Summarizer */}
       {isLoading ? (

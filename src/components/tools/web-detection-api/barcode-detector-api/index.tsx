@@ -102,7 +102,7 @@ export default function BarcodeDetectorApi() {
   }, [results]);
 
   return (
-    <div className="mx-auto max-w-screen-2xl pt-[68px] text-center">
+    <div className="mx-auto pt-[68px] text-center">
       <Title>Barcode Detector</Title>
       {/* <SupportTable /> */}
       {isLoading ? (

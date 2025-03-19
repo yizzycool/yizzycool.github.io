@@ -27,7 +27,7 @@ export default function PromptApi() {
     _isNull(isSupported) || (isSupported && _isNull(isPartialUnsupported));
 
   return (
-    <div className="mx-auto max-w-screen-2xl pt-[68px] text-center">
+    <div className="mx-auto pt-[68px] text-center">
       <Title>Gemini Nano (Prompt API)</Title>
       {/* Prompt */}
       {isLoading ? (
