@@ -9,7 +9,7 @@ export default function FeaturePanel() {
   const pathname = usePathname();
 
   return (
-    <div className="sticky top-0 hidden h-dvh w-64 border-r-[1px] border-neutral-400/20 p-4 pt-16 lg:block">
+    <div className="sticky top-[68px] hidden h-dvh w-64 border-r-[1px] border-neutral-400/20 p-4 lg:block">
       {Tools.map((tool) => (
         <div key={tool.name} className="mt-6">
           <div className="mb-2 font-bold">{tool.name}</div>

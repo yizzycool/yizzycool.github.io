@@ -47,7 +47,7 @@ export default function ImageToBase64() {
   };
 
   return (
-    <div className="mx-auto flex min-h-full max-w-screen-lg flex-col items-center px-5 pt-[68px] lg:px-10">
+    <div className="mx-auto flex min-h-full max-w-screen-lg flex-col items-center px-5 lg:px-10">
       <Title>Image to Base64</Title>
       {/* File Picker */}
       <FilePicker type="image" onFileChange={onFileChange} />

@@ -73,7 +73,7 @@ export default function TranslatorApi() {
   };
 
   return (
-    <div className="mx-auto pt-[68px] text-center">
+    <div className="mx-auto text-center">
       <Title>Translator</Title>
       {/* Translator */}
       {isLoading ? (
@@ -87,7 +87,7 @@ export default function TranslatorApi() {
         <Unsupported type={UnsupportedTypes.partialUnsupported} />
       ) : (
         <>
-          <div className="mt-10 flex flex-col justify-center gap-5 px-5 pb-40 pt-20 md:flex-row">
+          <div className="flex flex-col justify-center gap-5 px-5 pb-40 pt-20 md:flex-row">
             {/* Input */}
             <div className="flex-1">
               <LanguageSelector

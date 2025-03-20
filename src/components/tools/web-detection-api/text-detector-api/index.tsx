@@ -110,7 +110,7 @@ export default function TextDetectorApi() {
   }, [transformedResults]);
 
   return (
-    <div className="mx-auto pt-[68px] text-center">
+    <div className="mx-auto text-center">
       <Title>Text Detector</Title>
       {/* <SupportTable /> */}
       {isLoading ? (
@@ -125,7 +125,7 @@ export default function TextDetectorApi() {
       ) : (
         <>
           {isAnyResult && (
-            <div className="mt-10 px-5">
+            <div className="px-5">
               <div className="mb-4 text-lg font-bold">Detected Results</div>
               <div ref={resultRef} className="relative mx-auto h-fit w-fit">
                 <Result

@@ -7,7 +7,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="mx-auto flex max-w-screen-2xl">
+    <div className="mx-auto flex min-h-dvh max-w-screen-2xl pt-[68px]">
       <FeaturePanel />
       <div className="flex-1">{children}</div>
     </div>

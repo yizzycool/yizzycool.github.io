@@ -27,7 +27,7 @@ export default function SummarizerApi() {
     _isNull(isSupported) || (isSupported && _isNull(isPartialUnsupported));
 
   return (
-    <div className="mx-auto pt-[68px] text-center">
+    <div className="mx-auto text-center">
       <Title>Summarizer</Title>
       {/* Summarizer */}
       {isLoading ? (
@@ -41,7 +41,7 @@ export default function SummarizerApi() {
         <Unsupported type={UnsupportedTypes.partialUnsupported} />
       ) : (
         <>
-          <div className="mx-auto mt-10 max-w-screen-sm px-5 pb-40 pt-20 text-left">
+          <div className="mx-auto max-w-screen-sm px-5 pb-40 pt-20 text-left">
             <div className="mx-auto max-w-screen-sm">
               <SettingsPanel
                 options={options}

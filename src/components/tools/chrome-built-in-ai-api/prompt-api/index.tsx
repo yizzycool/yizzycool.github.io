@@ -30,7 +30,7 @@ export default function PromptApi() {
     _isNull(isSupported) || (isSupported && _isNull(isPartialUnsupported));
 
   return (
-    <div className="mx-auto pt-[68px] text-center">
+    <div className="mx-auto text-center">
       <Title>Gemini Nano (Prompt API)</Title>
       {/* Prompt */}
       {isLoading ? (
@@ -44,7 +44,7 @@ export default function PromptApi() {
         <Unsupported type={UnsupportedTypes.partialUnsupported} />
       ) : (
         <>
-          <div className="mx-auto mt-10 max-w-screen-sm border-neutral-700 px-5 py-20 text-left">
+          <div className="mx-auto max-w-screen-sm border-neutral-700 px-5 py-20 text-left">
             <SettingsPanel
               options={options}
               isOptionUpdating={isOptionUpdating}

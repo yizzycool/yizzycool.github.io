@@ -45,7 +45,7 @@ export default function LanguageDetectorApi() {
   };
 
   return (
-    <div className="mx-auto pt-[68px] text-center">
+    <div className="mx-auto text-center">
       <Title>Language Detector</Title>
       {/* Language Detector */}
       {isLoading ? (
@@ -59,7 +59,7 @@ export default function LanguageDetectorApi() {
         <Unsupported type={UnsupportedTypes.partialUnsupported} />
       ) : (
         <>
-          <div className="mt-10 px-5 pb-40 pt-20 text-left">
+          <div className="px-5 pb-40 pt-20 text-left">
             <div className="mx-auto max-w-screen-sm text-center">
               {/* Input */}
               <div className="mb-4 text-lg font-bold">
