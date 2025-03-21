@@ -71,7 +71,7 @@ export default function Base64ToImage() {
   };
 
   return (
-    <div className="mx-auto flex min-h-full max-w-screen-xl flex-col items-center px-5 lg:px-10">
+    <div className="mx-auto flex min-h-full max-w-screen-lg flex-col items-center px-5 lg:px-10">
       <Title>Base64 to Image</Title>
       <div className="mt-8 flex w-full items-center justify-between">
         {/* Enable auto update or not */}
