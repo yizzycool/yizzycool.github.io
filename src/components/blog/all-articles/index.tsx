@@ -1,7 +1,9 @@
 'use client';
 
-import _map from 'lodash/map';
 import Image from 'next/image';
+import Link from 'next/link';
+import strapiUtils from '@/utils/strapi-utils';
+import _map from 'lodash/map';
 
 type MediaData = {
   width: number;
@@ -26,18 +28,23 @@ type Author = {
   name: string;
 };
 
+type Category = {
+  slug: string;
+};
+
 type Article = {
   id: number;
   documentId: string;
   title: string;
   description: string;
-  url: string;
+  slug: string;
   createdAt: string | null;
   updatedAt: string | null;
   publishedAt: string | null;
   banner: Banner;
   tags: Array<Tag>;
   author: Author;
+  category: Category;
 };
 
 type Articles = {
@@ -54,14 +61,15 @@ export default function AllArticles({ articles }: { articles: Articles }) {
         All Articles
       </h1>
       {_map(data, (article) => (
-        <div
+        <Link
           key={article.documentId}
           className="flex cursor-pointer border-b border-neutral-400/20 px-4 py-8 hover:bg-neutral-400/5"
+          href={strapiUtils.toBlogUrl(article.category.slug, article.slug)}
         >
           <Image
             width="300"
             height="300"
-            src={`${process.env.NEXT_PUBLIC_STRAPI_MEDIA_URL}${article.banner.formats.thumbnail.url}`}
+            src={strapiUtils.toMediaUrl(article.banner.formats.thumbnail.url)}
             alt="thumbnail"
             className="mr-8 aspect-video w-1/4 max-w-[300px] object-cover"
           />
@@ -79,7 +87,7 @@ export default function AllArticles({ articles }: { articles: Articles }) {
               ))}
             </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );

@@ -3,19 +3,21 @@
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import strapiUtils from '@/utils/strapi-utils';
 import _get from 'lodash/get';
 import _map from 'lodash/map';
 
 type Article = {
   id: number;
   title: string;
-  url: string;
+  slug: string;
 };
 
 type CategoryArticleData = {
   id: number;
   name: string;
   articles: Array<Article>;
+  slug: string;
 };
 
 type CategoryArticles = {
@@ -37,18 +39,20 @@ export default function LeftPanel({
       {data.map((category) => (
         <div key={category.name} className="mt-6">
           <div className="mb-2 font-bold">{category.name}</div>
-          {_map(category.articles, (data) => (
+          {_map(category.articles, (article) => (
             <Link
-              key={data.title}
+              key={article.title}
               className={clsx(
                 'my-1 flex cursor-pointer items-center rounded-md p-2 text-sm',
                 'hover:bg-sky-600/10',
                 'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500'
               )}
-              href={data.url}
-              data-active={pathname === data.url}
+              href={strapiUtils.toBlogUrl(category.slug, article.slug)}
+              data-active={
+                pathname === strapiUtils.toBlogUrl(category.slug, article.slug)
+              }
             >
-              {data.title}
+              {article.title}
             </Link>
           ))}
         </div>
