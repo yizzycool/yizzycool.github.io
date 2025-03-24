@@ -1,8 +1,10 @@
+import strapiUtils from '@/utils/strapi-utils';
 import LeftPanel from '@/components/blog/layout/left-panel';
 
 const fetchCategoryArticles = async () => {
+  const queryString = strapiUtils.getCategoryArticlesQueryString();
   const response = await fetch(
-    `${process.env.STRAPI_URL}${process.env.STRAPI_LEFT_PANEL_DATA_URL}`
+    `${process.env.STRAPI_URL}/api/categories?${queryString}`
   );
   const data = await response.json();
   return data;

@@ -1,5 +1,6 @@
 'use client';
 
+import { BlogCategory } from '@/types/blog';
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -7,32 +8,14 @@ import strapiUtils from '@/utils/strapi-utils';
 import _get from 'lodash/get';
 import _map from 'lodash/map';
 
-type Article = {
-  id: number;
-  title: string;
-  slug: string;
-};
-
-type CategoryArticleData = {
-  id: number;
-  name: string;
-  articles: Array<Article>;
-  slug: string;
-};
-
-type CategoryArticles = {
-  data: Array<CategoryArticleData>;
-  meta?: object;
-};
-
 export default function LeftPanel({
   categoryArticles,
 }: {
-  categoryArticles: CategoryArticles;
+  categoryArticles: BlogCategory;
 }) {
   const pathname = usePathname();
 
-  const data = _get(categoryArticles, 'data') || [];
+  const data = _get(categoryArticles, ['data']) || [];
 
   return (
     <div className="sticky top-[68px] hidden h-dvh w-64 border-r-[1px] border-neutral-400/20 p-4 lg:block">
