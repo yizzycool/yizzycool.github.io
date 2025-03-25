@@ -10,7 +10,7 @@ export interface BlogMeta {
 export interface BaseBlogData {
   id: number;
   documentId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  publishedAt: Date | null;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string | null;
 }

@@ -37,7 +37,7 @@ const strapiUtils = {
   getArticleQueryString: (articleSlug: string) => {
     const queryObject = {
       status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
-      populate: ['banner', 'tags', 'author', 'category'],
+      populate: ['banner', 'tags', 'category', 'author', 'author.avatar'],
       filters: {
         slug: {
           '$eq': articleSlug,
