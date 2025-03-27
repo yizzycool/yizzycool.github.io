@@ -2,9 +2,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import Title from '@/components/tools/components/title';
 import strapiUtils from '@/utils/strapi-utils';
 import _map from 'lodash/map';
-import Title from '@/components/tools/components/title';
 
 type MediaData = {
   width: number;
@@ -57,7 +57,7 @@ export default function AllArticles({ articles }: { articles: Articles }) {
   const { data } = articles || {};
 
   return (
-    <div className="mx-auto max-w-screen-lg flex-1 px-5 lg:px-10 [&_h1]:text-center">
+    <div className="mx-auto flex-grow overflow-hidden px-5 lg:max-w-screen-lg lg:px-10 [&_h1]:text-center">
       <Title>All Articles</Title>
       <div className="mt-10" />
       {_map(data, (article) => (

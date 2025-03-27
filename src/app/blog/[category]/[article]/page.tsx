@@ -1,6 +1,14 @@
-import { BlogCategory } from '@/types/blog';
+import { BlogArticle, BlogCategory } from '@/types/blog';
 import strapiUtils from '@/utils/strapi-utils';
 import Article from '@/components/blog/article';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import rehypeSlug from 'rehype-slug';
+import { toc as rehypeToc } from '@jsdevtools/rehype-toc';
+import rehypeStringify from 'rehype-stringify';
+import _get from 'lodash/get';
+import _size from 'lodash/size';
 
 type Slug = { category: string; article: string };
 
@@ -36,9 +44,29 @@ const fetchArticle = async (articleSlug: string) => {
   return data;
 };
 
+const parseToc = async (article: BlogArticle) => {
+  const data = _get(article, 'data.0') || {};
+  const { content } = data;
+
+  const toc = await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeSlug)
+    .use(rehypeToc)
+    .use(rehypeStringify)
+    .process(content);
+
+  const regex = /<nav class="toc">.*?<\/nav>/;
+  const result = String(toc).match(regex);
+
+  if (_size(result) < 1) return '';
+  return result?.[0] || '';
+};
+
 export default async function Page({ params }: { params: Promise<Slug> }) {
   const { article: articleSlug } = await params;
   const article = await fetchArticle(articleSlug);
+  const toc = await parseToc(article);
 
-  return <Article article={article} />;
+  return <Article article={article} toc={toc} />;
 }

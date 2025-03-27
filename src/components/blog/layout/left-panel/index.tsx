@@ -18,7 +18,7 @@ export default function LeftPanel({
   const data = _get(categoryArticles, ['data']) || [];
 
   return (
-    <div className="sticky top-[68px] hidden h-dvh w-64 border-r-[1px] border-neutral-400/20 p-4 lg:block">
+    <div className="sticky top-[68px] hidden h-dvh w-64 shrink-0 border-r-[1px] border-neutral-400/20 p-4 lg:block">
       {data.map((category) => (
         <div key={category.name} className="mt-6">
           <div className="mb-2 font-bold">{category.name}</div>

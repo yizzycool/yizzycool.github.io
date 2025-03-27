@@ -8,9 +8,16 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
+import rehypeSlug from 'rehype-slug';
 import _get from 'lodash/get';
 
-export default function Article({ article }: { article: BlogArticle }) {
+export default function Article({
+  article,
+  toc,
+}: {
+  article: BlogArticle;
+  toc: string;
+}) {
   const data = _get(article, 'data.0') || {};
   const { title, content, banner } = data;
 
@@ -31,33 +38,42 @@ export default function Article({ article }: { article: BlogArticle }) {
   }, [banner]);
 
   return (
-    <div className="mx-auto max-w-screen-lg px-5 lg:px-8">
-      <h1 className="mx-auto mt-10 text-4xl font-bold">{title}</h1>
-      <div className="mt-4">
-        <Tags article={article} />
+    <>
+      <div className="mx-auto flex-grow overflow-x-hidden px-5 lg:max-w-screen-lg lg:px-8">
+        <h1 className="mx-auto mt-10 text-4xl font-bold">{title}</h1>
+        <div className="mt-4">
+          <Tags article={article} />
+        </div>
+        <div className="mt-10">
+          <Image
+            className="aspect-video w-full object-cover"
+            src={bannerUrl}
+            width="1600"
+            height="900"
+            alt="banner"
+          />
+        </div>
+        <Markdown
+          className="all-revert my-20 !leading-8"
+          remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
+          rehypePlugins={[rehypeRaw, rehypeSlug]}
+          components={{
+            code(props) {
+              return Code(props);
+            },
+          }}
+        >
+          {content}
+        </Markdown>
       </div>
-      <div className="mt-10">
-        <Image
-          className="aspect-video w-full object-cover"
-          src={bannerUrl}
-          width="1600"
-          height="900"
-          alt="banner"
-        />
+      {/* Toc on right side */}
+      <div className="sticky top-[68px] hidden h-dvh w-64 shrink-0 border-l-[1px] border-neutral-400/20 p-4 lg:block">
+        <div className="mt-6 font-bold">Table of Content</div>
+        <div className="mt-6 text-sm leading-normal transition-all [&_*]:my-2 [&_a:hover]:brightness-200 [&_a]:block [&_ol_ol]:ps-5 [&_ul_ul]:ps-8">
+          <div dangerouslySetInnerHTML={{ __html: toc }} />
+        </div>
       </div>
-      <Markdown
-        className="all-revert my-20 !leading-8"
-        rehypePlugins={[rehypeRaw]}
-        remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
-        components={{
-          code(props) {
-            return Code(props);
-          },
-        }}
-      >
-        {content}
-      </Markdown>
-    </div>
+    </>
   );
 }
 
