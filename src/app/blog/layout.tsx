@@ -18,9 +18,9 @@ export default async function Layout({
   const categoryArticles = await fetchCategoryArticles();
 
   return (
-    <div className="mx-auto flex min-h-dvh max-w-screen-2xl pt-[68px]">
+    <div className="mx-auto flex min-h-dvh w-full max-w-full pt-[68px] 2xl:max-w-screen-2xl">
       <LeftPanel categoryArticles={categoryArticles} />
-      <div className="flex-1">{children}</div>
+      {children}
     </div>
   );
 }

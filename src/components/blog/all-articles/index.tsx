@@ -57,7 +57,7 @@ export default function AllArticles({ articles }: { articles: Articles }) {
   const { data } = articles || {};
 
   return (
-    <div className="mx-auto max-w-screen-lg px-5 lg:px-10 [&_h1]:text-center">
+    <div className="mx-auto max-w-screen-lg flex-1 px-5 lg:px-10 [&_h1]:text-center">
       <Title>All Articles</Title>
       <div className="mt-10" />
       {_map(data, (article) => (
