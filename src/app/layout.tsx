@@ -70,7 +70,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className="bg-white text-neutral-700 antialiased dark:bg-neutral-900 dark:text-neutral-300">
+      <body className="overflow-x-hidden bg-white text-neutral-700 antialiased dark:bg-neutral-900 dark:text-neutral-300">
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-TVFKTXLV"
