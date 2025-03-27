@@ -54,7 +54,7 @@ export default function Article({
           />
         </div>
         <Markdown
-          className="all-revert my-20 !leading-8"
+          className="all-revert my-20 !leading-8 [&_*]:!scroll-mt-20"
           remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
           rehypePlugins={[rehypeRaw, rehypeSlug]}
           components={{
