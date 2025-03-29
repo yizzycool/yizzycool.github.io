@@ -32,6 +32,9 @@ const eslintConfig = [
       '@typescript-eslint/no-unused-vars': 'off',
     },
   },
+  {
+    ignores: ['misc/*'],
+  },
 ];
 
 export default eslintConfig;
