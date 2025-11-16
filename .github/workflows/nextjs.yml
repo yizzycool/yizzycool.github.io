@@ -72,19 +72,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          path: site
+          path: page
       - name: Install dependencies
         run: |
-          cd site
+          cd page
           yarn install
       - name: Build with Next.js
         run: |
-          cd site
+          cd page
           yarn build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out
+          path: ./page/out
 
   # Deployment job
   deploy:
