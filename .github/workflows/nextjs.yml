@@ -40,7 +40,10 @@ jobs:
       # Setup environment config for Strapi
       - name: Setup Strapi environment
         run: |
-          cd strapi && cat ${{ env.STRAPI_ENV_CONFIG }} > .env
+          cd strapi
+          cat << 'EOF' > strapi/.env
+          ${{ env.STRAPI_ENV_CONFIG }}
+          EOF
       # Install Strapi repo dependencies
       - name: Install Strapi dependencies
         run: |
