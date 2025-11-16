@@ -46,7 +46,7 @@ jobs:
       - name: Start Strapi server
         run: |
           cd strapi
-          yarn start
+          yarn dev &
           sleep 20
 
       # For Next.js site
