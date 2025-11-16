@@ -2,5 +2,5 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 npx lint-staged
-node misc/scripts/copyStrapiMedia.js
-git add public/uploads/*
+node misc/scripts/syncStrapiMedia.js # Sync Strapi media files to public folder
+git add public/strapi/uploads/* # Stage the synced media files
