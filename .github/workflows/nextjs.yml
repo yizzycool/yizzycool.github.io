@@ -37,6 +37,10 @@ jobs:
           repository: yizzycool/yizzycool.github.io-strapi
           path: strapi
           token: ${{ secrets.STRAPI_REPO_TOKEN }}
+      # Setup environment config for Strapi
+      - name: Setup Strapi environment
+        run: |
+          cp strapi && cat ${{ env.STRAPI_ENV_CONFIG }} > .env
       # Install Strapi repo dependencies
       - name: Install Strapi dependencies
         run: |
@@ -47,7 +51,18 @@ jobs:
         run: |
           cd strapi
           yarn dev &
-          sleep 20
+      # Wait for Strapi to be ready
+      - name: Wait for Strapi to be ready
+        run: |
+          echo "Waiting for Strapi..."
+          for i in {1..40}; do
+            if curl -s http://127.0.0.1:1337 >/dev/null; then
+              echo "Strapi is ready!"
+              break
+            fi
+            echo "Strapi not ready yet... ($i)"
+            sleep 3
+          done
 
       # For Next.js site
       - name: Checkout
