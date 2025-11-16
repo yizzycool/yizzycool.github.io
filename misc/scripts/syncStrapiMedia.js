@@ -9,7 +9,7 @@ const colors = {
 
 const SOURCE_FOLDER = path.join(
   __dirname,
-  '../../../yizzy.github.io-strapi/public/uploads'
+  '../../../yizzycool.github.io-strapi/public/uploads'
 );
 const TARGET_FOLDER = path.join(__dirname, '../../public/strapi/uploads');
 
@@ -55,8 +55,8 @@ function syncDirectory(src, dest) {
   }
 }
 
-// - Make sure yizzy.github.io-strapi is cloned locally before running this script
-// - Make sure yizzy.github.io and yizzy.github.io-strapi are located in the same parent directory.
+// - Make sure yizzycool.github.io-strapi is cloned locally before running this script
+// - Make sure yizzycool.github.io and yizzycool.github.io-strapi are located in the same parent directory.
 // - Change these paths as needed
 syncDirectory(SOURCE_FOLDER, TARGET_FOLDER);
 console.log(`${colors.green}DONE!${colors.reset}`);
