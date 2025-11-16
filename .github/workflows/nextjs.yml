@@ -42,7 +42,7 @@ jobs:
         run: |
           cd strapi
           cat << 'EOF' > .env
-          ${{ env.STRAPI_ENV_CONFIG }}
+          ${{ secrets.STRAPI_ENV_CONFIG }}
           EOF
       # Install Strapi repo dependencies
       - name: Install Strapi dependencies
