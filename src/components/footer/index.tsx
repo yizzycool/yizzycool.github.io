@@ -11,7 +11,7 @@ export default function Footer() {
           >
             Yizzy Wu
           </a>{' '}
-          &copy; 2024
+          &copy; 2025
         </p>
       </footer>
     </div>
