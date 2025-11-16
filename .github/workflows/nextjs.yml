@@ -53,19 +53,21 @@ jobs:
       - name: Start Strapi server
         run: |
           cd strapi
-          yarn dev &
+          nohup yarn dev > server.log 2>&1 &
       # Wait for Strapi to be ready
       - name: Wait for Strapi to be ready
         run: |
           echo "Waiting for Strapi..."
-          for i in {1..40}; do
+          for i in {1..30}; do
             if curl -s http://0.0.0.0:1337 >/dev/null; then
               echo "Strapi is ready!"
-              break
+              exit 0
             fi
             echo "Strapi not ready yet... ($i)"
-            sleep 3
+            sleep 2
           done
+          echo "Strapi failed to start within expected time."
+          exit 1
 
       # For Next.js site
       - name: Checkout
