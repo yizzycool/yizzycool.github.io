@@ -28,39 +28,46 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
-    steps:
-      # Setup Node.js environment
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'yarn'
+    env:
+      NODE_VERSION: 20
+      PACKAGE_MANAGER: yarn
+      DEPENDENCY_FILE: yarn.lock
+      STRAPI_FOLDER: strapi
+      PAGE_FOLDER: page
 
+    steps:
       # For Strapi support
       # Checkout Strapi repository to access content
       - name: Checkout Strapi repo
         uses: actions/checkout@v4
         with:
           repository: yizzycool/yizzycool.github.io-strapi
-          path: strapi
+          path: ${{ env.STRAPI_FOLDER }}
           token: ${{ secrets.STRAPI_REPO_TOKEN }}
+      # Setup Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: ${{ env.PACKAGE_MANAGER }}
+          cache-dependency-path: ${{ env.STRAPI_FOLDER }}/${{ env.DEPENDENCY_FILE }}
       # Setup environment config for Strapi
       - name: Setup Strapi environment
         run: |
-          cd strapi
+          cd ${{ env.STRAPI_FOLDER }}
           cat << 'EOF' > .env
           ${{ secrets.STRAPI_ENV_CONFIG }}
           EOF
       # Install Strapi repo dependencies
       - name: Install Strapi dependencies
         run: |
-          cd strapi 
-          yarn install
+          cd ${{ env.STRAPI_FOLDER }} 
+          ${{ env.PACKAGE_MANAGER }} install
       # Start Strapi server
       - name: Start Strapi server
         run: |
-          cd strapi
-          nohup yarn dev > server.log 2>&1 &
+          cd ${{ env.STRAPI_FOLDER }}
+          nohup ${{ env.PACKAGE_MANAGER }} dev > server.log 2>&1 &
       # Wait for Strapi to be ready
       - name: Wait for Strapi to be ready
         run: |
@@ -80,19 +87,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          path: page
+          path: ${{ env.PAGE_FOLDER }}
+      # Setup Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: ${{ env.PACKAGE_MANAGER }}
+          cache-dependency-path: ${{ env.PAGE_FOLDER }}/${{ env.DEPENDENCY_FILE }}
       - name: Install dependencies
         run: |
-          cd page
-          yarn install
+          cd ${{ env.PAGE_FOLDER }}
+          ${{ env.PACKAGE_MANAGER }} install
       - name: Build with Next.js
         run: |
-          cd page
-          yarn build
+          cd ${{ env.PAGE_FOLDER }}
+          ${{ env.PACKAGE_MANAGER }} build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./page/out
+          path: ./${{ env.PAGE_FOLDER }}/out
 
   # Deployment job
   deploy:
