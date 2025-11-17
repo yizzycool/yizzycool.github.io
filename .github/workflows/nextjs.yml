@@ -29,6 +29,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # Setup Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+
       # For Strapi support
       # Checkout Strapi repository to access content
       - name: Checkout Strapi repo
@@ -68,6 +75,7 @@ jobs:
           done
           echo "Strapi failed to start within expected time."
           exit 1
+
       # For Next.js site
       - name: Checkout
         uses: actions/checkout@v4
