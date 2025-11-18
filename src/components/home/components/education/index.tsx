@@ -17,9 +17,10 @@ export default function Education() {
     <div className="relative min-h-80 w-full border-t border-neutral-300 px-4 py-20 dark:border-neutral-500">
       <Image
         className="absolute inset-0 -z-[1] object-cover opacity-10 blur-sm"
-        src="/assets/images/home/meeting.jpg"
+        src="/assets/images/home/school-background.jpg"
         fill={true}
         alt="background image"
+        loading="lazy"
       />
       <div id="education" className="mx-auto max-w-screen-xl px-4">
         <div

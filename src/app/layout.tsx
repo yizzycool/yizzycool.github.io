@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     siteName: 'Yizzy Peasy',
     images: [
       {
-        url: 'https://yizzycool.github.io/assets/images/home/avatar.png',
+        url: 'https://yizzycool.github.io/assets/images/home/avatar.jpg',
         width: 600,
         height: 600,
       },
