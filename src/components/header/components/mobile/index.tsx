@@ -38,22 +38,24 @@ export default function HeaderMobile() {
               >
                 <div className="flex h-full flex-col overflow-y-scroll bg-gray-100 py-6 shadow-xl dark:bg-gray-700">
                   <div className="flex items-center justify-between px-4 sm:px-6">
-                    <Image
-                      src="/assets/images/header/logo.png"
-                      width="20"
-                      height="20"
-                      alt="Logo"
-                    />
+                    <div />
                     <button className="p-1" onClick={() => setOpen(false)}>
                       <X aria-hidden="true" className="size-6" />
                     </button>
                   </div>
                   <div className="relative mt-6 flex-1 px-2 sm:px-4">
+                    {/* Blog */}
+                    <Link
+                      className="block px-3 py-4 font-medium"
+                      href="/blog"
+                      onClick={() => setOpen(false)}
+                    >
+                      Blog
+                    </Link>
                     {/* Tools */}
                     <ToolsSelectorMobile
                       closeSidePanel={() => setOpen(false)}
                     />
-                    {/* <ToolsSelectorMobile /> */}
                     {/* Divider */}
                     <div className="my-2 mt-5 border-t border-gray-400/50 dark:border-gray-600" />
                     {/* Theme Selector */}

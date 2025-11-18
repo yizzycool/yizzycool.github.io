@@ -18,8 +18,8 @@ export default function ToolsSelectorMobile({
   return (
     <>
       <Disclosure as="div" className="">
-        <DisclosureButton className="group flex w-full items-center justify-between rounded-lg px-3 py-2 data-[hover]:bg-neutral-800/10">
-          <span className="text-sm/6 font-medium">Tools</span>
+        <DisclosureButton className="group flex w-full items-center justify-between rounded-lg px-3 py-4 data-[hover]:bg-neutral-800/10">
+          <span className="font-medium">Tools</span>
           <ChevronDown className="size-5 group-data-[open]:rotate-180" />
         </DisclosureButton>
         <DisclosurePanel

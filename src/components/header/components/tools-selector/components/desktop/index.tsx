@@ -21,7 +21,6 @@ export default function ToolsSelectorDesktop() {
     setBody(window.document.body);
   }, []);
 
-  if (!body) return;
   return (
     <>
       {/* Tools */}
@@ -74,10 +73,11 @@ export default function ToolsSelectorDesktop() {
             </div>
           ))}
         </PopoverPanel>
-        {createPortal(
-          <PopoverBackdrop className="fixed inset-0 z-0 bg-transparent" />,
-          body
-        )}
+        {body &&
+          createPortal(
+            <PopoverBackdrop className="fixed inset-0 z-0 bg-transparent" />,
+            body
+          )}
       </Popover>
     </>
   );

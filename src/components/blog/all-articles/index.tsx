@@ -71,7 +71,7 @@ export default function AllArticles({ articles }: { articles: Articles }) {
             height="300"
             src={strapiUtils.toMediaUrl(article.banner.formats.thumbnail.url)}
             alt="thumbnail"
-            className="mr-8 aspect-video w-1/4 max-w-[300px] object-cover"
+            className="mr-8 hidden aspect-video w-1/4 max-w-[300px] object-cover sm:block"
           />
           <div>
             <div className="text-lg font-bold">{article.title}</div>

@@ -59,8 +59,6 @@ export default function ThemeSelector() {
     setBody(window.document.body);
   }, []);
 
-  if (!body) return;
-
   return (
     <Popover className="group relative flex w-full justify-end">
       <PopoverButton
@@ -108,10 +106,11 @@ export default function ThemeSelector() {
           </CloseButton>
         ))}
       </PopoverPanel>
-      {createPortal(
-        <PopoverBackdrop className="invisible fixed inset-0 z-0 bg-transparent lg:visible" />,
-        body
-      )}
+      {body &&
+        createPortal(
+          <PopoverBackdrop className="invisible fixed inset-0 z-0 bg-transparent lg:visible" />,
+          body
+        )}
     </Popover>
   );
 }
