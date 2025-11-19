@@ -12,7 +12,7 @@ export default function useAiTranslator({ createInstance = true } = {}) {
   const [isPartialUnsupported, setIsPartialUnsupported] = useState<
     boolean | null
   >(null);
-  const [canTranslate, setCanTranslate] = useState<AICapability | ''>('');
+  const [canTranslate, setCanTranslate] = useState<AIAvailability | ''>('');
 
   useEffect(() => {
     checkCapability();
@@ -31,8 +31,8 @@ export default function useAiTranslator({ createInstance = true } = {}) {
 
   // To check if translator is supported
   const checkCapability = () => {
-    const translator = window.ai?.translator;
-    setIsSupported(!!translator?.capabilities);
+    const translator = window.Translator;
+    setIsSupported(!!translator?.availability);
   };
 
   const resetTranslator = () => {
@@ -53,13 +53,11 @@ export default function useAiTranslator({ createInstance = true } = {}) {
       sourceLanguage,
       targetLanguage
     );
-    if (canTranslate === 'no') return;
+    if (canTranslate === 'unavailable') return;
     // Create new translator
-    if (window.ai?.translator) {
+    if (window.Translator) {
       try {
-        // If window.ai.translator exists
-        console.log('[Translator: ai.translator]');
-        const translator = await window.ai.translator.create({
+        const translator = await window.Translator.create({
           sourceLanguage,
           targetLanguage,
         });
@@ -75,17 +73,16 @@ export default function useAiTranslator({ createInstance = true } = {}) {
   const isLanguagePairSupported = async (
     sourceLanguage = '',
     targetLanguage = ''
-  ): Promise<AICapability | ''> => {
-    let canTranslate: AICapability | '' = '';
-    if (window.ai?.translator) {
-      // If window.ai.translator exists
-      const capabilities = await window.ai.translator.capabilities();
-      canTranslate = capabilities.languagePairAvailable(
+  ): Promise<AIAvailability | ''> => {
+    let canTranslate: AIAvailability | '' = '';
+    if (window.Translator) {
+      // If window.Translator exists
+      canTranslate = await window.Translator.availability({
         sourceLanguage,
-        targetLanguage
-      );
+        targetLanguage,
+      });
     }
-    if (canTranslate !== 'readily') {
+    if (canTranslate !== 'available') {
       setCanTranslate(canTranslate);
     }
     return canTranslate;
@@ -100,7 +97,7 @@ export default function useAiTranslator({ createInstance = true } = {}) {
       targetLanguage
     );
     setCanTranslate(canTranslate);
-    if (canTranslate === 'after-download') {
+    if (canTranslate === 'downloadable' || canTranslate === 'downloading') {
       setTimeout(() => {
         loopCheckIfLanguagePairIsSupported(sourceLanguage, targetLanguage);
       }, 1000);

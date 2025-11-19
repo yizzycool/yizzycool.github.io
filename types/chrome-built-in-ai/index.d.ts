@@ -1,5 +1,6 @@
 interface Window {
   ai: AI;
+  Translator: AITranslatorFactory;
 }
 
 interface AI {

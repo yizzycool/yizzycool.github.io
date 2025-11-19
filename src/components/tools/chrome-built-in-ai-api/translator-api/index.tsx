@@ -35,14 +35,14 @@ export default function TranslatorApi() {
 
   // If translator update to another language, auto translate to new language when translator is readily
   useEffect(() => {
-    if (canTranslate === 'readily' && text) {
+    if (canTranslate === 'available' && text) {
       translateString(text);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canTranslate]);
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (canTranslate !== 'readily') return;
+    if (canTranslate !== 'available') return;
     const text = e.target.value;
     setText(text);
     if (timerRef.current) {
@@ -101,9 +101,7 @@ export default function TranslatorApi() {
                   className="block min-h-60 w-full flex-1 resize-none rounded-md border border-neutral-400/50 bg-transparent px-6 py-4 text-xl focus:outline-none"
                   onChange={onChange}
                   value={text}
-                  disabled={
-                    canTranslate === 'after-download' || canTranslate === 'no'
-                  }
+                  disabled={canTranslate !== 'available'}
                 />
                 <CanTranslateHint params={params} canTranslate={canTranslate} />
               </div>

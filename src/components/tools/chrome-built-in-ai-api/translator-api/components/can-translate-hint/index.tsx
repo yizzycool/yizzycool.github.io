@@ -9,7 +9,7 @@ export default function CanTranslateHint({
   canTranslate,
 }: {
   params: AITranslatorCreateOptions;
-  canTranslate: AICapability | '';
+  canTranslate: AIAvailability | '';
 }) {
   const { languageTagToHumanReadable } = useLanguageTagToHumanReadable();
 
@@ -21,12 +21,12 @@ export default function CanTranslateHint({
   }, [params]);
 
   const bgClass = useMemo(() => {
-    if (canTranslate === 'after-download') return 'bg-sky-500/20';
-    else if (canTranslate === 'no') return 'bg-red-500/20';
+    if (canTranslate === 'downloadable') return 'bg-sky-500/20';
+    else if (canTranslate === 'unavailable') return 'bg-red-500/20';
     return null;
   }, [canTranslate]);
 
-  if (canTranslate === 'readily' || canTranslate === '') return null;
+  if (canTranslate === 'available' || canTranslate === '') return null;
   return (
     <div
       className={clsx(
@@ -34,7 +34,7 @@ export default function CanTranslateHint({
         bgClass
       )}
     >
-      {canTranslate === 'after-download' ? (
+      {canTranslate === 'downloadable' || canTranslate === 'downloading' ? (
         <>
           <div>Language model is downloading...</div>
           <div>Please wait a minute</div>
