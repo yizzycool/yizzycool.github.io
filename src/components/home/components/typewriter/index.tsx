@@ -72,7 +72,7 @@ export default function Typewritter() {
   };
 
   return (
-    <div className="w-full pt-16 xl:py-40">
+    <div className="w-full pt-8 xl:py-40">
       {Intros.map((intro, idx) => (
         <div
           key={idx}

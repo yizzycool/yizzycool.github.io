@@ -3,15 +3,29 @@
 import Link from 'next/link';
 import { ToolsSelectorDesktop } from '../../../tools-selector';
 
+const NavigationData = [
+  {
+    link: '/resume',
+    title: 'Resume',
+  },
+  {
+    link: '/blog',
+    title: 'Blog',
+  },
+];
+
 export default function Navigation() {
   return (
     <>
-      <Link
-        className="mx-5 px-4 transition-opacity hover:opacity-80"
-        href="/blog"
-      >
-        Blog
-      </Link>
+      {NavigationData.map(({ link, title }) => (
+        <Link
+          key={link}
+          className="px-4 transition-opacity hover:opacity-80"
+          href={link}
+        >
+          {title}
+        </Link>
+      ))}
       <ToolsSelectorDesktop />
     </>
   );
