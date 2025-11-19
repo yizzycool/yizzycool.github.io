@@ -1,7 +1,7 @@
 import strapiUtils from '@/utils/strapi-utils';
 import LeftPanel from '@/components/blog/layout/left-panel';
 
-const fetchCategoryArticles = async () => {
+export const fetchCategoryArticles = async () => {
   const queryString = strapiUtils.getCategoryArticlesQueryString();
   const response = await fetch(
     `${process.env.STRAPI_URL}/api/categories?${queryString}`

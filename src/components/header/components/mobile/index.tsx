@@ -1,5 +1,6 @@
 'use client';
 
+import { BlogCategory } from '@/types/blog';
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -7,8 +8,13 @@ import ThemeSelector from '../theme-selector';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import { Menu, X } from 'lucide-react';
 import { ToolsSelectorMobile } from '../tools-selector';
+import BlogSelectorMobile from './components/blog-selector';
 
-export default function HeaderMobile() {
+export default function HeaderMobile({
+  categoryArticles,
+}: {
+  categoryArticles: BlogCategory;
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -44,18 +50,23 @@ export default function HeaderMobile() {
                     </button>
                   </div>
                   <div className="relative mt-6 flex-1 px-2 sm:px-4">
-                    {/* Blog */}
-                    <Link
-                      className="block px-3 py-4 font-medium"
-                      href="/blog"
-                      onClick={() => setOpen(false)}
-                    >
-                      Blog
-                    </Link>
                     {/* Tools */}
                     <ToolsSelectorMobile
                       closeSidePanel={() => setOpen(false)}
                     />
+                    {/* Blog */}
+                    <BlogSelectorMobile
+                      closeSidePanel={() => setOpen(false)}
+                      categoryArticles={categoryArticles}
+                    />
+                    {/* Resume */}
+                    <Link
+                      className="block px-3 py-4 font-medium"
+                      href="/resume"
+                      onClick={() => setOpen(false)}
+                    >
+                      Resume
+                    </Link>
                     {/* Divider */}
                     <div className="my-2 mt-5 border-t border-gray-400/50 dark:border-gray-600" />
                     {/* Theme Selector */}

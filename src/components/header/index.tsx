@@ -1,10 +1,13 @@
-'use client';
+// 'use client';
 
 import clsx from 'clsx';
 import HeaderDesktop from './components/desktop';
 import HeaderMobile from './components/mobile';
+import { fetchCategoryArticles } from '@/app/blog/layout';
 
-export default function Header() {
+export default async function Header() {
+  const categoryArticles = await fetchCategoryArticles();
+
   return (
     <div
       className={clsx(
@@ -17,7 +20,7 @@ export default function Header() {
         <HeaderDesktop />
       </div>
       <div className="mx-auto max-w-screen-2xl p-4 lg:hidden lg:px-8">
-        <HeaderMobile />
+        <HeaderMobile categoryArticles={categoryArticles} />
       </div>
     </div>
   );

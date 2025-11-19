@@ -10,15 +10,25 @@ import _map from 'lodash/map';
 
 export default function LeftPanel({
   categoryArticles,
+  side = 'leftPanel',
+  onClick = () => {},
 }: {
   categoryArticles: BlogCategory;
+  side?: 'leftPanel' | 'headerBlogSelector';
+  onClick?: () => void;
 }) {
   const pathname = usePathname();
 
   const data = _get(categoryArticles, ['data']) || [];
 
   return (
-    <div className="sticky top-[68px] hidden h-dvh w-64 shrink-0 border-r-[1px] border-neutral-400/20 p-4 lg:block">
+    <div
+      className={clsx(
+        side === 'leftPanel' &&
+          'sticky top-[68px] hidden h-dvh w-64 shrink-0 border-r-[1px] border-neutral-400/20 p-4 lg:block',
+        side === 'headerBlogSelector' && ''
+      )}
+    >
       {data.map((category) => (
         <div key={category.name} className="mt-6">
           <div className="mb-2 font-bold">{category.name}</div>
@@ -34,6 +44,7 @@ export default function LeftPanel({
               data-active={
                 pathname === strapiUtils.toBlogUrl(category.slug, article.slug)
               }
+              onClick={onClick}
             >
               {article.title}
             </Link>

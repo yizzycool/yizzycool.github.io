@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import {
   Disclosure,
   DisclosureButton,
@@ -15,6 +16,8 @@ export default function ToolsSelectorMobile({
 }: {
   closeSidePanel: () => void;
 }) {
+  const pathname = usePathname();
+
   return (
     <>
       <Disclosure as="div" className="">
@@ -25,22 +28,28 @@ export default function ToolsSelectorMobile({
         <DisclosurePanel
           transition
           className={clsx(
-            'mt-2 overflow-hidden',
+            'ml-3 mt-2 overflow-hidden border-l-[1px] border-neutral-400/20',
             'origin-top transition duration-200 ease-out data-[closed]:-translate-y-10 data-[closed]:opacity-0'
           )}
         >
           {Tools.map((tool) => (
             <div key={tool.name} className="flex p-4 pr-16">
               <div className="w-full">
-                <div className="mb-4 text-sm font-bold text-gray-700 dark:text-gray-200">
+                <div className="mb-4 font-bold text-gray-700 dark:text-gray-200">
                   {tool.name}
                 </div>
                 {tool.items.map((item) => (
                   <Link
                     key={item.name}
-                    className="mt-2 flex items-center text-gray-600 hover:text-sky-500 hover:underline dark:text-gray-50 dark:hover:text-sky-500"
+                    className={clsx(
+                      'mt-2 flex items-center text-sm text-gray-600',
+                      'hover:text-sky-500 hover:underline dark:hover:text-sky-500',
+                      'data-[active=true]:text-sky-500',
+                      'data-[active=false]:text-gray-600 dark:data-[active=false]:text-gray-50'
+                    )}
                     href={item.href}
                     onClick={closeSidePanel}
+                    data-active={pathname === item.href}
                   >
                     <div className="mr-3 h-8 w-8 rounded border border-gray-300 p-1.5 dark:border-gray-500/50">
                       <item.icon.component className="h-full w-full" />
