@@ -5,7 +5,7 @@ interface AILanguageDetectorFactory {
   availability: (
     options?: AILanguageDetectorCreateCoreOptions
   ) => Promise<AIAvailability>;
-  capabilities: () => Promise<AILanguageDetectorCapabilities>;
+  // capabilities: () => Promise<AILanguageDetectorCapabilities>;
 }
 
 interface AILanguageDetector extends AIDestroyable {

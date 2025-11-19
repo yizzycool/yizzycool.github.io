@@ -25,14 +25,14 @@ export default function useAiLanguageDetector({ createInstance = true } = {}) {
 
   // To check if language detector is supported
   const checkCapability = () => {
-    const languageDetector = window.ai?.languageDetector;
-    setIsSupported(!!languageDetector?.capabilities);
+    const languageDetector = window.LanguageDetector;
+    setIsSupported(!!languageDetector?.availability);
   };
 
   const initLanguageDetector = async () => {
-    if (window.ai?.languageDetector) {
+    if (window.LanguageDetector) {
       try {
-        const detector = await window.ai.languageDetector.create();
+        const detector = await window.LanguageDetector.create();
         setDetector(detector);
         setIsPartialUnsupported(false);
       } catch (_e) {
