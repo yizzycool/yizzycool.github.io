@@ -3,7 +3,7 @@ interface AITranslatorFactory {
   availability: (
     options: AITranslatorCreateCoreOptions
   ) => Promise<AIAvailability>;
-  capabilities: () => Promise<AITranslatorCapabilities>;
+  // capabilities: () => Promise<AITranslatorCapabilities>;
 }
 
 interface AITranslator extends AIDestroyable {
