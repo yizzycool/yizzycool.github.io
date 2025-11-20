@@ -3,7 +3,7 @@ interface AISummarizerFactory {
   availability: (
     options?: AISummarizerCreateCoreOptions
   ) => Promise<AIAvailability>;
-  capabilities: () => Promise<AISummarizerCapabilities>;
+  // capabilities: () => Promise<AISummarizerCapabilities>;
 }
 
 interface AISummarizer extends AIDestroyable {
@@ -54,7 +54,7 @@ interface AISummarizerSummarizeOptions {
   context?: string;
 }
 
-type AISummarizerType = 'tl;dr' | 'teaser' | 'key-points' | 'headline';
+type AISummarizerType = 'tldr' | 'teaser' | 'key-points' | 'headline';
 
 type AISummarizerFormat = 'plain-text' | 'markdown';
 

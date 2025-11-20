@@ -1,6 +1,6 @@
 'use client';
 
-import { OctagonAlert, OctagonX } from 'lucide-react';
+import { OctagonAlert, OctagonX, CloudDownload } from 'lucide-react';
 import _get from 'lodash/get';
 import { useMemo } from 'react';
 
@@ -18,6 +18,7 @@ export const UnsupportedApiTypes = {
 export const UnsupportedTypes = {
   unsupported: 'unsupported',
   partialUnsupported: 'partial-unsupported',
+  userDownloadRequired: 'user-download-required',
 };
 
 const ChromeFlags = {
@@ -49,6 +50,11 @@ const TypeInfo = {
     desc: 'Although your device supports this API, an error occurred during the creation process. This might be because the API is still in the development stage and remains unstable on some devices. Please try again later!',
     icon: <OctagonAlert className="h-full w-full text-yellow-500" />,
   },
+  [UnsupportedTypes.userDownloadRequired]: {
+    title: 'AI Model Download Required',
+    desc: 'Before you start, please download the AI model first.',
+    icon: <CloudDownload className="h-full w-full" />,
+  },
 };
 
 export type UnsupportedApiType =
@@ -59,9 +65,11 @@ export type UnsupportedType =
 export default function Unsupported({
   apiType = UnsupportedApiTypes.chromeBuiltInAiApi,
   type = UnsupportedTypes.unsupported,
+  downloadAiModelHandler = () => {},
 }: {
   apiType?: UnsupportedApiType;
   type: UnsupportedType;
+  downloadAiModelHandler?: () => void;
 }) {
   const iconComponent = useMemo(() => {
     return _get(TypeInfo, [type, 'icon']);
@@ -72,7 +80,12 @@ export default function Unsupported({
   }, [type]);
 
   const desc = useMemo(() => {
-    if (type === UnsupportedTypes.partialUnsupported) {
+    if (
+      [
+        UnsupportedTypes.partialUnsupported,
+        UnsupportedTypes.userDownloadRequired,
+      ].includes(type)
+    ) {
       return _get(TypeInfo, [type, 'desc']);
     } else {
       const chromeFlag = _get(ChromeFlags, apiType) || '';
@@ -85,11 +98,22 @@ export default function Unsupported({
     }
   }, [apiType, type]);
 
+  const button = _get(TypeInfo, [type, 'button'], null);
+
   return (
     <div className="mx-auto mt-10 max-w-screen-sm px-5 py-20 text-center">
       <div className="mx-auto h-20 w-20">{iconComponent}</div>
       <div className="mt-10 text-xl font-bold">{title}</div>
       <div className="mt-5" dangerouslySetInnerHTML={{ __html: desc }}></div>
+      {type === UnsupportedTypes.userDownloadRequired && (
+        <button
+          className="mt-12 rounded-full bg-sky-700 px-6 py-2 text-white hover:bg-sky-700/80 dark:text-current"
+          onClick={downloadAiModelHandler}
+        >
+          Download AI Model
+        </button>
+      )}
+      {button}
     </div>
   );
 }

@@ -16,11 +16,13 @@ export default function SummarizerApi() {
   const {
     isSupported,
     isPartialUnsupported,
+    isUserDownloadRequired,
     options,
     isOptionUpdating,
     summarize: _summarize,
     summarizeStreaming,
     updateSummarizer,
+    triggerUserDownload,
   } = useAiSummarizer();
 
   const isLoading =
@@ -32,6 +34,12 @@ export default function SummarizerApi() {
       {/* Summarizer */}
       {isLoading ? (
         <LoadingSkeleton />
+      ) : isUserDownloadRequired ? (
+        <Unsupported
+          apiType={UnsupportedApiTypes.chromeSummarizerApi}
+          type={UnsupportedTypes.userDownloadRequired}
+          downloadAiModelHandler={triggerUserDownload}
+        />
       ) : !isSupported ? (
         <Unsupported
           apiType={UnsupportedApiTypes.chromeSummarizerApi}

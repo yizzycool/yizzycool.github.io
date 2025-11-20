@@ -19,6 +19,7 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
   >(null);
   const [summarizer, setSummarizer] = useState<AISummarizer | null>(null);
   const [options, setOptions] = useState(Options);
+  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState(false);
 
   useEffect(() => {
     checkCapability();
@@ -35,15 +36,22 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
   }, [isSupported]);
 
   // To check if summarizer is supported
-  const checkCapability = () => {
-    const summarizer = window.ai?.summarizer;
-    setIsSupported(!!summarizer?.capabilities);
+  const checkCapability = async () => {
+    const availability = await window.Summarizer?.availability?.();
+    if (availability === 'downloadable' || availability === 'downloading') {
+      setIsUserDownloadRequired(true);
+      setIsSupported(false);
+    } else if (availability === 'available') {
+      setIsSupported(true);
+    } else {
+      setIsSupported(false);
+    }
   };
 
   const initSummarizer = async () => {
-    if (window.ai?.summarizer) {
+    if (window.Summarizer) {
       try {
-        const summarizer = await window.ai.summarizer.create(options);
+        const summarizer = await window.Summarizer.create(options);
         setSummarizer(summarizer);
         setIsPartialUnsupported(false);
       } catch (_e) {
@@ -53,13 +61,13 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
   };
 
   const updateSummarizer = async (options: AISummarizerCreateOptions) => {
-    if (window.ai?.summarizer) {
+    if (window.Summarizer) {
       try {
         if (summarizer) summarizer?.destroy?.();
         setSummarizer(null);
         await browserUtils.sleep(500);
         const newOptions = _defaults(options, Options);
-        const newSummarizer = await window.ai.summarizer.create(newOptions);
+        const newSummarizer = await window.Summarizer.create(newOptions);
         setOptions(newOptions);
         setSummarizer(newSummarizer);
         setIsPartialUnsupported(false);
@@ -67,6 +75,11 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
         setIsPartialUnsupported(true);
       }
     }
+  };
+
+  const triggerUserDownload = async () => {
+    setIsUserDownloadRequired(false);
+    setIsSupported(true);
   };
 
   const summarize = async (text: string): Promise<string | null> => {
@@ -102,10 +115,12 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
   return {
     isSupported,
     isPartialUnsupported,
+    isUserDownloadRequired,
     options,
     isOptionUpdating: _isNull(summarizer),
     summarize,
     summarizeStreaming,
     updateSummarizer,
+    triggerUserDownload,
   };
 }
