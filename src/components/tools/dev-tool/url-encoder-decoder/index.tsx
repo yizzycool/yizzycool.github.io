@@ -1,11 +1,16 @@
 'use client';
 
 import type { ChangeEvent } from 'react';
+import clsx from 'clsx';
 import { useState } from 'react';
 import browserUtils from '@/utils/browser-utils';
 import ErrorDialog from '@/components/common/dialog/error';
-import { Trash2 } from 'lucide-react';
+import { FileCode, FileCode2 } from 'lucide-react';
 import Title from '../../components/title';
+import Description from '../../components/description';
+import DeleteAction from '@/components/common/action-button/delete';
+import CopyAction from '@/components/common/action-button/copy';
+import SwapAction from '@/components/common/action-button/swap';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 
@@ -42,49 +47,86 @@ export default function UrlEncoderDecoder() {
     }
   };
 
+  const onSwapClick = () => {
+    setInput(output);
+    setOutput(input);
+    setError(false);
+  };
+
   return (
-    <div className="mx-auto flex min-h-full max-w-screen-lg flex-col items-center px-5 lg:px-10">
+    <div className="mx-auto flex min-h-full max-w-screen-lg flex-col items-center px-5 pb-20 lg:px-10">
       <Title>URL Encoder / Decoder</Title>
-      <div className="mt-8 flex w-full items-center justify-end">
-        <button
-          className="flex items-center rounded-md bg-red-800 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 hover:bg-red-600"
+      <Description>
+        Quickly convert URLs into a transmission-safe format or decode
+        previously encoded URLs. Supports UTF-8 characters.
+      </Description>
+
+      {/* Input block */}
+      <div className="mb-2 mt-8 flex w-full items-center justify-between">
+        <label htmlFor="textarea" className="block font-semibold">
+          Paste URL below
+        </label>
+        <DeleteAction
           onClick={onClearClick}
-        >
-          <Trash2 className="mr-2 h-5 w-5 text-white" />
-          Clear
-        </button>
+          disabled={_isNull(input) || _isEmpty(input)}
+        />
+      </div>
+      <textarea
+        id="textarea"
+        className={clsx(
+          'h-64 w-full resize-none rounded-xl border p-4 font-mono text-sm leading-relaxed shadow-sm outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500 lg:h-96',
+          'border-gray-200 bg-white text-gray-700 placeholder-gray-400 focus:bg-white',
+          'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder-neutral-500 dark:focus:bg-neutral-800'
+        )}
+        value={input}
+        onChange={onInputChange}
+        placeholder="Paste the URL or text you want to process here..."
+      />
+
+      {/* Action buttons */}
+      <div className="my-6 flex w-full flex-col items-stretch justify-stretch gap-3 sm:flex-row lg:items-center">
         <button
-          className="ml-4 items-center rounded-md bg-sky-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 hover:bg-sky-600"
+          className="flex flex-1 items-center justify-center gap-2 justify-self-stretch rounded-lg bg-sky-600 px-4 py-3 font-medium text-white hover:bg-sky-700"
           onClick={onEncodeClick}
         >
+          <FileCode size={20} />
           Encode
         </button>
         <button
-          className="ml-4 items-center rounded-md bg-sky-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 hover:bg-sky-600"
+          className="flex flex-1 items-center justify-center gap-2 justify-self-stretch rounded-lg bg-sky-600 px-4 py-3 font-medium text-white hover:bg-sky-700"
           onClick={onDecodeClick}
         >
+          <FileCode2 size={20} />
           Decode
         </button>
-      </div>
-      {/* Textarea block */}
-      <div className="mt-8 w-full">
-        <label htmlFor="base64-textarea" className="mb-2 block font-bold">
-          Paste URL below
-        </label>
-        <textarea
-          id="base64-textarea"
-          className="mt-2 h-[300px] w-full resize-none rounded-md bg-white/5 px-3 py-2 text-neutral-700 outline outline-2 outline-neutral-300 focus:outline-sky-600 dark:text-neutral-300"
-          value={input}
-          onChange={onInputChange}
+        <SwapAction
+          onClick={onSwapClick}
+          disabled={_isEmpty(input) || _isEmpty(output)}
         />
       </div>
+
       {/* Result block */}
-      <div className="mt-8 w-full">
-        <div className="mb-2 block font-bold">Result</div>
-        <div className="mt-2 h-[300px] w-full resize-none rounded-md bg-white/5 px-3 py-2 text-neutral-700 outline outline-2 outline-neutral-300 focus:outline-sky-600 dark:text-neutral-300">
-          {output}
-        </div>
+      <div className="mb-2 flex w-full items-center justify-between">
+        <label htmlFor="output" className="block font-semibold">
+          Result
+        </label>
+        <CopyAction
+          content={output}
+          disabled={_isNull(output) || _isEmpty(output)}
+        />
       </div>
+      <textarea
+        id="output"
+        className={clsx(
+          'h-64 w-full resize-none rounded-xl border p-4 font-mono text-sm leading-relaxed shadow-sm outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500 lg:h-96',
+          'border-gray-200 bg-white text-gray-700 placeholder-gray-400 focus:bg-white',
+          'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder-neutral-500 dark:focus:bg-neutral-800'
+        )}
+        value={output}
+        placeholder="The results will be displayed here..."
+        readOnly
+      />
+
       {/* Error dialog */}
       <ErrorDialog
         open={error}

@@ -4,12 +4,12 @@
  */
 
 import {
+  ArrowLeftRight,
   Bot,
   CaseUpper,
   FileText,
   Image,
   Languages,
-  Link,
   PencilLine,
   PencilRuler,
   QrCode,
@@ -26,7 +26,7 @@ export const Tools = [
         href: '/tools/dev-tool/url-encoder-decoder',
         desc: '',
         icon: {
-          component: Link,
+          component: ArrowLeftRight,
         },
       },
     ],
