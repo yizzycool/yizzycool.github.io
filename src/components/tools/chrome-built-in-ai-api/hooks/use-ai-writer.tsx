@@ -19,6 +19,9 @@ export default function useAiWriter({ createInstance = true } = {}) {
   const [isPartialUnsupported, setIsPartialUnsupported] = useState<
     boolean | null
   >(null);
+  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState<
+    boolean | null
+  >(false);
   const [writer, setWriter] = useState<AIWriter | null>(null);
   const [options, setOptions] = useState(Options);
 
@@ -37,15 +40,22 @@ export default function useAiWriter({ createInstance = true } = {}) {
   }, [isSupported]);
 
   // To check if writer is supported
-  const checkCapability = () => {
-    const writer = window.ai?.writer;
-    setIsSupported(!!writer?.availability);
+  const checkCapability = async () => {
+    const availability = await window.Writer?.availability?.();
+    if (availability === 'downloadable' || availability === 'downloading') {
+      setIsUserDownloadRequired(true);
+      setIsSupported(false);
+    } else if (availability === 'available') {
+      setIsSupported(true);
+    } else {
+      setIsSupported(false);
+    }
   };
 
   const initWriter = async () => {
-    if (window.ai?.writer) {
+    if (window.Writer) {
       try {
-        const writer = await window.ai.writer.create(options);
+        const writer = await window.Writer.create(options);
         setWriter(writer);
         setIsPartialUnsupported(false);
       } catch (_e) {
@@ -55,13 +65,13 @@ export default function useAiWriter({ createInstance = true } = {}) {
   };
 
   const updateWriter = async (options: AIWriterCreateOptions) => {
-    if (window.ai?.writer) {
+    if (window.Writer) {
       try {
         if (writer) writer?.destroy?.();
         setWriter(null);
         await browserUtils.sleep(500);
         const newOptions = _defaults(options, Options);
-        const newWriter = await window.ai.writer.create(newOptions);
+        const newWriter = await window.Writer.create(newOptions);
         setOptions(newOptions);
         setWriter(newWriter);
         setIsPartialUnsupported(false);
@@ -69,6 +79,11 @@ export default function useAiWriter({ createInstance = true } = {}) {
         setIsPartialUnsupported(true);
       }
     }
+  };
+
+  const triggerUserDownload = async () => {
+    setIsUserDownloadRequired(false);
+    setIsSupported(true);
   };
 
   const write = async (text: string): Promise<string | null> => {
@@ -109,10 +124,12 @@ export default function useAiWriter({ createInstance = true } = {}) {
   return {
     isSupported,
     isPartialUnsupported,
+    isUserDownloadRequired,
     options,
     isOptionUpdating: _isNull(writer),
     write,
     writeStreaming,
     updateWriter,
+    triggerUserDownload,
   };
 }

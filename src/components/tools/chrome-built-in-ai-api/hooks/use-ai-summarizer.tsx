@@ -17,9 +17,11 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
   const [isPartialUnsupported, setIsPartialUnsupported] = useState<
     boolean | null
   >(null);
+  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState<
+    boolean | null
+  >(false);
   const [summarizer, setSummarizer] = useState<AISummarizer | null>(null);
   const [options, setOptions] = useState(Options);
-  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState(false);
 
   useEffect(() => {
     checkCapability();

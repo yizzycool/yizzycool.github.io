@@ -3,6 +3,7 @@ interface Window {
   Translator: AITranslatorFactory;
   LanguageDetector: AILanguageDetectorFactory;
   Summarizer: AISummarizerFactory;
+  Writer: AIWriterFactory;
 }
 
 interface AI {

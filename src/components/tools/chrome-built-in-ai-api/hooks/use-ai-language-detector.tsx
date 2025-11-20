@@ -7,8 +7,10 @@ export default function useAiLanguageDetector({ createInstance = true } = {}) {
   const [isPartialUnsupported, setIsPartialUnsupported] = useState<
     boolean | null
   >(null);
+  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState<
+    boolean | null
+  >(false);
   const [detector, setDetector] = useState<AILanguageDetector | null>(null);
-  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState(false);
 
   useEffect(() => {
     checkCapability();

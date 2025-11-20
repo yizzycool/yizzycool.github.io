@@ -4,16 +4,19 @@ import { useEffect, useState } from 'react';
 
 export default function useAiTranslator({ createInstance = true } = {}) {
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
+  const [isPartialUnsupported, setIsPartialUnsupported] = useState<
+    boolean | null
+  >(null);
+  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState<
+    boolean | null
+  >(false);
   const [params, setParams] = useState<AITranslatorCreateCoreOptions>({
     sourceLanguage: 'zh-Hant',
     targetLanguage: 'en',
   });
   const [translator, setTranslator] = useState<AITranslator | null>(null);
-  const [isPartialUnsupported, setIsPartialUnsupported] = useState<
-    boolean | null
-  >(null);
+
   const [canTranslate, setCanTranslate] = useState<AIAvailability | ''>('');
-  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState(false);
 
   useEffect(() => {
     checkCapability();

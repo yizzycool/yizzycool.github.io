@@ -16,11 +16,13 @@ export default function WriterApi() {
   const {
     isSupported,
     isPartialUnsupported,
+    isUserDownloadRequired,
     options,
     isOptionUpdating,
     write: _write,
     writeStreaming,
     updateWriter,
+    triggerUserDownload,
   } = useAiWriter();
 
   const isLoading =
@@ -32,6 +34,12 @@ export default function WriterApi() {
       {/* Summarizer */}
       {isLoading ? (
         <LoadingSkeleton />
+      ) : isUserDownloadRequired ? (
+        <Unsupported
+          apiType={UnsupportedApiTypes.chromeWriter}
+          type={UnsupportedTypes.userDownloadRequired}
+          downloadAiModelHandler={triggerUserDownload}
+        />
       ) : !isSupported ? (
         <Unsupported
           apiType={UnsupportedApiTypes.chromeWriter}
