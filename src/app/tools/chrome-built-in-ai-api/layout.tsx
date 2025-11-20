@@ -7,7 +7,7 @@ import DiscoverMoreFeatures from '@/components/tools/components/discover-more-fe
 export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // Insert Writer/Rewriter API into <head>
+  // Insert Writer/Rewriter/Prompt API into <head>
   useEffect(() => {
     const head = document.querySelector('head');
     if (!head) return;
@@ -28,9 +28,18 @@ export default function Layout({
 
     head.appendChild(rewriterMeta);
 
+    // <meta> tag for prompt API
+    const promptMeta = document.createElement('meta');
+    promptMeta.httpEquiv = 'origin-trial';
+    promptMeta.content =
+      'AvXWDJ953Yy1wVHjgvANJLXt4aq8sl+zCVdHgIribEZ7kswvdRR4RjOy8qwTJ6J4vhfh4bu9HfRbtqvTq32PtQAAAABneyJvcmlnaW4iOiJodHRwczovL3lpenp5Y29vbC5naXRodWIuaW86NDQzIiwiZmVhdHVyZSI6IkFJUHJvbXB0QVBJTXVsdGltb2RhbElucHV0IiwiZXhwaXJ5IjoxNzc0MzEwNDAwfQ==';
+
+    head.appendChild(promptMeta);
+
     return () => {
       head.removeChild(writerMeta);
       head.removeChild(rewriterMeta);
+      head.removeChild(promptMeta);
     };
   }, []);
 

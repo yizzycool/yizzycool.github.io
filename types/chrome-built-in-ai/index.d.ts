@@ -1,10 +1,11 @@
 interface Window {
-  ai: AI;
+  // ai: AI;
   Translator: AITranslatorFactory;
   LanguageDetector: AILanguageDetectorFactory;
   Summarizer: AISummarizerFactory;
   Writer: AIWriterFactory;
   Rewriter: AIRewriterFactory;
+  LanguageModel: AILanguageModelFactory;
 }
 
 interface AI {

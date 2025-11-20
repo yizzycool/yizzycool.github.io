@@ -17,6 +17,7 @@ export default function PromptApi() {
   const {
     isSupported,
     isPartialUnsupported,
+    isUserDownloadRequired,
     options,
     isOptionUpdating,
     session,
@@ -24,6 +25,7 @@ export default function PromptApi() {
     promptStreaming,
     updateLanguageModel,
     resetModelWithCustomOptions,
+    triggerUserDownload,
   } = useAiLanguageModel();
 
   const isLoading =
@@ -35,6 +37,12 @@ export default function PromptApi() {
       {/* Prompt */}
       {isLoading ? (
         <LoadingSkeleton />
+      ) : isUserDownloadRequired ? (
+        <Unsupported
+          apiType={UnsupportedApiTypes.chromePromptApi}
+          type={UnsupportedTypes.userDownloadRequired}
+          downloadAiModelHandler={triggerUserDownload}
+        />
       ) : !isSupported ? (
         <Unsupported
           apiType={UnsupportedApiTypes.chromePromptApi}

@@ -4,7 +4,7 @@ interface AILanguageModelFactory {
     options?: AILanguageModelCreateCoreOptions
   ) => Promise<AIAvailability>;
   params: () => Promise<AILanguageModelParams | undefined>;
-  capabilities: () => Promise<AILanguageModelCapabilities>;
+  // capabilities: () => Promise<AILanguageModelCapabilities>;
 }
 
 interface AILanguageModel extends AIDestroyable {

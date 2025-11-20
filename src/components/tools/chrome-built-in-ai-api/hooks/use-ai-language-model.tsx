@@ -16,6 +16,9 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
   const [isPartialUnsupported, setIsPartialUnsupported] = useState<
     boolean | null
   >(null);
+  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState<
+    boolean | null
+  >(false);
   const [session, setSession] = useState<AILanguageModel | null>(null);
   const [options, setOptions] = useState(Options);
 
@@ -34,15 +37,22 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
   }, [isSupported]);
 
   // To check if language detector is supported
-  const checkCapability = () => {
-    const languageModel = window.ai?.languageModel;
-    setIsSupported(!!languageModel?.capabilities);
+  const checkCapability = async () => {
+    const availability = await window.LanguageModel?.availability?.();
+    if (availability === 'downloadable' || availability === 'downloading') {
+      setIsUserDownloadRequired(true);
+      setIsSupported(false);
+    } else if (availability === 'available') {
+      setIsSupported(true);
+    } else {
+      setIsSupported(false);
+    }
   };
 
   const initLanguageModel = async () => {
-    if (window.ai?.languageModel) {
+    if (window.LanguageModel) {
       try {
-        const session = await window.ai.languageModel.create({});
+        const session = await window.LanguageModel.create({});
         setSession(session);
         setIsPartialUnsupported(false);
       } catch (_e) {
@@ -52,13 +62,13 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
   };
 
   const updateLanguageModel = async (options: AILanguageModelCreateOptions) => {
-    if (window.ai?.languageModel) {
+    if (window.LanguageModel) {
       try {
         if (session) session?.destroy?.();
         setSession(null);
         await browserUtils.sleep(500);
         const newOptions = _defaults(options, Options);
-        const newSession = await window.ai.languageModel.create(newOptions);
+        const newSession = await window.LanguageModel.create(newOptions);
         setOptions(newOptions);
         setSession(newSession);
         setIsPartialUnsupported(false);
@@ -69,6 +79,11 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
   };
 
   const resetModelWithCustomOptions = () => updateLanguageModel(options);
+
+  const triggerUserDownload = async () => {
+    setIsUserDownloadRequired(false);
+    setIsSupported(true);
+  };
 
   const prompt = async (text: string): Promise<string | null> => {
     if (!session) return null;
@@ -103,6 +118,7 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
   return {
     isSupported,
     isPartialUnsupported,
+    isUserDownloadRequired,
     options,
     isOptionUpdating: _isNull(session),
     session,
@@ -110,5 +126,6 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
     promptStreaming,
     updateLanguageModel,
     resetModelWithCustomOptions,
+    triggerUserDownload,
   };
 }
