@@ -16,11 +16,13 @@ export default function RewriterApi() {
   const {
     isSupported,
     isPartialUnsupported,
+    isUserDownloadRequired,
     options,
     isOptionUpdating,
     rewrite: _rewrite,
     rewriteStreaming,
     updateRewriter,
+    triggerUserDownload,
   } = useAiRewriter();
 
   const isLoading =
@@ -32,6 +34,12 @@ export default function RewriterApi() {
       {/* Summarizer */}
       {isLoading ? (
         <LoadingSkeleton />
+      ) : isUserDownloadRequired ? (
+        <Unsupported
+          apiType={UnsupportedApiTypes.chromeRewriter}
+          type={UnsupportedTypes.userDownloadRequired}
+          downloadAiModelHandler={triggerUserDownload}
+        />
       ) : !isSupported ? (
         <Unsupported
           apiType={UnsupportedApiTypes.chromeRewriter}

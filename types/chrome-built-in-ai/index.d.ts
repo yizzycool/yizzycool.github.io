@@ -4,6 +4,7 @@ interface Window {
   LanguageDetector: AILanguageDetectorFactory;
   Summarizer: AISummarizerFactory;
   Writer: AIWriterFactory;
+  Rewriter: AIRewriterFactory;
 }
 
 interface AI {

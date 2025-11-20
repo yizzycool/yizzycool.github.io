@@ -19,6 +19,9 @@ export default function useAiRewriter({ createInstance = true } = {}) {
   const [isPartialUnsupported, setIsPartialUnsupported] = useState<
     boolean | null
   >(null);
+  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState<
+    boolean | null
+  >(false);
   const [rewriter, setRewriter] = useState<AIRewriter | null>(null);
   const [options, setOptions] = useState(Options);
 
@@ -37,15 +40,22 @@ export default function useAiRewriter({ createInstance = true } = {}) {
   }, [isSupported]);
 
   // To check if rewriter is supported
-  const checkCapability = () => {
-    const rewriter = window.ai?.rewriter;
-    setIsSupported(!!rewriter?.availability);
+  const checkCapability = async () => {
+    const availability = await window.Rewriter?.availability?.();
+    if (availability === 'downloadable' || availability === 'downloading') {
+      setIsUserDownloadRequired(true);
+      setIsSupported(false);
+    } else if (availability === 'available') {
+      setIsSupported(true);
+    } else {
+      setIsSupported(false);
+    }
   };
 
   const initRewriter = async () => {
-    if (window.ai?.rewriter) {
+    if (window.Rewriter) {
       try {
-        const rewriter = await window.ai.rewriter.create(options);
+        const rewriter = await window.Rewriter.create(options);
         setRewriter(rewriter);
         setIsPartialUnsupported(false);
       } catch (_e) {
@@ -55,13 +65,13 @@ export default function useAiRewriter({ createInstance = true } = {}) {
   };
 
   const updateRewriter = async (options: AIRewriterCreateOptions) => {
-    if (window.ai?.rewriter) {
+    if (window.Rewriter) {
       try {
         if (rewriter) rewriter?.destroy?.();
         setRewriter(null);
         await browserUtils.sleep(500);
         const newOptions = _defaults(options, Options);
-        const newRewriter = await window.ai.rewriter.create(newOptions);
+        const newRewriter = await window.Rewriter.create(newOptions);
         setOptions(newOptions);
         setRewriter(newRewriter);
         setIsPartialUnsupported(false);
@@ -69,6 +79,11 @@ export default function useAiRewriter({ createInstance = true } = {}) {
         setIsPartialUnsupported(true);
       }
     }
+  };
+
+  const triggerUserDownload = async () => {
+    setIsUserDownloadRequired(false);
+    setIsSupported(true);
   };
 
   const rewrite = async (text: string): Promise<string | null> => {
@@ -109,10 +124,12 @@ export default function useAiRewriter({ createInstance = true } = {}) {
   return {
     isSupported,
     isPartialUnsupported,
+    isUserDownloadRequired,
     options,
     isOptionUpdating: _isNull(rewriter),
     rewrite,
     rewriteStreaming,
     updateRewriter,
+    triggerUserDownload,
   };
 }
