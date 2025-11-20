@@ -8,6 +8,7 @@ export default function useAiLanguageDetector({ createInstance = true } = {}) {
     boolean | null
   >(null);
   const [detector, setDetector] = useState<AILanguageDetector | null>(null);
+  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState(false);
 
   useEffect(() => {
     checkCapability();
@@ -24,9 +25,16 @@ export default function useAiLanguageDetector({ createInstance = true } = {}) {
   }, [isSupported]);
 
   // To check if language detector is supported
-  const checkCapability = () => {
-    const languageDetector = window.LanguageDetector;
-    setIsSupported(!!languageDetector?.availability);
+  const checkCapability = async () => {
+    const availability = await window.LanguageDetector?.availability?.();
+    if (availability === 'downloadable' || availability === 'downloading') {
+      setIsUserDownloadRequired(true);
+      setIsSupported(false);
+    } else if (availability === 'available') {
+      setIsSupported(true);
+    } else {
+      setIsSupported(false);
+    }
   };
 
   const initLanguageDetector = async () => {
@@ -41,6 +49,11 @@ export default function useAiLanguageDetector({ createInstance = true } = {}) {
     }
   };
 
+  const triggerUserDownload = async () => {
+    setIsUserDownloadRequired(false);
+    setIsSupported(true);
+  };
+
   const detect = async (
     text: string
   ): Promise<Array<LanguageDetectionResult> | null> => {
@@ -52,6 +65,8 @@ export default function useAiLanguageDetector({ createInstance = true } = {}) {
   return {
     isSupported,
     isPartialUnsupported,
+    isUserDownloadRequired,
     detect,
+    triggerUserDownload,
   };
 }

@@ -21,7 +21,13 @@ export default function LanguageDetectorApi() {
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const { isSupported, isPartialUnsupported, detect } = useAiLanguageDetector();
+  const {
+    isSupported,
+    isPartialUnsupported,
+    isUserDownloadRequired,
+    detect,
+    triggerUserDownload,
+  } = useAiLanguageDetector();
 
   const isLoading =
     _isNull(isSupported) || (isSupported && _isNull(isPartialUnsupported));
@@ -50,6 +56,12 @@ export default function LanguageDetectorApi() {
       {/* Language Detector */}
       {isLoading ? (
         <LoadingSkeleton />
+      ) : isUserDownloadRequired ? (
+        <Unsupported
+          apiType={UnsupportedApiTypes.chromeLanguageDetectorApi}
+          type={UnsupportedTypes.userDownloadRequired}
+          downloadAiModelHandler={triggerUserDownload}
+        />
       ) : !isSupported ? (
         <Unsupported
           apiType={UnsupportedApiTypes.chromeLanguageDetectorApi}

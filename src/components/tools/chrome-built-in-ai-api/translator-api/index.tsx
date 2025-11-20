@@ -24,10 +24,12 @@ export default function TranslatorApi() {
   const {
     isSupported,
     isPartialUnsupported,
+    isUserDownloadRequired,
     translate,
     params,
     setTranslatorLang,
     canTranslate,
+    triggerUserDownload,
   } = useAiTranslator();
 
   const isLoading =
@@ -78,6 +80,12 @@ export default function TranslatorApi() {
       {/* Translator */}
       {isLoading ? (
         <LoadingSkeleton />
+      ) : isUserDownloadRequired ? (
+        <Unsupported
+          apiType={UnsupportedApiTypes.chromeTranslatorApi}
+          type={UnsupportedTypes.userDownloadRequired}
+          downloadAiModelHandler={triggerUserDownload}
+        />
       ) : !isSupported ? (
         <Unsupported
           apiType={UnsupportedApiTypes.chromeTranslatorApi}

@@ -13,6 +13,7 @@ export default function useAiTranslator({ createInstance = true } = {}) {
     boolean | null
   >(null);
   const [canTranslate, setCanTranslate] = useState<AIAvailability | ''>('');
+  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState(false);
 
   useEffect(() => {
     checkCapability();
@@ -30,9 +31,19 @@ export default function useAiTranslator({ createInstance = true } = {}) {
   }, [isSupported]);
 
   // To check if translator is supported
-  const checkCapability = () => {
-    const translator = window.Translator;
-    setIsSupported(!!translator?.availability);
+  const checkCapability = async () => {
+    const availability = await window.Translator?.availability?.({
+      sourceLanguage: params.sourceLanguage,
+      targetLanguage: params.targetLanguage,
+    });
+    if (availability === 'downloadable' || availability === 'downloading') {
+      setIsUserDownloadRequired(true);
+      setIsSupported(false);
+    } else if (availability === 'available') {
+      setIsSupported(true);
+    } else {
+      setIsSupported(false);
+    }
   };
 
   const resetTranslator = () => {
@@ -104,6 +115,11 @@ export default function useAiTranslator({ createInstance = true } = {}) {
     }
   };
 
+  const triggerUserDownload = async () => {
+    setIsUserDownloadRequired(false);
+    setIsSupported(true);
+  };
+
   const translate = async (text: string): Promise<string> => {
     if (!translator) return '';
     const result = await translator.translate(text);
@@ -113,9 +129,11 @@ export default function useAiTranslator({ createInstance = true } = {}) {
   return {
     isSupported,
     isPartialUnsupported,
+    isUserDownloadRequired,
     translate,
     params,
     setTranslatorLang,
     canTranslate,
+    triggerUserDownload,
   };
 }
