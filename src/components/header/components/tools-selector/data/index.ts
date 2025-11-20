@@ -9,6 +9,7 @@ import {
   FileText,
   Image,
   Languages,
+  Link,
   PencilLine,
   PencilRuler,
   QrCode,
@@ -17,6 +18,19 @@ import {
 } from 'lucide-react';
 
 export const Tools = [
+  {
+    name: 'Developer Tools',
+    items: [
+      {
+        name: 'URL Encoder & Decoder',
+        href: '/tools/dev-tool/url-encoder-decoder',
+        desc: '',
+        icon: {
+          component: Link,
+        },
+      },
+    ],
+  },
   {
     name: 'Image Tools',
     items: [
