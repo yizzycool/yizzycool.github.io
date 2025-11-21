@@ -21,19 +21,20 @@ export default function Selector({
   return (
     <Field>
       {title && (
-        <Label className="text-sm/6 font-medium dark:text-white">{title}</Label>
+        <Label className="text-sm/6 font-bold dark:text-white">{title}</Label>
       )}
       {desc && (
-        <Description className="text-sm/6 dark:text-white/50">
+        <Description className="text-sm/6 opacity-70 dark:text-white/50">
           {desc}
         </Description>
       )}
       <div className="relative">
         <Select
           className={clsx(
-            'mt-3 block w-full appearance-none rounded-lg border-none bg-neutral-800/5 px-3 py-1.5 text-sm/6',
-            'dark:bg-white/5 dark:text-white',
-            'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25',
+            'mt-3 block w-full appearance-none rounded-lg border px-4 py-2 font-mono text-sm leading-relaxed outline-none',
+            'focus:border-transparent focus:ring-2 focus:ring-blue-500',
+            'border-gray-200 bg-white text-gray-700 placeholder-gray-400',
+            'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder-neutral-500',
             // Make the text of each option black on Windows
             '*:text-black'
           )}

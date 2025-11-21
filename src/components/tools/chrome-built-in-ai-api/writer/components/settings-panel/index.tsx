@@ -62,7 +62,7 @@ export default function SettingsPanel({
             title="Shared Context"
             desc="Enables shared context across multiple write requests"
             placeholder="ex: A formal email to a bank asking something"
-            onChange={(value) => onChange('sharedContext', value)}
+            onChange={(e) => onChange('sharedContext', e.target.value)}
           />
         </div>
         {Settings.map((setting) => (
