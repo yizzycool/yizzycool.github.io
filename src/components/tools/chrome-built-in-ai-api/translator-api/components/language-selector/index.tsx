@@ -5,6 +5,7 @@ import useLanguageTagToHumanReadable from '@/components/tools/chrome-built-in-ai
 import { Dialog } from '@headlessui/react';
 import { ChevronDown } from 'lucide-react';
 import ISO6391 from '@/components/tools/chrome-built-in-ai-api/translator-api/data/iso-639-1';
+import clsx from 'clsx';
 
 export default function LanguageSelector({
   params,
@@ -38,13 +39,17 @@ export default function LanguageSelector({
   };
 
   return (
-    <div className="mb-3 text-lg font-bold">
+    <div className="text-sm font-semibold">
       <button
-        className="m-auto flex items-center justify-center"
+        className={clsx(
+          'm-auto flex items-center justify-center rounded-md px-3 py-2 transition-all',
+          'hover:bg-neutral-200 dark:hover:bg-neutral-700',
+          'text-neutral-500 dark:text-neutral-400'
+        )}
         onClick={openMenu}
       >
         {language}
-        <ChevronDown className="ml-2 h-6 w-6" />
+        <ChevronDown className="ml-2" size={16} />
       </button>
       <Dialog
         open={opened}

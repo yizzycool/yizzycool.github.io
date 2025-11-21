@@ -1,19 +1,24 @@
 'use client';
 
+import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 import useAiTranslator from '../hooks/use-ai-translator';
+import { ArrowRightLeft } from 'lucide-react';
 import Title from '../../components/title';
 import LanguageSelector from './components/language-selector';
 import CanTranslateHint from './components/can-translate-hint';
-import SwitchButton from './components/switch-button';
 import Unsupported, {
   UnsupportedApiTypes,
   UnsupportedTypes,
 } from '../../components/unsupported';
 import LoadingSkeleton from '../components/loading-skeleton';
+import Description from '../../components/description';
+import CopyAction from '@/components/common/action-button/copy';
+import SpeakAction from '@/components/common/action-button/speak';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _values from 'lodash/values';
+import _size from 'lodash/size';
 
 export default function TranslatorApi() {
   const [text, setText] = useState('');
@@ -75,8 +80,13 @@ export default function TranslatorApi() {
   };
 
   return (
-    <div className="mx-auto text-center">
+    <div className="mx-auto max-w-screen-lg px-5 pb-20 text-center lg:px-10">
       <Title>Translator</Title>
+      <Description>
+        A fast, accurate translation tool powered by Chrome’s built-in Gemini
+        AI—no setup, no API key, just instant multilingual translation with
+        natural results.
+      </Description>
       {/* Translator */}
       {isLoading ? (
         <LoadingSkeleton />
@@ -95,35 +105,103 @@ export default function TranslatorApi() {
         <Unsupported type={UnsupportedTypes.partialUnsupported} />
       ) : (
         <>
-          <div className="flex flex-col justify-center gap-5 px-5 pb-40 pt-20 md:flex-row">
-            {/* Input */}
-            <div className="flex-1">
-              <LanguageSelector
-                params={params}
-                type="source"
-                changeLanguage={changeLanguage}
-              />
-              <div className="relative">
+          <div
+            className={clsx(
+              'mt-8 flex flex-col justify-center',
+              'rounded-xl border',
+              'border-neutral-200 bg-white text-neutral-700 placeholder-neutral-400',
+              'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder-neutral-500'
+            )}
+          >
+            {/* Lauguage selector block */}
+            <div
+              className={clsx(
+                'flex w-full items-center justify-stretch gap-3 p-2',
+                'border-b border-neutral-200 dark:border-neutral-700'
+              )}
+            >
+              <div className="flex-1">
+                <LanguageSelector
+                  params={params}
+                  type="source"
+                  changeLanguage={changeLanguage}
+                />
+              </div>
+              <button
+                className={clsx('mx-auto block cursor-pointer px-4')}
+                onClick={switchSourceTargetLanguage}
+              >
+                <ArrowRightLeft className="" size={16} />
+              </button>
+              <div className="flex-1">
+                <LanguageSelector
+                  params={params}
+                  type="target"
+                  changeLanguage={changeLanguage}
+                />
+              </div>
+            </div>
+
+            {/* Textarea block */}
+            <div className="flex flex-col sm:flex-row">
+              {/* input */}
+              <div
+                className={clsx(
+                  'relative flex h-56 w-full flex-col sm:h-[300px]',
+                  'border-b border-neutral-200 sm:border-b-0 sm:border-r dark:border-neutral-700'
+                )}
+              >
                 <textarea
+                  id="input"
                   autoFocus
-                  className="block min-h-60 w-full flex-1 resize-none rounded-md border border-neutral-400/50 bg-transparent px-6 py-4 text-xl focus:outline-none"
+                  className={clsx(
+                    'block w-full flex-1 resize-none border-none bg-transparent px-3 py-2 focus:outline-none',
+                    'border-neutral-200 bg-white text-neutral-700 placeholder-neutral-400',
+                    'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder-neutral-500'
+                  )}
                   onChange={onChange}
                   value={text}
                   disabled={canTranslate !== 'available'}
+                  placeholder="Enter the text to be translated..."
                 />
+                {/* Word count */}
+                <div className="flex items-center justify-between px-3 py-2">
+                  <SpeakAction
+                    content={text}
+                    disabled={_isEmpty(text)}
+                    size={14}
+                  />
+                  <div className="text-xs opacity-50">
+                    {_size(text)} characters
+                  </div>
+                </div>
                 <CanTranslateHint params={params} canTranslate={canTranslate} />
               </div>
-            </div>
-            {/* Output */}
-            <div className="relative flex-1">
-              <SwitchButton onSwitch={switchSourceTargetLanguage} />
-              <LanguageSelector
-                params={params}
-                type="target"
-                changeLanguage={changeLanguage}
-              />
-              <div className="block min-h-60 w-full flex-1 rounded-md bg-neutral-400/20 px-6 py-4 text-left text-xl">
-                {translation}
+
+              {/* output */}
+              <div className="relative flex h-64 w-full flex-col sm:h-[300px]">
+                <textarea
+                  id="output"
+                  className={clsx(
+                    'block h-full w-full flex-1 resize-none border-none bg-transparent px-3 py-2 focus:outline-none',
+                    'border-neutral-200 bg-white text-neutral-700 placeholder-neutral-400',
+                    'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder-neutral-500'
+                  )}
+                  value={translation}
+                  readOnly
+                />
+                {/* Copy */}
+                <div className="flex items-center justify-between border-t border-neutral-200 px-3 py-2 dark:border-neutral-700">
+                  <SpeakAction
+                    content={translation}
+                    disabled={_isEmpty(translation)}
+                    size={14}
+                  />
+                  <CopyAction
+                    content={translation}
+                    disabled={_isEmpty(translation)}
+                  />
+                </div>
               </div>
             </div>
           </div>

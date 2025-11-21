@@ -6,9 +6,11 @@ import { ArrowRightLeft } from 'lucide-react';
 export default function SwapAction({
   onClick = () => {},
   disabled = false,
+  size = 18,
 }: {
   onClick?: () => void;
   disabled?: boolean;
+  size?: number;
 }) {
   return (
     <button
@@ -22,7 +24,7 @@ export default function SwapAction({
       )}
     >
       <ArrowRightLeft
-        size={18}
+        size={size}
         className="rotate-90 transition-all duration-500 group-active/switch:rotate-180"
       />
     </button>
