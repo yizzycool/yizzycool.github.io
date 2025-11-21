@@ -29,13 +29,13 @@ export default function Textarea({
         <Label className="text-sm/6 font-bold dark:text-white">{title}</Label>
       )}
       {desc && (
-        <Description className="text-sm/6 opacity-70 dark:text-white/50">
+        <Description className="mb-3 text-sm/6 opacity-70 dark:text-white/50">
           {desc}
         </Description>
       )}
       <TA
         className={clsx(
-          'mt-3 w-full resize-none rounded-lg border px-4 py-3 font-mono text-sm leading-relaxed outline-none',
+          'w-full resize-none rounded-lg border px-4 py-3 font-mono text-sm leading-relaxed outline-none',
           'focus:border-transparent focus:ring-2 focus:ring-blue-500',
           'border-gray-200 bg-white text-gray-700 placeholder-gray-400',
           'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder-neutral-500'

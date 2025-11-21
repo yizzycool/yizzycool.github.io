@@ -62,7 +62,7 @@ export default function UrlEncoderDecoder() {
       </Description>
 
       {/* Input block */}
-      <div className="mb-2 mt-8 flex w-full items-center justify-between">
+      <div className="mb-3 mt-8 flex w-full items-center justify-between">
         <label htmlFor="textarea" className="block font-semibold">
           Paste URL below
         </label>
@@ -102,7 +102,7 @@ export default function UrlEncoderDecoder() {
       </div>
 
       {/* Result block */}
-      <div className="mb-2 flex w-full items-center justify-between">
+      <div className="mb-3 flex w-full items-center justify-between">
         <label htmlFor="output" className="block font-semibold">
           Result
         </label>
