@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import { Check, Copy } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import _isNil from 'lodash/isNil';
 
 export default function CopyAction({
@@ -13,6 +13,8 @@ export default function CopyAction({
   disabled?: boolean;
 }) {
   const [copied, setCopied] = useState(false);
+  const [isActionSupported, setIsActionSupported] = useState(false);
+  const [isMimeTypeSupported, setIsMimeTypeSupported] = useState(false);
 
   const mimeType = useMemo(() => {
     if (typeof content === 'string') {
@@ -24,22 +26,23 @@ export default function CopyAction({
     }
   }, [content]);
 
-  const isFunctionSupported = useMemo(() => {
-    return !!ClipboardItem && !!navigator.clipboard?.write;
-  }, []);
-
-  const isClipboardSupportMimeType = useMemo(() => {
-    return ClipboardItem.supports(mimeType);
-  }, [mimeType]);
-
   const isButtonDisabled = useMemo(() => {
     return (
-      disabled ||
-      _isNil(content) ||
-      !isClipboardSupportMimeType ||
-      !isFunctionSupported
+      disabled || _isNil(content) || !isMimeTypeSupported || !isActionSupported
     );
-  }, [disabled, content, isClipboardSupportMimeType, isFunctionSupported]);
+  }, [disabled, content, isMimeTypeSupported, isActionSupported]);
+
+  // Check if ClipboardItem and navigator?.clipboard?.write exist
+  useEffect(() => {
+    setIsActionSupported(
+      !!window.ClipboardItem && !!window.navigator?.clipboard?.write
+    );
+  }, []);
+
+  // Check if mimeType is supported
+  useEffect(() => {
+    setIsMimeTypeSupported(ClipboardItem.supports(mimeType));
+  }, [mimeType]);
 
   const handleCopy = async () => {
     if (isButtonDisabled) return;
@@ -61,7 +64,7 @@ export default function CopyAction({
       });
   };
 
-  if (!isFunctionSupported) return null;
+  if (!isActionSupported) return null;
 
   return (
     <button

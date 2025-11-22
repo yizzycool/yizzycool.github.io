@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import { Clipboard } from 'lucide-react';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import _find from 'lodash/find';
 
 type InputType = 'string' | 'image';
@@ -27,14 +27,20 @@ export default function PasteAction<T extends InputType>({
   size = 12,
   type = 'string' as T,
 }: Props<T>) {
-  const isFunctionSupported = useMemo(() => {
-    if (type === 'string') return !!navigator.clipboard?.readText;
-    else return !!navigator.clipboard?.read;
-  }, [type]);
+  const [isActionSupported, setIsActionSupported] = useState(false);
 
   const isButtonDisabled = useMemo(() => {
-    return disabled || !isFunctionSupported;
-  }, [disabled, isFunctionSupported]);
+    return disabled || !isActionSupported;
+  }, [disabled, isActionSupported]);
+
+  // Check if ClipboardItem and navigator?.clipboard?.write exist
+  useEffect(() => {
+    if (type === 'string') {
+      setIsActionSupported(!!window.navigator?.clipboard?.readText);
+    } else {
+      setIsActionSupported(!!window.navigator?.clipboard?.read);
+    }
+  }, [type]);
 
   const onPasteClick = async () => {
     if (isButtonDisabled) return;
@@ -56,7 +62,7 @@ export default function PasteAction<T extends InputType>({
     }
   };
 
-  if (!isFunctionSupported) return null;
+  if (!isActionSupported) return null;
 
   return (
     <button

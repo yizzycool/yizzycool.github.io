@@ -17,6 +17,7 @@ import CopyAction from '@/components/common/action-button/copy';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _size from 'lodash/size';
+import ImageInfoTag from '../components/ImageInfoTag';
 
 type ImageInfo = {
   blob: Blob | null;
@@ -152,9 +153,9 @@ export default function Base64ToImage() {
                 src={imageInfo.image.src}
                 alt="result image"
               />
-              <div className="absolute bottom-4 left-4 z-20 flex gap-2">
+              <div className="absolute bottom-4 left-4 z-20 flex gap-2 overflow-hidden">
                 <ImageInfoTag
-                  title="Dimensions"
+                  title=""
                   value={`${imageInfo.width} x ${imageInfo.height}`}
                 />
                 <ImageInfoTag
@@ -177,24 +178,3 @@ export default function Base64ToImage() {
     </div>
   );
 }
-
-const ImageInfoTag = ({
-  title = '',
-  value = '',
-}: {
-  title: string;
-  value: string | number | null | undefined;
-}) => {
-  return (
-    <div
-      className={clsx(
-        'flex items-center gap-2 rounded-full px-3 py-1.5 font-mono text-xs text-white shadow-lg backdrop-blur-md',
-        'border border-white/10',
-        'bg-neutral-900/80 dark:bg-neutral-800/80'
-      )}
-    >
-      {!!title && <span className="opacity-60">{title}:</span>}
-      {!!value && value}
-    </div>
-  );
-};
