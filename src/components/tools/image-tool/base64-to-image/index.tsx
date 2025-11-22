@@ -73,7 +73,7 @@ export default function Base64ToImage() {
     timerRef.current = setTimeout(() => transferToImage(base64String), 500);
   };
 
-  const onCopyBase64 = (value: string) => {
+  const onPasteBase64 = (value: string) => {
     setBase64(value as string);
     timerRef.current = setTimeout(() => transferToImage(value as string), 500);
   };
@@ -103,7 +103,7 @@ export default function Base64ToImage() {
             Paste Base64 string below
           </label>
           <div className="flex items-center gap-2">
-            <PasteAction onClick={onCopyBase64} />
+            <PasteAction onClick={onPasteBase64} />
             <DeleteAction onClick={onClearBase64} disabled={_isEmpty(base64)} />
           </div>
         </div>
