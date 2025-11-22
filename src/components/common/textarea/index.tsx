@@ -35,10 +35,13 @@ export default function Textarea({
       )}
       <TA
         className={clsx(
-          'w-full resize-none rounded-lg border px-4 py-3 font-mono text-sm leading-relaxed outline-none',
-          'focus:border-transparent focus:ring-2 focus:ring-blue-500',
-          'border-neutral-200 bg-white text-neutral-700 placeholder-neutral-400',
-          'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder-neutral-500'
+          'w-full rounded-lg border px-4 py-3',
+          'resize-none font-mono text-sm leading-relaxed outline-none',
+          'border-neutral-200 dark:border-neutral-700',
+          'bg-white dark:bg-neutral-800',
+          'text-neutral-700 dark:text-neutral-200',
+          'placeholder-neutral-400 dark:placeholder-neutral-500',
+          'focus:border-transparent focus:ring-2 focus:ring-blue-500'
         )}
         rows={rows}
         id={id}

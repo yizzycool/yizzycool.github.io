@@ -8,6 +8,7 @@ import Title from '../../components/title';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import FilePicker from '@/components/common/file-picker';
+import Description from '../../components/description';
 
 type ImageInfo = {
   image: HTMLImageElement | null;
@@ -49,6 +50,10 @@ export default function ImageToBase64() {
   return (
     <div className="mx-auto flex min-h-full max-w-screen-lg flex-col items-center px-5 lg:px-10">
       <Title>Image to Base64</Title>
+      <Description>
+        Convert your images to Base64 strings instantly. Supports drag & drop,
+        runs entirely in your browser to ensure privacy.
+      </Description>
       {/* File Picker */}
       <FilePicker type="image" onFileChange={onFileChange} />
       {/* Textarea block */}

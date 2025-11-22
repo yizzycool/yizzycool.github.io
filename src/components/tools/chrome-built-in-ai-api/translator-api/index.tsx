@@ -83,8 +83,8 @@ export default function TranslatorApi() {
     <div className="mx-auto max-w-screen-lg px-5 pb-20 text-center lg:px-10">
       <Title>Translator</Title>
       <Description>
-        A fast, accurate translation tool powered by Chrome’s built-in Gemini
-        AI—no setup, no API key, just instant multilingual translation with
+        A fast, accurate translation tool powered by Chrome’s built-in Gemini AI
+        - no setup, no API key, just instant multilingual translation with
         natural results.
       </Description>
       {/* Translator */}
@@ -171,9 +171,7 @@ export default function TranslatorApi() {
                     disabled={_isEmpty(text)}
                     size={14}
                   />
-                  <div className="text-xs opacity-50">
-                    {_size(text)} characters
-                  </div>
+                  <div className="text-xs opacity-50">{_size(text)} chars</div>
                 </div>
                 <CanTranslateHint params={params} canTranslate={canTranslate} />
               </div>

@@ -1,17 +1,25 @@
 'use client';
 
+import clsx from 'clsx';
 import type { ChangeEvent } from 'react';
 import { useRef, useState } from 'react';
 import imageUtils from '@/utils/image-utils';
 import Image from 'next/image';
 import ErrorDialog from '@/components/common/dialog/error';
-import { Checkbox, Field, Label } from '@headlessui/react';
-import { Check, Trash2 } from 'lucide-react';
+import { FileText, View } from 'lucide-react';
 import Title from '../../components/title';
+import Description from '../../components/description';
+import DeleteAction from '@/components/common/action-button/delete';
+import Textarea from '@/components/common/textarea';
+import PasteAction from '@/components/common/action-button/paste';
+import DownloadAction from '@/components/common/action-button/download';
+import CopyAction from '@/components/common/action-button/copy';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
+import _size from 'lodash/size';
 
 type ImageInfo = {
+  blob: Blob | null;
   image: HTMLImageElement | null;
   width: number;
   height: number;
@@ -19,6 +27,7 @@ type ImageInfo = {
 };
 
 const DefaultImageInfo: ImageInfo = {
+  blob: null,
   image: null,
   width: 0,
   height: 0,
@@ -26,7 +35,6 @@ const DefaultImageInfo: ImageInfo = {
 };
 
 export default function Base64ToImage() {
-  const [autoUpdate, setAutoUpdate] = useState(true);
   const [base64, setBase64] = useState<string>('');
   const [imageInfo, setImageInfo] = useState<ImageInfo>(DefaultImageInfo);
 
@@ -46,23 +54,27 @@ export default function Base64ToImage() {
         : `data:image/png;base64,${base64String}`;
       const image = await imageUtils.newImageFromBase64(transformedBase64);
       const { width, height } = image;
-      setImageInfo({ image, width, height, error: false });
-    } catch (e) {
-      console.log('[ERROR] convert image:', e);
-      setImageInfo({ image: null, width: 0, height: 0, error: true });
+      const type = imageUtils.parseTypeFromBase64(transformedBase64);
+      const blob = await imageUtils.imageToBlob(image, type || 'image/png');
+      setImageInfo({ image, width, height, error: false, blob });
+    } catch (_e) {
+      console.log('An error occurred while converting image');
+      setImageInfo(DefaultImageInfo);
     }
   };
-
-  const onAutoUpdateChecked = (checked: boolean) => setAutoUpdate(checked);
 
   const onBase64StringChanged = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const base64String = event.target.value;
     setBase64(base64String);
-    if (!autoUpdate) return;
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
     timerRef.current = setTimeout(() => transferToImage(base64String), 500);
+  };
+
+  const onCopyBase64 = (value: string) => {
+    setBase64(value as string);
+    timerRef.current = setTimeout(() => transferToImage(value as string), 500);
   };
 
   const onClearBase64 = () => {
@@ -73,61 +85,86 @@ export default function Base64ToImage() {
   return (
     <div className="mx-auto flex min-h-full max-w-screen-lg flex-col items-center px-5 lg:px-10">
       <Title>Base64 to Image</Title>
-      <div className="mt-8 flex w-full items-center justify-between">
-        {/* Enable auto update or not */}
-        <Field className="flex items-center gap-2">
-          <Checkbox
-            checked={autoUpdate}
-            onChange={onAutoUpdateChecked}
-            className="group block size-6 rounded-md bg-white/10 p-1 outline-none ring-1 ring-inset ring-black/30 data-[checked]:bg-white dark:ring-white/30"
-          >
-            <Check
-              strokeWidth={4}
-              className="hidden size-4 stroke-black group-data-[checked]:block"
-            />
-          </Checkbox>
-          <Label className="cursor-pointer">Auto Update</Label>
-        </Field>
-        <div className="flex items-center">
-          <button
-            className="flex items-center rounded-md bg-red-800 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 hover:bg-red-600"
-            onClick={onClearBase64}
-          >
-            <Trash2 className="mr-2 h-5 w-5 text-white" />
-            Clear
-          </button>
-          <button
-            className="ml-4 items-center rounded-md bg-sky-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 hover:bg-sky-600"
-            onClick={() => transferToImage()}
-          >
-            Convert
-          </button>
-        </div>
-      </div>
+      <Description>
+        Convert Base64 strings into downloadable image files instantly. A fast,
+        secure Base64 to Image tool that supports PNG, JPG, and more with one
+        click.
+      </Description>
+
       {/* Textarea block */}
       <div className="mt-8 w-full">
-        <label htmlFor="base64-textarea" className="mb-2 block font-bold">
-          Paste the Base64 string below
-        </label>
-        <textarea
+        <div className="mb-3 flex items-center justify-between">
+          <label
+            htmlFor="base64-textarea"
+            className="block flex items-center font-semibold"
+          >
+            <FileText className="mr-2 inline-block" size={16} />
+            Paste Base64 string below
+          </label>
+          <div className="flex items-center gap-2">
+            <PasteAction onClick={onCopyBase64} />
+            <DeleteAction onClick={onClearBase64} disabled={_isEmpty(base64)} />
+          </div>
+        </div>
+        <Textarea
           id="base64-textarea"
-          className="mt-2 h-[300px] w-full resize-none rounded-md bg-white/5 px-3 py-2 text-neutral-700 outline outline-2 outline-neutral-300 focus:outline-sky-600 dark:text-neutral-300"
           value={base64}
           onChange={onBase64StringChanged}
+          rows={10}
+          placeholder="Paste your Base64 string here (e.g. data:image/png;base64,...)"
         />
       </div>
+
+      {/* Char count block */}
+      <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
+        Length: {_size(base64)} chars
+      </div>
+
       {/* Image block */}
       <div className="mb-20 mt-8 w-full">
-        <div className="mb-2 font-bold">Image</div>
-        <div className="flex h-[300px] w-full flex-col items-center rounded-md bg-neutral-500/20">
-          {!imageInfo.error && !_isNull(imageInfo.image) && (
-            <Image
-              width={0}
-              height={0}
-              className="h-full max-h-full w-full max-w-full object-contain"
-              src={imageInfo.image.src}
-              alt="result image"
+        <div className="mb-4 flex items-center justify-between">
+          <div className="font-semibold">
+            <View className="mr-2 inline-block" size={16} />
+            Image Preview
+          </div>
+          <div className="flex items-center gap-2">
+            <CopyAction content={imageInfo.blob} />
+            <DownloadAction
+              blob={imageInfo.blob}
+              disabled={!imageInfo.image}
+              filename={`converted_${Date.now()}`}
             />
+          </div>
+        </div>
+        <div
+          className={clsx(
+            'relative flex h-[300px] w-full flex-col items-center rounded-lg border p-4',
+            'border-neutral-200 dark:border-neutral-700',
+            'bg-white dark:bg-neutral-800'
+          )}
+        >
+          {!imageInfo.error && !_isNull(imageInfo.image) && (
+            <>
+              <Image
+                width={0}
+                height={0}
+                className="h-full max-h-full w-full max-w-full object-contain"
+                src={imageInfo.image.src}
+                alt="result image"
+              />
+              <div className="absolute bottom-4 left-4 z-20 flex gap-2">
+                <ImageInfoTag
+                  title="Dimensions"
+                  value={`${imageInfo.width} x ${imageInfo.height}`}
+                />
+                <ImageInfoTag
+                  title="Sizes"
+                  value={imageUtils.toHumanReadableSize(
+                    imageInfo.blob?.size || 0
+                  )}
+                />
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -140,3 +177,24 @@ export default function Base64ToImage() {
     </div>
   );
 }
+
+const ImageInfoTag = ({
+  title = '',
+  value = '',
+}: {
+  title: string;
+  value: string | number | null | undefined;
+}) => {
+  return (
+    <div
+      className={clsx(
+        'flex items-center gap-2 rounded-full px-3 py-1.5 font-mono text-xs text-white shadow-lg backdrop-blur-md',
+        'border border-white/10',
+        'bg-neutral-900/80 dark:bg-neutral-800/80'
+      )}
+    >
+      {!!title && <span className="opacity-60">{title}:</span>}
+      {!!value && value}
+    </div>
+  );
+};

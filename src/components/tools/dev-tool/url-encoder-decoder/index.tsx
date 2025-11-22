@@ -13,6 +13,7 @@ import CopyAction from '@/components/common/action-button/copy';
 import SwapAction from '@/components/common/action-button/swap';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
+import PasteAction from '@/components/common/action-button/paste';
 
 export default function UrlEncoderDecoder() {
   const [input, setInput] = useState<string>('');
@@ -63,16 +64,19 @@ export default function UrlEncoderDecoder() {
 
       {/* Input block */}
       <div className="mb-3 mt-8 flex w-full items-center justify-between">
-        <label htmlFor="textarea" className="block font-semibold">
+        <label htmlFor="url-textarea" className="block font-semibold">
           Paste URL below
         </label>
-        <DeleteAction
-          onClick={onClearClick}
-          disabled={_isNull(input) || _isEmpty(input)}
-        />
+        <div className="flex items-center gap-2">
+          <PasteAction onClick={setInput} />
+          <DeleteAction
+            onClick={onClearClick}
+            disabled={_isNull(input) || _isEmpty(input)}
+          />
+        </div>
       </div>
       <Textarea
-        id="textarea"
+        id="url-textarea"
         placeholder="Paste the URL or text you want to process here..."
         onChange={onInputChange}
         value={input}

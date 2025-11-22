@@ -25,8 +25,8 @@ const useWebcam = () => {
       setStream(stream);
       setFacingMode(facingMode);
       return stream;
-    } catch (err) {
-      console.error('Error accessing webcam:', err);
+    } catch (e) {
+      console.log('Error accessing webcam:', e);
     }
   };
 
