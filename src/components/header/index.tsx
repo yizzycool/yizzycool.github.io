@@ -11,7 +11,7 @@ export default async function Header() {
   return (
     <div
       className={clsx(
-        'fixed top-0 z-10 w-full bg-white/95 backdrop-blur',
+        'fixed top-0 z-50 w-full bg-white/95 backdrop-blur',
         'supports-backdrop-blur:bg-white/60',
         'border-neutral-400/20 lg:border-b dark:bg-neutral-900/60'
       )}

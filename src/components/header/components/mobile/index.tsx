@@ -30,7 +30,7 @@ export default function HeaderMobile({
       <button className="h-9 w-9 p-1" onClick={() => setOpen(true)}>
         <Menu className="w-full" />
       </button>
-      <Dialog open={open} onClose={setOpen} className="relative z-10">
+      <Dialog open={open} onClose={setOpen} className="relative z-50">
         <DialogBackdrop
           transition
           className="fixed inset-0 bg-neutral-900/75 transition-opacity duration-300 ease-in-out data-[closed]:opacity-0"
