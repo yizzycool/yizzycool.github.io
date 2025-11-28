@@ -24,6 +24,7 @@ const eslintConfig = [
         },
       ],
       '@next/next/no-page-custom-font': 'off',
+      'react/no-unescaped-entities': 'off',
     },
   }),
   {

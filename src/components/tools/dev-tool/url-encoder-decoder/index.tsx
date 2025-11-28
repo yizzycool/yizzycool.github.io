@@ -55,15 +55,17 @@ export default function UrlEncoderDecoder() {
   };
 
   return (
-    <div className="mx-auto flex min-h-full max-w-screen-lg flex-col items-center px-5 pb-20 lg:px-10">
-      <Title>URL Encoder / Decoder</Title>
-      <Description>
-        Quickly convert URLs into a transmission-safe format or decode
-        previously encoded URLs. Supports UTF-8 characters.
-      </Description>
+    <>
+      <header>
+        <Title>URL Encoder / Decoder</Title>
+        <Description>
+          Quickly convert URLs into a transmission-safe format or decode
+          previously encoded URLs. Supports UTF-8 characters.
+        </Description>
+      </header>
 
       {/* Input block */}
-      <div className="mb-3 mt-8 flex w-full items-center justify-between">
+      <div className="mb-3 mt-16 flex w-full items-center justify-between">
         <label htmlFor="url-textarea" className="block font-semibold">
           Paste URL below
         </label>
@@ -84,7 +86,7 @@ export default function UrlEncoderDecoder() {
       />
 
       {/* Action buttons */}
-      <div className="my-6 flex w-full flex-col items-stretch justify-stretch gap-3 sm:flex-row lg:items-center">
+      <div className="mt-10 flex w-full flex-col items-stretch justify-stretch gap-3 sm:flex-row lg:items-center">
         <button
           className="flex flex-1 items-center justify-center gap-2 justify-self-stretch rounded-lg bg-sky-600 px-4 py-3 font-medium text-white hover:bg-sky-700"
           onClick={onEncodeClick}
@@ -106,7 +108,7 @@ export default function UrlEncoderDecoder() {
       </div>
 
       {/* Result block */}
-      <div className="mb-3 flex w-full items-center justify-between">
+      <div className="mb-3 mt-10 flex w-full items-center justify-between">
         <label htmlFor="output" className="block font-semibold">
           Result
         </label>
@@ -129,6 +131,6 @@ export default function UrlEncoderDecoder() {
         onClose={() => setError(false)}
         errorString="Conversion Error! Please check string and try again."
       />
-    </div>
+    </>
   );
 }

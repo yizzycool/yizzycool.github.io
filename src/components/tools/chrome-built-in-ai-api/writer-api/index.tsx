@@ -1,19 +1,19 @@
 'use client';
 
-import useAiSummarizer from '../hooks/use-ai-summarizer';
+import useAiWriter from '../hooks/use-ai-writer';
 import Title from '../../components/title';
+import Description from '../../components/description';
 import SettingsPanel from './components/settings-panel';
 import LoadingSkeleton from '../components/loading-skeleton';
 import Chat from '../components/chat';
-import UnsupportedCard from '../components/unsupported-card';
 import ModelDownloadCard from '../components/model-download-card';
-import Description from '../../components/description';
+import UnsupportedCard from '../components/unsupported-card';
 import ErrorDialog from '@/components/common/dialog/error';
 import { UnsupportedApiTypes } from '../data/unsupported-types';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 
-export default function SummarizerApi() {
+export default function WriterApi() {
   const {
     hasCheckedAIStatus,
     isApiSupported,
@@ -21,23 +21,23 @@ export default function SummarizerApi() {
     error,
     options,
     isOptionUpdating,
-    // summarize,
-    summarizeStreaming,
-    updateSummarizer,
+    // write,
+    writeStreaming,
+    updateWriter,
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
     resetError,
-  } = useAiSummarizer();
+  } = useAiWriter();
 
   return (
     <>
       <header>
-        <Title>Summarizer</Title>
+        <Title>Writer</Title>
         <Description>
-          Instantly summarize any text with Chrome’s built-in Gemini AI — get
-          concise, accurate, and readable summaries in seconds without extra
-          setup or API keys.
+          Generate high-quality text effortlessly using Chrome’s built-in Gemini
+          AI - perfect for articles, emails, or creative writing with fast,
+          natural, and accurate results.
         </Description>
       </header>
 
@@ -45,7 +45,7 @@ export default function SummarizerApi() {
       {!hasCheckedAIStatus ? (
         <LoadingSkeleton />
       ) : !isApiSupported ? (
-        <UnsupportedCard apiType={UnsupportedApiTypes.chromeSummarizerApi} />
+        <UnsupportedCard apiType={UnsupportedApiTypes.chromeTranslatorApi} />
       ) : shouldDownloadModel ? (
         <ModelDownloadCard
           onClick={downloadModel}
@@ -58,12 +58,12 @@ export default function SummarizerApi() {
               <SettingsPanel
                 options={options}
                 isOptionUpdating={isOptionUpdating}
-                updateSummarizer={updateSummarizer}
+                updateWriter={updateWriter}
               />
               <Chat
                 buttonText="Start"
-                placeholder="type some text to be summarized"
-                promptStreaming={summarizeStreaming}
+                placeholder="enter a topic or idea"
+                promptStreaming={writeStreaming}
                 isOptionUpdating={isOptionUpdating}
               />
             </div>
@@ -72,7 +72,7 @@ export default function SummarizerApi() {
       )}
 
       <ErrorDialog
-        errorString="Something went wrong while translating! Please try again later."
+        errorString="Something went wrong while processing! Please try again later."
         open={error}
         onClose={resetError}
       />

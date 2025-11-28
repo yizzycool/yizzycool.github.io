@@ -1,7 +1,5 @@
-'use client';
-
-export default function useLanguageTagToHumanReadable() {
-  const languageTagToHumanReadable = (
+const intlUtils = {
+  languageTagToHumanReadable: (
     languageTag: string,
     targetLanguage: string | undefined = 'en'
   ): string | undefined => {
@@ -10,9 +8,7 @@ export default function useLanguageTagToHumanReadable() {
       type: 'language',
     });
     return displayNames.of(languageTag);
-  };
+  },
+};
 
-  return {
-    languageTagToHumanReadable,
-  };
-}
+export default intlUtils;

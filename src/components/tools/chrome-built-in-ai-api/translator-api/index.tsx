@@ -1,20 +1,21 @@
 'use client';
 
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
-import useAiTranslator from '../hooks/use-ai-translator';
+import { useRef, useState } from 'react';
 import { ArrowRightLeft } from 'lucide-react';
+import useAiTranslator from '../hooks/use-ai-translator';
 import Title from '../../components/title';
 import LanguageSelector from './components/language-selector';
-import CanTranslateHint from './components/can-translate-hint';
-import Unsupported, {
-  UnsupportedApiTypes,
-  UnsupportedTypes,
-} from '../../components/unsupported';
+import UnsupportedCard from '../components/unsupported-card';
+import ModelDownloadCard from '../components/model-download-card';
 import LoadingSkeleton from '../components/loading-skeleton';
 import Description from '../../components/description';
 import CopyAction from '@/components/common/action-button/copy';
 import SpeakAction from '@/components/common/action-button/speak';
+import UnsupportedLanguagePairCard from './components/unsupported-language-pair-card';
+import InlineDownloadCard from './components/inline-download-card';
+import ErrorDialog from '@/components/common/dialog/error';
+import { UnsupportedApiTypes } from '../data/unsupported-types';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _values from 'lodash/values';
@@ -27,29 +28,22 @@ export default function TranslatorApi() {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const {
-    isSupported,
-    isPartialUnsupported,
-    isUserDownloadRequired,
+    hasCheckedAIStatus,
+    isApiSupported,
+    availability,
+    error,
+    options,
+    translator,
     translate,
-    params,
     setTranslatorLang,
-    canTranslate,
-    triggerUserDownload,
+    shouldDownloadModel,
+    downloadModel,
+    downloadProgress,
+    resetError,
   } = useAiTranslator();
 
-  const isLoading =
-    _isNull(isSupported) || (isSupported && _isNull(isPartialUnsupported));
-
-  // If translator update to another language, auto translate to new language when translator is readily
-  useEffect(() => {
-    if (canTranslate === 'available' && text) {
-      translateString(text);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canTranslate]);
-
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (canTranslate !== 'available') return;
+    if (availability !== 'available') return;
     const text = e.target.value;
     setText(text);
     if (timerRef.current) {
@@ -68,46 +62,43 @@ export default function TranslatorApi() {
   };
 
   const switchSourceTargetLanguage = () => {
-    setTranslatorLang(params.targetLanguage, params.sourceLanguage);
+    setTranslatorLang(options.targetLanguage, options.sourceLanguage);
   };
 
   const changeLanguage = (type: string, languageCode: string) => {
     if (type === 'source') {
-      setTranslatorLang(languageCode, params.targetLanguage);
+      setTranslatorLang(languageCode, options.targetLanguage);
     } else {
-      setTranslatorLang(params.sourceLanguage, languageCode);
+      setTranslatorLang(options.sourceLanguage, languageCode);
     }
   };
 
   return (
-    <div className="mx-auto max-w-screen-lg px-5 pb-20 text-center lg:px-10">
-      <Title>Translator</Title>
-      <Description>
-        A fast, accurate translation tool powered by Chrome’s built-in Gemini AI
-        - no setup, no API key, just instant multilingual translation with
-        natural results.
-      </Description>
+    <>
+      <header>
+        <Title>Translator</Title>
+        <Description>
+          A fast, accurate translation tool powered by Chrome’s built-in Gemini
+          AI - no setup, no API key, just instant multilingual translation with
+          natural results.
+        </Description>
+      </header>
+
       {/* Translator */}
-      {isLoading ? (
+      {!hasCheckedAIStatus ? (
         <LoadingSkeleton />
-      ) : isUserDownloadRequired ? (
-        <Unsupported
-          apiType={UnsupportedApiTypes.chromeTranslatorApi}
-          type={UnsupportedTypes.userDownloadRequired}
-          downloadAiModelHandler={triggerUserDownload}
+      ) : !isApiSupported ? (
+        <UnsupportedCard apiType={UnsupportedApiTypes.chromeTranslatorApi} />
+      ) : _isNull(translator) && shouldDownloadModel ? (
+        <ModelDownloadCard
+          onClick={downloadModel}
+          progress={downloadProgress}
         />
-      ) : !isSupported ? (
-        <Unsupported
-          apiType={UnsupportedApiTypes.chromeTranslatorApi}
-          type={UnsupportedTypes.unsupported}
-        />
-      ) : isPartialUnsupported ? (
-        <Unsupported type={UnsupportedTypes.partialUnsupported} />
       ) : (
         <>
           <div
             className={clsx(
-              'mt-8 flex flex-col justify-center',
+              'mt-16 flex flex-col justify-center',
               'rounded-xl border',
               'border-neutral-200 bg-white text-neutral-700 placeholder-neutral-400',
               'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder-neutral-500'
@@ -122,7 +113,7 @@ export default function TranslatorApi() {
             >
               <div className="flex-1">
                 <LanguageSelector
-                  params={params}
+                  params={options}
                   type="source"
                   changeLanguage={changeLanguage}
                 />
@@ -135,7 +126,7 @@ export default function TranslatorApi() {
               </button>
               <div className="flex-1">
                 <LanguageSelector
-                  params={params}
+                  params={options}
                   type="target"
                   changeLanguage={changeLanguage}
                 />
@@ -161,7 +152,7 @@ export default function TranslatorApi() {
                   )}
                   onChange={onChange}
                   value={text}
-                  disabled={canTranslate !== 'available'}
+                  disabled={availability !== 'available'}
                   placeholder="Enter the text to be translated..."
                 />
                 {/* Word count */}
@@ -173,7 +164,6 @@ export default function TranslatorApi() {
                   />
                   <div className="text-xs opacity-50">{_size(text)} chars</div>
                 </div>
-                <CanTranslateHint params={params} canTranslate={canTranslate} />
               </div>
 
               {/* output */}
@@ -200,11 +190,31 @@ export default function TranslatorApi() {
                     disabled={_isEmpty(translation)}
                   />
                 </div>
+
+                {shouldDownloadModel && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center backdrop-blur-sm">
+                    <InlineDownloadCard
+                      options={options}
+                      progress={downloadProgress || 0}
+                    />
+                  </div>
+                )}
+                {availability === 'unavailable' && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center backdrop-blur-sm">
+                    <UnsupportedLanguagePairCard options={options} />
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </>
       )}
-    </div>
+
+      <ErrorDialog
+        errorString="Something went wrong while translating! Please try again later."
+        open={error}
+        onClose={resetError}
+      />
+    </>
   );
 }

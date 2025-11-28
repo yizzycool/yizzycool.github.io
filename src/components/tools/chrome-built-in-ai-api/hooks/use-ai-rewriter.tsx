@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import useAiCommon from './use-ai-common';
 import browserUtils from '@/utils/browser-utils';
 import _defaults from 'lodash/defaults';
 import _isNull from 'lodash/isNull';
@@ -14,53 +15,61 @@ const Options: AIRewriterCreateOptions = {
   length: 'as-is',
 };
 
-export default function useAiRewriter({ createInstance = true } = {}) {
-  const [isSupported, setIsSupported] = useState<boolean | null>(null);
-  const [isPartialUnsupported, setIsPartialUnsupported] = useState<
-    boolean | null
-  >(null);
-  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState<
-    boolean | null
-  >(false);
+export default function useAiRewriter() {
   const [rewriter, setRewriter] = useState<AIRewriter | null>(null);
   const [options, setOptions] = useState(Options);
 
+  const {
+    isApiSupported,
+    setIsApiSupported,
+    availability,
+    setAvailability,
+    error,
+    setError,
+    downloadProgress,
+    setDownloadProgress,
+    hasCheckedAIStatus,
+    shouldDownloadModel,
+  } = useAiCommon();
+
   useEffect(() => {
-    checkCapability();
+    // Check if API is supported on the device
+    const apiExist = !!window.Rewriter;
+    setIsApiSupported(apiExist);
+    if (!apiExist) return;
+    checkAvailability();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!isSupported || !createInstance) return;
-    initRewriter();
-
     return () => {
       rewriter?.destroy?.();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSupported]);
+  }, [rewriter]);
 
   // To check if rewriter is supported
-  const checkCapability = async () => {
+  const checkAvailability = async () => {
+    // Check API availability (unavailable / downloadable / downloading / available)
     const availability = await window.Rewriter?.availability?.();
-    if (availability === 'downloadable' || availability === 'downloading') {
-      setIsUserDownloadRequired(true);
-      setIsSupported(false);
-    } else if (availability === 'available') {
-      setIsSupported(true);
-    } else {
-      setIsSupported(false);
+    setAvailability(availability);
+    if (availability === 'available') {
+      initRewriter();
     }
   };
 
-  const initRewriter = async () => {
-    if (window.Rewriter) {
-      try {
-        const rewriter = await window.Rewriter.create(options);
-        setRewriter(rewriter);
-        setIsPartialUnsupported(false);
-      } catch (_e) {
-        setIsPartialUnsupported(true);
-      }
+  const initRewriter = async (
+    monitor?: AICreateMonitorCallback | undefined
+  ) => {
+    if (!window.Rewriter) {
+      setIsApiSupported(false);
+      return;
+    }
+    try {
+      const rewriter = await window.Rewriter.create({ ...options, monitor });
+      setRewriter(rewriter);
+    } catch (_e) {
+      setError(true);
     }
   };
 
@@ -74,16 +83,27 @@ export default function useAiRewriter({ createInstance = true } = {}) {
         const newRewriter = await window.Rewriter.create(newOptions);
         setOptions(newOptions);
         setRewriter(newRewriter);
-        setIsPartialUnsupported(false);
       } catch (_e) {
-        setIsPartialUnsupported(true);
+        setError(true);
       }
     }
   };
 
-  const triggerUserDownload = async () => {
-    setIsUserDownloadRequired(false);
-    setIsSupported(true);
+  const createMonitorCallback: AICreateMonitorCallback = (monitor) => {
+    setDownloadProgress(0);
+    monitor.addEventListener('downloadprogress', (e) => {
+      setDownloadProgress(e.loaded);
+      if (e.loaded === 1) {
+        setTimeout(() => setDownloadProgress(null), 1000);
+      }
+    });
+  };
+
+  const downloadModel = async () => {
+    await initRewriter(createMonitorCallback);
+    // Check API availability (unavailable / downloadable / downloading / available)
+    const availability = await window.Rewriter?.availability?.();
+    setAvailability(availability);
   };
 
   const rewrite = async (text: string): Promise<string | null> => {
@@ -121,15 +141,21 @@ export default function useAiRewriter({ createInstance = true } = {}) {
     }
   };
 
+  const resetError = () => setError(false);
+
   return {
-    isSupported,
-    isPartialUnsupported,
-    isUserDownloadRequired,
+    hasCheckedAIStatus,
+    isApiSupported,
+    availability,
+    error,
     options,
     isOptionUpdating: _isNull(rewriter),
     rewrite,
     rewriteStreaming,
     updateRewriter,
-    triggerUserDownload,
+    shouldDownloadModel,
+    downloadModel,
+    downloadProgress,
+    resetError,
   };
 }

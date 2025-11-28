@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import { useMemo } from 'react';
-import useLanguageTagToHumanReadable from '@/components/tools/chrome-built-in-ai-api/hooks/use-language-tag-to-human-readable';
+import intlUtils from '@/utils/intl-utils';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -71,15 +71,13 @@ export default function BarChart({
 }: {
   results: Array<LanguageDetectionResult> | null;
 }) {
-  const { languageTagToHumanReadable } = useLanguageTagToHumanReadable();
-
   const data = useMemo(() => {
     if (_isNull(results)) return null;
     const slicedResults = _slice(results, 0, 20);
 
     return {
       labels: _map(slicedResults, (result) =>
-        languageTagToHumanReadable(result.detectedLanguage)
+        intlUtils.languageTagToHumanReadable(result.detectedLanguage)
       ),
       datasets: [
         {
@@ -97,7 +95,6 @@ export default function BarChart({
         },
       ],
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results]);
 
   const topData = _head(results);
@@ -118,7 +115,9 @@ export default function BarChart({
           </div>
           <div className="mt-1 flex items-baseline">
             <div className="text-4xl font-bold text-neutral-900 dark:text-neutral-50">
-              {languageTagToHumanReadable(topData?.detectedLanguage || '')}
+              {intlUtils.languageTagToHumanReadable(
+                topData?.detectedLanguage || ''
+              )}
             </div>
             <div className="ml-3 rounded-md bg-neutral-400 px-2 py-0.5 text-lg font-medium text-neutral-100">
               {topData?.detectedLanguage}

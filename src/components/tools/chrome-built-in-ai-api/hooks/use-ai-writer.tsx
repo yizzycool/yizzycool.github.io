@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import useAiCommon from './use-ai-common';
 import browserUtils from '@/utils/browser-utils';
 import _defaults from 'lodash/defaults';
 import _isNull from 'lodash/isNull';
@@ -14,53 +15,59 @@ const Options: AIWriterCreateOptions = {
   length: 'short',
 };
 
-export default function useAiWriter({ createInstance = true } = {}) {
-  const [isSupported, setIsSupported] = useState<boolean | null>(null);
-  const [isPartialUnsupported, setIsPartialUnsupported] = useState<
-    boolean | null
-  >(null);
-  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState<
-    boolean | null
-  >(false);
+export default function useAiWriter() {
   const [writer, setWriter] = useState<AIWriter | null>(null);
   const [options, setOptions] = useState(Options);
 
+  const {
+    isApiSupported,
+    setIsApiSupported,
+    availability,
+    setAvailability,
+    error,
+    setError,
+    downloadProgress,
+    setDownloadProgress,
+    hasCheckedAIStatus,
+    shouldDownloadModel,
+  } = useAiCommon();
+
   useEffect(() => {
-    checkCapability();
+    // Check if API is supported on the device
+    const apiExist = !!window.Writer;
+    setIsApiSupported(apiExist);
+    if (!apiExist) return;
+    checkAvailability();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!isSupported || !createInstance) return;
-    initWriter();
-
     return () => {
       writer?.destroy?.();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSupported]);
+  }, [writer]);
 
   // To check if writer is supported
-  const checkCapability = async () => {
+  const checkAvailability = async () => {
+    // Check API availability (unavailable / downloadable / downloading / available)
     const availability = await window.Writer?.availability?.();
-    if (availability === 'downloadable' || availability === 'downloading') {
-      setIsUserDownloadRequired(true);
-      setIsSupported(false);
-    } else if (availability === 'available') {
-      setIsSupported(true);
-    } else {
-      setIsSupported(false);
+    setAvailability(availability);
+    if (availability === 'available') {
+      initWriter();
     }
   };
 
-  const initWriter = async () => {
-    if (window.Writer) {
-      try {
-        const writer = await window.Writer.create(options);
-        setWriter(writer);
-        setIsPartialUnsupported(false);
-      } catch (_e) {
-        setIsPartialUnsupported(true);
-      }
+  const initWriter = async (monitor?: AICreateMonitorCallback | undefined) => {
+    if (!window.Writer) {
+      setIsApiSupported(false);
+      return;
+    }
+    try {
+      const writer = await window.Writer.create({ ...options, monitor });
+      setWriter(writer);
+    } catch (_e) {
+      setError(true);
     }
   };
 
@@ -74,16 +81,27 @@ export default function useAiWriter({ createInstance = true } = {}) {
         const newWriter = await window.Writer.create(newOptions);
         setOptions(newOptions);
         setWriter(newWriter);
-        setIsPartialUnsupported(false);
       } catch (_e) {
-        setIsPartialUnsupported(true);
+        setError(true);
       }
     }
   };
 
-  const triggerUserDownload = async () => {
-    setIsUserDownloadRequired(false);
-    setIsSupported(true);
+  const createMonitorCallback: AICreateMonitorCallback = (monitor) => {
+    setDownloadProgress(0);
+    monitor.addEventListener('downloadprogress', (e) => {
+      setDownloadProgress(e.loaded);
+      if (e.loaded === 1) {
+        setTimeout(() => setDownloadProgress(null), 1000);
+      }
+    });
+  };
+
+  const downloadModel = async () => {
+    await initWriter(createMonitorCallback);
+    // Check API availability (unavailable / downloadable / downloading / available)
+    const availability = await window.Writer?.availability?.();
+    setAvailability(availability);
   };
 
   const write = async (text: string): Promise<string | null> => {
@@ -121,15 +139,21 @@ export default function useAiWriter({ createInstance = true } = {}) {
     }
   };
 
+  const resetError = () => setError(false);
+
   return {
-    isSupported,
-    isPartialUnsupported,
-    isUserDownloadRequired,
+    hasCheckedAIStatus,
+    isApiSupported,
+    availability,
+    error,
     options,
     isOptionUpdating: _isNull(writer),
     write,
     writeStreaming,
     updateWriter,
-    triggerUserDownload,
+    shouldDownloadModel,
+    downloadModel,
+    downloadProgress,
+    resetError,
   };
 }

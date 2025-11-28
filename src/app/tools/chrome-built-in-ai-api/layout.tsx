@@ -1,8 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import SupportTable from '@/components/tools/chrome-built-in-ai-api/components/support-table';
-import DiscoverMoreFeatures from '@/components/tools/components/discover-more-features';
 
 export default function Layout({
   children,
@@ -43,11 +41,5 @@ export default function Layout({
     };
   }, []);
 
-  return (
-    <>
-      {children}
-      <DiscoverMoreFeatures type="chromeAiApi" />
-      <SupportTable />
-    </>
-  );
+  return <div className="relative h-full w-full">{children}</div>;
 }

@@ -69,7 +69,7 @@ export default function FilePicker({
   return (
     <button
       className={clsx(
-        'group mt-8 w-full rounded-lg p-12 text-center transition-all [&_*]:pointer-events-none',
+        'group w-full rounded-lg p-12 text-center transition-all [&_*]:pointer-events-none',
         'border-2 border-dashed border-neutral-300 hover:border-neutral-400 dark:border-neutral-700 dark:hover:border-neutral-600',
         'hover:bg-neutral-50/50 dark:hover:bg-neutral-900/50',
         'data-[dragging=true]:scale-[1.01]',

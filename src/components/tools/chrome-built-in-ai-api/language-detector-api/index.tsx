@@ -2,19 +2,19 @@
 
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
-import useAiLanguageDetector from '../hooks/use-ai-language-detector';
 import { ChartColumn, PenLine } from 'lucide-react';
+import useAiLanguageDetector from '../hooks/use-ai-language-detector';
 import Title from '../../components/title';
 import BarChart from './components/bar-chart';
 import Description from '../../components/description';
 import Textarea from '@/components/common/textarea';
 import PasteAction from '@/components/common/action-button/paste';
 import DeleteAction from '@/components/common/action-button/delete';
-import Unsupported, {
-  UnsupportedApiTypes,
-  UnsupportedTypes,
-} from '../../components/unsupported';
 import LoadingSkeleton from '../components/loading-skeleton';
+import UnsupportedCard from '../components/unsupported-card';
+import ModelDownloadCard from '../components/model-download-card';
+import ErrorDialog from '@/components/common/dialog/error';
+import { UnsupportedApiTypes } from '../data/unsupported-types';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _values from 'lodash/values';
@@ -29,15 +29,16 @@ export default function LanguageDetectorApi() {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const {
-    isSupported,
-    isPartialUnsupported,
-    isUserDownloadRequired,
+    hasCheckedAIStatus,
+    isApiSupported,
+    // availability,
+    error,
     detect,
-    triggerUserDownload,
+    shouldDownloadModel,
+    downloadModel,
+    downloadProgress,
+    resetError,
   } = useAiLanguageDetector();
-
-  const isLoading =
-    _isNull(isSupported) || (isSupported && _isNull(isPartialUnsupported));
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
@@ -55,6 +56,7 @@ export default function LanguageDetectorApi() {
 
   const onClearClick = () => {
     setText('');
+    setResults(null);
   };
 
   const detectString = async (text: string) => {
@@ -67,31 +69,31 @@ export default function LanguageDetectorApi() {
   };
 
   return (
-    <div className="mx-auto max-w-screen-lg px-5 pb-20 text-center">
-      <Title>Language Detector</Title>
-      <Description>
-        Instantly detect the language of any text using Chrome’s built-in AI,
-        supporting fast and accurate multilingual identification.
-      </Description>
+    <>
+      <header>
+        <Title>Language Detector</Title>
+        <Description>
+          Instantly detect the language of any text with Chrome’s built-in
+          Gemini AI — fast, accurate, and reliable multilingual detection
+          without setup or API key.
+        </Description>
+      </header>
+
       {/* Language Detector */}
-      {isLoading ? (
+      {!hasCheckedAIStatus ? (
         <LoadingSkeleton />
-      ) : isUserDownloadRequired ? (
-        <Unsupported
+      ) : !isApiSupported ? (
+        <UnsupportedCard
           apiType={UnsupportedApiTypes.chromeLanguageDetectorApi}
-          type={UnsupportedTypes.userDownloadRequired}
-          downloadAiModelHandler={triggerUserDownload}
         />
-      ) : !isSupported ? (
-        <Unsupported
-          apiType={UnsupportedApiTypes.chromeLanguageDetectorApi}
-          type={UnsupportedTypes.unsupported}
+      ) : shouldDownloadModel ? (
+        <ModelDownloadCard
+          onClick={downloadModel}
+          progress={downloadProgress}
         />
-      ) : isPartialUnsupported ? (
-        <Unsupported type={UnsupportedTypes.partialUnsupported} />
       ) : (
         <>
-          <div className="mt-8 text-left">
+          <div className="mt-16 text-left">
             <div className="mx-auto text-center">
               {/* Input */}
               <div className="mb-3 flex items-center justify-between">
@@ -121,7 +123,7 @@ export default function LanguageDetectorApi() {
             {/* Output */}
             <div
               className={clsx(
-                'relative mt-8 flex min-h-[300px] w-full flex-col items-center rounded-lg border p-6',
+                'relative mt-10 flex min-h-[300px] w-full flex-col items-center rounded-lg border p-6',
                 'border-neutral-200 dark:border-neutral-700',
                 'bg-white dark:bg-neutral-800'
               )}
@@ -138,6 +140,12 @@ export default function LanguageDetectorApi() {
           </div>
         </>
       )}
-    </div>
+
+      <ErrorDialog
+        errorString="Something went wrong while detecting! Please try again later."
+        open={error}
+        onClose={resetError}
+      />
+    </>
   );
 }

@@ -1,59 +1,80 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import useAiCommon from './use-ai-common';
 
-export default function useAiLanguageDetector({ createInstance = true } = {}) {
-  const [isSupported, setIsSupported] = useState<boolean | null>(null);
-  const [isPartialUnsupported, setIsPartialUnsupported] = useState<
-    boolean | null
-  >(null);
-  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState<
-    boolean | null
-  >(false);
+export default function useAiLanguageDetector() {
   const [detector, setDetector] = useState<AILanguageDetector | null>(null);
 
+  const {
+    isApiSupported,
+    setIsApiSupported,
+    availability,
+    setAvailability,
+    error,
+    setError,
+    downloadProgress,
+    setDownloadProgress,
+    hasCheckedAIStatus,
+    shouldDownloadModel,
+  } = useAiCommon();
+
   useEffect(() => {
-    checkCapability();
+    // Check if API is supported on the device
+    const apiExist = !!window.LanguageDetector;
+    setIsApiSupported(apiExist);
+    if (!apiExist) return;
+    checkAvailability();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!isSupported || !createInstance) return;
-    initLanguageDetector();
-
     return () => {
       detector?.destroy?.();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSupported]);
+  }, [detector]);
 
   // To check if language detector is supported
-  const checkCapability = async () => {
+  const checkAvailability = async () => {
+    // Check API availability (unavailable / downloadable / downloading / available)
     const availability = await window.LanguageDetector?.availability?.();
-    if (availability === 'downloadable' || availability === 'downloading') {
-      setIsUserDownloadRequired(true);
-      setIsSupported(false);
-    } else if (availability === 'available') {
-      setIsSupported(true);
-    } else {
-      setIsSupported(false);
+    setAvailability(availability);
+    if (availability === 'available') {
+      initLanguageDetector();
     }
   };
 
-  const initLanguageDetector = async () => {
-    if (window.LanguageDetector) {
-      try {
-        const detector = await window.LanguageDetector.create();
-        setDetector(detector);
-        setIsPartialUnsupported(false);
-      } catch (_e) {
-        setIsPartialUnsupported(true);
+  const initLanguageDetector = async (
+    monitor?: AICreateMonitorCallback | undefined
+  ) => {
+    if (!window.LanguageDetector) {
+      setIsApiSupported(false);
+      return;
+    }
+    try {
+      const detector = await window.LanguageDetector.create({ monitor });
+      setDetector(detector);
+    } catch (_e) {
+      setError(true);
+    }
+  };
+
+  const createMonitorCallback: AICreateMonitorCallback = (monitor) => {
+    setDownloadProgress(0);
+    monitor.addEventListener('downloadprogress', (e) => {
+      setDownloadProgress(e.loaded);
+      if (e.loaded === 1) {
+        setTimeout(() => setDownloadProgress(null), 1000);
       }
-    }
+    });
   };
 
-  const triggerUserDownload = async () => {
-    setIsUserDownloadRequired(false);
-    setIsSupported(true);
+  const downloadModel = async () => {
+    await initLanguageDetector(createMonitorCallback);
+    // Check API availability (unavailable / downloadable / downloading / available)
+    const availability = await window.LanguageDetector?.availability?.();
+    setAvailability(availability);
   };
 
   const detect = async (
@@ -64,11 +85,17 @@ export default function useAiLanguageDetector({ createInstance = true } = {}) {
     return results;
   };
 
+  const resetError = () => setError(false);
+
   return {
-    isSupported,
-    isPartialUnsupported,
-    isUserDownloadRequired,
+    hasCheckedAIStatus,
+    isApiSupported,
+    availability,
+    error,
     detect,
-    triggerUserDownload,
+    shouldDownloadModel,
+    downloadModel,
+    downloadProgress,
+    resetError,
   };
 }

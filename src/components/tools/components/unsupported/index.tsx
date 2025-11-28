@@ -1,8 +1,8 @@
 'use client';
 
 import { OctagonAlert, OctagonX, CloudDownload } from 'lucide-react';
-import _get from 'lodash/get';
 import { useMemo } from 'react';
+import _get from 'lodash/get';
 
 export const UnsupportedApiTypes = {
   chromeBuiltInAiApi: 'chrome-built-in-ai-api',

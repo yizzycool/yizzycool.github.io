@@ -1,10 +1,10 @@
 'use client';
 
-import useAiLanguageModel from '../hooks/use-ai-language-model';
+import useAiRewriter from '../hooks/use-ai-rewriter';
 import Title from '../../components/title';
 import Description from '../../components/description';
-import LoadingSkeleton from '../components/loading-skeleton';
 import SettingsPanel from './components/settings-panel';
+import LoadingSkeleton from '../components/loading-skeleton';
 import Chat from '../components/chat';
 import UnsupportedCard from '../components/unsupported-card';
 import ModelDownloadCard from '../components/model-download-card';
@@ -12,9 +12,8 @@ import ErrorDialog from '@/components/common/dialog/error';
 import { UnsupportedApiTypes } from '../data/unsupported-types';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
-import _values from 'lodash/values';
 
-export default function PromptApi() {
+export default function RewriterApi() {
   const {
     hasCheckedAIStatus,
     isApiSupported,
@@ -22,33 +21,31 @@ export default function PromptApi() {
     error,
     options,
     isOptionUpdating,
-    session,
-    // prompt,
-    promptStreaming,
-    updateLanguageModel,
-    resetModelWithCustomOptions,
+    // rewrite,
+    rewriteStreaming,
+    updateRewriter,
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
     resetError,
-  } = useAiLanguageModel();
+  } = useAiRewriter();
 
   return (
     <>
       <header>
-        <Title>Gemini Nano (Prompt API)</Title>
+        <Title>Rewriter</Title>
         <Description>
-          Send prompts and receive AI-powered responses directly with Chrome’s
-          built-in Gemini AI — seamless, fast, and accurate AI interaction for
-          any application or workflow.
+          Rewrite and improve any text instantly with Chrome’s built-in Gemini
+          AI — enhance clarity, style, and tone while keeping meaning intact,
+          all in seconds.
         </Description>
       </header>
 
-      {/* Prompt */}
+      {/* Summarizer */}
       {!hasCheckedAIStatus ? (
         <LoadingSkeleton />
       ) : !isApiSupported ? (
-        <UnsupportedCard apiType={UnsupportedApiTypes.chromePromptApi} />
+        <UnsupportedCard apiType={UnsupportedApiTypes.chromeRewriter} />
       ) : shouldDownloadModel ? (
         <ModelDownloadCard
           onClick={downloadModel}
@@ -56,20 +53,20 @@ export default function PromptApi() {
         />
       ) : (
         <>
-          <div className="mx-auto max-w-screen-sm border-neutral-700 px-5 py-20 text-left">
-            <SettingsPanel
-              options={options}
-              isOptionUpdating={isOptionUpdating}
-              updateLanguageModel={updateLanguageModel}
-            />
-            <Chat
-              buttonText="Start a Chat"
-              placeholder="You can ask me anything!"
-              promptStreaming={promptStreaming}
-              resetModelWithCustomOptions={resetModelWithCustomOptions}
-              session={session}
-              isOptionUpdating={isOptionUpdating}
-            />
+          <div className="mx-auto max-w-screen-sm px-5 pb-40 pt-20 text-left">
+            <div className="mx-auto max-w-screen-sm">
+              <SettingsPanel
+                options={options}
+                isOptionUpdating={isOptionUpdating}
+                updateRewriter={updateRewriter}
+              />
+              <Chat
+                buttonText="Open Rewriter"
+                placeholder="enter some text to be rewritten"
+                promptStreaming={rewriteStreaming}
+                isOptionUpdating={isOptionUpdating}
+              />
+            </div>
           </div>
         </>
       )}

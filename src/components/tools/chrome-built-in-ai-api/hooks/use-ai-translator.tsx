@@ -1,126 +1,111 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import useAiCommon from './use-ai-common';
 
-export default function useAiTranslator({ createInstance = true } = {}) {
-  const [isSupported, setIsSupported] = useState<boolean | null>(null);
-  const [isPartialUnsupported, setIsPartialUnsupported] = useState<
-    boolean | null
-  >(null);
-  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState<
-    boolean | null
-  >(false);
-  const [params, setParams] = useState<AITranslatorCreateCoreOptions>({
-    sourceLanguage: 'zh-Hant',
-    targetLanguage: 'en',
-  });
+const Options: AITranslatorCreateOptions = {
+  sourceLanguage: 'zh-Hant',
+  targetLanguage: 'en',
+};
+
+export default function useAiTranslator() {
   const [translator, setTranslator] = useState<AITranslator | null>(null);
+  const [options, setOptions] = useState(Options);
 
-  const [canTranslate, setCanTranslate] = useState<AIAvailability | ''>('');
+  const {
+    isApiSupported,
+    setIsApiSupported,
+    availability,
+    setAvailability,
+    error,
+    setError,
+    downloadProgress,
+    setDownloadProgress,
+    hasCheckedAIStatus,
+    shouldDownloadModel,
+  } = useAiCommon();
 
   useEffect(() => {
-    checkCapability();
+    initTranslator();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Init translator lang
   useEffect(() => {
-    if (!isSupported || !createInstance) return;
-    setTranslatorLang();
-
     return () => {
       translator?.destroy?.();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSupported]);
+  }, [translator]);
 
-  // To check if translator is supported
-  const checkCapability = async () => {
-    const availability = await window.Translator?.availability?.({
-      sourceLanguage: params.sourceLanguage,
-      targetLanguage: params.targetLanguage,
-    });
-    if (availability === 'downloadable' || availability === 'downloading') {
-      setIsUserDownloadRequired(true);
-      setIsSupported(false);
-    } else if (availability === 'available') {
-      setIsSupported(true);
-    } else {
-      setIsSupported(false);
+  const initTranslator = async () => {
+    // Check if API is supported on the device
+    const apiExist = !!window.Translator;
+    setIsApiSupported(apiExist);
+    if (!apiExist) return;
+    const availability = await checkAvailability();
+    if (availability === 'available') {
+      setTranslatorLang();
     }
   };
 
-  const resetTranslator = () => {
-    setCanTranslate('');
-    setTranslator(null);
+  // To check if translator is supported
+  const checkAvailability = async (
+    sourceLanguage = Options.sourceLanguage,
+    targetLanguage = Options.targetLanguage
+  ) => {
+    // Check API availability (unavailable / downloadable / downloading / available)
+    const availability = await window.Translator?.availability?.({
+      sourceLanguage,
+      targetLanguage,
+    });
+    setAvailability(availability);
+    return availability;
   };
 
   const setTranslatorLang = async (
-    sourceLanguage = 'zh-Hant',
-    targetLanguage = 'en'
+    sourceLanguage = Options.sourceLanguage,
+    targetLanguage = Options.targetLanguage
   ) => {
-    resetTranslator();
-    // Destroy previous translator before get the new one
-    if (translator) translator.destroy?.();
-    setParams({ sourceLanguage, targetLanguage });
-    // If cannot translate for source-target pair, do nothing
-    const canTranslate = await isLanguagePairSupported(
-      sourceLanguage,
-      targetLanguage
-    );
-    if (canTranslate === 'unavailable') return;
-    // Create new translator
-    if (window.Translator) {
-      try {
-        const translator = await window.Translator.create({
-          sourceLanguage,
-          targetLanguage,
-        });
-        setTranslator(translator);
-        setIsPartialUnsupported(false);
-        loopCheckIfLanguagePairIsSupported(sourceLanguage, targetLanguage);
-      } catch (_e) {
-        setIsPartialUnsupported(true);
-      }
+    if (!window.Translator) {
+      setIsApiSupported(false);
+      return;
     }
-  };
-
-  const isLanguagePairSupported = async (
-    sourceLanguage = '',
-    targetLanguage = ''
-  ): Promise<AIAvailability | ''> => {
-    let canTranslate: AIAvailability | '' = '';
-    if (window.Translator) {
-      // If window.Translator exists
-      canTranslate = await window.Translator.availability({
+    try {
+      if (translator) translator.destroy?.();
+      const availability = await window.Translator.availability({
         sourceLanguage,
         targetLanguage,
       });
-    }
-    if (canTranslate !== 'available') {
-      setCanTranslate(canTranslate);
-    }
-    return canTranslate;
-  };
-
-  const loopCheckIfLanguagePairIsSupported = async (
-    sourceLanguage = '',
-    targetLanguage = ''
-  ): Promise<void> => {
-    const canTranslate = await isLanguagePairSupported(
-      sourceLanguage,
-      targetLanguage
-    );
-    setCanTranslate(canTranslate);
-    if (canTranslate === 'downloadable' || canTranslate === 'downloading') {
-      setTimeout(() => {
-        loopCheckIfLanguagePairIsSupported(sourceLanguage, targetLanguage);
-      }, 1000);
+      setAvailability(availability);
+      setOptions({
+        sourceLanguage,
+        targetLanguage,
+      });
+      if (availability === 'unavailable') return;
+      const monitor =
+        availability === 'available' ? undefined : createMonitorCallback;
+      const newTranslator = await window.Translator.create({
+        sourceLanguage,
+        targetLanguage,
+        monitor,
+      });
+      setTranslator(newTranslator);
+      checkAvailability(sourceLanguage, targetLanguage);
+    } catch (_e) {
+      console.log('error:', _e);
+      setError(true);
     }
   };
 
-  const triggerUserDownload = async () => {
-    setIsUserDownloadRequired(false);
-    setIsSupported(true);
+  const createMonitorCallback: AICreateMonitorCallback = (monitor) => {
+    setDownloadProgress(0);
+    monitor.addEventListener('downloadprogress', (e) => {
+      setDownloadProgress(e.loaded);
+    });
+  };
+
+  const downloadModel = async () => {
+    await setTranslatorLang();
   };
 
   const translate = async (text: string): Promise<string> => {
@@ -129,14 +114,20 @@ export default function useAiTranslator({ createInstance = true } = {}) {
     return result;
   };
 
+  const resetError = () => setError(false);
+
   return {
-    isSupported,
-    isPartialUnsupported,
-    isUserDownloadRequired,
+    hasCheckedAIStatus,
+    isApiSupported,
+    availability,
+    error,
+    options,
+    translator,
     translate,
-    params,
     setTranslatorLang,
-    canTranslate,
-    triggerUserDownload,
+    shouldDownloadModel,
+    downloadModel,
+    downloadProgress,
+    resetError,
   };
 }

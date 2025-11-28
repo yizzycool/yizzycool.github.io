@@ -20,7 +20,39 @@ interface AI {
 type AICreateMonitorCallback = (monitor: AICreateMonitor) => void;
 
 interface AICreateMonitor extends EventTarget {
-  ondownloadprogress: EventHandler;
+  ondownloadprogress:
+    | ((this: AICreateMonitor, event: ProgressEvent) => void)
+    | null;
+  addEventListener<T extends keyof AICreateMonitorEventMap>(
+    type: T,
+    listener: (
+      this: AICreateMonitor,
+      event: AICreateMonitorEventMap[T]
+    ) => void,
+    options?: boolean | AddEventListenerOptions
+  ): void;
+  addEventListener(
+    type: string,
+    listener: EventListenerOrEventListenerObject,
+    options?: boolean | AddEventListenerOptions
+  ): void;
+  removeEventListener<T extends keyof AICreateMonitorEventMap>(
+    type: T,
+    listener: (
+      this: AICreateMonitor,
+      event: AICreateMonitorEventMap[T]
+    ) => void,
+    options?: boolean | EventListenerOptions
+  ): void;
+  removeEventListener(
+    type: string,
+    listener: EventListenerOrEventListenerObject,
+    options?: boolean | EventListenerOptions
+  ): void;
+}
+
+interface AICreateMonitorEventMap {
+  downloadprogress: ProgressEvent;
 }
 
 type AIAvailability =

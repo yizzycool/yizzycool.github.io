@@ -62,17 +62,23 @@ export default function ImageToBase64() {
   };
 
   return (
-    <div className="mx-auto flex min-h-full max-w-screen-lg flex-col items-center px-5 lg:px-10">
-      <Title>Image to Base64</Title>
-      <Description>
-        Convert your images to Base64 strings instantly. Supports drag & drop,
-        runs entirely in your browser to ensure privacy.
-      </Description>
+    <>
+      <header>
+        <Title>Image to Base64</Title>
+        <Description>
+          Convert your images to Base64 strings instantly. Supports drag & drop,
+          runs entirely in your browser to ensure privacy.
+        </Description>
+      </header>
+
+      <div className="mt-16" />
+
       {/* File Picker */}
       <FilePicker type="image" onFileChange={onFileChange} />
+
       {/* Image Preview */}
       {!!imageInfo.image && (
-        <div className="mt-8 grid w-full grid-cols-1 gap-8 pb-20 duration-500 animate-in fade-in slide-in-from-bottom-4 lg:grid-cols-2">
+        <div className="mt-16 grid w-full grid-cols-1 gap-8 duration-500 animate-in fade-in slide-in-from-bottom-4 lg:grid-cols-2">
           <div className="flex-1">
             <div className="mb-3 flex items-center font-semibold">
               <ImageIcon className="mr-2" size={16} />
@@ -145,6 +151,6 @@ export default function ImageToBase64() {
         onClose={() => setImageInfo(DefaultImageInfo)}
         errorString="Uploaded image is not supported now. Please choose another image and try again."
       />
-    </div>
+    </>
   );
 }

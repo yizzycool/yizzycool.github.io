@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import useAiCommon from './use-ai-common';
 import browserUtils from '@/utils/browser-utils';
 import _isNull from 'lodash/isNull';
 import _defaults from 'lodash/defaults';
@@ -11,78 +12,102 @@ const Options: AILanguageModelCreateOptions = {
   systemPrompt: '',
 };
 
-export default function useAiLanguageModel({ createInstance = true } = {}) {
-  const [isSupported, setIsSupported] = useState<boolean | null>(null);
-  const [isPartialUnsupported, setIsPartialUnsupported] = useState<
-    boolean | null
-  >(null);
-  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState<
-    boolean | null
-  >(false);
+export default function useAiLanguageModel() {
   const [session, setSession] = useState<AILanguageModel | null>(null);
   const [options, setOptions] = useState(Options);
 
+  const {
+    isApiSupported,
+    setIsApiSupported,
+    availability,
+    setAvailability,
+    error,
+    setError,
+    downloadProgress,
+    setDownloadProgress,
+    hasCheckedAIStatus,
+    shouldDownloadModel,
+  } = useAiCommon();
+
   useEffect(() => {
-    checkCapability();
+    // Check if API is supported on the device
+    const apiExist = !!window.LanguageModel;
+    setIsApiSupported(apiExist);
+    if (!apiExist) return;
+    checkAvailability();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!isSupported || !createInstance) return;
-    initLanguageModel();
-
     return () => {
       session?.destroy?.();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSupported]);
+  }, [session]);
 
   // To check if language detector is supported
-  const checkCapability = async () => {
+  const checkAvailability = async () => {
+    // Check API availability (unavailable / downloadable / downloading / available)
     const availability = await window.LanguageModel?.availability?.();
-    if (availability === 'downloadable' || availability === 'downloading') {
-      setIsUserDownloadRequired(true);
-      setIsSupported(false);
-    } else if (availability === 'available') {
-      setIsSupported(true);
-    } else {
-      setIsSupported(false);
+    setAvailability(availability);
+    if (availability === 'available') {
+      initLanguageModel();
     }
   };
 
-  const initLanguageModel = async () => {
-    if (window.LanguageModel) {
-      try {
-        const session = await window.LanguageModel.create({});
-        setSession(session);
-        setIsPartialUnsupported(false);
-      } catch (_e) {
-        setIsPartialUnsupported(true);
-      }
+  const initLanguageModel = async (
+    monitor?: AICreateMonitorCallback | undefined
+  ) => {
+    if (!window.LanguageModel) {
+      setIsApiSupported(false);
+      return;
+    }
+    try {
+      const session = await window.LanguageModel.create({
+        ...options,
+        monitor,
+      });
+      setSession(session);
+    } catch (_e) {
+      setError(true);
     }
   };
 
   const updateLanguageModel = async (options: AILanguageModelCreateOptions) => {
-    if (window.LanguageModel) {
-      try {
-        if (session) session?.destroy?.();
-        setSession(null);
-        await browserUtils.sleep(500);
-        const newOptions = _defaults(options, Options);
-        const newSession = await window.LanguageModel.create(newOptions);
-        setOptions(newOptions);
-        setSession(newSession);
-        setIsPartialUnsupported(false);
-      } catch (_e) {
-        setIsPartialUnsupported(true);
-      }
+    if (!window.LanguageModel) {
+      setIsApiSupported(false);
+      return;
+    }
+    try {
+      if (session) session?.destroy?.();
+      setSession(null);
+      await browserUtils.sleep(500);
+      const newOptions = _defaults(options, Options);
+      const newSession = await window.LanguageModel.create(newOptions);
+      setOptions(newOptions);
+      setSession(newSession);
+    } catch (_e) {
+      setError(true);
     }
   };
 
   const resetModelWithCustomOptions = () => updateLanguageModel(options);
 
-  const triggerUserDownload = async () => {
-    setIsUserDownloadRequired(false);
-    setIsSupported(true);
+  const createMonitorCallback: AICreateMonitorCallback = (monitor) => {
+    setDownloadProgress(0);
+    monitor.addEventListener('downloadprogress', (e) => {
+      setDownloadProgress(e.loaded);
+      if (e.loaded === 1) {
+        setTimeout(() => setDownloadProgress(null), 1000);
+      }
+    });
+  };
+
+  const downloadModel = async () => {
+    await initLanguageModel(createMonitorCallback);
+    // Check API availability (unavailable / downloadable / downloading / available)
+    const availability = await window.LanguageModel?.availability?.();
+    setAvailability(availability);
   };
 
   const prompt = async (text: string): Promise<string | null> => {
@@ -115,10 +140,13 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
     }
   };
 
+  const resetError = () => setError(false);
+
   return {
-    isSupported,
-    isPartialUnsupported,
-    isUserDownloadRequired,
+    hasCheckedAIStatus,
+    isApiSupported,
+    availability,
+    error,
     options,
     isOptionUpdating: _isNull(session),
     session,
@@ -126,6 +154,9 @@ export default function useAiLanguageModel({ createInstance = true } = {}) {
     promptStreaming,
     updateLanguageModel,
     resetModelWithCustomOptions,
-    triggerUserDownload,
+    shouldDownloadModel,
+    downloadModel,
+    downloadProgress,
+    resetError,
   };
 }

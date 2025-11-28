@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import browserUtils from '@/utils/browser-utils';
 import _defaults from 'lodash/defaults';
 import _isNull from 'lodash/isNull';
+import useAiCommon from './use-ai-common';
 
 const Options: AISummarizerCreateOptions = {
   sharedContext: '',
@@ -12,76 +13,100 @@ const Options: AISummarizerCreateOptions = {
   length: 'medium',
 };
 
-export default function useAiSummarizer({ createInstance = true } = {}) {
-  const [isSupported, setIsSupported] = useState<boolean | null>(null);
-  const [isPartialUnsupported, setIsPartialUnsupported] = useState<
-    boolean | null
-  >(null);
-  const [isUserDownloadRequired, setIsUserDownloadRequired] = useState<
-    boolean | null
-  >(false);
+export default function useAiSummarizer() {
   const [summarizer, setSummarizer] = useState<AISummarizer | null>(null);
   const [options, setOptions] = useState(Options);
 
+  const {
+    isApiSupported,
+    setIsApiSupported,
+    availability,
+    setAvailability,
+    error,
+    setError,
+    downloadProgress,
+    setDownloadProgress,
+    hasCheckedAIStatus,
+    shouldDownloadModel,
+  } = useAiCommon();
+
   useEffect(() => {
-    checkCapability();
+    // Check if API is supported on the device
+    const apiExist = !!window.Summarizer;
+    setIsApiSupported(apiExist);
+    if (!apiExist) return;
+    checkAvailability();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!isSupported || !createInstance) return;
-    initSummarizer();
-
     return () => {
       summarizer?.destroy?.();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSupported]);
+  }, [summarizer]);
 
   // To check if summarizer is supported
-  const checkCapability = async () => {
+  const checkAvailability = async () => {
+    // Check API availability (unavailable / downloadable / downloading / available)
     const availability = await window.Summarizer?.availability?.();
-    if (availability === 'downloadable' || availability === 'downloading') {
-      setIsUserDownloadRequired(true);
-      setIsSupported(false);
-    } else if (availability === 'available') {
-      setIsSupported(true);
-    } else {
-      setIsSupported(false);
+    setAvailability(availability);
+    if (availability === 'available') {
+      initSummarizer();
     }
   };
 
-  const initSummarizer = async () => {
-    if (window.Summarizer) {
-      try {
-        const summarizer = await window.Summarizer.create(options);
-        setSummarizer(summarizer);
-        setIsPartialUnsupported(false);
-      } catch (_e) {
-        setIsPartialUnsupported(true);
-      }
+  const initSummarizer = async (
+    monitor?: AICreateMonitorCallback | undefined
+  ) => {
+    if (!window.Summarizer) {
+      setIsApiSupported(false);
+      return;
+    }
+    try {
+      const summarizer = await window.Summarizer.create({
+        ...options,
+        monitor,
+      });
+      setSummarizer(summarizer);
+    } catch (_e) {
+      setError(true);
     }
   };
 
   const updateSummarizer = async (options: AISummarizerCreateOptions) => {
-    if (window.Summarizer) {
-      try {
-        if (summarizer) summarizer?.destroy?.();
-        setSummarizer(null);
-        await browserUtils.sleep(500);
-        const newOptions = _defaults(options, Options);
-        const newSummarizer = await window.Summarizer.create(newOptions);
-        setOptions(newOptions);
-        setSummarizer(newSummarizer);
-        setIsPartialUnsupported(false);
-      } catch (_e) {
-        setIsPartialUnsupported(true);
-      }
+    if (!window.Summarizer) {
+      setIsApiSupported(false);
+      return;
+    }
+    try {
+      if (summarizer) summarizer?.destroy?.();
+      setSummarizer(null);
+      await browserUtils.sleep(500);
+      const newOptions = _defaults(options, Options);
+      const newSummarizer = await window.Summarizer.create(newOptions);
+      setOptions(newOptions);
+      setSummarizer(newSummarizer);
+    } catch (_e) {
+      setError(true);
     }
   };
 
-  const triggerUserDownload = async () => {
-    setIsUserDownloadRequired(false);
-    setIsSupported(true);
+  const createMonitorCallback: AICreateMonitorCallback = (monitor) => {
+    setDownloadProgress(0);
+    monitor.addEventListener('downloadprogress', (e) => {
+      setDownloadProgress(e.loaded);
+      if (e.loaded === 1) {
+        setTimeout(() => setDownloadProgress(null), 1000);
+      }
+    });
+  };
+
+  const downloadModel = async () => {
+    await initSummarizer(createMonitorCallback);
+    // Check API availability (unavailable / downloadable / downloading / available)
+    const availability = await window.Summarizer?.availability?.();
+    setAvailability(availability);
   };
 
   const summarize = async (text: string): Promise<string | null> => {
@@ -114,15 +139,21 @@ export default function useAiSummarizer({ createInstance = true } = {}) {
     }
   };
 
+  const resetError = () => setError(false);
+
   return {
-    isSupported,
-    isPartialUnsupported,
-    isUserDownloadRequired,
+    hasCheckedAIStatus,
+    isApiSupported,
+    availability,
+    error,
     options,
     isOptionUpdating: _isNull(summarizer),
     summarize,
     summarizeStreaming,
     updateSummarizer,
-    triggerUserDownload,
+    shouldDownloadModel,
+    downloadModel,
+    downloadProgress,
+    resetError,
   };
 }

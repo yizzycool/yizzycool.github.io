@@ -5,7 +5,6 @@ import type { ChangeEvent } from 'react';
 import { useRef, useState } from 'react';
 import imageUtils from '@/utils/image-utils';
 import Image from 'next/image';
-import ErrorDialog from '@/components/common/dialog/error';
 import { FileText, View } from 'lucide-react';
 import Title from '../../components/title';
 import Description from '../../components/description';
@@ -14,17 +13,16 @@ import Textarea from '@/components/common/textarea';
 import PasteAction from '@/components/common/action-button/paste';
 import DownloadAction from '@/components/common/action-button/download';
 import CopyAction from '@/components/common/action-button/copy';
+import ImageInfoTag from '../components/ImageInfoTag';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _size from 'lodash/size';
-import ImageInfoTag from '../components/ImageInfoTag';
 
 type ImageInfo = {
   blob: Blob | null;
   image: HTMLImageElement | null;
   width: number;
   height: number;
-  error: boolean;
 };
 
 const DefaultImageInfo: ImageInfo = {
@@ -32,7 +30,6 @@ const DefaultImageInfo: ImageInfo = {
   image: null,
   width: 0,
   height: 0,
-  error: false,
 };
 
 export default function Base64ToImage() {
@@ -57,7 +54,7 @@ export default function Base64ToImage() {
       const { width, height } = image;
       const type = imageUtils.parseTypeFromBase64(transformedBase64);
       const blob = await imageUtils.imageToBlob(image, type || 'image/png');
-      setImageInfo({ image, width, height, error: false, blob });
+      setImageInfo({ image, width, height, blob });
     } catch (_e) {
       console.log('An error occurred while converting image');
       setImageInfo(DefaultImageInfo);
@@ -84,16 +81,18 @@ export default function Base64ToImage() {
   };
 
   return (
-    <div className="mx-auto flex min-h-full max-w-screen-lg flex-col items-center px-5 lg:px-10">
-      <Title>Base64 to Image</Title>
-      <Description>
-        Convert Base64 strings into downloadable image files instantly. A fast,
-        secure Base64 to Image tool that supports PNG, JPG, and more with one
-        click.
-      </Description>
+    <>
+      <header>
+        <Title>Base64 to Image</Title>
+        <Description>
+          Convert Base64 strings into downloadable image files instantly. A
+          fast, secure Base64 to Image tool that supports PNG, JPG, and more
+          with one click.
+        </Description>
+      </header>
 
       {/* Textarea block */}
-      <div className="mt-8 w-full">
+      <div className="mt-16 w-full">
         <div className="mb-3 flex items-center justify-between">
           <label
             htmlFor="base64-textarea"
@@ -122,7 +121,7 @@ export default function Base64ToImage() {
       </div>
 
       {/* Image block */}
-      <div className="mb-20 mt-8 w-full">
+      <div className="mt-8 w-full">
         <div className="mb-4 flex items-center justify-between">
           <div className="font-semibold">
             <View className="mr-2 inline-block" size={16} />
@@ -144,7 +143,7 @@ export default function Base64ToImage() {
             'bg-white dark:bg-neutral-800'
           )}
         >
-          {!imageInfo.error && !_isNull(imageInfo.image) && (
+          {!_isNull(imageInfo.image) && (
             <>
               <Image
                 width={0}
@@ -169,12 +168,6 @@ export default function Base64ToImage() {
           )}
         </div>
       </div>
-      {/* Error dialog */}
-      <ErrorDialog
-        open={imageInfo.error}
-        onClose={() => setImageInfo(DefaultImageInfo)}
-        errorString="Conversion Error! Please check your base64 string and try again."
-      />
-    </div>
+    </>
   );
 }
