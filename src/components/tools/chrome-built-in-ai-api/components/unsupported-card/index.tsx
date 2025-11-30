@@ -74,7 +74,7 @@ export default function UnsupportedCard({
 
         {/* Actions */}
         <div className="space-y-3">
-          <Button onClick={() => {}} size="lg" className="w-full">
+          <Button onClick={() => {}} className="w-full">
             Check Again
           </Button>
 
@@ -86,7 +86,7 @@ export default function UnsupportedCard({
           >
             <Button
               variant="ghost"
-              size="sm"
+              size="xs"
               className="w-full text-neutral-500"
               icon={ExternalLink}
             >

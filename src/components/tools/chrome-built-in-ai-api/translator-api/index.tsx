@@ -158,9 +158,10 @@ export default function TranslatorApi() {
                 {/* Word count */}
                 <div className="flex items-center justify-between px-3 py-2">
                   <SpeakAction
-                    content={text}
+                    display="icon"
+                    size="sm"
                     disabled={_isEmpty(text)}
-                    size={14}
+                    content={text}
                   />
                   <div className="text-xs opacity-50">{_size(text)} chars</div>
                 </div>
@@ -181,9 +182,10 @@ export default function TranslatorApi() {
                 {/* Copy */}
                 <div className="flex items-center justify-between border-t border-neutral-200 px-3 py-2 dark:border-neutral-700">
                   <SpeakAction
-                    content={translation}
+                    display="icon"
+                    size="sm"
                     disabled={_isEmpty(translation)}
-                    size={14}
+                    content={translation}
                   />
                   <CopyAction
                     content={translation}

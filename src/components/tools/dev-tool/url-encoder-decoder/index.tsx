@@ -14,6 +14,7 @@ import SwapAction from '@/components/common/action-button/swap';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import PasteAction from '@/components/common/action-button/paste';
+import Button from '@/components/common/button';
 
 export default function UrlEncoderDecoder() {
   const [input, setInput] = useState<string>('');
@@ -86,23 +87,29 @@ export default function UrlEncoderDecoder() {
       />
 
       {/* Action buttons */}
-      <div className="mt-10 flex w-full flex-col items-stretch justify-stretch gap-3 sm:flex-row lg:items-center">
-        <button
-          className="flex flex-1 items-center justify-center gap-2 justify-self-stretch rounded-lg bg-sky-600 px-4 py-3 font-medium text-white hover:bg-sky-700"
+      <div className="mt-10 flex w-full flex-col items-stretch justify-stretch gap-3 sm:flex-row sm:items-center">
+        <Button
+          variant="dark-sky"
+          size="lg"
+          className="flex-1"
+          icon={FileCode}
           onClick={onEncodeClick}
         >
-          <FileCode size={20} />
           Encode
-        </button>
-        <button
-          className="flex flex-1 items-center justify-center gap-2 justify-self-stretch rounded-lg bg-sky-600 px-4 py-3 font-medium text-white hover:bg-sky-700"
+        </Button>
+        <Button
+          variant="dark-sky"
+          size="lg"
+          className="flex-1"
+          icon={FileCode2}
           onClick={onDecodeClick}
         >
-          <FileCode2 size={20} />
           Decode
-        </button>
+        </Button>
         <SwapAction
+          display="icon"
           onClick={onSwapClick}
+          size="lg"
           disabled={_isEmpty(input) || _isEmpty(output)}
         />
       </div>

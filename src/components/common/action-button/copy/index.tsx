@@ -1,20 +1,27 @@
 'use client';
 
-import clsx from 'clsx';
+import { ActionButtonProps } from '@/types/common/action-button';
 import { Check, Copy } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import useDisplay from '../hooks/use-display';
+import Button from '../../button';
 import _isNil from 'lodash/isNil';
 
-export default function CopyAction({
-  content = '',
-  disabled = false,
-}: {
+interface Props extends ActionButtonProps {
   content?: string | Blob | null | undefined;
-  disabled?: boolean;
-}) {
+}
+
+export default function CopyAction({
+  display = 'icon-label',
+  size = 'xs',
+  disabled = false,
+  content = '',
+}: Props) {
   const [copied, setCopied] = useState(false);
   const [isActionSupported, setIsActionSupported] = useState(false);
   const [isMimeTypeSupported, setIsMimeTypeSupported] = useState(false);
+
+  const { showIcon, showLabel } = useDisplay({ display });
 
   const mimeType = useMemo(() => {
     if (typeof content === 'string') {
@@ -67,19 +74,14 @@ export default function CopyAction({
   if (!isActionSupported) return null;
 
   return (
-    <button
+    <Button
       onClick={handleCopy}
-      className={clsx(
-        'flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium shadow-sm',
-        'border border-gray-200 dark:border-neutral-700',
-        'bg-white dark:bg-neutral-800',
-        'text-gray-600 dark:text-neutral-300',
-        'hover:bg-gray-50 dark:hover:bg-neutral-700',
-        isButtonDisabled && 'pointer-events-none opacity-50'
-      )}
+      variant="secondary"
+      size={size}
+      icon={!showIcon ? undefined : copied ? Check : Copy}
+      disabled={isButtonDisabled}
     >
-      {copied ? <Check size={12} strokeWidth={3} /> : <Copy size={12} />}
-      {copied ? 'Copied' : 'Copy'}
-    </button>
+      {!showLabel ? null : copied ? 'Copied' : 'Copy'}
+    </Button>
   );
 }

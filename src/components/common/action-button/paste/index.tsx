@@ -1,8 +1,10 @@
 'use client';
 
-import clsx from 'clsx';
+import { ActionButtonProps } from '@/types/common/action-button';
 import { Clipboard } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import useDisplay from '../hooks/use-display';
+import Button from '../../button';
 import _find from 'lodash/find';
 
 type InputType = 'string' | 'image';
@@ -14,20 +16,21 @@ type OnClick<T extends InputType> = T extends 'string'
   ? OnTextPaste
   : OnImagePaste;
 
-interface Props<T extends InputType> {
-  type?: T;
-  disabled?: boolean;
-  size?: number;
+interface Props<T extends InputType> extends ActionButtonProps {
   onClick?: OnClick<T>;
+  type?: T;
 }
 
 export default function PasteAction<T extends InputType>({
+  display = 'icon-label',
+  size = 'xs',
   disabled = false,
   onClick = () => {},
-  size = 12,
   type = 'string' as T,
 }: Props<T>) {
   const [isActionSupported, setIsActionSupported] = useState(false);
+
+  const { showIcon, showLabel } = useDisplay({ display });
 
   const isButtonDisabled = useMemo(() => {
     return disabled || !isActionSupported;
@@ -65,16 +68,14 @@ export default function PasteAction<T extends InputType>({
   if (!isActionSupported) return null;
 
   return (
-    <button
+    <Button
       onClick={onPasteClick}
-      className={clsx(
-        'flex items-center gap-1 rounded px-2 py-1 text-xs transition',
-        'bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700',
-        'text-neutral-700 dark:text-neutral-300',
-        isButtonDisabled && 'pointer-events-none opacity-50'
-      )}
+      variant="secondary"
+      size={size}
+      icon={showIcon ? Clipboard : undefined}
+      disabled={isButtonDisabled}
     >
-      <Clipboard size={size} /> Paste
-    </button>
+      {showLabel ? 'Paste' : null}
+    </Button>
   );
 }

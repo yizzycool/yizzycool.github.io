@@ -1,19 +1,24 @@
 'use client';
 
-import clsx from 'clsx';
+import { ActionButtonProps } from '@/types/common/action-button';
 import { Download } from 'lucide-react';
+import useDisplay from '../hooks/use-display';
+import Button from '../../button';
+
+interface Props extends ActionButtonProps {
+  blob?: Blob | null;
+  filename?: string;
+}
 
 export default function DownloadAction({
+  display = 'icon-label',
+  size = 'xs',
   disabled = false,
   blob = null,
-  size = 12,
   filename = 'download',
-}: {
-  disabled?: boolean;
-  blob?: Blob | null;
-  size?: number;
-  filename?: string;
-}) {
+}: Props) {
+  const { showIcon, showLabel } = useDisplay({ display });
+
   const onDownloadClick = () => {
     if (disabled) return;
 
@@ -30,17 +35,14 @@ export default function DownloadAction({
   };
 
   return (
-    <button
+    <Button
       onClick={onDownloadClick}
-      className={clsx(
-        'flex items-center gap-1 rounded px-2 py-1 text-xs transition',
-        'border border-neutral-900 dark:border-neutral-100',
-        'bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-neutral-200',
-        'text-white dark:text-neutral-900',
-        disabled && 'pointer-events-none opacity-50'
-      )}
+      variant="primary"
+      size={size}
+      icon={showIcon ? Download : undefined}
+      disabled={disabled}
     >
-      <Download size={size} /> Download
-    </button>
+      {showLabel ? 'Download' : null}
+    </Button>
   );
 }

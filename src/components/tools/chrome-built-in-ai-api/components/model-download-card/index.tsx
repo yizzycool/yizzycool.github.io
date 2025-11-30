@@ -72,7 +72,6 @@ export default function ModelDownloadCard({
           <Button
             onClick={onClick}
             disabled={isDownloading}
-            size="lg"
             className="group relative w-full overflow-hidden"
           >
             {isDownloading ? 'Downloading...' : 'Download Model'}

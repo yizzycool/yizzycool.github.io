@@ -1,34 +1,38 @@
 'use client';
 
-import clsx from 'clsx';
+import { ActionButtonProps } from '@/types/common/action-button';
+import { MouseEventHandler } from 'react';
 import { Trash2 } from 'lucide-react';
+import useDisplay from '../hooks/use-display';
+import Button from '../../button';
+
+interface Props extends ActionButtonProps {
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+}
 
 export default function DeleteAction({
+  display = 'icon-label',
+  size = 'xs',
   disabled = false,
   onClick = () => {},
-  size = 12,
-}: {
-  disabled?: boolean;
-  onClick?: () => void;
-  size?: number;
-}) {
-  const onButtonClick = () => {
+}: Props) {
+  const { showIcon, showLabel } = useDisplay({ display });
+
+  const onButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     if (disabled) return;
 
-    onClick();
+    onClick(e);
   };
 
   return (
-    <button
+    <Button
+      variant="error"
       onClick={onButtonClick}
-      className={clsx(
-        'flex items-center gap-1 rounded px-2 py-1 text-xs text-red-600 transition',
-        'bg-red-500/10 hover:bg-red-600/20',
-        'dark:text-red-400 dark:hover:bg-red-400/20',
-        disabled && 'pointer-events-none opacity-50'
-      )}
+      size={size}
+      icon={showIcon ? Trash2 : undefined}
+      disabled={disabled}
     >
-      <Trash2 size={size} /> Clear
-    </button>
+      {showLabel ? 'Clear' : null}
+    </Button>
   );
 }
