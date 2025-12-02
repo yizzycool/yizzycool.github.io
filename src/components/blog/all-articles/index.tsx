@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import Title from '@/components/tools/components/title';
+import Title from '@/components/common/title';
 import strapiUtils from '@/utils/strapi-utils';
 import _map from 'lodash/map';
 

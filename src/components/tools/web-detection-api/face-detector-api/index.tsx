@@ -3,7 +3,7 @@
 import { useMemo, useRef, useState } from 'react';
 import useFaceDetector from '../hooks/use-face-detector';
 import useWebcam from '../hooks/use-webcam';
-import Title from '../../components/title';
+import Title from '@/components/common/title';
 import Unsupported, {
   UnsupportedApiTypes,
   UnsupportedTypes,

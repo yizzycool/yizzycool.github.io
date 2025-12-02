@@ -4,7 +4,7 @@ import { useMemo, useRef, useState } from 'react';
 import useBarcodeDetector from '../hooks/use-barcode-detector';
 import useWebcam from '../hooks/use-webcam';
 import { Dot } from 'lucide-react';
-import Title from '../../components/title';
+import Title from '@/components/common/title';
 import Unsupported, {
   UnsupportedApiTypes,
   UnsupportedTypes,
