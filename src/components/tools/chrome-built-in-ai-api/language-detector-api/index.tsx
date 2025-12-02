@@ -4,9 +4,8 @@ import clsx from 'clsx';
 import { useRef, useState } from 'react';
 import { ChartColumn, PenLine } from 'lucide-react';
 import useAiLanguageDetector from '../hooks/use-ai-language-detector';
-import Title from '../../components/title';
+import HeaderBlock from '../../components/header-block';
 import BarChart from './components/bar-chart';
-import Description from '../../components/description';
 import Textarea from '@/components/common/textarea';
 import PasteAction from '@/components/common/action-button/paste';
 import DeleteAction from '@/components/common/action-button/delete';
@@ -70,14 +69,7 @@ export default function LanguageDetectorApi() {
 
   return (
     <>
-      <header>
-        <Title>Language Detector</Title>
-        <Description>
-          Instantly detect the language of any text with Chrome’s built-in
-          Gemini AI — fast, accurate, and reliable multilingual detection
-          without setup or API key.
-        </Description>
-      </header>
+      <HeaderBlock />
 
       {/* Language Detector */}
       {!hasCheckedAIStatus ? (
@@ -96,12 +88,12 @@ export default function LanguageDetectorApi() {
           <div className="mt-16 text-left">
             <div className="mx-auto text-center">
               {/* Input */}
-              <div className="mb-3 flex items-center justify-between">
-                <div className="flex items-center font-semibold">
+              <div className="mb-3 flex flex-col-reverse items-center justify-between gap-2 sm:flex-row">
+                <div className="flex items-center self-start font-semibold sm:self-auto">
                   <PenLine className="mr-2" size={16} />
                   Paste your text below
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 self-end sm:self-auto">
                   <PasteAction onClick={onPasteText} />
                   <DeleteAction
                     onClick={onClearClick}
@@ -117,7 +109,7 @@ export default function LanguageDetectorApi() {
               />
               {/* Char count block */}
               <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
-                Length: {_size(text)} chars
+                {_size(text)} chars
               </div>
             </div>
             {/* Output */}

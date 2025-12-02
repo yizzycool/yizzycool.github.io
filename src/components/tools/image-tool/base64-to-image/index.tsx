@@ -6,8 +6,7 @@ import { useRef, useState } from 'react';
 import imageUtils from '@/utils/image-utils';
 import Image from 'next/image';
 import { FileText, View } from 'lucide-react';
-import Title from '../../components/title';
-import Description from '../../components/description';
+import HeaderBlock from '../../components/header-block';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
 import PasteAction from '@/components/common/action-button/paste';
@@ -82,26 +81,19 @@ export default function Base64ToImage() {
 
   return (
     <>
-      <header>
-        <Title>Base64 to Image</Title>
-        <Description>
-          Convert Base64 strings into downloadable image files instantly. A
-          fast, secure Base64 to Image tool that supports PNG, JPG, and more
-          with one click.
-        </Description>
-      </header>
+      <HeaderBlock />
 
       {/* Textarea block */}
       <div className="mt-16 w-full">
-        <div className="mb-3 flex items-center justify-between">
+        <div className="mb-3 flex flex-col-reverse items-center justify-between gap-2 sm:flex-row">
           <label
             htmlFor="base64-textarea"
-            className="block flex items-center font-semibold"
+            className="block flex items-center self-start font-semibold sm:self-auto"
           >
             <FileText className="mr-2 inline-block" size={16} />
             Paste Base64 string below
           </label>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 self-end sm:self-auto">
             <PasteAction onClick={onPasteBase64} />
             <DeleteAction onClick={onClearBase64} disabled={_isEmpty(base64)} />
           </div>
@@ -117,17 +109,17 @@ export default function Base64ToImage() {
 
       {/* Char count block */}
       <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
-        Length: {_size(base64)} chars
+        {_size(base64)} chars
       </div>
 
       {/* Image block */}
       <div className="mt-8 w-full">
-        <div className="mb-4 flex items-center justify-between">
-          <div className="font-semibold">
+        <div className="mb-4 flex flex-col-reverse items-center justify-between gap-2 sm:flex-row">
+          <div className="self-start font-semibold sm:self-auto">
             <View className="mr-2 inline-block" size={16} />
             Image Preview
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 self-end sm:self-auto">
             <CopyAction content={imageInfo.blob} />
             <DownloadAction
               blob={imageInfo.blob}

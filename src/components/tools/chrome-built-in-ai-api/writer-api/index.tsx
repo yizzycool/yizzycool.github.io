@@ -1,15 +1,14 @@
 'use client';
 
+import { UnsupportedApiTypes } from '../data/unsupported-types';
 import useAiWriter from '../hooks/use-ai-writer';
-import Title from '../../components/title';
-import Description from '../../components/description';
+import HeaderBlock from '../../components/header-block';
 import SettingsPanel from './components/settings-panel';
 import LoadingSkeleton from '../components/loading-skeleton';
 import Chat from '../components/chat';
 import ModelDownloadCard from '../components/model-download-card';
 import UnsupportedCard from '../components/unsupported-card';
 import ErrorDialog from '@/components/common/dialog/error';
-import { UnsupportedApiTypes } from '../data/unsupported-types';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 
@@ -32,14 +31,7 @@ export default function WriterApi() {
 
   return (
     <>
-      <header>
-        <Title>Writer</Title>
-        <Description>
-          Generate high-quality text effortlessly using Chrome’s built-in Gemini
-          AI - perfect for articles, emails, or creative writing with fast,
-          natural, and accurate results.
-        </Description>
-      </header>
+      <HeaderBlock />
 
       {/* Summarizer */}
       {!hasCheckedAIStatus ? (

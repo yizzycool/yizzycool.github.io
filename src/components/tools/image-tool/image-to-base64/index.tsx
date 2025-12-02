@@ -5,16 +5,15 @@ import { FileCode, ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import imageUtils from '@/utils/image-utils';
 import Image from 'next/image';
-import ErrorDialog from '@/components/common/dialog/error';
-import Title from '../../components/title';
-import FilePicker from '@/components/common/file-picker';
-import Description from '../../components/description';
 import { Textarea } from '@headlessui/react';
+import HeaderBlock from '../../components/header-block';
+import FilePicker from '@/components/common/file-picker';
+import CopyAction from '@/components/common/action-button/copy';
+import ImageInfoTag from '../components/ImageInfoTag';
+import ErrorDialog from '@/components/common/dialog/error';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _size from 'lodash/size';
-import CopyAction from '@/components/common/action-button/copy';
-import ImageInfoTag from '../components/ImageInfoTag';
 
 type ImageInfo = {
   image: HTMLImageElement | null;
@@ -63,13 +62,7 @@ export default function ImageToBase64() {
 
   return (
     <>
-      <header>
-        <Title>Image to Base64</Title>
-        <Description>
-          Convert your images to Base64 strings instantly. Supports drag & drop,
-          runs entirely in your browser to ensure privacy.
-        </Description>
-      </header>
+      <HeaderBlock />
 
       <div className="mt-16" />
 
@@ -139,7 +132,7 @@ export default function ImageToBase64() {
             />
             {/* Char count block */}
             <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
-              Length: {_size(base64)} chars
+              {_size(base64)} chars
             </div>
           </div>
         </div>

@@ -1,20 +1,13 @@
 'use client';
 
 import clsx from 'clsx';
-import Markdown, { ExtraProps } from 'react-markdown';
+import Markdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { XIcon } from 'lucide-react';
-import {
-  ChangeEvent,
-  ClassAttributes,
-  HTMLAttributes,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
+import SyntaxHighlighterCode from '@/components/common/syntax-highlighter-code';
 import _slice from 'lodash/slice';
 import _last from 'lodash/last';
 import _size from 'lodash/size';
@@ -177,7 +170,7 @@ export default function Chat({
                         remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
                         components={{
                           code(props) {
-                            return Code(props);
+                            return SyntaxHighlighterCode(props);
                           },
                         }}
                       >
@@ -190,7 +183,7 @@ export default function Chat({
                         remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
                         components={{
                           code(props) {
-                            return Code(props);
+                            return SyntaxHighlighterCode(props);
                           },
                         }}
                       >
@@ -222,26 +215,3 @@ export default function Chat({
     </div>
   );
 }
-
-const Code = (
-  props: ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement> & ExtraProps
-) => {
-  const { ref, children, className, node, ...rest } = props;
-  const match = /language-(\w+)/.exec(className || '');
-  return match ? (
-    // @ts-expect-error - known issue about react-syntax-highlighter
-    <SyntaxHighlighter
-      {...rest}
-      PreTag="div"
-      language={match[1]}
-      style={vscDarkPlus}
-      showLineNumbers={true}
-    >
-      {children}
-    </SyntaxHighlighter>
-  ) : (
-    <code {...rest} className={className}>
-      {children}
-    </code>
-  );
-};

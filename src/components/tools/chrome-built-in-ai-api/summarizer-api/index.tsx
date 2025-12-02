@@ -1,19 +1,32 @@
 'use client';
 
+import { UnsupportedApiTypes } from '../data/unsupported-types';
+import { PenLine, Sparkles } from 'lucide-react';
+import { ChangeEventHandler, useState } from 'react';
 import useAiSummarizer from '../hooks/use-ai-summarizer';
-import Title from '../../components/title';
-import SettingsPanel from './components/settings-panel';
+import HeaderBlock from '../../components/header-block';
 import LoadingSkeleton from '../components/loading-skeleton';
-import Chat from '../components/chat';
 import UnsupportedCard from '../components/unsupported-card';
 import ModelDownloadCard from '../components/model-download-card';
-import Description from '../../components/description';
 import ErrorDialog from '@/components/common/dialog/error';
-import { UnsupportedApiTypes } from '../data/unsupported-types';
+import PasteAction from '@/components/common/action-button/paste';
+import DeleteAction from '@/components/common/action-button/delete';
+import Textarea from '@/components/common/textarea';
+import Config from './components/config';
+import Button from '@/components/common/button';
+import Result from './components/result';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
+import _size from 'lodash/size';
+import _slice from 'lodash/slice';
+import _last from 'lodash/last';
+import _range from 'lodash/range';
 
 export default function SummarizerApi() {
+  const [text, setText] = useState('');
+  const [results, setResults] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+
   const {
     hasCheckedAIStatus,
     isApiSupported,
@@ -30,16 +43,42 @@ export default function SummarizerApi() {
     resetError,
   } = useAiSummarizer();
 
+  const onPasteText = (value: string) => {
+    setText(value as string);
+  };
+
+  const onClearClick = () => {
+    setText('');
+    setResults('');
+  };
+
+  const onChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
+    setText(e.target.value);
+  };
+
+  const onSummarizeClick = async () => {
+    scrollToResultBlock();
+    setIsProcessing(true);
+    setResults('');
+    await summarizeStreaming(text, (chunk) => {
+      setResults((prev) => prev + chunk);
+    });
+    setIsProcessing(false);
+  };
+
+  const scrollToResultBlock = () => {
+    const result = document.getElementById('result');
+    if (!result) return;
+    result.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'start',
+    });
+  };
+
   return (
     <>
-      <header>
-        <Title>Summarizer</Title>
-        <Description>
-          Instantly summarize any text with Chrome’s built-in Gemini AI — get
-          concise, accurate, and readable summaries in seconds without extra
-          setup or API keys.
-        </Description>
-      </header>
+      <HeaderBlock />
 
       {/* Summarizer */}
       {!hasCheckedAIStatus ? (
@@ -53,20 +92,67 @@ export default function SummarizerApi() {
         />
       ) : (
         <>
-          <div className="mx-auto max-w-screen-sm px-5 pb-40 pt-20 text-left">
-            <div className="mx-auto max-w-screen-sm">
-              <SettingsPanel
+          <div className="mt-16 text-left">
+            <div className="mb-6 flex items-center justify-end">
+              <Config
                 options={options}
                 isOptionUpdating={isOptionUpdating}
                 updateSummarizer={updateSummarizer}
               />
-              <Chat
-                buttonText="Start"
-                placeholder="type some text to be summarized"
-                promptStreaming={summarizeStreaming}
-                isOptionUpdating={isOptionUpdating}
-              />
             </div>
+            {/* Input */}
+            <div className="mb-3 flex flex-col-reverse items-center justify-between gap-2 sm:flex-row">
+              <div className="flex items-center self-start font-semibold sm:self-auto">
+                <PenLine className="mr-2" size={16} />
+                Paste your text below
+              </div>
+              <div className="flex items-center gap-2 self-end sm:self-auto">
+                <PasteAction onClick={onPasteText} />
+                <DeleteAction
+                  onClick={onClearClick}
+                  disabled={_isEmpty(text)}
+                />
+              </div>
+            </div>
+            <Textarea
+              onChange={onChange}
+              value={text}
+              rows={10}
+              placeholder="Type or paste the artice or text here to summarize..."
+            />
+            {/* Char count block */}
+            <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
+              {_size(text)} chars
+            </div>
+
+            {/* Action Button */}
+            <div className="mt-10 flex justify-end">
+              <Button
+                icon={Sparkles}
+                rounded="lg"
+                onClick={onSummarizeClick}
+                disabled={_isEmpty(text) || isProcessing}
+              >
+                {isProcessing ? (
+                  <>
+                    Summarizing
+                    {_range(3).map((t) => (
+                      <span
+                        key={t}
+                        className={`inline-block animate-bounce delay-${t * 100}`}
+                      >
+                        .
+                      </span>
+                    ))}
+                  </>
+                ) : (
+                  'Summarize'
+                )}
+              </Button>
+            </div>
+
+            {/* Result */}
+            <Result results={results} isProcessing={isProcessing} />
           </div>
         </>
       )}

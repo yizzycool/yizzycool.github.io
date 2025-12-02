@@ -3,18 +3,17 @@
 import type { ChangeEvent } from 'react';
 import { useState } from 'react';
 import browserUtils from '@/utils/browser-utils';
-import ErrorDialog from '@/components/common/dialog/error';
 import { FileCode, FileCode2 } from 'lucide-react';
+import HeaderBlock from '../../components/header-block';
 import Textarea from '@/components/common/textarea';
-import Title from '../../components/title';
-import Description from '../../components/description';
+import Button from '@/components/common/button';
 import DeleteAction from '@/components/common/action-button/delete';
 import CopyAction from '@/components/common/action-button/copy';
 import SwapAction from '@/components/common/action-button/swap';
+import PasteAction from '@/components/common/action-button/paste';
+import ErrorDialog from '@/components/common/dialog/error';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
-import PasteAction from '@/components/common/action-button/paste';
-import Button from '@/components/common/button';
 
 export default function UrlEncoderDecoder() {
   const [input, setInput] = useState<string>('');
@@ -57,20 +56,17 @@ export default function UrlEncoderDecoder() {
 
   return (
     <>
-      <header>
-        <Title>URL Encoder / Decoder</Title>
-        <Description>
-          Quickly convert URLs into a transmission-safe format or decode
-          previously encoded URLs. Supports UTF-8 characters.
-        </Description>
-      </header>
+      <HeaderBlock />
 
       {/* Input block */}
-      <div className="mb-3 mt-16 flex w-full items-center justify-between">
-        <label htmlFor="url-textarea" className="block font-semibold">
+      <div className="mb-3 mt-16 flex w-full flex-col-reverse items-center justify-between gap-2 sm:flex-row">
+        <label
+          htmlFor="url-textarea"
+          className="block self-start font-semibold sm:self-auto"
+        >
           Paste URL below
         </label>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-end sm:self-auto">
           <PasteAction onClick={setInput} />
           <DeleteAction
             onClick={onClearClick}
@@ -115,14 +111,19 @@ export default function UrlEncoderDecoder() {
       </div>
 
       {/* Result block */}
-      <div className="mb-3 mt-10 flex w-full items-center justify-between">
-        <label htmlFor="output" className="block font-semibold">
+      <div className="mb-3 mt-10 flex w-full flex-col-reverse items-center justify-between gap-2 sm:flex-row">
+        <label
+          htmlFor="output"
+          className="block self-start font-semibold sm:self-auto"
+        >
           Result
         </label>
-        <CopyAction
-          content={output}
-          disabled={_isNull(output) || _isEmpty(output)}
-        />
+        <div className="flex items-center gap-2 self-end sm:self-auto">
+          <CopyAction
+            content={output}
+            disabled={_isNull(output) || _isEmpty(output)}
+          />
+        </div>
       </div>
       <Textarea
         id="output"

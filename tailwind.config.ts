@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss';
 import tailwindcssAnimatePlugin from 'tailwindcss-animate';
+import tailwindcssTypography from '@tailwindcss/typography';
 
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
@@ -80,7 +81,7 @@ module.exports = {
       },
     },
   },
-  plugins: [tailwindcssAnimatePlugin],
+  plugins: [tailwindcssAnimatePlugin, tailwindcssTypography],
   darkMode: [
     'variant',
     [

@@ -4,12 +4,11 @@ import clsx from 'clsx';
 import { useRef, useState } from 'react';
 import { ArrowRightLeft } from 'lucide-react';
 import useAiTranslator from '../hooks/use-ai-translator';
-import Title from '../../components/title';
+import HeaderBlock from '../../components/header-block';
 import LanguageSelector from './components/language-selector';
 import UnsupportedCard from '../components/unsupported-card';
 import ModelDownloadCard from '../components/model-download-card';
 import LoadingSkeleton from '../components/loading-skeleton';
-import Description from '../../components/description';
 import CopyAction from '@/components/common/action-button/copy';
 import SpeakAction from '@/components/common/action-button/speak';
 import UnsupportedLanguagePairCard from './components/unsupported-language-pair-card';
@@ -75,14 +74,7 @@ export default function TranslatorApi() {
 
   return (
     <>
-      <header>
-        <Title>Translator</Title>
-        <Description>
-          A fast, accurate translation tool powered by Chrome’s built-in Gemini
-          AI - no setup, no API key, just instant multilingual translation with
-          natural results.
-        </Description>
-      </header>
+      <HeaderBlock />
 
       {/* Translator */}
       {!hasCheckedAIStatus ? (
@@ -138,7 +130,7 @@ export default function TranslatorApi() {
               {/* input */}
               <div
                 className={clsx(
-                  'relative flex h-56 w-full flex-col sm:h-[300px]',
+                  'relative flex h-56 w-full flex-col sm:h-[350px]',
                   'border-b border-neutral-200 sm:border-b-0 sm:border-r dark:border-neutral-700'
                 )}
               >
@@ -168,7 +160,7 @@ export default function TranslatorApi() {
               </div>
 
               {/* output */}
-              <div className="relative flex h-64 w-full flex-col sm:h-[300px]">
+              <div className="relative flex h-64 w-full flex-col sm:h-[350px]">
                 <textarea
                   id="output"
                   className={clsx(

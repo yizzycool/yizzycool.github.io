@@ -1,15 +1,14 @@
 'use client';
 
+import { UnsupportedApiTypes } from '../data/unsupported-types';
 import useAiLanguageModel from '../hooks/use-ai-language-model';
-import Title from '../../components/title';
-import Description from '../../components/description';
+import HeaderBlock from '../../components/header-block';
 import LoadingSkeleton from '../components/loading-skeleton';
 import SettingsPanel from './components/settings-panel';
 import Chat from '../components/chat';
 import UnsupportedCard from '../components/unsupported-card';
 import ModelDownloadCard from '../components/model-download-card';
 import ErrorDialog from '@/components/common/dialog/error';
-import { UnsupportedApiTypes } from '../data/unsupported-types';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _values from 'lodash/values';
@@ -35,14 +34,7 @@ export default function PromptApi() {
 
   return (
     <>
-      <header>
-        <Title>Gemini Nano (Prompt API)</Title>
-        <Description>
-          Send prompts and receive AI-powered responses directly with Chrome’s
-          built-in Gemini AI — seamless, fast, and accurate AI interaction for
-          any application or workflow.
-        </Description>
-      </header>
+      <HeaderBlock />
 
       {/* Prompt */}
       {!hasCheckedAIStatus ? (
