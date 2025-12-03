@@ -124,7 +124,6 @@ export default function SummarizerApi() {
 
           {/* Action Button */}
           <div className="mt-10 flex justify-end">
-            <button onClick={onProcessClick}>Test</button>
             <Button
               icon={Sparkles}
               rounded="lg"
