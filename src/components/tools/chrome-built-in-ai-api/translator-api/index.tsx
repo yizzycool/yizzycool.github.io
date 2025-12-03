@@ -90,7 +90,7 @@ export default function TranslatorApi() {
         <>
           <div
             className={clsx(
-              'mt-16 flex flex-col justify-center',
+              'mt-8 flex flex-col justify-center sm:mt-16',
               'rounded-xl border',
               'border-neutral-200 bg-white text-neutral-700 placeholder-neutral-400',
               'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder-neutral-500'

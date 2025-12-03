@@ -59,7 +59,7 @@ export default function UrlEncoderDecoder() {
       <HeaderBlock />
 
       {/* Input block */}
-      <div className="mb-3 mt-16 flex w-full flex-col-reverse items-center justify-between gap-2 sm:flex-row">
+      <div className="mb-3 mt-8 flex w-full flex-col-reverse items-center justify-between gap-2 sm:mt-16 sm:flex-row">
         <label
           htmlFor="url-textarea"
           className="block self-start font-semibold sm:self-auto"

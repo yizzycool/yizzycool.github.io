@@ -85,7 +85,7 @@ export default function LanguageDetectorApi() {
         />
       ) : (
         <>
-          <div className="mt-16 text-left">
+          <div className="mt-8 text-left sm:mt-16">
             <div className="mx-auto text-center">
               {/* Input */}
               <div className="mb-3 flex flex-col-reverse items-center justify-between gap-2 sm:flex-row">

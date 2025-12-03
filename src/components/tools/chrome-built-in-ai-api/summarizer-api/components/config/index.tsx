@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import useWindowDevice from '@/hooks/window/use-window-device';
 import Selector from '@/components/common/selector';
 import Textarea from '@/components/common/textarea';
 import { Settings2 } from 'lucide-react';
@@ -45,6 +46,8 @@ export default function Config({
 }: Props) {
   const [newOptions, setNewOptions] = useState(options);
 
+  const { isMobile } = useWindowDevice();
+
   const buttonDisabled = useMemo(() => {
     return _isEqual(options, newOptions) || isOptionUpdating;
   }, [options, newOptions, isOptionUpdating]);
@@ -56,14 +59,19 @@ export default function Config({
   const onUpdate = () => !buttonDisabled && updateOption(newOptions);
 
   return (
-    <ConfigDialog size="sm" title="Configuration" icon={Settings2}>
+    <ConfigDialog
+      size="sm"
+      title="Configuration"
+      icon={Settings2}
+      display={isMobile ? 'icon' : 'icon-label'}
+    >
       <div className="border-b border-slate-100 dark:border-white/5" />
       <div className="flex flex-col overflow-y-auto px-4 py-8 sm:px-8">
         <div className="">
           <Textarea
             title="Shared Context"
             desc="Enables shared context across multiple summarization requests"
-            placeholder="ex: An article from the magazine"
+            placeholder="ex: This is a scientific article"
             onChange={(e) => onChange('sharedContext', e.target.value)}
           />
         </div>

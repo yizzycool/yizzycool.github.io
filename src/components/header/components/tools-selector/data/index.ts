@@ -10,10 +10,10 @@ import {
   FileText,
   Image,
   Languages,
-  PencilLine,
-  PencilRuler,
+  PenTool,
   QrCode,
   Radar,
+  RefreshCcw,
   ScanFace,
 } from 'lucide-react';
 
@@ -84,7 +84,7 @@ export const Tools = [
         href: '/tools/chrome-built-in-ai-api/writer',
         desc: 'Enables AI-powered content creation for web apps.',
         icon: {
-          component: PencilLine,
+          component: PenTool,
         },
       },
       {
@@ -92,7 +92,7 @@ export const Tools = [
         href: '/tools/chrome-built-in-ai-api/rewriter',
         desc: 'Enables AI-driven text revision for web apps.',
         icon: {
-          component: PencilRuler,
+          component: RefreshCcw,
         },
       },
       {

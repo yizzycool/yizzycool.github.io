@@ -64,7 +64,7 @@ export default function ImageToBase64() {
     <>
       <HeaderBlock />
 
-      <div className="mt-16" />
+      <div className="mt-8 sm:mt-16" />
 
       {/* File Picker */}
       <FilePicker type="image" onFileChange={onFileChange} />

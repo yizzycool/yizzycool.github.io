@@ -84,7 +84,7 @@ export default function Base64ToImage() {
       <HeaderBlock />
 
       {/* Textarea block */}
-      <div className="mt-16 w-full">
+      <div className="mt-8 w-full sm:mt-16">
         <div className="mb-3 flex flex-col-reverse items-center justify-between gap-2 sm:flex-row">
           <label
             htmlFor="base64-textarea"

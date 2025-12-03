@@ -51,7 +51,7 @@ const descriptions = {
   [tools.chromeAiRewriter]:
     'Rewrite and enhance existing text using Chrome’s built-in AI to improve clarity, tone, flow, and readability while preserving meaning.',
   [tools.chromeAiPrompt]:
-    'Run AI prompts directly through Chrome’s built-in models, enabling fast, local AI inference with minimal setup for developers.',
+    'Run AI prompts directly through Chrome’s built-in models.',
   [tools.chromeFaceDetector]:
     'Detect faces in images instantly using Chrome’s built-in face detection API—ideal for camera apps, interactive features, and security tools.',
   [tools.chromeBarcodeDetector]:
@@ -65,10 +65,10 @@ export default function HeaderBlock() {
 
   return (
     <header>
-      <h1 className="mx-auto text-2xl font-bold">
+      <h1 className="text-left text-2xl font-bold">
         {_get(titles, pathname, '')}
       </h1>
-      <h2 className="mx-auto mt-4 text-center text-sm text-gray-500 md:text-base dark:text-neutral-400">
+      <h2 className="mt-4 text-left text-sm text-gray-500 md:text-base dark:text-neutral-400">
         {_get(descriptions, pathname, '')}
       </h2>
     </header>

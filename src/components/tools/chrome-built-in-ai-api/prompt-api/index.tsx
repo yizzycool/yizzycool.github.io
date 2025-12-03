@@ -4,8 +4,8 @@ import { UnsupportedApiTypes } from '../data/unsupported-types';
 import useAiLanguageModel from '../hooks/use-ai-language-model';
 import HeaderBlock from '../../components/header-block';
 import LoadingSkeleton from '../components/loading-skeleton';
-import SettingsPanel from './components/settings-panel';
-import Chat from '../components/chat';
+import Config from './components/config';
+import Chat from './components/chat';
 import UnsupportedCard from '../components/unsupported-card';
 import ModelDownloadCard from '../components/model-download-card';
 import ErrorDialog from '@/components/common/dialog/error';
@@ -25,7 +25,7 @@ export default function PromptApi() {
     // prompt,
     promptStreaming,
     updateLanguageModel,
-    resetModelWithCustomOptions,
+    // resetModelWithCustomOptions,
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
@@ -33,7 +33,7 @@ export default function PromptApi() {
   } = useAiLanguageModel();
 
   return (
-    <>
+    <div className="relative flex h-full flex-col text-left">
       <HeaderBlock />
 
       {/* Prompt */}
@@ -48,21 +48,18 @@ export default function PromptApi() {
         />
       ) : (
         <>
-          <div className="mx-auto max-w-screen-sm border-neutral-700 px-5 py-20 text-left">
-            <SettingsPanel
+          <div className="absolute right-0 top-0">
+            <Config
               options={options}
               isOptionUpdating={isOptionUpdating}
-              updateLanguageModel={updateLanguageModel}
-            />
-            <Chat
-              buttonText="Start a Chat"
-              placeholder="You can ask me anything!"
-              promptStreaming={promptStreaming}
-              resetModelWithCustomOptions={resetModelWithCustomOptions}
-              session={session}
-              isOptionUpdating={isOptionUpdating}
+              updateOption={updateLanguageModel}
             />
           </div>
+          <Chat
+            placeholder="You can ask me anything!"
+            promptStreaming={promptStreaming}
+            session={session}
+          />
         </>
       )}
 
@@ -71,6 +68,6 @@ export default function PromptApi() {
         open={error}
         onClose={resetError}
       />
-    </>
+    </div>
   );
 }

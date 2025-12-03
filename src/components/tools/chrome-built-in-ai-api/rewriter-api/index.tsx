@@ -92,8 +92,8 @@ export default function RewriterApi() {
           progress={downloadProgress}
         />
       ) : (
-        <div className="mt-16 text-left">
-          <div className="mb-6 flex items-center justify-end">
+        <div className="mt-8 text-left sm:mt-16">
+          <div className="absolute right-0 top-0">
             <Config
               options={options}
               isOptionUpdating={isOptionUpdating}
