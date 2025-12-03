@@ -10,32 +10,32 @@ import _isEqual from 'lodash/isEqual';
 
 const Settings = [
   {
-    key: 'type',
-    title: 'Summary Type',
-    desc: 'The type of the summarization, with the allowed values',
-    options: ['key-points', 'tl;dr', 'teaser', 'headline'],
-    defaultValue: 'key-points',
+    key: 'tone',
+    title: 'Tone',
+    desc: 'The tone of the rewriter',
+    options: ['as-is', 'more-formal', 'more-casual'],
+    defaultValue: 'as-is',
   },
   {
     key: 'format',
     title: 'Format',
-    desc: 'The format of the summarization',
-    options: ['markdown', 'plain-text'],
-    defaultValue: 'markdown',
+    desc: 'The format of the rewriter',
+    options: ['as-is', 'plain-text', 'markdown'],
+    defaultValue: 'as-is',
   },
   {
     key: 'length',
     title: 'Length',
-    desc: 'The length of the summarization',
-    options: ['short', 'medium', 'long'],
-    defaultValue: 'medium',
+    desc: 'The length of the rewriter',
+    options: ['as-is', 'shorter', 'longer'],
+    defaultValue: 'as-is',
   },
 ];
 
 type Props = {
-  options: AISummarizerCreateOptions;
+  options: AIRewriterCreateOptions;
   isOptionUpdating: boolean;
-  updateOption: (settings: AISummarizerCreateOptions) => void;
+  updateOption: (settings: AIRewriterCreateOptions) => void;
 };
 
 export default function Config({
@@ -62,7 +62,7 @@ export default function Config({
         <div className="">
           <Textarea
             title="Shared Context"
-            desc="Enables shared context across multiple summarization requests"
+            desc="Enables shared context across multiple rewrite requests"
             placeholder="ex: An article from the magazine"
             onChange={(e) => onChange('sharedContext', e.target.value)}
           />

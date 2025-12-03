@@ -12,7 +12,7 @@ type Props = {
   isProcessing: boolean;
 };
 
-export default function Result({ results, isProcessing }: Props) {
+export default function PromptResult({ results, isProcessing }: Props) {
   return (
     <>
       <div
@@ -60,7 +60,7 @@ export default function Result({ results, isProcessing }: Props) {
           </div>
         ) : (
           <Markdown
-            className="prose prose-neutral min-h-full min-w-full dark:prose-invert"
+            className="prose prose-neutral min-h-full min-w-full cursor-text dark:prose-invert"
             remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
             components={{
               code(props) {
