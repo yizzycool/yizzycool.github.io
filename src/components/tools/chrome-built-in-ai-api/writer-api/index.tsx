@@ -79,7 +79,7 @@ export default function WriterApi() {
   };
 
   return (
-    <>
+    <div className="relative">
       <HeaderBlock />
 
       {!hasCheckedAIStatus ? (
@@ -158,6 +158,6 @@ export default function WriterApi() {
         open={error}
         onClose={resetError}
       />
-    </>
+    </div>
   );
 }

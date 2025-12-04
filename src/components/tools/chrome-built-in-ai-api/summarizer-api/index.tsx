@@ -79,7 +79,7 @@ export default function SummarizerApi() {
   };
 
   return (
-    <>
+    <div className="relative">
       <HeaderBlock />
 
       {!hasCheckedAIStatus ? (
@@ -159,6 +159,6 @@ export default function SummarizerApi() {
         open={error}
         onClose={resetError}
       />
-    </>
+    </div>
   );
 }
