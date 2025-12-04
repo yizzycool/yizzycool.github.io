@@ -48,6 +48,7 @@ export default function Config({
             title="System Prompt"
             desc="Give the language model some instructions"
             placeholder="ex: You are a helpful and friendly assistant."
+            value={newOptions.systemPrompt}
             onChange={(e) => onChange('systemPrompt', e.target.value)}
           />
         </div>

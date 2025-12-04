@@ -72,6 +72,7 @@ export default function Config({
             title="Shared Context"
             desc="Enables shared context across multiple summarization requests"
             placeholder="ex: This is a scientific article"
+            value={newOptions.sharedContext}
             onChange={(e) => onChange('sharedContext', e.target.value)}
           />
         </div>

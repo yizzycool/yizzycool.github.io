@@ -72,6 +72,7 @@ export default function Config({
             title="Shared Context"
             desc="Enables shared context across multiple write requests"
             placeholder="ex: This is an email to acquaintances about an upcoming event."
+            value={newOptions.sharedContext}
             onChange={(e) => onChange('sharedContext', e.target.value)}
           />
         </div>
