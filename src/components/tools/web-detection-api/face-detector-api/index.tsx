@@ -3,12 +3,12 @@
 import { useMemo, useRef, useState } from 'react';
 import useFaceDetector from '../hooks/use-face-detector';
 import useWebcam from '../hooks/use-webcam';
-import Title from '@/components/common/title';
 import Unsupported, {
   UnsupportedApiTypes,
   UnsupportedTypes,
 } from '../../components/unsupported';
 import LoadingSkeleton from '../components/loading-skeleton';
+import HeaderBlock from '../../components/header-block';
 import Empty from '../components/empty';
 import Result, { Param } from '../components/result';
 import BoundingBox from '../components/bounding-box';
@@ -106,7 +106,8 @@ export default function FaceDetectorApi() {
 
   return (
     <div className="mx-auto text-center">
-      <Title>Face Detector</Title>
+      <HeaderBlock />
+
       {/* <SupportTable /> */}
       {isLoading ? (
         <LoadingSkeleton />
