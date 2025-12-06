@@ -12,6 +12,7 @@ import CopyAction from '@/components/common/action-button/copy';
 import SwapAction from '@/components/common/action-button/swap';
 import PasteAction from '@/components/common/action-button/paste';
 import ErrorDialog from '@/components/common/dialog/error';
+import SectionGap from '../../components/section-gap';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 
@@ -58,8 +59,10 @@ export default function UrlEncoderDecoder() {
     <>
       <HeaderBlock />
 
+      <SectionGap />
+
       {/* Input block */}
-      <div className="mb-3 mt-8 flex w-full flex-col-reverse items-center justify-between gap-2 sm:mt-16 sm:flex-row">
+      <div className="mb-3 flex w-full flex-col-reverse items-center justify-between gap-2 sm:flex-row">
         <label
           htmlFor="url-textarea"
           className="block self-start font-semibold sm:self-auto"
@@ -82,8 +85,10 @@ export default function UrlEncoderDecoder() {
         rows={8}
       />
 
+      <SectionGap />
+
       {/* Action buttons */}
-      <div className="mt-10 flex w-full flex-col items-stretch justify-stretch gap-3 sm:flex-row sm:items-center">
+      <div className="flex w-full flex-col items-stretch justify-stretch gap-3 sm:flex-row sm:items-center">
         <Button
           variant="dark-sky"
           size="lg"
@@ -110,8 +115,10 @@ export default function UrlEncoderDecoder() {
         />
       </div>
 
+      <SectionGap />
+
       {/* Result block */}
-      <div className="mb-3 mt-10 flex w-full flex-col-reverse items-center justify-between gap-2 sm:flex-row">
+      <div className="mb-3 flex w-full flex-col-reverse items-center justify-between gap-2 sm:flex-row">
         <label
           htmlFor="output"
           className="block self-start font-semibold sm:self-auto"

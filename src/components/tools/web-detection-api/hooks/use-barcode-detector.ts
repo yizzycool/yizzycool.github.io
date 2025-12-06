@@ -1,29 +1,37 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import useApiCommon from './use-api-common';
 
-export default function useBarcodeDetector({ createInstance = true } = {}) {
-  const [isSupported, setIsSupported] = useState<boolean | null>(null);
-  const [isPartialUnsupported, setIsPartialUnsupported] = useState<
-    boolean | null
-  >(null);
+export default function useBarcodeDetector() {
   const [detector, setDetector] = useState<BarcodeDetectorInstance | null>(
     null
   );
 
+  const {
+    isApiSupported,
+    setIsApiSupported,
+    error,
+    setError,
+    isProcessing,
+    setIsProcessing,
+    hasCheckedApiStatus,
+  } = useApiCommon();
+
   useEffect(() => {
     checkCapability();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!isSupported || !createInstance) return;
+    if (!isApiSupported) return;
     initBarcodeDetector();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSupported]);
+  }, [isApiSupported]);
 
   // To check if barcode detector is supported
   const checkCapability = () => {
-    setIsSupported(!!window.BarcodeDetector);
+    setIsApiSupported(!!window.BarcodeDetector);
   };
 
   const initBarcodeDetector = async () => {
@@ -31,9 +39,8 @@ export default function useBarcodeDetector({ createInstance = true } = {}) {
       try {
         const detector = await new window.BarcodeDetector();
         setDetector(detector);
-        setIsPartialUnsupported(false);
       } catch (_e) {
-        setIsPartialUnsupported(true);
+        setError(true);
       }
     }
   };
@@ -43,16 +50,25 @@ export default function useBarcodeDetector({ createInstance = true } = {}) {
   ): Promise<BarcodeDetectionResults | null> => {
     try {
       if (!detector) return null;
+      setIsProcessing(true);
       const results = await detector.detect(image);
+      setIsProcessing(false);
       return results;
     } catch (_e) {
+      setError(true);
+      setIsProcessing(false);
       return null;
     }
   };
 
+  const resetError = () => setError(false);
+
   return {
-    isSupported,
-    isPartialUnsupported,
+    hasCheckedApiStatus,
+    isApiSupported,
+    isProcessing,
+    error,
     detect,
+    resetError,
   };
 }

@@ -1,8 +1,7 @@
-import {
-  ButtonRounded,
-  ButtonSize,
-  ButtonVariant,
-} from '@/types/common/button';
+'use client';
+
+import { Rounded } from '@/types/common';
+import { ButtonSize, ButtonVariant } from '@/types/common/button';
 import clsx from 'clsx';
 import { LucideIcon } from 'lucide-react';
 import { MouseEventHandler, useMemo } from 'react';
@@ -13,7 +12,7 @@ type Props = {
   onClick?: MouseEventHandler<HTMLButtonElement>;
   variant?: ButtonVariant;
   size?: ButtonSize;
-  rounded?: ButtonRounded;
+  rounded?: Rounded;
   className?: string;
   icon?: LucideIcon;
   iconStrokeWidth?: number;

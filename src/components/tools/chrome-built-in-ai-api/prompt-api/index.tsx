@@ -9,6 +9,7 @@ import Chat from './components/chat';
 import UnsupportedCard from '../components/unsupported-card';
 import ModelDownloadCard from '../components/model-download-card';
 import ErrorDialog from '@/components/common/dialog/error';
+import SectionGap from '../../components/section-gap';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _values from 'lodash/values';
@@ -35,6 +36,8 @@ export default function PromptApi() {
   return (
     <div className="relative flex h-full flex-col text-left">
       <HeaderBlock />
+
+      <SectionGap />
 
       {/* Prompt */}
       {!hasCheckedAIStatus ? (

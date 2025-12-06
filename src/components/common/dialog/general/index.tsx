@@ -1,3 +1,5 @@
+'use client';
+
 import { Dialog, DialogBackdrop } from '@headlessui/react';
 import { LucideIcon, X } from 'lucide-react';
 import clsx from 'clsx';

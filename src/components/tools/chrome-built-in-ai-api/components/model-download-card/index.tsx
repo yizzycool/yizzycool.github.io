@@ -15,7 +15,7 @@ export default function ModelDownloadCard({
   const isDownloading = !_isNull(progress);
 
   return (
-    <div className="mt-16 flex h-full flex-col items-center justify-center p-6 text-center duration-500 animate-in fade-in">
+    <div className="flex flex-col items-center justify-center px-6 text-center duration-500 animate-in fade-in">
       <div className="w-full max-w-md rounded-3xl border border-neutral-100 bg-white p-8 shadow-2xl shadow-neutral-200/50 dark:border-neutral-800 dark:bg-neutral-900 dark:shadow-black/50">
         {/* Icon */}
         <div className="relative mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-neutral-50 dark:bg-neutral-800">

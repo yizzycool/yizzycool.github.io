@@ -17,7 +17,7 @@ export default function PromptResult({ results, isProcessing }: Props) {
     <>
       <div
         id="result"
-        className="mb-3 mt-10 flex w-full flex-col-reverse items-center justify-between gap-2 sm:flex-row"
+        className="mb-3 flex w-full flex-col-reverse items-center justify-between gap-2 sm:flex-row"
       >
         <div className="flex items-center self-start font-semibold sm:self-auto">
           <List className="mr-2" size={16} />

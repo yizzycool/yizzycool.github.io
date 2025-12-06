@@ -16,6 +16,7 @@ import Config from './components/config';
 import Button from '@/components/common/button';
 import PromptResult from '../components/prompt-result';
 import ErrorDialog from '@/components/common/dialog/error';
+import SectionGap from '../../components/section-gap';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _size from 'lodash/size';
@@ -82,6 +83,8 @@ export default function SummarizerApi() {
     <div className="relative">
       <HeaderBlock />
 
+      <SectionGap />
+
       {!hasCheckedAIStatus ? (
         <LoadingSkeleton />
       ) : !isApiSupported ? (
@@ -92,7 +95,7 @@ export default function SummarizerApi() {
           progress={downloadProgress}
         />
       ) : (
-        <div className="mt-8 text-left sm:mt-16">
+        <>
           {/* <div className="mb-6 flex items-center justify-end"> */}
           <div className="absolute right-0 top-0">
             <Config
@@ -123,8 +126,10 @@ export default function SummarizerApi() {
             {_size(text)} chars
           </div>
 
+          <SectionGap size="sm" />
+
           {/* Action Button */}
-          <div className="mt-10 flex justify-end">
+          <div className="flex justify-end">
             <Button
               icon={Sparkles}
               rounded="lg"
@@ -149,9 +154,11 @@ export default function SummarizerApi() {
             </Button>
           </div>
 
+          <SectionGap size="sm" />
+
           {/* Result */}
           <PromptResult results={results} isProcessing={isProcessing} />
-        </div>
+        </>
       )}
 
       <ErrorDialog

@@ -14,6 +14,7 @@ import SpeakAction from '@/components/common/action-button/speak';
 import UnsupportedLanguagePairCard from './components/unsupported-language-pair-card';
 import InlineDownloadCard from './components/inline-download-card';
 import ErrorDialog from '@/components/common/dialog/error';
+import SectionGap from '../../components/section-gap';
 import { UnsupportedApiTypes } from '../data/unsupported-types';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
@@ -76,6 +77,8 @@ export default function TranslatorApi() {
     <>
       <HeaderBlock />
 
+      <SectionGap />
+
       {/* Translator */}
       {!hasCheckedAIStatus ? (
         <LoadingSkeleton />
@@ -90,8 +93,7 @@ export default function TranslatorApi() {
         <>
           <div
             className={clsx(
-              'mt-8 flex flex-col justify-center sm:mt-16',
-              'rounded-xl border',
+              'flex flex-col justify-center rounded-xl border',
               'border-neutral-200 bg-white text-neutral-700 placeholder-neutral-400',
               'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder-neutral-500'
             )}

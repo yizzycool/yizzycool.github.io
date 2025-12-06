@@ -2,13 +2,15 @@
 
 import { useEffect, useRef } from 'react';
 
+export type WebDetectionFileType = '' | 'image' | 'video' | 'webcam';
+
 export type Param = {
-  type: string;
+  type: WebDetectionFileType;
   blob: File | null;
   stream: MediaStream | null | undefined;
 };
 
-export default function ImageResult({
+export default function ResultCanvas({
   canvasRef,
   param,
   onCanvasDraw,
@@ -134,6 +136,7 @@ export default function ImageResult({
   return (
     <>
       <canvas ref={canvasRef} className="h-fit w-full lg:max-w-screen-sm" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         ref={imageRef}
         className="absolute left-0 top-0 -z-10 opacity-0"

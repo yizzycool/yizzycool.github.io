@@ -13,6 +13,7 @@ import PasteAction from '@/components/common/action-button/paste';
 import DownloadAction from '@/components/common/action-button/download';
 import CopyAction from '@/components/common/action-button/copy';
 import ImageInfoTag from '../components/ImageInfoTag';
+import SectionGap from '../../components/section-gap';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _size from 'lodash/size';
@@ -83,82 +84,81 @@ export default function Base64ToImage() {
     <>
       <HeaderBlock />
 
-      {/* Textarea block */}
-      <div className="mt-8 w-full sm:mt-16">
-        <div className="mb-3 flex flex-col-reverse items-center justify-between gap-2 sm:flex-row">
-          <label
-            htmlFor="base64-textarea"
-            className="block flex items-center self-start font-semibold sm:self-auto"
-          >
-            <FileText className="mr-2 inline-block" size={16} />
-            Paste Base64 string below
-          </label>
-          <div className="flex items-center gap-2 self-end sm:self-auto">
-            <PasteAction onClick={onPasteBase64} />
-            <DeleteAction onClick={onClearBase64} disabled={_isEmpty(base64)} />
-          </div>
-        </div>
-        <Textarea
-          id="base64-textarea"
-          value={base64}
-          onChange={onBase64StringChanged}
-          rows={10}
-          placeholder="Paste your Base64 string here (e.g. data:image/png;base64,...)"
-        />
-      </div>
+      <SectionGap />
 
+      {/* Textarea block */}
+      <div className="mb-3 flex flex-col-reverse items-center justify-between gap-2 sm:flex-row">
+        <label
+          htmlFor="base64-textarea"
+          className="block flex items-center self-start font-semibold sm:self-auto"
+        >
+          <FileText className="mr-2 inline-block" size={16} />
+          Paste Base64 string below
+        </label>
+        <div className="flex items-center gap-2 self-end sm:self-auto">
+          <PasteAction onClick={onPasteBase64} />
+          <DeleteAction onClick={onClearBase64} disabled={_isEmpty(base64)} />
+        </div>
+      </div>
+      <Textarea
+        id="base64-textarea"
+        value={base64}
+        onChange={onBase64StringChanged}
+        rows={10}
+        placeholder="Paste your Base64 string here (e.g. data:image/png;base64,...)"
+      />
       {/* Char count block */}
       <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
         {_size(base64)} chars
       </div>
 
+      <SectionGap />
+
       {/* Image block */}
-      <div className="mt-8 w-full">
-        <div className="mb-4 flex flex-col-reverse items-center justify-between gap-2 sm:flex-row">
-          <div className="self-start font-semibold sm:self-auto">
-            <View className="mr-2 inline-block" size={16} />
-            Image Preview
-          </div>
-          <div className="flex items-center gap-2 self-end sm:self-auto">
-            <CopyAction content={imageInfo.blob} />
-            <DownloadAction
-              blob={imageInfo.blob}
-              disabled={!imageInfo.image}
-              filename={`converted_${Date.now()}`}
+      <div className="mb-4 flex flex-col-reverse items-center justify-between gap-2 sm:flex-row">
+        <div className="self-start font-semibold sm:self-auto">
+          <View className="mr-2 inline-block" size={16} />
+          Image Preview
+        </div>
+        <div className="flex items-center gap-2 self-end sm:self-auto">
+          <CopyAction content={imageInfo.blob} />
+          <DownloadAction
+            blob={imageInfo.blob}
+            disabled={!imageInfo.image}
+            filename={`converted_${Date.now()}`}
+          />
+        </div>
+      </div>
+      <div
+        className={clsx(
+          'relative flex h-[300px] w-full flex-col items-center rounded-lg border p-4',
+          'border-neutral-200 dark:border-neutral-700',
+          'bg-white dark:bg-neutral-800'
+        )}
+      >
+        {!_isNull(imageInfo.image) && (
+          <>
+            <Image
+              width={0}
+              height={0}
+              className="h-full max-h-full w-full max-w-full object-contain"
+              src={imageInfo.image.src}
+              alt="result image"
             />
-          </div>
-        </div>
-        <div
-          className={clsx(
-            'relative flex h-[300px] w-full flex-col items-center rounded-lg border p-4',
-            'border-neutral-200 dark:border-neutral-700',
-            'bg-white dark:bg-neutral-800'
-          )}
-        >
-          {!_isNull(imageInfo.image) && (
-            <>
-              <Image
-                width={0}
-                height={0}
-                className="h-full max-h-full w-full max-w-full object-contain"
-                src={imageInfo.image.src}
-                alt="result image"
+            <div className="absolute bottom-4 left-4 z-20 flex gap-2 overflow-hidden">
+              <ImageInfoTag
+                title=""
+                value={`${imageInfo.width} x ${imageInfo.height}`}
               />
-              <div className="absolute bottom-4 left-4 z-20 flex gap-2 overflow-hidden">
-                <ImageInfoTag
-                  title=""
-                  value={`${imageInfo.width} x ${imageInfo.height}`}
-                />
-                <ImageInfoTag
-                  title="Sizes"
-                  value={imageUtils.toHumanReadableSize(
-                    imageInfo.blob?.size || 0
-                  )}
-                />
-              </div>
-            </>
-          )}
-        </div>
+              <ImageInfoTag
+                title="Sizes"
+                value={imageUtils.toHumanReadableSize(
+                  imageInfo.blob?.size || 0
+                )}
+              />
+            </div>
+          </>
+        )}
       </div>
     </>
   );

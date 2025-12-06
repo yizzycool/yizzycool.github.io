@@ -1,102 +1,67 @@
-import clsx from 'clsx';
-import { Camera, FileImage, FilePlus, FileVideo } from 'lucide-react';
-import { useRef } from 'react';
+import { CameraIcon, Image, Video, Webcam } from 'lucide-react';
+import { WebDetectionFileType } from '../result-canvas';
+import Button from '@/components/common/button';
+import FilePicker from '@/components/common/file-picker';
+import _get from 'lodash/get';
 
 type Props = {
-  isEmpty?: boolean;
-  isCameraOpened?: boolean;
-  disabled?: {
-    image?: boolean;
-    video?: boolean;
-    webcam?: boolean;
-  };
+  tab: WebDetectionFileType;
   processImage?: (file: File | undefined) => void;
   processVideo?: (file: File | undefined) => void;
   processWebcam?: () => void;
 };
 
 export default function Empty({
-  isEmpty = true,
-  isCameraOpened = false,
-  disabled = {},
+  tab,
   processImage = () => {},
   processVideo = () => {},
   processWebcam = () => {},
 }: Props) {
-  const imageInputRef = useRef<HTMLInputElement | null>(null);
-  const videoInputRef = useRef<HTMLInputElement | null>(null);
-
-  const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    event.target.value = '';
+  const onImageChange = (file: File) => {
     processImage(file);
   };
 
-  const onVideoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    event.target.value = '';
+  const onVideoChange = (file: File) => {
     processVideo(file);
   };
 
   return (
-    <div className="mt-10 flex flex-col items-center px-5 py-20">
-      {isEmpty && (
-        <>
-          <FilePlus className="h-12 w-12" />
-          <div className="mt-4 font-bold">No Result</div>
-          <div className="mb-20 mt-2 text-neutral-700/50 dark:text-neutral-300/50">
-            Get started by select a new image or video.
+    <div className="py-8">
+      {tab === 'image' ? (
+        <FilePicker
+          icon={Image}
+          title="Upload an image"
+          desc="Drag and drop your file here, or click the button below to browse your files."
+          onFileChange={onImageChange}
+        />
+      ) : tab === 'video' ? (
+        <FilePicker
+          icon={Video}
+          title="Upload a video"
+          desc="Drag and drop your file here, or click the button below to browse your files."
+          onFileChange={onVideoChange}
+        />
+      ) : (
+        <div className="flex flex-col items-center border-2 border-transparent px-4 py-12 sm:px-8">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-neutral-200 text-neutral-400 dark:bg-neutral-700">
+            <Webcam size={32} />
           </div>
-        </>
-      )}
-      {!disabled.image && (
-        <>
-          <button
-            onClick={() => imageInputRef.current?.click()}
-            className="mt-4 flex items-center rounded-md bg-sky-700 px-4 py-2 text-white hover:bg-sky-700/80"
+          <div className="mt-4 w-fit px-8 py-2 text-lg font-bold">
+            Use webcam
+          </div>
+          <div className="max-w-xs text-sm text-neutral-500 dark:text-neutral-400">
+            Use your webcam to start detection. Just click when you're ready.
+          </div>
+          <Button
+            onClick={processWebcam}
+            size="sm"
+            variant="primary"
+            icon={CameraIcon}
+            className="mt-8"
           >
-            <FileImage className="mr-4 h-5 w-5" />
-            Choose an image
-          </button>
-          <input
-            ref={imageInputRef}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={onImageChange}
-          />
-        </>
-      )}
-      {!disabled.video && (
-        <>
-          <button
-            onClick={() => videoInputRef.current?.click()}
-            className="mt-4 flex items-center rounded-md bg-sky-700 px-4 py-2 text-white hover:bg-sky-700/80"
-          >
-            <FileVideo className="mr-4 h-5 w-5" />
-            Choose a video
-          </button>
-          <input
-            ref={videoInputRef}
-            type="file"
-            accept="video/*"
-            className="hidden"
-            onChange={onVideoChange}
-          />
-        </>
-      )}
-      {!disabled.webcam && (
-        <button
-          className={clsx(
-            'mt-4 flex items-center rounded-md bg-sky-700 px-4 py-2 text-white hover:bg-sky-700/80',
-            'data-[camera-opened=true]:bg-red-700 data-[camera-opened=true]:hover:bg-red-700/80'
-          )}
-          onClick={processWebcam}
-          data-camera-opened={isCameraOpened}
-        >
-          <Camera className="mr-4 h-5 w-5" />
-          {isCameraOpened ? 'Close webcam' : 'Detect with webcam'}
-        </button>
+            Open Webcam
+          </Button>
+        </div>
       )}
     </div>
   );

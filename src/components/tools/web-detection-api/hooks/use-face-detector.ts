@@ -1,27 +1,33 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import useApiCommon from './use-api-common';
 
-export default function useFaceDetector({ createInstance = true } = {}) {
-  const [isSupported, setIsSupported] = useState<boolean | null>(null);
-  const [isPartialUnsupported, setIsPartialUnsupported] = useState<
-    boolean | null
-  >(null);
+export default function useFaceDetector() {
   const [detector, setDetector] = useState<FaceDetectorInstance | null>(null);
+
+  const {
+    isApiSupported,
+    setIsApiSupported,
+    error,
+    setError,
+    isProcessing,
+    setIsProcessing,
+    hasCheckedApiStatus,
+  } = useApiCommon();
 
   useEffect(() => {
     checkCapability();
   }, []);
 
   useEffect(() => {
-    if (!isSupported || !createInstance) return;
+    if (!isApiSupported) return;
     initFaceDetector();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSupported]);
+  }, [isApiSupported]);
 
   // To check if face detector is supported
   const checkCapability = () => {
-    setIsSupported(!!window.FaceDetector);
+    setIsApiSupported(!!window.FaceDetector);
   };
 
   const initFaceDetector = async () => {
@@ -29,9 +35,8 @@ export default function useFaceDetector({ createInstance = true } = {}) {
       try {
         const detector = await new window.FaceDetector();
         setDetector(detector);
-        setIsPartialUnsupported(false);
       } catch (_e) {
-        setIsPartialUnsupported(true);
+        setError(true);
       }
     }
   };
@@ -41,16 +46,25 @@ export default function useFaceDetector({ createInstance = true } = {}) {
   ): Promise<FaceDetectionResults | null> => {
     try {
       if (!detector) return null;
+      setIsProcessing(true);
       const results = await detector.detect(image);
+      setIsProcessing(false);
       return results;
     } catch (_e) {
+      setError(true);
+      setIsProcessing(false);
       return null;
     }
   };
 
+  const resetError = () => setError(false);
+
   return {
-    isSupported,
-    isPartialUnsupported,
+    hasCheckedApiStatus,
+    isApiSupported,
+    isProcessing,
+    error,
     detect,
+    resetError,
   };
 }

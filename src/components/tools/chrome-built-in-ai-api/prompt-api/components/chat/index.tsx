@@ -76,7 +76,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
   };
 
   return (
-    <div className="mt-8 flex flex-1 flex-col sm:mt-16">
+    <div className="flex flex-1 flex-col">
       {!!(session as AILanguageModel)?.tokensLeft && (
         <div className="absolute left-0 top-0 bg-neutral-700/20 px-4 py-2 text-xs">
           <span className="hidden sm:inline">Tokens Left:</span>{' '}

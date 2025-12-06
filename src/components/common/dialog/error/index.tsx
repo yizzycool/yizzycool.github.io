@@ -1,3 +1,5 @@
+'use client';
+
 import { MouseEventHandler } from 'react';
 import {
   Button,
@@ -9,13 +11,13 @@ import {
 import { CircleAlert } from 'lucide-react';
 
 type Props = {
-  errorString: string;
+  errorString?: string;
   open: boolean;
   onClose: () => void;
 };
 
 export default function ErrorDialog({
-  errorString,
+  errorString = 'Something went wrong! Please try again later.',
   open,
   onClose = () => {},
 }: Props) {
