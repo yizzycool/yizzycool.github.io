@@ -18,11 +18,13 @@ export default function useTextDetector() {
 
   useEffect(() => {
     checkCapability();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (!isApiSupported) return;
     initTextDetector();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isApiSupported]);
 
   // To check if text detector is supported

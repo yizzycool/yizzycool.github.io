@@ -18,11 +18,13 @@ export default function useFaceDetector() {
 
   useEffect(() => {
     checkCapability();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (!isApiSupported) return;
     initFaceDetector();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isApiSupported]);
 
   // To check if face detector is supported
