@@ -15,26 +15,6 @@ module.exports = {
             opacity: '0',
           },
         },
-        'slightly-fade-in-down': {
-          '0%': {
-            opacity: '0',
-            transform: 'translate3d(0, -10%, 0)',
-          },
-          '100%': {
-            opacity: '1',
-            transform: 'translate3d(0, 0, 0)',
-          },
-        },
-        'slightly-fade-out-up': {
-          '0%': {
-            opacity: '1',
-            transform: 'translate3d(0, 0, 0)',
-          },
-          '100%': {
-            opacity: '0',
-            transform: 'translate3d(0, -10%, 0)',
-          },
-        },
         'pulse-glow': {
           '0%': { opacity: '0.3', transform: 'scale(0.98)' },
           '50%': { opacity: '0.8', transform: 'scale(1.02)' },
@@ -43,8 +23,6 @@ module.exports = {
       },
       animation: {
         'flash-cursor': '1s flash-cursor infinite',
-        'slightly-fade-in-down': '1s slightly-fade-in-down',
-        'slightly-fade-out-up': '1s slightly-fade-out-up',
         'pulse-glow': '3s pulse-glow ease-in-out infinite',
       },
       fontFamily: {

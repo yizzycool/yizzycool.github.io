@@ -1,64 +1,37 @@
 'use client';
 
-import useIntersectionObserver from '@/hooks/window/use-intersection-observer';
-import Image from 'next/image';
+import { GraduationCap } from 'lucide-react';
 import EducationData from './data/educations.json';
+import RevealSection from '@/components/common/reveal-section';
 import _get from 'lodash/get';
 
-const THRESHOLD = 0.3;
-
 export default function Education() {
-  const { hit } = useIntersectionObserver({
-    targetSelector: '#education',
-    threshold: THRESHOLD,
-  });
-
   return (
-    <div className="relative min-h-80 w-full border-t border-neutral-300 px-4 py-20 dark:border-neutral-500">
-      <Image
-        className="absolute inset-0 -z-[1] object-cover opacity-10 blur-sm"
-        src="/assets/images/home/school-background.jpg"
-        fill={true}
-        alt="background image"
-        loading="lazy"
-      />
-      <div id="education" className="mx-auto max-w-screen-xl px-4">
-        <div
-          data-hit={hit}
-          className="pt-40 opacity-0 data-[hit=true]:animate-slightly-fade-in-down data-[hit=true]:opacity-100"
-        >
-          <div className="text-5xl font-bold dark:text-white">Education</div>
-          {EducationData.map((data) => (
-            <div
-              key={data.name}
-              className="mt-20 border-t border-neutral-300 py-12 lg:grid lg:grid-cols-3 dark:border-neutral-500"
-            >
+    <div className="relative">
+      <div id="education" className="mx-auto max-w-screen-xl">
+        <RevealSection className="flex items-center gap-4">
+          <div className="rounded-xl bg-purple-500/10 p-3 text-purple-600 dark:text-purple-400">
+            <GraduationCap size={28} />
+          </div>
+          <div>
+            <h2 className="text-3xl font-bold">Education</h2>
+            <p className="text-neutral-500 dark:text-neutral-400">
+              Academic background
+            </p>
+          </div>
+        </RevealSection>
+        {EducationData.map((data) => (
+          <RevealSection key={data.name}>
+            <div className="mt-20 border-t border-neutral-300 py-12 lg:grid lg:grid-cols-3 dark:border-neutral-500">
               <div>{data.duration}</div>
               <div className="col-span-2">
                 <div className="text-2xl font-bold">{data.name}</div>
                 <div className="mt-5">{data.department}</div>
               </div>
             </div>
-          ))}
-        </div>
+          </RevealSection>
+        ))}
       </div>
     </div>
   );
 }
-
-// function JobIcon({
-//   iconType,
-//   className = '',
-// }: {
-//   iconType: string;
-//   className: string;
-// }) {
-//   if (iconType === 'pencil-square') {
-//     return <PencilSquareIcon className={className} />;
-//   } else if (iconType === 'sparkles') {
-//     return <SparklesIcon className={className} />;
-//   } else if (iconType === 'circle-stack') {
-//     return <CircleStackIcon className={className} />;
-//   }
-//   return null;
-// }

@@ -10,12 +10,14 @@ export default function useIntersectionObserver({
   threshold = 1.0,
   once = true,
   targetSelector,
+  targetRef,
 }: {
   rootSelector?: string | null;
   rootMargin?: string;
   threshold?: number;
   once?: boolean;
-  targetSelector: string;
+  targetSelector?: string;
+  targetRef?: React.RefObject<HTMLElement>;
 }) {
   const [hit, setHit] = useState(false);
 
@@ -37,8 +39,14 @@ export default function useIntersectionObserver({
         threshold,
       };
       const observer = new IntersectionObserver(callback, options);
-      const target = <Element>document.querySelector(targetSelector);
-      observer.observe(target);
+      // If target is selector string
+      if (targetSelector) {
+        const target = <Element>document.querySelector(targetSelector);
+        observer.observe(target);
+      } else if (targetRef?.current) {
+        const target = targetRef.current;
+        observer.observe(target);
+      }
     }
   };
 
