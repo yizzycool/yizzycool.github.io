@@ -13,7 +13,7 @@ type Props = {
 const Roundeds = {
   none: 'rounded-none',
   sm: 'rounded-sm',
-  normal: 'rounded',
+  base: 'rounded',
   md: 'rounded-md',
   lg: 'rounded-lg',
   full: 'rounded-full',
