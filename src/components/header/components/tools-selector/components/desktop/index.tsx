@@ -27,9 +27,10 @@ export default function ToolsSelectorDesktop() {
       <Popover className="group relative">
         <PopoverButton
           className={clsx(
-            'flex items-center gap-2 px-4 transition-opacity',
+            'ml-4 flex items-center gap-2 transition-opacity',
             'focus:outline-none',
-            'data-[active]:opacity-80 data-[hover]:opacity-80'
+            'data-[active]:text-black data-[hover]:text-black',
+            'dark:data-[active]:text-white dark:data-[hover]:text-white'
           )}
         >
           Tools

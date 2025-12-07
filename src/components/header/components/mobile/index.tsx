@@ -42,7 +42,7 @@ export default function HeaderMobile({
                 transition
                 className="pointer-events-auto relative w-screen max-w-md transform transition duration-300 ease-in-out data-[closed]:translate-x-full sm:duration-700"
               >
-                <div className="flex h-full flex-col overflow-y-scroll bg-gray-100 py-6 shadow-xl dark:bg-gray-700">
+                <div className="flex h-full flex-col overflow-y-scroll bg-neutral-50 py-6 shadow-xl dark:bg-neutral-800">
                   <div className="flex items-center justify-between px-4 sm:px-6">
                     <div />
                     <button className="p-1" onClick={() => setOpen(false)}>
@@ -67,8 +67,16 @@ export default function HeaderMobile({
                     >
                       Resume
                     </Link>
+                    {/* Home */}
+                    <Link
+                      className="block px-3 py-4 font-medium"
+                      href="/"
+                      onClick={() => setOpen(false)}
+                    >
+                      Home
+                    </Link>
                     {/* Divider */}
-                    <div className="my-2 mt-5 border-t border-gray-400/50 dark:border-gray-600" />
+                    <div className="my-5 border-t border-neutral-400/50 dark:border-neutral-600" />
                     {/* Theme Selector */}
                     <ThemeSelector />
                   </div>

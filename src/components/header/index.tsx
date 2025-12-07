@@ -1,27 +1,10 @@
 // 'use client';
 
-import clsx from 'clsx';
-import HeaderDesktop from './components/desktop';
-import HeaderMobile from './components/mobile';
 import { fetchCategoryArticles } from '@/app/blog/layout';
+import Navbar from './components/navbar';
 
 export default async function Header() {
   const categoryArticles = await fetchCategoryArticles();
 
-  return (
-    <div
-      className={clsx(
-        'fixed top-0 z-50 w-full bg-white/95 backdrop-blur',
-        'supports-backdrop-blur:bg-white/60',
-        'border-neutral-400/20 lg:border-b dark:bg-neutral-900/60'
-      )}
-    >
-      <div className="mx-auto hidden max-w-screen-2xl p-4 lg:block lg:px-8">
-        <HeaderDesktop />
-      </div>
-      <div className="mx-auto max-w-screen-2xl p-4 lg:hidden lg:px-8">
-        <HeaderMobile categoryArticles={categoryArticles} />
-      </div>
-    </div>
-  );
+  return <Navbar categoryArticles={categoryArticles} />;
 }

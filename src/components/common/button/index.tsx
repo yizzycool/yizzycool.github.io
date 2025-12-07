@@ -13,6 +13,7 @@ type Props = {
   variant?: ButtonVariant;
   size?: ButtonSize;
   rounded?: Rounded;
+  bordered?: boolean;
   className?: string;
   icon?: LucideIcon;
   iconStrokeWidth?: number;
@@ -26,7 +27,8 @@ export default function Button({
   onClick,
   variant = 'primary',
   size = 'base',
-  rounded = 'normal',
+  rounded = 'base',
+  bordered = false,
   className = '',
   icon: Icon,
   iconStrokeWidth = 2,
@@ -38,15 +40,15 @@ export default function Button({
 
   const variants = {
     primary: clsx(
-      'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 shadow-sm',
+      'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 border-white dark:border-black',
       !disabled && 'hover:bg-neutral-800 dark:hover:bg-neutral-200'
     ),
     secondary: clsx(
-      'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100',
+      'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100 border-neutral-600 dark:border-neutral-400',
       !disabled && 'hover:bg-neutral-200 dark:hover:bg-neutral-700'
     ),
     ghost: clsx(
-      'text-neutral-600 dark:text-neutral-400',
+      'text-neutral-600 dark:text-neutral-400 border-neutral-500/20',
       !disabled && 'hover:bg-neutral-100 dark:hover:bg-neutral-800'
     ),
     outline: clsx(
@@ -54,12 +56,24 @@ export default function Button({
       !disabled && 'hover:bg-neutral-200 dark:hover:bg-neutral-700'
     ),
     error: clsx(
-      'text-red-600 dark:text-red-400 bg-red-100/50 dark:bg-red-800/10',
+      'text-red-600 dark:text-red-400 bg-red-100/50 dark:bg-red-800/10 border-red-500/20',
       !disabled && 'hover:bg-red-100/90 dark:hover:bg-red-800/30'
     ),
     'dark-sky': clsx(
-      'text-white bg-sky-600 dark:bg-sky-900',
+      'text-white bg-sky-600 dark:bg-sky-900 border-sky-500/20',
       !disabled && 'hover:bg-sky-500 dark:hover:bg-sky-800'
+    ),
+    neutral: clsx(
+      'bg-neutral-100 border-neutral-500/20 text-neutral-600 dark:bg-neutral-700 dark:text-neutral-400',
+      !disabled && 'hover:bg-neutral-200 dark:hover:bg-neutral-600'
+    ),
+    success: clsx(
+      'bg-green-500/10 border-green-500/20 text-green-600 dark:text-green-400',
+      !disabled && 'hover:bg-green-400/20'
+    ),
+    blue: clsx(
+      'bg-blue-100 border-blue-500/20  text-blue-700 dark:bg-blue-500/10 dark:text-blue-400',
+      !disabled && 'hover:bg-blue-50 dark:hover:bg-blue-400/10'
     ),
   };
 
@@ -74,7 +88,7 @@ export default function Button({
   const roundeds = {
     none: 'rounded-none',
     sm: 'rounded-sm',
-    normal: 'rounded',
+    base: 'rounded',
     md: 'rounded-md',
     lg: 'rounded-lg',
     full: 'rounded-full',
@@ -107,7 +121,7 @@ export default function Button({
     <button
       onClick={onButtonClick}
       disabled={disabled}
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${roundeds[rounded]} ${className}`}
+      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${roundeds[rounded]} ${className} ${bordered ? 'border' : ''}`}
     >
       {Icon && (
         <Icon

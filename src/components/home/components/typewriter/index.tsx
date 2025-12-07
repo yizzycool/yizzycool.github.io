@@ -1,92 +1,82 @@
 'use client';
 
-// import styles from './index.module.scss';
-import { useEffect, useMemo, useState } from 'react';
-import browserUtils from '@/utils/browser-utils';
-import _fill from 'lodash/fill';
-import _forEach from 'lodash/forEach';
+import { useEffect, useRef, useState } from 'react';
 import _random from 'lodash/random';
-import _last from 'lodash/last';
-import _size from 'lodash/size';
 
-const Intros = ['Hi There', 'I am Yizzy', 'Front-end Developer'];
-
-const defaultShowedLength = _fill(Array(Intros.length), 0);
-
-let mounted = false;
+const Phrases = [
+  'Clean design meets chill engineering.',
+  'Simple ideas, thoughtfully engineered.',
+];
+const typingSpeed = 50;
+const deletingSpeed = 30;
+const stayDuration = 3000;
+const startDelay = 2000;
 
 export default function Typewritter() {
-  const [showedLine, setShowedLine] = useState(0);
-  const [showedLength, setShowedLength] = useState(defaultShowedLength);
+  const [isMounted, setIsMounted] = useState(false);
+  const [text, setText] = useState('');
+  const [index, setIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const isLastWordOfEachLine = useMemo(() => {
-    return showedLength[showedLine] === Intros[showedLine].length;
-  }, [showedLine, showedLength]);
-
-  const isLastWordOfLastLine = useMemo(() => {
-    return (
-      showedLine === _size(Intros) - 1 &&
-      showedLength[showedLine] === Intros[showedLine].length
-    );
-  }, [showedLine, showedLength]);
-
-  // Start typewritter effect
   useEffect(() => {
-    if (!mounted) {
-      mounted = true;
-      setTimeout(startTransition, 1000);
-    } else {
-      startTransition();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showedLength]);
+    setTimeout(() => {
+      setIsMounted(true);
+    }, startDelay);
+  }, []);
 
-  const startTransition = async () => {
-    const delay = getDelay();
-    await browserUtils.sleep(delay);
-    const nextShowedLength = [...showedLength];
-    if (isLastWordOfLastLine) {
-      setShowedLine(0);
-      setShowedLength(defaultShowedLength);
-    } else if (isLastWordOfEachLine) {
-      const nextLine = (showedLine + 1) % _size(Intros);
-      nextShowedLength[nextLine] = 0;
-      setShowedLine(nextLine);
-      setShowedLength(nextShowedLength);
+  // Main typing logic
+  useEffect(() => {
+    if (!isMounted) return;
+
+    if (isDeleting) {
+      deleteText();
     } else {
-      nextShowedLength[showedLine] += 1;
-      setShowedLength(nextShowedLength);
+      typeText();
+    }
+
+    return () => {
+      if (!timeoutRef.current) return;
+      clearTimeout(timeoutRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMounted, text, isDeleting, index]);
+
+  const typeText = () => {
+    // Typing characters
+    if (text.length < Phrases[index].length) {
+      const randomTime = _random(0, 20);
+      timeoutRef.current = setTimeout(() => {
+        setText(Phrases[index].slice(0, text.length + 1));
+      }, typingSpeed + randomTime);
+    } else {
+      // Finished typing → wait → start deleting
+      timeoutRef.current = setTimeout(() => {
+        setIsDeleting(true);
+      }, stayDuration);
     }
   };
 
-  const getDelay = () => {
-    // Default: 50ms
-    let delay = 50;
-    if (isLastWordOfLastLine) {
-      delay = 5000;
-    } else if (isLastWordOfEachLine) {
-      delay = 1000;
+  const deleteText = () => {
+    // Erasing characters
+    if (text.length > 0) {
+      timeoutRef.current = setTimeout(() => {
+        setText(text.slice(0, -1));
+      }, deletingSpeed);
+    } else {
+      // Move to next phrase
+      setIsDeleting(false);
+      setIndex((prev) => (prev + 1) % Phrases.length);
     }
-    const randomDelay = _random(0, 25, false);
-    return delay + randomDelay;
   };
 
   return (
-    <div className="w-full pt-8 xl:py-40">
-      {Intros.map((intro, idx) => (
-        <div
-          key={idx}
-          data-line={idx + 1}
-          className="mt-2 text-2xl font-bold after:invisible after:content-['.'] data-[line=2]:text-4xl data-[line=3]:text-sky-500"
-        >
-          {intro.substring(0, showedLength[idx])}
-          {idx === showedLine && (
-            <span className="inline-block w-0 animate-flash-cursor text-center">
-              |
-            </span>
-          )}
-        </div>
-      ))}
-    </div>
+    <>
+      <span>{text}</span>
+      {/* Blinking cursor */}
+      <span className="inline-block w-0 animate-flash-cursor text-center">
+        |
+      </span>
+    </>
   );
 }

@@ -60,16 +60,15 @@ export default function ThemeSelector() {
   }, []);
 
   return (
-    <Popover className="group relative flex w-full justify-end">
+    <Popover className="group relative flex w-full justify-start">
       <PopoverButton
         className={clsx(
           'flex items-center',
-          'rounded-md p-2 focus:outline-none',
+          'rounded-md px-3 py-4 focus:outline-none lg:rounded-full lg:px-2 lg:py-2',
           'data-[active]:bg-neutral-800/10 dark:data-[active]:bg-neutral-800/10 lg:dark:data-[active]:bg-neutral-700',
           'data-[hover]:hover:bg-neutral-800/10 dark:data-[hover]:bg-neutral-800/10 lg:dark:data-[hover]:bg-neutral-700'
         )}
       >
-        <div className="mr-6 lg:hidden">Switch Theme</div>
         {theme === 'dark' ? (
           <Moon className="h-5 w-5" />
         ) : theme === 'light' ? (
@@ -77,6 +76,7 @@ export default function ThemeSelector() {
         ) : (
           <SunMoon className="h-5 w-5" />
         )}
+        <div className="ml-3 lg:hidden">Switch Theme</div>
       </PopoverButton>
       <PopoverPanel
         transition

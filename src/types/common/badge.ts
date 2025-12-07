@@ -1,4 +1,4 @@
-export type ButtonVariant =
+export type BadgeVariant =
   | 'primary'
   | 'secondary'
   | 'ghost'
@@ -9,4 +9,4 @@ export type ButtonVariant =
   | 'success'
   | 'blue';
 
-export type ButtonSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl';
+export type BadgeSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl';
