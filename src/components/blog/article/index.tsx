@@ -39,12 +39,12 @@ export default function Article({
 
   return (
     <>
-      <div className="mx-auto flex-grow overflow-x-hidden px-5 lg:max-w-screen-lg lg:px-8">
-        <h1 className="mx-auto mt-10 text-4xl font-bold">{title}</h1>
+      <div className="mx-auto flex-grow overflow-x-hidden px-5 py-10 lg:max-w-screen-lg lg:px-8">
+        <h1 className="mx-auto text-4xl font-bold">{title}</h1>
         <div className="mt-4">
           <Tags article={article} />
         </div>
-        <div className="mt-10">
+        <div className="mb-20 mt-10">
           <Image
             className="aspect-video w-full object-cover"
             src={bannerUrl}
@@ -54,7 +54,7 @@ export default function Article({
           />
         </div>
         <Markdown
-          className="all-revert my-20 !leading-8 [&_*]:!scroll-mt-20"
+          className="prose prose-neutral dark:prose-invert"
           remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
           rehypePlugins={[rehypeRaw, rehypeSlug]}
           components={{
