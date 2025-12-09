@@ -30,6 +30,7 @@ const strapiUtils = {
         'updatedAt',
         'publishedAt',
         'slug',
+        'readTime',
       ],
     };
     return qs.stringify(queryObject);

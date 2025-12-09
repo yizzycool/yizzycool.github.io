@@ -1,5 +1,5 @@
 import strapiUtils from '@/utils/strapi-utils';
-import AllArticles from '@/components/blog/all-articles';
+import Articles from '@/components/blog/articles';
 
 const fetchAllArticles = async () => {
   const queryString = strapiUtils.getAllArticlesQueryString();
@@ -13,5 +13,5 @@ const fetchAllArticles = async () => {
 export default async function Page() {
   const articles = await fetchAllArticles();
 
-  return <AllArticles articles={articles} />;
+  return <Articles articles={articles} />;
 }

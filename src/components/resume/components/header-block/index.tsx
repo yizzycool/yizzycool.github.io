@@ -1,23 +1,12 @@
 'use client';
 
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
 import { Github, Linkedin, Mail } from 'lucide-react';
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import SocialIcon from '@/components/common/social-icon';
 
 export default function HeaderBlock() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const getTransitionClass = (delay = 'delay-0') =>
-    clsx(
-      'transition-all duration-1000 ease-out transform',
-      mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12',
-      delay
-    );
+  const { getSlideUpClass } = useGetTransitionClass();
 
   return (
     <header>
@@ -27,7 +16,7 @@ export default function HeaderBlock() {
           'bg-clip-text pb-4 text-4xl font-extrabold tracking-tight text-transparent md:text-6xl',
           'bg-gradient-to-r from-neutral-900 to-neutral-500',
           'dark:from-neutral-100 dark:to-neutral-500',
-          getTransitionClass('delay-100')
+          getSlideUpClass('delay-100')
         )}
       >
         Senior Front-end Engineer
@@ -36,7 +25,7 @@ export default function HeaderBlock() {
         className={clsx(
           'text-center md:text-left',
           'max-w-2xl text-lg leading-relaxed text-neutral-600 md:text-xl dark:text-neutral-400',
-          getTransitionClass('delay-200')
+          getSlideUpClass('delay-200')
         )}
       >
         Front-end engineer specializing in React, Next.js, and clean, modern UI.
@@ -47,7 +36,7 @@ export default function HeaderBlock() {
       <div
         className={clsx(
           'mt-6 flex flex-wrap justify-center gap-4 md:justify-start',
-          getTransitionClass('delay-300')
+          getSlideUpClass('delay-300')
         )}
       >
         <SocialIcon icon={Github} href="https://github.com/yizzycool" />

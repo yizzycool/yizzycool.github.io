@@ -10,7 +10,7 @@ export default function GradientBackground() {
         className={clsx(
           'absolute left-[-10%] top-[-10%] h-[50vw] w-[50vw] rounded-full mix-blend-multiply blur-[120px]',
           'animate-pulse opacity-60 dark:opacity-40',
-          'bg-blue-400/10 dark:bg-blue-600/10',
+          'bg-blue-400/20 dark:bg-blue-600/20',
           '[animation-duration:_8000ms]'
         )}
       />
@@ -20,7 +20,7 @@ export default function GradientBackground() {
         className={clsx(
           'absolute right-[-10%] top-[-5%] h-[45vw] w-[45vw] rounded-full mix-blend-multiply blur-[120px]',
           'opacity-60 dark:opacity-40',
-          'bg-purple-300/10 dark:bg-purple-600/10'
+          'bg-purple-300/20 dark:bg-purple-600/10'
         )}
       />
 

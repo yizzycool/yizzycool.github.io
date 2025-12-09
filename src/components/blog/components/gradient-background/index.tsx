@@ -10,16 +10,16 @@ export default function GradientBackground() {
         className={clsx(
           'absolute left-[-10%] top-[-10%] h-[40vw] w-[40vw] rounded-full mix-blend-multiply blur-3xl',
           'animate-pulse opacity-60 dark:opacity-40',
-          'bg-blue-400/10 dark:bg-blue-600/10',
+          'bg-blue-400/20 dark:bg-blue-600/20',
           '[animation-duration:_8000ms]'
         )}
       />
-      {/* Top Right / Purplish tone  */}
+      {/* Bottom Right / Purplish tone  */}
       <div
         className={clsx(
           'absolute bottom-[-10%] right-[-10%] h-[35vw] w-[35vw] rounded-full mix-blend-multiply blur-3xl',
           'opacity-60 dark:opacity-40',
-          'bg-violet-400/10 dark:bg-violet-600/10'
+          'bg-violet-400/20 dark:bg-violet-600/10'
         )}
       />
       {/* Center Top Subtle Highlight */}

@@ -9,7 +9,8 @@ import {
   Linkedin,
   Terminal,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import Image from 'next/image';
 import Typewritter from './components/typewriter';
 import Badge from '@/components/common/badge';
@@ -36,20 +37,8 @@ const TechStacks = [
 
 export default function Intro() {
   const [avatarLoaded, setAvatarLoaded] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const getTransitionClass = (delay = 'delay-0') =>
-    clsx(
-      'transition-all duration-1000 ease-out transform',
-      mounted && avatarLoaded
-        ? 'opacity-100 translate-y-0'
-        : 'opacity-0 translate-y-12',
-      delay
-    );
+  const { getSlideUpClass } = useGetTransitionClass({ loaded: avatarLoaded });
 
   return (
     <div className="relative flex min-h-full w-full">
@@ -61,7 +50,7 @@ export default function Intro() {
             <Badge
               variant="success"
               bordered={true}
-              className={`uppercase ${getTransitionClass('delay-100')}`}
+              className={`uppercase ${getSlideUpClass('delay-100')}`}
             >
               <span className="relative mr-1.5 flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
@@ -76,7 +65,7 @@ export default function Intro() {
               <h2
                 className={clsx(
                   'text-4xl font-extrabold tracking-tight text-neutral-900 md:text-5xl lg:text-7xl dark:text-white',
-                  getTransitionClass('delay-200')
+                  getSlideUpClass('delay-200')
                 )}
               >
                 Hi There, <br />I am{' '}
@@ -88,7 +77,7 @@ export default function Intro() {
               <div
                 className={clsx(
                   'flex h-12 items-center justify-center text-xl font-medium text-neutral-500 md:text-2xl lg:justify-start dark:text-neutral-400',
-                  getTransitionClass('delay-300')
+                  getSlideUpClass('delay-300')
                 )}
               >
                 <Typewritter />
@@ -99,7 +88,7 @@ export default function Intro() {
             <p
               className={clsx(
                 'max-w-lg text-lg leading-relaxed text-neutral-600 dark:text-neutral-400',
-                getTransitionClass('delay-500')
+                getSlideUpClass('delay-500')
               )}
             >
               Crafting clean, efficient front-end experiences with Next.js and
@@ -111,7 +100,7 @@ export default function Intro() {
             <div
               className={clsx(
                 'flex flex-wrap justify-center gap-3 lg:justify-start',
-                getTransitionClass('delay-700')
+                getSlideUpClass('delay-700')
               )}
             >
               {TechStacks.map(({ label, icon }) => (
@@ -132,7 +121,7 @@ export default function Intro() {
             <div
               className={clsx(
                 'flex justify-center gap-2 pt-8 lg:justify-start',
-                getTransitionClass('delay-[1200ms]')
+                getSlideUpClass('delay-[1200ms]')
               )}
             >
               <SocialIcon icon={Github} href="https://github.com/yizzycool" />
@@ -146,7 +135,7 @@ export default function Intro() {
           <div
             className={clsx(
               'relative order-1 flex justify-center lg:order-2 lg:justify-end',
-              getTransitionClass('delay-500')
+              getSlideUpClass('delay-500')
             )}
           >
             <div className="group relative">
@@ -220,7 +209,7 @@ export default function Intro() {
         <div
           className={clsx(
             'mt-12 w-full text-center',
-            getTransitionClass('delay-[1500ms]')
+            getSlideUpClass('delay-[1500ms]')
           )}
         >
           <p className="mb-4 text-sm font-medium uppercase tracking-widest text-neutral-400">
