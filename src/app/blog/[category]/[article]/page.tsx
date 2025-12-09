@@ -36,7 +36,11 @@ export async function generateStaticParams() {
 }
 
 const fetchArticle = async (articleSlug: string) => {
-  const queryString = strapiUtils.getArticleQueryString(articleSlug);
+  const queryString = strapiUtils.getArticleQueryString({
+    slug: {
+      '$eq': articleSlug,
+    },
+  });
   const response = await fetch(
     `${process.env.STRAPI_URL}/api/articles?${queryString}`
   );

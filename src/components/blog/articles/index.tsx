@@ -1,12 +1,12 @@
 'use client';
 
 import clsx from 'clsx';
-import { usePathname } from 'next/navigation';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import HeaderBlock from './components/header-block';
 import ArticleCard from './components/article-card';
 import _map from 'lodash/map';
 import _get from 'lodash/get';
+import _find from 'lodash/find';
 
 type MediaData = {
   width: number;
@@ -58,16 +58,28 @@ type Articles = {
   meta?: object;
 };
 
-export default function Articles({ articles }: { articles: Articles }) {
+type Props = {
+  articles: Articles;
+  categorySlug?: string | undefined;
+};
+
+export default function Articles({ articles, categorySlug }: Props) {
   const { data, meta } = articles || {};
 
-  const pathname = usePathname(); // "/blog/frontend"
-  const slug = pathname.split('/')[2] || 'all articles';
+  const firstCategoryArticle = _find(
+    data,
+    (d) => d.category.slug === categorySlug
+  );
+  const categoryName = _get(
+    firstCategoryArticle,
+    ['category', 'name'],
+    'All articles'
+  );
 
   const { getSlideUpClass } = useGetTransitionClass();
 
   return (
-    <div className="mx-auto flex-grow overflow-hidden px-5 py-12 lg:max-w-screen-lg lg:px-10">
+    <div className="mx-auto flex-grow overflow-hidden px-5 pb-20 pt-4 lg:max-w-screen-lg lg:px-10">
       <HeaderBlock />
 
       <div
@@ -77,7 +89,7 @@ export default function Articles({ articles }: { articles: Articles }) {
         )}
       >
         <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
-          {slug}
+          {categoryName}
           <span className="ml-3 text-sm font-normal text-neutral-400 dark:text-neutral-500">
             {_get(meta, ['pagination', 'total'], 0)} articles
           </span>
