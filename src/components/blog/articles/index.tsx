@@ -66,8 +66,6 @@ export default function Articles({ articles }: { articles: Articles }) {
 
   const { getSlideUpClass } = useGetTransitionClass();
 
-  console.log('articles:', articles);
-
   return (
     <div className="mx-auto flex-grow overflow-hidden px-5 py-12 lg:max-w-screen-lg lg:px-10">
       <HeaderBlock />
