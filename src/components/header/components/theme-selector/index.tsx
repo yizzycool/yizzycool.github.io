@@ -69,7 +69,7 @@ export default function ThemeSelector() {
         transition
         anchor="bottom end"
         className={clsx(
-          'z-10 mt-5 origin-top-right rounded-md py-2 text-sm/6 font-semibold',
+          'z-50 mt-5 origin-top-right rounded-md py-2 text-sm/6 font-semibold',
           'border border-neutral-800/20 dark:border-white/20',
           'bg-white/95 backdrop-blur-lg dark:bg-neutral-800',
           'focus:outline-none',
