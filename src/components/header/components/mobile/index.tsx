@@ -9,6 +9,7 @@ import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import { Menu, X } from 'lucide-react';
 import { ToolsSelectorMobile } from '../tools-selector';
 import BlogSelectorMobile from './components/blog-selector';
+import SearchDialog from '@/components/common/search-dialog';
 
 export default function HeaderMobile({
   categoryArticles,
@@ -27,6 +28,13 @@ export default function HeaderMobile({
           alt="Logo"
         />
       </Link>
+      <div className="items-centexr flex flex-1 justify-end gap-2 px-4">
+        {/* Search Dialog */}
+        <SearchDialog deviceType="mobile" />
+        {/* Theme Selector */}
+        <ThemeSelector />
+      </div>
+
       <button className="h-9 w-9 p-1" onClick={() => setOpen(true)}>
         <Menu className="w-full" />
       </button>
@@ -77,8 +85,6 @@ export default function HeaderMobile({
                     </Link>
                     {/* Divider */}
                     <div className="my-5 border-t border-neutral-400/50 dark:border-neutral-600" />
-                    {/* Theme Selector */}
-                    <ThemeSelector />
                   </div>
                 </div>
               </DialogPanel>

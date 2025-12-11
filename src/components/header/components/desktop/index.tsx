@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Navigation from './components/navigation';
 import ThemeSelector from '../theme-selector';
+import SearchDialog from '@/components/common/search-dialog';
 
 export default function HeaderDesktop() {
   return (
@@ -18,6 +19,9 @@ export default function HeaderDesktop() {
         <div className="ml-4 text-xl font-bold">Yizzy Peasy</div>
       </Link>
       <div className="items-centexr flex flex-1 justify-end px-4">
+        <SearchDialog deviceType="desktop" />
+      </div>
+      <div className="items-centexr flex justify-end px-4">
         <Navigation />
       </div>
       <div className="mx-2 h-4 w-px bg-neutral-300 dark:bg-neutral-700" />

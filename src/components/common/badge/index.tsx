@@ -30,7 +30,7 @@ export default function Badge({
   iconClassName = '',
 }: Props) {
   const baseStyles =
-    'w-fit flex items-center justify-center transition-all duration-200 font-semibold';
+    'w-fit flex items-center justify-center transition-all duration-200 font-semibold whitespace-nowrap';
 
   const variants = {
     primary:

@@ -1,13 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import {
-  ForwardRefExoticComponent,
-  RefAttributes,
-  SVGProps,
-  useEffect,
-  useState,
-} from 'react';
+import { ForwardRefExoticComponent, RefAttributes, SVGProps } from 'react';
 import {
   CloseButton,
   Popover,
@@ -17,7 +11,6 @@ import {
 } from '@headlessui/react';
 import { Moon, Sun, SunMoon } from 'lucide-react';
 import useSwitchTheme, { Theme } from './hooks/use-switch-theme';
-import { createPortal } from 'react-dom';
 
 type SwitchButtonSettings = {
   component: ForwardRefExoticComponent<
@@ -51,22 +44,16 @@ const Buttons: SwitchButtons = [
 ];
 
 export default function ThemeSelector() {
-  const [body, setBody] = useState<HTMLElement | null>(null);
-
   const { theme, updateTheme } = useSwitchTheme();
 
-  useEffect(() => {
-    setBody(window.document.body);
-  }, []);
-
   return (
-    <Popover className="group relative flex w-full justify-start">
+    <Popover className="group relative flex justify-start">
       <PopoverButton
         className={clsx(
           'flex items-center',
-          'rounded-md px-3 py-4 focus:outline-none lg:rounded-full lg:px-2 lg:py-2',
-          'data-[active]:bg-neutral-800/10 dark:data-[active]:bg-neutral-800/10 lg:dark:data-[active]:bg-neutral-700',
-          'data-[hover]:hover:bg-neutral-800/10 dark:data-[hover]:bg-neutral-800/10 lg:dark:data-[hover]:bg-neutral-700'
+          'rounded-full p-2 focus:outline-none',
+          'data-[active]:bg-neutral-800/10 dark:data-[active]:bg-neutral-700',
+          'data-[hover]:hover:bg-neutral-800/10 dark:data-[hover]:bg-neutral-700'
         )}
       >
         {theme === 'dark' ? (
@@ -76,8 +63,8 @@ export default function ThemeSelector() {
         ) : (
           <SunMoon className="h-5 w-5" />
         )}
-        <div className="ml-3 lg:hidden">Switch Theme</div>
       </PopoverButton>
+      <PopoverBackdrop className="visible fixed inset-0 z-0 bg-transparent" />
       <PopoverPanel
         transition
         anchor="bottom end"
@@ -106,11 +93,6 @@ export default function ThemeSelector() {
           </CloseButton>
         ))}
       </PopoverPanel>
-      {body &&
-        createPortal(
-          <PopoverBackdrop className="invisible fixed inset-0 z-0 bg-transparent lg:visible" />,
-          body
-        )}
     </Popover>
   );
 }

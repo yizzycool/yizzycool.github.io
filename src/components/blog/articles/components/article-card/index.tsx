@@ -91,14 +91,8 @@ export default function ArticleCard({ article }: Props) {
                 <div className="flex gap-2">
                   {article.tags.map((tag) => (
                     <Badge key={tag.name} variant="outline" rounded="md">
-                      #{tag.name}
+                      {tag.name}
                     </Badge>
-                    // <span
-                    //   key={tag.name}
-                    //   className="rounded border border-neutral-200 bg-neutral-100 px-2 py-0.5 text-xs text-neutral-600 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-400"
-                    // >
-                    //   #{tag.name}
-                    // </span>
                   ))}
                 </div>
 

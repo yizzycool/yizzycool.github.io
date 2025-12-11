@@ -59,4 +59,4 @@ function syncDirectory(src, dest) {
 // - Make sure yizzycool.github.io and yizzycool.github.io-strapi are located in the same parent directory.
 // - Change these paths as needed
 syncDirectory(SOURCE_FOLDER, TARGET_FOLDER);
-console.log(`${colors.green}DONE!${colors.reset}`);
+console.log(`${colors.green}[DONE] Strapi Media Synced!${colors.reset}`);

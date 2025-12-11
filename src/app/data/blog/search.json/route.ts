@@ -9,13 +9,15 @@ export async function GET() {
     `${process.env.STRAPI_URL}/api/articles?${queryString}`
   );
   const { data } = await response.json();
-  const filteredData = _map(data, (d) => ({
-    title: d.title,
-    description: d.description,
-    content: d.content,
-    slug: d.slug,
-    tags: _map(d.tags, (tag) => tag.name),
-    category: d.category.name,
+  const filteredData: Array<DataForSearch> = _map(data, (dt) => ({
+    page: 'blog',
+    title: dt.title,
+    description: dt.description,
+    content: dt.content,
+    slug: dt.slug,
+    tags: _map(dt.tags, (tag) => tag.name),
+    category: dt.category.name,
+    categorySlug: dt.category.slug,
   }));
 
   return Response.json(filteredData);

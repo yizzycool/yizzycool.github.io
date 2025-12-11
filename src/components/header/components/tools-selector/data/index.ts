@@ -41,6 +41,13 @@ export const ToolGroupNames = {
   [ToolGroupKeys.webDetectorApi]: 'Web Detector APIs',
 };
 
+export const ToolGroupSlugs = {
+  [ToolGroupKeys.devTool]: 'dev-tool',
+  [ToolGroupKeys.imgTool]: 'image-tool',
+  [ToolGroupKeys.chromeAiApi]: 'chrome-built-in-ai-api',
+  [ToolGroupKeys.webDetectorApi]: 'web-detection-api',
+};
+
 // Tools
 
 export const ToolKeys = {
@@ -118,20 +125,34 @@ export const ToolDescriptions = {
     'Extract text from images with Chrome’s built-in text detection API, supporting OCR tasks, data extraction, and automation workflows.',
 };
 
+export const ToolSlugs = {
+  [ToolKeys.urlEncoderDecoder]: 'url-encoder-decoder',
+  [ToolKeys.base64ToImage]: 'base64-to-image',
+  [ToolKeys.imageToBase64]: 'image-to-base64',
+  [ToolKeys.chromeAiTranslator]: 'translator',
+  [ToolKeys.chromeAiLanguageDetector]: 'language-detector',
+  [ToolKeys.chromeAiSummarizer]: 'summarizer',
+  [ToolKeys.chromeAiWriter]: 'writer',
+  [ToolKeys.chromeAiRewriter]: 'rewriter',
+  [ToolKeys.chromeAiPrompt]: 'prompt',
+  [ToolKeys.chromeFaceDetector]: 'face-detector',
+  [ToolKeys.chromeBarcodeDetector]: 'barcode-detector',
+  [ToolKeys.chromeTextDetector]: 'text-detector',
+};
+
 export const ToolUrls = {
-  [ToolKeys.urlEncoderDecoder]: '/tools/dev-tool/url-encoder-decoder',
-  [ToolKeys.base64ToImage]: '/tools/image-tool/base64-to-image',
-  [ToolKeys.imageToBase64]: '/tools/image-tool/image-to-base64',
-  [ToolKeys.chromeAiTranslator]: '/tools/chrome-built-in-ai-api/translator',
-  [ToolKeys.chromeAiLanguageDetector]:
-    '/tools/chrome-built-in-ai-api/language-detector',
-  [ToolKeys.chromeAiSummarizer]: '/tools/chrome-built-in-ai-api/summarizer',
-  [ToolKeys.chromeAiWriter]: '/tools/chrome-built-in-ai-api/writer',
-  [ToolKeys.chromeAiRewriter]: '/tools/chrome-built-in-ai-api/rewriter',
-  [ToolKeys.chromeAiPrompt]: '/tools/chrome-built-in-ai-api/prompt',
-  [ToolKeys.chromeFaceDetector]: '/tools/web-detection-api/face-detector',
-  [ToolKeys.chromeBarcodeDetector]: '/tools/web-detection-api/barcode-detector',
-  [ToolKeys.chromeTextDetector]: '/tools/web-detection-api/text-detector',
+  [ToolKeys.urlEncoderDecoder]: `/tools/${ToolGroupSlugs[ToolGroupKeys.devTool]}/${ToolSlugs[ToolKeys.urlEncoderDecoder]}`,
+  [ToolKeys.base64ToImage]: `/tools/${ToolGroupSlugs[ToolGroupKeys.imgTool]}/${ToolSlugs[ToolKeys.base64ToImage]}`,
+  [ToolKeys.imageToBase64]: `/tools/${ToolGroupSlugs[ToolGroupKeys.imgTool]}/${ToolSlugs[ToolKeys.imageToBase64]}`,
+  [ToolKeys.chromeAiTranslator]: `/tools/${ToolGroupSlugs[ToolGroupKeys.chromeAiApi]}/${ToolSlugs[ToolKeys.chromeAiTranslator]}`,
+  [ToolKeys.chromeAiLanguageDetector]: `/tools/${ToolGroupSlugs[ToolGroupKeys.chromeAiApi]}/${ToolSlugs[ToolKeys.chromeAiLanguageDetector]}`,
+  [ToolKeys.chromeAiSummarizer]: `/tools/${ToolGroupSlugs[ToolGroupKeys.chromeAiApi]}/${ToolSlugs[ToolKeys.chromeAiSummarizer]}`,
+  [ToolKeys.chromeAiWriter]: `/tools/${ToolGroupSlugs[ToolGroupKeys.chromeAiApi]}/${ToolSlugs[ToolKeys.chromeAiWriter]}`,
+  [ToolKeys.chromeAiRewriter]: `/tools/${ToolGroupSlugs[ToolGroupKeys.chromeAiApi]}/${ToolSlugs[ToolKeys.chromeAiRewriter]}`,
+  [ToolKeys.chromeAiPrompt]: `/tools/${ToolGroupSlugs[ToolGroupKeys.chromeAiApi]}/${ToolSlugs[ToolKeys.chromeAiPrompt]}`,
+  [ToolKeys.chromeFaceDetector]: `/tools/${ToolGroupSlugs[ToolGroupKeys.webDetectorApi]}/${ToolSlugs[ToolKeys.chromeFaceDetector]}`,
+  [ToolKeys.chromeBarcodeDetector]: `/tools/${ToolGroupSlugs[ToolGroupKeys.webDetectorApi]}/${ToolSlugs[ToolKeys.chromeBarcodeDetector]}`,
+  [ToolKeys.chromeTextDetector]: `/tools/${ToolGroupSlugs[ToolGroupKeys.webDetectorApi]}/${ToolSlugs[ToolKeys.chromeTextDetector]}`,
 };
 
 export const ToolIcons = {
