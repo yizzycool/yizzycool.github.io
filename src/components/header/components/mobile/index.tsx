@@ -28,7 +28,7 @@ export default function HeaderMobile({
           alt="Logo"
         />
       </Link>
-      <div className="items-centexr flex flex-1 justify-end gap-2 px-4">
+      <div className="items-centexr flex flex-1 justify-end gap-4 px-4">
         {/* Search Dialog */}
         <SearchDialog deviceType="mobile" />
         {/* Theme Selector */}
