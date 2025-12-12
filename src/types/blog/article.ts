@@ -14,4 +14,5 @@ export interface BlogArticleData extends BaseBlogData {
   tags: Array<BlogTagData>;
   category: BlogCategoryData;
   banner: BlogMediaData;
+  readTime: number;
 }

@@ -3,6 +3,7 @@
 import { BlogCategory } from '@/types/blog';
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import Link from 'next/link';
 import strapiUtils from '@/utils/strapi-utils';
 import _get from 'lodash/get';
@@ -19,19 +20,27 @@ export default function LeftPanel({
 }) {
   const pathname = usePathname();
 
+  const { getSlideUpClass } = useGetTransitionClass();
+
   const data = _get(categoryArticles, ['data']) || [];
 
   return (
     <div
       className={clsx(
         '[&_*]:transition-all',
+        getSlideUpClass(),
         side === 'leftPanel' &&
-          'w- sticky top-24 hidden h-dvh w-80 shrink-0 border-r border-neutral-400/20 p-4 lg:block',
+          'sticky top-24 hidden h-dvh w-80 w-[300px] shrink-0 border-r border-neutral-400/20 p-4 lg:block',
         side === 'headerBlogSelector' && ''
       )}
     >
       {/* Title */}
-      <h3 className="mb-4 pl-2 text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
+      <h3
+        className={clsx(
+          'mb-4 pl-2 text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500',
+          getSlideUpClass('delay-100')
+        )}
+      >
         Categories
       </h3>
       {/* All Articles */}
@@ -39,7 +48,8 @@ export default function LeftPanel({
         className={clsx(
           'flex items-center rounded-md px-4 py-2 font-bold',
           'hover:bg-sky-600/10',
-          'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500'
+          'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500',
+          getSlideUpClass('delay-150')
         )}
         href="/blog"
         data-active={pathname === '/blog'}
@@ -54,7 +64,8 @@ export default function LeftPanel({
             className={clsx(
               'mt-1 flex items-center rounded-md px-4 py-2 font-bold',
               'hover:bg-sky-600/10',
-              'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500'
+              'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500',
+              getSlideUpClass('delay-150')
             )}
             href={strapiUtils.toBlogUrl(category.slug, '')}
             data-active={pathname === strapiUtils.toBlogUrl(category.slug, '')}
@@ -62,7 +73,12 @@ export default function LeftPanel({
           >
             {category.name}
           </Link>
-          <div className="ml-4 border-neutral-400/50 pl-2 lg:border-l">
+          <div
+            className={clsx(
+              'ml-4 border-neutral-400/50 pl-2 lg:border-l',
+              getSlideUpClass('delay-200')
+            )}
+          >
             {_map(category.articles, (article) => (
               <Link
                 key={article.title}
