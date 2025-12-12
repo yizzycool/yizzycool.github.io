@@ -51,17 +51,18 @@ export default function ThemeSelector() {
       <PopoverButton
         className={clsx(
           'flex items-center',
+          'transition-all duration-200',
           'rounded-full p-2 focus:outline-none',
           'data-[active]:bg-neutral-800/10 dark:data-[active]:bg-neutral-700',
           'data-[hover]:hover:bg-neutral-800/10 dark:data-[hover]:bg-neutral-700'
         )}
       >
         {theme === 'dark' ? (
-          <Moon className="h-5 w-5" />
+          <Moon size={20} />
         ) : theme === 'light' ? (
-          <Sun className="h-5 w-5" />
+          <Sun size={20} />
         ) : (
-          <SunMoon className="h-5 w-5" />
+          <SunMoon size={20} />
         )}
       </PopoverButton>
       <PopoverBackdrop className="visible fixed inset-0 z-0 bg-transparent" />
@@ -80,7 +81,10 @@ export default function ThemeSelector() {
         {Buttons.map((button, idx) => (
           <CloseButton
             key={idx}
-            className="flex w-full cursor-pointer px-4 py-1 pr-6 hover:bg-neutral-800/10 dark:hover:bg-neutral-700"
+            className={clsx(
+              'flex w-full cursor-pointer px-4 py-1 pr-6 hover:bg-sky-100/50 dark:hover:bg-neutral-700/50',
+              'transition-all duration-300'
+            )}
             onClick={() => updateTheme(button.theme)}
           >
             <div

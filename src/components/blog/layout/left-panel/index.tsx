@@ -43,6 +43,7 @@ export default function LeftPanel({
         )}
         href="/blog"
         data-active={pathname === '/blog'}
+        onClick={onClick}
       >
         All Artices
       </Link>
@@ -57,10 +58,11 @@ export default function LeftPanel({
             )}
             href={strapiUtils.toBlogUrl(category.slug, '')}
             data-active={pathname === strapiUtils.toBlogUrl(category.slug, '')}
+            onClick={onClick}
           >
             {category.name}
           </Link>
-          <div className="ml-4 border-l border-neutral-400/50 pl-2">
+          <div className="ml-4 border-neutral-400/50 pl-2 lg:border-l">
             {_map(category.articles, (article) => (
               <Link
                 key={article.title}

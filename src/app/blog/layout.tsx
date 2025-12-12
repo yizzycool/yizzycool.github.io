@@ -1,5 +1,6 @@
 import strapiUtils from '@/utils/strapi-utils';
-import GradientBackground from '@/components/blog/components/gradient-background';
+import GlimmerBackground from '@/components/common/glimmer-background';
+import GlimmerBackgroundConfigs from '@/data/glimmer-background-config/blog';
 import LeftPanel from '@/components/blog/layout/left-panel';
 
 export const fetchCategoryArticles = async () => {
@@ -20,7 +21,7 @@ export default async function Layout({
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-full pt-[101px] 2xl:max-w-screen-2xl">
-      <GradientBackground />
+      <GlimmerBackground configs={GlimmerBackgroundConfigs} />
       <LeftPanel categoryArticles={categoryArticles} />
       {children}
     </div>

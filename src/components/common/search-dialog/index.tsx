@@ -95,9 +95,13 @@ export default function SearchDialog({ deviceType }: Props) {
       <Button
         onClick={onButtonClick}
         variant="ghost"
-        size={deviceType === 'desktop' ? 'xs' : 'sm'}
+        size={deviceType === 'desktop' ? 'xs' : 'lg'}
         rounded={deviceType === 'desktop' ? 'base' : 'full'}
-        className="group border border-neutral-200 dark:border-neutral-700"
+        className={
+          deviceType === 'desktop'
+            ? 'group border border-neutral-200 dark:border-neutral-700'
+            : 'group !p-2'
+        }
         icon={Search}
         iconClassName="transition-colors group-hover:text-blue-500"
       >
