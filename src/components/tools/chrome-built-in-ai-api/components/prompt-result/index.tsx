@@ -60,7 +60,7 @@ export default function PromptResult({ results, isProcessing }: Props) {
           </div>
         ) : (
           <Markdown
-            className="prose prose-neutral min-h-full min-w-full cursor-text dark:prose-invert"
+            className="prose prose-neutral min-h-full min-w-full cursor-text text-left dark:prose-invert"
             remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
             components={{
               code(props) {
