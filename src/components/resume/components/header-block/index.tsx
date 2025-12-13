@@ -1,9 +1,8 @@
 'use client';
 
 import clsx from 'clsx';
-import { Github, Linkedin, Mail } from 'lucide-react';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import SocialIcon from '@/components/common/social-icon';
+import SocialIcons from '@/components/common/social-icons';
 
 export default function HeaderBlock() {
   const { getSlideUpClass } = useGetTransitionClass();
@@ -33,16 +32,12 @@ export default function HeaderBlock() {
         experience.
       </div>
 
-      <div
-        className={clsx(
-          'mt-6 flex flex-wrap justify-center gap-4 md:justify-start',
-          getSlideUpClass('delay-300')
-        )}
-      >
-        <SocialIcon icon={Github} href="https://github.com/yizzycool" />
-        <SocialIcon icon={Linkedin} href="https://www.linkedin.com/in/yizzy/" />
-        <SocialIcon icon={Mail} href="mailto:chsh110768@gmail.com" />
-      </div>
+      <SocialIcons
+        types={['github', 'linkedin', 'email']}
+        transition
+        delay="delay-300"
+        className="mt-6 justify-center gap-4 md:justify-start"
+      />
     </header>
   );
 }

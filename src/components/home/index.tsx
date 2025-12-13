@@ -1,20 +1,13 @@
 'use client';
 
 import clsx from 'clsx';
-import {
-  Code2,
-  Github,
-  Layers,
-  LayoutTemplate,
-  Linkedin,
-  Terminal,
-} from 'lucide-react';
+import { Code2, Layers, LayoutTemplate, Terminal } from 'lucide-react';
 import { useState } from 'react';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import Image from 'next/image';
 import Typewritter from './components/typewriter';
 import Badge from '@/components/common/badge';
-import SocialIcon from '@/components/common/social-icon';
+import SocialIcons from '../common/social-icons';
 
 const TechStacks = [
   {
@@ -118,18 +111,12 @@ export default function Intro() {
             </div>
 
             {/* Social Links */}
-            <div
-              className={clsx(
-                'flex justify-center gap-2 pt-8 lg:justify-start',
-                getSlideUpClass('delay-[1200ms]')
-              )}
-            >
-              <SocialIcon icon={Github} href="https://github.com/yizzycool" />
-              <SocialIcon
-                icon={Linkedin}
-                href="https://www.linkedin.com/in/yizzy/"
-              />
-            </div>
+            <SocialIcons
+              types={['github', 'linkedin']}
+              transition
+              delay="[transition-delay:_1200ms]"
+              className="justify-center pt-8 lg:justify-start"
+            />
           </div>
           {/* Right Column - Avatar */}
           <div

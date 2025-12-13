@@ -31,7 +31,7 @@ export default function LeftPanel({
         getSlideUpClass(),
         side === 'leftPanel' &&
           'sticky top-24 hidden h-dvh w-80 w-[300px] shrink-0 border-r border-neutral-400/20 p-4 lg:block',
-        side === 'headerBlogSelector' && ''
+        side === 'headerBlogSelector' && 'py-4'
       )}
     >
       {/* Title */}

@@ -12,6 +12,7 @@ import { ToolsSelectorMobile } from '../tools-selector';
 import BlogSelectorMobile from './components/blog-selector';
 import SearchDialog from '@/components/common/search-dialog';
 import GeneralLink from './components/general-link';
+import SocialIcons from '@/components/common/social-icons';
 
 export default function HeaderMobile({
   categoryArticles,
@@ -59,13 +60,13 @@ export default function HeaderMobile({
                 transition
                 className={clsx(
                   'pointer-events-auto relative w-screen max-w-md',
-                  'transform transition duration-500 ease-out',
+                  'transition-transform duration-500 ease-out',
                   'data-[closed]:translate-x-full'
                 )}
               >
                 <div
                   className={clsx(
-                    'flex h-full flex-col overflow-y-scroll py-6 shadow-2xl',
+                    'flex h-full flex-col overflow-hidden py-6 shadow-2xl',
                     'bg-white/90 backdrop-blur-md dark:bg-neutral-900/95'
                   )}
                 >
@@ -82,7 +83,9 @@ export default function HeaderMobile({
                       />
                     </button>
                   </div>
-                  <div className="relative mt-6 flex flex-1 flex-col gap-2 px-2 sm:px-4">
+
+                  {/* Drawer Contents */}
+                  <div className="relative mt-6 flex flex-1 flex-col gap-2 overflow-y-auto px-4">
                     {/* Home */}
                     <GeneralLink
                       onClick={closeSidePanel}
@@ -107,9 +110,17 @@ export default function HeaderMobile({
                       label="Resume"
                       href="/resume"
                     />
+                  </div>
 
-                    {/* Divider */}
-                    <div className="my-5 border-t border-neutral-400/50 dark:border-neutral-600" />
+                  {/* Drawer Footer */}
+                  <div className="mt-6 border-t border-neutral-200 px-4 pt-6 dark:border-neutral-700">
+                    <SocialIcons
+                      types={['github', 'linkedin', 'email']}
+                      className="justify-center"
+                    />
+                    <p className="mt-4 text-center text-xs text-neutral-400 dark:text-neutral-500">
+                      © 2025 Yizzy Peasy.
+                    </p>
                   </div>
                 </div>
               </DialogPanel>
