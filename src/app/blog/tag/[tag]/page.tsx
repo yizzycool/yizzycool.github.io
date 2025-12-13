@@ -5,27 +5,31 @@ import _get from 'lodash/get';
 import _size from 'lodash/size';
 import _map from 'lodash/map';
 
-type Slug = { category: string };
+type Slug = { tag: string };
 
 export async function generateStaticParams() {
   const queryString =
-    strapiUtils.staticParams.generateCategoriesQueryStringForCategorPage();
+    strapiUtils.staticParams.generateTagsQueryStringForTagPage({
+      articles: {
+        '$notNull': true,
+      },
+    });
   const response = await fetch(
-    `${process.env.STRAPI_URL}/api/categories?${queryString}`
+    `${process.env.STRAPI_URL}/api/tags?${queryString}`
   );
   const categoryArticleData: BlogCategory = await response.json();
   const { data } = categoryArticleData;
 
   return _map(data, ({ slug }) => ({
-    category: slug,
+    tag: slug,
   }));
 }
 
-const fetchArticle = async (categorySlug: string) => {
+const fetchArticle = async (tagSlug: string) => {
   const queryString = strapiUtils.fetch.generateArticlesQueryString({
-    category: {
+    tags: {
       slug: {
-        '$eq': categorySlug,
+        '$in': tagSlug,
       },
     },
   });
@@ -37,8 +41,8 @@ const fetchArticle = async (categorySlug: string) => {
 };
 
 export default async function Page({ params }: { params: Promise<Slug> }) {
-  const { category: categorySlug } = await params;
-  const articles = await fetchArticle(categorySlug);
+  const { tag: tagSlug } = await params;
+  const articles = await fetchArticle(tagSlug);
 
-  return <Articles articles={articles} categorySlug={categorySlug} />;
+  return <Articles articles={articles} tagSlug={tagSlug} />;
 }

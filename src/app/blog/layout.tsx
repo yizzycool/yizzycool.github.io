@@ -4,7 +4,8 @@ import GlimmerBackgroundConfigs from '@/data/glimmer-background-config/blog';
 import LeftPanel from '@/components/blog/layout/left-panel';
 
 export const fetchCategoryArticles = async () => {
-  const queryString = strapiUtils.getCategoryArticlesQueryString();
+  const queryString =
+    strapiUtils.fetch.generateCategoriesQueryStringForLeftPanel();
   const response = await fetch(
     `${process.env.STRAPI_URL}/api/categories?${queryString}`
   );

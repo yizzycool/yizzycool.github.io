@@ -4,7 +4,8 @@ import _map from 'lodash/map';
 export const dynamic = 'force-static';
 
 export async function GET() {
-  const queryString = strapiUtils.getAllArticlesQueryStringForSearch();
+  const queryString =
+    strapiUtils.staticRoute.generateArticlesQueryStringForSearch();
   const response = await fetch(
     `${process.env.STRAPI_URL}/api/articles?${queryString}`
   );

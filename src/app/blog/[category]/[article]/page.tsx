@@ -13,7 +13,8 @@ import _size from 'lodash/size';
 type Slug = { category: string; article: string };
 
 export async function generateStaticParams() {
-  const queryString = strapiUtils.getCategoryArticlesQueryString();
+  const queryString =
+    strapiUtils.staticParams.generateCategoriesQueryStringForCategorArticlePage();
   const response = await fetch(
     `${process.env.STRAPI_URL}/api/categories?${queryString}`
   );
@@ -36,7 +37,7 @@ export async function generateStaticParams() {
 }
 
 const fetchArticle = async (articleSlug: string) => {
-  const queryString = strapiUtils.getArticleQueryString({
+  const queryString = strapiUtils.fetch.generateArticleQueryStringF({
     slug: {
       '$eq': articleSlug,
     },

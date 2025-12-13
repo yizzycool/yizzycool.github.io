@@ -2,7 +2,7 @@ import strapiUtils from '@/utils/strapi-utils';
 import Articles from '@/components/blog/articles';
 
 const fetchAllArticles = async () => {
-  const queryString = strapiUtils.getAllArticlesQueryString();
+  const queryString = strapiUtils.fetch.generateArticlesQueryString();
   const response = await fetch(
     `${process.env.STRAPI_URL}/api/articles?${queryString}`
   );

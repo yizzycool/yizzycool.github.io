@@ -7,6 +7,7 @@ import ArticleCard from './components/article-card';
 import _map from 'lodash/map';
 import _get from 'lodash/get';
 import _find from 'lodash/find';
+import { useMemo } from 'react';
 
 type MediaData = {
   width: number;
@@ -26,6 +27,7 @@ type Banner = {
 
 type Tag = {
   name: string;
+  slug: string;
 };
 
 type Author = {
@@ -61,20 +63,23 @@ type Articles = {
 type Props = {
   articles: Articles;
   categorySlug?: string | undefined;
+  tagSlug?: string | undefined;
 };
 
-export default function Articles({ articles, categorySlug }: Props) {
+export default function Articles({ articles, categorySlug, tagSlug }: Props) {
   const { data, meta } = articles || {};
 
-  const firstCategoryArticle = _find(
-    data,
-    (d) => d.category.slug === categorySlug
-  );
-  const categoryName = _get(
-    firstCategoryArticle,
-    ['category', 'name'],
-    'All articles'
-  );
+  const categoryName = useMemo(() => {
+    if (categorySlug) {
+      return _get(data, [0, 'category', 'name'], '');
+    } else if (tagSlug) {
+      const tags = _get(data, [0, 'tags']);
+      const tag = _find(tags, (t) => t.slug === tagSlug);
+      return _get(tag, 'name', '');
+    } else {
+      return 'All articles';
+    }
+  }, [data, categorySlug, tagSlug]);
 
   const { getSlideUpClass } = useGetTransitionClass();
 

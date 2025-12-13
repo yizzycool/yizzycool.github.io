@@ -1,7 +1,9 @@
 'use client';
 
 import clsx from 'clsx';
+import urlJoin from 'url-join';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
+import Link from 'next/link';
 import Badge from '@/components/common/badge';
 import { BlogArticle } from '@/types/blog';
 import _get from 'lodash/get';
@@ -18,14 +20,15 @@ export default function Tags({ article }: Props) {
   return (
     <div className={clsx('mb-6 flex gap-2', getSlideUpClass('delay-150'))}>
       {_map(tags, (tag) => (
-        <Badge
-          key={tag.name}
-          variant="blue"
-          bordered
-          className="rounded-md bg-neutral-400/20 px-2 py-1 text-xs"
-        >
-          {tag.name}
-        </Badge>
+        <Link key={tag.name} href={urlJoin('/', 'blog', 'tag', tag.slug)}>
+          <Badge
+            variant="blue"
+            bordered
+            className="rounded-md bg-neutral-400/20 px-2 py-1 text-xs"
+          >
+            {tag.name}
+          </Badge>
+        </Link>
       ))}
     </div>
   );
