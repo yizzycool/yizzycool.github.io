@@ -1,6 +1,6 @@
 'use client';
 
-import { Article } from '../..';
+import type { BlogArticleData } from '@/types/blog/article';
 import clsx from 'clsx';
 import { ArrowRight, Calendar, Clock } from 'lucide-react';
 import Image from 'next/image';
@@ -11,7 +11,7 @@ import RevealSection from '@/components/common/reveal-section';
 import Badge from '@/components/common/badge';
 
 type Props = {
-  article: Article;
+  article: BlogArticleData;
 };
 
 export default function ArticleCard({ article }: Props) {

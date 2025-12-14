@@ -1,5 +1,42 @@
+import type { Metadata } from 'next';
+import urlJoin from 'url-join';
+import seoUtils from '@/utils/seo-utils';
 import strapiUtils from '@/utils/strapi-utils';
 import Articles from '@/components/blog/articles';
+
+const domain = process.env.NEXT_PUBLIC_DOMAIN || '/';
+
+// Generate metadata
+export const metadata: Metadata = {
+  title: 'Yizzy Peasy | Blog — Front-End 與 Web 開發筆記',
+  description:
+    'Yizzy Peasy 的技術部落格，涵蓋前端開發、JavaScript、Web API、Chrome Built-in AI 等深度教學與實用筆記。',
+  alternates: {
+    canonical: domain,
+  },
+  openGraph: {
+    title: 'Yizzy Peasy | Blog — Front-End 與 Web 開發筆記',
+    description:
+      '深入的前端與 Web 技術教學、Chrome API 實作筆記與工程實例整理。',
+    url: urlJoin(domain, 'blog'),
+    siteName: 'Yizzy Peasy',
+    images: [
+      {
+        url: urlJoin(domain, 'assets/images/blog/og-image.jpg'),
+        width: 1200,
+        height: 630,
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Yizzy Peasy | Blog',
+    description:
+      '深入的前端與 Web 技術教學、Chrome API 實作筆記與工程實例整理。',
+    images: [urlJoin(domain, 'assets/images/blog/twitter-image.jpg')],
+  },
+};
 
 const fetchAllArticles = async () => {
   const queryString = strapiUtils.fetch.generateArticlesQueryString();
@@ -13,5 +50,15 @@ const fetchAllArticles = async () => {
 export default async function Page() {
   const articles = await fetchAllArticles();
 
-  return <Articles articles={articles} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(seoUtils.generateBlogJsonLd()),
+        }}
+      />
+      <Articles articles={articles} />)
+    </>
+  );
 }

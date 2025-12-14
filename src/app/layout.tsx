@@ -1,8 +1,12 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
+import urlJoin from 'url-join';
 import Script from 'next/script';
+import seoUtils from '@/utils/seo-utils';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
+
+const domain = process.env.NEXT_PUBLIC_DOMAIN || '/';
 
 export const metadata: Metadata = {
   title: 'Yizzy Peasy | Coding Life',
@@ -16,16 +20,16 @@ export const metadata: Metadata = {
     'Programming',
     'Useful Tools',
   ],
-  authors: [{ name: 'Yizzy Wu', url: 'https://yizzycool.github.io' }],
+  authors: [{ name: 'Yizzy Wu', url: domain }],
   openGraph: {
     title: 'Yizzy Peasy | Coding Life',
     description:
       'Focused on programming and frontend development, sharing technical articles and useful tools to help developers improve their skills and efficiency. Explore JavaScript, React, Next.js, TypeScript, and the latest frontend technologies!',
-    url: 'https://yizzycool.github.io',
+    url: domain,
     siteName: 'Yizzy Peasy',
     images: [
       {
-        url: 'https://yizzycool.github.io/assets/images/home/avatar.jpg',
+        url: urlJoin(domain, '/assets/images/home/avatar.jpg'),
         width: 600,
         height: 600,
       },
@@ -69,6 +73,12 @@ export default function RootLayout({
             })(window,document,'script','dataLayer','GTM-TVFKTXLV');
           `}
         </Script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(seoUtils.generateWebSiteJsonLd()),
+          }}
+        />
       </head>
       <body className="overflow-x-hidden bg-gray-50 text-neutral-700 antialiased dark:bg-neutral-900 dark:text-neutral-300">
         <noscript>

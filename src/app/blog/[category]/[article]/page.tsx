@@ -1,4 +1,7 @@
-import { BlogArticle, BlogCategory } from '@/types/blog';
+import type { BlogArticle, BlogCategory } from '@/types/blog';
+import type { Metadata } from 'next';
+import urlJoin from 'url-join';
+import seoUtils from '@/utils/seo-utils';
 import strapiUtils from '@/utils/strapi-utils';
 import Article from '@/components/blog/article';
 import { unified } from 'unified';
@@ -10,7 +13,50 @@ import rehypeStringify from 'rehype-stringify';
 import _get from 'lodash/get';
 import _size from 'lodash/size';
 
+const domain = process.env.NEXT_PUBLIC_DOMAIN || '/';
+
 type Slug = { category: string; article: string };
+
+// Generate metadata
+export async function generateMetadata({
+  params,
+}: {
+  params: Slug;
+}): Promise<Metadata> {
+  const { article: articleSlug } = await params;
+  const article = await fetchArticle(articleSlug);
+  const data = _get(article, 'data.0') || {};
+
+  return {
+    title: `${data.title} | Yizzy Peasy`,
+    description: data.metaDescription,
+
+    openGraph: {
+      title: data.title,
+      description: data.ogDescription,
+      type: 'article',
+      url: urlJoin(domain, 'blog', data.slug),
+      publishedTime: data.publishedAt ?? data.createdAt,
+      modifiedTime: data.updatedAt ?? data.publishedAt ?? data.createdAt,
+
+      images: [
+        {
+          url: strapiUtils.toMediaUrl(data.banner.url),
+          width: 1200,
+          height: 630,
+          alt: data.title,
+        },
+      ],
+    },
+
+    twitter: {
+      card: 'summary_large_image',
+      title: data.title,
+      description: data.twitterDescription ?? data.ogDescription,
+      images: [strapiUtils.toMediaUrl(data.banner.url)],
+    },
+  };
+}
 
 export async function generateStaticParams() {
   const queryString =
@@ -73,5 +119,23 @@ export default async function Page({ params }: { params: Promise<Slug> }) {
   const article = await fetchArticle(articleSlug);
   const toc = await parseToc(article);
 
-  return <Article article={article} toc={toc} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(seoUtils.generateBlogArticleJsonLd(article)),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            seoUtils.generateBlogArticleBreadcrumbJsonLd(article)
+          ),
+        }}
+      />
+      <Article article={article} toc={toc} />
+    </>
+  );
 }

@@ -1,4 +1,5 @@
 import { BlogCategory } from '@/types/blog';
+import seoUtils from '@/utils/seo-utils';
 import strapiUtils from '@/utils/strapi-utils';
 import Articles from '@/components/blog/articles';
 import _get from 'lodash/get';
@@ -40,5 +41,15 @@ export default async function Page({ params }: { params: Promise<Slug> }) {
   const { category: categorySlug } = await params;
   const articles = await fetchArticle(categorySlug);
 
-  return <Articles articles={articles} categorySlug={categorySlug} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(seoUtils.generateBlogCategoryJsonLd(articles)),
+        }}
+      />
+      <Articles articles={articles} categorySlug={categorySlug} />
+    </>
+  );
 }

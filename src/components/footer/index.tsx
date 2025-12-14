@@ -9,9 +9,9 @@ export default function Footer() {
             target="_blank"
             rel="noreferrer"
           >
-            Yizzy Wu
+            {process.env.NEXT_PUBLIC_WEBSITE_NAME}
           </a>{' '}
-          &copy; 2025
+          &copy; {new Date().getFullYear()}
         </p>
       </footer>
     </div>

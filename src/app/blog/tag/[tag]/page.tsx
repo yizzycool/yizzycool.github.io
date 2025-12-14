@@ -4,6 +4,7 @@ import Articles from '@/components/blog/articles';
 import _get from 'lodash/get';
 import _size from 'lodash/size';
 import _map from 'lodash/map';
+import seoUtils from '@/utils/seo-utils';
 
 type Slug = { tag: string };
 
@@ -44,5 +45,15 @@ export default async function Page({ params }: { params: Promise<Slug> }) {
   const { tag: tagSlug } = await params;
   const articles = await fetchArticle(tagSlug);
 
-  return <Articles articles={articles} tagSlug={tagSlug} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(seoUtils.generateBlogCategoryJsonLd(articles)),
+        }}
+      />
+      <Articles articles={articles} tagSlug={tagSlug} />
+    </>
+  );
 }
