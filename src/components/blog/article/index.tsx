@@ -14,8 +14,8 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
-import _get from 'lodash/get';
 import Metadata from './components/metadata';
+import _get from 'lodash/get';
 
 export default function Article({
   article,

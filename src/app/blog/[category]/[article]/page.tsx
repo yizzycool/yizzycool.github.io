@@ -21,7 +21,7 @@ type Slug = { category: string; article: string };
 export async function generateMetadata({
   params,
 }: {
-  params: Slug;
+  params: Promise<Slug>;
 }): Promise<Metadata> {
   const { article: articleSlug } = await params;
   const article = await fetchArticle(articleSlug);
