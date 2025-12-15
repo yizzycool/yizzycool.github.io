@@ -6,7 +6,7 @@ import {
   ToolGroupSlugs,
   ToolSlugs,
   ToolTitles,
-} from '@/components/header/components/tools-selector/data';
+} from '@/data/tools';
 import _flatMap from 'lodash/flatMap';
 import _map from 'lodash/map';
 

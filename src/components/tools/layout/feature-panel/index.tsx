@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Tools } from '@/components/header/components/tools-selector';
+import { Tools } from '@/data/tools';
 
 export default function FeaturePanel() {
   const pathname = usePathname();

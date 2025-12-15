@@ -31,7 +31,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = _get(article, ['data', 0]) || {};
   const categorySlug = _get(data, ['category', 'slug']);
 
-  const url = urlJoin(domain, strapiUtils.toBlogUrl(categorySlug, articleSlug));
+  const url = urlJoin(
+    domain,
+    strapiUtils.toBlogCategoryArticleUrl(categorySlug, articleSlug)
+  );
 
   return {
     title: `${data.title} | Yizzy Peasy`,
@@ -69,7 +72,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export async function generateStaticParams() {
   const queryString =
-    strapiUtils.staticParams.generateCategoriesQueryStringForCategorArticlePage();
+    strapiUtils.staticParams.generateCategoriesQueryStringForCategorArticlePage(
+      undefined,
+      { pageCount: 9999 }
+    );
   const response = await fetch(
     `${process.env.STRAPI_URL}/api/categories?${queryString}`
   );

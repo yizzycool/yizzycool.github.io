@@ -28,7 +28,10 @@ export default function ArticleCard({ article }: Props) {
     <RevealSection>
       <Link
         key={article.documentId}
-        href={strapiUtils.toBlogUrl(article.category.slug, article.slug)}
+        href={strapiUtils.toBlogCategoryArticleUrl(
+          article.category.slug,
+          article.slug
+        )}
       >
         <article
           key={article.id}

@@ -12,7 +12,7 @@ import {
 } from '@headlessui/react';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
-import { Tools } from '../..';
+import { Tools } from '@/data/tools';
 
 export default function ToolsSelectorDesktop() {
   const [body, setBody] = useState<HTMLElement | null>(null);

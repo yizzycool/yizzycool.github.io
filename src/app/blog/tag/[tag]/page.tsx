@@ -101,7 +101,9 @@ export default async function Page({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(seoUtils.generateBlogCategoryJsonLd(articles)),
+          __html: JSON.stringify(
+            seoUtils.generateBlogTagJsonLd(articles, tagSlug)
+          ),
         }}
       />
       <Articles articles={articles} tagSlug={tagSlug} />

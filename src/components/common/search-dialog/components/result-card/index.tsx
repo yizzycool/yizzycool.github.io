@@ -6,10 +6,7 @@ import { FuseResult } from 'fuse.js';
 import { CornerDownLeft, FileText, LucideIcon } from 'lucide-react';
 import { useMemo } from 'react';
 import Link from 'next/link';
-import {
-  ToolIcons,
-  ToolSlugs,
-} from '@/components/header/components/tools-selector/data';
+import { ToolIcons, ToolSlugs } from '@/data/tools';
 import Badge from '@/components/common/badge';
 import _get from 'lodash/get';
 import _findKey from 'lodash/findKey';

@@ -19,7 +19,7 @@ const strapiUtils = {
   toBlogCategoryUrl: (categorySlug: string) => {
     return urlJoin('/blog/category', categorySlug);
   },
-  toBlogUrl: (categorySlug: string, articleSlug: string) => {
+  toBlogCategoryArticleUrl: (categorySlug: string, articleSlug: string) => {
     return urlJoin('/blog', categorySlug, articleSlug);
   },
   toMediaUrl: (url: string) => {
@@ -97,7 +97,8 @@ const strapiUtils = {
 
     // /blog/[category]/[artcle]/page.tsx
     generateCategoriesQueryStringForCategorArticlePage: (
-      filters?: object | undefined
+      filters?: object | undefined,
+      pagination?: object | undefined
     ) => {
       const queryObject: QueryObject = {
         status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
@@ -107,6 +108,7 @@ const strapiUtils = {
             fields: ['slug'],
           },
         },
+        pagination: _defaults(pagination, defaultPagination),
         filters,
       };
       return qs.stringify(queryObject);

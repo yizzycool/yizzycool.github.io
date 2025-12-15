@@ -1,5 +1,6 @@
 'use client';
 
+import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 import {
   Disclosure,
@@ -8,8 +9,7 @@ import {
 } from '@headlessui/react';
 import { ChevronDown, PenTool } from 'lucide-react';
 import Link from 'next/link';
-import { Tools } from '../..';
-import clsx from 'clsx';
+import { Tools } from '@/data/tools';
 
 export default function ToolsSelectorMobile({
   closeSidePanel,

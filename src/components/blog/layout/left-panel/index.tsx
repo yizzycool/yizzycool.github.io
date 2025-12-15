@@ -89,10 +89,16 @@ export default function LeftPanel({
                   'hover:bg-sky-600/10',
                   'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500'
                 )}
-                href={strapiUtils.toBlogUrl(category.slug, article.slug)}
+                href={strapiUtils.toBlogCategoryArticleUrl(
+                  category.slug,
+                  article.slug
+                )}
                 data-active={
                   pathname ===
-                  strapiUtils.toBlogUrl(category.slug, article.slug)
+                  strapiUtils.toBlogCategoryArticleUrl(
+                    category.slug,
+                    article.slug
+                  )
                 }
                 onClick={onClick}
               >

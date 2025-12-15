@@ -6,7 +6,7 @@ import {
   ToolIcons,
   ToolTitles,
   ToolUrls,
-} from '@/components/header/components/tools-selector/data';
+} from '@/data/tools';
 import _get from 'lodash/get';
 import _invert from 'lodash/invert';
 
