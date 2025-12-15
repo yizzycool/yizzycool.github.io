@@ -1,14 +1,24 @@
 import urlJoin from 'url-join';
 import qs from 'qs';
+import _defaults from 'lodash/defaults';
 
 type QueryObject = {
   status: 'published' | 'draft';
   populate?: object;
   fields?: object;
   filters?: object;
+  pagination?: object;
+};
+
+const defaultPagination = {
+  page: 1,
+  pageSize: 10,
 };
 
 const strapiUtils = {
+  toBlogCategoryUrl: (categorySlug: string) => {
+    return urlJoin('/blog/category', categorySlug);
+  },
   toBlogUrl: (categorySlug: string, articleSlug: string) => {
     return urlJoin('/blog', categorySlug, articleSlug);
   },
@@ -34,8 +44,14 @@ const strapiUtils = {
       return qs.stringify(queryObject);
     },
 
+    // /blog/page.tsx
     // /blog/[category]/page.tsx
-    generateArticlesQueryString: (filters?: object | undefined) => {
+    // /blog/tag/[tag]/page.tsx
+    // /blog/page/[page]/page.tsx
+    generateArticlesQueryString: (
+      filters?: object | undefined,
+      pagination?: object | undefined
+    ) => {
       const queryObject: QueryObject = {
         status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
         populate: ['banner', 'tags', 'author', 'category'],
@@ -48,13 +64,14 @@ const strapiUtils = {
           'slug',
           'readTime',
         ],
+        pagination: _defaults(pagination, defaultPagination),
         filters,
       };
       return qs.stringify(queryObject);
     },
 
     // /blog/[category]/[article]/page.tsx
-    generateArticleQueryStringF: (filters?: object | undefined) => {
+    generateArticleQueryString: (filters?: object | undefined) => {
       const queryObject: QueryObject = {
         status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
         populate: ['banner', 'tags', 'category', 'author', 'author.avatar'],
@@ -100,6 +117,20 @@ const strapiUtils = {
       const queryObject: QueryObject = {
         status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
         fields: ['slug'],
+        filters,
+      };
+      return qs.stringify(queryObject);
+    },
+
+    // /blog/page/[page]/page.tsx
+    generateArticlesQueryStringForPagePage: (
+      filters?: object | undefined,
+      pagination?: object | undefined
+    ) => {
+      const queryObject: QueryObject = {
+        status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
+        fields: ['slug'],
+        pagination: _defaults(pagination, defaultPagination),
         filters,
       };
       return qs.stringify(queryObject);

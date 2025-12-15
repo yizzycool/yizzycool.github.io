@@ -35,7 +35,7 @@ export default function ArticleCard({ article }: Props) {
           className={clsx(
             'group relative overflow-hidden rounded-2xl border fill-mode-backwards',
             'bg-white dark:bg-neutral-900/40',
-            'border-neutral-200 dark:border-neutral-800',
+            'border-neutral-200 dark:border-neutral-700/50',
             'hover:-translate-y-1 hover:shadow-2xl',
             getSlideUpClass()
           )}

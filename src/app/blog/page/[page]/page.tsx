@@ -1,33 +1,28 @@
 import type { Metadata } from 'next';
 import urlJoin from 'url-join';
-import strapiUtils from '@/utils/strapi-utils';
 import seoUtils from '@/utils/seo-utils';
+import strapiUtils from '@/utils/strapi-utils';
 import Articles from '@/components/blog/articles';
-import _get from 'lodash/get';
-import _size from 'lodash/size';
 import _map from 'lodash/map';
-import _find from 'lodash/find';
+import _range from 'lodash/range';
+import _get from 'lodash/get';
 
-const domain = process.env.NEXT_PUBLIC_DOMAIN as string;
+const domain = process.env.NEXT_PUBLIC_DOMAIN || '/';
 
 type Props = {
   params: Promise<{
-    tag: string;
+    page: number;
   }>;
 };
 
 // Generate metadata
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { tag: tagSlug } = await params;
-  const articles = await fetchArticles(tagSlug);
-  const tags = _get(articles, ['data', 0, 'tags']);
-  const tagData = _find(tags, (t) => t.slug === tagSlug);
-  const { name, slug } = tagData;
+  const { page } = await params;
 
-  const url = urlJoin(domain, 'blog/tag', slug);
+  const url = urlJoin(domain, 'blog', page === 1 ? '' : `page/${page}`);
 
   return {
-    title: `Blog - ${name} Articles | Yizzy Peasy`,
+    title: `Blog - Page ${page} | Yizzy Peasy`,
     description:
       'Yizzy Peasy 的技術部落格，涵蓋前端開發、JavaScript、Web API、Chrome Built-in AI 等深度教學與實用筆記。',
     alternates: {
@@ -62,28 +57,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export async function generateStaticParams() {
   const queryString =
-    strapiUtils.staticParams.generateTagsQueryStringForTagPage({
-      articles: {
-        '$notNull': true,
-      },
-    });
+    strapiUtils.staticParams.generateArticlesQueryStringForPagePage();
   const response = await fetch(
-    `${process.env.STRAPI_URL}/api/tags?${queryString}`
+    `${process.env.STRAPI_URL}/api/articles?${queryString}`
   );
-  const tags = await response.json();
+  const articles = await response.json();
+  const pageCount = _get(articles, ['meta', 'pagination', 'pageCount']);
 
-  return _map(tags.data, ({ slug }) => ({
-    tag: slug,
+  return _map(_range(1, pageCount + 1), (page) => ({
+    page: page.toString(),
   }));
 }
 
-const fetchArticles = async (tagSlug: string) => {
-  const queryString = strapiUtils.fetch.generateArticlesQueryString({
-    tags: {
-      slug: {
-        '$in': tagSlug,
-      },
-    },
+const fetchAllArticles = async (page: number) => {
+  const queryString = strapiUtils.fetch.generateArticlesQueryString(undefined, {
+    page,
   });
   const response = await fetch(
     `${process.env.STRAPI_URL}/api/articles?${queryString}`
@@ -93,18 +81,18 @@ const fetchArticles = async (tagSlug: string) => {
 };
 
 export default async function Page({ params }: Props) {
-  const { tag: tagSlug } = await params;
-  const articles = await fetchArticles(tagSlug);
+  const { page } = await params;
+  const articles = await fetchAllArticles(page);
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(seoUtils.generateBlogCategoryJsonLd(articles)),
+          __html: JSON.stringify(seoUtils.generateBlogJsonLd(page)),
         }}
       />
-      <Articles articles={articles} tagSlug={tagSlug} />
+      <Articles articles={articles} />
     </>
   );
 }

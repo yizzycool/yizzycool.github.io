@@ -1,30 +1,26 @@
 import type { Metadata } from 'next';
 import urlJoin from 'url-join';
-import strapiUtils from '@/utils/strapi-utils';
 import seoUtils from '@/utils/seo-utils';
+import strapiUtils from '@/utils/strapi-utils';
 import Articles from '@/components/blog/articles';
 import _get from 'lodash/get';
 import _size from 'lodash/size';
 import _map from 'lodash/map';
-import _find from 'lodash/find';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN as string;
 
 type Props = {
-  params: Promise<{
-    tag: string;
-  }>;
+  params: Promise<{ category: string }>;
 };
 
 // Generate metadata
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { tag: tagSlug } = await params;
-  const articles = await fetchArticles(tagSlug);
-  const tags = _get(articles, ['data', 0, 'tags']);
-  const tagData = _find(tags, (t) => t.slug === tagSlug);
-  const { name, slug } = tagData;
+  const { category: categorySlug } = await params;
+  const articles = await fetchArticles(categorySlug);
+  const category = _get(articles, ['data', 0, 'category']);
+  const { name, slug } = category;
 
-  const url = urlJoin(domain, 'blog/tag', slug);
+  const url = urlJoin(domain, 'blog/category', slug);
 
   return {
     title: `Blog - ${name} Articles | Yizzy Peasy`,
@@ -62,26 +58,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export async function generateStaticParams() {
   const queryString =
-    strapiUtils.staticParams.generateTagsQueryStringForTagPage({
-      articles: {
-        '$notNull': true,
-      },
-    });
+    strapiUtils.staticParams.generateCategoriesQueryStringForCategorPage();
   const response = await fetch(
-    `${process.env.STRAPI_URL}/api/tags?${queryString}`
+    `${process.env.STRAPI_URL}/api/categories?${queryString}`
   );
-  const tags = await response.json();
+  const categories = await response.json();
 
-  return _map(tags.data, ({ slug }) => ({
-    tag: slug,
+  return _map(categories.data, ({ slug }) => ({
+    category: slug,
   }));
 }
 
-const fetchArticles = async (tagSlug: string) => {
+const fetchArticles = async (categorySlug: string) => {
   const queryString = strapiUtils.fetch.generateArticlesQueryString({
-    tags: {
+    category: {
       slug: {
-        '$in': tagSlug,
+        '$eq': categorySlug,
       },
     },
   });
@@ -93,8 +85,8 @@ const fetchArticles = async (tagSlug: string) => {
 };
 
 export default async function Page({ params }: Props) {
-  const { tag: tagSlug } = await params;
-  const articles = await fetchArticles(tagSlug);
+  const { category: categorySlug } = await params;
+  const articles = await fetchArticles(categorySlug);
 
   return (
     <>
@@ -104,7 +96,7 @@ export default async function Page({ params }: Props) {
           __html: JSON.stringify(seoUtils.generateBlogCategoryJsonLd(articles)),
         }}
       />
-      <Articles articles={articles} tagSlug={tagSlug} />
+      <Articles articles={articles} categorySlug={categorySlug} />
     </>
   );
 }

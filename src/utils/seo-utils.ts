@@ -1,4 +1,6 @@
 import type { BlogArticle } from '@/types/blog';
+import type { BlogCategoryData } from '@/types/blog/category';
+import type { BlogTagData } from '@/types/blog/tag';
 import urlJoin from 'url-join';
 import strapiUtils from './strapi-utils';
 import _get from 'lodash/get';
@@ -30,31 +32,53 @@ const seoUtils = {
   },
 
   // For /blog/page.tsx
-  generateBlogJsonLd: () => {
+  // For /blog/page/[page]/page.tsx
+  generateBlogJsonLd: (page = 1) => {
+    const name = page === 1 ? 'Blog' : `Blog - Page ${page}`;
+    const url = urlJoin(domain, 'blog', page === 1 ? '' : `page/${page}`);
+
     return {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
-      name: 'Blog',
-      url: urlJoin(domain, 'blog'),
+      name,
+      url,
       isPartOf: {
         '@type': 'WebSite',
         name: websiteName,
         url: domain,
+      },
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': url,
       },
     };
   },
 
   // For /blog/[tag]/page.tsx
-  generateBlogTagJsonLd: (articles: BlogArticle, tagSlug: string) => {
+  // For /blog/[tag]/page/[page]/page.tsx
+  generateBlogTagJsonLd: (
+    articles: BlogArticle,
+    tagSlug: string,
+    page: number = 1
+  ) => {
     const tags = _get(articles, ['data', 0, 'tags']);
-    const tag = _find(tags, (t) => t.slug === tagSlug);
-    const name = _get(tag, 'name', '');
+    const tag = _find(tags, (t) => t.slug === tagSlug) || {};
+    const { name: tagName } = tag as BlogTagData;
+
+    const name =
+      page === 1 ? `${tagName} Articles` : `${tagName} Articles - Page ${page}`;
+    const url = urlJoin(
+      domain,
+      'blog/tag',
+      tagSlug,
+      page === 1 ? '' : `page/${page}`
+    );
 
     return {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
-      name: `${name} Articles`,
-      url: urlJoin(domain, 'blog'),
+      name,
+      url,
       isPartOf: {
         '@type': 'WebSite',
         name: websiteName,
@@ -63,15 +87,28 @@ const seoUtils = {
     };
   },
 
-  // For /blog/[category]/page.tsx
-  generateBlogCategoryJsonLd: (articles: BlogArticle) => {
-    const name = _get(articles, ['data', 0, 'category', 'name'], '');
+  // For /blog/category/[category]/page.tsx
+  // For /blog/category/[category]/page/[page]/page.tsx
+  generateBlogCategoryJsonLd: (articles: BlogArticle, page: number = 1) => {
+    const category = _get(articles, ['data', 0, 'category'], {});
+    const { name: categoryName = '', slug = '' } = category as BlogCategoryData;
+
+    const name =
+      page === 1
+        ? `${categoryName} Articles`
+        : `${categoryName} Articles - Page ${page}`;
+    const url = urlJoin(
+      domain,
+      'blog/category',
+      slug,
+      page === 1 ? '' : `page/${page}`
+    );
 
     return {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
-      name: `${name} Articles`,
-      url: urlJoin(domain, 'blog'),
+      name: name,
+      url,
       isPartOf: {
         '@type': 'WebSite',
         name: websiteName,

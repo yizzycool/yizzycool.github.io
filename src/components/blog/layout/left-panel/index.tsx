@@ -67,8 +67,10 @@ export default function LeftPanel({
               'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500',
               getSlideUpClass('delay-150')
             )}
-            href={strapiUtils.toBlogUrl(category.slug, '')}
-            data-active={pathname === strapiUtils.toBlogUrl(category.slug, '')}
+            href={strapiUtils.toBlogCategoryUrl(category.slug)}
+            data-active={
+              pathname === strapiUtils.toBlogCategoryUrl(category.slug)
+            }
             onClick={onClick}
           >
             {category.name}

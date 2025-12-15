@@ -9,6 +9,7 @@ import ArticleCard from './components/article-card';
 import _map from 'lodash/map';
 import _get from 'lodash/get';
 import _find from 'lodash/find';
+import Pagination from './components/pagination';
 
 type Props = {
   articles: BlogArticle;
@@ -37,6 +38,7 @@ export default function Articles({ articles, categorySlug, tagSlug }: Props) {
     <div className="mx-auto flex-grow overflow-hidden px-5 pb-20 pt-4 lg:max-w-screen-lg lg:px-10">
       <HeaderBlock />
 
+      {/* All articles, <Category>, or <Tag> */}
       <div
         className={clsx(
           'mb-6 mt-12 flex items-center justify-between',
@@ -56,6 +58,8 @@ export default function Articles({ articles, categorySlug, tagSlug }: Props) {
           <ArticleCard key={index} article={article} />
         ))}
       </div>
+
+      <Pagination articles={articles} />
     </div>
   );
 }

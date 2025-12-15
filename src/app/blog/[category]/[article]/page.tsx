@@ -1,4 +1,4 @@
-import type { BlogArticle, BlogCategory } from '@/types/blog';
+import type { BlogArticle } from '@/types/blog';
 import type { Metadata } from 'next';
 import urlJoin from 'url-join';
 import seoUtils from '@/utils/seo-utils';
@@ -12,30 +12,39 @@ import { toc as rehypeToc } from '@jsdevtools/rehype-toc';
 import rehypeStringify from 'rehype-stringify';
 import _get from 'lodash/get';
 import _size from 'lodash/size';
+import _flatMap from 'lodash/flatMap';
+import _map from 'lodash/map';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN || '/';
 
-type Slug = { category: string; article: string };
+type Props = {
+  params: Promise<{
+    category: string;
+    article: string;
+  }>;
+};
 
 // Generate metadata
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<Slug>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { article: articleSlug } = await params;
   const article = await fetchArticle(articleSlug);
-  const data = _get(article, 'data.0') || {};
+  const data = _get(article, ['data', 0]) || {};
+  const categorySlug = _get(data, ['category', 'slug']);
+
+  const url = urlJoin(domain, strapiUtils.toBlogUrl(categorySlug, articleSlug));
 
   return {
     title: `${data.title} | Yizzy Peasy`,
     description: data.metaDescription,
+    alternates: {
+      canonical: url,
+    },
 
     openGraph: {
       title: data.title,
       description: data.ogDescription,
       type: 'article',
-      url: urlJoin(domain, 'blog', data.slug),
+      url,
       publishedTime: data.publishedAt ?? data.createdAt,
       modifiedTime: data.updatedAt ?? data.publishedAt ?? data.createdAt,
 
@@ -64,26 +73,19 @@ export async function generateStaticParams() {
   const response = await fetch(
     `${process.env.STRAPI_URL}/api/categories?${queryString}`
   );
-  const categoryArticleData: BlogCategory = await response.json();
-  const { data } = categoryArticleData;
+  const categories = await response.json();
+  const { data } = categories;
 
-  const allSlugs: Array<Slug> = [];
-
-  data.forEach((category) => {
-    const categorySlug = category.slug;
-    category.articles.map((article) => {
-      allSlugs.push({
-        category: categorySlug,
-        article: article.slug,
-      });
-    });
-  });
-
-  return allSlugs;
+  return _flatMap(data, ({ slug: categorySlug, articles }) =>
+    _map(articles, ({ slug }) => ({
+      category: categorySlug,
+      article: slug,
+    }))
+  );
 }
 
 const fetchArticle = async (articleSlug: string) => {
-  const queryString = strapiUtils.fetch.generateArticleQueryStringF({
+  const queryString = strapiUtils.fetch.generateArticleQueryString({
     slug: {
       '$eq': articleSlug,
     },
@@ -114,7 +116,7 @@ const parseToc = async (article: BlogArticle) => {
   return result?.[0] || '';
 };
 
-export default async function Page({ params }: { params: Promise<Slug> }) {
+export default async function Page({ params }: Props) {
   const { article: articleSlug } = await params;
   const article = await fetchArticle(articleSlug);
   const toc = await parseToc(article);
