@@ -196,7 +196,7 @@ export default function Intro() {
         <div
           className={clsx(
             'mt-12 w-full text-center',
-            getSlideUpClass('delay-[1500ms]')
+            getSlideUpClass('[transition-delay:_1500ms]')
           )}
         >
           <p className="mb-4 text-sm font-medium uppercase tracking-widest text-neutral-400">
