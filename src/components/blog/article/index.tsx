@@ -2,20 +2,53 @@
 
 import { BlogArticle } from '@/types/blog';
 import clsx from 'clsx';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import strapiUtils from '@/utils/strapi-utils';
 import Image from 'next/image';
 import Breadcrumb from './components/breadcrumb';
 import Tags from './components/tags';
-import Markdown, { ExtraProps } from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import SyntaxHighlighterCode from '@/components/common/syntax-highlighter-code';
+import Markdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import Metadata from './components/metadata';
 import _get from 'lodash/get';
+
+const ProseClass = clsx(
+  // prose - base setup
+  `prose
+   prose-neutral
+   dark:prose-invert`,
+
+  // reset prose's default
+  'max-w-none',
+
+  // customize <a>
+  'prose-a:text-blue-500 dark:prose-a:text-blue-600',
+
+  // customize <pre> for inline code
+  `prose-code:rounded
+   prose-code:bg-gray-100
+   dark:prose-code:bg-gray-800
+   prose-code:px-1
+   prose-code:py-0.5
+   prose-code:font-mono
+   prose-code:text-sm
+   prose-code:before:content-none
+   prose-code:after:content-none`,
+
+  // code block
+  `prose-pre:bg-transparent
+   prose-pre:text-gray-100
+   prose-pre:rounded-lg
+   prose-pre:p-0
+   prose-pre:overflow-x-auto`,
+
+  // remove inline code styles inside pre
+  `prose-code:prose-pre:!bg-transparent`
+);
 
 export default function Article({
   article,
@@ -24,6 +57,8 @@ export default function Article({
   article: BlogArticle;
   toc: string;
 }) {
+  const [bannerLoaded, setBannerLoaded] = useState(false);
+
   const { getSlideUpClass } = useGetTransitionClass();
 
   const data = _get(article, 'data.0') || {};
@@ -77,25 +112,30 @@ export default function Article({
         {/* Banner Image  */}
         <div className={clsx('mb-20 mt-10', getSlideUpClass('delay-300'))}>
           <Image
-            className="aspect-video w-full object-cover"
+            className={clsx(
+              'aspect-video w-full object-cover transition-opacity',
+              bannerLoaded ? 'opacity-100' : 'opacity-0'
+            )}
             src={bannerUrl}
             width="1600"
             height="900"
             alt="banner"
+            onLoad={() => setBannerLoaded(true)}
           />
         </div>
 
         {/* Main Content */}
         <Markdown
           className={clsx(
-            'prose prose-neutral dark:prose-invert',
+            '[&_*]:scroll-mt-20',
+            ProseClass,
             getSlideUpClass('delay-300')
           )}
           remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
           rehypePlugins={[rehypeRaw, rehypeSlug]}
           components={{
             code(props) {
-              return Code(props);
+              return SyntaxHighlighterCode(props);
             },
           }}
         >
@@ -125,28 +165,3 @@ export default function Article({
     </>
   );
 }
-
-const Code = (
-  props: React.ClassAttributes<HTMLElement> &
-    React.HTMLAttributes<HTMLElement> &
-    ExtraProps
-) => {
-  const { ref, children, className, node, ...rest } = props;
-  const match = /language-(\w+)/.exec(className || '');
-  return match ? (
-    // @ts-expect-error - known issue about react-syntax-highlighter
-    <SyntaxHighlighter
-      {...rest}
-      PreTag="div"
-      language={match[1]}
-      style={vscDarkPlus}
-      showLineNumbers={true}
-    >
-      {children}
-    </SyntaxHighlighter>
-  ) : (
-    <code {...rest} className={className}>
-      {children}
-    </code>
-  );
-};

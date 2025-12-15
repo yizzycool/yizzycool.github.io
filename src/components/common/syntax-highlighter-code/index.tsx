@@ -1,3 +1,5 @@
+'use client';
+
 import { ExtraProps } from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -9,6 +11,7 @@ export default function SyntaxHighlighterCode(
 ) {
   const { ref, children, className, node, ...rest } = props;
   const match = /language-(\w+)/.exec(className || '');
+
   return match ? (
     // @ts-expect-error - known issue about react-syntax-highlighter
     <SyntaxHighlighter
@@ -18,7 +21,7 @@ export default function SyntaxHighlighterCode(
       style={vscDarkPlus}
       showLineNumbers={true}
     >
-      {children}
+      {(children as string).replace(/\n$/, '')}
     </SyntaxHighlighter>
   ) : (
     <code {...rest} className={className}>
