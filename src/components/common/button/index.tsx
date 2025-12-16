@@ -1,7 +1,7 @@
 'use client';
 
-import { Rounded } from '@/types/common';
-import { ButtonSize, ButtonVariant } from '@/types/common/button';
+import type { Rounded } from '@/types/common';
+import type { ButtonSize, ButtonVariant } from '@/types/common/button';
 import clsx from 'clsx';
 import { LucideIcon } from 'lucide-react';
 import { MouseEventHandler, useMemo } from 'react';

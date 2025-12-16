@@ -1,6 +1,6 @@
 'use client';
 
-import { ActionButtonProps } from '@/types/common/action-button';
+import type { ActionButtonProps } from '@/types/common/action-button';
 import { Check, Copy } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import useDisplay from '../hooks/use-display';
@@ -13,6 +13,7 @@ interface Props extends ActionButtonProps {
 
 export default function CopyAction({
   display = 'icon-label',
+  variant = 'secondary',
   size = 'xs',
   disabled = false,
   content = '',
@@ -76,7 +77,7 @@ export default function CopyAction({
   return (
     <Button
       onClick={handleCopy}
-      variant="secondary"
+      variant={variant}
       size={size}
       icon={!showIcon ? undefined : copied ? Check : Copy}
       disabled={isButtonDisabled}

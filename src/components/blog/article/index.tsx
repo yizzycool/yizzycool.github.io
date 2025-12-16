@@ -8,47 +8,9 @@ import strapiUtils from '@/utils/strapi-utils';
 import Image from 'next/image';
 import Breadcrumb from './components/breadcrumb';
 import Tags from './components/tags';
-import SyntaxHighlighterCode from '@/components/common/syntax-highlighter-code';
-import Markdown from 'react-markdown';
-import rehypeRaw from 'rehype-raw';
-import remarkGfm from 'remark-gfm';
-import rehypeSlug from 'rehype-slug';
 import Metadata from './components/metadata';
+import ProseMarkdown from '@/components/common/prose-markdown';
 import _get from 'lodash/get';
-
-const ProseClass = clsx(
-  // prose - base setup
-  `prose
-   prose-neutral
-   dark:prose-invert`,
-
-  // reset prose's default
-  'max-w-none',
-
-  // customize <a>
-  'prose-a:text-blue-500 dark:prose-a:text-blue-600',
-
-  // customize <pre> for inline code
-  `prose-code:rounded
-   prose-code:bg-gray-100
-   dark:prose-code:bg-gray-800
-   prose-code:px-1
-   prose-code:py-0.5
-   prose-code:font-mono
-   prose-code:text-sm
-   prose-code:before:content-none
-   prose-code:after:content-none`,
-
-  // code block
-  `prose-pre:bg-transparent
-   prose-pre:text-gray-100
-   prose-pre:rounded-lg
-   prose-pre:p-0
-   prose-pre:overflow-x-auto`,
-
-  // remove inline code styles inside pre
-  `prose-code:prose-pre:!bg-transparent`
-);
 
 export default function Article({
   article,
@@ -125,22 +87,11 @@ export default function Article({
         </div>
 
         {/* Main Content */}
-        <Markdown
-          className={clsx(
-            '[&_*]:scroll-mt-20',
-            ProseClass,
-            getSlideUpClass('delay-300')
-          )}
-          remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
-          rehypePlugins={[rehypeRaw, rehypeSlug]}
-          components={{
-            code(props) {
-              return SyntaxHighlighterCode(props);
-            },
-          }}
+        <ProseMarkdown
+          className={clsx('[&_*]:scroll-mt-20', getSlideUpClass('delay-300'))}
         >
           {content}
-        </Markdown>
+        </ProseMarkdown>
       </div>
 
       {/* Toc on right side */}

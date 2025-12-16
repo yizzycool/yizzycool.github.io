@@ -1,9 +1,7 @@
 import clsx from 'clsx';
-import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import { Cpu, List, ScrollText } from 'lucide-react';
+import ProseMarkdown from '@/components/common/prose-markdown';
 import CopyAction from '@/components/common/action-button/copy';
-import SyntaxHighlighterCode from '@/components/common/syntax-highlighter-code';
 import _isEmpty from 'lodash/isEmpty';
 import _range from 'lodash/range';
 
@@ -59,17 +57,9 @@ export default function PromptResult({ results, isProcessing }: Props) {
             )}
           </div>
         ) : (
-          <Markdown
-            className="prose prose-neutral min-h-full min-w-full cursor-text text-left dark:prose-invert"
-            remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
-            components={{
-              code(props) {
-                return SyntaxHighlighterCode(props);
-              },
-            }}
-          >
+          <ProseMarkdown className="cursor-text text-left">
             {results}
-          </Markdown>
+          </ProseMarkdown>
         )}
       </div>
     </>

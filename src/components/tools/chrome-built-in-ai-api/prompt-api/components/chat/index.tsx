@@ -1,12 +1,9 @@
 'use client';
 
 import clsx from 'clsx';
-import Markdown from 'react-markdown';
-import rehypeRaw from 'rehype-raw';
-import remarkGfm from 'remark-gfm';
 import { Bot, SendHorizonal } from 'lucide-react';
 import { ChangeEventHandler, useRef, useState } from 'react';
-import SyntaxHighlighterCode from '@/components/common/syntax-highlighter-code';
+import ProseMarkdown from '@/components/common/prose-markdown';
 import Button from '@/components/common/button';
 import _slice from 'lodash/slice';
 import _last from 'lodash/last';
@@ -105,22 +102,15 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
                     )}
                   </div>
                 )}
-                <Markdown
+                <ProseMarkdown
                   className={clsx(
-                    'prose prose-neutral dark:prose-invert',
+                    'w-fit !max-w-[80%]',
                     result.role === 'user' &&
-                      'ml-auto w-fit max-w-[60%] rounded-xl bg-neutral-800 px-5 py-2'
+                      'ml-auto !max-w-[60%] rounded-xl bg-neutral-800 px-5 py-2'
                   )}
-                  rehypePlugins={[rehypeRaw]}
-                  remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
-                  components={{
-                    code(props) {
-                      return SyntaxHighlighterCode(props);
-                    },
-                  }}
                 >
                   {result.content}
-                </Markdown>
+                </ProseMarkdown>
               </div>
             ))}
           </div>
