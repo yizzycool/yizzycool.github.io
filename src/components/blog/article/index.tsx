@@ -66,7 +66,7 @@ export default function Article({
         {/* Separator */}
         <div
           className={clsx(
-            'my-6 border-b border-neutral-100 dark:border-neutral-800',
+            'my-6 border-b border-neutral-200 dark:border-neutral-700',
             getSlideUpClass('delay-200')
           )}
         />
@@ -97,7 +97,7 @@ export default function Article({
       {/* Toc on right side */}
       <div
         className={clsx(
-          'sticky top-[68px] hidden h-dvh w-64 shrink-0 border-l-[1px] border-neutral-400/20 p-4 lg:block',
+          'sticky top-[68px] hidden h-[calc(100dvh-68px)] w-64 shrink-0 overflow-y-auto border-l-[1px] border-neutral-400/20 p-4 lg:block',
           getSlideUpClass()
         )}
       >
