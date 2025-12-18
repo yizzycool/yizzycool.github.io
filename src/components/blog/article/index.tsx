@@ -9,7 +9,7 @@ import Image from 'next/image';
 import Breadcrumb from './components/breadcrumb';
 import Tags from './components/tags';
 import Metadata from './components/metadata';
-import ProseMarkdown from '@/components/common/prose-markdown';
+import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import _get from 'lodash/get';
 
 export default function Article({

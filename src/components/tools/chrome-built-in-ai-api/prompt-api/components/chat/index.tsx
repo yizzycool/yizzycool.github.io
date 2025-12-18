@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import { Bot, SendHorizonal } from 'lucide-react';
 import { ChangeEventHandler, useRef, useState } from 'react';
-import ProseMarkdown from '@/components/common/prose-markdown';
+import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import Button from '@/components/common/button';
 import _slice from 'lodash/slice';
 import _last from 'lodash/last';

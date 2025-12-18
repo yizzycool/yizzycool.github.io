@@ -4,6 +4,7 @@ import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import SyntaxHighlighterCode from '../syntax-highlighter-code';
+import LinkParser from '../link-parser';
 
 const ProseClass = clsx(
   // prose - base setup
@@ -16,7 +17,8 @@ const ProseClass = clsx(
 
   // customize <a>
   'prose-a:text-blue-500',
-  'dark:prose-a:text-sky-700',
+  'dark:prose-a:text-sky-600',
+  'hover:prose-a:no-underline',
 
   // code block
   'prose-pre:p-0',
@@ -36,6 +38,7 @@ export default function ProseMarkdown({ children, className = '' }: Props) {
       rehypePlugins={[rehypeRaw, rehypeSlug]}
       components={{
         code: SyntaxHighlighterCode,
+        a: LinkParser,
       }}
     >
       {children}

@@ -8,7 +8,7 @@ import {
   oneLight,
 } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import useDarkModeObserver from '@/hooks/window/use-dark-mode-observer';
-import CopyAction from '../action-button/copy';
+import CopyAction from '../../action-button/copy';
 
 // To customize `Prose` styles of '@tailwindcss/typography'
 const InlineCodeProseClass = clsx(

@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { Cpu, List, ScrollText } from 'lucide-react';
-import ProseMarkdown from '@/components/common/prose-markdown';
+import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import CopyAction from '@/components/common/action-button/copy';
 import _isEmpty from 'lodash/isEmpty';
 import _range from 'lodash/range';
