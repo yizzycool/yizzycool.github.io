@@ -44,7 +44,7 @@ export default function Article({
 
   return (
     <>
-      <div className="mx-auto flex-grow overflow-hidden px-5 py-5 lg:max-w-screen-lg lg:px-8 lg:py-10">
+      <div className="mx-auto flex-grow overflow-hidden px-5 pb-10 pt-5 lg:max-w-screen-lg lg:px-8 lg:py-10">
         <Breadcrumb article={article} />
 
         {/* Title */}
