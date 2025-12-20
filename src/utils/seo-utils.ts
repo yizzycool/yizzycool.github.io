@@ -3,8 +3,11 @@ import type { BlogCategoryData } from '@/types/blog/category';
 import type { BlogTagData } from '@/types/blog/tag';
 import urlJoin from 'url-join';
 import strapiUtils from './strapi-utils';
+import dataProcessUtils from './tools/data/data-process-utils';
+import { ToolJsonLdSoftwareApplication } from '@/data/tools/metadata';
 import _get from 'lodash/get';
 import _find from 'lodash/find';
+import _defaultsDeep from 'lodash/defaultsDeep';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN || '';
 const websiteName = process.env.NEXT_PUBLIC_WEBSITE_NAME || '';
@@ -183,6 +186,25 @@ const seoUtils = {
         },
       ],
     };
+  },
+
+  // For /tools/*/page.tsx
+  generateToolJsonLd: (toolKey: string) => {
+    const url = dataProcessUtils.getToolUrl(toolKey);
+
+    const customJsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      operatingSystem: 'Web',
+      url,
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+    };
+
+    return _defaultsDeep(customJsonLd, ToolJsonLdSoftwareApplication[toolKey]);
   },
 };
 
