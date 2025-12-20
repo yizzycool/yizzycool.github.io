@@ -82,8 +82,8 @@ export default function ArticleCard({ article }: Props) {
               </div>
 
               {/* Tags */}
-              <div className="mt-4 flex items-center justify-between">
-                <div className="flex gap-2">
+              <div className="mt-4 flex flex-col justify-between gap-6">
+                <div className="flex flex-wrap gap-2">
                   {article.tags.map((tag) => (
                     <Badge key={tag.name} variant="outline" rounded="md">
                       {tag.name}
@@ -91,7 +91,7 @@ export default function ArticleCard({ article }: Props) {
                   ))}
                 </div>
 
-                <div className="flex items-center gap-2 text-sm font-semibold text-blue-600 transition-all group-hover:translate-x-2 dark:text-blue-400">
+                <div className="flex items-center gap-2 self-end text-sm font-semibold text-blue-600 transition-all group-hover:translate-x-2 dark:text-blue-400">
                   Read Article <ArrowRight size={16} />
                 </div>
               </div>

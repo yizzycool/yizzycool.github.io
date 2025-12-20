@@ -18,7 +18,12 @@ export default function Tags({ article }: Props) {
   const { tags } = data;
 
   return (
-    <div className={clsx('mb-6 flex gap-2', getSlideUpClass('delay-150'))}>
+    <div
+      className={clsx(
+        'mb-6 flex flex-wrap gap-2',
+        getSlideUpClass('delay-150')
+      )}
+    >
       {_map(
         tags,
         ({ name, slug }) =>
