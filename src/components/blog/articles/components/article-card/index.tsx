@@ -3,12 +3,12 @@
 import type { BlogArticleData } from '@/types/blog/article';
 import clsx from 'clsx';
 import { ArrowRight, Calendar, Clock } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import strapiUtils from '@/utils/strapi-utils';
 import RevealSection from '@/components/common/reveal-section';
 import Badge from '@/components/common/badge';
+import Banner from './components/banner';
 
 type Props = {
   article: BlogArticleData;
@@ -48,15 +48,7 @@ export default function ArticleCard({ article }: Props) {
             <div className="relative h-48 overflow-hidden md:h-auto md:w-1/3">
               {/* Mask */}
               <div className="absolute inset-0 z-10 bg-neutral-900/10 transition-colors group-hover:bg-transparent" />
-              <Image
-                src={strapiUtils.toMediaUrl(
-                  article.banner.formats.thumbnail.url
-                )}
-                alt={article.banner.caption || 'article banner image'}
-                width={article.banner.formats.thumbnail.width}
-                height={article.banner.formats.thumbnail.height}
-                className="h-full w-full transform object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-              />
+              <Banner article={article} />
               {/* Floating Tag over Image */}
               <div className="absolute left-4 top-4 z-20">
                 <Badge>{article.category.name}</Badge>

@@ -22,7 +22,7 @@ export interface BlogMediaData extends BaseBlogData {
   provider_metadata: string | null;
 }
 
-type BlogMediaFormat = {
+export type BlogMediaFormat = {
   name: string;
   hash: string;
   ext: string;

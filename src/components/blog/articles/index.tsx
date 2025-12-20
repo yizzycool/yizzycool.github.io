@@ -6,10 +6,10 @@ import { useMemo } from 'react';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import HeaderBlock from './components/header-block';
 import ArticleCard from './components/article-card';
+import Pagination from './components/pagination';
 import _map from 'lodash/map';
 import _get from 'lodash/get';
 import _find from 'lodash/find';
-import Pagination from './components/pagination';
 
 type Props = {
   articles: BlogArticle;

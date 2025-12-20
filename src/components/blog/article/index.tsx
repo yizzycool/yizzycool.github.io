@@ -2,45 +2,24 @@
 
 import { BlogArticle } from '@/types/blog';
 import clsx from 'clsx';
-import { useMemo, useState } from 'react';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import strapiUtils from '@/utils/strapi-utils';
-import Image from 'next/image';
 import Breadcrumb from './components/breadcrumb';
 import Tags from './components/tags';
 import Metadata from './components/metadata';
+import Banner from './components/banner';
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import _get from 'lodash/get';
 
-export default function Article({
-  article,
-  toc,
-}: {
+type Props = {
   article: BlogArticle;
   toc: string;
-}) {
-  const [bannerLoaded, setBannerLoaded] = useState(false);
+};
+
+export default function Article({ article, toc }: Props) {
+  const data = _get(article, 'data.0') || {};
+  const { title, content } = data;
 
   const { getSlideUpClass } = useGetTransitionClass();
-
-  const data = _get(article, 'data.0') || {};
-  const { title, content, banner } = data;
-
-  const bannerUrl = useMemo(() => {
-    const largePath = _get(banner, 'formats.large.url') || '';
-    if (largePath) {
-      return strapiUtils.toMediaUrl(largePath);
-    }
-    const mediumPath = _get(banner, 'formats.medium.url') || '';
-    if (mediumPath) {
-      return strapiUtils.toMediaUrl(mediumPath);
-    }
-    const originalPath = _get(banner, 'url') || '';
-    if (originalPath) {
-      return strapiUtils.toMediaUrl(originalPath);
-    }
-    return '';
-  }, [banner]);
 
   return (
     <>
@@ -71,20 +50,7 @@ export default function Article({
           )}
         />
 
-        {/* Banner Image  */}
-        <div className={clsx('mb-20 mt-10', getSlideUpClass('delay-300'))}>
-          <Image
-            className={clsx(
-              'aspect-video w-full object-cover transition-opacity',
-              bannerLoaded ? 'opacity-100' : 'opacity-0'
-            )}
-            src={bannerUrl}
-            width="1600"
-            height="900"
-            alt="banner"
-            onLoad={() => setBannerLoaded(true)}
-          />
-        </div>
+        <Banner article={article} />
 
         {/* Main Content */}
         <ProseMarkdown

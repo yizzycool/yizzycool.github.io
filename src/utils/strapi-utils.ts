@@ -1,3 +1,4 @@
+import type { BlogMediaFormat } from '@/types/blog/media';
 import urlJoin from 'url-join';
 import qs from 'qs';
 import _defaults from 'lodash/defaults';
@@ -24,6 +25,14 @@ const strapiUtils = {
   },
   toMediaUrl: (url: string) => {
     return urlJoin(process.env.NEXT_PUBLIC_STRAPI_MEDIA_URL as string, url);
+  },
+
+  // To generate srcSet for <img> tag
+  buildSrcSet: (formats: Record<string, BlogMediaFormat>) => {
+    return Object.values(formats)
+      .sort((a, b) => a.width - b.width)
+      .map((f) => `${strapiUtils.toMediaUrl(f.url)} ${f.width}w`)
+      .join(', ');
   },
 
   // Used for fetch Strapi data
