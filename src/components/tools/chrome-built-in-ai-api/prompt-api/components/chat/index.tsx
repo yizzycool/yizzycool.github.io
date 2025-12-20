@@ -73,7 +73,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
   };
 
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="-mb-12 flex flex-1 flex-col">
       {!!(session as AILanguageModel)?.tokensLeft && (
         <div className="absolute left-0 top-0 bg-neutral-700/20 px-4 py-2 text-xs">
           <span className="hidden sm:inline">Tokens Left:</span>{' '}
@@ -116,17 +116,13 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
           </div>
         </div>
       </div>
-      <div
-        className={clsx(
-          'sticky -bottom-1 left-1/2 w-full pb-4 pt-8 sm:pb-6',
-          'bg-gradient-to-t from-gray-50 from-70% dark:from-neutral-900'
-        )}
-      >
+      <div className="sticky -bottom-1 left-1/2 w-full pb-4 pt-8 sm:pb-6">
         <div
           className={clsx(
             'relative flex w-full items-center rounded-[30px] border px-4 py-2 transition-colors',
             'border-neutral-200 dark:border-neutral-700',
-            'bg-neutral-100/50 hover:bg-neutral-100 dark:bg-neutral-800/50 dark:hover:bg-neutral-800'
+            'bg-white/20 dark:bg-neutral-900/20',
+            'hover:bg-neutral-100/20 dark:hover:bg-neutral-800/20'
           )}
         >
           {/* Placeholder  */}
@@ -153,6 +149,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
             onKeyDown={onKeyDown}
             onCompositionStart={() => setIsCompsing(true)}
             onCompositionEnd={() => setIsCompsing(false)}
+            autoFocus
           />
           <Button
             onClick={process}

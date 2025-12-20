@@ -35,7 +35,7 @@ export default function Card({
       className={clsx(
         'border p-6',
         'border-neutral-200 dark:border-neutral-700',
-        'bg-white dark:bg-neutral-800',
+        'bg-white/80 dark:bg-neutral-900/80',
         animations[animation],
         Roundeds[rounded],
         className

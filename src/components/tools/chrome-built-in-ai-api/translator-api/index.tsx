@@ -93,9 +93,11 @@ export default function TranslatorApi() {
         <>
           <div
             className={clsx(
-              'flex flex-col justify-center rounded-xl border',
-              'border-neutral-200 bg-white text-neutral-700 placeholder-neutral-400',
-              'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder-neutral-500'
+              'flex flex-col justify-center rounded-xl border backdrop-blur',
+              'border-neutral-200 dark:border-neutral-700',
+              'bg-white/80 dark:bg-neutral-900/80',
+              'text-neutral-700 dark:text-neutral-200',
+              'placeholder-neutral-400 dark:placeholder-neutral-500'
             )}
           >
             {/* Lauguage selector block */}
@@ -140,9 +142,9 @@ export default function TranslatorApi() {
                   id="input"
                   autoFocus
                   className={clsx(
-                    'block w-full flex-1 resize-none border-none bg-transparent px-3 py-2 focus:outline-none',
-                    'border-neutral-200 bg-white text-neutral-700 placeholder-neutral-400',
-                    'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder-neutral-500'
+                    'block w-full flex-1 resize-none bg-transparent px-3 py-2 focus:outline-none',
+                    'text-neutral-700 dark:text-neutral-200',
+                    'placeholder-neutral-400 dark:placeholder-neutral-500'
                   )}
                   onChange={onChange}
                   value={text}
@@ -166,9 +168,9 @@ export default function TranslatorApi() {
                 <textarea
                   id="output"
                   className={clsx(
-                    'block h-full w-full flex-1 resize-none border-none bg-transparent px-3 py-2 focus:outline-none',
-                    'border-neutral-200 bg-white text-neutral-700 placeholder-neutral-400',
-                    'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder-neutral-500'
+                    'block h-full w-full flex-1 resize-none bg-transparent px-3 py-2 focus:outline-none',
+                    'text-neutral-700 dark:text-neutral-200',
+                    'placeholder-neutral-400 dark:placeholder-neutral-500'
                   )}
                   value={translation}
                   readOnly
@@ -182,6 +184,7 @@ export default function TranslatorApi() {
                     content={translation}
                   />
                   <CopyAction
+                    variant="ghost"
                     content={translation}
                     disabled={_isEmpty(translation)}
                   />

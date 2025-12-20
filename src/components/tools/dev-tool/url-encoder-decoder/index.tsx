@@ -83,6 +83,7 @@ export default function UrlEncoderDecoder() {
         onChange={onInputChange}
         value={input}
         rows={8}
+        autoFocus
       />
 
       <SectionGap />

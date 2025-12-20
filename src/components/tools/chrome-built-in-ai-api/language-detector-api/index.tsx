@@ -108,6 +108,7 @@ export default function LanguageDetectorApi() {
               value={text}
               rows={10}
               placeholder="Type or paste the text you want to detect here..."
+              autoFocus
             />
             {/* Char count block */}
             <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
@@ -122,7 +123,8 @@ export default function LanguageDetectorApi() {
             className={clsx(
               'relative flex min-h-[300px] w-full flex-col items-center rounded-lg border p-6',
               'border-neutral-200 dark:border-neutral-700',
-              'bg-white dark:bg-neutral-800'
+              'bg-white/80 dark:bg-neutral-900/80',
+              'backdrop-blur'
             )}
           >
             {_isNull(results) ? (

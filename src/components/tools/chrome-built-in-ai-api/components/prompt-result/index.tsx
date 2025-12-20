@@ -29,7 +29,8 @@ export default function PromptResult({ results, isProcessing }: Props) {
         className={clsx(
           'relative h-[300px] w-full overflow-y-auto rounded-lg border p-6',
           'border-neutral-200 dark:border-neutral-700',
-          'bg-white dark:bg-neutral-800'
+          'bg-white/80 dark:bg-neutral-900/80',
+          'backdrop-blur'
         )}
       >
         {_isEmpty(results) ? (

@@ -5,7 +5,7 @@ import type { ChangeEvent } from 'react';
 import { useRef, useState } from 'react';
 import imageUtils from '@/utils/image-utils';
 import Image from 'next/image';
-import { FileText, View } from 'lucide-react';
+import { FileText, ImageIcon, View } from 'lucide-react';
 import HeaderBlock from '../../components/header-block';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
@@ -106,6 +106,7 @@ export default function Base64ToImage() {
         onChange={onBase64StringChanged}
         rows={10}
         placeholder="Paste your Base64 string here (e.g. data:image/png;base64,...)"
+        autoFocus
       />
       {/* Char count block */}
       <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
@@ -131,12 +132,18 @@ export default function Base64ToImage() {
       </div>
       <div
         className={clsx(
-          'relative flex h-[300px] w-full flex-col items-center rounded-lg border p-4',
-          'border-neutral-200 dark:border-neutral-700',
-          'bg-white dark:bg-neutral-800'
+          'relative flex h-[300px] w-full flex-col items-center rounded-lg p-4',
+          'border border-neutral-200 dark:border-neutral-700',
+          'backgrop-blur',
+          'bg-white/80 dark:bg-neutral-900/80'
         )}
       >
-        {!_isNull(imageInfo.image) && (
+        {_isNull(imageInfo.image) ? (
+          <div className="m-auto text-center text-lg font-bold text-neutral-500">
+            <ImageIcon className="mx-auto mb-4 block" size={40} />
+            <div>Image will be displayed here</div>
+          </div>
+        ) : (
           <>
             <Image
               width={0}

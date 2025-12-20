@@ -84,7 +84,8 @@ export default function ImageToBase64() {
                 className={clsx(
                   'relative flex h-[300px] w-full flex-col items-center rounded-lg border p-4',
                   'border-neutral-200 dark:border-neutral-700',
-                  'bg-white dark:bg-neutral-800'
+                  'bg-white/80 dark:bg-neutral-900/80',
+                  'backgrop-blur'
                 )}
               >
                 {!imageInfo.error && !_isNull(imageInfo.image) && (
@@ -125,7 +126,8 @@ export default function ImageToBase64() {
                   'h-[300px] w-full rounded-lg border px-4 py-3',
                   'resize-none font-mono text-sm leading-relaxed outline-none',
                   'border-neutral-200 dark:border-neutral-700',
-                  'bg-white dark:bg-neutral-800',
+                  'bg-white/80 dark:bg-neutral-900/80',
+                  'backgrop-blur',
                   'text-neutral-700 dark:text-neutral-200',
                   'placeholder-neutral-400 dark:placeholder-neutral-500',
                   'focus:border-transparent focus:ring-2 focus:ring-blue-500'
