@@ -10,9 +10,9 @@ import LoadingSkeleton from '../components/loading-skeleton';
 import Empty from '../components/empty';
 import BoundingBox from '../components/bounding-box';
 import FlipCamera from '../components/flip-camera';
-import ErrorDialog from '@/components/common/dialog/error';
 import UnsupportedCard from '../components/unsupported-card';
 import SectionGap from '../../components/section-gap';
+import Snackbar from '@/components/common/snackbar';
 import Tip from '../components/tip';
 import Card from '@/components/common/card';
 import Tabs from '../components/tabs';
@@ -154,7 +154,7 @@ export default function TextDetectorApi() {
         </>
       )}
 
-      <ErrorDialog open={error} onClose={resetError} />
+      <Snackbar variant="error" open={error} onClose={resetError} />
     </>
   );
 }

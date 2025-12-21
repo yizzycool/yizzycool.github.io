@@ -21,7 +21,7 @@ export default function JsonFormatter() {
   const [tab, setTab] = useState(TabItems[0]);
   const [input, setInput] = useState<string>('');
   const [output, setOutput] = useState<string>('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState(false);
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -40,10 +40,8 @@ export default function JsonFormatter() {
       const obj = JSON.parse(jsonString);
       const formatted = JSON.stringify(obj, null, 2);
       setOutput(formatted);
-      setError('');
-    } catch (e) {
-      console.log('error while formatting:', e);
-      setError('Invalid JSON format');
+    } catch (_e) {
+      setError(true);
     }
   };
 
@@ -54,15 +52,13 @@ export default function JsonFormatter() {
       const obj = JSON.parse(jsonString);
       const minified = JSON.stringify(obj);
       setOutput(minified);
-      setError('');
-    } catch (e) {
-      console.log('error while minifying:', e);
-      setError('Invalid JSON format');
+    } catch (_e) {
+      setError(true);
     }
   };
 
   const onJsonStringChanged = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setError('');
+    setError(false);
     const jsonString = event.target.value;
     setInput(jsonString);
     if (timerRef.current) {
@@ -72,14 +68,24 @@ export default function JsonFormatter() {
   };
 
   const onPaste = (value: string) => {
+    setError(false);
     setInput(value as string);
-    timerRef.current = setTimeout(() => processJson(value as string), 500);
+    processJson(value as string);
   };
 
   const onClear = () => {
     setInput('');
     setOutput('');
-    setError('');
+    setError(false);
+  };
+
+  const onTabChanged = (newTab: string) => {
+    setTab(newTab);
+    if (newTab === TabItems[0]) {
+      handleFormat(input);
+    } else {
+      handleMinify(input);
+    }
   };
 
   return (
@@ -92,7 +98,7 @@ export default function JsonFormatter() {
       <ButtonTabs
         tabs={TabItems}
         tabIcons={[Maximize2, Minimize2]}
-        onChange={setTab}
+        onChange={onTabChanged}
       />
 
       {/* Textarea block */}
@@ -154,9 +160,8 @@ export default function JsonFormatter() {
         variant="error"
         open={!!error}
         icon={Info}
-        bordered
         onClose={() => setError('')}
-        content={error}
+        content="Invalid JSON format"
       />
     </>
   );

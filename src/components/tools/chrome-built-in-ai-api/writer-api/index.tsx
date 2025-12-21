@@ -15,8 +15,8 @@ import Textarea from '@/components/common/textarea';
 import Config from './components/config';
 import Button from '@/components/common/button';
 import PromptResult from '../components/prompt-result';
-import ErrorDialog from '@/components/common/dialog/error';
 import SectionGap from '../../components/section-gap';
+import Snackbar from '@/components/common/snackbar';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _size from 'lodash/size';
@@ -161,11 +161,7 @@ export default function WriterApi() {
         </>
       )}
 
-      <ErrorDialog
-        errorString="Something went wrong while processing! Please try again later."
-        open={error}
-        onClose={resetError}
-      />
+      <Snackbar variant="error" open={error} onClose={resetError} />
     </div>
   );
 }

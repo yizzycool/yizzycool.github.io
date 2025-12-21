@@ -10,8 +10,8 @@ import HeaderBlock from '../../components/header-block';
 import FilePicker from '@/components/common/file-picker';
 import CopyAction from '@/components/common/action-button/copy';
 import ImageInfoTag from '../components/ImageInfoTag';
-import ErrorDialog from '@/components/common/dialog/error';
 import SectionGap from '../../components/section-gap';
+import Snackbar from '@/components/common/snackbar';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _size from 'lodash/size';
@@ -144,11 +144,11 @@ export default function ImageToBase64() {
         </>
       )}
 
-      {/* Error dialog */}
-      <ErrorDialog
+      <Snackbar
+        variant="error"
         open={imageInfo.error}
         onClose={() => setImageInfo(DefaultImageInfo)}
-        errorString="Uploaded image is not supported now. Please choose another image and try again."
+        content="Uploaded image is not supported now. Please choose another image and try again."
       />
     </>
   );

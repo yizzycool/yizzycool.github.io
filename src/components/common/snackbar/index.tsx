@@ -30,10 +30,10 @@ type Props = {
 // UI Component: Snackbar
 export default function Snackbar({
   open,
-  variant = 'primary',
+  variant = 'success',
   size = 'base',
   rounded = 'base',
-  bordered = false,
+  bordered = true,
   className = '',
   icon: Icon,
   iconStrokeWidth = 2,
@@ -44,7 +44,7 @@ export default function Snackbar({
   offsetY = 20,
   onClose = () => {},
   timeout = 3000,
-  content = '',
+  content = 'Something went wrong! Please try again later.',
 }: Props) {
   const [message, setMessage] = useState(content);
 

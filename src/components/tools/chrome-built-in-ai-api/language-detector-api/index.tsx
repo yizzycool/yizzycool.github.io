@@ -12,8 +12,8 @@ import DeleteAction from '@/components/common/action-button/delete';
 import LoadingSkeleton from '../components/loading-skeleton';
 import UnsupportedCard from '../components/unsupported-card';
 import ModelDownloadCard from '../components/model-download-card';
-import ErrorDialog from '@/components/common/dialog/error';
 import SectionGap from '../../components/section-gap';
+import Snackbar from '@/components/common/snackbar';
 import { UnsupportedApiTypes } from '../data/unsupported-types';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
@@ -139,11 +139,7 @@ export default function LanguageDetectorApi() {
         </>
       )}
 
-      <ErrorDialog
-        errorString="Something went wrong while detecting! Please try again later."
-        open={error}
-        onClose={resetError}
-      />
+      <Snackbar variant="error" open={error} onClose={resetError} />
     </>
   );
 }

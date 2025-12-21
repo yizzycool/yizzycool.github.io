@@ -11,15 +11,15 @@ import DeleteAction from '@/components/common/action-button/delete';
 import CopyAction from '@/components/common/action-button/copy';
 import SwapAction from '@/components/common/action-button/swap';
 import PasteAction from '@/components/common/action-button/paste';
-import ErrorDialog from '@/components/common/dialog/error';
 import SectionGap from '../../components/section-gap';
+import Snackbar from '@/components/common/snackbar';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 
 export default function UrlEncoderDecoder() {
   const [input, setInput] = useState<string>('');
   const [output, setOutput] = useState<string>('');
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
 
   const onInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
@@ -28,7 +28,7 @@ export default function UrlEncoderDecoder() {
   const onClearClick = () => {
     setInput('');
     setOutput('');
-    setError(false);
+    setError('');
   };
 
   const onEncodeClick = () => {
@@ -36,7 +36,7 @@ export default function UrlEncoderDecoder() {
       const encoded = browserUtils.encodeURI(input);
       setOutput(encoded);
     } catch (_e) {
-      setError(true);
+      setError('Encode Error');
     }
   };
 
@@ -45,14 +45,14 @@ export default function UrlEncoderDecoder() {
       const decoded = browserUtils.decodeURI(input);
       setOutput(decoded);
     } catch (_e) {
-      setError(true);
+      setError('Decode Error');
     }
   };
 
   const onSwapClick = () => {
     setInput(output);
     setOutput(input);
-    setError(false);
+    setError('');
   };
 
   return (
@@ -141,11 +141,11 @@ export default function UrlEncoderDecoder() {
         readOnly
       />
 
-      {/* Error dialog */}
-      <ErrorDialog
-        open={error}
-        onClose={() => setError(false)}
-        errorString="Conversion Error! Please check string and try again."
+      <Snackbar
+        variant="error"
+        open={!!error}
+        onClose={() => setError('')}
+        content={error}
       />
     </>
   );

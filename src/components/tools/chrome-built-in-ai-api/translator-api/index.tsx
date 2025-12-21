@@ -13,8 +13,8 @@ import CopyAction from '@/components/common/action-button/copy';
 import SpeakAction from '@/components/common/action-button/speak';
 import UnsupportedLanguagePairCard from './components/unsupported-language-pair-card';
 import InlineDownloadCard from './components/inline-download-card';
-import ErrorDialog from '@/components/common/dialog/error';
 import SectionGap from '../../components/section-gap';
+import Snackbar from '@/components/common/snackbar';
 import { UnsupportedApiTypes } from '../data/unsupported-types';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
@@ -209,11 +209,7 @@ export default function TranslatorApi() {
         </>
       )}
 
-      <ErrorDialog
-        errorString="Something went wrong while translating! Please try again later."
-        open={error}
-        onClose={resetError}
-      />
+      <Snackbar variant="error" open={error} onClose={resetError} />
     </>
   );
 }

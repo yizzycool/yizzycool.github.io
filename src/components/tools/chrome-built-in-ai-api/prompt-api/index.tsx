@@ -8,8 +8,8 @@ import Config from './components/config';
 import Chat from './components/chat';
 import UnsupportedCard from '../components/unsupported-card';
 import ModelDownloadCard from '../components/model-download-card';
-import ErrorDialog from '@/components/common/dialog/error';
 import SectionGap from '../../components/section-gap';
+import Snackbar from '@/components/common/snackbar';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _values from 'lodash/values';
@@ -66,11 +66,7 @@ export default function PromptApi() {
         </>
       )}
 
-      <ErrorDialog
-        errorString="Something went wrong while processing! Please try again later."
-        open={error}
-        onClose={resetError}
-      />
+      <Snackbar variant="error" open={error} onClose={resetError} />
     </div>
   );
 }
