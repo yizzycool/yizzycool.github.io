@@ -2,11 +2,14 @@
  * Keep this file as a Server Component because it is imported by @/src/app/sitemap.ts,
  * and only Server Components can be imported in that context.
  */
+import _fromPairs from 'lodash/fromPairs';
+import _findKey from 'lodash/findKey';
 
 import {
   ArrowLeftRight,
   Bot,
   CaseUpper,
+  CodeXml,
   FileImage,
   FileText,
   Image,
@@ -52,6 +55,7 @@ export const ToolGroupSlugs = {
 
 export const ToolKeys = {
   urlEncoderDecoder: 'urlEncoderDecoder',
+  jsonFormatter: 'jsonFormatter',
   base64ToImage: 'base64ToImage',
   imageToBase64: 'imageToBase64',
   chromeAiTranslator: 'chromeAiTranslator',
@@ -66,7 +70,7 @@ export const ToolKeys = {
 };
 
 export const ToolGroupItems = {
-  [ToolGroupKeys.devTool]: [ToolKeys.urlEncoderDecoder],
+  [ToolGroupKeys.devTool]: [ToolKeys.urlEncoderDecoder, ToolKeys.jsonFormatter],
   [ToolGroupKeys.imgTool]: [ToolKeys.base64ToImage, ToolKeys.imageToBase64],
   [ToolGroupKeys.chromeAiApi]: [
     ToolKeys.chromeAiTranslator,
@@ -85,6 +89,7 @@ export const ToolGroupItems = {
 
 export const ToolTitles = {
   [ToolKeys.urlEncoderDecoder]: 'URL Encoder / Decoder',
+  [ToolKeys.jsonFormatter]: 'JSON Formatter',
   [ToolKeys.base64ToImage]: 'Base64 to Image',
   [ToolKeys.imageToBase64]: 'Image to Base64',
   [ToolKeys.chromeAiTranslator]: 'AI Translator',
@@ -101,6 +106,8 @@ export const ToolTitles = {
 export const ToolDescriptions = {
   [ToolKeys.urlEncoderDecoder]:
     'Quickly encode or decode URLs and text to prevent errors and ensure safe, reliable data transmission across the web.',
+  [ToolKeys.jsonFormatter]:
+    'Format JSON for readability or minify it for compact output. Instantly prettify or compress JSON with this free online tool.',
   [ToolKeys.base64ToImage]:
     'Instantly convert Base64 strings back into images, supporting multiple formats for fast preview and verification.',
   [ToolKeys.imageToBase64]:
@@ -127,6 +134,7 @@ export const ToolDescriptions = {
 
 export const ToolSlugs = {
   [ToolKeys.urlEncoderDecoder]: 'url-encoder-decoder',
+  [ToolKeys.jsonFormatter]: 'json-formatter',
   [ToolKeys.base64ToImage]: 'base64-to-image',
   [ToolKeys.imageToBase64]: 'image-to-base64',
   [ToolKeys.chromeAiTranslator]: 'translator',
@@ -140,23 +148,22 @@ export const ToolSlugs = {
   [ToolKeys.chromeTextDetector]: 'text-detector',
 };
 
-export const ToolUrls = {
-  [ToolKeys.urlEncoderDecoder]: `/tools/${ToolGroupSlugs[ToolGroupKeys.devTool]}/${ToolSlugs[ToolKeys.urlEncoderDecoder]}`,
-  [ToolKeys.base64ToImage]: `/tools/${ToolGroupSlugs[ToolGroupKeys.imgTool]}/${ToolSlugs[ToolKeys.base64ToImage]}`,
-  [ToolKeys.imageToBase64]: `/tools/${ToolGroupSlugs[ToolGroupKeys.imgTool]}/${ToolSlugs[ToolKeys.imageToBase64]}`,
-  [ToolKeys.chromeAiTranslator]: `/tools/${ToolGroupSlugs[ToolGroupKeys.chromeAiApi]}/${ToolSlugs[ToolKeys.chromeAiTranslator]}`,
-  [ToolKeys.chromeAiLanguageDetector]: `/tools/${ToolGroupSlugs[ToolGroupKeys.chromeAiApi]}/${ToolSlugs[ToolKeys.chromeAiLanguageDetector]}`,
-  [ToolKeys.chromeAiSummarizer]: `/tools/${ToolGroupSlugs[ToolGroupKeys.chromeAiApi]}/${ToolSlugs[ToolKeys.chromeAiSummarizer]}`,
-  [ToolKeys.chromeAiWriter]: `/tools/${ToolGroupSlugs[ToolGroupKeys.chromeAiApi]}/${ToolSlugs[ToolKeys.chromeAiWriter]}`,
-  [ToolKeys.chromeAiRewriter]: `/tools/${ToolGroupSlugs[ToolGroupKeys.chromeAiApi]}/${ToolSlugs[ToolKeys.chromeAiRewriter]}`,
-  [ToolKeys.chromeAiPrompt]: `/tools/${ToolGroupSlugs[ToolGroupKeys.chromeAiApi]}/${ToolSlugs[ToolKeys.chromeAiPrompt]}`,
-  [ToolKeys.chromeFaceDetector]: `/tools/${ToolGroupSlugs[ToolGroupKeys.webDetectorApi]}/${ToolSlugs[ToolKeys.chromeFaceDetector]}`,
-  [ToolKeys.chromeBarcodeDetector]: `/tools/${ToolGroupSlugs[ToolGroupKeys.webDetectorApi]}/${ToolSlugs[ToolKeys.chromeBarcodeDetector]}`,
-  [ToolKeys.chromeTextDetector]: `/tools/${ToolGroupSlugs[ToolGroupKeys.webDetectorApi]}/${ToolSlugs[ToolKeys.chromeTextDetector]}`,
-};
+export const ToolUrls = _fromPairs(
+  Object.values(ToolKeys).map((toolKey) => {
+    const toolGroupKey = _findKey(ToolGroupItems, (value) =>
+      value.includes(toolKey)
+    ) as string;
+    console.log(toolGroupKey, toolKey);
+    return [
+      toolKey,
+      `/tools/${ToolGroupSlugs[toolGroupKey]}/${ToolSlugs[toolKey]}`,
+    ];
+  })
+);
 
 export const ToolIcons = {
   [ToolKeys.urlEncoderDecoder]: ArrowLeftRight,
+  [ToolKeys.jsonFormatter]: CodeXml,
   [ToolKeys.base64ToImage]: FileImage,
   [ToolKeys.imageToBase64]: Image,
   [ToolKeys.chromeAiTranslator]: Languages,

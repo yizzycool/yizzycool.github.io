@@ -18,6 +18,23 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.jsonFormatter]: {
+    title:
+      'JSON Formatter & Minifier – Format or Minify JSON Online | Yizzy Peasy',
+    description:
+      'Free online JSON Formatter and Minifier. Instantly prettify JSON for readability or minify it to reduce size. No signup required.',
+    openGraph: {
+      title: 'JSON Formatter & Minifier',
+      description:
+        'Format JSON with indentation or minify it into a compact string using this free online JSON tool.',
+    },
+    twitter: {
+      title: 'JSON Formatter & Minifier',
+      description:
+        'Prettify or minify JSON instantly with this free online JSON formatter tool.',
+    },
+  },
+
   [ToolKeys.base64ToImage]: {
     title: 'Base64 to Image Converter – Decode Base64 to Image | Yizzy Peasy',
     description:
