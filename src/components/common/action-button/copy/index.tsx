@@ -49,7 +49,9 @@ export default function CopyAction({
 
   // Check if mimeType is supported
   useEffect(() => {
-    setIsMimeTypeSupported(ClipboardItem.supports(mimeType));
+    setIsMimeTypeSupported(
+      !!window.ClipboardItem && ClipboardItem.supports(mimeType)
+    );
   }, [mimeType]);
 
   const handleCopy = async () => {
