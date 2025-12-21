@@ -46,3 +46,14 @@ a {
 .all-revert *:not(.ignore-all-revert *) {
   all: revert;
 }
+
+/* Hide spin (up/down button) for <input type="number" /> */
+.input-number-no-spin {
+  appearance: textfield;
+}
+
+.input-number-no-spin::-webkit-inner-spin-button,
+.input-number-no-spin::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}

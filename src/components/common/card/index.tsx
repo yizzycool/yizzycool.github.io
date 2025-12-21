@@ -1,6 +1,6 @@
 'use client';
 
-import { Animation, Rounded } from '@/types/common';
+import type { Animation, Rounded } from '@/types/common';
 import clsx from 'clsx';
 
 type Props = {

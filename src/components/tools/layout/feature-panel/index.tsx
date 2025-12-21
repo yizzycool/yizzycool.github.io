@@ -10,7 +10,7 @@ export default function FeaturePanel() {
 
   return (
     <div
-      className="sticky top-[68px] hidden w-64 overflow-y-auto border-r-[1px] border-neutral-400/20 p-4 lg:block"
+      className="sticky top-[68px] hidden w-72 overflow-y-auto border-r-[1px] border-neutral-400/20 p-4 lg:block"
       style={{
         height: 'calc(100dvh - 68px)',
       }}

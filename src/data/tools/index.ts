@@ -9,6 +9,7 @@ import {
   ArrowLeftRight,
   Bot,
   CaseUpper,
+  Clock,
   CodeXml,
   FileImage,
   FileText,
@@ -56,21 +57,29 @@ export const ToolGroupSlugs = {
 export const ToolKeys = {
   urlEncoderDecoder: 'urlEncoderDecoder',
   jsonFormatter: 'jsonFormatter',
+  unixTimestampConverter: 'unixTimestampConverter',
+
   base64ToImage: 'base64ToImage',
   imageToBase64: 'imageToBase64',
+
   chromeAiTranslator: 'chromeAiTranslator',
   chromeAiLanguageDetector: 'chromeAiLanguageDetector',
   chromeAiSummarizer: 'chromeAiSummarizer',
   chromeAiWriter: 'chromeAiWriter',
   chromeAiRewriter: 'chromeAiRewriter',
   chromeAiPrompt: 'chromeAiPrompt',
+
   chromeFaceDetector: 'chromeFaceDetector',
   chromeBarcodeDetector: 'chromeBarcodeDetector',
   chromeTextDetector: 'chromeTextDetector',
 };
 
 export const ToolGroupItems = {
-  [ToolGroupKeys.devTool]: [ToolKeys.urlEncoderDecoder, ToolKeys.jsonFormatter],
+  [ToolGroupKeys.devTool]: [
+    ToolKeys.urlEncoderDecoder,
+    ToolKeys.jsonFormatter,
+    ToolKeys.unixTimestampConverter,
+  ],
   [ToolGroupKeys.imgTool]: [ToolKeys.base64ToImage, ToolKeys.imageToBase64],
   [ToolGroupKeys.chromeAiApi]: [
     ToolKeys.chromeAiTranslator,
@@ -90,14 +99,18 @@ export const ToolGroupItems = {
 export const ToolTitles = {
   [ToolKeys.urlEncoderDecoder]: 'URL Encoder / Decoder',
   [ToolKeys.jsonFormatter]: 'JSON Formatter',
+  [ToolKeys.unixTimestampConverter]: 'Unix Timestamp Converter',
+
   [ToolKeys.base64ToImage]: 'Base64 to Image',
   [ToolKeys.imageToBase64]: 'Image to Base64',
+
   [ToolKeys.chromeAiTranslator]: 'AI Translator',
   [ToolKeys.chromeAiLanguageDetector]: 'AI Language Detector',
   [ToolKeys.chromeAiSummarizer]: 'AI Summarizer',
   [ToolKeys.chromeAiWriter]: 'AI Writer',
   [ToolKeys.chromeAiRewriter]: 'AI Rewriter',
   [ToolKeys.chromeAiPrompt]: 'AI Chat',
+
   [ToolKeys.chromeFaceDetector]: 'Face Detector',
   [ToolKeys.chromeBarcodeDetector]: 'Barcode Detector',
   [ToolKeys.chromeTextDetector]: 'Text Detector',
@@ -108,10 +121,14 @@ export const ToolDescriptions = {
     'Quickly encode or decode URLs and text to prevent errors and ensure safe, reliable data transmission across the web.',
   [ToolKeys.jsonFormatter]:
     'Format JSON for readability or minify it for compact output. Instantly prettify or compress JSON with this free online tool.',
+  [ToolKeys.unixTimestampConverter]:
+    'Convert Unix timestamps to human-readable dates and convert date/time back to Unix timestamps instantly.',
+
   [ToolKeys.base64ToImage]:
     'Instantly convert Base64 strings back into images, supporting multiple formats for fast preview and verification.',
   [ToolKeys.imageToBase64]:
     'Upload any image and convert it into a Base64 string — perfect for frontend development, API testing, and embedding assets in HTML.',
+
   [ToolKeys.chromeAiTranslator]:
     'Translate text instantly using Chrome’s built-in Gemini AI, offering fast, accurate, and setup-free multilingual translation.',
   [ToolKeys.chromeAiLanguageDetector]:
@@ -124,6 +141,7 @@ export const ToolDescriptions = {
     'Rewrite and enhance existing text using Chrome’s built-in AI to improve clarity, tone, flow, and readability while preserving meaning.',
   [ToolKeys.chromeAiPrompt]:
     'Run AI prompts directly through Chrome’s built-in models, enabling fast, local AI inference with minimal setup for developers.',
+
   [ToolKeys.chromeFaceDetector]:
     'Detect faces in images instantly using Chrome’s built-in face detection API—ideal for camera apps, interactive features, and security ToolKeys.',
   [ToolKeys.chromeBarcodeDetector]:
@@ -135,14 +153,18 @@ export const ToolDescriptions = {
 export const ToolSlugs = {
   [ToolKeys.urlEncoderDecoder]: 'url-encoder-decoder',
   [ToolKeys.jsonFormatter]: 'json-formatter',
+  [ToolKeys.unixTimestampConverter]: 'unix-timestamp-converter',
+
   [ToolKeys.base64ToImage]: 'base64-to-image',
   [ToolKeys.imageToBase64]: 'image-to-base64',
+
   [ToolKeys.chromeAiTranslator]: 'translator',
   [ToolKeys.chromeAiLanguageDetector]: 'language-detector',
   [ToolKeys.chromeAiSummarizer]: 'summarizer',
   [ToolKeys.chromeAiWriter]: 'writer',
   [ToolKeys.chromeAiRewriter]: 'rewriter',
   [ToolKeys.chromeAiPrompt]: 'prompt',
+
   [ToolKeys.chromeFaceDetector]: 'face-detector',
   [ToolKeys.chromeBarcodeDetector]: 'barcode-detector',
   [ToolKeys.chromeTextDetector]: 'text-detector',
@@ -164,14 +186,18 @@ export const ToolUrls = _fromPairs(
 export const ToolIcons = {
   [ToolKeys.urlEncoderDecoder]: ArrowLeftRight,
   [ToolKeys.jsonFormatter]: CodeXml,
+  [ToolKeys.unixTimestampConverter]: Clock,
+
   [ToolKeys.base64ToImage]: FileImage,
   [ToolKeys.imageToBase64]: Image,
+
   [ToolKeys.chromeAiTranslator]: Languages,
   [ToolKeys.chromeAiLanguageDetector]: Radar,
   [ToolKeys.chromeAiSummarizer]: FileText,
   [ToolKeys.chromeAiWriter]: PenTool,
   [ToolKeys.chromeAiRewriter]: RefreshCcw,
   [ToolKeys.chromeAiPrompt]: Bot,
+
   [ToolKeys.chromeFaceDetector]: ScanFace,
   [ToolKeys.chromeBarcodeDetector]: QrCode,
   [ToolKeys.chromeTextDetector]: CaseUpper,

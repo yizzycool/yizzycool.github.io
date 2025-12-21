@@ -35,6 +35,25 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.unixTimestampConverter]: {
+    title:
+      'Unix Timestamp Converter – Convert Epoch Time to Date Online | Yizzy Peasy',
+    description:
+      'Free online Unix Timestamp Converter. Instantly convert Unix epoch timestamps to readable dates or convert date and time back to Unix timestamps.',
+    openGraph: {
+      title: 'Unix Timestamp Converter',
+      description:
+        'Convert Unix epoch timestamps to human-readable dates and times, or convert date/time back to Unix timestamps online.',
+    },
+    twitter: {
+      title: 'Unix Timestamp Converter',
+      description:
+        'Instantly convert Unix timestamps to dates or generate Unix timestamps from date and time.',
+    },
+  },
+
+  // ==================
+
   [ToolKeys.base64ToImage]: {
     title: 'Base64 to Image Converter – Decode Base64 to Image | Yizzy Peasy',
     description:
@@ -64,6 +83,8 @@ export const ToolMetadata = {
       description: 'Convert image files into Base64 strings online instantly.',
     },
   },
+
+  // ==================
 
   [ToolKeys.chromeAiTranslator]: {
     title: 'AI Translator – Chrome Built-In AI API Tool | Yizzy Peasy',
@@ -158,6 +179,8 @@ export const ToolMetadata = {
     },
   },
 
+  // ==================
+
   [ToolKeys.chromeFaceDetector]: {
     title: 'Face Detector – Web Detection API Tool | Yizzy Peasy',
     description:
@@ -212,6 +235,22 @@ export const ToolJsonLdSoftwareApplication = {
       'Free online URL Encoder & Decoder to encode or decode URL components instantly.',
   },
 
+  [ToolKeys.jsonFormatter]: {
+    'name': 'JSON Formatter & Minifier',
+    'applicationCategory': 'DeveloperTool',
+    'description':
+      'An online JSON formatter and minifier that allows developers to prettify JSON for readability or minify it for compact output.',
+  },
+
+  [ToolKeys.unixTimestampConverter]: {
+    'name': 'Unix Timestamp Converter',
+    'applicationCategory': 'DeveloperTool',
+    'description':
+      'An online Unix timestamp converter that allows users to convert Unix epoch time to human-readable dates and convert date and time back to Unix timestamps instantly.',
+  },
+
+  // ==================
+
   [ToolKeys.base64ToImage]: {
     'name': 'Base64 to Image Converter',
     'applicationCategory': 'DeveloperTool',
@@ -225,6 +264,8 @@ export const ToolJsonLdSoftwareApplication = {
     'description':
       'Encode image files into Base64 strings instantly using this free online tool.',
   },
+
+  // ==================
 
   [ToolKeys.chromeAiTranslator]: {
     'name': 'AI Translator',
@@ -265,6 +306,8 @@ export const ToolJsonLdSoftwareApplication = {
     'applicationCategory': 'AIApplication',
     'description': 'Generate and test AI prompts using Chrome Built-In AI API.',
   },
+
+  // ==================
 
   [ToolKeys.chromeFaceDetector]: {
     'name': 'Face Detector',
