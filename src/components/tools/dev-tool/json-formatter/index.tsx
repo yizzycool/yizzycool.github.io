@@ -160,7 +160,7 @@ export default function JsonFormatter() {
         variant="error"
         open={!!error}
         icon={Info}
-        onClose={() => setError('')}
+        onClose={() => setError(false)}
         content="Invalid JSON format"
       />
     </>
