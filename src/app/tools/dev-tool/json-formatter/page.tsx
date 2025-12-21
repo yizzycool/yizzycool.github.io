@@ -5,7 +5,7 @@ import toolsMetadataUtils from '@/utils/tools/metadata/tools-metadata-utls';
 import seoUtils from '@/utils/seo-utils';
 import _defaultsDeep from 'lodash/defaultsDeep';
 
-const toolKey = ToolKeys.urlEncoderDecoder;
+const toolKey = ToolKeys.jsonFormatter;
 
 export const metadata: Metadata = toolsMetadataUtils.generateMetadata(toolKey);
 
