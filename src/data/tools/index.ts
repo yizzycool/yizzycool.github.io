@@ -19,6 +19,7 @@ import {
   QrCode,
   Radar,
   RefreshCcw,
+  Regex,
   ScanFace,
 } from 'lucide-react';
 
@@ -58,6 +59,7 @@ export const ToolKeys = {
   urlEncoderDecoder: 'urlEncoderDecoder',
   jsonFormatter: 'jsonFormatter',
   unixTimestampConverter: 'unixTimestampConverter',
+  regexTester: 'regexTester',
 
   base64ToImage: 'base64ToImage',
   imageToBase64: 'imageToBase64',
@@ -79,6 +81,7 @@ export const ToolGroupItems = {
     ToolKeys.urlEncoderDecoder,
     ToolKeys.jsonFormatter,
     ToolKeys.unixTimestampConverter,
+    ToolKeys.regexTester,
   ],
   [ToolGroupKeys.imgTool]: [ToolKeys.base64ToImage, ToolKeys.imageToBase64],
   [ToolGroupKeys.chromeAiApi]: [
@@ -100,6 +103,7 @@ export const ToolTitles = {
   [ToolKeys.urlEncoderDecoder]: 'URL Encoder / Decoder',
   [ToolKeys.jsonFormatter]: 'JSON Formatter',
   [ToolKeys.unixTimestampConverter]: 'Unix Timestamp Converter',
+  [ToolKeys.regexTester]: 'Regular Expression Tester',
 
   [ToolKeys.base64ToImage]: 'Base64 to Image',
   [ToolKeys.imageToBase64]: 'Image to Base64',
@@ -123,6 +127,8 @@ export const ToolDescriptions = {
     'Format JSON for readability or minify it for compact output. Instantly prettify or compress JSON with this free online tool.',
   [ToolKeys.unixTimestampConverter]:
     'Convert Unix timestamps to human-readable dates and convert date/time back to Unix timestamps instantly.',
+  [ToolKeys.regexTester]:
+    'Test and debug regular expressions in real time with instant match highlighting and group inspection.',
 
   [ToolKeys.base64ToImage]:
     'Instantly convert Base64 strings back into images, supporting multiple formats for fast preview and verification.',
@@ -154,6 +160,7 @@ export const ToolSlugs = {
   [ToolKeys.urlEncoderDecoder]: 'url-encoder-decoder',
   [ToolKeys.jsonFormatter]: 'json-formatter',
   [ToolKeys.unixTimestampConverter]: 'unix-timestamp-converter',
+  [ToolKeys.regexTester]: 'regex-tester',
 
   [ToolKeys.base64ToImage]: 'base64-to-image',
   [ToolKeys.imageToBase64]: 'image-to-base64',
@@ -187,6 +194,7 @@ export const ToolIcons = {
   [ToolKeys.urlEncoderDecoder]: ArrowLeftRight,
   [ToolKeys.jsonFormatter]: CodeXml,
   [ToolKeys.unixTimestampConverter]: Clock,
+  [ToolKeys.regexTester]: Regex,
 
   [ToolKeys.base64ToImage]: FileImage,
   [ToolKeys.imageToBase64]: Image,

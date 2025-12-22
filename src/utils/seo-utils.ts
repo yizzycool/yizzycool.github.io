@@ -202,6 +202,10 @@ const seoUtils = {
         price: '0',
         priceCurrency: 'USD',
       },
+      author: {
+        '@type': 'Person',
+        name: authorName,
+      },
     };
 
     return _defaultsDeep(customJsonLd, ToolJsonLdSoftwareApplication[toolKey]);

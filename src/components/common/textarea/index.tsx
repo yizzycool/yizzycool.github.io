@@ -41,7 +41,7 @@ export default function Textarea({
       )}
       <TA
         className={clsx(
-          'w-full rounded-lg border px-4 py-3',
+          'block w-full rounded-lg border px-4 py-3',
           'resize-none font-mono text-sm leading-relaxed outline-none',
           'border-neutral-200 dark:border-neutral-700',
           'bg-white/80 dark:bg-neutral-900/80',

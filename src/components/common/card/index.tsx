@@ -33,7 +33,7 @@ export default function Card({
   return (
     <div
       className={clsx(
-        'border p-6',
+        'border p-6 text-left',
         'border-neutral-200 dark:border-neutral-700',
         'bg-white/80 dark:bg-neutral-900/80',
         animations[animation],

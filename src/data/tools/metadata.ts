@@ -52,6 +52,23 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.regexTester]: {
+    title:
+      'Regular Expression Tester – Test & Debug Regex Online | Yizzy Peasy',
+    description:
+      'Free online Regular Expression Tester. Test, debug, and validate regex patterns with real-time matching and group highlights.',
+    openGraph: {
+      title: 'Regular Expression Tester',
+      description:
+        'Test and debug regular expressions online with instant match highlighting and group inspection.',
+    },
+    twitter: {
+      title: 'Regular Expression Tester',
+      description:
+        'Test and debug regex patterns online with real-time matching and validation.',
+    },
+  },
+
   // ==================
 
   [ToolKeys.base64ToImage]: {
@@ -233,6 +250,12 @@ export const ToolJsonLdSoftwareApplication = {
     'applicationCategory': 'DeveloperTool',
     'description':
       'Free online URL Encoder & Decoder to encode or decode URL components instantly.',
+    'featureList': [
+      'Encode URLs into percent-encoded format',
+      'Decode encoded URLs back to readable text',
+      'Handle special characters safely',
+      'Instant client-side conversion',
+    ],
   },
 
   [ToolKeys.jsonFormatter]: {
@@ -240,6 +263,12 @@ export const ToolJsonLdSoftwareApplication = {
     'applicationCategory': 'DeveloperTool',
     'description':
       'An online JSON formatter and minifier that allows developers to prettify JSON for readability or minify it for compact output.',
+    'featureList': [
+      'Format JSON with readable indentation',
+      'Minify JSON by removing whitespace',
+      'Validate JSON structure',
+      'Instant client-side processing',
+    ],
   },
 
   [ToolKeys.unixTimestampConverter]: {
@@ -247,6 +276,25 @@ export const ToolJsonLdSoftwareApplication = {
     'applicationCategory': 'DeveloperTool',
     'description':
       'An online Unix timestamp converter that allows users to convert Unix epoch time to human-readable dates and convert date and time back to Unix timestamps instantly.',
+    'featureList': [
+      'Convert Unix timestamps to readable date and time',
+      'Convert date and time to Unix timestamps',
+      'Support seconds and milliseconds timestamps',
+      'Instant client-side conversion',
+    ],
+  },
+
+  [ToolKeys.regexTester]: {
+    'name': 'Regular Expression Tester',
+    'applicationCategory': 'DeveloperTool',
+    'description':
+      'An online regular expression tester that allows developers to test, debug, and validate regex patterns with real-time matching and group highlighting.',
+    'featureList': [
+      'Test regular expressions in real time',
+      'Highlight matched text',
+      'Inspect capture groups',
+      'Validate regex syntax',
+    ],
   },
 
   // ==================
@@ -256,6 +304,12 @@ export const ToolJsonLdSoftwareApplication = {
     'applicationCategory': 'DeveloperTool',
     'description':
       'Convert Base64 strings into image files instantly with this free online tool.',
+    'featureList': [
+      'Convert Base64 strings into images',
+      'Preview decoded images instantly',
+      'Support common image formats',
+      'Client-side decoding without uploads',
+    ],
   },
 
   [ToolKeys.imageToBase64]: {
@@ -263,6 +317,12 @@ export const ToolJsonLdSoftwareApplication = {
     'applicationCategory': 'DeveloperTool',
     'description':
       'Encode image files into Base64 strings instantly using this free online tool.',
+    'featureList': [
+      'Convert images to Base64 encoded strings',
+      'Preview image encoding results',
+      'Support common image formats',
+      'Client-side processing without uploads',
+    ],
   },
 
   // ==================
@@ -272,6 +332,12 @@ export const ToolJsonLdSoftwareApplication = {
     'applicationCategory': 'AIApplication',
     'description':
       'Translate text instantly using the Chrome Built-In AI API with no API key required.',
+    'featureList': [
+      'Translate text between multiple languages',
+      'Use Chrome Built-In AI for translation',
+      'Produce natural and accurate translations',
+      'No API key or server required',
+    ],
   },
 
   [ToolKeys.chromeAiLanguageDetector]: {
@@ -279,6 +345,12 @@ export const ToolJsonLdSoftwareApplication = {
     'applicationCategory': 'AIApplication',
     'description':
       'Detect the language of any text instantly using Chrome Built-In AI API.',
+    'featureList': [
+      'Detect the language of input text',
+      'Support multiple languages',
+      'Use Chrome Built-In AI for detection',
+      'Instant client-side analysis',
+    ],
   },
 
   [ToolKeys.chromeAiSummarizer]: {
@@ -286,12 +358,24 @@ export const ToolJsonLdSoftwareApplication = {
     'applicationCategory': 'AIApplication',
     'description':
       'Summarize long text instantly using Chrome Built-In AI API.',
+    'featureList': [
+      'Summarize long text into concise content',
+      'Adjust summary length and focus',
+      'Use Chrome Built-In AI for summarization',
+      'Client-side processing without external APIs',
+    ],
   },
 
   [ToolKeys.chromeAiWriter]: {
     'name': 'AI Writer',
     'applicationCategory': 'AIApplication',
     'description': 'Generate text content online using Chrome Built-In AI API.',
+    'featureList': [
+      'Generate text based on user prompts',
+      'Support multiple writing styles',
+      'Use Chrome Built-In AI for text generation',
+      'Instant content creation',
+    ],
   },
 
   [ToolKeys.chromeAiRewriter]: {
@@ -299,12 +383,24 @@ export const ToolJsonLdSoftwareApplication = {
     'applicationCategory': 'AIApplication',
     'description':
       'Rewrite and improve text instantly using Chrome Built-In AI API.',
+    'featureList': [
+      'Rewrite text with improved clarity',
+      'Change tone or wording of content',
+      'Use Chrome Built-In AI for rewriting',
+      'Preserve original meaning',
+    ],
   },
 
   [ToolKeys.chromeAiPrompt]: {
     'name': 'AI Prompt Helper',
     'applicationCategory': 'AIApplication',
     'description': 'Generate and test AI prompts using Chrome Built-In AI API.',
+    'featureList': [
+      'Generate structured prompts for AI usage',
+      'Improve prompt clarity and effectiveness',
+      'Use Chrome Built-In AI for prompt generation',
+      'Support various AI writing scenarios',
+    ],
   },
 
   // ==================
@@ -313,6 +409,12 @@ export const ToolJsonLdSoftwareApplication = {
     'name': 'Face Detector',
     'applicationCategory': 'ComputerVisionApplication',
     'description': 'Detect faces in images using the Web Detection API.',
+    'featureList': [
+      'Detect human faces in images',
+      'Identify face positions and bounding boxes',
+      'Use Web Detection API',
+      'Client-side image analysis',
+    ],
   },
 
   [ToolKeys.chromeBarcodeDetector]: {
@@ -320,6 +422,12 @@ export const ToolJsonLdSoftwareApplication = {
     'applicationCategory': 'ComputerVisionApplication',
     'description':
       'Scan and decode barcodes online using the Web Detection API.',
+    'featureList': [
+      'Detect barcodes from images',
+      'Support common barcode formats',
+      'Use Web Detection API',
+      'Instant client-side scanning',
+    ],
   },
 
   [ToolKeys.chromeTextDetector]: {
@@ -327,5 +435,11 @@ export const ToolJsonLdSoftwareApplication = {
     'applicationCategory': 'ComputerVisionApplication',
     'description':
       'Detect and extract text from images using the Web Detection API.',
+    'featureList': [
+      'Detect text within images',
+      'Extract readable text from visual content',
+      'Use Web Detection API',
+      'Client-side image processing',
+    ],
   },
 };
