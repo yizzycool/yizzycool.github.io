@@ -182,7 +182,6 @@ export const ToolUrls = _fromPairs(
     const toolGroupKey = _findKey(ToolGroupItems, (value) =>
       value.includes(toolKey)
     ) as string;
-    console.log(toolGroupKey, toolKey);
     return [
       toolKey,
       `/tools/${ToolGroupSlugs[toolGroupKey]}/${ToolSlugs[toolKey]}`,

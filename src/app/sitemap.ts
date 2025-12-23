@@ -14,8 +14,7 @@ export const dynamic = 'force-static';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN as string;
 
-const getDate = () => new Date().toISOString().split('T')[0];
-const lastModified = getDate();
+const lastModified = new Date().toISOString();
 
 const generateBlogData = async (): Promise<MetadataRoute.Sitemap> => {
   const changeFrequency = 'weekly' as const;
