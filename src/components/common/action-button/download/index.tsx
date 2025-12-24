@@ -6,7 +6,7 @@ import useDisplay from '../hooks/use-display';
 import Button from '../../button';
 
 interface Props extends ActionButtonProps {
-  blob?: Blob;
+  blob?: Blob | null;
   imageUrl?: string;
   filename?: string;
 }
