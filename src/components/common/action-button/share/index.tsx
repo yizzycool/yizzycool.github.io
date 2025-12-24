@@ -1,17 +1,19 @@
 'use client';
 
 import type { ActionButtonProps } from '@/types/common/action-button';
-import { Check, Copy } from 'lucide-react';
+import { Share2 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import useDisplay from '../hooks/use-display';
 import Button from '../../button';
 import _isNil from 'lodash/isNil';
 
 interface Props extends ActionButtonProps {
-  content?: string | Blob | null | undefined;
+  content?: string | File | null | undefined;
+  shareTitle?: '';
+  shareText?: '';
 }
 
-export default function CopyAction({
+export default function ShareAction({
   display = 'icon-label',
   variant = 'secondary',
   size = 'xs',
@@ -20,9 +22,10 @@ export default function CopyAction({
   className,
   disabled = false,
   content = '',
-  label = 'copy',
+  label = 'Share',
+  shareTitle = '',
+  shareText = '',
 }: Props) {
-  const [copied, setCopied] = useState(false);
   const [isActionSupported, setIsActionSupported] = useState(false);
   const [isMimeTypeSupported, setIsMimeTypeSupported] = useState(false);
 
@@ -38,60 +41,67 @@ export default function CopyAction({
     }
   }, [content]);
 
+  const shareData = useMemo(() => {
+    if (typeof content === 'string') {
+      return {
+        title: shareTitle,
+        text: shareText,
+        url: content,
+      };
+    } else if (_isNil(content)) {
+      return {};
+    } else {
+      return {
+        title: shareTitle,
+        text: shareText,
+        files: [content],
+      };
+    }
+  }, [content]);
+
   const isButtonDisabled = useMemo(() => {
     return (
       disabled || _isNil(content) || !isMimeTypeSupported || !isActionSupported
     );
   }, [disabled, content, isMimeTypeSupported, isActionSupported]);
 
-  // Check if ClipboardItem and navigator?.clipboard?.write exist
+  // Check if navigator.share and navigator.share.canShare exist
   useEffect(() => {
     setIsActionSupported(
-      !!window.ClipboardItem && !!window.navigator?.clipboard?.write
+      !!window.navigator.share && !!window.navigator.canShare
     );
-  }, []);
+  }, [shareData]);
 
   // Check if mimeType is supported
   useEffect(() => {
     setIsMimeTypeSupported(
-      !!window.ClipboardItem && ClipboardItem.supports(mimeType)
+      !!window.navigator.canShare && window.navigator.canShare(shareData)
     );
   }, [mimeType]);
 
-  const handleCopy = async () => {
+  const handleShare = async () => {
     if (isButtonDisabled) return;
     if (!content) return;
 
-    const mimeType = typeof content === 'string' ? 'text/plain' : content.type;
-    const clipboardItemData = {
-      [mimeType]: content,
-    };
-    const clipboardItem = new ClipboardItem(clipboardItemData);
-    navigator.clipboard
-      .write([clipboardItem])
-      .then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      })
-      .catch((e) => {
-        console.log('Clipboard API failed:', e);
-      });
+    navigator.share(shareData).catch((e) => {
+      console.log('Share API failed:', e);
+    });
   };
 
   if (!isActionSupported) return null;
 
   return (
     <Button
-      onClick={handleCopy}
+      onClick={handleShare}
       variant={variant}
       size={size}
       rounded={rounded}
       bordered={bordered}
       className={className}
-      icon={!showIcon ? undefined : copied ? Check : Copy}
+      icon={!showIcon ? undefined : Share2}
       disabled={isButtonDisabled}
     >
-      {!showLabel ? null : copied ? 'Copied' : label}
+      {!showLabel ? null : label}
     </Button>
   );
 }

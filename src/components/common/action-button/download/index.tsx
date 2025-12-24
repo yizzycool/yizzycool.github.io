@@ -1,37 +1,51 @@
 'use client';
 
-import { ActionButtonProps } from '@/types/common/action-button';
+import type { ActionButtonProps } from '@/types/common/action-button';
 import { Download } from 'lucide-react';
 import useDisplay from '../hooks/use-display';
 import Button from '../../button';
 
 interface Props extends ActionButtonProps {
-  blob?: Blob | null;
+  blob?: Blob;
+  imageUrl?: string;
   filename?: string;
 }
 
 export default function DownloadAction({
   display = 'icon-label',
   size = 'xs',
+  rounded,
+  bordered,
+  className,
   disabled = false,
-  blob = null,
+  blob,
+  imageUrl,
   filename = 'download',
+  label = 'Download',
 }: Props) {
   const { showIcon, showLabel } = useDisplay({ display });
 
-  const onDownloadClick = () => {
+  const onDownloadClick = async () => {
     if (disabled) return;
 
     if (blob) {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      download(blob);
+    } else if (imageUrl) {
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+      download(blob);
     }
+  };
+
+  const download = (blob: Blob) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -39,10 +53,13 @@ export default function DownloadAction({
       onClick={onDownloadClick}
       variant="primary"
       size={size}
+      rounded={rounded}
+      bordered={bordered}
+      className={className}
       icon={showIcon ? Download : undefined}
       disabled={disabled}
     >
-      {showLabel ? 'Download' : null}
+      {showLabel ? label : null}
     </Button>
   );
 }

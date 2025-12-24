@@ -31,11 +31,9 @@ export default function Textarea({
 }: Props) {
   return (
     <Field className="w-full">
-      {title && (
-        <Label className="text-sm/6 font-bold dark:text-white">{title}</Label>
-      )}
+      {title && <Label className="text-sm/6 font-bold">{title}</Label>}
       {desc && (
-        <Description className="mb-3 text-sm/6 opacity-70 dark:text-white/50">
+        <Description className="mb-3 text-sm/6 text-neutral-500 dark:text-neutral-400">
           {desc}
         </Description>
       )}

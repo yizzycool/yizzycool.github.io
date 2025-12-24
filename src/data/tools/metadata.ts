@@ -1,6 +1,24 @@
 import { ToolKeys } from '.';
 
 export const ToolMetadata = {
+  [ToolKeys.qrCodeGenerator]: {
+    title: 'QR Code Generator – Generate QR Codes Online | Yizzy Peasy',
+    description:
+      'Free online QR Code Generator. Instantly generate QR codes from text, URLs, or custom input with no signup required.',
+    openGraph: {
+      title: 'QR Code Generator',
+      description:
+        'Generate QR codes instantly from URLs or text using this free online QR code generator.',
+    },
+    twitter: {
+      title: 'QR Code Generator',
+      description:
+        'Create QR codes instantly from text or URLs with this free online tool.',
+    },
+  },
+
+  // ==================
+
   [ToolKeys.urlEncoderDecoder]: {
     title:
       'URL Encoder & Decoder – Encode and Decode URLs Online | Yizzy Peasy',
@@ -245,6 +263,21 @@ export const ToolMetadata = {
 };
 
 export const ToolJsonLdSoftwareApplication = {
+  [ToolKeys.qrCodeGenerator]: {
+    'name': 'QR Code Generator',
+    'applicationCategory': 'Utility',
+    'description':
+      'An online QR code generator that allows users to generate QR codes from text, URLs, or custom content instantly.',
+    'featureList': [
+      'Generate QR codes from text or URLs',
+      'Instant QR code preview',
+      'Download generated QR codes',
+      'Client-side processing without data upload',
+    ],
+  },
+
+  // ==================
+
   [ToolKeys.urlEncoderDecoder]: {
     'name': 'URL Encoder & Decoder',
     'applicationCategory': 'DeveloperTool',

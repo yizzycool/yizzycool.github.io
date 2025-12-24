@@ -43,15 +43,13 @@ export default function Config({
     >
       <div className="border-b border-slate-100 dark:border-white/5" />
       <div className="flex flex-col overflow-y-auto px-4 py-8 sm:px-8">
-        <div className="">
-          <Textarea
-            title="System Prompt"
-            desc="Give the language model some instructions"
-            placeholder="ex: You are a helpful and friendly assistant."
-            value={newOptions.systemPrompt}
-            onChange={(e) => onChange('systemPrompt', e.target.value)}
-          />
-        </div>
+        <Textarea
+          title="System Prompt"
+          desc="Give the language model some instructions"
+          placeholder="ex: You are a helpful and friendly assistant."
+          value={newOptions.systemPrompt}
+          onChange={(e) => onChange('systemPrompt', e.target.value)}
+        />
         <div className="mt-8">
           <Slider
             title="Top K"
@@ -60,7 +58,7 @@ export default function Config({
             max={8}
             value={newOptions.topK as number}
             step={1}
-            onChange={(value) => onChange('topK', value)}
+            onChange={(e) => onChange('topK', Number(e.target.value))}
           />
         </div>
         <div className="mt-8">
@@ -71,7 +69,7 @@ export default function Config({
             max={2.0}
             value={newOptions.temperature as number}
             step={0.1}
-            onChange={(value) => onChange('temperature', value)}
+            onChange={(e) => onChange('temperature', Number(e.target.value))}
           />
         </div>
         <div className="-mx-4 my-4 border-b border-slate-100 sm:-mx-8 dark:border-white/5" />

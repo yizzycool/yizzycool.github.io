@@ -4,6 +4,17 @@ import { Description, Field, Label } from '@headlessui/react';
 import clsx from 'clsx';
 import _toNumber from 'lodash/toNumber';
 
+type Props = {
+  title?: string;
+  desc?: string;
+  min: number;
+  max: number;
+  value: number;
+  step?: number;
+  showBubble?: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
 export default function Slider({
   title,
   desc,
@@ -11,29 +22,22 @@ export default function Slider({
   max,
   value,
   step = 0.1,
+  showBubble = true,
   onChange = () => {},
-}: {
-  title?: string;
-  desc?: string;
-  min: number;
-  max: number;
-  value: number;
-  step?: number;
-  onChange?: (value: number) => void;
-}) {
+}: Props) {
   return (
     <Field>
-      {title && (
-        <Label className="text-sm/6 font-medium dark:text-white">{title}</Label>
-      )}
+      {title && <Label className="text-sm/6 font-bold">{title}</Label>}
       {desc && (
-        <Description className="text-sm/6 dark:text-white/50">
+        <Description className="text-sm/6 text-neutral-500 dark:text-neutral-400">
           {desc}
         </Description>
       )}
-      <div className="mx-auto w-fit rounded-md bg-neutral-800/5 px-2 py-1 text-xs dark:bg-white/10">
-        {value}
-      </div>
+      {showBubble && (
+        <div className="mx-auto w-fit rounded-md bg-neutral-800/5 px-2 py-1 text-xs dark:bg-white/10">
+          {value}
+        </div>
+      )}
       <input
         className={clsx(
           'mt-4 h-2 w-full cursor-pointer appearance-none rounded-lg bg-neutral-200 dark:bg-neutral-700',
@@ -48,7 +52,7 @@ export default function Slider({
         max={max}
         value={value}
         step={step}
-        onChange={(event) => onChange(_toNumber(event.target.value))}
+        onChange={onChange}
       />
     </Field>
   );

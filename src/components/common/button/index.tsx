@@ -44,7 +44,7 @@ export default function Button({
       !disabled && 'hover:bg-neutral-800 dark:hover:bg-neutral-200'
     ),
     secondary: clsx(
-      'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100 border-neutral-600 dark:border-neutral-400',
+      'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100 border-neutral-300 dark:border-neutral-600',
       !disabled && 'hover:bg-neutral-200 dark:hover:bg-neutral-700'
     ),
     ghost: clsx(

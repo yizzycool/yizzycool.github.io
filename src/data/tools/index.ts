@@ -26,6 +26,7 @@ import {
 // Tool Groups
 
 export const ToolGroupKeys = {
+  everydayLifeTool: 'everydayLifeTool',
   devTool: 'devTool',
   imgTool: 'imgTool',
   chromeAiApi: 'chromeAiApi',
@@ -33,6 +34,7 @@ export const ToolGroupKeys = {
 };
 
 export const ToolGroupKeysOrder = [
+  ToolGroupKeys.everydayLifeTool,
   ToolGroupKeys.devTool,
   ToolGroupKeys.imgTool,
   ToolGroupKeys.chromeAiApi,
@@ -40,6 +42,7 @@ export const ToolGroupKeysOrder = [
 ];
 
 export const ToolGroupNames = {
+  [ToolGroupKeys.everydayLifeTool]: 'Everyday Life Tool',
   [ToolGroupKeys.devTool]: 'Developer Tools',
   [ToolGroupKeys.imgTool]: 'Image Tools',
   [ToolGroupKeys.chromeAiApi]: 'Chrome AI APIs',
@@ -47,6 +50,7 @@ export const ToolGroupNames = {
 };
 
 export const ToolGroupSlugs = {
+  [ToolGroupKeys.everydayLifeTool]: 'everyday-life-tool',
   [ToolGroupKeys.devTool]: 'dev-tool',
   [ToolGroupKeys.imgTool]: 'image-tool',
   [ToolGroupKeys.chromeAiApi]: 'chrome-built-in-ai-api',
@@ -56,6 +60,8 @@ export const ToolGroupSlugs = {
 // Tools
 
 export const ToolKeys = {
+  qrCodeGenerator: 'qrCodeGenerator',
+
   urlEncoderDecoder: 'urlEncoderDecoder',
   jsonFormatter: 'jsonFormatter',
   unixTimestampConverter: 'unixTimestampConverter',
@@ -77,6 +83,7 @@ export const ToolKeys = {
 };
 
 export const ToolGroupItems = {
+  [ToolGroupKeys.everydayLifeTool]: [ToolKeys.qrCodeGenerator],
   [ToolGroupKeys.devTool]: [
     ToolKeys.urlEncoderDecoder,
     ToolKeys.jsonFormatter,
@@ -100,6 +107,8 @@ export const ToolGroupItems = {
 };
 
 export const ToolTitles = {
+  [ToolKeys.qrCodeGenerator]: 'QR Code Generator',
+
   [ToolKeys.urlEncoderDecoder]: 'URL Encoder / Decoder',
   [ToolKeys.jsonFormatter]: 'JSON Formatter',
   [ToolKeys.unixTimestampConverter]: 'Unix Timestamp Converter',
@@ -121,6 +130,9 @@ export const ToolTitles = {
 };
 
 export const ToolDescriptions = {
+  [ToolKeys.qrCodeGenerator]:
+    'Generate QR codes instantly from text, URLs, or custom content with this free online QR code generator.',
+
   [ToolKeys.urlEncoderDecoder]:
     'Quickly encode or decode URLs and text to prevent errors and ensure safe, reliable data transmission across the web.',
   [ToolKeys.jsonFormatter]:
@@ -157,6 +169,8 @@ export const ToolDescriptions = {
 };
 
 export const ToolSlugs = {
+  [ToolKeys.qrCodeGenerator]: 'qr-code-generator',
+
   [ToolKeys.urlEncoderDecoder]: 'url-encoder-decoder',
   [ToolKeys.jsonFormatter]: 'json-formatter',
   [ToolKeys.unixTimestampConverter]: 'unix-timestamp-converter',
@@ -190,6 +204,8 @@ export const ToolUrls = _fromPairs(
 );
 
 export const ToolIcons = {
+  [ToolKeys.qrCodeGenerator]: QrCode,
+
   [ToolKeys.urlEncoderDecoder]: ArrowLeftRight,
   [ToolKeys.jsonFormatter]: CodeXml,
   [ToolKeys.unixTimestampConverter]: Clock,
