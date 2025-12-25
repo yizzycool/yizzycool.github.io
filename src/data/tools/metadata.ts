@@ -17,6 +17,22 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.wordCounter]: {
+    title: 'Word Counter – Count Words & Characters Online | Yizzy Peasy',
+    description:
+      'Free online Word Counter for Chinese and English text. Count words, characters, numbers, and lines, check social media character limits, and apply basic text transformations.',
+    openGraph: {
+      title: 'Word Counter',
+      description:
+        'Count words and characters for Chinese and English text, check social media limits, and transform text instantly.',
+    },
+    twitter: {
+      title: 'Word Counter',
+      description:
+        'Count words, characters, and numbers with social media limits and text transformations.',
+    },
+  },
+
   // ==================
 
   [ToolKeys.urlEncoderDecoder]: {
@@ -276,6 +292,19 @@ export const ToolJsonLdSoftwareApplication = {
     ],
   },
 
+  [ToolKeys.wordCounter]: {
+    'name': 'Word Counter',
+    'applicationCategory': 'Utility',
+    'description':
+      'An online word counter that supports Chinese and English text, counts words, characters, numbers, and lines, provides social media character limit guidance, and offers basic text transformations.',
+    'featureList': [
+      'Count words and characters for Chinese and English text',
+      'Count numbers and lines',
+      'Display social media character limits',
+      'Convert text to uppercase, lowercase, or title case',
+      'Trim extra whitespace',
+    ],
+  },
   // ==================
 
   [ToolKeys.urlEncoderDecoder]: {

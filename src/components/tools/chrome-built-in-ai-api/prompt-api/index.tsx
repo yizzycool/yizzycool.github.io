@@ -34,7 +34,10 @@ export default function PromptApi() {
   } = useAiLanguageModel();
 
   return (
-    <div className="relative flex h-full flex-col text-left">
+    <div
+      className="relative flex h-full flex-col text-left"
+      style={{ height: 'calc(100dvh - 68px' }}
+    >
       <HeaderBlock />
 
       <SectionGap />

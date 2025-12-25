@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Hash, RefreshCw } from 'lucide-react';
 import Card from '@/components/common/card';
 import ResultRow from './components/result-row';
+import CardTitle from '@/components/common/card/title';
 
 type ConvertedDate = {
   utc?: string;
@@ -38,14 +39,12 @@ export default function TimestampToDateCard() {
 
   return (
     <Card animation="fade-in" className="text-left">
-      <div className="border-b border-neutral-100 pb-6 dark:border-neutral-800">
-        <div className="flex items-center gap-2">
-          <Hash className="h-5 w-5 text-neutral-500" />
-          <h3 className="text-lg font-semibold">Timestamp to Date</h3>
-        </div>
-      </div>
+      <CardTitle icon={Hash}>Timestamp to Date</CardTitle>
 
-      <div className="flex-1 pt-6">
+      {/* Separate */}
+      <div className="-mx-6 my-6 border-b border-neutral-200 dark:border-neutral-700" />
+
+      <div className="flex-1">
         <div className="space-y-4">
           <div>
             <label className="mb-2 block text-sm font-medium">

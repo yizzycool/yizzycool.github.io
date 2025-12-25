@@ -3,7 +3,7 @@
 import type { ChangeEvent } from 'react';
 import { useState } from 'react';
 import browserUtils from '@/utils/browser-utils';
-import { FileCode, FileCode2 } from 'lucide-react';
+import { Code, FileCode, FileCode2, Link2 } from 'lucide-react';
 import HeaderBlock from '../../components/header-block';
 import Textarea from '@/components/common/textarea';
 import Button from '@/components/common/button';
@@ -13,6 +13,7 @@ import SwapAction from '@/components/common/action-button/swap';
 import PasteAction from '@/components/common/action-button/paste';
 import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
+import Label from '@/components/common/label';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 
@@ -62,13 +63,10 @@ export default function UrlEncoderDecoder() {
       <SectionGap />
 
       {/* Input block */}
-      <div className="mb-3 flex w-full flex-col-reverse items-center justify-between gap-2 sm:flex-row">
-        <label
-          htmlFor="url-textarea"
-          className="block self-start font-semibold sm:self-auto"
-        >
+      <div className="mb-3 flex w-full flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
+        <Label htmlFor="url-textarea" icon={Link2}>
           Paste URL below
-        </label>
+        </Label>
         <div className="flex items-center gap-2 self-end sm:self-auto">
           <PasteAction onClick={setInput} />
           <DeleteAction
@@ -119,13 +117,10 @@ export default function UrlEncoderDecoder() {
       <SectionGap />
 
       {/* Result block */}
-      <div className="mb-3 flex w-full flex-col-reverse items-center justify-between gap-2 sm:flex-row">
-        <label
-          htmlFor="output"
-          className="block self-start font-semibold sm:self-auto"
-        >
+      <div className="mb-3 flex w-full flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
+        <Label htmlFor="output" icon={Code}>
           Result
-        </label>
+        </Label>
         <div className="flex items-center gap-2 self-end sm:self-auto">
           <CopyAction
             content={output}

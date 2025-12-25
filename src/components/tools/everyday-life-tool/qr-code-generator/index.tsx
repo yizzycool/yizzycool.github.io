@@ -66,7 +66,7 @@ export default function QrCodeGenerator() {
       <SectionGap />
 
       {/* Input block */}
-      <div className="mb-3 flex flex-col-reverse items-center justify-between gap-2 sm:flex-row">
+      <div className="mb-3 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
         <Label htmlFor="url-textarea" icon={Link}>
           Enter URL or Text
         </Label>

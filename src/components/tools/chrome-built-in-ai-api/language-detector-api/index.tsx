@@ -14,6 +14,7 @@ import UnsupportedCard from '../components/unsupported-card';
 import ModelDownloadCard from '../components/model-download-card';
 import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
+import Label from '@/components/common/label';
 import { UnsupportedApiTypes } from '../data/unsupported-types';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
@@ -90,11 +91,10 @@ export default function LanguageDetectorApi() {
         <>
           <div className="mx-auto text-center">
             {/* Input */}
-            <div className="mb-3 flex flex-col-reverse items-center justify-between gap-2 sm:flex-row">
-              <div className="flex items-center self-start font-semibold sm:self-auto">
-                <PenLine className="mr-2" size={16} />
+            <div className="mb-3 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
+              <Label htmlFor="text-textarea" icon={PenLine}>
                 Paste your text below
-              </div>
+              </Label>
               <div className="flex items-center gap-2 self-end sm:self-auto">
                 <PasteAction onClick={onPasteText} />
                 <DeleteAction
@@ -104,6 +104,7 @@ export default function LanguageDetectorApi() {
               </div>
             </div>
             <Textarea
+              id="text-textarea"
               onChange={onChange}
               value={text}
               rows={10}

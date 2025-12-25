@@ -61,6 +61,7 @@ export const ToolGroupSlugs = {
 
 export const ToolKeys = {
   qrCodeGenerator: 'qrCodeGenerator',
+  wordCounter: 'wordCounter',
 
   urlEncoderDecoder: 'urlEncoderDecoder',
   jsonFormatter: 'jsonFormatter',
@@ -83,7 +84,10 @@ export const ToolKeys = {
 };
 
 export const ToolGroupItems = {
-  [ToolGroupKeys.everydayLifeTool]: [ToolKeys.qrCodeGenerator],
+  [ToolGroupKeys.everydayLifeTool]: [
+    ToolKeys.qrCodeGenerator,
+    ToolKeys.wordCounter,
+  ],
   [ToolGroupKeys.devTool]: [
     ToolKeys.urlEncoderDecoder,
     ToolKeys.jsonFormatter,
@@ -108,6 +112,7 @@ export const ToolGroupItems = {
 
 export const ToolTitles = {
   [ToolKeys.qrCodeGenerator]: 'QR Code Generator',
+  [ToolKeys.wordCounter]: 'Word Counter',
 
   [ToolKeys.urlEncoderDecoder]: 'URL Encoder / Decoder',
   [ToolKeys.jsonFormatter]: 'JSON Formatter',
@@ -132,6 +137,8 @@ export const ToolTitles = {
 export const ToolDescriptions = {
   [ToolKeys.qrCodeGenerator]:
     'Generate QR codes instantly from text, URLs, or custom content with this free online QR code generator.',
+  [ToolKeys.wordCounter]:
+    'Count words, characters, numbers, and lines for Chinese and English text, with social media character limits and basic text transformations.',
 
   [ToolKeys.urlEncoderDecoder]:
     'Quickly encode or decode URLs and text to prevent errors and ensure safe, reliable data transmission across the web.',
@@ -170,6 +177,7 @@ export const ToolDescriptions = {
 
 export const ToolSlugs = {
   [ToolKeys.qrCodeGenerator]: 'qr-code-generator',
+  [ToolKeys.wordCounter]: 'word-counter',
 
   [ToolKeys.urlEncoderDecoder]: 'url-encoder-decoder',
   [ToolKeys.jsonFormatter]: 'json-formatter',
@@ -205,6 +213,7 @@ export const ToolUrls = _fromPairs(
 
 export const ToolIcons = {
   [ToolKeys.qrCodeGenerator]: QrCode,
+  [ToolKeys.wordCounter]: FileText,
 
   [ToolKeys.urlEncoderDecoder]: ArrowLeftRight,
   [ToolKeys.jsonFormatter]: CodeXml,

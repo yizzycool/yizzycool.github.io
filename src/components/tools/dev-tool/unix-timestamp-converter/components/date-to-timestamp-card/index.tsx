@@ -5,6 +5,7 @@ import { CalendarDays } from 'lucide-react';
 import Card from '@/components/common/card';
 import DateInput from './components/date-input';
 import CopyAction from '@/components/common/action-button/copy';
+import CardTitle from '@/components/common/card/title';
 
 type DateInput = {
   year?: number;
@@ -50,14 +51,12 @@ export default function DateToTimestampCard() {
 
   return (
     <Card animation="fade-in" className="text-left">
-      <div className="border-b border-neutral-100 pb-6 dark:border-neutral-800">
-        <div className="flex items-center gap-2">
-          <CalendarDays className="h-5 w-5 text-neutral-500" />
-          <h3 className="text-lg font-semibold">Date to Timestamp</h3>
-        </div>
-      </div>
+      <CardTitle icon={CalendarDays}>Date to Timestamp</CardTitle>
 
-      <div className="flex-1 pt-6">
+      {/* Separate */}
+      <div className="-mx-6 my-6 border-b border-neutral-200 dark:border-neutral-700" />
+
+      <div className="flex-1">
         <div className="grid grid-cols-3 gap-3">
           <DateInput
             label="Year"

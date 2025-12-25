@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { Cpu, List, ScrollText } from 'lucide-react';
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import CopyAction from '@/components/common/action-button/copy';
+import Label from '@/components/common/label';
 import _isEmpty from 'lodash/isEmpty';
 import _range from 'lodash/range';
 
@@ -15,12 +16,9 @@ export default function PromptResult({ results, isProcessing }: Props) {
     <>
       <div
         id="result"
-        className="mb-3 flex w-full flex-col-reverse items-center justify-between gap-2 sm:flex-row"
+        className="mb-3 flex w-full flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center"
       >
-        <div className="flex items-center self-start font-semibold sm:self-auto">
-          <List className="mr-2" size={16} />
-          Result
-        </div>
+        <Label icon={List}>Result</Label>
         <div className="flex items-center gap-2 self-end sm:self-auto">
           <CopyAction content={results} disabled={_isEmpty(results)} />
         </div>

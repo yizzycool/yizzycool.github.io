@@ -12,6 +12,7 @@ import CopyAction from '@/components/common/action-button/copy';
 import ImageInfoTag from '../components/ImageInfoTag';
 import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
+import Label from '@/components/common/label';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _size from 'lodash/size';
@@ -77,8 +78,7 @@ export default function ImageToBase64() {
           <div className="grid w-full grid-cols-1 gap-8 duration-500 animate-in fade-in slide-in-from-bottom-4 lg:grid-cols-2">
             <div className="flex-1">
               <div className="mb-3 flex items-center font-semibold">
-                <ImageIcon className="mr-2" size={16} />
-                Image Preview
+                <Label icon={ImageIcon}>Image Preview</Label>
               </div>
               <div
                 className={clsx(
@@ -115,10 +115,7 @@ export default function ImageToBase64() {
             </div>
             <div className="flex-1">
               <div className="mb-3 flex items-center justify-between">
-                <div className="flex items-center font-semibold">
-                  <FileCode className="mr-2" size={16} />
-                  Base64 Output
-                </div>
+                <Label icon={FileCode}>Base64 Output</Label>
                 <CopyAction content={base64} />
               </div>
               <Textarea

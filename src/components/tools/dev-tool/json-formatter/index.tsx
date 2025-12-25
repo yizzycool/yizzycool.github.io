@@ -2,7 +2,14 @@
 
 import type { ChangeEvent } from 'react';
 import { useRef, useState } from 'react';
-import { CodeXml, FileText, Info, Maximize2, Minimize2 } from 'lucide-react';
+import {
+  Braces,
+  CodeXml,
+  FileText,
+  Info,
+  Maximize2,
+  Minimize2,
+} from 'lucide-react';
 import HeaderBlock from '../../components/header-block';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
@@ -11,6 +18,7 @@ import CopyAction from '@/components/common/action-button/copy';
 import SectionGap from '../../components/section-gap';
 import ButtonTabs from '@/components/common/button-tabs';
 import Snackbar from '@/components/common/snackbar';
+import Label from '@/components/common/label';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _size from 'lodash/size';
@@ -102,14 +110,10 @@ export default function JsonFormatter() {
       />
 
       {/* Textarea block */}
-      <div className="mb-3 mt-8 flex flex-col-reverse items-center justify-between gap-2 sm:flex-row">
-        <label
-          htmlFor="json-string-textarea"
-          className="block flex items-center self-start font-semibold sm:self-auto"
-        >
-          <FileText className="mr-2 inline-block" size={16} />
+      <div className="mb-3 mt-8 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
+        <Label htmlFor="json-string-textarea" icon={FileText}>
           Paste JSON below
-        </label>
+        </Label>
         <div className="flex items-center gap-2 self-end sm:self-auto">
           <PasteAction onClick={onPaste} />
           <DeleteAction onClick={onClear} disabled={_isEmpty(input)} />
@@ -131,13 +135,10 @@ export default function JsonFormatter() {
       <SectionGap />
 
       {/* Result block */}
-      <div className="mb-3 flex w-full flex-col-reverse items-center justify-between gap-2 sm:flex-row">
-        <label
-          htmlFor="output"
-          className="block self-start font-semibold sm:self-auto"
-        >
+      <div className="mb-3 flex w-full flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
+        <Label htmlFor="output" icon={Braces}>
           Result
-        </label>
+        </Label>
         <div className="flex items-center gap-2 self-end sm:self-auto">
           <CopyAction
             content={output}

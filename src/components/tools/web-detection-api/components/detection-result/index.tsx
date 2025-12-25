@@ -1,10 +1,11 @@
 'use client';
 
 import { TransformedResults } from '../../types';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, SquareSquare } from 'lucide-react';
 import CopyAction from '@/components/common/action-button/copy';
 import Badge from '@/components/common/badge';
 import Card from '@/components/common/card';
+import CardTitle from '@/components/common/card/title';
 import _size from 'lodash/size';
 
 type Props = {
@@ -16,11 +17,11 @@ export default function DetectionResult({ results, isProcessing }: Props) {
   return (
     <Card>
       <div className="flex items-center justify-between">
-        <div className="font-bold">Detection Results</div>
+        <CardTitle icon={SquareSquare}>Detection Results</CardTitle>
         <Badge>{_size(results)} Found</Badge>
       </div>
 
-      {/* Divider */}
+      {/* Separate */}
       <div className="-mx-6 my-6 border-b border-neutral-200 dark:border-neutral-700" />
 
       <div className="-m-6 max-h-80 flex-1 space-y-3 overflow-y-auto p-6">

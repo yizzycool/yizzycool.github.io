@@ -14,6 +14,7 @@ import DownloadAction from '@/components/common/action-button/download';
 import CopyAction from '@/components/common/action-button/copy';
 import ImageInfoTag from '../components/ImageInfoTag';
 import SectionGap from '../../components/section-gap';
+import Label from '@/components/common/label';
 import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _size from 'lodash/size';
@@ -87,14 +88,10 @@ export default function Base64ToImage() {
       <SectionGap />
 
       {/* Textarea block */}
-      <div className="mb-3 flex flex-col-reverse items-center justify-between gap-2 sm:flex-row">
-        <label
-          htmlFor="base64-textarea"
-          className="block flex items-center self-start font-semibold sm:self-auto"
-        >
-          <FileText className="mr-2 inline-block" size={16} />
+      <div className="itms-start mb-3 flex flex-col-reverse justify-between gap-2 sm:flex-row sm:items-center">
+        <Label htmlFor="base64-textarea" icon={FileText}>
           Paste Base64 string below
-        </label>
+        </Label>
         <div className="flex items-center gap-2 self-end sm:self-auto">
           <PasteAction onClick={onPasteBase64} />
           <DeleteAction onClick={onClearBase64} disabled={_isEmpty(base64)} />
@@ -116,11 +113,8 @@ export default function Base64ToImage() {
       <SectionGap />
 
       {/* Image block */}
-      <div className="mb-4 flex flex-col-reverse items-center justify-between gap-2 sm:flex-row">
-        <div className="self-start font-semibold sm:self-auto">
-          <View className="mr-2 inline-block" size={16} />
-          Image Preview
-        </div>
+      <div className="mb-4 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
+        <Label icon={View}>Image Preview</Label>
         <div className="flex items-center gap-2 self-end sm:self-auto">
           <CopyAction content={imageInfo.blob} />
           <DownloadAction
