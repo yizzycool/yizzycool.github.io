@@ -4,8 +4,7 @@ import { useMemo, useState } from 'react';
 import useWindowDevice from '@/hooks/window/use-window-device';
 import Selector from '@/components/common/selector';
 import Textarea from '@/components/common/textarea';
-import { Settings2 } from 'lucide-react';
-import ConfigDialog from '@/components/common/config-dialog';
+import ConfigDialog from '@/components/common/dialog/config';
 import Button from '@/components/common/button';
 import _isEqual from 'lodash/isEqual';
 
@@ -59,12 +58,7 @@ export default function Config({
   const onUpdate = () => !buttonDisabled && updateOption(newOptions);
 
   return (
-    <ConfigDialog
-      size="sm"
-      title="Configuration"
-      icon={Settings2}
-      display={isMobile ? 'icon' : 'icon-label'}
-    >
+    <ConfigDialog display={isMobile ? 'icon' : 'icon-label'}>
       <div className="border-b border-slate-100 dark:border-white/5" />
       <div className="flex flex-col overflow-y-auto px-4 py-8 sm:px-8">
         <div className="">

@@ -15,9 +15,11 @@ import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Tip from '../components/tip';
 import Card from '@/components/common/card';
-import Tabs from '../components/tabs';
+import BaseTabs from '@/components/common/tabs/base';
 import Button from '@/components/common/button';
-import ResultCanvas from '../components/result-canvas';
+import ResultCanvas, {
+  WebDetectionFileType,
+} from '../components/result-canvas';
 import DetectionResult from '../components/detection-result';
 import RawData from '../components/raw-data';
 import _isNull from 'lodash/isNull';
@@ -25,6 +27,8 @@ import _map from 'lodash/map';
 import _fromPairs from 'lodash/fromPairs';
 import _isEmpty from 'lodash/isEmpty';
 import _filter from 'lodash/filter';
+
+const TabList: Array<WebDetectionFileType> = ['image', 'video', 'webcam'];
 
 export default function TextDetectorApi() {
   const {
@@ -104,7 +108,10 @@ export default function TextDetectorApi() {
 
           <Card>
             <div className="flex items-center justify-between">
-              <Tabs tab={tab} setTab={setTab} />
+              <BaseTabs
+                tabs={TabList}
+                onChange={(tab) => setTab(tab as WebDetectionFileType)}
+              />
               {!!param.type && (
                 <Button
                   variant="error"

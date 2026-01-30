@@ -1,6 +1,7 @@
 'use client';
 
-import { FuseResult } from 'fuse.js';
+import type { FuseResult } from 'fuse.js';
+
 import {
   Fragment,
   MouseEventHandler,
@@ -9,12 +10,14 @@ import {
   useState,
 } from 'react';
 import { Command, Search, SearchX } from 'lucide-react';
+
 import useSearchContent from './hooks/use-search-content';
 import useKeyboardNavigation from './hooks/use-keyboard-navigation';
 import Button from '../button';
-import GeneralDialog from '../dialog/general';
+import BaseDialog from '../dialog/base';
 import Badge from '../badge';
 import ResultCard from './components/result-card';
+
 import _sortBy from 'lodash/sortBy';
 import _get from 'lodash/get';
 import _filter from 'lodash/filter';
@@ -66,9 +69,6 @@ export default function SearchDialog({ deviceType }: Props) {
         e.preventDefault();
         setIsOpen((prev) => !prev);
       }
-      if (e.key === 'Escape') {
-        setIsOpen(false);
-      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -117,10 +117,9 @@ export default function SearchDialog({ deviceType }: Props) {
       </Button>
 
       {/* Dialog */}
-      <GeneralDialog
+      <BaseDialog
         isOpen={isOpen}
         onClose={closeDialog}
-        showCloseButton={false}
         className="w-full max-w-2xl"
       >
         <div
@@ -137,6 +136,7 @@ export default function SearchDialog({ deviceType }: Props) {
               placeholder="Search articles or tools..."
               className="flex-1 bg-transparent text-lg text-neutral-900 outline-none placeholder:text-neutral-500 dark:text-neutral-100"
               data-autofocus // implement autoFocus by headlessui
+              autoFocus
             />
             <Button size="xs" variant="ghost" bordered onClick={closeDialog}>
               ESC
@@ -210,7 +210,7 @@ export default function SearchDialog({ deviceType }: Props) {
             </span>
           </div>
         </div>
-      </GeneralDialog>
+      </BaseDialog>
     </>
   );
 }

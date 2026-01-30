@@ -3,4 +3,7 @@
 
 npx lint-staged
 node misc/scripts/syncStrapiMedia.js # Sync Strapi media files to public folder
+
+sleep 3
+
 git add public/strapi/uploads/* # Stage the synced media files

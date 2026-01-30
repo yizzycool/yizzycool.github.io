@@ -20,6 +20,8 @@ export const ToolAbout = {
 
   // ==================
 
+  [ToolKeys.picMergeStudio]:
+    'PicMerge Studio is a lightweight online poster editor designed for combining multiple images into a single, well-structured canvas. It provides an intuitive editing experience that allows users to freely drag, resize, rotate, and arrange images with precision. Whether you are creating a poster, a visual layout, or a simple image composition, PicMerge Studio focuses on clarity, control, and efficiency. The editor supports flexible canvas sizing, free and grid-based layouts, and high-resolution exports without requiring any installation. Built for speed and simplicity, PicMerge Studio helps users turn multiple images into a clean, customizable poster in just a few steps.',
   [ToolKeys.base64ToImage]:
     'Base64 encoding is often used to embed images directly into text-based formats such as HTML, CSS, or JSON. This Base64 to Image tool allows users to decode Base64-encoded image strings and preview the resulting image instantly. It is useful for developers debugging embedded images, inspecting API responses, or converting Base64 data back into standard image formats without uploading files to a server.',
   [ToolKeys.imageToBase64]:

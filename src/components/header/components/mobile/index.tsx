@@ -1,18 +1,20 @@
 'use client';
 
-import { BlogCategory } from '@/types/blog';
+import type { BlogCategory } from '@/types/blog';
+
 import clsx from 'clsx';
-import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import { Home, Menu, UserRound, X } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+
 import ThemeSelector from '../theme-selector';
 import { ToolsSelectorMobile } from '../tools-selector';
 import BlogSelectorMobile from './components/blog-selector';
 import SearchDialog from '@/components/common/search-dialog';
 import GeneralLink from './components/general-link';
 import SocialIcons from '@/components/common/social-icons';
+import Drawer from '@/components/common/drawer';
 
 export default function HeaderMobile({
   categoryArticles,
@@ -43,91 +45,71 @@ export default function HeaderMobile({
       <button className="h-9 w-9 p-1" onClick={() => setOpen(true)}>
         <Menu className="w-full" />
       </button>
-      <Dialog open={open} onClose={setOpen} className="relative z-50">
-        <DialogBackdrop
-          transition
+      <Drawer
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        className="w-screen !max-w-md"
+      >
+        <div
           className={clsx(
-            'fixed inset-0 transition-opacity duration-300 ease-in-out',
-            'bg-neutral-900/20 dark:bg-black/40',
-            'backdrop-blur-sm',
-            'data-[closed]:opacity-0'
+            'flex h-full flex-col overflow-hidden py-6 shadow-2xl',
+            'bg-white/90 backdrop-blur-md dark:bg-neutral-900/95'
           )}
-        />
-        <div className="fixed inset-0 overflow-hidden">
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-              <DialogPanel
-                transition
-                className={clsx(
-                  'pointer-events-auto relative w-screen max-w-md',
-                  'transition-transform duration-500 ease-out',
-                  'data-[closed]:translate-x-full'
-                )}
-              >
-                <div
-                  className={clsx(
-                    'flex h-full flex-col overflow-hidden py-6 shadow-2xl',
-                    'bg-white/90 backdrop-blur-md dark:bg-neutral-900/95'
-                  )}
-                >
-                  <div className="flex items-center justify-between px-4 sm:px-6">
-                    <div />
-                    <button
-                      className="group rounded-full p-2 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                      onClick={closeSidePanel}
-                    >
-                      <X
-                        aria-hidden="true"
-                        size={24}
-                        className="transition-transform duration-300 group-hover:rotate-90"
-                      />
-                    </button>
-                  </div>
+        >
+          <div className="flex items-center justify-between px-4 sm:px-6">
+            <div />
+            <button
+              className="group rounded-full p-2 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+              onClick={closeSidePanel}
+            >
+              <X
+                aria-hidden="true"
+                size={24}
+                className="transition-transform duration-300 group-hover:rotate-90"
+              />
+            </button>
+          </div>
 
-                  {/* Drawer Contents */}
-                  <div className="relative mt-6 flex flex-1 flex-col gap-2 overflow-y-auto px-4">
-                    {/* Home */}
-                    <GeneralLink
-                      onClick={closeSidePanel}
-                      icon={Home}
-                      label="Home"
-                      href="/"
-                    />
+          {/* Drawer Contents */}
+          <div className="relative mt-6 flex flex-1 flex-col gap-2 overflow-y-auto px-4">
+            {/* Home */}
+            <GeneralLink
+              onClick={closeSidePanel}
+              icon={Home}
+              label="Home"
+              href="/"
+            />
 
-                    {/* Tools */}
-                    <ToolsSelectorMobile closeSidePanel={closeSidePanel} />
+            {/* Tools */}
+            <ToolsSelectorMobile closeSidePanel={closeSidePanel} />
 
-                    {/* Blog */}
-                    <BlogSelectorMobile
-                      closeSidePanel={closeSidePanel}
-                      categoryArticles={categoryArticles}
-                    />
+            {/* Blog */}
+            <BlogSelectorMobile
+              closeSidePanel={closeSidePanel}
+              categoryArticles={categoryArticles}
+            />
 
-                    {/* Resume */}
-                    <GeneralLink
-                      onClick={closeSidePanel}
-                      icon={UserRound}
-                      label="Resume"
-                      href="/resume"
-                    />
-                  </div>
+            {/* Resume */}
+            <GeneralLink
+              onClick={closeSidePanel}
+              icon={UserRound}
+              label="Resume"
+              href="/resume"
+            />
+          </div>
 
-                  {/* Drawer Footer */}
-                  <div className="mt-6 border-t border-neutral-200 px-4 pt-6 dark:border-neutral-700">
-                    <SocialIcons
-                      types={['github', 'linkedin', 'email']}
-                      className="justify-center"
-                    />
-                    <p className="mt-4 text-center text-xs text-neutral-400 dark:text-neutral-500">
-                      © 2025 Yizzy Peasy.
-                    </p>
-                  </div>
-                </div>
-              </DialogPanel>
-            </div>
+          {/* Drawer Footer */}
+          <div className="mt-6 border-t border-neutral-200 px-4 pt-6 dark:border-neutral-700">
+            <SocialIcons
+              types={['github', 'linkedin', 'email']}
+              className="justify-center"
+            />
+            <p className="mt-4 text-center text-xs text-neutral-400 dark:text-neutral-500">
+              © 2025 Yizzy Peasy.
+            </p>
           </div>
         </div>
-      </Dialog>
+      </Drawer>
     </div>
   );
 }

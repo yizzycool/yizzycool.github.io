@@ -1,11 +1,14 @@
 'use client';
 
-import { BlogCategory } from '@/types/blog';
+import type { BlogCategory } from '@/types/blog';
+
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+
+import useWindowDevice from '@/hooks/window/use-window-device';
 import HeaderDesktop from '../desktop';
 import HeaderMobile from '../mobile';
-import useWindowDevice from '@/hooks/window/use-window-device';
 
 type Props = {
   categoryArticles: BlogCategory;
@@ -14,22 +17,29 @@ type Props = {
 export default function Navbar({ categoryArticles }: Props) {
   const [scrolled, setScrolled] = useState(false);
 
+  const pathname = usePathname();
+  const isToolPage = pathname.startsWith('/tools');
+
   const { isDesktop } = useWindowDevice();
 
   // Handle Scroll & Mount Animations
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
+    // Check once page loaded
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const headerExpanded = !scrolled && !isToolPage;
 
   return (
     <div
       className={clsx(
         'fixed top-0 z-50 w-full border-b transition-all duration-300',
-        !scrolled && 'border-transparent bg-transparent py-4',
-        scrolled &&
-          'supports-backdrop-blur:bg-white/60 border-transparent bg-white/95 backdrop-blur lg:border-neutral-400/20 dark:bg-neutral-900/60'
+        headerExpanded
+          ? 'border-transparent bg-transparent py-4'
+          : 'supports-backdrop-blur:bg-white/60 border-transparent bg-white/95 backdrop-blur lg:border-neutral-400/20 dark:bg-neutral-900/60'
       )}
     >
       {isDesktop ? (

@@ -2,9 +2,11 @@
 
 import type { Rounded } from '@/types/common';
 import type { ButtonSize, ButtonVariant } from '@/types/common/button';
+
 import clsx from 'clsx';
 import { LucideIcon } from 'lucide-react';
 import { MouseEventHandler, useMemo } from 'react';
+
 import _isFunction from 'lodash/isFunction';
 
 type Props = {
@@ -36,7 +38,7 @@ export default function Button({
   disabled = false,
 }: Props) {
   const baseStyles =
-    'flex items-center justify-center transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed';
+    'group flex items-center justify-center transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
 
   const variants = {
     primary: clsx(
@@ -48,11 +50,11 @@ export default function Button({
       !disabled && 'hover:bg-neutral-200 dark:hover:bg-neutral-700'
     ),
     ghost: clsx(
-      'text-neutral-600 dark:text-neutral-400 border-neutral-500/20',
+      'text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-neutral-700',
       !disabled && 'hover:bg-neutral-100 dark:hover:bg-neutral-800'
     ),
     outline: clsx(
-      'border border-neutral-200 text-neutral-700 dark:border-neutral-700 dark:text-neutral-300',
+      'border border-neutral-300 text-neutral-700 dark:border-neutral-700 dark:text-neutral-300',
       !disabled && 'hover:bg-neutral-200 dark:hover:bg-neutral-700'
     ),
     error: clsx(
@@ -91,6 +93,9 @@ export default function Button({
     base: 'rounded',
     md: 'rounded-md',
     lg: 'rounded-lg',
+    xl: 'rounded-xl',
+    '2xl': 'rounded-2xl',
+    '3xl': 'rounded-3xl',
     full: 'rounded-full',
   };
 

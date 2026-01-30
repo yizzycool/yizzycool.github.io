@@ -105,6 +105,30 @@ export const ToolMetadata = {
 
   // ==================
 
+  [ToolKeys.picMergeStudio]: {
+    title: 'PicMerge Studio – Merge Multiple Images into One Poster Online',
+    description:
+      'PicMerge Studio is a free online poster editor that lets you merge multiple images into one canvas. Drag, resize, rotate, and export high-quality posters instantly.',
+    keywords: [
+      'image merge',
+      'merge images online',
+      'poster editor',
+      'combine photos',
+      'photo merge tool',
+      'canvas editor',
+    ],
+    openGraph: {
+      title: 'PicMerge Studio – Merge Multiple Images into One Poster',
+      description:
+        'Create posters by merging multiple images into one canvas. Drag, resize, rotate, and export high-quality results instantly.',
+    },
+    twitter: {
+      title: 'PicMerge Studio – Merge Multiple Images into One Poster',
+      description:
+        'A lightweight online studio to merge multiple images into one clean, customizable poster.',
+    },
+  },
+
   [ToolKeys.base64ToImage]: {
     title: 'Base64 to Image Converter – Decode Base64 to Image | Yizzy Peasy',
     description:
@@ -360,6 +384,20 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   // ==================
+
+  [ToolKeys.picMergeStudio]: {
+    'name': 'PicMerge Studio',
+    'applicationCategory': 'MultimediaApplication',
+    'description':
+      'PicMerge Studio is an online poster editor that allows users to merge multiple images into a single canvas. Users can freely drag, resize, rotate, and export high-quality posters.',
+    'featureList': [
+      'Merge multiple images into one poster',
+      'Drag, resize, and rotate images',
+      'Free layout and grid layout modes',
+      'High-resolution export',
+      'No installation required',
+    ],
+  },
 
   [ToolKeys.base64ToImage]: {
     'name': 'Base64 to Image Converter',

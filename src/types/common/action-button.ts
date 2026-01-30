@@ -1,7 +1,10 @@
 import type { Rounded } from '.';
 import type { ButtonSize, ButtonVariant } from './button';
 
-export type ActionButtonDisplay = 'icon' | 'icon-label' | 'label';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const ActionButtonDisplays = ['icon', 'icon-label', 'label'] as const;
+
+export type ActionButtonDisplay = (typeof ActionButtonDisplays)[number];
 
 export interface ActionButtonProps {
   display?: ActionButtonDisplay;

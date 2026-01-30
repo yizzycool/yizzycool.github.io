@@ -62,6 +62,8 @@ export default function Snackbar({
       if (!timerRef.current) return;
       clearTimeout(timerRef.current);
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   // Sync `message` from `content` if content is not empty
@@ -120,6 +122,9 @@ export default function Snackbar({
     base: 'rounded',
     md: 'rounded-md',
     lg: 'rounded-lg',
+    xl: 'rounded-xl',
+    '2xl': 'rounded-2xl',
+    '3xl': 'rounded-3xl',
     full: 'rounded-full',
   };
 

@@ -15,6 +15,7 @@ import {
   FileText,
   Image,
   Languages,
+  Layers,
   PenTool,
   QrCode,
   Radar,
@@ -68,6 +69,7 @@ export const ToolKeys = {
   unixTimestampConverter: 'unixTimestampConverter',
   regexTester: 'regexTester',
 
+  picMergeStudio: 'picMergeStudio',
   base64ToImage: 'base64ToImage',
   imageToBase64: 'imageToBase64',
 
@@ -94,7 +96,11 @@ export const ToolGroupItems = {
     ToolKeys.unixTimestampConverter,
     ToolKeys.regexTester,
   ],
-  [ToolGroupKeys.imgTool]: [ToolKeys.base64ToImage, ToolKeys.imageToBase64],
+  [ToolGroupKeys.imgTool]: [
+    ToolKeys.picMergeStudio,
+    ToolKeys.base64ToImage,
+    ToolKeys.imageToBase64,
+  ],
   [ToolGroupKeys.chromeAiApi]: [
     ToolKeys.chromeAiTranslator,
     ToolKeys.chromeAiLanguageDetector,
@@ -119,6 +125,7 @@ export const ToolTitles = {
   [ToolKeys.unixTimestampConverter]: 'Unix Timestamp Converter',
   [ToolKeys.regexTester]: 'Regular Expression Tester',
 
+  [ToolKeys.picMergeStudio]: 'PicMerge Studio',
   [ToolKeys.base64ToImage]: 'Base64 to Image',
   [ToolKeys.imageToBase64]: 'Image to Base64',
 
@@ -149,6 +156,8 @@ export const ToolDescriptions = {
   [ToolKeys.regexTester]:
     'Test and debug regular expressions in real time with instant match highlighting and group inspection.',
 
+  [ToolKeys.picMergeStudio]:
+    'A lightweight poster editor to merge multiple images into one canvas.',
   [ToolKeys.base64ToImage]:
     'Instantly convert Base64 strings back into images, supporting multiple formats for fast preview and verification.',
   [ToolKeys.imageToBase64]:
@@ -184,6 +193,7 @@ export const ToolSlugs = {
   [ToolKeys.unixTimestampConverter]: 'unix-timestamp-converter',
   [ToolKeys.regexTester]: 'regex-tester',
 
+  [ToolKeys.picMergeStudio]: 'pic-merge-studio',
   [ToolKeys.base64ToImage]: 'base64-to-image',
   [ToolKeys.imageToBase64]: 'image-to-base64',
 
@@ -220,6 +230,7 @@ export const ToolIcons = {
   [ToolKeys.unixTimestampConverter]: Clock,
   [ToolKeys.regexTester]: Regex,
 
+  [ToolKeys.picMergeStudio]: Layers,
   [ToolKeys.base64ToImage]: FileImage,
   [ToolKeys.imageToBase64]: Image,
 

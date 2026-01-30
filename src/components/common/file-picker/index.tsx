@@ -3,36 +3,48 @@
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
 import { Image, LucideIcon, Upload } from 'lucide-react';
+
 import Button from '../button';
 
 type Props = {
   icon?: LucideIcon;
   title?: string;
   desc?: string;
+  showButton?: boolean;
   buttonIcon?: LucideIcon;
   buttonText?: string;
   accept?: string;
+  multiple?: boolean;
   onFileChange?: (file: File) => void;
+  onFilesChange?: (files: FileList) => void;
 };
 
 export default function FilePicker({
   icon: Icon = Image,
   title = 'Click to upload',
   desc = 'or drop an image here',
+  showButton = true,
   buttonIcon: ButtonIcon = Upload,
   buttonText = 'Choose File',
   accept = 'image/*',
+  multiple = false,
   onFileChange = () => {},
+  onFilesChange = () => {},
 }: Props) {
   const [isDragging, setIsDragging] = useState(false);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    event.target.value = '';
-    onFileChange(file);
+    if (multiple) {
+      const files = event.target.files;
+      if (!files || !files.length) return;
+      onFilesChange(files);
+    } else {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      onFileChange(file);
+    }
   };
 
   const onDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
@@ -58,6 +70,13 @@ export default function FilePicker({
     return false;
   };
 
+  const onClick = () => {
+    if (inputRef.current?.value) {
+      inputRef.current.value = '';
+    }
+    inputRef.current?.click();
+  };
+
   return (
     <div
       className={clsx(
@@ -68,7 +87,7 @@ export default function FilePicker({
         'data-[dragging=true]:border-neutral-900 data-[dragging=true]:dark:border-neutral-100',
         'data-[dragging=true]:bg-neutral-100 data-[dragging=true]:dark:bg-neutral-900'
       )}
-      onClick={() => inputRef.current?.click()}
+      onClick={onClick}
       onDragEnter={onDragEnter}
       onDragOver={cancelDefault}
       onDragLeave={onDragLeave}
@@ -84,15 +103,15 @@ export default function FilePicker({
         <Icon className="h-8 w-8 text-neutral-500 dark:text-neutral-400" />
       </div>
       {!!title && (
-        <div className="mt-4 w-fit px-8 py-2 text-lg font-bold">{title}</div>
+        <div className="mt-6 w-fit px-8 text-lg font-bold">{title}</div>
       )}
       {!!desc && (
-        <div className="max-w-xs text-sm text-neutral-500 dark:text-neutral-400">
+        <div className="mt-2 max-w-xs text-sm text-neutral-500 dark:text-neutral-400">
           {desc}
         </div>
       )}
       {/* Button */}
-      {(!!ButtonIcon || !!buttonText) && (
+      {showButton && (!!ButtonIcon || !!buttonText) && (
         <Button
           variant="primary"
           size="sm"
@@ -108,6 +127,7 @@ export default function FilePicker({
         ref={inputRef}
         type="file"
         accept={accept}
+        multiple={multiple}
         className="hidden"
         onChange={onChange}
       />

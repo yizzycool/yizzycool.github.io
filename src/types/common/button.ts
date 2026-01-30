@@ -1,12 +1,19 @@
-export type ButtonVariant =
-  | 'primary'
-  | 'secondary'
-  | 'ghost'
-  | 'outline'
-  | 'error'
-  | 'dark-sky'
-  | 'neutral'
-  | 'success'
-  | 'blue';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const ButtonVariants = [
+  'primary',
+  'secondary',
+  'ghost',
+  'outline',
+  'error',
+  'dark-sky',
+  'neutral',
+  'success',
+  'blue',
+] as const;
 
-export type ButtonSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const ButtonSizes = ['xs', 'sm', 'base', 'lg', 'xl'] as const;
+
+export type ButtonVariant = (typeof ButtonVariants)[number];
+
+export type ButtonSize = (typeof ButtonSizes)[number];

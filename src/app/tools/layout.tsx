@@ -14,7 +14,7 @@ export default function RootLayout({
       <GlimmerBackground configs={GlimmerBackgroundConfigs} />
       <FeaturePanel />
       <div className="relative flex-1">
-        <div className="mx-auto min-h-full max-w-screen-lg px-4 py-8 text-center sm:px-6 lg:px-12 lg:py-12">
+        <div className="mx-auto min-h-full px-4 py-8 text-center sm:px-6 lg:px-12 lg:py-12">
           {children}
           <AboutBlock />
         </div>

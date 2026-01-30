@@ -1,7 +1,8 @@
 'use client';
 
-import { Rounded } from '@/types/common';
-import { BadgeSize, BadgeVariant } from '@/types/common/badge';
+import type { Rounded } from '@/types/common';
+import type { BadgeSize, BadgeVariant } from '@/types/common/badge';
+
 import clsx from 'clsx';
 import { LucideIcon } from 'lucide-react';
 import { useMemo } from 'react';
@@ -48,7 +49,7 @@ export default function Badge({
       'bg-neutral-100 border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300',
     success:
       'bg-green-500/10 border-green-500/20 text-green-600 dark:text-green-400',
-    blue: 'bg-blue-100 border-blue-500/20  text-blue-700 dark:bg-blue-500/10 dark:text-blue-400',
+    blue: 'bg-blue-100 border-blue-500/20 text-blue-500 dark:bg-blue-500/10 dark:text-blue-400',
   };
 
   const sizes = {
@@ -65,6 +66,9 @@ export default function Badge({
     base: 'rounded',
     md: 'rounded-md',
     lg: 'rounded-lg',
+    xl: 'rounded-xl',
+    '2xl': 'rounded-2xl',
+    '3xl': 'rounded-3xl',
     full: 'rounded-full',
   };
 

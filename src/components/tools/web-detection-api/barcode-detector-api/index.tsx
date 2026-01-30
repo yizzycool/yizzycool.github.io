@@ -14,9 +14,11 @@ import UnsupportedCard from '../components/unsupported-card';
 import SectionGap from '../../components/section-gap';
 import Tip from '../components/tip';
 import Card from '@/components/common/card';
-import Tabs from '../components/tabs';
+import BaseTabs from '@/components/common/tabs/base';
 import Button from '@/components/common/button';
-import ResultCanvas from '../components/result-canvas';
+import ResultCanvas, {
+  WebDetectionFileType,
+} from '../components/result-canvas';
 import DetectionResult from '../components/detection-result';
 import RawData from '../components/raw-data';
 import Snackbar from '@/components/common/snackbar';
@@ -24,6 +26,8 @@ import _isNull from 'lodash/isNull';
 import _map from 'lodash/map';
 import _fromPairs from 'lodash/fromPairs';
 import _get from 'lodash/get';
+
+const TabList: Array<WebDetectionFileType> = ['image', 'video', 'webcam'];
 
 const ReadableMap = {
   aztec: 'Aztec Code',
@@ -119,7 +123,10 @@ export default function BarcodeDetectorApi() {
 
           <Card>
             <div className="flex items-center justify-between">
-              <Tabs tab={tab} setTab={setTab} />
+              <BaseTabs
+                tabs={TabList}
+                onChange={(tab) => setTab(tab as WebDetectionFileType)}
+              />
               {!!param.type && (
                 <Button
                   variant="error"

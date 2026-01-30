@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss';
 import tailwindcssAnimatePlugin from 'tailwindcss-animate';
+import tailwindcssAnimatedPlugin from 'tailwindcss-animated';
 import tailwindcssTypography from '@tailwindcss/typography';
 
 module.exports = {
@@ -27,7 +28,7 @@ module.exports = {
       },
       fontFamily: {
         sans: [
-          'Inter',
+          'var(--font-inter)',
           'ui-sans-serif',
           'system-ui',
           'sans-serif',
@@ -37,7 +38,7 @@ module.exports = {
           'Noto Color Emoji',
         ],
         serif: [
-          'Inter',
+          'var(--font-inter)',
           'ui-serif',
           'Georgia',
           'Cambria',
@@ -46,7 +47,7 @@ module.exports = {
           'serif',
         ],
         mono: [
-          'Inter',
+          'var(--font-inter)',
           'ui-monospace',
           'SFMono-Regular',
           'Menlo',
@@ -59,7 +60,11 @@ module.exports = {
       },
     },
   },
-  plugins: [tailwindcssAnimatePlugin, tailwindcssTypography],
+  plugins: [
+    tailwindcssAnimatePlugin,
+    tailwindcssAnimatedPlugin,
+    tailwindcssTypography,
+  ],
   darkMode: [
     'variant',
     [

@@ -16,7 +16,7 @@ import Textarea from '@/components/common/textarea';
 import PasteAction from '@/components/common/action-button/paste';
 import CopyAction from '@/components/common/action-button/copy';
 import SectionGap from '../../components/section-gap';
-import ButtonTabs from '@/components/common/button-tabs';
+import ButtonTabs from '@/components/common/tabs/button';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
 import _isNull from 'lodash/isNull';
