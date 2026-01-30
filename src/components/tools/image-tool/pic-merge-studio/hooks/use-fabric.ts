@@ -3,6 +3,7 @@
 import type { FabricHelper } from '../types/fabric-helper';
 import type { ConfigHelper } from '../types/config-helper';
 import type { GridTemplate } from '../types/grid-layout';
+import type { SupportedFabricFilterType } from '../types/fabric-filter';
 
 import * as fabric from 'fabric';
 import { useEffect, useRef, useState } from 'react';
@@ -289,7 +290,8 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
         lockMovementY: selectedImage.lockMovementY,
         flipX: selectedImage.flipX,
         flipY: selectedImage.flipY,
-        filters: selectedImage.filters,
+        filters:
+          selectedImage.filters as InstanceType<SupportedFabricFilterType>[],
       }));
     };
 

@@ -1,4 +1,5 @@
-import type { ColorStop, filters } from 'fabric';
+import type { ColorStop } from 'fabric';
+import { SupportedFabricFilterType } from './fabric-filter';
 
 export type CanvasExportFormat = 'png' | 'jpeg' | 'svg';
 
@@ -67,10 +68,10 @@ export type ImageConfig = {
   lockMovementY: boolean;
   flipX: boolean;
   flipY: boolean;
-  // filters: SupportedFabricFilterType[];
-  filters: filters.BaseFilter<
-    string,
-    Record<string, object>,
-    Record<string, object>
-  >[];
+  filters: InstanceType<SupportedFabricFilterType>[];
+  // filters: filters.BaseFilter<
+  //   string,
+  //   Record<string, object>,
+  //   Record<string, object>
+  // >[];
 };
