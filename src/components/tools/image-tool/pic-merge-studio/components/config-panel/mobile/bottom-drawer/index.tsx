@@ -45,7 +45,7 @@ export default function BottomDrawer({ isOpen, onClose, children }: Props) {
   if (!node) return;
 
   return createPortal(
-    <Transition show={isOpen}>
+    <Transition show={isOpen} unmount={false} appear={true}>
       <TransitionChild
         enter="ease-out duration-300"
         enterFrom="translate-y-full"
@@ -53,6 +53,7 @@ export default function BottomDrawer({ isOpen, onClose, children }: Props) {
         leave="ease-in duration-300"
         leaveFrom="translate-y-0"
         leaveTo="translate-y-full"
+        unmount={false}
       >
         <div
           className={clsx(

@@ -42,7 +42,7 @@ export default function BaseDialog({
   if (!body) return null;
 
   return createPortal(
-    <Transition show={isOpen}>
+    <Transition show={isOpen} unmount={false} appear={true}>
       <div
         role="dialog"
         className="fixed inset-0 z-50 flex items-center justify-center p-4 focus:outline-none sm:p-8 md:p-12"
@@ -54,6 +54,7 @@ export default function BaseDialog({
           leave="ease-in duration-200"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
+          unmount={false}
         >
           <div
             className="absolute inset-0 bg-neutral-900/20 backdrop-blur-md dark:bg-black/40"
@@ -68,12 +69,13 @@ export default function BaseDialog({
           leave="ease-in duration-200"
           leaveFrom="opacity-100 scale-100"
           leaveTo="opacity-0 scale-95"
+          unmount={false}
         >
           <div
             className={clsx(
               'relative flex max-h-full w-fit max-w-4xl flex-col overflow-hidden rounded-3xl shadow-2xl',
               'bg-white dark:bg-[#111]',
-              'border border-slate-900/5 dark:border-white/10',
+              'border border-neutral-200 dark:border-neutral-700',
               className
             )}
           >

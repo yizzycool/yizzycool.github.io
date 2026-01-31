@@ -3,9 +3,10 @@
 import type { ActionButtonProps } from '@/types/common/action-button';
 
 import { LucideIcon, Settings2, SlidersVertical, X } from 'lucide-react';
-import { MouseEventHandler, useState } from 'react';
+import { MouseEventHandler, useEffect, useState } from 'react';
 
 import useDisplay from '../../action-button/hooks/use-display';
+import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import Button from '../../button';
 import BaseDialog from '../base';
 
@@ -28,6 +29,26 @@ export default function ConfigDialog({
   const [isOpen, setIsOpen] = useState(false);
 
   const { showIcon, showLabel } = useDisplay({ display });
+
+  // Create customEvent listener to toggle dialog
+  useEffect(() => {
+    const toggleConfigDialog = (e: CustomEvent) => {
+      if (e.detail?.isOpen === undefined) {
+        setIsOpen((prev) => !prev);
+      } else {
+        setIsOpen(e.detail.isOpen);
+      }
+    };
+
+    const unsubscriber = customEventUtils.on(
+      CustomEvents.common.toggleConfigDialog,
+      toggleConfigDialog
+    );
+
+    return () => {
+      unsubscriber();
+    };
+  }, []);
 
   const onButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     if (disabled) return;

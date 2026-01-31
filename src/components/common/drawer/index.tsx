@@ -76,7 +76,7 @@ export default function Drawer({
   };
 
   return (
-    <Transition show={isOpen}>
+    <Transition show={isOpen} unmount={false} appear={true}>
       <Wrapper
         usePortal={usePortal}
         as="div"
@@ -95,6 +95,7 @@ export default function Drawer({
             leave="ease-in duration-300"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
+            unmount={false}
           >
             <DialogBackdrop
               className="absolute inset-0 bg-neutral-900/20 backdrop-blur-md dark:bg-black/40"
@@ -110,6 +111,7 @@ export default function Drawer({
           leave="ease-in duration-500"
           leaveFrom={enterTo[side]}
           leaveTo={enterFrom[side]}
+          unmount={false}
         >
           <div
             className={clsx(

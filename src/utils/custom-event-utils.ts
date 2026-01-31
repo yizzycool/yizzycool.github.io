@@ -1,6 +1,7 @@
 export const CustomEvents = {
   common: {
     switchTab: 'common.switch-tab',
+    toggleConfigDialog: 'common.toggle-config-dialog',
   },
   tools: {
     fabricRecalcSelection: 'tools.fabric-recalc-selection',

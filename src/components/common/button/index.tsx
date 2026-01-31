@@ -55,7 +55,7 @@ export default function Button({
     ),
     outline: clsx(
       'border border-neutral-300 text-neutral-700 dark:border-neutral-700 dark:text-neutral-300',
-      !disabled && 'hover:bg-neutral-200 dark:hover:bg-neutral-700'
+      !disabled && 'hover:bg-white/30 dark:hover:bg-neutral-700/50'
     ),
     error: clsx(
       'text-red-600 dark:text-red-400 bg-red-100/50 dark:bg-red-800/10 border-red-500/20',

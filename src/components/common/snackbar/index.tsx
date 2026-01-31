@@ -2,11 +2,26 @@
 
 import type { Rounded } from '@/types/common';
 import type { ButtonSize, ButtonVariant } from '@/types/common/button';
+
 import clsx from 'clsx';
 import { LucideIcon, X } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import _isFunction from 'lodash/isFunction';
+
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
+
+import _isFunction from 'lodash/isFunction';
+
+const DefaultContents = {
+  primary: '',
+  secondary: '',
+  ghost: '',
+  outline: '',
+  error: 'Something went wrong! Please try again later.',
+  'dark-sky': '',
+  neutral: '',
+  success: '',
+  blue: '',
+};
 
 type Props = {
   open: boolean;
@@ -44,9 +59,11 @@ export default function Snackbar({
   offsetY = 20,
   onClose = () => {},
   timeout = 3000,
-  content = 'Something went wrong! Please try again later.',
+  content,
 }: Props) {
-  const [message, setMessage] = useState(content);
+  const [message, setMessage] = useState(
+    content || DefaultContents[variant] || ''
+  );
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -72,8 +89,10 @@ export default function Snackbar({
     setMessage(content);
   }, [content]);
 
-  const baseStyles =
-    'fixed z-50 flex items-center justify-center transition-all duration-300 font-medium backdrop-blur-md';
+  const baseStyles = clsx(
+    'fixed z-[60] flex justify-center backdrop-blur-md overflow-hidden',
+    'transition-all duration-300 font-medium text-left break-all'
+  );
 
   const positions = {
     'top left': { top: `${offsetY}px`, left: `${offsetX}px` },
@@ -159,7 +178,10 @@ export default function Snackbar({
         bordered && 'border',
         open ? 'opacity-100' : 'pointer-events-none opacity-0'
       )}
-      style={positions[position]}
+      style={{
+        ...positions[position],
+        maxWidth: `calc(100% - ${2 * offsetX}px)`,
+      }}
     >
       {Icon && (
         <Icon
