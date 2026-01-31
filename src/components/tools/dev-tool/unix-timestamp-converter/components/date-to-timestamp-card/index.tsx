@@ -7,6 +7,8 @@ import DateInput from './components/date-input';
 import CopyAction from '@/components/common/action-button/copy';
 import CardTitle from '@/components/common/card/title';
 
+import _isNumber from 'lodash/isNumber';
+
 type DateInput = {
   year?: number;
   month?: number;
@@ -37,21 +39,26 @@ export default function DateToTimestampCard() {
   const convertedTimestamp = useMemo(() => {
     try {
       const { year, month, day, hour, minute, second } = dateInput;
-      if (!year || !month) return '';
-      const date = new Date(year, month - 1, day, hour, minute, second);
+      if (!_isNumber(year) || !_isNumber(month)) return;
+      const date = new Date(
+        Date.UTC(year, month - 1, day, hour, minute, second)
+      );
       return Math.floor(date.getTime() / 1000);
     } catch (_e) {
-      return '';
+      return;
     }
   }, [dateInput]);
 
   const updateDateInput = (field: string, value: string) => {
-    setDateInput((prev) => ({ ...prev, [field]: parseInt(value) || 0 }));
+    setDateInput((prev) => ({
+      ...prev,
+      [field]: !!value ? parseInt(value) : '',
+    }));
   };
 
   return (
     <Card animation="fade-in" className="text-left">
-      <CardTitle icon={CalendarDays}>Date to Timestamp</CardTitle>
+      <CardTitle icon={CalendarDays}>UTC Date to Timestamp</CardTitle>
 
       {/* Separate */}
       <div className="-mx-6 my-6 border-b border-neutral-200 dark:border-neutral-700" />
@@ -106,11 +113,11 @@ export default function DateToTimestampCard() {
           </p>
           <div className="flex items-center justify-between">
             <span className="font-mono text-2xl font-bold">
-              {convertedTimestamp || '---'}
+              {convertedTimestamp ?? '---'}
             </span>
             <CopyAction
               display="icon"
-              content={convertedTimestamp.toString()}
+              content={convertedTimestamp?.toString() || ''}
             />
           </div>
         </div>

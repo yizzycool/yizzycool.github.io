@@ -14,7 +14,7 @@ export default function DateInput({ label, value, onChange, min, max }: Props) {
       <label className="text-xs font-medium text-neutral-500">{label}</label>
       <input
         type="number"
-        value={value || ''}
+        value={value ?? ''}
         min={min}
         max={max}
         onChange={(e) => onChange(e.target.value)}
