@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import _isNull from 'lodash/isNull';
+import _isUndefined from 'lodash/isUndefined';
 
 const BreakPoints = {
   'width-sm': 640,
@@ -12,22 +12,21 @@ const BreakPoints = {
 };
 
 export default function useWindowDevice() {
-  const [width, setWidth] = useState<number | null>(0);
+  const [width, setWidth] = useState<number>();
 
   const isDesktop = useMemo(() => {
-    return !_isNull(width) && width >= BreakPoints['width-lg'];
+    if (_isUndefined(width)) return false;
+    return width >= BreakPoints['width-lg'];
   }, [width]);
 
   const isPad = useMemo(() => {
-    return (
-      !_isNull(width) &&
-      width < BreakPoints['width-lg'] &&
-      width >= BreakPoints['width-sm']
-    );
+    if (_isUndefined(width)) return false;
+    return width < BreakPoints['width-lg'] && width >= BreakPoints['width-sm'];
   }, [width]);
 
   const isMobile = useMemo(() => {
-    return !_isNull(width) && width < BreakPoints['width-sm'];
+    if (_isUndefined(width)) return false;
+    return width < BreakPoints['width-sm'];
   }, [width]);
 
   useEffect(() => {
