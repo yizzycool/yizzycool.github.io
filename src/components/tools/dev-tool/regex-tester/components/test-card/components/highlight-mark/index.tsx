@@ -112,8 +112,7 @@ export default function HighlightMark({
     <div
       aria-hidden="true"
       className={clsx(
-        'absolute inset-0 z-10 w-full rounded-lg px-4 py-3',
-        'border border-transparent',
+        'absolute inset-0 z-10 w-full px-4 py-3',
         'pointer-events-none select-none',
         'whitespace-pre-wrap break-words font-mono text-base leading-loose',
         'text-transparent'

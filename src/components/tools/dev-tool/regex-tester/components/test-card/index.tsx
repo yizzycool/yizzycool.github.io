@@ -1,7 +1,7 @@
+import clsx from 'clsx';
 import { Type } from 'lucide-react';
 import Badge from '@/components/common/badge';
 import Card from '@/components/common/card';
-import Textarea from '@/components/common/textarea';
 import HighlightMark from './components/highlight-mark';
 
 type Props = {
@@ -21,6 +21,18 @@ export default function TestCard({
   matches,
   error,
 }: Props) {
+  const onChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
+    setTestString(e.target.value);
+    updateTextareaHeight();
+  };
+
+  const updateTextareaHeight = () => {
+    const ta = document.getElementById('regex-tester-textarea');
+    if (!ta) return;
+    ta.style.height = 'auto';
+    ta.style.height = `${ta.scrollHeight}px`;
+  };
+
   return (
     <Card>
       <div className="mb-4 flex items-center justify-between">
@@ -34,7 +46,15 @@ export default function TestCard({
       </div>
 
       {/* Textarea + Highlighting Overlay */}
-      <div className="relative">
+      <div
+        className={clsx(
+          'relative h-[300px] overflow-auto',
+          'rounded-lg border border-neutral-200 dark:border-neutral-700',
+          'bg-white/80 dark:bg-neutral-900/80',
+          'has-[:focus]:border-transparent has-[:focus]:ring-2 has-[:focus]:ring-blue-500',
+          'backdrop-blur'
+        )}
+      >
         <HighlightMark
           pattern={pattern}
           flags={flags}
@@ -43,12 +63,18 @@ export default function TestCard({
           error={error}
         />
 
-        <Textarea
+        <textarea
+          id="regex-tester-textarea"
+          className={clsx(
+            'block min-h-full w-full bg-transparent px-4 py-3',
+            'resize-none text-base leading-loose outline-none',
+            'text-neutral-700 dark:text-neutral-200',
+            'placeholder-neutral-400 dark:placeholder-neutral-500'
+          )}
           value={testString}
-          rows={10}
           placeholder="Insert test text here..."
-          className="bg-neutral-50 !text-base !leading-loose dark:bg-neutral-950"
-          onChange={(e) => setTestString(e.target.value)}
+          autoFocus
+          onChange={onChange}
         />
       </div>
     </Card>
