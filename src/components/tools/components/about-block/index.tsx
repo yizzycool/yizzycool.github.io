@@ -2,7 +2,7 @@
 
 import { Info } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { ToolKeys, ToolTitles, ToolUrls } from '@/data/tools';
+import { ToolTitles, ToolUrls } from '@/data/tools';
 import { ToolAbout } from '@/data/tools/about';
 import _findKey from 'lodash/findKey';
 import _get from 'lodash/get';
@@ -12,7 +12,7 @@ export default function AboutBlock() {
 
   const toolKey = _findKey(ToolUrls, (url) => url === pathname);
 
-  if (!toolKey || toolKey === ToolKeys.chromeAiPrompt) return null;
+  if (!toolKey) return null;
 
   const title = _get(ToolTitles, [toolKey]);
   const about = _get(ToolAbout, [toolKey]);

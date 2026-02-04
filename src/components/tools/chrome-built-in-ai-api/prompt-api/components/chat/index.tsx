@@ -116,7 +116,15 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
           </div>
         </div>
       </div>
-      <div className="sticky -bottom-1 left-1/2 w-full pb-4 pt-8 sm:pb-6">
+      <div
+        className={clsx(
+          'sticky -bottom-1 left-0 right-0',
+          'bg-gradient-to-t from-neutral-900 from-50% to-transparent',
+          '-mx-4 sm:-mx-6 lg:-mx-12',
+          'px-4 sm:px-6 lg:px-12',
+          'pb-4 pt-16 sm:pb-6'
+        )}
+      >
         <div
           className={clsx(
             'relative flex w-full items-center rounded-[30px] border px-4 py-2 transition-colors',
