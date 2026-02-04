@@ -30,14 +30,23 @@ export default function Layout({
     const promptMeta = document.createElement('meta');
     promptMeta.httpEquiv = 'origin-trial';
     promptMeta.content =
-      'AvXWDJ953Yy1wVHjgvANJLXt4aq8sl+zCVdHgIribEZ7kswvdRR4RjOy8qwTJ6J4vhfh4bu9HfRbtqvTq32PtQAAAABneyJvcmlnaW4iOiJodHRwczovL3lpenp5Y29vbC5naXRodWIuaW86NDQzIiwiZmVhdHVyZSI6IkFJUHJvbXB0QVBJTXVsdGltb2RhbElucHV0IiwiZXhwaXJ5IjoxNzc0MzEwNDAwfQ==';
+      'AtzauyFPMorWnwAuEK0+yiWP5JdebU0IBQ/7oH6N9cHplIjab3GQKEwhuFhv4WX00kiKc+PtB+FwDdE5d9uWow0AAABneyJvcmlnaW4iOiJodHRwczovL3lpenp5Y29vbC5naXRodWIuaW86NDQzIiwiZmVhdHVyZSI6IkFJUHJvbXB0QVBJTXVsdGltb2RhbElucHV0IiwiZXhwaXJ5IjoxNzgxNTY4MDAwfQ==';
 
     head.appendChild(promptMeta);
+
+    // <meta> tag for prompt API
+    const proofreaderMeta = document.createElement('meta');
+    proofreaderMeta.httpEquiv = 'origin-trial';
+    proofreaderMeta.content =
+      'ApAaYwVhkSUG/Vtuvh9JW7GHTgZTc+papZMQt8e2yDf7NBEunbHUbGbBHHSjMQwMNM82rjPjF0UMRlxZa2my+A8AAABdeyJvcmlnaW4iOiJodHRwczovL3lpenp5Y29vbC5naXRodWIuaW86NDQzIiwiZmVhdHVyZSI6IkFJUHJvb2ZyZWFkZXJBUEkiLCJleHBpcnkiOjE3NzkxNDg4MDB9';
+
+    head.appendChild(proofreaderMeta);
 
     return () => {
       head.removeChild(writerMeta);
       head.removeChild(rewriterMeta);
       head.removeChild(promptMeta);
+      head.removeChild(proofreaderMeta);
     };
   }, []);
 

@@ -6,6 +6,7 @@ interface Window {
   Writer: AIWriterFactory;
   Rewriter: AIRewriterFactory;
   LanguageModel: AILanguageModelFactory;
+  Proofreader: AIProofreaderFactory;
 }
 
 interface AI {
@@ -15,6 +16,7 @@ interface AI {
   readonly languageModel: AILanguageModelFactory;
   readonly writer: AIWriterFactory;
   readonly rewriter: AIRewriterFactory;
+  readonly proofreader: AIProofreaderFactory;
 }
 
 type AICreateMonitorCallback = (monitor: AICreateMonitor) => void;

@@ -1,10 +1,9 @@
 'use client';
 
-import { UnsupportedApiTypes } from '../data/unsupported-types';
-import { LoaderCircle, PenLine, Sparkles } from 'lucide-react';
+import { LoaderCircle, PenLine, WandSparkles } from 'lucide-react';
 import { ChangeEventHandler, useState } from 'react';
 
-import useAiSummarizer from '../hooks/use-ai-summarizer';
+import useAiProofreader from '../hooks/use-ai-proofreader';
 import browserUtils from '@/utils/browser-utils';
 import HeaderBlock from '../../components/header-block';
 import LoadingSkeleton from '../components/loading-skeleton';
@@ -13,19 +12,23 @@ import ModelDownloadCard from '../components/model-download-card';
 import PasteAction from '@/components/common/action-button/paste';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
-import Config from './components/config';
 import Button from '@/components/common/button';
-import PromptResult from '../components/prompt-result';
 import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
+import Result from './components/result';
+import { UnsupportedApiTypes } from '../data/unsupported-types';
 
+import _isNull from 'lodash/isNull';
 import _isEmpty from 'lodash/isEmpty';
 import _size from 'lodash/size';
+import _slice from 'lodash/slice';
+import _last from 'lodash/last';
+import _range from 'lodash/range';
 
-export default function SummarizerApi() {
+export default function ProofreaderApi() {
   const [text, setText] = useState('');
-  const [results, setResults] = useState('');
+  const [result, setResult] = useState<ProofreadResult>();
   const [isProcessing, setIsProcessing] = useState(false);
 
   const {
@@ -33,16 +36,17 @@ export default function SummarizerApi() {
     isApiSupported,
     // availability,
     error,
-    options,
-    isOptionUpdating,
-    // summarize,
-    summarizeStreaming,
-    updateSummarizer,
+    errorMessage,
+    // options,
+    // isOptionUpdating,
+    proofread,
+    // proofreadStreaming,
+    // updateProofreader,
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
     resetError,
-  } = useAiSummarizer();
+  } = useAiProofreader();
 
   const onPasteText = (value: string) => {
     setText(value as string);
@@ -50,21 +54,30 @@ export default function SummarizerApi() {
 
   const onClearClick = () => {
     setText('');
-    setResults('');
+    setResult(undefined);
   };
 
   const onChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     setText(e.target.value);
+    updateTextareaHeight();
+  };
+
+  const updateTextareaHeight = () => {
+    const ta = document.getElementById('proofreader-textarea');
+    if (!ta) return;
+    ta.style.height = 'auto';
+    ta.style.height = `${ta.scrollHeight}px`;
   };
 
   const onProcessClick = async () => {
     setIsProcessing(true);
     await browserUtils.sleep(100);
     scrollToResultBlock();
-    setResults('');
-    await summarizeStreaming(text, (chunk) => {
-      setResults((prev) => prev + chunk);
-    });
+    setResult(undefined);
+    const proofreadResults = await proofread(text);
+    if (proofreadResults) {
+      setResult(proofreadResults);
+    }
     setIsProcessing(false);
   };
 
@@ -87,7 +100,7 @@ export default function SummarizerApi() {
       {!hasCheckedAIStatus ? (
         <LoadingSkeleton />
       ) : !isApiSupported ? (
-        <UnsupportedCard apiType={UnsupportedApiTypes.chromeSummarizerApi} />
+        <UnsupportedCard apiType={UnsupportedApiTypes.chromeProofreaderApi} />
       ) : shouldDownloadModel ? (
         <ModelDownloadCard
           onClick={downloadModel}
@@ -95,14 +108,6 @@ export default function SummarizerApi() {
         />
       ) : (
         <>
-          {/* <div className="mb-6 flex items-center justify-end"> */}
-          <div className="absolute right-0 top-0">
-            <Config
-              options={options}
-              isOptionUpdating={isOptionUpdating}
-              updateOption={updateSummarizer}
-            />
-          </div>
           {/* Input */}
           <div className="mb-3 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
             <Label htmlFor="text-textarea" icon={PenLine}>
@@ -114,11 +119,11 @@ export default function SummarizerApi() {
             </div>
           </div>
           <Textarea
-            id="text-textarea"
+            id="proofreader-textarea"
             onChange={onChange}
             value={text}
             rows={10}
-            placeholder="Type or paste the artice or text here to summarize..."
+            placeholder="Enter your text for grammar and style check..."
             autoFocus
           />
           {/* Char count block */}
@@ -131,25 +136,29 @@ export default function SummarizerApi() {
           {/* Action Button */}
           <div className="flex justify-end">
             <Button
-              icon={isProcessing ? LoaderCircle : Sparkles}
+              icon={isProcessing ? LoaderCircle : WandSparkles}
               size="sm"
               rounded="lg"
               onClick={onProcessClick}
               disabled={_isEmpty(text) || isProcessing}
               iconClassName={isProcessing ? 'animate-spin' : ''}
             >
-              {isProcessing ? 'Summarizing' : 'Summarize'}
+              {isProcessing ? 'Proofreading...' : 'Proofread'}
             </Button>
           </div>
 
           <SectionGap size="sm" />
 
-          {/* Result */}
-          <PromptResult results={results} isProcessing={isProcessing} />
+          <Result text={text} result={result} isProcessing={isProcessing} />
         </>
       )}
 
-      <Snackbar variant="error" open={error} onClose={resetError} />
+      <Snackbar
+        variant="error"
+        open={error}
+        onClose={resetError}
+        content={errorMessage}
+      />
     </div>
   );
 }

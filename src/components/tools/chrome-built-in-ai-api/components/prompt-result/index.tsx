@@ -1,10 +1,11 @@
 import clsx from 'clsx';
 import { Cpu, List, ScrollText } from 'lucide-react';
+
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import CopyAction from '@/components/common/action-button/copy';
 import Label from '@/components/common/label';
+
 import _isEmpty from 'lodash/isEmpty';
-import _range from 'lodash/range';
 
 type Props = {
   results: string;
@@ -16,7 +17,7 @@ export default function PromptResult({ results, isProcessing }: Props) {
     <>
       <div
         id="result"
-        className="mb-3 flex w-full flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center"
+        className="mb-3 flex w-full scroll-mt-20 flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center"
       >
         <Label icon={List}>Result</Label>
         <div className="flex items-center gap-2 self-end sm:self-auto">
@@ -35,18 +36,11 @@ export default function PromptResult({ results, isProcessing }: Props) {
           <div className="m-auto flex h-full flex-col items-center justify-center text-center text-lg font-bold text-neutral-500">
             {isProcessing ? (
               <>
-                <Cpu className="mx-auto mb-4 block" size={40} />
-                <div>
-                  Processing
-                  {_range(3).map((t) => (
-                    <span
-                      key={t}
-                      className={`inline-block animate-bounce delay-${t * 100}`}
-                    >
-                      .
-                    </span>
-                  ))}
-                </div>
+                <Cpu
+                  className="mx-auto mb-4 block animate-bounce animate-duration-[2000ms] animate-infinite"
+                  size={40}
+                />
+                <div>Processing...</div>
               </>
             ) : (
               <>

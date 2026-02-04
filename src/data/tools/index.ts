@@ -22,6 +22,7 @@ import {
   RefreshCcw,
   Regex,
   ScanFace,
+  SpellCheck,
 } from 'lucide-react';
 
 // Tool Groups
@@ -79,6 +80,7 @@ export const ToolKeys = {
   chromeAiWriter: 'chromeAiWriter',
   chromeAiRewriter: 'chromeAiRewriter',
   chromeAiPrompt: 'chromeAiPrompt',
+  chromeAiProofreader: 'chrochromeAiProofreadermeAi',
 
   chromeFaceDetector: 'chromeFaceDetector',
   chromeBarcodeDetector: 'chromeBarcodeDetector',
@@ -108,6 +110,7 @@ export const ToolGroupItems = {
     ToolKeys.chromeAiWriter,
     ToolKeys.chromeAiRewriter,
     ToolKeys.chromeAiPrompt,
+    ToolKeys.chromeAiProofreader,
   ],
   [ToolGroupKeys.webDetectorApi]: [
     ToolKeys.chromeFaceDetector,
@@ -135,6 +138,7 @@ export const ToolTitles = {
   [ToolKeys.chromeAiWriter]: 'AI Writer',
   [ToolKeys.chromeAiRewriter]: 'AI Rewriter',
   [ToolKeys.chromeAiPrompt]: 'AI Chat',
+  [ToolKeys.chromeAiProofreader]: 'AI Proofreader',
 
   [ToolKeys.chromeFaceDetector]: 'Face Detector',
   [ToolKeys.chromeBarcodeDetector]: 'Barcode Detector',
@@ -175,6 +179,8 @@ export const ToolDescriptions = {
     'Rewrite and enhance existing text using Chrome’s built-in AI to improve clarity, tone, flow, and readability while preserving meaning.',
   [ToolKeys.chromeAiPrompt]:
     'Run AI prompts directly through Chrome’s built-in models, enabling fast, local AI inference with minimal setup for developers.',
+  [ToolKeys.chromeAiProofreader]:
+    'Instantly proofread and correct text using Chrome’s built-in AI, including grammar, spelling, punctuation, and style improvements—all on-device and fast.',
 
   [ToolKeys.chromeFaceDetector]:
     'Detect faces in images instantly using Chrome’s built-in face detection API—ideal for camera apps, interactive features, and security ToolKeys.',
@@ -203,6 +209,7 @@ export const ToolSlugs = {
   [ToolKeys.chromeAiWriter]: 'writer',
   [ToolKeys.chromeAiRewriter]: 'rewriter',
   [ToolKeys.chromeAiPrompt]: 'prompt',
+  [ToolKeys.chromeAiProofreader]: 'proofreader',
 
   [ToolKeys.chromeFaceDetector]: 'face-detector',
   [ToolKeys.chromeBarcodeDetector]: 'barcode-detector',
@@ -240,6 +247,7 @@ export const ToolIcons = {
   [ToolKeys.chromeAiWriter]: PenTool,
   [ToolKeys.chromeAiRewriter]: RefreshCcw,
   [ToolKeys.chromeAiPrompt]: Bot,
+  [ToolKeys.chromeAiProofreader]: SpellCheck,
 
   [ToolKeys.chromeFaceDetector]: ScanFace,
   [ToolKeys.chromeBarcodeDetector]: QrCode,

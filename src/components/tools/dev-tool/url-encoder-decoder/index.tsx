@@ -90,8 +90,7 @@ export default function UrlEncoderDecoder() {
       <div className="flex w-full flex-col items-stretch justify-stretch gap-3 sm:flex-row sm:items-center">
         <Button
           variant="dark-sky"
-          size="lg"
-          className="flex-1"
+          className="flex-1 font-bold uppercase"
           icon={FileCode}
           onClick={onEncodeClick}
         >
@@ -99,8 +98,7 @@ export default function UrlEncoderDecoder() {
         </Button>
         <Button
           variant="dark-sky"
-          size="lg"
-          className="flex-1"
+          className="flex-1 font-bold uppercase"
           icon={FileCode2}
           onClick={onDecodeClick}
         >

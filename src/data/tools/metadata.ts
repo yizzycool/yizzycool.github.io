@@ -254,6 +254,22 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.chromeAiProofreader]: {
+    title: 'AI Proofreader – Chrome Built-In AI API Tool | Yizzy Peasy',
+    description:
+      'Proofread and correct text instantly with this free online AI Proofreader powered by Chrome Built-In AI API. Fix grammar, spelling, punctuation, and improve clarity—all on-device.',
+    openGraph: {
+      title: 'AI Proofreader – Dev Tool',
+      description:
+        'Use Chrome Built-In AI API to proofread text online, correcting grammar, spelling, punctuation, and style instantly.',
+    },
+    twitter: {
+      title: 'AI Proofreader – Chrome Built-In AI API',
+      description:
+        'Free online AI Proofreader using Chrome Built-In AI API for fast, on-device grammar, spelling, and style correction.',
+    },
+  },
+
   // ==================
 
   [ToolKeys.chromeFaceDetector]: {
@@ -304,11 +320,11 @@ export const ToolMetadata = {
 
 export const ToolJsonLdSoftwareApplication = {
   [ToolKeys.qrCodeGenerator]: {
-    'name': 'QR Code Generator',
-    'applicationCategory': 'Utility',
-    'description':
+    name: 'QR Code Generator',
+    applicationCategory: 'Utility',
+    description:
       'An online QR code generator that allows users to generate QR codes from text, URLs, or custom content instantly.',
-    'featureList': [
+    featureList: [
       'Generate QR codes from text or URLs',
       'Instant QR code preview',
       'Download generated QR codes',
@@ -317,11 +333,11 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   [ToolKeys.wordCounter]: {
-    'name': 'Word Counter',
-    'applicationCategory': 'Utility',
-    'description':
+    name: 'Word Counter',
+    applicationCategory: 'Utility',
+    description:
       'An online word counter that supports Chinese and English text, counts words, characters, numbers, and lines, provides social media character limit guidance, and offers basic text transformations.',
-    'featureList': [
+    featureList: [
       'Count words and characters for Chinese and English text',
       'Count numbers and lines',
       'Display social media character limits',
@@ -332,11 +348,11 @@ export const ToolJsonLdSoftwareApplication = {
   // ==================
 
   [ToolKeys.urlEncoderDecoder]: {
-    'name': 'URL Encoder & Decoder',
-    'applicationCategory': 'DeveloperTool',
-    'description':
+    name: 'URL Encoder & Decoder',
+    applicationCategory: 'DeveloperTool',
+    description:
       'Free online URL Encoder & Decoder to encode or decode URL components instantly.',
-    'featureList': [
+    featureList: [
       'Encode URLs into percent-encoded format',
       'Decode encoded URLs back to readable text',
       'Handle special characters safely',
@@ -345,11 +361,11 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   [ToolKeys.jsonFormatter]: {
-    'name': 'JSON Formatter & Minifier',
-    'applicationCategory': 'DeveloperTool',
-    'description':
+    name: 'JSON Formatter & Minifier',
+    applicationCategory: 'DeveloperTool',
+    description:
       'An online JSON formatter and minifier that allows developers to prettify JSON for readability or minify it for compact output.',
-    'featureList': [
+    featureList: [
       'Format JSON with readable indentation',
       'Minify JSON by removing whitespace',
       'Validate JSON structure',
@@ -358,11 +374,11 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   [ToolKeys.unixTimestampConverter]: {
-    'name': 'Unix Timestamp Converter',
-    'applicationCategory': 'DeveloperTool',
-    'description':
+    name: 'Unix Timestamp Converter',
+    applicationCategory: 'DeveloperTool',
+    description:
       'An online Unix timestamp converter that allows users to convert Unix epoch time to human-readable dates and convert date and time back to Unix timestamps instantly.',
-    'featureList': [
+    featureList: [
       'Convert Unix timestamps to readable date and time',
       'Convert date and time to Unix timestamps',
       'Support seconds and milliseconds timestamps',
@@ -371,11 +387,11 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   [ToolKeys.regexTester]: {
-    'name': 'Regular Expression Tester',
-    'applicationCategory': 'DeveloperTool',
-    'description':
+    name: 'Regular Expression Tester',
+    applicationCategory: 'DeveloperTool',
+    description:
       'An online regular expression tester that allows developers to test, debug, and validate regex patterns with real-time matching and group highlighting.',
-    'featureList': [
+    featureList: [
       'Test regular expressions in real time',
       'Highlight matched text',
       'Inspect capture groups',
@@ -386,11 +402,11 @@ export const ToolJsonLdSoftwareApplication = {
   // ==================
 
   [ToolKeys.picMergeStudio]: {
-    'name': 'PicMerge Studio',
-    'applicationCategory': 'MultimediaApplication',
-    'description':
+    name: 'PicMerge Studio',
+    applicationCategory: 'MultimediaApplication',
+    description:
       'PicMerge Studio is an online poster editor that allows users to merge multiple images into a single canvas. Users can freely drag, resize, rotate, and export high-quality posters.',
-    'featureList': [
+    featureList: [
       'Merge multiple images into one poster',
       'Drag, resize, and rotate images',
       'Free layout and grid layout modes',
@@ -400,11 +416,11 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   [ToolKeys.base64ToImage]: {
-    'name': 'Base64 to Image Converter',
-    'applicationCategory': 'DeveloperTool',
-    'description':
+    name: 'Base64 to Image Converter',
+    applicationCategory: 'DeveloperTool',
+    description:
       'Convert Base64 strings into image files instantly with this free online tool.',
-    'featureList': [
+    featureList: [
       'Convert Base64 strings into images',
       'Preview decoded images instantly',
       'Support common image formats',
@@ -413,11 +429,11 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   [ToolKeys.imageToBase64]: {
-    'name': 'Image to Base64 Encoder',
-    'applicationCategory': 'DeveloperTool',
-    'description':
+    name: 'Image to Base64 Encoder',
+    applicationCategory: 'DeveloperTool',
+    description:
       'Encode image files into Base64 strings instantly using this free online tool.',
-    'featureList': [
+    featureList: [
       'Convert images to Base64 encoded strings',
       'Preview image encoding results',
       'Support common image formats',
@@ -428,11 +444,11 @@ export const ToolJsonLdSoftwareApplication = {
   // ==================
 
   [ToolKeys.chromeAiTranslator]: {
-    'name': 'AI Translator',
-    'applicationCategory': 'AIApplication',
-    'description':
+    name: 'AI Translator',
+    applicationCategory: 'AIApplication',
+    description:
       'Translate text instantly using the Chrome Built-In AI API with no API key required.',
-    'featureList': [
+    featureList: [
       'Translate text between multiple languages',
       'Use Chrome Built-In AI for translation',
       'Produce natural and accurate translations',
@@ -441,11 +457,11 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   [ToolKeys.chromeAiLanguageDetector]: {
-    'name': 'AI Language Detector',
-    'applicationCategory': 'AIApplication',
-    'description':
+    name: 'AI Language Detector',
+    applicationCategory: 'AIApplication',
+    description:
       'Detect the language of any text instantly using Chrome Built-In AI API.',
-    'featureList': [
+    featureList: [
       'Detect the language of input text',
       'Support multiple languages',
       'Use Chrome Built-In AI for detection',
@@ -454,11 +470,10 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   [ToolKeys.chromeAiSummarizer]: {
-    'name': 'AI Summarizer',
-    'applicationCategory': 'AIApplication',
-    'description':
-      'Summarize long text instantly using Chrome Built-In AI API.',
-    'featureList': [
+    name: 'AI Summarizer',
+    applicationCategory: 'AIApplication',
+    description: 'Summarize long text instantly using Chrome Built-In AI API.',
+    featureList: [
       'Summarize long text into concise content',
       'Adjust summary length and focus',
       'Use Chrome Built-In AI for summarization',
@@ -467,10 +482,10 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   [ToolKeys.chromeAiWriter]: {
-    'name': 'AI Writer',
-    'applicationCategory': 'AIApplication',
-    'description': 'Generate text content online using Chrome Built-In AI API.',
-    'featureList': [
+    name: 'AI Writer',
+    applicationCategory: 'AIApplication',
+    description: 'Generate text content online using Chrome Built-In AI API.',
+    featureList: [
       'Generate text based on user prompts',
       'Support multiple writing styles',
       'Use Chrome Built-In AI for text generation',
@@ -479,11 +494,11 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   [ToolKeys.chromeAiRewriter]: {
-    'name': 'AI Rewriter',
-    'applicationCategory': 'AIApplication',
-    'description':
+    name: 'AI Rewriter',
+    applicationCategory: 'AIApplication',
+    description:
       'Rewrite and improve text instantly using Chrome Built-In AI API.',
-    'featureList': [
+    featureList: [
       'Rewrite text with improved clarity',
       'Change tone or wording of content',
       'Use Chrome Built-In AI for rewriting',
@@ -492,10 +507,10 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   [ToolKeys.chromeAiPrompt]: {
-    'name': 'AI Prompt Helper',
-    'applicationCategory': 'AIApplication',
-    'description': 'Generate and test AI prompts using Chrome Built-In AI API.',
-    'featureList': [
+    name: 'AI Prompt Helper',
+    applicationCategory: 'AIApplication',
+    description: 'Generate and test AI prompts using Chrome Built-In AI API.',
+    featureList: [
       'Generate structured prompts for AI usage',
       'Improve prompt clarity and effectiveness',
       'Use Chrome Built-In AI for prompt generation',
@@ -503,13 +518,26 @@ export const ToolJsonLdSoftwareApplication = {
     ],
   },
 
+  [ToolKeys.chromeAiProofreader]: {
+    name: 'AI Proofreader',
+    applicationCategory: 'AIApplication',
+    description:
+      'Proofread and correct text instantly using Chrome Built-In AI API. Improve grammar, spelling, punctuation, and overall clarity—all on-device and fast.',
+    featureList: [
+      'Correct grammar and spelling mistakes instantly',
+      'Improve punctuation, style, and readability',
+      'Use Chrome Built-In AI for on-device proofreading',
+      'Client-side processing without external servers',
+    ],
+  },
+
   // ==================
 
   [ToolKeys.chromeFaceDetector]: {
-    'name': 'Face Detector',
-    'applicationCategory': 'ComputerVisionApplication',
-    'description': 'Detect faces in images using the Web Detection API.',
-    'featureList': [
+    name: 'Face Detector',
+    applicationCategory: 'ComputerVisionApplication',
+    description: 'Detect faces in images using the Web Detection API.',
+    featureList: [
       'Detect human faces in images',
       'Identify face positions and bounding boxes',
       'Use Web Detection API',
@@ -518,11 +546,10 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   [ToolKeys.chromeBarcodeDetector]: {
-    'name': 'Barcode Detector',
-    'applicationCategory': 'ComputerVisionApplication',
-    'description':
-      'Scan and decode barcodes online using the Web Detection API.',
-    'featureList': [
+    name: 'Barcode Detector',
+    applicationCategory: 'ComputerVisionApplication',
+    description: 'Scan and decode barcodes online using the Web Detection API.',
+    featureList: [
       'Detect barcodes from images',
       'Support common barcode formats',
       'Use Web Detection API',
@@ -531,11 +558,11 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   [ToolKeys.chromeTextDetector]: {
-    'name': 'Text Detector',
-    'applicationCategory': 'ComputerVisionApplication',
-    'description':
+    name: 'Text Detector',
+    applicationCategory: 'ComputerVisionApplication',
+    description:
       'Detect and extract text from images using the Web Detection API.',
-    'featureList': [
+    featureList: [
       'Detect text within images',
       'Extract readable text from visual content',
       'Use Web Detection API',

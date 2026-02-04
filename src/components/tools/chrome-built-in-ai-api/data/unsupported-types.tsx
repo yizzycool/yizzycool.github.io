@@ -6,6 +6,7 @@ export const UnsupportedApiTypes = {
   chromeSummarizerApi: 'chrome-summarizer-api',
   chromeTranslatorApi: 'chrome-translator-api',
   chromeWriter: 'chrome-writer',
+  chromeProofreaderApi: 'chrome-proofreader-api',
 };
 
 export const ChromeBuiltInAiApiFlags = {
@@ -16,6 +17,7 @@ export const ChromeBuiltInAiApiFlags = {
     'summarization-api-for-gemini-nano',
   [UnsupportedApiTypes.chromeTranslatorApi]: 'translation-api',
   [UnsupportedApiTypes.chromeWriter]: 'writer-api-for-gemini-nano',
+  [UnsupportedApiTypes.chromeProofreaderApi]: 'proofreader-api-for-gemini-nano',
 };
 
 export const ChromeBuiltInAiApiNames = {
@@ -25,6 +27,7 @@ export const ChromeBuiltInAiApiNames = {
   [UnsupportedApiTypes.chromeSummarizerApi]: 'Summarizer',
   [UnsupportedApiTypes.chromeTranslatorApi]: 'Translator',
   [UnsupportedApiTypes.chromeWriter]: 'Writer',
+  [UnsupportedApiTypes.chromeProofreaderApi]: 'Proofreader',
 };
 
 export type UnsupportedApiType =

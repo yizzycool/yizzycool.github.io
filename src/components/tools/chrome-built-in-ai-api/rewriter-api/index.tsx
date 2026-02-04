@@ -1,8 +1,9 @@
 'use client';
 
 import { UnsupportedApiTypes } from '../data/unsupported-types';
-import { PenLine, WandSparkles } from 'lucide-react';
+import { LoaderCircle, PenLine, WandSparkles } from 'lucide-react';
 import { ChangeEventHandler, useState } from 'react';
+
 import useAiRewriter from '../hooks/use-ai-rewriter';
 import browserUtils from '@/utils/browser-utils';
 import HeaderBlock from '../../components/header-block';
@@ -18,11 +19,9 @@ import PromptResult from '../components/prompt-result';
 import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
-import _isNull from 'lodash/isNull';
+
 import _isEmpty from 'lodash/isEmpty';
 import _size from 'lodash/size';
-import _slice from 'lodash/slice';
-import _last from 'lodash/last';
 import _range from 'lodash/range';
 
 export default function RewriterApi() {
@@ -60,9 +59,9 @@ export default function RewriterApi() {
   };
 
   const onProcessClick = async () => {
-    scrollToResultBlock();
-    await browserUtils.sleep(500);
     setIsProcessing(true);
+    await browserUtils.sleep(100);
+    scrollToResultBlock();
     setResults('');
     await rewriteStreaming(text, (chunk) => {
       setResults((prev) => prev + chunk);
@@ -107,7 +106,7 @@ export default function RewriterApi() {
           {/* Input */}
           <div className="mb-3 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
             <Label htmlFor="text-textarea" icon={PenLine}>
-              Paste your text below
+              Start by adding your text
             </Label>
             <div className="flex items-center gap-2 self-end sm:self-auto">
               <PasteAction onClick={onPasteText} />
@@ -132,26 +131,14 @@ export default function RewriterApi() {
           {/* Action Button */}
           <div className="flex justify-end">
             <Button
-              icon={WandSparkles}
+              icon={isProcessing ? LoaderCircle : WandSparkles}
+              size="sm"
               rounded="lg"
               onClick={onProcessClick}
               disabled={_isEmpty(text) || isProcessing}
+              iconClassName={isProcessing ? 'animate-spin' : ''}
             >
-              {isProcessing ? (
-                <>
-                  Rewriting
-                  {_range(3).map((t) => (
-                    <span
-                      key={t}
-                      className={`inline-block animate-bounce delay-${t * 100}`}
-                    >
-                      .
-                    </span>
-                  ))}
-                </>
-              ) : (
-                'Rewrite'
-              )}
+              {isProcessing ? 'Rewriting...' : 'Rewrite'}
             </Button>
           </div>
 

@@ -7,6 +7,7 @@ export default function useAiCommon() {
   const [isApiSupported, setIsApiSupported] = useState<boolean | null>(null);
   const [availability, setAvailability] = useState<AIAvailability | null>(null);
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [downloadProgress, setDownloadProgress] = useState<number | null>(null);
 
   const hasCheckedAIStatus = !(
@@ -25,6 +26,8 @@ export default function useAiCommon() {
     setAvailability,
     error,
     setError,
+    errorMessage,
+    setErrorMessage,
     downloadProgress,
     setDownloadProgress,
     hasCheckedAIStatus,

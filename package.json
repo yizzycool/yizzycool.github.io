@@ -11,6 +11,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.27.17",
     "@headlessui/react": "^2.2.0",
     "@jsdevtools/rehype-toc": "^3.0.2",
     "chart.js": "^4.4.7",

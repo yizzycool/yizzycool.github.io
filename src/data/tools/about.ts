@@ -41,6 +41,8 @@ export const ToolAbout = {
     'Rewriting text is useful when improving clarity, adjusting tone, or refining existing content. This Rewriter tool uses Chrome’s built-in AI to rewrite text while preserving the original meaning. It helps users improve readability, simplify complex sentences, or adapt content for different audiences without manually rewriting everything from scratch.',
   [ToolKeys.chromeAiPrompt]:
     'Effective prompts are essential for getting better results from AI systems. This Prompt Tool helps users generate and refine structured prompts using Chrome’s built-in AI. It is designed to improve clarity, intent, and completeness of prompts, making it easier to interact with AI writing and generation tools across different use cases.',
+  [ToolKeys.chromeAiProofreader]:
+    'Proofreading is essential for clear and professional writing. This AI Proofreader tool uses Chrome’s built-in AI to instantly check and correct grammar, spelling, punctuation, and writing style. It helps users improve clarity, readability, and overall text quality without relying on external services. The tool processes text entirely on-device, making it fast, private, and suitable for writers, developers, and anyone looking to refine their content efficiently.',
 
   // ==================
 
