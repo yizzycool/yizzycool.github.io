@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { useEffect, useMemo, useState } from 'react';
 import {
+  BookCheck,
   Check,
   Cpu,
   ScrollText,
@@ -147,6 +148,15 @@ export default function Result({ text, result, isProcessing }: Props) {
     ]);
   };
 
+  const onApplyAll = () => {
+    setHighlightList((prev) =>
+      _map(prev, (chunk) => {
+        if (!chunk.error) return chunk;
+        return { ...chunk, applySuggestion: true };
+      })
+    );
+  };
+
   return (
     <>
       <div
@@ -155,6 +165,15 @@ export default function Result({ text, result, isProcessing }: Props) {
       >
         <Label icon={SpellCheck}>Proofreader Suggestions</Label>
         <div className="flex items-center gap-2 self-end sm:self-auto">
+          {/* Apply all suggestions */}
+          <Button
+            variant="success"
+            size="xs"
+            icon={BookCheck}
+            onClick={onApplyAll}
+          >
+            Apply All
+          </Button>
           <CopyAction content={copyText} disabled={_isEmpty(copyText)} />
         </div>
       </div>
@@ -207,7 +226,10 @@ export default function Result({ text, result, isProcessing }: Props) {
                           {text}
                         </span>
                       </TooltipTrigger>
-                      <TooltipPopup>
+                      <TooltipPopup
+                        showArrow
+                        arrowClassName="bg-blue-100 dark:bg-gray-800"
+                      >
                         <div
                           key={idx}
                           className={clsx(

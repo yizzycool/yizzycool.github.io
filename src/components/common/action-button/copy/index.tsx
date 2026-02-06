@@ -20,7 +20,7 @@ export default function CopyAction({
   className,
   disabled = false,
   content = '',
-  label = 'copy',
+  label = 'Copy',
 }: Props) {
   const [copied, setCopied] = useState(false);
   const [isActionSupported, setIsActionSupported] = useState(false);

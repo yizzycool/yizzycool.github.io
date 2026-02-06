@@ -12,6 +12,7 @@ import {
 } from '@headlessui/react';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
+
 import { Tools } from '@/data/tools';
 
 export default function ToolsSelectorDesktop() {
@@ -37,19 +38,22 @@ export default function ToolsSelectorDesktop() {
           <ChevronDown className="size-5 transition-transform duration-200 group-data-[open]:rotate-180" />
         </PopoverButton>
         <PopoverPanel
-          transition
+          static
+          unmount={false}
           anchor={{
             to: 'bottom end',
             gap: 24,
             padding: 16,
           }}
           className={clsx(
-            'z-10 origin-top-right rounded-md py-2 text-sm/6 font-semibold',
+            'origin-top-right focus:outline-none',
+            'rounded-md py-2 text-sm/6 font-semibold',
             'border border-neutral-800/20 dark:border-white/20',
             'bg-white/95 backdrop-blur-lg dark:bg-neutral-800',
-            'focus:outline-none',
-            'transition duration-100 ease-out',
-            'data-[closed]:scale-95 data-[closed]:opacity-0'
+            '[transition:_all_300ms_ease-out,_z-index_300ms_step-end]',
+            'data-[open]:[transition:_all_300ms_ease-out,_z-index_300ms_step-start]',
+            'z-[-1] -translate-y-4 opacity-0',
+            'data-[open]:z-10 data-[open]:translate-y-0 data-[open]:opacity-100'
           )}
         >
           {Tools.map((tool) => (

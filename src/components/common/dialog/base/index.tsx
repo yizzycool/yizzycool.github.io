@@ -47,6 +47,7 @@ export default function BaseDialog({
         role="dialog"
         className="fixed inset-0 z-50 flex items-center justify-center p-4 focus:outline-none sm:p-8 md:p-12"
       >
+        {/* Backrop */}
         <TransitionChild
           enter="ease-out duration-200"
           enterFrom="opacity-0"
@@ -85,6 +86,6 @@ export default function BaseDialog({
       </div>
     </Transition>,
     body,
-    'dialog'
+    'base-dialog'
   );
 }

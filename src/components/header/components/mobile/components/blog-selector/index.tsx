@@ -23,6 +23,7 @@ export default function BlogSelectorMobile({
         <DisclosureButton
           className={clsx(
             'flex w-full items-center justify-between rounded-lg px-3 py-4',
+            'transition-all duration-300',
             'data-[hover]:bg-neutral-200 dark:data-[hover]:bg-neutral-800/50'
           )}
         >
@@ -33,14 +34,13 @@ export default function BlogSelectorMobile({
           <ChevronDown className="size-5 transition-all duration-300 group-data-[open]:rotate-180" />
         </DisclosureButton>
         <DisclosurePanel
-          transition
+          static
           className={clsx(
-            'ml-3 mt-2 border-l border-neutral-400/50 pl-2',
-            'grid grid-rows-[1fr] transition-all duration-300 ease-out',
-            'data-[closed]:grid-rows-[0fr]'
+            'grid grid-rows-[0fr] transition-all duration-300 ease-out',
+            'data-[open]:grid-rows-[1fr]'
           )}
         >
-          <div className="overflow-hidden">
+          <div className="ml-4 overflow-hidden border-l border-neutral-400/50 pl-2">
             <LeftPanel
               categoryArticles={categoryArticles}
               side="headerBlogSelector"
