@@ -142,9 +142,11 @@ export default function Intro() {
                 )}
               >
                 <Image
-                  priority={true}
+                  priority
+                  fetchPriority="high"
+                  loading="eager"
                   className={clsx(
-                    'm-auto rounded',
+                    'm-auto rounded object-contain object-center',
                     'group-hover:contrast-110 transition-all duration-500 ease-in-out group-hover:scale-110',
                     avatarLoaded ? 'opacity-100' : 'opacity-0'
                   )}
@@ -152,9 +154,7 @@ export default function Intro() {
                   height={500}
                   src="/assets/images/home/avatar.jpg"
                   alt="main image"
-                  objectFit="contain"
-                  objectPosition="center"
-                  onLoadingComplete={() => setAvatarLoaded(true)}
+                  onLoad={() => setAvatarLoaded(true)}
                 />
               </div>
 
@@ -171,8 +171,7 @@ export default function Intro() {
                   height={200}
                   src="/assets/images/home/gogogo_vertical.svg"
                   alt="gogogo"
-                  objectFit="contain"
-                  objectPosition="center"
+                  className="object-contain object-center"
                 />
               </div>
 
@@ -184,8 +183,7 @@ export default function Intro() {
                   height={200}
                   src="/assets/images/home/gogogo_horizontal.svg"
                   alt="gogogo"
-                  objectFit="contain"
-                  objectPosition="center"
+                  className="object-contain object-center"
                 />
               </div>
             </div>
