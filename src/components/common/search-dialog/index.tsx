@@ -104,6 +104,7 @@ export default function SearchDialog({ deviceType }: Props) {
         }
         icon={Search}
         iconClassName="transition-colors group-hover:text-blue-500"
+        ariaLabel="search"
       >
         {deviceType === 'desktop' && (
           <>

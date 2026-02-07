@@ -21,6 +21,7 @@ type Props = {
   iconStrokeWidth?: number;
   iconClassName?: string;
   disabled?: boolean;
+  ariaLabel?: string;
 };
 
 // UI Component: Button
@@ -36,6 +37,7 @@ export default function Button({
   iconStrokeWidth = 2,
   iconClassName = '',
   disabled = false,
+  ariaLabel,
 }: Props) {
   const baseStyles =
     'group flex items-center justify-center transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
@@ -127,6 +129,7 @@ export default function Button({
       onClick={onButtonClick}
       disabled={disabled}
       className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${roundeds[rounded]} ${className} ${bordered ? 'border' : ''}`}
+      aria-label={ariaLabel}
     >
       {Icon && (
         <Icon

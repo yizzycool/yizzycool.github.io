@@ -56,6 +56,7 @@ export default function ThemeSelector() {
           'data-[active]:bg-neutral-800/10 dark:data-[active]:bg-neutral-700',
           'data-[hover]:hover:bg-neutral-800/10 dark:data-[hover]:bg-neutral-700'
         )}
+        aria-label="theme"
       >
         {theme === 'dark' ? (
           <Moon size={20} />

@@ -42,7 +42,11 @@ export default function HeaderMobile({
         <ThemeSelector />
       </div>
 
-      <button className="h-9 w-9 p-1" onClick={() => setOpen(true)}>
+      <button
+        className="h-9 w-9 p-1"
+        onClick={() => setOpen(true)}
+        aria-label="menu"
+      >
         <Menu className="w-full" />
       </button>
       <Drawer

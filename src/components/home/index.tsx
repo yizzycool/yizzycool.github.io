@@ -34,7 +34,7 @@ export default function Intro() {
   const { getSlideUpClass } = useGetTransitionClass({ loaded: avatarLoaded });
 
   return (
-    <div className="relative flex min-h-full w-full">
+    <main className="relative flex min-h-full w-full">
       <div className="relative mx-auto my-auto h-full max-w-screen-2xl px-4 pb-20 pt-32 lg:px-20">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
           {/* Left Column */}
@@ -203,6 +203,6 @@ export default function Intro() {
           <div className="mx-auto h-px w-24 bg-gradient-to-r from-transparent via-neutral-400 to-transparent" />
         </div>
       </div>
-    </div>
+    </main>
   );
 }
