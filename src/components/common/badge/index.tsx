@@ -49,7 +49,7 @@ export default function Badge({
       'bg-neutral-100 border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300',
     success:
       'bg-green-400/10 border-green-500/20 text-green-900/70 dark:text-green-400',
-    blue: 'bg-blue-100 border-blue-500/20 text-blue-500 dark:bg-blue-500/10 dark:text-blue-400',
+    blue: 'bg-blue-100/20 border-blue-500/20 text-blue-500 dark:bg-blue-500/10 dark:text-blue-400',
   };
 
   const sizes = {

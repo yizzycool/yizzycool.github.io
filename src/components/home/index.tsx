@@ -166,7 +166,7 @@ export default function Intro() {
                 )}
               >
                 <Image
-                  priority={true}
+                  // priority
                   width={200}
                   height={200}
                   src="/assets/images/home/gogogo_vertical.svg"
@@ -178,7 +178,7 @@ export default function Intro() {
               {/* Bottom Left gogogo */}
               <div className="pointer-events-none absolute -bottom-14 -left-16 z-20 opacity-0 transition-all duration-300 group-hover:-translate-x-2 group-hover:translate-y-2 group-hover:opacity-100">
                 <Image
-                  priority={true}
+                  // priority
                   width={200}
                   height={200}
                   src="/assets/images/home/gogogo_horizontal.svg"

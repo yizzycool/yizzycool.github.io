@@ -30,7 +30,12 @@ export default function LeftPanel({
         '[&_*]:transition-all',
         getSlideUpClass(),
         side === 'leftPanel' &&
-          'sticky top-24 hidden h-dvh w-80 w-[300px] shrink-0 border-r border-neutral-400/20 p-4 lg:block',
+          clsx(
+            'sticky top-[68px] h-[calc(100dvh_-_68px)] w-[300px] shrink-0 overflow-y-auto',
+            'hidden lg:block',
+            'border-r border-neutral-400/20',
+            'px-4 py-5 lg:py-10'
+          ),
         side === 'headerBlogSelector' && 'py-4'
       )}
     >

@@ -29,6 +29,11 @@ export default function useWindowDevice() {
     return width < BreakPoints['width-sm'];
   }, [width]);
 
+  const isNotDesktop = useMemo(() => {
+    if (_isUndefined(width)) return false;
+    return !isDesktop;
+  }, [width, isDesktop]);
+
   useEffect(() => {
     onResized();
     window.addEventListener('resize', onResized);
@@ -43,6 +48,7 @@ export default function useWindowDevice() {
 
   return {
     isDesktop,
+    isNotDesktop,
     isPad,
     isMobile,
   };

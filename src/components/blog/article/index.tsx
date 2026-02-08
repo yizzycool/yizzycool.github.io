@@ -1,13 +1,17 @@
 'use client';
 
-import { BlogArticle } from '@/types/blog';
+import type { BlogArticle } from '@/types/blog';
+
 import clsx from 'clsx';
+
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import Breadcrumb from './components/breadcrumb';
 import Tags from './components/tags';
 import Metadata from './components/metadata';
 import Banner from './components/banner';
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
+import { TocDesktop, TocMobile } from './components/toc';
+
 import _get from 'lodash/get';
 
 type Props = {
@@ -52,6 +56,9 @@ export default function Article({ article, toc }: Props) {
 
         <Banner article={article} />
 
+        {/* Toc between Banner & Content */}
+        <TocMobile toc={toc} />
+
         {/* Main Content */}
         <ProseMarkdown
           className={clsx('[&_*]:scroll-mt-20', getSlideUpClass('delay-300'))}
@@ -61,24 +68,7 @@ export default function Article({ article, toc }: Props) {
       </div>
 
       {/* Toc on right side */}
-      <div
-        className={clsx(
-          'sticky top-[68px] hidden h-[calc(100dvh-68px)] w-64 shrink-0 overflow-y-auto border-l-[1px] border-neutral-400/20 p-4 lg:block',
-          getSlideUpClass()
-        )}
-      >
-        <div className={clsx('mt-6 font-bold', getSlideUpClass('delay-150'))}>
-          Table of Content
-        </div>
-        <div
-          className={clsx(
-            'mt-6 text-sm leading-normal transition-all [&_*]:my-2 [&_a:hover]:brightness-200 [&_a]:block [&_ol_ol]:ps-5 [&_ul_ul]:ps-8',
-            getSlideUpClass('delay-200')
-          )}
-        >
-          <div dangerouslySetInnerHTML={{ __html: toc }} />
-        </div>
-      </div>
+      <TocDesktop toc={toc} />
     </>
   );
 }
