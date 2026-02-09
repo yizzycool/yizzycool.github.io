@@ -25,7 +25,7 @@ export default function ToolsSelectorDesktop() {
   return (
     <>
       {/* Tools */}
-      <Popover className="group relative">
+      <Popover as="li" className="group relative">
         <PopoverButton
           className={clsx(
             'ml-4 flex items-center gap-2 transition-opacity',
@@ -38,6 +38,7 @@ export default function ToolsSelectorDesktop() {
           <ChevronDown className="size-5 transition-transform duration-200 group-data-[open]:rotate-180" />
         </PopoverButton>
         <PopoverPanel
+          as="ul"
           static
           unmount={false}
           anchor={{
@@ -57,33 +58,36 @@ export default function ToolsSelectorDesktop() {
           )}
         >
           {Tools.map((tool) => (
-            <div
+            <li
               key={tool.name}
-              className="flex p-4 pr-16 transition-all duration-300 hover:bg-gray-100/50 dark:hover:bg-neutral-700/20"
+              className="space-y-4 p-4 transition-all duration-300 hover:bg-gray-100/50 dark:hover:bg-neutral-700/20"
             >
-              <div className="w-full">
-                <div className="mb-4 text-sm font-bold text-gray-700 dark:text-gray-200">
-                  {tool.name}
-                </div>
+              {/* <div className="w-full"> */}
+              <span className="text-sm font-black leading-loose text-gray-400">
+                {tool.name}
+              </span>
+              <ul>
                 {tool.items.map((item) => (
-                  <CloseButton
-                    as={Link}
-                    key={item.name}
-                    className={clsx(
-                      'mt-2 flex items-center',
-                      'transition-all duration-300',
-                      'text-gray-600 hover:text-sky-500 dark:text-gray-50 dark:hover:text-sky-500'
-                    )}
-                    href={item.href}
-                  >
-                    <div className="mr-3 h-8 w-8 rounded p-1.5">
-                      <item.icon.component className="h-full w-full" />
-                    </div>
-                    {item.name}
-                  </CloseButton>
+                  <li key={item.name}>
+                    <CloseButton
+                      as={Link}
+                      className={clsx(
+                        'mt-2 flex items-center pr-12',
+                        'transition-all duration-300',
+                        'text-gray-600 hover:text-sky-500 dark:text-gray-50 dark:hover:text-sky-500'
+                      )}
+                      href={item.href}
+                    >
+                      <div className="mr-3 h-8 w-8 rounded p-1.5">
+                        <item.icon.component className="h-full w-full" />
+                      </div>
+                      {item.name}
+                    </CloseButton>
+                  </li>
                 ))}
-              </div>
-            </div>
+              </ul>
+              {/* </div> */}
+            </li>
           ))}
         </PopoverPanel>
         {body &&

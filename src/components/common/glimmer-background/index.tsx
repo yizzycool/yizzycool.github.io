@@ -31,7 +31,10 @@ type Props = {
 
 export default function GlimmerBackground({ configs = [{}] }: Props) {
   return (
-    <div className="pointer-events-none fixed inset-0 overflow-hidden">
+    <div
+      className="pointer-events-none fixed inset-0 overflow-hidden"
+      aria-hidden
+    >
       {configs.map((config, idx) => (
         <div
           key={idx}

@@ -34,7 +34,7 @@ export default function Navbar({ categoryArticles }: Props) {
   const headerExpanded = !scrolled && !isToolPage;
 
   return (
-    <div
+    <header
       className={clsx(
         'fixed top-0 z-50 w-full border-b transition-all duration-300',
         headerExpanded
@@ -51,6 +51,6 @@ export default function Navbar({ categoryArticles }: Props) {
           <HeaderMobile categoryArticles={categoryArticles} />
         </div>
       )}
-    </div>
+    </header>
   );
 }

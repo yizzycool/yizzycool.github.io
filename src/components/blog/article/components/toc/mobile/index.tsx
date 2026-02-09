@@ -23,12 +23,13 @@ export default function TocMobile({ toc }: Props) {
         getSlideUpClass('[transition-delay:250ms]')
       )}
     >
-      <div
+      <nav
         className={clsx(
           'relative transition-all duration-300',
           'bg-neutral-50/50 backdrop-blur-md dark:bg-neutral-900/50',
           'rounded-2xl border-2 border-neutral-200 dark:border-neutral-800'
         )}
+        aria-label="table of content"
       >
         {/* TOC Button */}
         <button
@@ -87,7 +88,7 @@ export default function TocMobile({ toc }: Props) {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </nav>
     </section>
   );
 }

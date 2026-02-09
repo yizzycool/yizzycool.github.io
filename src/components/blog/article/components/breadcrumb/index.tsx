@@ -18,25 +18,33 @@ export default function Breadcrumb({ article }: Props) {
   const { getSlideUpClass } = useGetTransitionClass();
 
   return (
-    <div
-      className={clsx(
-        'mb-6 flex items-center gap-1 text-sm text-neutral-500 dark:text-neutral-400',
-        getSlideUpClass()
-      )}
-    >
-      <Link
-        className="cursor-pointer transition-colors hover:text-blue-500"
-        href="/blog"
+    <nav aria-label="breadcrumb">
+      <ol
+        className={clsx(
+          'mb-6 flex items-center gap-1 text-sm text-neutral-500 dark:text-neutral-400',
+          getSlideUpClass()
+        )}
       >
-        Blog
-      </Link>
-      <ChevronRight size={14} />
-      <Link
-        className="cursor-pointer transition-colors hover:text-blue-500"
-        href={urlJoin('/blog', slug)}
-      >
-        {name}
-      </Link>
-    </div>
+        <li>
+          <Link
+            className="cursor-pointer transition-colors hover:text-blue-500"
+            href="/blog"
+          >
+            Blog
+          </Link>
+        </li>
+
+        <ChevronRight size={14} aria-hidden />
+
+        <li>
+          <Link
+            className="cursor-pointer transition-colors hover:text-blue-500"
+            href={urlJoin('/blog', slug)}
+          >
+            {name}
+          </Link>
+        </li>
+      </ol>
+    </nav>
   );
 }

@@ -18,27 +18,30 @@ export default function Tags({ article }: Props) {
   const { tags } = data;
 
   return (
-    <div
+    <ul
       className={clsx(
         'mb-6 flex flex-wrap gap-2',
         getSlideUpClass('delay-150')
       )}
+      aria-label="article tags"
     >
       {_map(
         tags,
         ({ name, slug }) =>
           !!slug && (
-            <Link key={name} href={urlJoin('/blog/tag', slug) || ''}>
-              <Badge
-                variant="blue"
-                bordered
-                className="rounded-md bg-neutral-400/20 px-2 py-1 text-xs"
-              >
-                {name}
-              </Badge>
-            </Link>
+            <li key={name}>
+              <Link href={urlJoin('/blog/tag', slug) || ''}>
+                <Badge
+                  variant="blue"
+                  bordered
+                  className="rounded-md bg-neutral-400/20 px-2 py-1 text-xs"
+                >
+                  {name}
+                </Badge>
+              </Link>
+            </li>
           )
       )}
-    </div>
+    </ul>
   );
 }

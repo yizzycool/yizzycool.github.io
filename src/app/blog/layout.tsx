@@ -21,10 +21,10 @@ export default async function Layout({
   const categoryArticles = await fetchCategoryArticles();
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-full pt-[101px] 2xl:max-w-screen-2xl">
+    <main className="mx-auto flex min-h-dvh w-full max-w-full pt-[101px] 2xl:max-w-screen-2xl">
       <GlimmerBackground configs={GlimmerBackgroundConfigs} />
       <LeftPanel categoryArticles={categoryArticles} />
       {children}
-    </div>
+    </main>
   );
 }

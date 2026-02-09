@@ -27,24 +27,26 @@ export default function Article({ article, toc }: Props) {
 
   return (
     <>
-      <div className="mx-auto flex-grow overflow-hidden px-5 pb-10 pt-5 lg:max-w-screen-lg lg:px-8 lg:py-10">
+      <article className="mx-auto flex-grow overflow-hidden px-5 pb-10 pt-5 lg:max-w-screen-lg lg:px-8 lg:py-10">
         <Breadcrumb article={article} />
 
-        {/* Title */}
-        <h1
-          className={clsx(
-            'mb-6 text-4xl font-extrabold tracking-tight md:text-5xl',
-            'bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text',
-            'dark:from-white dark:to-neutral-400',
-            getSlideUpClass('delay-100')
-          )}
-        >
-          {title}
-        </h1>
+        <header>
+          {/* Title */}
+          <h1
+            className={clsx(
+              'mb-6 text-4xl font-extrabold tracking-tight md:text-5xl',
+              'bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text',
+              'dark:from-white dark:to-neutral-400',
+              getSlideUpClass('delay-100')
+            )}
+          >
+            {title}
+          </h1>
 
-        <Tags article={article} />
+          <Tags article={article} />
 
-        <Metadata article={article} />
+          <Metadata article={article} />
+        </header>
 
         {/* Separator */}
         <div
@@ -59,13 +61,15 @@ export default function Article({ article, toc }: Props) {
         {/* Toc between Banner & Content */}
         <TocMobile toc={toc} />
 
-        {/* Main Content */}
-        <ProseMarkdown
-          className={clsx('[&_*]:scroll-mt-20', getSlideUpClass('delay-300'))}
-        >
-          {content}
-        </ProseMarkdown>
-      </div>
+        <section>
+          {/* Main Content */}
+          <ProseMarkdown
+            className={clsx('[&_*]:scroll-mt-20', getSlideUpClass('delay-300'))}
+          >
+            {content}
+          </ProseMarkdown>
+        </section>
+      </article>
 
       {/* Toc on right side */}
       <TocDesktop toc={toc} />

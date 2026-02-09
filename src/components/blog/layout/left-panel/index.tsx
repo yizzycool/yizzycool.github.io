@@ -25,7 +25,7 @@ export default function LeftPanel({
   const data = _get(categoryArticles, ['data']) || [];
 
   return (
-    <div
+    <aside
       className={clsx(
         '[&_*]:transition-all',
         getSlideUpClass(),
@@ -39,80 +39,94 @@ export default function LeftPanel({
         side === 'headerBlogSelector' && 'py-4'
       )}
     >
-      {/* Title */}
-      <h3
-        className={clsx(
-          'mb-4 pl-2 text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500',
-          getSlideUpClass('delay-100')
-        )}
-      >
-        Categories
-      </h3>
-      {/* All Articles */}
-      <Link
-        className={clsx(
-          'flex items-center rounded-md px-4 py-2 font-bold',
-          'hover:bg-sky-600/10',
-          'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500',
-          getSlideUpClass('delay-150')
-        )}
-        href="/blog"
-        data-active={pathname === '/blog'}
-        onClick={onClick}
-      >
-        All Artices
-      </Link>
-      {/* Categories */}
-      {data.map((category) => (
-        <div key={category.name}>
-          <Link
-            className={clsx(
-              'mt-1 flex items-center rounded-md px-4 py-2 font-bold',
-              'hover:bg-sky-600/10',
-              'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500',
-              getSlideUpClass('delay-150')
-            )}
-            href={strapiUtils.toBlogCategoryUrl(category.slug)}
-            data-active={
-              pathname === strapiUtils.toBlogCategoryUrl(category.slug)
-            }
-            onClick={onClick}
-          >
-            {category.name}
-          </Link>
-          <div
-            className={clsx(
-              'ml-4 border-neutral-400/50 pl-2 lg:border-l',
-              getSlideUpClass('delay-200')
-            )}
-          >
-            {_map(category.articles, (article) => (
+      <nav aria-label="articles list">
+        {/* Title */}
+        <h2
+          className={clsx(
+            'mb-4 pl-2 text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500',
+            getSlideUpClass('delay-100')
+          )}
+        >
+          Categories
+        </h2>
+        <ul>
+          {/* All Articles */}
+          <li>
+            <h3>
               <Link
-                key={article.title}
                 className={clsx(
-                  'my-1 flex cursor-pointer items-center rounded-md p-2 text-sm',
+                  'flex items-center rounded-md px-4 py-2 font-bold',
                   'hover:bg-sky-600/10',
-                  'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500'
+                  'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500',
+                  getSlideUpClass('delay-150')
                 )}
-                href={strapiUtils.toBlogCategoryArticleUrl(
-                  category.slug,
-                  article.slug
-                )}
-                data-active={
-                  pathname ===
-                  strapiUtils.toBlogCategoryArticleUrl(
-                    category.slug,
-                    article.slug
-                  )
-                }
+                href="/blog"
+                data-active={pathname === '/blog'}
                 onClick={onClick}
               >
-                {article.title}
+                All Artices
               </Link>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
+            </h3>
+            <ul>
+              {/* Categories */}
+              {data.map((category) => (
+                <li key={category.name}>
+                  <h3>
+                    <Link
+                      className={clsx(
+                        'mt-1 flex items-center rounded-md px-4 py-2 font-bold',
+                        'hover:bg-sky-600/10',
+                        'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500',
+                        getSlideUpClass('delay-150')
+                      )}
+                      href={strapiUtils.toBlogCategoryUrl(category.slug)}
+                      data-active={
+                        pathname ===
+                        strapiUtils.toBlogCategoryUrl(category.slug)
+                      }
+                      onClick={onClick}
+                    >
+                      {category.name}
+                    </Link>
+                  </h3>
+                  <ul
+                    className={clsx(
+                      'ml-4 border-neutral-400/50 pl-2 lg:border-l',
+                      getSlideUpClass('delay-200')
+                    )}
+                  >
+                    {_map(category.articles, (article) => (
+                      <li key={article.title}>
+                        <Link
+                          className={clsx(
+                            'my-1 flex cursor-pointer items-center rounded-md p-2 text-sm',
+                            'hover:bg-sky-600/10',
+                            'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500'
+                          )}
+                          href={strapiUtils.toBlogCategoryArticleUrl(
+                            category.slug,
+                            article.slug
+                          )}
+                          data-active={
+                            pathname ===
+                            strapiUtils.toBlogCategoryArticleUrl(
+                              category.slug,
+                              article.slug
+                            )
+                          }
+                          onClick={onClick}
+                        >
+                          {article.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </aside>
   );
 }

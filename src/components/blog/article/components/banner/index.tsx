@@ -30,7 +30,9 @@ export default function Banner({ article }: Props) {
   }, []);
 
   return (
-    <div className={clsx('relative mb-20 mt-10', getSlideUpClass('delay-300'))}>
+    <figure
+      className={clsx('relative mb-20 mt-10', getSlideUpClass('delay-300'))}
+    >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         ref={imgRef}
@@ -41,10 +43,10 @@ export default function Banner({ article }: Props) {
         src={strapiUtils.toMediaUrl(banner.url)}
         srcSet={strapiUtils.buildSrcSet(banner.formats)}
         sizes="(max-width: 1024px) 100vw, 1024px"
-        alt={banner.alternativeText ?? ''}
+        alt={banner.alternativeText ?? 'banner image'}
         loading="eager"
         onLoad={() => setBannerLoaded(true)}
       />
-    </div>
+    </figure>
   );
 }
