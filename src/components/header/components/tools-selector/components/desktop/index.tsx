@@ -63,7 +63,7 @@ export default function ToolsSelectorDesktop() {
               className="space-y-4 p-4 transition-all duration-300 hover:bg-gray-100/50 dark:hover:bg-neutral-700/20"
             >
               {/* <div className="w-full"> */}
-              <span className="text-sm font-black leading-loose text-gray-400">
+              <span className="text-sm font-bold tracking-wide text-neutral-500 dark:text-neutral-400">
                 {tool.name}
               </span>
               <ul>

@@ -75,35 +75,41 @@ export default function HeaderMobile({
           </div>
 
           {/* Drawer Contents */}
-          <div className="relative mt-6 flex flex-1 flex-col gap-2 overflow-y-auto px-4">
-            {/* Home */}
-            <GeneralLink
-              onClick={closeSidePanel}
-              icon={Home}
-              label="Home"
-              href="/"
-            />
+          <nav className="flex-1 overflow-y-auto">
+            <ul className="relative mt-6 flex flex-col gap-2 px-4">
+              {/* Home */}
+              <li>
+                <GeneralLink
+                  onClick={closeSidePanel}
+                  icon={Home}
+                  label="Home"
+                  href="/"
+                />
+              </li>
 
-            {/* Tools */}
-            <ToolsSelectorMobile closeSidePanel={closeSidePanel} />
+              {/* Tools */}
+              <ToolsSelectorMobile closeSidePanel={closeSidePanel} />
 
-            {/* Blog */}
-            <BlogSelectorMobile
-              closeSidePanel={closeSidePanel}
-              categoryArticles={categoryArticles}
-            />
+              {/* Blog */}
+              <BlogSelectorMobile
+                closeSidePanel={closeSidePanel}
+                categoryArticles={categoryArticles}
+              />
 
-            {/* Resume */}
-            <GeneralLink
-              onClick={closeSidePanel}
-              icon={UserRound}
-              label="Resume"
-              href="/resume"
-            />
-          </div>
+              {/* Resume */}
+              <li>
+                <GeneralLink
+                  onClick={closeSidePanel}
+                  icon={UserRound}
+                  label="Resume"
+                  href="/resume"
+                />
+              </li>
+            </ul>
+          </nav>
 
           {/* Drawer Footer */}
-          <div className="mt-6 border-t border-neutral-200 px-4 pt-6 dark:border-neutral-700">
+          <footer className="mt-6 border-t border-neutral-200 px-4 pt-6 dark:border-neutral-700">
             <SocialIcons
               types={['github', 'linkedin', 'email']}
               className="justify-center"
@@ -111,7 +117,7 @@ export default function HeaderMobile({
             <p className="mt-4 text-center text-xs text-neutral-400 dark:text-neutral-500">
               © 2025 Yizzy Peasy.
             </p>
-          </div>
+          </footer>
         </div>
       </Drawer>
     </div>

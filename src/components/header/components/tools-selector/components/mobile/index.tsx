@@ -20,7 +20,7 @@ export default function ToolsSelectorMobile({
 
   return (
     <>
-      <Disclosure as="div" className="group">
+      <Disclosure as="li" className="group">
         <DisclosureButton
           className={clsx(
             'flex w-full items-center justify-between rounded-lg px-3 py-4',
@@ -41,36 +41,37 @@ export default function ToolsSelectorMobile({
             'data-[open]:grid-rows-[1fr]'
           )}
         >
-          <div className="ml-4 overflow-hidden border-l border-neutral-400/50">
+          <ul className="ml-4 overflow-hidden border-l border-neutral-400/50">
             {Tools.map((tool) => (
-              <div key={tool.name} className="flex p-4 pr-16">
-                <div className="w-full">
-                  <div className="mb-4 font-bold text-gray-700 dark:text-gray-200">
-                    {tool.name}
-                  </div>
+              <li key={tool.name} className="space-y-4 p-4">
+                <span className="text-sm font-bold tracking-wide text-neutral-500 dark:text-neutral-400">
+                  {tool.name}
+                </span>
+                <ul>
                   {tool.items.map((item) => (
-                    <Link
-                      key={item.name}
-                      className={clsx(
-                        'mt-2 flex items-center text-sm',
-                        'transition-all duration-300',
-                        'hover:text-sky-500 dark:hover:text-sky-500',
-                        'data-[active=true]:text-sky-500'
-                      )}
-                      href={item.href}
-                      onClick={closeSidePanel}
-                      data-active={pathname === item.href}
-                    >
-                      <div className="mr-3 h-8 w-8 p-1.5 dark:border-gray-500/50">
-                        <item.icon.component className="h-full w-full" />
-                      </div>
-                      {item.name}
-                    </Link>
+                    <li key={item.name}>
+                      <Link
+                        className={clsx(
+                          'mt-2 flex items-center text-sm',
+                          'transition-all duration-300',
+                          'hover:text-sky-500 dark:hover:text-sky-500',
+                          'data-[active=true]:text-sky-500'
+                        )}
+                        href={item.href}
+                        onClick={closeSidePanel}
+                        data-active={pathname === item.href}
+                      >
+                        <div className="mr-3 h-8 w-8 p-1.5 dark:border-gray-500/50">
+                          <item.icon.component className="h-full w-full" />
+                        </div>
+                        {item.name}
+                      </Link>
+                    </li>
                   ))}
-                </div>
-              </div>
+                </ul>
+              </li>
             ))}
-          </div>
+          </ul>
         </DisclosurePanel>
       </Disclosure>
     </>

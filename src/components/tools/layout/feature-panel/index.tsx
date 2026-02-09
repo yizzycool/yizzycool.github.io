@@ -19,7 +19,9 @@ export default function FeaturePanel() {
         <ul>
           {Tools.map((tool) => (
             <li key={tool.name} className="mt-6">
-              <h2 className="mb-2 font-bold">{tool.name}</h2>
+              <h2 className="mb-2 font-bold text-neutral-500 dark:text-neutral-400">
+                {tool.name}
+              </h2>
               <ul>
                 {tool.items.map((item) => (
                   <li key={item.name}>
