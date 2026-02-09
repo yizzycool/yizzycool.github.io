@@ -10,7 +10,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="mx-auto flex min-h-dvh max-w-screen-2xl pt-[68px]">
+    <main className="mx-auto flex min-h-dvh max-w-screen-2xl pt-[68px]">
       <GlimmerBackground configs={GlimmerBackgroundConfigs} />
       <FeaturePanel />
       <div className="relative flex-1">
@@ -19,6 +19,6 @@ export default function RootLayout({
           <AboutBlock />
         </div>
       </div>
-    </div>
+    </main>
   );
 }

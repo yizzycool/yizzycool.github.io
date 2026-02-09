@@ -39,7 +39,7 @@ export default function LeftPanel({
         side === 'headerBlogSelector' && 'py-4'
       )}
     >
-      <nav aria-label="articles list">
+      <nav aria-label="Articles list">
         {/* Title */}
         <h2
           className={clsx(
