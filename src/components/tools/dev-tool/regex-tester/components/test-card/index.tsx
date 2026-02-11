@@ -74,6 +74,7 @@ export default function TestCard({
           value={testString}
           placeholder="Insert test text here..."
           onChange={onChange}
+          aria-label="Test string"
         />
       </div>
     </Card>
