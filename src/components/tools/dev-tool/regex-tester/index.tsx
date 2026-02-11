@@ -7,6 +7,8 @@ import PatternCard from './components/pattern-card';
 import TestCard from './components/test-card';
 import DetailCard from './components/detail-card';
 
+import _filter from 'lodash/filter';
+
 export type RegexColorType = {
   bg: string;
   text: string;
@@ -57,7 +59,7 @@ export default function RegexTester() {
     'Contact us at support@example.com or info@web.org!'
   );
   const [error, setError] = useState<string | null>(null);
-  const [matches, setMatches] = useState<Array<RegExpExecArray>>([]);
+  const [matches, setMatches] = useState<RegExpExecArray[]>([]);
 
   // Regex processing
   useEffect(() => {

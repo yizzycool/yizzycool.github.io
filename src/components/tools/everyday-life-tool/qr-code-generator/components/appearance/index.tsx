@@ -31,6 +31,7 @@ export default function Appearance({
           <ColorPicker
             value={fgColor}
             onChange={(e) => setFgColor(e.target.value)}
+            ariaLabel="Foreground color picker"
           />
         </div>
         <div className="flex items-center justify-between">
@@ -40,6 +41,7 @@ export default function Appearance({
           <ColorPicker
             value={bgColor}
             onChange={(e) => setBgColor(e.target.value)}
+            ariaLabel="Background color picker"
           />
         </div>
 

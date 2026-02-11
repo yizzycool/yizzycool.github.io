@@ -42,6 +42,7 @@ export default function PatternCard({
             onChange={(e) => setPattern(e.target.value)}
             className="flex-1 border-none bg-transparent tracking-widest text-neutral-900 outline-none dark:text-neutral-100"
             placeholder="e.g. ([A-Z])\w+"
+            aria-label="Patern of regular expression"
           />
           <span className="text-neutral-400">/</span>
           <span className="text-neutral-600 dark:text-neutral-400">

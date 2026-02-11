@@ -8,6 +8,8 @@ type Props = {
 
 export default function FlagSelector({ flags, setFlags }: Props) {
   const toggleFlag = (flag: string) => {
+    if (flag === 'g') return;
+
     setFlags((prev) =>
       prev.includes(flag) ? prev.replace(flag, '') : prev + flag
     );
@@ -22,6 +24,7 @@ export default function FlagSelector({ flags, setFlags }: Props) {
           size="xs"
           bordered
           onClick={() => toggleFlag(f.key)}
+          disabled={f.key === 'g'}
         >
           <span className="font-bold">{f.key}</span>
           <span className="ml-1.5 hidden font-normal opacity-80 sm:inline">

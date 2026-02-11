@@ -29,6 +29,7 @@ export default function Layout({ size, setSize, margin, setMargin }: Props) {
             step={sizeStep}
             showBubble={false}
             onChange={(e) => setSize(Number(e.target.value))}
+            ariaLabel="Slider to adjust image size of QR code"
           />
         </div>
         <div className="space-y-2">
@@ -40,6 +41,7 @@ export default function Layout({ size, setSize, margin, setMargin }: Props) {
             step={1}
             showBubble={false}
             onChange={(e) => setMargin(Number(e.target.value))}
+            ariaLabel="Slider to adjust margin of QR code"
           />
         </div>
       </Card>

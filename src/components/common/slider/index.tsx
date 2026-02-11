@@ -13,6 +13,8 @@ type Props = {
   step?: number;
   showBubble?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  ariaLabel?: string;
+  id?: string;
 };
 
 export default function Slider({
@@ -24,6 +26,8 @@ export default function Slider({
   step = 0.1,
   showBubble = true,
   onChange = () => {},
+  id,
+  ariaLabel,
 }: Props) {
   return (
     <Field>
@@ -39,6 +43,7 @@ export default function Slider({
         </div>
       )}
       <input
+        id={id}
         className={clsx(
           'mt-4 h-2 w-full cursor-pointer appearance-none rounded-lg bg-neutral-200 dark:bg-neutral-700',
           '[&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none',
@@ -53,6 +58,7 @@ export default function Slider({
         value={value}
         step={step}
         onChange={onChange}
+        aria-label={ariaLabel ?? 'slider'}
       />
     </Field>
   );

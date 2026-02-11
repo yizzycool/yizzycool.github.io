@@ -73,7 +73,6 @@ export default function TestCard({
           )}
           value={testString}
           placeholder="Insert test text here..."
-          autoFocus
           onChange={onChange}
         />
       </div>
