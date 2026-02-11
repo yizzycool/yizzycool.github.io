@@ -14,8 +14,8 @@ export default function Divider({
   return (
     <div
       className={clsx(
-        'border-neutral-200 dark:border-neutral-700',
-        orientation === 'vertical' ? 'h-full border-l' : 'w-full border-t',
+        'bg-neutral-200 dark:bg-neutral-700',
+        orientation === 'vertical' ? 'w-px self-stretch' : 'h-px w-full',
         className
       )}
     />

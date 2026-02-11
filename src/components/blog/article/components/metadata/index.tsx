@@ -1,9 +1,13 @@
 'use client';
 
+import type { BlogArticle } from '@/types/blog';
+
 import clsx from 'clsx';
-import { Calendar, Clock } from 'lucide-react';
+import { Calendar, Clock, RefreshCw } from 'lucide-react';
+
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import { BlogArticle } from '@/types/blog';
+import Divider from '@/components/common/divider';
+
 import _get from 'lodash/get';
 import _map from 'lodash/map';
 
@@ -11,10 +15,17 @@ type Props = { article: BlogArticle };
 
 export default function Metadata({ article }: Props) {
   const data = _get(article, 'data.0') || {};
-  const { updatedAt, readTime } = data;
+  const { updatedAt, publishedAt, createdAt, readTime } = data;
 
-  const date = new Date(updatedAt as string);
-  const dateString = date.toLocaleDateString('en-US', {
+  const publishDate = new Date((publishedAt ?? createdAt) as string);
+  const publishDateString = publishDate.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
+  const updateDate = new Date(updatedAt as string);
+  const updateDateString = updateDate.toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
@@ -23,24 +34,32 @@ export default function Metadata({ article }: Props) {
   const { getSlideUpClass } = useGetTransitionClass();
 
   return (
-    <p
+    <div
       className={clsx(
-        'mb-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm',
+        'flex flex-wrap items-center gap-x-4 gap-y-2',
+        'mb-6 text-sm',
         'text-neutral-500 dark:text-neutral-400',
         getSlideUpClass('delay-200')
       )}
     >
-      <time className="flex items-center gap-1.5">
-        <Calendar size={14} />
-        <span>{dateString}</span>
-      </time>
-
-      <span className="hidden h-1 w-1 rounded-full bg-neutral-300 md:inline dark:bg-neutral-600" />
-
-      <span className="flex items-center gap-1.5">
+      <span className="flex items-center gap-2">
         <Clock size={14} />
         <span>{readTime} min read</span>
       </span>
-    </p>
+
+      <Divider orientation="vertical" className="my-1" />
+
+      <time className="flex items-center gap-2">
+        <Calendar size={14} />
+        <span>{publishDateString}</span>
+      </time>
+
+      <Divider orientation="vertical" className="my-1" />
+
+      <time className="flex items-center gap-2 italic">
+        <RefreshCw size={14} />
+        <span>{updateDateString}</span>
+      </time>
+    </div>
   );
 }
