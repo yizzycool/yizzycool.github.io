@@ -9,7 +9,7 @@ const Phrases = [
 ];
 const typingSpeed = 50;
 const deletingSpeed = 30;
-const stayDuration = 3000000;
+const stayDuration = 3000;
 const startDelay = 2000;
 
 export default function Typewritter() {
