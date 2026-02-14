@@ -9,7 +9,7 @@ const Phrases = [
 ];
 const typingSpeed = 50;
 const deletingSpeed = 30;
-const stayDuration = 3000;
+const stayDuration = 3000000;
 const startDelay = 2000;
 
 export default function Typewritter() {
@@ -71,12 +71,12 @@ export default function Typewritter() {
   };
 
   return (
-    <>
-      <span>{text}</span>
+    <span>
+      {text}
       {/* Blinking cursor */}
       <span className="inline-block w-0 animate-flash-cursor text-center">
         |
       </span>
-    </>
+    </span>
   );
 }

@@ -80,7 +80,7 @@ export default function Intro() {
             {/* Description */}
             <p
               className={clsx(
-                'max-w-lg text-lg leading-relaxed text-neutral-600 dark:text-neutral-400',
+                'text-md max-w-lg leading-relaxed text-neutral-500 dark:text-neutral-400',
                 getSlideUpClass('delay-500')
               )}
             >
