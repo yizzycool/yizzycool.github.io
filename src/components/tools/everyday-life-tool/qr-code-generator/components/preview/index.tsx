@@ -16,6 +16,8 @@ export default function Preview({ qrCodeUrl, inputText }: Props) {
   useEffect(() => {
     if (!inputText) return;
     setIsGenerating(true);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [qrCodeUrl]);
 
   return (

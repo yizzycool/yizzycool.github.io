@@ -3,9 +3,10 @@ import type { LucideIcon } from 'lucide-react';
 import type { Rounded } from '@/types/common';
 
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Button from '@/components/common/button';
+import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 
 type Props = {
   tabs: Array<string>;
@@ -35,6 +36,25 @@ export default function ButtonTabs({
   onChange = () => {},
 }: Props) {
   const [tab, setTab] = useState(defaultActiveTab || tabs[0]);
+
+  // Bind a event listener to trigger tab switch
+  useEffect(() => {
+    const handler = (e: CustomEvent) => {
+      const { tab = '' } = e.detail;
+      if (!tabs.includes(tab)) return;
+      setTab(tab);
+      onChange(tab);
+    };
+
+    const unsubscriber = customEventUtils.on(
+      CustomEvents.common.switchTab,
+      handler
+    );
+
+    return () => unsubscriber();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tabs]);
 
   const onTabClick = (mode: string) => {
     if (mode === tab) return;

@@ -57,7 +57,7 @@ export default function ShareAction({
         files: [content],
       };
     }
-  }, [content]);
+  }, [shareTitle, shareText, content]);
 
   const isButtonDisabled = useMemo(() => {
     return (
@@ -77,6 +77,7 @@ export default function ShareAction({
     setIsMimeTypeSupported(
       !!window.navigator.canShare && window.navigator.canShare(shareData)
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mimeType]);
 
   const handleShare = async () => {

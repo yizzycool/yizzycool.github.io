@@ -138,6 +138,8 @@ export default function Result({ text, result, isProcessing }: Props) {
     } catch (_e) {
       return setHighlightList([]);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   const onApply = (idx: number) => {

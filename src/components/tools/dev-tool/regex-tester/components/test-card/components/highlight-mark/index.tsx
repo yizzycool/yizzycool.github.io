@@ -104,6 +104,8 @@ export default function HighlightMark({
     } catch (_e) {
       return [];
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pattern, testString]);
 
   if (!pattern || error || matches.length === 0) return null;
