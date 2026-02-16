@@ -27,7 +27,6 @@ export default function LeftPanel({
   return (
     <aside
       className={clsx(
-        '[&_*]:transition-all',
         getSlideUpClass(),
         side === 'leftPanel' &&
           clsx(
