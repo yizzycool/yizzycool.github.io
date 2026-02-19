@@ -35,17 +35,17 @@ export default function Metadata({ article }: Props) {
         getSlideUpClass('delay-200')
       )}
     >
-      <span className="flex items-center gap-2">
-        <Clock size={14} />
-        <span>{readTime} min read</span>
-      </span>
-
-      <Divider orientation="vertical" className="my-1" />
-
       <time className="flex items-center gap-2">
         <Calendar size={14} />
         <span>{publishDateString}</span>
       </time>
+
+      <Divider orientation="vertical" className="my-1" />
+
+      <span className="flex items-center gap-2">
+        <Clock size={14} />
+        <span>{readTime} min read</span>
+      </span>
     </div>
   );
 }

@@ -29,7 +29,7 @@ export default function CodeBlock({ match, code, rest }: Props) {
       {/* Header - language + copy button */}
       <div className="flex items-center justify-between px-3 py-2 text-xs text-gray-600 dark:text-gray-300">
         <span>{match[1]}</span>
-        <CopyAction variant="ghost" content={code as string} />
+        <CopyAction variant="secondary" content={code as string} />
       </div>
       {/* @ts-expect-error - known issue about react-syntax-highlighter */}
       <SyntaxHighlighter

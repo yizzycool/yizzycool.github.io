@@ -57,10 +57,10 @@ export default function Pagination({ articles }: Props) {
     if (page === nextPage || nextPage < 1 || nextPage > pageCount) return;
 
     const rootPath = pathname.replace(/\/page\/[0-9]+$/, '');
-    if (page === 1) {
+    if (nextPage === 1) {
       router.push(rootPath);
     } else {
-      router.push(urlJoin(rootPath, '/page', page.toString()));
+      router.push(urlJoin(rootPath, '/page', nextPage.toString()));
     }
   };
 
@@ -72,11 +72,13 @@ export default function Pagination({ articles }: Props) {
           getSlideUpClass('delay-100')
         )}
       >
+        {/* 1st Page */}
         <LeftRightButton
           onClick={() => redirectToPage(1)}
           disabled={page === 1}
           icon={ChevronsLeft}
         />
+        {/* Previous Page */}
         <LeftRightButton
           onClick={() => redirectToPage(Math.max(1, page - 1))}
           disabled={page === 1}
@@ -101,11 +103,13 @@ export default function Pagination({ articles }: Props) {
           ))}
         </div>
 
+        {/* Next Page */}
         <LeftRightButton
           onClick={() => redirectToPage(Math.min(pageCount, page + 1))}
           disabled={page === pageCount}
           icon={ChevronRight}
         />
+        {/* Last Page */}
         <LeftRightButton
           onClick={() => redirectToPage(pageCount)}
           disabled={page === pageCount}

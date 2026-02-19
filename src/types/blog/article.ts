@@ -6,6 +6,7 @@ import { BlogTagData } from './tag';
 
 export interface BlogArticleData extends BaseBlogData {
   title: string;
+  shortTitle: string;
   description: string;
   content: string;
   slug: string;

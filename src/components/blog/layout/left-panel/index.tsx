@@ -95,7 +95,7 @@ export default function LeftPanel({
                     )}
                   >
                     {_map(category.articles, (article) => (
-                      <li key={article.title}>
+                      <li key={article.shortTitle}>
                         <Link
                           className={clsx(
                             'my-1 flex cursor-pointer items-center rounded-md p-2 text-sm',
@@ -115,7 +115,7 @@ export default function LeftPanel({
                           }
                           onClick={onClick}
                         >
-                          {article.title}
+                          {article.shortTitle}
                         </Link>
                       </li>
                     ))}

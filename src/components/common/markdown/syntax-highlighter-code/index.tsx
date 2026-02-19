@@ -24,7 +24,7 @@ export default function SyntaxHighlighterCode(
   const match = /language-([\w?=&]+)/.exec(className || '');
 
   return match && match[1].startsWith('live') ? (
-    // ```live?lang=<lang>&disabled=<disabled>
+    // ```live?lang=<lang>&lockMode=<mode>
     <ReactLive code={children as string} metadata={match[1]} />
   ) : match ? (
     <CodeBlock match={match} code={children as string} rest={rest} />

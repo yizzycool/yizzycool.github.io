@@ -5,6 +5,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import SyntaxHighlighterCode from '../syntax-highlighter-code';
 import LinkParser from '../link-parser';
+import ImageParser from '../image-parser';
 
 const ProseClass = clsx(
   // prose - base setup
@@ -39,6 +40,7 @@ export default function ProseMarkdown({ children, className = '' }: Props) {
       components={{
         code: SyntaxHighlighterCode,
         a: LinkParser,
+        img: ImageParser,
       }}
     >
       {children}

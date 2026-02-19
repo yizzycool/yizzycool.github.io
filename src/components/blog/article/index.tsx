@@ -34,9 +34,7 @@ export default function Article({ article, toc }: Props) {
           {/* Title */}
           <h1
             className={clsx(
-              'mb-6 text-4xl font-extrabold tracking-tight md:text-5xl',
-              'bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text',
-              'dark:from-white dark:to-neutral-400',
+              'mb-6 text-4xl font-extrabold leading-normal tracking-tight',
               getSlideUpClass('delay-100')
             )}
           >

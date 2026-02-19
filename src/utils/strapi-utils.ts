@@ -9,9 +9,10 @@ type QueryObject = {
   fields?: object;
   filters?: object;
   pagination?: object;
+  sort?: object;
 };
 
-const defaultPagination = {
+const PAGINATION = {
   page: 1,
   pageSize: 10,
 };
@@ -45,10 +46,11 @@ const strapiUtils = {
         status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
         populate: {
           articles: {
-            fields: ['title', 'slug'],
+            fields: ['shortTitle', 'slug'],
           },
         },
         filters,
+        sort: ['order'],
       };
       return qs.stringify(queryObject);
     },
@@ -73,8 +75,9 @@ const strapiUtils = {
           'slug',
           'readTime',
         ],
-        pagination: _defaults(pagination, defaultPagination),
+        pagination: _defaults(pagination, PAGINATION),
         filters,
+        sort: ['createdAt:desc'],
       };
       return qs.stringify(queryObject);
     },
@@ -117,7 +120,7 @@ const strapiUtils = {
             fields: ['slug'],
           },
         },
-        pagination: _defaults(pagination, defaultPagination),
+        pagination: _defaults(pagination, PAGINATION),
         filters,
       };
       return qs.stringify(queryObject);
@@ -141,7 +144,7 @@ const strapiUtils = {
       const queryObject: QueryObject = {
         status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
         fields: ['slug'],
-        pagination: _defaults(pagination, defaultPagination),
+        pagination: _defaults(pagination, PAGINATION),
         filters,
       };
       return qs.stringify(queryObject);

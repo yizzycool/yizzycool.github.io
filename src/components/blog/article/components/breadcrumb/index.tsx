@@ -1,12 +1,15 @@
 'use client';
 
-import { BlogArticle } from '@/types/blog';
+import type { BlogArticle } from '@/types/blog';
+
 import clsx from 'clsx';
 import { ChevronRight } from 'lucide-react';
-import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import _get from 'lodash/get';
 import Link from 'next/link';
 import urlJoin from 'url-join';
+
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
+
+import _get from 'lodash/get';
 
 type Props = { article: BlogArticle };
 
@@ -21,7 +24,7 @@ export default function Breadcrumb({ article }: Props) {
     <nav aria-label="breadcrumb">
       <ol
         className={clsx(
-          'mb-6 flex items-center gap-1 text-sm text-neutral-500 dark:text-neutral-400',
+          'mb-8 flex items-center gap-1 text-sm text-neutral-500 dark:text-neutral-400',
           getSlideUpClass()
         )}
       >
@@ -43,6 +46,14 @@ export default function Breadcrumb({ article }: Props) {
           >
             {name}
           </Link>
+        </li>
+
+        <ChevronRight size={14} aria-hidden />
+
+        <li>
+          <span className="text-blue-500 transition-colors">
+            {data.shortTitle}
+          </span>
         </li>
       </ol>
     </nav>
