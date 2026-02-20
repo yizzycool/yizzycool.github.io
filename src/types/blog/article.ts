@@ -1,8 +1,9 @@
-import { BaseBlogData } from './base';
-import { BlogAuthorData } from './author';
-import { BlogCategoryData } from './category';
-import { BlogMediaData } from './media';
-import { BlogTagData } from './tag';
+import type { BaseBlogData } from './base';
+import type { BlogAuthorData } from './author';
+import type { BlogCategoryData } from './category';
+import type { BlogMediaData } from './media';
+import type { BlogTagData } from './tag';
+import type { BlogCollectionData } from './collection';
 
 export interface BlogArticleData extends BaseBlogData {
   title: string;
@@ -19,4 +20,5 @@ export interface BlogArticleData extends BaseBlogData {
   metaDescription: string;
   ogDescription: string;
   twitterDescription: string;
+  collection: BlogCollectionData;
 }

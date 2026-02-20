@@ -19,13 +19,13 @@ export default function TocMobile({ toc }: Props) {
   return (
     <section
       className={clsx(
-        'mx-auto my-20 block lg:hidden',
+        'mx-auto my-12 block lg:hidden',
         getSlideUpClass('[transition-delay:250ms]')
       )}
     >
       <nav
         className={clsx(
-          'relative transition-all duration-300',
+          'relative overflow-hidden transition-all duration-300',
           'bg-neutral-50/50 backdrop-blur-md dark:bg-neutral-900/50',
           'rounded-2xl border-2 border-neutral-200 dark:border-neutral-800'
         )}
@@ -34,9 +34,7 @@ export default function TocMobile({ toc }: Props) {
         {/* TOC Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={clsx(
-            'flex w-full items-center justify-between p-4 focus:outline-none'
-          )}
+          className="flex w-full items-center justify-between p-4 text-left focus:outline-none"
           aria-label="table of content"
         >
           <div className="flex items-center gap-3">
@@ -50,7 +48,7 @@ export default function TocMobile({ toc }: Props) {
               <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
                 Table of Contents
               </span>
-              <span className="text-sm font-medium">文章章節目錄</span>
+              <span className="mt-1 text-sm font-medium">文章章節目錄</span>
             </div>
           </div>
           <ChevronDown
@@ -70,7 +68,7 @@ export default function TocMobile({ toc }: Props) {
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="overflow-hidden"
+              className="overflow-hidden border-t border-neutral-200 dark:border-neutral-800"
             >
               <div
                 className={clsx(

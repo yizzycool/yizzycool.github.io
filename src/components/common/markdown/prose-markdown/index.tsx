@@ -1,8 +1,13 @@
+import 'katex/dist/katex.min.css'; // Katex
+
 import clsx from 'clsx';
 import Markdown from 'react-markdown';
-import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math'; // Katex
+import rehypeRaw from 'rehype-raw'; // Render HTML tag without sanatizing
 import rehypeSlug from 'rehype-slug';
+import rehypeKatex from 'rehype-katex'; // Katex
+
 import SyntaxHighlighterCode from '../syntax-highlighter-code';
 import LinkParser from '../link-parser';
 import ImageParser from '../image-parser';
@@ -23,7 +28,13 @@ const ProseClass = clsx(
 
   // code block
   'prose-pre:p-0',
-  'prose-pre:bg-transparent'
+  'prose-pre:bg-transparent',
+
+  // blockquote
+  '[&_blockquote>p:first-of-type::before]:content-none',
+  '[&_blockquote>p:first-of-type::after]:content-none',
+  '[&_blockquote>p:first-of-type]:not-italic',
+  '[&_blockquote>p:first-of-type]:font-normal'
 );
 
 type Props = {
@@ -35,8 +46,8 @@ export default function ProseMarkdown({ children, className = '' }: Props) {
   return (
     <Markdown
       className={clsx(ProseClass, className)}
-      remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
-      rehypePlugins={[rehypeRaw, rehypeSlug]}
+      remarkPlugins={[remarkMath, [remarkGfm, { singleTilde: false }]]}
+      rehypePlugins={[rehypeKatex, rehypeRaw, rehypeSlug]}
       components={{
         code: SyntaxHighlighterCode,
         a: LinkParser,

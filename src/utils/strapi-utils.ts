@@ -86,7 +86,25 @@ const strapiUtils = {
     generateArticleQueryString: (filters?: object | undefined) => {
       const queryObject: QueryObject = {
         status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
-        populate: ['banner', 'tags', 'category', 'author', 'author.avatar'],
+        populate: {
+          banner: true,
+          tags: true,
+          category: true,
+          author: {
+            populate: {
+              avatar: true,
+            },
+          },
+          collection: {
+            populate: {
+              articles: {
+                fields: ['title', 'slug'],
+                populate: ['category'],
+              },
+            },
+          },
+        },
+        // populate: ['banner', 'tags', 'category', 'author', 'author.avatar'],
         filters,
       };
       return qs.stringify(queryObject);

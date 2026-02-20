@@ -11,6 +11,7 @@ import Metadata from './components/metadata';
 import Banner from './components/banner';
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import { TocDesktop, TocMobile } from './components/toc';
+import SeriesGuide from './components/series-guide';
 
 import _get from 'lodash/get';
 
@@ -21,7 +22,7 @@ type Props = {
 
 export default function Article({ article, toc }: Props) {
   const data = _get(article, 'data.0') || {};
-  const { title, content } = data;
+  const { title, content, collection, slug } = data;
 
   const { getSlideUpClass } = useGetTransitionClass();
 
@@ -58,6 +59,9 @@ export default function Article({ article, toc }: Props) {
 
         {/* Toc between Banner & Content */}
         <TocMobile toc={toc} />
+
+        {/* Show Series Guide if collection exists */}
+        <SeriesGuide collection={collection} slug={slug} />
 
         <section>
           {/* Main Content */}
