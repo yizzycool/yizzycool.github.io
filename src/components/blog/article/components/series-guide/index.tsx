@@ -26,7 +26,10 @@ export default function SeriesGuide({ collection, slug }: Props) {
   const articles = useMemo(() => {
     if (!rawArticles) return [];
 
-    return rawArticles.sort((a, b) => a.id - b.id);
+    return rawArticles.sort(
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
   }, [rawArticles]);
 
   const currentIndex = useMemo(() => {

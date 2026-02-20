@@ -35,7 +35,7 @@ export default function ToolsSelectorDesktop() {
           )}
         >
           Tools
-          <ChevronDown className="size-5 transition-transform duration-200 group-data-[open]:rotate-180" />
+          <ChevronDown className="size-5 transition-transform duration-300 group-data-[open]:rotate-180" />
         </PopoverButton>
         <PopoverPanel
           as="ul"
