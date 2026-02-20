@@ -101,6 +101,7 @@ const strapiUtils = {
               articles: {
                 fields: ['title', 'slug'],
                 populate: ['category'],
+                sort: ['createdAt'],
               },
             },
           },

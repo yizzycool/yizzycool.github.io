@@ -1,14 +1,15 @@
 'use client';
 
+import type { BlogCollectionData } from '@/types/blog/collection';
+
 import clsx from 'clsx';
 import { ChevronDown, Layers } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useMemo, useState } from 'react';
+import Link from 'next/link';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import { BlogCollectionData } from '@/types/blog/collection';
 import strapiUtils from '@/utils/strapi-utils';
-import Link from 'next/link';
 import Badge from '@/components/common/badge';
 
 type Props = {
@@ -21,22 +22,15 @@ export default function SeriesGuide({ collection, slug }: Props) {
 
   const { getSlideUpClass } = useGetTransitionClass();
 
-  const { articles: rawArticles } = collection || {};
-
-  const articles = useMemo(() => {
-    if (!rawArticles) return [];
-
-    return rawArticles.sort(
-      (a, b) =>
-        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-    );
-  }, [rawArticles]);
+  const { articles } = collection || {};
 
   const currentIndex = useMemo(() => {
+    if (!articles) return -1;
+
     return articles.findIndex((data) => data.slug === slug);
   }, [articles, slug]);
 
-  if (!articles.length) return null;
+  if (!articles) return null;
 
   return (
     <section
