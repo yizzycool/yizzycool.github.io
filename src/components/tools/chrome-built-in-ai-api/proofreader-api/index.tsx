@@ -124,7 +124,6 @@ export default function ProofreaderApi() {
             value={text}
             rows={10}
             placeholder="Enter your text for grammar and style check..."
-            autoFocus
           />
           {/* Char count block */}
           <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">

@@ -119,7 +119,6 @@ export default function RewriterApi() {
             value={text}
             rows={10}
             placeholder="e.g. Rewrite this sentence to sound more professional: “I might be late to the meeting.”"
-            autoFocus
           />
           {/* Char count block */}
           <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">

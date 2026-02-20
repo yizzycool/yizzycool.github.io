@@ -119,7 +119,6 @@ export default function SummarizerApi() {
             value={text}
             rows={10}
             placeholder="Type or paste the artice or text here to summarize..."
-            autoFocus
           />
           {/* Char count block */}
           <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">

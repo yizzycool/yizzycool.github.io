@@ -103,7 +103,6 @@ export default function Base64ToImage() {
         onChange={onBase64StringChanged}
         rows={10}
         placeholder="Paste your Base64 string here (e.g. data:image/png;base64,...)"
-        autoFocus
       />
       {/* Char count block */}
       <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">

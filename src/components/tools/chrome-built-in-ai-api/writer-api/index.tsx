@@ -119,7 +119,6 @@ export default function WriterApi() {
             value={text}
             rows={10}
             placeholder="e.g. Draft a friendly email asking a coworker for a project update"
-            autoFocus
           />
           {/* Char count block */}
           <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">

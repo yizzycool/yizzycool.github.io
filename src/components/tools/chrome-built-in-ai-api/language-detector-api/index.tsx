@@ -109,7 +109,6 @@ export default function LanguageDetectorApi() {
               value={text}
               rows={10}
               placeholder="Type or paste the text you want to detect here..."
-              autoFocus
             />
             {/* Char count block */}
             <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">

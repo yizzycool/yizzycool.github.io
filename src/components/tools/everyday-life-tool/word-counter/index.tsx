@@ -49,7 +49,6 @@ export default function WordCounter() {
         onChange={onChange}
         value={text}
         rows={8}
-        autoFocus
         className="rounded-b-none"
       />
       <Tools setText={setText} />

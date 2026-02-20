@@ -84,7 +84,6 @@ export default function QrCodeGenerator() {
         onChange={onInputChange}
         value={inputText}
         rows={8}
-        autoFocus
       />
 
       <SectionGap />

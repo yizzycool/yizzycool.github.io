@@ -125,7 +125,6 @@ export default function JsonFormatter() {
         onChange={onJsonStringChanged}
         rows={10}
         placeholder="Paste your JSON string here..."
-        autoFocus
       />
       {/* Char count block */}
       <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">

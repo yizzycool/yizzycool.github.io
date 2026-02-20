@@ -157,7 +157,6 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
             onKeyDown={onKeyDown}
             onCompositionStart={() => setIsCompsing(true)}
             onCompositionEnd={() => setIsCompsing(false)}
-            autoFocus
           />
           <Button
             onClick={process}

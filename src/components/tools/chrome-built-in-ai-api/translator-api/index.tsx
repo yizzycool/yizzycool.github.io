@@ -140,7 +140,6 @@ export default function TranslatorApi() {
               >
                 <textarea
                   id="input"
-                  autoFocus
                   className={clsx(
                     'block w-full flex-1 resize-none bg-transparent px-3 py-2 focus:outline-none',
                     'text-neutral-700 dark:text-neutral-200',
