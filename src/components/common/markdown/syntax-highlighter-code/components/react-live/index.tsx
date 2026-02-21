@@ -33,7 +33,7 @@ type LiveProviderConfig = {
   transformCode?(code: string): void;
 };
 
-export default function ReactLive({ code, metadata }: Props) {
+export default function ReactLive({ code = '', metadata }: Props) {
   const [draftCode, setDraftCode] = useState(code.replace(/\n$/, ''));
   const [executedCode, setExecutedCode] = useState(code.replace(/\n$/, ''));
 
