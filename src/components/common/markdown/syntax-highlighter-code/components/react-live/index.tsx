@@ -123,7 +123,12 @@ export default function ReactLive({ code = '', metadata }: Props) {
                     </Button>
                   )}
                 </div>
-                <Divider orientation="vertical" className="mx-2 my-2 sm:mx-4" />
+                {!lockMode && (
+                  <Divider
+                    orientation="vertical"
+                    className="mx-2 my-2 sm:mx-4"
+                  />
+                )}
               </>
             )}
             {!lockMode && (
