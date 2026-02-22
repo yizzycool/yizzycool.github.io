@@ -106,8 +106,27 @@ const strapiUtils = {
             },
           },
         },
-        // populate: ['banner', 'tags', 'category', 'author', 'author.avatar'],
         filters,
+      };
+      return qs.stringify(queryObject);
+    },
+
+    // To get previous / next article
+    // /blog/[category]/[article]/page.tsx
+    generatePrevNextArticleInfoQueryString: (
+      filters?: object | undefined,
+      sort?: string[]
+    ) => {
+      const queryObject: QueryObject = {
+        status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
+        fields: ['title', 'shortTitle', 'slug'],
+        populate: {
+          tags: true,
+          category: true,
+        },
+        pagination: { limit: 1 },
+        filters,
+        sort,
       };
       return qs.stringify(queryObject);
     },

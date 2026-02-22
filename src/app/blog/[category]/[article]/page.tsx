@@ -1,15 +1,18 @@
 import type { BlogArticle } from '@/types/blog';
 import type { Metadata } from 'next';
+
 import urlJoin from 'url-join';
-import seoUtils from '@/utils/seo-utils';
-import strapiUtils from '@/utils/strapi-utils';
-import Article from '@/components/blog/article';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import rehypeSlug from 'rehype-slug';
 import { toc as rehypeToc } from '@jsdevtools/rehype-toc';
 import rehypeStringify from 'rehype-stringify';
+
+import seoUtils from '@/utils/seo-utils';
+import strapiUtils from '@/utils/strapi-utils';
+import Article from '@/components/blog/article';
+
 import _get from 'lodash/get';
 import _size from 'lodash/size';
 import _flatMap from 'lodash/flatMap';
@@ -103,6 +106,47 @@ const fetchArticle = async (articleSlug: string) => {
   return data;
 };
 
+const getPrevNextArticle = async (
+  type: 'prev' | 'next',
+  article: BlogArticle
+) => {
+  const categoryOrder = _get(article, ['data', 0, 'category', 'order']);
+  const shortTitle = _get(article, ['data', 0, 'shortTitle']);
+
+  const compareKey = type === 'prev' ? '$lt' : '$gt';
+  const sortArray =
+    type === 'prev'
+      ? ['category.order:desc', 'shortTitle:desc']
+      : ['category.order', 'shortTitle'];
+
+  const queryString = strapiUtils.fetch.generatePrevNextArticleInfoQueryString(
+    {
+      $or: [
+        // Get previous/next categorys articles
+        {
+          category: {
+            order: { [compareKey]: categoryOrder },
+          },
+        },
+        // or get previous/next articles under same category
+        {
+          category: {
+            order: { $eq: categoryOrder },
+          },
+          shortTitle: { [compareKey]: shortTitle },
+        },
+      ],
+    },
+    sortArray
+  );
+
+  const response = await fetch(
+    `${process.env.STRAPI_URL}/api/articles?${queryString}`
+  );
+  const data = await response.json();
+  return data;
+};
+
 const parseToc = async (article: BlogArticle) => {
   const data = _get(article, 'data.0') || {};
   const { content } = data;
@@ -125,6 +169,8 @@ const parseToc = async (article: BlogArticle) => {
 export default async function Page({ params }: Props) {
   const { article: articleSlug } = await params;
   const article = await fetchArticle(articleSlug);
+  const prevArticle = await getPrevNextArticle('prev', article);
+  const nextArticle = await getPrevNextArticle('next', article);
   const toc = await parseToc(article);
 
   return (
@@ -143,7 +189,12 @@ export default async function Page({ params }: Props) {
           ),
         }}
       />
-      <Article article={article} toc={toc} />
+      <Article
+        article={article}
+        prevArticle={prevArticle}
+        nextArticle={nextArticle}
+        toc={toc}
+      />
     </>
   );
 }

@@ -5,4 +5,5 @@ export interface BlogCategoryData extends BaseBlogData {
   name: string;
   slug: string;
   articles: Array<BlogArticleData>;
+  order: number;
 }

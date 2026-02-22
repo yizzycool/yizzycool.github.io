@@ -34,7 +34,9 @@ const ProseClass = clsx(
   '[&_blockquote>p:first-of-type::before]:content-none',
   '[&_blockquote>p:first-of-type::after]:content-none',
   '[&_blockquote>p:first-of-type]:not-italic',
-  '[&_blockquote>p:first-of-type]:font-normal'
+  '[&_blockquote>p:first-of-type]:font-normal',
+
+  'leading-loose'
 );
 
 type Props = {

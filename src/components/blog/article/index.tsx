@@ -12,15 +12,23 @@ import Banner from './components/banner';
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import { TocDesktop, TocMobile } from './components/toc';
 import SeriesGuide from './components/series-guide';
+import PrevNextCard from './components/prev-next-card';
 
 import _get from 'lodash/get';
 
 type Props = {
   article: BlogArticle;
+  prevArticle: BlogArticle;
+  nextArticle: BlogArticle;
   toc: string;
 };
 
-export default function Article({ article, toc }: Props) {
+export default function Article({
+  article,
+  prevArticle,
+  nextArticle,
+  toc,
+}: Props) {
   const data = _get(article, 'data.0') || {};
   const { title, content, collection, slug } = data;
 
@@ -71,6 +79,21 @@ export default function Article({ article, toc }: Props) {
             {content}
           </ProseMarkdown>
         </section>
+
+        {/* Prev/Next Article */}
+        <nav
+          className={clsx('mt-20', getSlideUpClass('delay-300'))}
+          aria-label="previous article and next article"
+        >
+          <ul
+            className={clsx(
+              'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2'
+            )}
+          >
+            <PrevNextCard type="prev" article={prevArticle} />
+            <PrevNextCard type="next" article={nextArticle} />
+          </ul>
+        </nav>
       </article>
 
       {/* Toc on right side */}
