@@ -1,14 +1,12 @@
 'use client';
 
 import clsx from 'clsx';
-import { usePathname } from 'next/navigation';
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-} from '@headlessui/react';
 import { ChevronDown, PenTool } from 'lucide-react';
+import { motion } from 'motion/react';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import Link from 'next/link';
+
 import { Tools } from '@/data/tools';
 
 export default function ToolsSelectorMobile({
@@ -16,30 +14,35 @@ export default function ToolsSelectorMobile({
 }: {
   closeSidePanel: () => void;
 }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   const pathname = usePathname();
 
   return (
     <>
-      <Disclosure as="li" className="group">
-        <DisclosureButton
+      <li className="group">
+        <button
           className={clsx(
             'flex w-full items-center justify-between rounded-lg px-3 py-4',
             'transition-all duration-300',
             'data-[hover]:bg-neutral-200 dark:data-[hover]:bg-neutral-800/50'
           )}
+          onClick={() => setIsOpen((prev) => !prev)}
         >
           <div className="flex items-center gap-3">
             <PenTool size={20} />
             <span className="font-medium">Tools</span>
           </div>
           <ChevronDown className="size-5 transition-all duration-300 group-data-[open]:rotate-180" />
-        </DisclosureButton>
-        <DisclosurePanel
-          static
-          className={clsx(
-            'grid grid-rows-[0fr] transition-all duration-300',
-            'data-[open]:grid-rows-[1fr]'
-          )}
+        </button>
+        <motion.div
+          initial={false}
+          animate={{
+            height: isOpen ? 'auto' : 0,
+            opacity: 1,
+          }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          style={{ overflow: 'hidden' }}
         >
           <ul className="ml-4 overflow-hidden border-l border-neutral-400/50">
             {Tools.map((tool) => (
@@ -72,8 +75,8 @@ export default function ToolsSelectorMobile({
               </li>
             ))}
           </ul>
-        </DisclosurePanel>
-      </Disclosure>
+        </motion.div>
+      </li>
     </>
   );
 }

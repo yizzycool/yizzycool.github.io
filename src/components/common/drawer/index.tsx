@@ -3,12 +3,9 @@
 import type { Rounded } from '@/types/common';
 
 import clsx from 'clsx';
-import {
-  Dialog,
-  DialogBackdrop,
-  Transition,
-  TransitionChild,
-} from '@headlessui/react';
+import { Transition, TransitionChild } from '@headlessui/react';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 type Side = 'top' | 'bottom' | 'left' | 'right';
 
@@ -78,8 +75,8 @@ export default function Drawer({
   return (
     <Transition show={isOpen} unmount={false} appear={true}>
       <Wrapper
+        isOpen={isOpen}
         usePortal={usePortal}
-        as="div"
         className={clsx(
           usePortal ? 'fixed z-50' : 'absolute z-10',
           'inset-0 flex items-center justify-center p-4 focus:outline-none sm:p-8 md:p-12',
@@ -89,15 +86,15 @@ export default function Drawer({
       >
         {backdrop && (
           <TransitionChild
-            enter="ease-out duration-300"
+            enter="ease-in-out duration-300"
             enterFrom="opacity-0"
             enterTo="opacity-100"
-            leave="ease-in duration-300"
+            leave="ease-in-out duration-300"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
             unmount={false}
           >
-            <DialogBackdrop
+            <div
               className="absolute inset-0 bg-neutral-900/20 backdrop-blur-md dark:bg-black/40"
               onClick={onClose}
             />
@@ -105,10 +102,10 @@ export default function Drawer({
         )}
         {/* Rounded Border */}
         <TransitionChild
-          enter="ease-out duration-500"
+          enter="ease-in-out duration-500"
           enterFrom={enterFrom[side]}
           enterTo={enterTo[side]}
-          leave="ease-in duration-500"
+          leave="ease-in-out duration-500"
           leaveFrom={enterTo[side]}
           leaveTo={enterFrom[side]}
           unmount={false}
@@ -131,18 +128,37 @@ export default function Drawer({
 }
 
 function Wrapper({
+  isOpen,
   usePortal,
   children,
   ...rests
 }: {
+  isOpen: boolean;
   usePortal: boolean;
   children: React.ReactNode;
-  as?: React.ElementType;
   className?: string;
   onClose: (value: boolean) => void;
 }) {
+  const [body, setBody] = useState<HTMLElement>();
+
+  useEffect(() => {
+    setBody(document.body);
+  }, []);
+
   if (usePortal) {
-    return <Dialog {...rests}>{children}</Dialog>;
+    if (!body) return null;
+    return createPortal(
+      <div
+        {...rests}
+        role="dialog"
+        tabIndex={-1}
+        aria-modal={isOpen || undefined}
+        hidden={!isOpen}
+      >
+        {children}
+      </div>,
+      body
+    );
   }
   return <div {...rests}>{children}</div>;
 }
