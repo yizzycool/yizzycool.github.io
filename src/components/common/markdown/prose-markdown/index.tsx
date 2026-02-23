@@ -22,9 +22,9 @@ const ProseClass = clsx(
   'max-w-none',
 
   // customize <a>
-  'prose-a:text-blue-500',
-  'dark:prose-a:text-sky-600',
-  'hover:prose-a:no-underline',
+  'prose-a:text-blue-600',
+  'dark:prose-a:text-blue-400',
+  'prose-a:no-underline',
 
   // code block
   'prose-pre:p-0',

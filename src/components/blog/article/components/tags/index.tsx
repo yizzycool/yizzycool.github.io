@@ -34,7 +34,7 @@ export default function Tags({ article }: Props) {
                 <Badge
                   variant="blue"
                   bordered
-                  className="rounded-md bg-neutral-400/20 px-2 py-1 text-xs"
+                  className="rounded-md px-2 py-1 text-xs"
                 >
                   {name}
                 </Badge>

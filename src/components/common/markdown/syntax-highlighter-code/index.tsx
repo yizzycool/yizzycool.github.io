@@ -1,19 +1,11 @@
 'use client';
 
+import type { ExtraProps } from 'react-markdown';
+
 import clsx from 'clsx';
-import { ExtraProps } from 'react-markdown';
+
 import CodeBlock from './components/code-block';
 import ReactLive from './components/react-live';
-
-// To customize `Prose` styles of '@tailwindcss/typography'
-const InlineCodeProseClass = clsx(
-  // customize <code> for inline code
-  'rounded px-1 py-0.5',
-  'bg-gray-200 dark:bg-gray-800',
-  'text-sm font-mono',
-  'before:content-none',
-  'after:content-none'
-);
 
 export default function SyntaxHighlighterCode(
   props: React.ClassAttributes<HTMLElement> &
@@ -29,7 +21,19 @@ export default function SyntaxHighlighterCode(
   ) : match ? (
     <CodeBlock match={match} code={children as string} rest={rest} />
   ) : (
-    <code {...rest} className={clsx(className, InlineCodeProseClass)}>
+    <code
+      {...rest}
+      className={clsx(
+        // To customize `Prose` styles of '@tailwindcss/typography'
+        // customize <code> for inline code
+        'rounded-md px-1.5 py-0.5 font-mono text-sm font-normal',
+        'bg-slate-200/50 dark:bg-slate-700/50',
+        'text-slate-800 dark:text-slate-200',
+        'ring-1 ring-inset ring-slate-900/5 dark:ring-white/10',
+        'before:content-none after:content-none',
+        className
+      )}
+    >
       {children}
     </code>
   );
