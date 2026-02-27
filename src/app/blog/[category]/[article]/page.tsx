@@ -116,8 +116,8 @@ const getPrevNextArticle = async (
   const compareKey = type === 'prev' ? '$lt' : '$gt';
   const sortArray =
     type === 'prev'
-      ? ['category.order:desc'] //, 'shortTitle:desc']
-      : ['category.order']; //, 'shortTitle'];
+      ? ['category.order:desc', 'shortTitle:desc']
+      : ['category.order', 'shortTitle'];
 
   const queryString = strapiUtils.fetch.generatePrevNextArticleInfoQueryString(
     {
