@@ -47,7 +47,7 @@ const strapiUtils = {
         populate: {
           articles: {
             fields: ['shortTitle', 'slug'],
-            sort: ['shortTitle'],
+            // sort: ['shortTitle'],
           },
         },
         filters,
