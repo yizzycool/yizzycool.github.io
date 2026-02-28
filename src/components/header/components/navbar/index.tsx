@@ -39,7 +39,7 @@ export default function Navbar({ categoryArticles }: Props) {
         'fixed top-0 z-50 w-full border-b transition-all duration-300',
         headerExpanded
           ? 'border-transparent bg-transparent py-4'
-          : 'supports-backdrop-blur:bg-white/60 border-transparent bg-white/95 backdrop-blur lg:border-neutral-400/20 dark:bg-neutral-900/60'
+          : 'supports-backdrop-blur:bg-white/60 border-transparent bg-white/60 backdrop-blur lg:border-neutral-400/20 dark:bg-neutral-900/60'
       )}
     >
       {isDesktop ? (
