@@ -31,10 +31,10 @@ const ProseClass = clsx(
   'prose-pre:bg-transparent',
 
   // blockquote
-  '[&_blockquote>p:first-of-type::before]:content-none',
-  '[&_blockquote>p:first-of-type::after]:content-none',
-  '[&_blockquote>p:first-of-type]:not-italic',
-  '[&_blockquote>p:first-of-type]:font-normal',
+  '[&_blockquote_*::before]:content-none',
+  '[&_blockquote_*::after]:content-none',
+  '[&_blockquote_*:not(i)]:not-italic',
+  '[&_blockquote_*]:font-normal',
 
   'leading-loose'
 );
