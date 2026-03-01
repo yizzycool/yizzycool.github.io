@@ -12,10 +12,14 @@ export default function useGetTransitionClass({ loaded = true }: Props = {}) {
     setMounted(true);
   }, []);
 
-  const slideBaseClass = 'animate-duration-1000 opacity-0';
+  const slideBaseClass = 'animate-duration-1000';
 
   const getFadeUpClass = (delay = 'animate-delay-0') =>
-    clsx(slideBaseClass, delay, mounted && loaded && 'animate-fade-up');
+    clsx(
+      slideBaseClass,
+      delay,
+      mounted && loaded ? 'animate-fade-up' : 'opacity-0'
+    );
 
   return {
     getFadeUpClass,
