@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function TocDesktop({ toc }: Props) {
-  const { getSlideUpClass } = useGetTransitionClass();
+  const { getFadeUpClass } = useGetTransitionClass();
 
   return (
     <aside
@@ -18,11 +18,11 @@ export default function TocDesktop({ toc }: Props) {
         'hidden lg:block',
         'border-l border-neutral-400/20',
         'px-4 py-5 lg:py-10',
-        getSlideUpClass()
+        getFadeUpClass()
       )}
     >
       <nav aria-label="table of content">
-        <h2 className={clsx('font-bold', getSlideUpClass('delay-150'))}>
+        <h2 className={clsx('font-bold', getFadeUpClass('animate-delay-150'))}>
           Table of Content
         </h2>
         <div
@@ -34,7 +34,7 @@ export default function TocDesktop({ toc }: Props) {
             '[&_ol_ol]:pl-5 [&_ul_ul]:pl-5',
             '[&_ol_ol]:border-l [&_ol_ol]:border-neutral-400/50',
             '[&_ul_ul]:border-l [&_ul_ul]:border-neutral-400/50',
-            getSlideUpClass('delay-200')
+            getFadeUpClass('animate-delay-200')
           )}
         >
           <div dangerouslySetInnerHTML={{ __html: toc }} />

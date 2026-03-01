@@ -32,7 +32,7 @@ export default function Article({
   const data = _get(article, 'data.0') || {};
   const { title, content, collection, slug } = data;
 
-  const { getSlideUpClass } = useGetTransitionClass();
+  const { getFadeUpClass } = useGetTransitionClass();
 
   return (
     <>
@@ -44,7 +44,7 @@ export default function Article({
           <h1
             className={clsx(
               'mb-6 text-4xl font-extrabold leading-normal tracking-tight',
-              getSlideUpClass('delay-100')
+              getFadeUpClass('animate-delay-100')
             )}
           >
             {title}
@@ -59,7 +59,7 @@ export default function Article({
         <div
           className={clsx(
             'my-6 border-b border-neutral-200 dark:border-neutral-700',
-            getSlideUpClass('delay-200')
+            getFadeUpClass('animate-delay-200')
           )}
         />
 
@@ -74,7 +74,10 @@ export default function Article({
         <section>
           {/* Main Content */}
           <ProseMarkdown
-            className={clsx('[&_*]:scroll-mt-20', getSlideUpClass('delay-300'))}
+            className={clsx(
+              '[&_*]:scroll-mt-20',
+              getFadeUpClass('animate-delay-300')
+            )}
           >
             {content}
           </ProseMarkdown>
@@ -82,7 +85,7 @@ export default function Article({
 
         {/* Prev/Next Article */}
         <nav
-          className={clsx('mt-20', getSlideUpClass('delay-300'))}
+          className={clsx('mt-20', getFadeUpClass('animate-delay-300'))}
           aria-label="previous article and next article"
         >
           <ul

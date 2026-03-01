@@ -32,17 +32,17 @@ const HrefMap = {
 export default function SocialIcons({
   types = [],
   transition = false,
-  delay = 'delay-0',
+  delay = 'animate-delay-0',
   className = '',
   iconSize = 20,
 }: Props) {
-  const { getSlideUpClass } = useGetTransitionClass();
+  const { getFadeUpClass } = useGetTransitionClass();
 
   return (
     <div
       className={clsx(
         'flex flex-wrap gap-2',
-        transition && getSlideUpClass(delay),
+        transition && getFadeUpClass(delay),
         className
       )}
     >

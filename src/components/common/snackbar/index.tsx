@@ -67,7 +67,7 @@ export default function Snackbar({
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const { getSlideUpClass } = useGetTransitionClass({ loaded: open });
+  const { getFadeUpClass } = useGetTransitionClass({ loaded: open });
 
   // Close snackbar after <timeout> ms
   useEffect(() => {
@@ -169,7 +169,7 @@ export default function Snackbar({
   return (
     <div
       className={clsx(
-        getSlideUpClass(),
+        getFadeUpClass(),
         baseStyles,
         variants[variant],
         sizes[size],

@@ -28,7 +28,7 @@ export default function Pagination({ articles }: Props) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { getSlideUpClass } = useGetTransitionClass();
+  const { getFadeUpClass } = useGetTransitionClass();
 
   // 2 3 `4` 5 6
   // `1` 2 3 4 5
@@ -69,7 +69,7 @@ export default function Pagination({ articles }: Props) {
       <div
         className={clsx(
           'mt-12 flex items-center justify-center gap-2 py-8',
-          getSlideUpClass('delay-100')
+          getFadeUpClass('animate-delay-100')
         )}
       >
         {/* 1st Page */}

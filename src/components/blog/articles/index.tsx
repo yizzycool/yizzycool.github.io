@@ -35,7 +35,7 @@ export default function Articles({ articles, categorySlug, tagSlug }: Props) {
     }
   }, [data, categorySlug, tagSlug]);
 
-  const { getSlideUpClass } = useGetTransitionClass();
+  const { getFadeUpClass } = useGetTransitionClass();
 
   return (
     <div className="mx-auto flex-grow overflow-hidden px-5 pb-20 pt-4 lg:max-w-screen-lg lg:px-10">
@@ -45,7 +45,7 @@ export default function Articles({ articles, categorySlug, tagSlug }: Props) {
       <div
         className={clsx(
           'mb-6 mt-12 flex items-center justify-between',
-          getSlideUpClass('delay-300')
+          getFadeUpClass('animate-delay-300')
         )}
       >
         <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">

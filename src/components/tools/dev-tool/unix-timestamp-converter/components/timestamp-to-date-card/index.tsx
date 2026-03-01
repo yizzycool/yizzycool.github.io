@@ -56,7 +56,6 @@ export default function TimestampToDateCard() {
                 value={tsInput}
                 onChange={(e) => setTsInput(e.target.value)}
                 className={clsx(
-                  'input-number-no-spin',
                   'w-full rounded-lg border px-4 py-3 font-mono text-lg outline-none transition-all',
                   'border-neutral-200 bg-neutral-50 focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500',
                   'dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-500'

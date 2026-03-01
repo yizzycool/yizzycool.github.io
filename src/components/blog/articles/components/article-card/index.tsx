@@ -2,7 +2,7 @@
 
 import type { BlogArticleData } from '@/types/blog/article';
 import clsx from 'clsx';
-import { ArrowRight, Calendar, Clock } from 'lucide-react';
+import { ArrowRight, Clock, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import strapiUtils from '@/utils/strapi-utils';
@@ -22,7 +22,7 @@ export default function ArticleCard({ article }: Props) {
     year: 'numeric',
   });
 
-  const { getSlideUpClass } = useGetTransitionClass();
+  const { getFadeUpClass } = useGetTransitionClass();
 
   return (
     <RevealSection>
@@ -40,7 +40,7 @@ export default function ArticleCard({ article }: Props) {
             'bg-white dark:bg-neutral-900/40',
             'border-neutral-200 dark:border-neutral-700/50',
             'hover:-translate-y-1 hover:shadow-2xl',
-            getSlideUpClass()
+            getFadeUpClass()
           )}
         >
           <div className="h-full md:flex">
@@ -61,7 +61,7 @@ export default function ArticleCard({ article }: Props) {
                 {/* Metadata */}
                 <div className="mb-3 flex items-center gap-3 text-xs font-medium text-neutral-500 dark:text-neutral-400">
                   <span className="flex items-center gap-1">
-                    <Calendar size={12} />
+                    <RefreshCw size={12} />
                     {dateString}
                   </span>
                   <span className="flex items-center gap-1">

@@ -14,13 +14,13 @@ type Props = {
 export default function TocMobile({ toc }: Props) {
   const [isOpen, setIsOpen] = useState(true);
 
-  const { getSlideUpClass } = useGetTransitionClass();
+  const { getFadeUpClass } = useGetTransitionClass();
 
   return (
     <section
       className={clsx(
         'mx-auto my-12 block lg:hidden',
-        getSlideUpClass('[transition-delay:250ms]')
+        getFadeUpClass('animate-delay-200')
       )}
     >
       <nav

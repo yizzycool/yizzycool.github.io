@@ -17,7 +17,7 @@ export default function Banner({ article }: Props) {
 
   const imgRef = useRef<HTMLImageElement | null>(null);
 
-  const { getSlideUpClass } = useGetTransitionClass();
+  const { getFadeUpClass } = useGetTransitionClass();
 
   useEffect(() => {
     const img = imgRef.current;
@@ -31,7 +31,10 @@ export default function Banner({ article }: Props) {
 
   return (
     <figure
-      className={clsx('relative mb-20 mt-10', getSlideUpClass('delay-300'))}
+      className={clsx(
+        'relative mb-20 mt-10',
+        getFadeUpClass('animate-delay-300')
+      )}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img

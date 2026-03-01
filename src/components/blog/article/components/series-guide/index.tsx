@@ -20,7 +20,7 @@ type Props = {
 export default function SeriesGuide({ collection, slug }: Props) {
   const [isOpen, setIsOpen] = useState(true);
 
-  const { getSlideUpClass } = useGetTransitionClass();
+  const { getFadeUpClass } = useGetTransitionClass();
 
   const { articles } = collection || {};
 
@@ -34,10 +34,7 @@ export default function SeriesGuide({ collection, slug }: Props) {
 
   return (
     <section
-      className={clsx(
-        'mx-auto my-12',
-        getSlideUpClass('[transition-delay:250ms]')
-      )}
+      className={clsx('mx-auto my-12', getFadeUpClass('animate-delay-200'))}
     >
       <nav
         className={clsx(

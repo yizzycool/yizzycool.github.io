@@ -19,7 +19,7 @@ export type GlimmerBackgroundConfig = {
   duration?: string;
   // e.g. blur-3xl, blur-[10px], etc.
   blur?: string;
-  // e.g. delay-700, [animation-delay:_4000ms], etc.
+  // e.g. animate-delay-700, [animation-delay:_4000ms], etc.
   delay?: string;
   // other tailwindcss classname
   className?: string;

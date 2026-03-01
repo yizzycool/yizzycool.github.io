@@ -1,6 +1,6 @@
 'use client';
 
-import ExperienceData from './data/experiences.json';
+import clsx from 'clsx';
 import {
   Briefcase,
   Building2,
@@ -8,7 +8,10 @@ import {
   SquarePen,
   WandSparkles,
 } from 'lucide-react';
+
+import ExperienceData from './data/experiences.json';
 import RevealSection from '@/components/common/reveal-section';
+
 import _get from 'lodash/get';
 
 export default function WorkExperience() {
@@ -49,7 +52,13 @@ export default function WorkExperience() {
           <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-3">
             {data.descriptions.map((desc) => (
               <RevealSection key={desc.title}>
-                <div className="bg-mix-black-5 dark:bg-mix-white-5 flex gap-6 overflow-hidden rounded-lg px-8 py-8 ring-1 ring-inset ring-black/10 dark:ring-white/10">
+                <div
+                  className={clsx(
+                    'flex gap-6 overflow-hidden rounded-lg px-8 py-8',
+                    'ring-1 ring-inset ring-black/10 dark:ring-white/10',
+                    'bg-black/5 dark:bg-white/5'
+                  )}
+                >
                   <div>
                     <JobIcon
                       iconType={desc.iconType}

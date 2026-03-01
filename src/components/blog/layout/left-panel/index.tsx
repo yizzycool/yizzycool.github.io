@@ -1,11 +1,14 @@
 'use client';
 
-import { BlogCategory } from '@/types/blog';
+import type { BlogCategory } from '@/types/blog';
+
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
+
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import Link from 'next/link';
 import strapiUtils from '@/utils/strapi-utils';
+
 import _get from 'lodash/get';
 import _map from 'lodash/map';
 
@@ -20,14 +23,14 @@ export default function LeftPanel({
 }) {
   const pathname = usePathname();
 
-  const { getSlideUpClass } = useGetTransitionClass();
+  const { getFadeUpClass } = useGetTransitionClass();
 
   const data = _get(categoryArticles, ['data']) || [];
 
   return (
     <aside
       className={clsx(
-        getSlideUpClass(),
+        getFadeUpClass(),
         side === 'leftPanel' &&
           clsx(
             'sticky top-[68px] h-[calc(100dvh_-_68px)] w-[300px] shrink-0 overflow-y-auto',
@@ -43,7 +46,7 @@ export default function LeftPanel({
         <h2
           className={clsx(
             'mb-4 pl-2 text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500',
-            getSlideUpClass('delay-100')
+            getFadeUpClass('animate-delay-100')
           )}
         >
           Categories
@@ -57,7 +60,7 @@ export default function LeftPanel({
                   'flex items-center rounded-md px-4 py-2 font-bold',
                   'hover:bg-sky-600/10',
                   'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500',
-                  getSlideUpClass('delay-150')
+                  getFadeUpClass('animate-delay-150')
                 )}
                 href="/blog"
                 data-active={pathname === '/blog'}
@@ -76,7 +79,7 @@ export default function LeftPanel({
                         'mt-1 flex items-center rounded-md px-4 py-2 font-bold',
                         'hover:bg-sky-600/10',
                         'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500',
-                        getSlideUpClass('delay-150')
+                        getFadeUpClass('animate-delay-150')
                       )}
                       href={strapiUtils.toBlogCategoryUrl(category.slug)}
                       data-active={
@@ -91,7 +94,7 @@ export default function LeftPanel({
                   <ul
                     className={clsx(
                       'ml-4 border-neutral-400/50 pl-2 lg:border-l',
-                      getSlideUpClass('delay-200')
+                      getFadeUpClass('animate-delay-200')
                     )}
                   >
                     {_map(category.articles, (article) => (

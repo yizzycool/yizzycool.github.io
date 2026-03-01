@@ -18,14 +18,14 @@ export default function Breadcrumb({ article }: Props) {
   const { category } = data;
   const { name, slug } = category;
 
-  const { getSlideUpClass } = useGetTransitionClass();
+  const { getFadeUpClass } = useGetTransitionClass();
 
   return (
     <nav aria-label="breadcrumb">
       <ol
         className={clsx(
           'mb-8 flex items-center gap-1 text-sm text-neutral-500 dark:text-neutral-400',
-          getSlideUpClass()
+          getFadeUpClass()
         )}
       >
         <li>

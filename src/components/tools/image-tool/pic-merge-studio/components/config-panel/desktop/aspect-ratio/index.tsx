@@ -189,7 +189,6 @@ export default function AspectRatio({ size, setSize }: Props) {
                 'px-4 py-3 text-sm font-bold transition-all',
                 'bg-transparent backdrop-blur',
                 'border border-neutral-500/20 text-neutral-600 dark:text-neutral-400',
-                'input-number-no-spin',
                 !isCustomSize && 'cursor-not-allowed'
               )}
               disabled={!isCustomSize}

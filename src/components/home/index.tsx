@@ -31,7 +31,7 @@ const TechStacks = [
 export default function Intro() {
   const [avatarLoaded, setAvatarLoaded] = useState(false);
 
-  const { getSlideUpClass } = useGetTransitionClass({ loaded: avatarLoaded });
+  const { getFadeUpClass } = useGetTransitionClass({ loaded: avatarLoaded });
 
   return (
     <main className="relative flex min-h-full w-full">
@@ -43,7 +43,7 @@ export default function Intro() {
             <Badge
               variant="success"
               bordered={true}
-              className={`gap-1.5 uppercase ${getSlideUpClass('delay-100')}`}
+              className={`gap-1.5 uppercase ${getFadeUpClass('animate-delay-100')}`}
             >
               <span className="relative flex">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
@@ -58,7 +58,7 @@ export default function Intro() {
               <h2
                 className={clsx(
                   'text-4xl font-extrabold tracking-tight text-neutral-900 md:text-5xl lg:text-7xl dark:text-white',
-                  getSlideUpClass('delay-200')
+                  getFadeUpClass('animate-delay-200')
                 )}
               >
                 Hi There, <br />I am{' '}
@@ -70,7 +70,7 @@ export default function Intro() {
               <div
                 className={clsx(
                   'flex h-12 items-center justify-center text-xl font-medium text-neutral-500 md:text-2xl lg:justify-start dark:text-neutral-400',
-                  getSlideUpClass('delay-300')
+                  getFadeUpClass('animate-delay-300')
                 )}
               >
                 <Typewritter />
@@ -81,7 +81,7 @@ export default function Intro() {
             <p
               className={clsx(
                 'text-md max-w-lg leading-relaxed text-neutral-500 dark:text-neutral-400',
-                getSlideUpClass('delay-500')
+                getFadeUpClass('animate-delay-500')
               )}
             >
               Crafting clean, efficient front-end experiences with Next.js and
@@ -93,7 +93,7 @@ export default function Intro() {
             <div
               className={clsx(
                 'flex flex-wrap justify-center gap-3 lg:justify-start',
-                getSlideUpClass('delay-700')
+                getFadeUpClass('animate-delay-700')
               )}
             >
               {TechStacks.map(({ label, icon }) => (
@@ -114,7 +114,7 @@ export default function Intro() {
             <SocialIcons
               types={['github', 'linkedin']}
               transition
-              delay="[transition-delay:_1200ms]"
+              delay="animate-delay-[1000ms]"
               className="justify-center pt-8 lg:justify-start"
             />
           </div>
@@ -122,7 +122,7 @@ export default function Intro() {
           <div
             className={clsx(
               'relative order-1 flex justify-center lg:order-2 lg:justify-end',
-              getSlideUpClass('delay-500')
+              getFadeUpClass('animate-delay-500')
             )}
           >
             <div className="group relative">
@@ -194,7 +194,7 @@ export default function Intro() {
         <div
           className={clsx(
             'mt-12 w-full text-center',
-            getSlideUpClass('[transition-delay:_1500ms]')
+            getFadeUpClass('animate-delay-[1200ms]')
           )}
         >
           <p className="mb-4 text-sm font-medium uppercase tracking-widest text-neutral-400">

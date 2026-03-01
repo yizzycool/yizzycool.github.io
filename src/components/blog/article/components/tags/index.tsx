@@ -12,7 +12,7 @@ import _map from 'lodash/map';
 type Props = { article: BlogArticle };
 
 export default function Tags({ article }: Props) {
-  const { getSlideUpClass } = useGetTransitionClass();
+  const { getFadeUpClass } = useGetTransitionClass();
 
   const data = _get(article, 'data.0') || {};
   const { tags } = data;
@@ -21,7 +21,7 @@ export default function Tags({ article }: Props) {
     <ul
       className={clsx(
         'mb-6 flex flex-wrap gap-2',
-        getSlideUpClass('delay-150')
+        getFadeUpClass('animate-delay-150')
       )}
       aria-label="article tags"
     >

@@ -5,7 +5,7 @@ import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import SocialIcons from '@/components/common/social-icons';
 
 export default function HeaderBlock() {
-  const { getSlideUpClass } = useGetTransitionClass();
+  const { getFadeUpClass } = useGetTransitionClass();
 
   return (
     <header>
@@ -15,7 +15,7 @@ export default function HeaderBlock() {
           'bg-clip-text pb-4 text-4xl font-extrabold tracking-tight text-transparent md:text-6xl',
           'bg-gradient-to-r from-neutral-900 to-neutral-500',
           'dark:from-neutral-100 dark:to-neutral-500',
-          getSlideUpClass('delay-100')
+          getFadeUpClass('animate-delay-100')
         )}
       >
         Senior Front-end Engineer
@@ -24,7 +24,7 @@ export default function HeaderBlock() {
         className={clsx(
           'text-center md:text-left',
           'max-w-2xl text-lg leading-relaxed text-neutral-600 md:text-xl dark:text-neutral-400',
-          getSlideUpClass('delay-200')
+          getFadeUpClass('animate-delay-200')
         )}
       >
         Front-end engineer specializing in React, Next.js, and clean, modern UI.

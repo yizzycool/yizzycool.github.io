@@ -20,14 +20,14 @@ const GlimmerBackgroundConfigs: Array<GlimmerBackgroundConfig> = [
     position: 'top-[-10%] right-[-10%]',
     color: 'bg-purple-200 dark:bg-purple-900',
     duration: '[animation-duration:_5000ms]',
-    delay: 'delay-1000',
+    delay: 'animate-delay-1000',
   },
   {
     ...commonConfig,
     position: 'bottom-[-20%] left-[20%]',
     color: 'bg-pink-200 dark:bg-pink-900',
     duration: '[animation-duration:_6000ms]',
-    delay: 'delay-700',
+    delay: 'animate-delay-700',
   },
 ];
 

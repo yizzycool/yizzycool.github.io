@@ -3,7 +3,7 @@
 import type { BlogArticle } from '@/types/blog';
 
 import clsx from 'clsx';
-import { Calendar, Clock } from 'lucide-react';
+import { Clock, RefreshCw } from 'lucide-react';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import Divider from '@/components/common/divider';
@@ -24,7 +24,7 @@ export default function Metadata({ article }: Props) {
     year: 'numeric',
   });
 
-  const { getSlideUpClass } = useGetTransitionClass();
+  const { getFadeUpClass } = useGetTransitionClass();
 
   return (
     <div
@@ -32,11 +32,11 @@ export default function Metadata({ article }: Props) {
         'flex flex-wrap items-center gap-x-4 gap-y-2',
         'mb-6 text-sm',
         'text-neutral-500 dark:text-neutral-400',
-        getSlideUpClass('delay-200')
+        getFadeUpClass('animate-delay-200')
       )}
     >
-      <time className="flex items-center gap-2">
-        <Calendar size={14} />
+      <time className="flex items-center gap-2" title="Last updated">
+        <RefreshCw size={14} />
         <span>{publishDateString}</span>
       </time>
 
