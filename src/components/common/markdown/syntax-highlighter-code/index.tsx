@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import CodeBlock from './components/code-block';
 import ReactLive from './components/react-live';
+import MermaidChart from './components/mermaid-chart';
 
 export default function SyntaxHighlighterCode(
   props: React.ClassAttributes<HTMLElement> &
@@ -15,11 +16,15 @@ export default function SyntaxHighlighterCode(
   const { ref, children, className, node, ...rest } = props;
   const match = /language-([\w?=&]+)/.exec(className || '');
 
-  return match && match[1].startsWith('live') ? (
-    // ```live?lang=<lang>&lockMode=<mode>
-    <ReactLive code={children as string} metadata={match[1]} />
-  ) : match ? (
-    <CodeBlock match={match} code={children as string} rest={rest} />
+  return match ? (
+    match[1].startsWith('live') ? (
+      // ```live?lang=<lang>&lockMode=<mode>
+      <ReactLive code={children as string} metadata={match[1]} />
+    ) : match[1].startsWith('mermaid') ? (
+      <MermaidChart code={children as string} metadata={match[1]} />
+    ) : (
+      <CodeBlock match={match} code={children as string} rest={rest} />
+    )
   ) : (
     <code
       {...rest}

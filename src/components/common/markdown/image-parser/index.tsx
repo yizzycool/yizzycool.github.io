@@ -79,7 +79,7 @@ export default function ImageParser(
         src={url}
         {...(rest as Partial<Omit<HTMLMotionProps<'img'>, 'ref'>>)}
         loading="lazy"
-        className={clsx('my-0', aligns[align])}
+        className={clsx('my-0 cursor-zoom-in', aligns[align])}
         style={{ width, height }}
         layoutId={imgLayoutId}
         onClick={() => setIsFullscreen(true)}
