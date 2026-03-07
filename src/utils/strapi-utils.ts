@@ -1,6 +1,8 @@
 import type { BlogMediaFormat } from '@/types/blog/media';
+
 import urlJoin from 'url-join';
 import qs from 'qs';
+
 import _defaults from 'lodash/defaults';
 
 type QueryObject = {
@@ -46,8 +48,8 @@ const strapiUtils = {
         status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
         populate: {
           articles: {
-            fields: ['shortTitle', 'slug'],
-            sort: ['shortTitle'],
+            fields: ['title', 'shortTitle', 'slug'],
+            // sort: ['shortTitle'],
           },
         },
         filters,

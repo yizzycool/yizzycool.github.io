@@ -1,4 +1,4 @@
-import type { BlogArticle } from '@/types/blog';
+import type { BlogArticle, BlogCategory } from '@/types/blog';
 import type { Metadata } from 'next';
 
 import urlJoin from 'url-join';
@@ -12,11 +12,13 @@ import rehypeStringify from 'rehype-stringify';
 import seoUtils from '@/utils/seo-utils';
 import strapiUtils from '@/utils/strapi-utils';
 import Article from '@/components/blog/article';
+import { fetchCategoryArticles } from '../../layout';
 
 import _get from 'lodash/get';
 import _size from 'lodash/size';
 import _flatMap from 'lodash/flatMap';
 import _map from 'lodash/map';
+import _findIndex from 'lodash/findIndex';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN || '/';
 
@@ -106,45 +108,23 @@ const fetchArticle = async (articleSlug: string) => {
   return data;
 };
 
-const getPrevNextArticle = async (
-  type: 'prev' | 'next',
+const getPrevNextArticle = (
+  categoryArticles: BlogCategory,
   article: BlogArticle
 ) => {
-  const categoryOrder = _get(article, ['data', 0, 'category', 'order']);
-  const shortTitle = _get(article, ['data', 0, 'shortTitle']);
-
-  const compareKey = type === 'prev' ? '$lt' : '$gt';
-  const sortArray =
-    type === 'prev'
-      ? ['category.order:desc', 'shortTitle:desc']
-      : ['category.order', 'shortTitle'];
-
-  const queryString = strapiUtils.fetch.generatePrevNextArticleInfoQueryString(
-    {
-      $or: [
-        // Get previous/next categorys articles
-        {
-          category: {
-            order: { [compareKey]: categoryOrder },
-          },
-        },
-        // or get previous/next articles under same category
-        {
-          category: {
-            order: { $eq: categoryOrder },
-          },
-          shortTitle: { [compareKey]: shortTitle },
-        },
-      ],
-    },
-    sortArray
+  const allArticles = _flatMap(categoryArticles.data, (data) =>
+    _map(data.articles, (article) => {
+      return {
+        ...article,
+        category: data,
+      };
+    })
   );
-
-  const response = await fetch(
-    `${process.env.STRAPI_URL}/api/articles?${queryString}`
-  );
-  const data = await response.json();
-  return data;
+  const articleId = _get(article, ['data', 0, 'id']);
+  const index = _findIndex(allArticles, (article) => article.id === articleId);
+  const prevArticle = _get(allArticles, index - 1, null);
+  const nextArticle = _get(allArticles, index + 1, null);
+  return { prevArticle, nextArticle };
 };
 
 const parseToc = async (article: BlogArticle) => {
@@ -168,9 +148,17 @@ const parseToc = async (article: BlogArticle) => {
 
 export default async function Page({ params }: Props) {
   const { article: articleSlug } = await params;
+  // Get article with `articleSlug`
   const article = await fetchArticle(articleSlug);
-  const prevArticle = await getPrevNextArticle('prev', article);
-  const nextArticle = await getPrevNextArticle('next', article);
+
+  // Get all articles to parse prev/next article
+  const categoryArticles = await fetchCategoryArticles();
+  const { prevArticle, nextArticle } = getPrevNextArticle(
+    categoryArticles,
+    article
+  );
+
+  // Parse TOC content
   const toc = await parseToc(article);
 
   return (

@@ -1,6 +1,7 @@
 'use client';
 
 import type { BlogArticle } from '@/types/blog';
+import type { BlogArticleData } from '@/types/blog/article';
 
 import clsx from 'clsx';
 
@@ -18,8 +19,8 @@ import _get from 'lodash/get';
 
 type Props = {
   article: BlogArticle;
-  prevArticle: BlogArticle;
-  nextArticle: BlogArticle;
+  prevArticle: BlogArticleData | null;
+  nextArticle: BlogArticleData | null;
   toc: string;
 };
 

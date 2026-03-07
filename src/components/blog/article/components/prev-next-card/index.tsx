@@ -1,6 +1,7 @@
 'use client';
 
-import type { BlogArticle } from '@/types/blog';
+import type { BlogArticleData } from '@/types/blog/article';
+
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import clsx from 'clsx';
@@ -11,13 +12,11 @@ import _get from 'lodash/get';
 
 type Props = {
   type: 'prev' | 'next';
-  article: BlogArticle;
+  article: BlogArticleData | null;
 };
 
-export default function PrevNextCard({ type, article }: Props) {
+export default function PrevNextCard({ type, article: data }: Props) {
   const isNext = type === 'next';
-
-  const data = _get(article, ['data', 0]);
 
   if (!data) return <div></div>;
 
