@@ -4,7 +4,7 @@ import type { BlogCollectionData } from '@/types/blog/collection';
 
 import clsx from 'clsx';
 import { ChevronDown, Layers } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
+import { motion } from 'motion/react';
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 
@@ -18,7 +18,7 @@ type Props = {
 };
 
 export default function SeriesGuide({ collection, slug }: Props) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const { getFadeUpClass } = useGetTransitionClass();
 
@@ -76,68 +76,65 @@ export default function SeriesGuide({ collection, slug }: Props) {
         </button>
 
         {/* TOC Content */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="overflow-hidden border-t border-neutral-200 dark:border-neutral-800"
-            >
-              <ul className="space-y-1 p-4 text-sm leading-normal">
-                {/* <div dangerouslySetInnerHTML={{ __html: toc }} /> */}
-                {articles.map(({ slug, title, category }, idx) => (
-                  <li key={slug}>
-                    <Link
-                      href={strapiUtils.toBlogCategoryArticleUrl(
-                        category.slug,
-                        slug
-                      )}
-                      className={clsx(
-                        'flex items-center gap-3 rounded-xl p-3 transition-all duration-200',
-                        currentIndex === idx
-                          ? 'bg-white ring-1 ring-neutral-200 dark:bg-neutral-800 dark:ring-neutral-700'
-                          : 'text-neutral-500 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800/40'
-                      )}
+        <motion.div
+          initial={false}
+          animate={
+            isOpen ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }
+          }
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          className="overflow-hidden border-t border-neutral-200 dark:border-neutral-800"
+        >
+          <ul className="space-y-1 p-4 text-sm leading-normal">
+            {/* <div dangerouslySetInnerHTML={{ __html: toc }} /> */}
+            {articles.map(({ slug, title, category }, idx) => (
+              <li key={slug}>
+                <Link
+                  href={strapiUtils.toBlogCategoryArticleUrl(
+                    category.slug,
+                    slug
+                  )}
+                  className={clsx(
+                    'flex items-center gap-3 rounded-xl p-3 transition-all duration-200',
+                    currentIndex === idx
+                      ? 'bg-white ring-1 ring-neutral-200 dark:bg-neutral-800 dark:ring-neutral-700'
+                      : 'text-neutral-500 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800/40'
+                  )}
+                >
+                  <div
+                    className={clsx(
+                      'flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-black transition-all',
+                      currentIndex === idx
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-neutral-200 text-neutral-500 dark:bg-neutral-800'
+                    )}
+                  >
+                    {idx + 1}
+                  </div>
+                  <span
+                    className={clsx(
+                      'font-semibold leading-relaxed',
+                      currentIndex === idx
+                        ? 'text-neutral-900 dark:text-white'
+                        : ''
+                    )}
+                  >
+                    {title}
+                  </span>
+                  {currentIndex === idx && (
+                    <Badge
+                      variant="blue"
+                      bordered={true}
+                      className="ml-auto hidden gap-1.5 uppercase sm:flex"
                     >
-                      <div
-                        className={clsx(
-                          'flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-black transition-all',
-                          currentIndex === idx
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-neutral-200 text-neutral-500 dark:bg-neutral-800'
-                        )}
-                      >
-                        {idx + 1}
-                      </div>
-                      <span
-                        className={clsx(
-                          'font-semibold leading-relaxed',
-                          currentIndex === idx
-                            ? 'text-neutral-900 dark:text-white'
-                            : ''
-                        )}
-                      >
-                        {title}
-                      </span>
-                      {currentIndex === idx && (
-                        <Badge
-                          variant="blue"
-                          bordered={true}
-                          className="ml-auto hidden gap-1.5 uppercase sm:flex"
-                        >
-                          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-600 dark:bg-blue-400" />
-                          Reading
-                        </Badge>
-                      )}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-600 dark:bg-blue-400" />
+                      Reading
+                    </Badge>
+                  )}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </motion.div>
       </nav>
     </section>
   );
