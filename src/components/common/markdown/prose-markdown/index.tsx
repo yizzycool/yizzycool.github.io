@@ -34,7 +34,7 @@ const ProseClass = clsx(
   '[&_blockquote_*::before]:content-none',
   '[&_blockquote_*::after]:content-none',
   '[&_blockquote_*:not(i)]:not-italic',
-  '[&_blockquote_*]:font-normal',
+  '[&_blockquote_*:not(strong)]:font-normal',
 
   'leading-loose'
 );
