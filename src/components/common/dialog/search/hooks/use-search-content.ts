@@ -4,29 +4,34 @@ import _isEmpty from 'lodash/isEmpty';
 import _isNull from 'lodash/isNull';
 
 const fuseOptions = {
+  // --- Basic Options ---
   // isCaseSensitive: false,
-  includeScore: true,
   // ignoreDiacritics: false,
-  // shouldSort: true,
+  includeScore: true, // default: false
   // includeMatches: false,
-  // findAllMatches: false,
   // minMatchCharLength: 1,
+  // shouldSort: true,
+  // findAllMatches: false,
+  keys: [
+    { name: 'title', weight: 5.0 },
+    { name: 'tags', weight: 3.0 },
+    { name: 'category', weight: 2.0 },
+    { name: 'description', weight: 1.5 },
+    { name: 'slug', weight: 1.0 },
+    { name: 'categorySlug', weight: 1.0 },
+    // { name: 'content', weight: 0.1 },
+  ],
+
+  // --- Fuzzy Matching Options ---
   // location: 0,
-  // threshold: 0.6,
+  threshold: 0.3, // default: 0.6
   // distance: 100,
-  // useExtendedSearch: false,
-  // ignoreLocation: false,
+  ignoreLocation: true, // default: false
+
+  // --- Advanced Options ---
+  useExtendedSearch: true, // default: false
   // ignoreFieldNorm: false,
   // fieldNormWeight: 1,
-  keys: [
-    { name: 'title', weight: 1 },
-    { name: 'description', weight: 1 },
-    { name: 'content', weight: 1 },
-    { name: 'slug', weight: 1 },
-    { name: 'tags', weight: 1 },
-    { name: 'category', weight: 1 },
-    { name: 'categorySlug', weight: 1 },
-  ],
 };
 
 type Props = {

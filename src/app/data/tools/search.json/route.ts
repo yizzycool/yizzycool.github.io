@@ -7,6 +7,8 @@ import {
   ToolSlugs,
   ToolTitles,
 } from '@/data/tools';
+import { ToolTags } from '@/data/tools/tags';
+
 import _flatMap from 'lodash/flatMap';
 import _map from 'lodash/map';
 
@@ -20,9 +22,9 @@ export async function GET() {
         page: 'tools',
         title: ToolTitles[itemKey],
         description: ToolDescriptions[itemKey],
-        content: '',
+        content: '', // or ToolAbout[itemKey]
         slug: ToolSlugs[itemKey],
-        tags: [],
+        tags: ToolTags[itemKey],
         category: ToolGroupNames[groupKey],
         categorySlug: ToolGroupSlugs[groupKey],
       }))

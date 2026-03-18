@@ -11,7 +11,7 @@ import Image from 'next/image';
 import ThemeSelector from '../theme-selector';
 import { ToolsSelectorMobile } from '../tools-selector';
 import BlogSelectorMobile from './components/blog-selector';
-import SearchDialog from '@/components/common/search-dialog';
+import SearchDialog from '@/components/common/dialog/search';
 import GeneralLink from './components/general-link';
 import SocialIcons from '@/components/common/social-icons';
 import Drawer from '@/components/common/drawer';

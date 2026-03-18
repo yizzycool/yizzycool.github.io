@@ -7,11 +7,13 @@ import urlJoin from 'url-join';
 import { useRouter } from 'next/navigation';
 
 type Props = {
+  isComposing: boolean;
   filteredResults: Array<Array<FuseResult<DataForSearch> & { idx: number }>>;
   closeDialog: () => void;
 };
 
 export default function useKeyboardNavigation({
+  isComposing,
   filteredResults,
   closeDialog,
 }: Props) {
@@ -34,6 +36,8 @@ export default function useKeyboardNavigation({
   }, [focusIndex, usingKeyboard]);
 
   const onDialogKeyDown: KeyboardEventHandler<HTMLDivElement> = (e) => {
+    // Prevent to be triggered if isComposing
+    if (isComposing) return;
     if (e.key === 'ArrowUp') {
       setFocusIndex((prev) => Math.max(0, prev - 1));
       setUsingKeyboard(true);

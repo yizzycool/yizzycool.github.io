@@ -1,11 +1,14 @@
 import strapiUtils from '@/utils/strapi-utils';
+
 import _map from 'lodash/map';
 
 export const dynamic = 'force-static';
 
 export async function GET() {
   const queryString =
-    strapiUtils.staticRoute.generateArticlesQueryStringForSearch();
+    strapiUtils.staticRoute.generateArticlesQueryStringForSearch(undefined, {
+      pageSize: 9999,
+    });
   const response = await fetch(
     `${process.env.STRAPI_URL}/api/articles?${queryString}`
   );
@@ -14,7 +17,7 @@ export async function GET() {
     page: 'blog',
     title: dt.title,
     description: dt.description,
-    content: dt.content,
+    content: '', // or dt.content
     slug: dt.slug,
     tags: _map(dt.tags, (tag) => tag.name),
     category: dt.category.name,

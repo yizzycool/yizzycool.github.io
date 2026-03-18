@@ -195,12 +195,16 @@ const strapiUtils = {
   // Used for static route handler
   staticRoute: {
     // /data/blog/search.json/route.ts
-    generateArticlesQueryStringForSearch: (filters?: object | undefined) => {
+    generateArticlesQueryStringForSearch: (
+      filters?: object | undefined,
+      pagination?: object | undefined
+    ) => {
       const queryObject: QueryObject = {
         status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
         populate: ['tags', 'category'],
-        fields: ['title', 'description', 'content', 'slug'],
+        fields: ['title', 'description', 'slug'],
         filters,
+        pagination: _defaults(pagination, PAGINATION),
       };
       return qs.stringify(queryObject);
     },

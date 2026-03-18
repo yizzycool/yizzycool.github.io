@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Navigation from './components/navigation';
 import ThemeSelector from '../theme-selector';
-import SearchDialog from '@/components/common/search-dialog';
+import SearchDialog from '@/components/common/dialog/search';
 
 export default function HeaderDesktop() {
   return (

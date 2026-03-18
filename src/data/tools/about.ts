@@ -3,7 +3,6 @@ import { ToolKeys } from '.';
 export const ToolAbout = {
   [ToolKeys.qrCodeGenerator]:
     'QR codes are commonly used to share URLs, text, and other information across devices. This QR Code Generator allows users to quickly generate QR codes from custom input such as text or URLs. The tool provides instant previews and client-side generation, making it easy to create QR codes for sharing links, contact information, or messages.',
-
   [ToolKeys.wordCounter]:
     'Accurately measuring text length is important for writing, publishing, and social media. This Word Counter supports both Chinese and English text, providing word, character, number, and line counts. It also includes social media character limit guidance and basic text transformations such as uppercase, lowercase, title case, and trimming whitespace to help users prepare content efficiently.',
 

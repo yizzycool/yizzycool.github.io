@@ -7,15 +7,22 @@ import {
   MouseEventHandler,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
-import { Command, Search, SearchX } from 'lucide-react';
+import {
+  ArrowDownUp,
+  Command,
+  CornerDownLeft,
+  Search,
+  SearchX,
+} from 'lucide-react';
 
 import useSearchContent from './hooks/use-search-content';
 import useKeyboardNavigation from './hooks/use-keyboard-navigation';
-import Button from '../button';
-import BaseDialog from '../dialog/base';
-import Badge from '../badge';
+import Button from '../../button';
+import BaseDialog from '../base';
+import Badge from '../../badge';
 import ResultCard from './components/result-card';
 
 import _sortBy from 'lodash/sortBy';
@@ -30,7 +37,10 @@ interface Props {
 
 export default function SearchDialog({ deviceType }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isComposing, setIsComposing] = useState(false);
   const [query, setQuery] = useState('');
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { error: blogDataError, searchResults: searchResultForBlog } =
     useSearchContent({ isOpen, query, dataUrl: '/data/blog/search.json' });
@@ -57,6 +67,7 @@ export default function SearchDialog({ deviceType }: Props) {
 
   const { focusIndex, onPointerEnter, onDialogKeyDown } = useKeyboardNavigation(
     {
+      isComposing,
       filteredResults,
       closeDialog: () => setIsOpen(false),
     }
@@ -81,6 +92,14 @@ export default function SearchDialog({ deviceType }: Props) {
     setQuery('');
   }, [isOpen]);
 
+  // Auto focus
+  useEffect(() => {
+    if (!isOpen) return;
+    setTimeout(() => {
+      inputRef.current?.focus();
+    });
+  }, [isOpen]);
+
   const onButtonClick: MouseEventHandler<HTMLButtonElement> = (_e) => {
     setIsOpen(true);
   };
@@ -89,6 +108,16 @@ export default function SearchDialog({ deviceType }: Props) {
 
   const getPageName = (results: Array<FuseResult<DataForSearch>>) =>
     _get(results, [0, 'item', 'page'], '');
+
+  const getPageCategory = (results: Array<FuseResult<DataForSearch>>) => {
+    const pageName = getPageName(results);
+    if (pageName === 'blog') {
+      return `Articles (${results.length})`;
+    } else if (pageName === 'tools') {
+      return `Tools (${results.length})`;
+    }
+    return '';
+  };
 
   return (
     <>
@@ -131,13 +160,14 @@ export default function SearchDialog({ deviceType }: Props) {
           <div className="flex shrink-0 items-center border-b border-neutral-100 px-4 py-4 dark:border-neutral-800">
             <Search className="mr-3 h-6 w-6 text-blue-600 dark:text-blue-400" />
             <input
+              ref={inputRef}
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onCompositionStart={() => setIsComposing(true)}
+              onCompositionEnd={() => setIsComposing(false)}
               placeholder="Search articles or tools..."
               className="flex-1 bg-transparent text-lg text-neutral-900 outline-none placeholder:text-neutral-500 dark:text-neutral-100"
-              data-autofocus // implement autoFocus by headlessui
-              autoFocus
             />
             <Button size="xs" variant="ghost" bordered onClick={closeDialog}>
               ESC
@@ -145,7 +175,7 @@ export default function SearchDialog({ deviceType }: Props) {
           </div>
 
           {/* Search Body */}
-          <div className="flex min-h-[300px] flex-col overflow-y-auto p-2">
+          <div className="flex max-h-[500px] min-h-[500px] flex-col overflow-y-auto p-2">
             {!query ? (
               // --- Empty State ---
               <div className="my-auto flex h-full select-none flex-col items-center justify-center py-12 text-center">
@@ -156,7 +186,7 @@ export default function SearchDialog({ deviceType }: Props) {
                   />
                 </div>
                 <p className="text-sm font-medium text-neutral-400 dark:text-neutral-500">
-                  Type to search articles...
+                  Type to search...
                 </p>
               </div>
             ) : // --- Results State ---
@@ -165,8 +195,7 @@ export default function SearchDialog({ deviceType }: Props) {
                 {filteredResults.map((results, index) => (
                   <Fragment key={index}>
                     <div className="px-2 py-2 text-xs font-semibold uppercase tracking-wider text-neutral-500">
-                      {getPageName(results) === 'blog' && 'Articles'}
-                      {getPageName(results) === 'tools' && 'Tools'}
+                      {getPageCategory(results)}
                     </div>
 
                     {/* Result for blog */}
@@ -203,11 +232,11 @@ export default function SearchDialog({ deviceType }: Props) {
 
           {/* Footer */}
           <div className="flex shrink-0 justify-end gap-4 border-t border-neutral-100 bg-neutral-50 px-4 py-3 text-xs text-neutral-400 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-500">
-            <span>
-              <span className="font-bold">↑↓</span> to navigate
+            <span className="flex items-center gap-1">
+              <ArrowDownUp size={12} strokeWidth={2} /> to navigate
             </span>
-            <span>
-              <span className="font-bold">↵</span> to select
+            <span className="flex items-center gap-1">
+              <CornerDownLeft size={12} strokeWidth={2} /> to select
             </span>
           </div>
         </div>
