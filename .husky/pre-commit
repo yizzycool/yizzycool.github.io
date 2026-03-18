@@ -8,6 +8,6 @@ for i in {1..3}; do
   printf "[Sync] Strapi Media Data... ${i}s\r"
   sleep 1
 done
-printf "[Synced] Strapi Media Data...  "
+printf "[Synced] Strapi Media Data...  \n"
 
 git add public/strapi/uploads/* # Stage the synced media files
