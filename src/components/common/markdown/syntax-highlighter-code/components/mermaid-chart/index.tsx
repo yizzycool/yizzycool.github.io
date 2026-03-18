@@ -124,13 +124,7 @@ type PopupProps = {
 };
 
 function ImagePopup({ onClose, children }: PopupProps) {
-  const [body, setBody] = useState<HTMLElement>();
-
-  useEffect(() => {
-    setBody(document.body);
-  }, []);
-
-  if (!body) return null;
+  if (typeof document === 'undefined') return null;
 
   return createPortal(
     <motion.div
@@ -146,6 +140,6 @@ function ImagePopup({ onClose, children }: PopupProps) {
       />
       {children}
     </motion.div>,
-    body
+    document.body
   );
 }

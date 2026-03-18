@@ -4,8 +4,9 @@ import type { Rounded } from '@/types/common';
 
 import clsx from 'clsx';
 import { Transition, TransitionChild } from '@headlessui/react';
-import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+
+import useMounted from '@/hooks/lifecycle/use-mounted';
 
 type Side = 'top' | 'bottom' | 'left' | 'right';
 
@@ -139,14 +140,10 @@ function Wrapper({
   className?: string;
   onClose: (value: boolean) => void;
 }) {
-  const [body, setBody] = useState<HTMLElement>();
-
-  useEffect(() => {
-    setBody(document.body);
-  }, []);
+  const isMounted = useMounted();
 
   if (usePortal) {
-    if (!body) return null;
+    if (!isMounted) return null;
     return createPortal(
       <div
         {...rests}
@@ -157,7 +154,7 @@ function Wrapper({
       >
         {children}
       </div>,
-      body
+      document.body
     );
   }
   return <div {...rests}>{children}</div>;

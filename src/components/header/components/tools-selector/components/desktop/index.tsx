@@ -1,7 +1,6 @@
 'use client';
 
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
   CloseButton,
@@ -13,14 +12,11 @@ import {
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 
+import useMounted from '@/hooks/lifecycle/use-mounted';
 import { Tools } from '@/data/tools';
 
 export default function ToolsSelectorDesktop() {
-  const [body, setBody] = useState<HTMLElement | null>(null);
-
-  useEffect(() => {
-    setBody(window.document.body);
-  }, []);
+  const isMounted = useMounted();
 
   return (
     <>
@@ -90,10 +86,10 @@ export default function ToolsSelectorDesktop() {
             </li>
           ))}
         </PopoverPanel>
-        {body &&
+        {isMounted &&
           createPortal(
             <PopoverBackdrop className="fixed inset-0 z-0 bg-transparent" />,
-            body
+            document.body
           )}
       </Popover>
     </>

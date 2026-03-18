@@ -2,8 +2,10 @@
 
 import clsx from 'clsx';
 import { Transition, TransitionChild } from '@headlessui/react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
+
+import useMounted from '@/hooks/lifecycle/use-mounted';
 
 type Props = {
   isOpen: boolean;
@@ -18,11 +20,9 @@ export default function BaseDialog({
   className = '',
   children,
 }: Props) {
-  const [body, setBody] = useState<HTMLElement | null>(null);
+  const isMounted = useMounted();
 
   useEffect(() => {
-    setBody(document.body);
-
     // Handle Esc keyboard shortcut
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -39,7 +39,7 @@ export default function BaseDialog({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!body) return null;
+  if (!isMounted) return null;
 
   return createPortal(
     <Transition show={isOpen} unmount={false} appear={true}>
@@ -85,7 +85,7 @@ export default function BaseDialog({
         </TransitionChild>
       </div>
     </Transition>,
-    body,
+    document.body,
     'base-dialog'
   );
 }
