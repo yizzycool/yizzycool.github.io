@@ -29,7 +29,7 @@ const fuseOptions = {
   ignoreLocation: true, // default: false
 
   // --- Advanced Options ---
-  useExtendedSearch: true, // default: false
+  // useExtendedSearch: false,
   // ignoreFieldNorm: false,
   // fieldNormWeight: 1,
 };
