@@ -24,7 +24,7 @@ const IconMap = {
 };
 
 const HrefMap = {
-  github: 'https://github2.com/yizzycool',
+  github: 'https://github.com/yizzycool',
   linkedin: 'https://www.linkedin.com/in/yizzy/',
   email: 'mailto:chsh110768@gmail.com',
 };
