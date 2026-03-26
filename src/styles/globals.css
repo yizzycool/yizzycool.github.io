@@ -3,6 +3,19 @@
 @tailwind utilities;
 
 @layer base {
+  :root[data-mode='light'] {
+    color-scheme: light;
+  }
+
+  :root[data-mode='dark'] {
+    color-scheme: dark;
+  }
+
+  :root[data-mode='system'] {
+    /* This tells the browser to respect the OS prefers-color-scheme */
+    color-scheme: light dark;
+  }
+
   html,
   body {
     width: 100%;
@@ -13,6 +26,10 @@
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  html * {
+    scrollbar-width: thin;
   }
 
   a {
