@@ -1,8 +1,9 @@
 'use client';
 
-import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+
+import { cn } from '@/utils/cn';
 import { Tools } from '@/data/tools';
 
 export default function FeaturePanel() {
@@ -10,7 +11,7 @@ export default function FeaturePanel() {
 
   return (
     <aside
-      className="sticky top-[68px] hidden w-72 overflow-y-auto border-r-[1px] border-neutral-400/20 p-4 lg:block"
+      className="sticky top-[68px] hidden w-72 overflow-y-auto border-r border-neutral-400/20 p-4 lg:block"
       style={{
         height: 'calc(100dvh - 68px)',
       }}
@@ -26,13 +27,13 @@ export default function FeaturePanel() {
                 {tool.items.map((item) => (
                   <li key={item.name}>
                     <Link
-                      className={clsx(
+                      href={item.href}
+                      data-active={pathname === item.href}
+                      className={cn(
                         'my-1 flex cursor-pointer items-center rounded-md p-2 text-sm',
                         'hover:bg-sky-600/10',
                         'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500'
                       )}
-                      href={item.href}
-                      data-active={pathname === item.href}
                     >
                       <item.icon.component className="mr-4 h-4 w-4" />
                       {item.name}
