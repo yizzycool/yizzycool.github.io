@@ -42,7 +42,7 @@ export default function Breadcrumb({ article }: Props) {
         <li>
           <Link
             className="cursor-pointer transition-colors hover:text-blue-500"
-            href={urlJoin('/blog', slug)}
+            href={urlJoin('/blog/category', slug)}
           >
             {name}
           </Link>
