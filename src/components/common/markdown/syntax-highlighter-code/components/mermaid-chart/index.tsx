@@ -5,10 +5,9 @@ import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import mermaid, { type MermaidConfig } from 'mermaid';
+import { defaultsDeep } from 'lodash';
 
 import useDarkModeObserver from '@/hooks/window/use-dark-mode-observer';
-
-import _defaultsDeep from 'lodash/defaultsDeep';
 
 const defaultConfig = {
   startOnLoad: false,
@@ -63,7 +62,7 @@ export default function MermaidChart({ code, metadata }: Props) {
   useEffect(() => {
     const render = async () => {
       mermaid.initialize(
-        _defaultsDeep(
+        defaultsDeep(
           {
             theme: isDark ? 'dark' : defaultConfig.theme,
             look,

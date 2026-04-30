@@ -2,20 +2,20 @@
 
 import { Info } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { findKey, get } from 'lodash';
+
 import { ToolTitles, ToolUrls } from '@/data/tools';
 import { ToolAbout } from '@/data/tools/about';
-import _findKey from 'lodash/findKey';
-import _get from 'lodash/get';
 
 export default function AboutBlock() {
   const pathname = usePathname();
 
-  const toolKey = _findKey(ToolUrls, (url) => url === pathname);
+  const toolKey = findKey(ToolUrls, (url) => url === pathname);
 
   if (!toolKey) return null;
 
-  const title = _get(ToolTitles, [toolKey]);
-  const about = _get(ToolAbout, [toolKey]);
+  const title = get(ToolTitles, [toolKey]);
+  const about = get(ToolAbout, [toolKey]);
 
   return (
     <div className="mt-20 border-t border-neutral-200 pt-12 text-left opacity-80 dark:border-neutral-700">

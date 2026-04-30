@@ -1,10 +1,10 @@
 import type { RegexColorType } from '../../../..';
+
 import clsx from 'clsx';
 import { useMemo } from 'react';
+import { forEach, filter, map } from 'lodash';
+
 import { RegexColors } from '../../../..';
-import _forEach from 'lodash/forEach';
-import _filter from 'lodash/filter';
-import _map from 'lodash/map';
 
 type Props = {
   pattern: string;
@@ -63,7 +63,10 @@ export default function HighlightMark({
         // ============
         // Find subgroup info
         let subLastIndex = match.index;
-        _forEach(match.indices?.slice(1), ([start, end], idx) => {
+        forEach(match.indices?.slice(1), (indice, idx) => {
+          if (!indice) return;
+          const [start, end] = indice;
+
           // Text before match of subgroup
           parts[parts.length - 1]?.subGroup?.push({
             text: match?.[0].slice(
@@ -89,7 +92,7 @@ export default function HighlightMark({
 
         // Clear empty text
         if (parts[parts.length - 1]?.subGroup) {
-          parts[parts.length - 1].subGroup = _filter(
+          parts[parts.length - 1].subGroup = filter(
             parts[parts.length - 1].subGroup,
             ({ text }) => !!text
           );
@@ -123,7 +126,7 @@ export default function HighlightMark({
       {highlightList.map(({ matched, text, subGroup }, idx) =>
         matched ? (
           <span key={idx} className="relative">
-            {_map(subGroup, ({ isGroup, text, color }, idx) =>
+            {map(subGroup, ({ isGroup, text, color }, idx) =>
               isGroup ? (
                 <span
                   key={idx}

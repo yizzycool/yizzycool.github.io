@@ -1,7 +1,8 @@
 import clsx from 'clsx';
-import intlUtils from '@/utils/intl-utils';
 import { Download } from 'lucide-react';
-import _round from 'lodash/round';
+import { round } from 'lodash';
+
+import intlUtils from '@/utils/intl-utils';
 
 export default function InlineDownloadCard({
   options,
@@ -85,7 +86,7 @@ export default function InlineDownloadCard({
 
         {/* Progress Stats */}
         <div className="text-center text-xs font-bold text-emerald-400">
-          {_round(progress * 100, 1)}%
+          {round(progress * 100, 1)}%
         </div>
       </div>
     </div>

@@ -20,10 +20,6 @@ import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Config from './components/config-panel';
 
-import _isNull from 'lodash/isNull';
-import _isEmpty from 'lodash/isEmpty';
-import _size from 'lodash/size';
-
 export const DefaultCanvasConfig: CanvasConfig = {
   layout: 'free',
   size: { width: 1080, height: 1080 },

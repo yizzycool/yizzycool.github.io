@@ -14,8 +14,6 @@ import IconTextButton from '../icon-text-button';
 import BottomDrawer from '../bottom-drawer';
 import GroupTitle from '../group-title';
 
-import _xor from 'lodash/xor';
-
 type Props = {
   setLayer: (type: 'front' | 'back' | 'forward' | 'backward') => void;
 };

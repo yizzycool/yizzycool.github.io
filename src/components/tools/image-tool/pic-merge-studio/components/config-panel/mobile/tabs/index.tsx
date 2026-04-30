@@ -3,11 +3,10 @@
 import clsx from 'clsx';
 import { Frame, Image, LucideIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { zip } from 'lodash';
 
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import Button from '@/components/common/button';
-
-import _zip from 'lodash/zip';
 
 type Props = {
   discardActiveObject: () => void;
@@ -61,7 +60,7 @@ export default function Tabs({ discardActiveObject, children }: Props) {
       </div>
       {/* Tabs */}
       <div className="flex w-full *:flex-1">
-        {(_zip(tabs, tabsIcon) as [string, LucideIcon][]).map(([tab, Icon]) => (
+        {(zip(tabs, tabsIcon) as [string, LucideIcon][]).map(([tab, Icon]) => (
           <Button
             key={tab}
             variant="ghost"

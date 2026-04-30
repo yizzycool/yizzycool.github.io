@@ -1,9 +1,8 @@
 import clsx from 'clsx';
 import { useMemo } from 'react';
+import { forEach, map, isUndefined } from 'lodash';
+
 import { RegexColors } from '../../../..';
-import _forEach from 'lodash/forEach';
-import _map from 'lodash/map';
-import _isUndefined from 'lodash/isUndefined';
 
 type Props = {
   pattern: string;
@@ -15,13 +14,13 @@ export default function PatternVisualizer({ pattern }: Props) {
     const info: Record<number, number> = {};
 
     let groupIdx = 0;
-    _forEach(pattern, (p, idx) => {
+    forEach(pattern, (p, idx) => {
       if (p === '(' && (idx === 0 || p[idx - 1] !== '\\')) {
         stack.push([groupIdx, idx]);
         groupIdx += 1;
       } else if (p === ')' && (idx === 0 || p[idx - 1] !== '\\')) {
         const [leftGroupIdx, leftIdx] = stack.pop() || [];
-        if (!_isUndefined(leftGroupIdx)) {
+        if (!isUndefined(leftGroupIdx)) {
           info[leftIdx] = leftGroupIdx;
           info[idx] = leftGroupIdx;
         }
@@ -50,7 +49,7 @@ export default function PatternVisualizer({ pattern }: Props) {
 
   return (
     <>
-      {_map(pattern, (p, idx) => (
+      {map(pattern, (p, idx) => (
         <span
           key={p + idx}
           data-group={getDataGroup(idx)}

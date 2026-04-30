@@ -1,6 +1,5 @@
 'use client';
 
-import { UnsupportedApiTypes } from '../data/unsupported-types';
 import useAiLanguageModel from '../hooks/use-ai-language-model';
 import HeaderBlock from '../../components/header-block';
 import LoadingSkeleton from '../components/loading-skeleton';
@@ -10,9 +9,7 @@ import UnsupportedCard from '../components/unsupported-card';
 import ModelDownloadCard from '../components/model-download-card';
 import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
-import _isNull from 'lodash/isNull';
-import _isEmpty from 'lodash/isEmpty';
-import _values from 'lodash/values';
+import { UnsupportedApiTypes } from '../data/unsupported-types';
 
 export default function PromptApi() {
   const {

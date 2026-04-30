@@ -5,13 +5,12 @@ import type { filters } from 'fabric';
 import clsx from 'clsx';
 import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
+import { xor } from 'lodash';
 
 import { useControlDrawer } from '../hooks/use-control-drawer';
 import IconTextButton from '../icon-text-button';
 import BottomDrawer from '../bottom-drawer';
 import { FabricFilterTypeList } from '../../../../data/fabric-filters';
-
-import _xor from 'lodash/xor';
 
 type Props = {
   filters: filters.BaseFilter<string>[];
@@ -25,7 +24,7 @@ export default function Filters({ filters, setFilters }: Props) {
 
   const updateFilter = (filter: string) => {
     if (!FabricFilterTypeList.includes(filter)) return;
-    setFilters(_xor(activeFilterList, [filter]));
+    setFilters(xor(activeFilterList, [filter]));
   };
 
   const isActive = (type: string) => {

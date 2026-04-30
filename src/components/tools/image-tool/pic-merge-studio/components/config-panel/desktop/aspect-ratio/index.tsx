@@ -5,6 +5,7 @@ import type { CanvasSize } from '../../../../types/config';
 import clsx from 'clsx';
 import { Move, Proportions } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { clamp } from 'lodash';
 
 import usePreventNumberWheel from '@/hooks/dom/use-prevent-number-wheel';
 import Label from '@/components/common/label';
@@ -14,8 +15,6 @@ import {
   PresetAspectRatios,
   type ConfitRatioType,
 } from '../../data/aspect-ratio';
-
-import _clamp from 'lodash/clamp';
 
 const MIN_SIZE = 512;
 const MAX_SIZE = 4096;
@@ -76,8 +75,8 @@ export default function AspectRatio({ size, setSize }: Props) {
   };
 
   const clampValue = () => {
-    const width = _clamp(inputSize.width, MIN_SIZE, MAX_SIZE);
-    const height = _clamp(inputSize.height, MIN_SIZE, MAX_SIZE);
+    const width = clamp(inputSize.width, MIN_SIZE, MAX_SIZE);
+    const height = clamp(inputSize.height, MIN_SIZE, MAX_SIZE);
     setInputSize({ width, height });
   };
 

@@ -6,15 +6,14 @@ import clsx from 'clsx';
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import urlJoin from 'url-join';
+import { get } from 'lodash';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-
-import _get from 'lodash/get';
 
 type Props = { article: BlogArticle };
 
 export default function Breadcrumb({ article }: Props) {
-  const data = _get(article, 'data.0') || {};
+  const data = get(article, 'data.0') || {};
   const { category } = data;
   const { name, slug } = category;
 

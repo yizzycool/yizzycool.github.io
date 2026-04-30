@@ -1,7 +1,6 @@
 import Fuse, { FuseResult } from 'fuse.js';
 import { useEffect, useState } from 'react';
-import _isEmpty from 'lodash/isEmpty';
-import _isNull from 'lodash/isNull';
+import { isEmpty, isNull } from 'lodash';
 
 const fuseOptions = {
   // --- Basic Options ---
@@ -67,7 +66,7 @@ export default function useSearchContent({ isOpen, query, dataUrl }: Props) {
       setFuse(newFuse);
     }
 
-    if (_isNull(data)) {
+    if (isNull(data)) {
       fetchData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -81,9 +80,9 @@ export default function useSearchContent({ isOpen, query, dataUrl }: Props) {
 
   // Update result
   useEffect(() => {
-    if (_isEmpty(query)) {
+    if (isEmpty(query)) {
       setSearchResults([]);
-    } else if (fuse && !_isNull(data)) {
+    } else if (fuse && !isNull(data)) {
       const results = fuse.search(query);
       setSearchResults(results);
     }

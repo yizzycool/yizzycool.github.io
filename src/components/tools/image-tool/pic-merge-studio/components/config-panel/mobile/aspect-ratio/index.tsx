@@ -1,10 +1,12 @@
 'use client';
 
 import type { CanvasSize } from '../../../../types/config';
+import type { ConfitRatioType } from '../../data/aspect-ratio';
 
 import clsx from 'clsx';
 import { Check, Move, Proportions } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { clamp } from 'lodash';
 
 import { useControlDrawer } from '../hooks/use-control-drawer';
 import usePreventNumberWheel from '@/hooks/dom/use-prevent-number-wheel';
@@ -13,12 +15,7 @@ import IconTextButton from '../icon-text-button';
 import BottomDrawer from '../bottom-drawer';
 import GroupTitle from '../group-title';
 import { DefaultCanvasConfig } from '../../../..';
-import {
-  PresetAspectRatios,
-  type ConfitRatioType,
-} from '../../data/aspect-ratio';
-
-import _clamp from 'lodash/clamp';
+import { PresetAspectRatios } from '../../data/aspect-ratio';
 
 const MobilePresetAspectRatios: ConfitRatioType[] = [
   {
@@ -90,8 +87,8 @@ export default function AspectRatio({ size, setSize }: Props) {
   };
 
   const clampValue = () => {
-    const width = _clamp(inputSize.width, MIN_SIZE, MAX_SIZE);
-    const height = _clamp(inputSize.height, MIN_SIZE, MAX_SIZE);
+    const width = clamp(inputSize.width, MIN_SIZE, MAX_SIZE);
+    const height = clamp(inputSize.height, MIN_SIZE, MAX_SIZE);
     setInputSize({ width, height });
   };
 

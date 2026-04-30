@@ -1,11 +1,7 @@
 'use client';
 
 import * as fabric from 'fabric';
-
-import _isArray from 'lodash/isArray';
-import _flatMap from 'lodash/flatMap';
-import _filter from 'lodash/filter';
-import _head from 'lodash/head';
+import { isArray, filter, head, flatMap } from 'lodash';
 
 type Props = {
   refs: {
@@ -19,18 +15,15 @@ export default function useCommon({ refs }: Props) {
   // To get the first selected image
   const getSelectedImage = (): fabric.FabricImage | undefined => {
     if (!fabricCanvasRef.current) return;
-    return _head(
-      _flatMap<fabric.FabricObject, fabric.FabricImage>(
+    return head(
+      flatMap<fabric.FabricObject, fabric.FabricImage>(
         fabricCanvasRef.current.getActiveObjects(),
         (
           obj: fabric.FabricObject & { _objects?: fabric.FabricObject[] }
         ): fabric.FabricImage | fabric.FabricImage[] => {
           if (obj instanceof fabric.FabricImage) return obj;
-          else if (_isArray(obj?._objects)) {
-            return _filter(
-              obj._objects,
-              (g) => g instanceof fabric.FabricImage
-            );
+          else if (isArray(obj?._objects)) {
+            return filter(obj._objects, (g) => g instanceof fabric.FabricImage);
           }
           return [];
         }
@@ -41,14 +34,14 @@ export default function useCommon({ refs }: Props) {
   // To get all images
   const getAllImages = (): fabric.FabricImage[] => {
     if (!fabricCanvasRef.current) return [];
-    return _flatMap<fabric.FabricObject, fabric.FabricImage>(
+    return flatMap<fabric.FabricObject, fabric.FabricImage>(
       fabricCanvasRef.current.getObjects(),
       (
         obj: fabric.FabricObject & { _objects?: fabric.FabricObject[] }
       ): fabric.FabricImage | fabric.FabricImage[] => {
         if (obj instanceof fabric.FabricImage) return obj;
-        else if (_isArray(obj?._objects)) {
-          return _filter(obj._objects, (g) => g instanceof fabric.FabricImage);
+        else if (isArray(obj?._objects)) {
+          return filter(obj._objects, (g) => g instanceof fabric.FabricImage);
         }
         return [];
       }

@@ -1,6 +1,6 @@
-import strapiUtils from '@/utils/strapi-utils';
+import { map } from 'lodash';
 
-import _map from 'lodash/map';
+import strapiUtils from '@/utils/strapi-utils';
 
 export const dynamic = 'force-static';
 
@@ -13,13 +13,13 @@ export async function GET() {
     `${process.env.STRAPI_URL}/api/articles?${queryString}`
   );
   const { data } = await response.json();
-  const filteredData: Array<DataForSearch> = _map(data, (dt) => ({
+  const filteredData: Array<DataForSearch> = map(data, (dt) => ({
     page: 'blog',
     title: dt.title,
     description: dt.description,
     content: '', // or dt.content
     slug: dt.slug,
-    tags: _map(dt.tags, (tag) => tag.name),
+    tags: map(dt.tags, (tag) => tag.name),
     category: dt.category.name,
     categorySlug: dt.category.slug,
   }));

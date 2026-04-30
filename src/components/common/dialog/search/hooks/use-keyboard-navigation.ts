@@ -1,10 +1,8 @@
 import { FuseResult } from 'fuse.js';
 import { KeyboardEventHandler, useEffect, useMemo, useState } from 'react';
-import _last from 'lodash/last';
-import _get from 'lodash/get';
-import _flatten from 'lodash/flatten';
 import urlJoin from 'url-join';
 import { useRouter } from 'next/navigation';
+import { get, flatten } from 'lodash';
 
 type Props = {
   isComposing: boolean;
@@ -23,7 +21,7 @@ export default function useKeyboardNavigation({
   const router = useRouter();
 
   const flattenFilteredResults = useMemo(() => {
-    return _flatten(filteredResults);
+    return flatten(filteredResults);
   }, [filteredResults]);
 
   // Scroll keyboard-selected element into view
@@ -52,7 +50,7 @@ export default function useKeyboardNavigation({
   };
 
   const redirectToPage = () => {
-    const data = _get(flattenFilteredResults, focusIndex);
+    const data = get(flattenFilteredResults, focusIndex);
     const { page, slug, categorySlug } = data.item;
     const url = urlJoin('/', page, categorySlug, slug);
     router.push(url);

@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
+
 import urlJoin from 'url-join';
+import { get, map } from 'lodash';
+
+import Articles from '@/components/blog/articles';
 import seoUtils from '@/utils/seo-utils';
 import strapiUtils from '@/utils/strapi-utils';
-import Articles from '@/components/blog/articles';
-import _get from 'lodash/get';
-import _size from 'lodash/size';
-import _map from 'lodash/map';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN as string;
 
@@ -17,7 +17,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category: categorySlug } = await params;
   const articles = await fetchArticles(categorySlug);
-  const category = _get(articles, ['data', 0, 'category']);
+  const category = get(articles, ['data', 0, 'category']);
   const { name, slug } = category;
 
   const url = urlJoin(domain, 'blog/category', slug);
@@ -64,7 +64,7 @@ export async function generateStaticParams() {
   );
   const categories = await response.json();
 
-  return _map(categories.data, ({ slug }) => ({
+  return map(categories.data, ({ slug }) => ({
     category: slug,
   }));
 }

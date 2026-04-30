@@ -4,15 +4,12 @@ import type { BlogArticle } from '@/types/blog';
 
 import clsx from 'clsx';
 import { useMemo } from 'react';
+import { get, find } from 'lodash';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import HeaderBlock from './components/header-block';
 import ArticleCard from './components/article-card';
 import Pagination from './components/pagination';
-
-import _map from 'lodash/map';
-import _get from 'lodash/get';
-import _find from 'lodash/find';
 
 type Props = {
   articles: BlogArticle;
@@ -25,11 +22,11 @@ export default function Articles({ articles, categorySlug, tagSlug }: Props) {
 
   const categoryName = useMemo(() => {
     if (categorySlug) {
-      return _get(data, [0, 'category', 'name'], '');
+      return get(data, [0, 'category', 'name'], '');
     } else if (tagSlug) {
-      const tags = _get(data, [0, 'tags']);
-      const tag = _find(tags, (t) => t.slug === tagSlug);
-      return _get(tag, 'name', '');
+      const tags = get(data, [0, 'tags']);
+      const tag = find(tags, (t) => t.slug === tagSlug);
+      return get(tag, 'name', '');
     } else {
       return 'All articles';
     }
@@ -51,7 +48,7 @@ export default function Articles({ articles, categorySlug, tagSlug }: Props) {
         <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
           {categoryName}
           <span className="ml-3 text-sm font-normal text-neutral-400 dark:text-neutral-500">
-            {_get(meta, ['pagination', 'total'], 0)} articles
+            {get(meta, ['pagination', 'total'], 0)} articles
           </span>
         </h2>
       </div>

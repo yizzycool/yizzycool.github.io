@@ -12,8 +12,6 @@ import {
 import ExperienceData from './data/experiences.json';
 import RevealSection from '@/components/common/reveal-section';
 
-import _get from 'lodash/get';
-
 export default function WorkExperience() {
   return (
     <div id="work-experience" className="mx-auto max-w-screen-xl">

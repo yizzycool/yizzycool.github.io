@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
+
 import urlJoin from 'url-join';
+import { map, range, get } from 'lodash';
+
+import Articles from '@/components/blog/articles';
 import seoUtils from '@/utils/seo-utils';
 import strapiUtils from '@/utils/strapi-utils';
-import Articles from '@/components/blog/articles';
-import _map from 'lodash/map';
-import _range from 'lodash/range';
-import _get from 'lodash/get';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN || '/';
 
@@ -62,9 +62,9 @@ export async function generateStaticParams() {
     `${process.env.STRAPI_URL}/api/articles?${queryString}`
   );
   const articles = await response.json();
-  const pageCount = _get(articles, ['meta', 'pagination', 'pageCount']);
+  const pageCount = get(articles, ['meta', 'pagination', 'pageCount']);
 
-  return _map(_range(1, pageCount + 1), (page) => ({
+  return map(range(1, pageCount + 1), (page) => ({
     page: page.toString(),
   }));
 }

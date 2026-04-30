@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import _isNull from 'lodash/isNull';
+import { isNull } from 'lodash';
 
 const useWebcam = () => {
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -41,7 +41,7 @@ const useWebcam = () => {
   };
 
   return {
-    isCameraOpened: !_isNull(stream),
+    isCameraOpened: !isNull(stream),
     startCamera,
     stopCamera,
     flipCamera,

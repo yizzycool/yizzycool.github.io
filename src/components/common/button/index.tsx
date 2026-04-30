@@ -6,8 +6,7 @@ import type { ButtonSize, ButtonVariant } from '@/types/common/button';
 import clsx from 'clsx';
 import { LucideIcon } from 'lucide-react';
 import { MouseEventHandler, useMemo } from 'react';
-
-import _isFunction from 'lodash/isFunction';
+import { isFunction } from 'lodash';
 
 type Props = {
   children?: React.ReactNode;
@@ -102,7 +101,7 @@ export default function Button({
   };
 
   const onButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
-    if (disabled || !_isFunction(onClick)) return;
+    if (disabled || !isFunction(onClick)) return;
     onClick(e);
   };
 

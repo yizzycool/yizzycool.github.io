@@ -1,12 +1,14 @@
 'use client';
 
-import { TransformedResults } from '../../types';
+import type { TransformedResults } from '../../types';
+
 import { AlertCircle, SquareSquare } from 'lucide-react';
+import { size } from 'lodash';
+
 import CopyAction from '@/components/common/action-button/copy';
 import Badge from '@/components/common/badge';
 import Card from '@/components/common/card';
 import CardTitle from '@/components/common/card/title';
-import _size from 'lodash/size';
 
 type Props = {
   results: TransformedResults;
@@ -18,7 +20,7 @@ export default function DetectionResult({ results, isProcessing }: Props) {
     <Card>
       <div className="flex items-center justify-between">
         <CardTitle icon={SquareSquare}>Detection Results</CardTitle>
-        <Badge>{_size(results)} Found</Badge>
+        <Badge>{size(results)} Found</Badge>
       </div>
 
       {/* Separate */}
@@ -30,7 +32,7 @@ export default function DetectionResult({ results, isProcessing }: Props) {
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-neutral-200 border-t-blue-500"></div>
             <p className="text-sm">Analyzing pixels...</p>
           </div>
-        ) : _size(results) > 0 ? (
+        ) : size(results) > 0 ? (
           results?.map(({ label, confidence, text }, idx) => (
             <div
               key={idx}

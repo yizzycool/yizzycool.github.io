@@ -4,6 +4,7 @@ import type { BlogArticle } from '@/types/blog';
 import type { BlogArticleData } from '@/types/blog/article';
 
 import clsx from 'clsx';
+import { get } from 'lodash';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import Breadcrumb from './components/breadcrumb';
@@ -14,8 +15,6 @@ import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import { TocDesktop, TocMobile } from './components/toc';
 import SeriesGuide from './components/series-guide';
 import PrevNextCard from './components/prev-next-card';
-
-import _get from 'lodash/get';
 
 type Props = {
   article: BlogArticle;
@@ -30,7 +29,7 @@ export default function Article({
   nextArticle,
   toc,
 }: Props) {
-  const data = _get(article, 'data.0') || {};
+  const data = get(article, 'data.0') || {};
   const { title, content, collection, slug } = data;
 
   const { getFadeUpClass } = useGetTransitionClass();

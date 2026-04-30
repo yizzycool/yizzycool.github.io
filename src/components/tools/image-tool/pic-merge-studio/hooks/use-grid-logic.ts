@@ -1,13 +1,13 @@
-import colorUtils from '@/utils/color-utils';
 import type { ConfigHelper } from '../types/config-helper';
 import type { GridCell, GridEdge, GridTemplate } from '../types/grid-layout';
 import type { CanvasBorder } from '../types/config';
 
 import * as fabric from 'fabric';
+import { range } from 'lodash';
+
 import useCommon from './use-common';
 import { FabricImageConfig, type FabricInternalStates } from './use-fabric';
-
-import _range from 'lodash/range';
+import colorUtils from '@/utils/color-utils';
 
 type Props = {
   refs: {
@@ -287,8 +287,8 @@ export default function useGridLogic({
         id,
         direction: 'vertical',
         adjacentCells: {
-          prev: _range(rows).map((idx) => root.cells[idx][j - 1]) as GridCell[],
-          next: _range(rows).map((idx) => root.cells[idx][j]) as GridCell[],
+          prev: range(rows).map((idx) => root.cells[idx][j - 1]) as GridCell[],
+          next: range(rows).map((idx) => root.cells[idx][j]) as GridCell[],
         },
         element: obj,
       };
@@ -347,8 +347,8 @@ export default function useGridLogic({
 
     // Generate root cell
     const root: GridTemplate = {
-      cellIds: new Set(_range(1, rows * cols + 1)),
-      edgeIds: new Set(_range(1, Math.max(1, (rows - 1) * (cols - 1)))),
+      cellIds: new Set(range(1, rows * cols + 1)),
+      edgeIds: new Set(range(1, Math.max(1, (rows - 1) * (cols - 1)))),
       edges: {
         horizontal: Array.from({ length: rows }, () =>
           Array.from({ length: cols })

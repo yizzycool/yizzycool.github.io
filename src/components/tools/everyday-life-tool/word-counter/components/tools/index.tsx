@@ -1,9 +1,10 @@
 'use client';
 
-import { ArrowDown, ArrowUp, Eraser, Type, Wand2 } from 'lucide-react';
-import Button from '@/components/common/button';
-import _capitalize from 'lodash/capitalize';
 import clsx from 'clsx';
+import { ArrowDown, ArrowUp, Eraser, Type, Wand2 } from 'lucide-react';
+import { capitalize } from 'lodash';
+
+import Button from '@/components/common/button';
 import Label from '@/components/common/label';
 
 const Actions = [
@@ -40,7 +41,7 @@ export default function Tools({ setText }: Props) {
     } else if (actionType === 'lower') {
       setText((prev) => prev.toLowerCase());
     } else if (actionType === 'title') {
-      setText((prev) => prev.replace(/\w\S*/g, (txt) => _capitalize(txt)));
+      setText((prev) => prev.replace(/\w\S*/g, (txt) => capitalize(txt)));
     } else if (actionType === 'trim') {
       setText((prev) => prev.replace(/\s+/g, ' ').trim());
     }

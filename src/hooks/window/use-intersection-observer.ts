@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import _get from 'lodash/get';
-import _isNull from 'lodash/isNull';
+import { get, isNull } from 'lodash';
 
 export default function useIntersectionObserver({
   rootSelector = null,
@@ -32,7 +31,7 @@ export default function useIntersectionObserver({
       setHit(true);
     } else {
       const options: IntersectionObserverInit = {
-        root: _isNull(rootSelector)
+        root: isNull(rootSelector)
           ? rootSelector
           : document.querySelector(rootSelector),
         rootMargin,
@@ -54,7 +53,7 @@ export default function useIntersectionObserver({
     entries: IntersectionObserverEntry[],
     _observer: IntersectionObserver
   ) => {
-    const intersectionRatio = _get(entries, '0.intersectionRatio', 0);
+    const intersectionRatio = get(entries, '0.intersectionRatio', 0);
     if (intersectionRatio < threshold) {
       if (!once) {
         setHit(false);

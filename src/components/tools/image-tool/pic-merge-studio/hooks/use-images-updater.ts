@@ -4,11 +4,10 @@ import type { FabricInternalStates } from './use-fabric';
 import type { GridTemplate } from '../types/grid-layout';
 
 import * as fabric from 'fabric'; // v6
+import { forEach } from 'lodash';
 
 import useCommon from './use-common';
 import colorUtils from '@/utils/color-utils';
-
-import _forEach from 'lodash/forEach';
 
 type Props = {
   refs: {
@@ -83,7 +82,7 @@ export default function useImagesUpdater({
     const normStrokeWidth = getNormStrokeWidth(strokeWidth) / 2;
 
     // Update Selected Fabric Images
-    _forEach(images, (img: fabric.FabricImage) => {
+    forEach(images, (img: fabric.FabricImage) => {
       img.set({
         _strokeWidthRatio: strokeWidth,
         strokeWidth: normStrokeWidth,
@@ -114,7 +113,7 @@ export default function useImagesUpdater({
     const stroke = colorUtils.rgbaToHex({ ...rgba, a: opacity });
 
     // Update selected Fabric Images
-    _forEach(images, (img: fabric.FabricImage) => {
+    forEach(images, (img: fabric.FabricImage) => {
       img.set({
         stroke,
       });
@@ -140,7 +139,7 @@ export default function useImagesUpdater({
     if (!images.length) return;
 
     // Update selected Fabric Images
-    _forEach(images, (img: fabric.FabricImage) => {
+    forEach(images, (img: fabric.FabricImage) => {
       img.set({
         stroke: '',
         strokeWidth: 0,

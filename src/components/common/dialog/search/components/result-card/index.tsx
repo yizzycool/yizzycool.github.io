@@ -1,15 +1,16 @@
 'use client';
 
+import type { FuseResult } from 'fuse.js';
+
 import clsx from 'clsx';
 import urlJoin from 'url-join';
-import { FuseResult } from 'fuse.js';
 import { CornerDownLeft, FileText, LucideIcon } from 'lucide-react';
 import { useMemo } from 'react';
 import Link from 'next/link';
-import { ToolIcons, ToolSlugs } from '@/data/tools';
+import { get, findKey } from 'lodash';
+
 import Badge from '@/components/common/badge';
-import _get from 'lodash/get';
-import _findKey from 'lodash/findKey';
+import { ToolIcons, ToolSlugs } from '@/data/tools';
 
 type Props = {
   data: FuseResult<DataForSearch> & { idx: number };
@@ -31,8 +32,8 @@ export default function ResultCard({
       return FileText;
     } else {
       const slug = data.item.slug;
-      const toolKey = _findKey(ToolSlugs, (s) => s === slug) || '';
-      return _get(ToolIcons, toolKey);
+      const toolKey = findKey(ToolSlugs, (s) => s === slug) || '';
+      return get(ToolIcons, toolKey);
     }
   }, [data]);
 

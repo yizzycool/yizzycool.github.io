@@ -2,6 +2,8 @@
 
 import { Info, Link } from 'lucide-react';
 import { ChangeEvent, useState } from 'react';
+import { isNull, isEmpty } from 'lodash';
+
 import Snackbar from '@/components/common/snackbar';
 import HeaderBlock from '../../components/header-block';
 import SectionGap from '../../components/section-gap';
@@ -9,8 +11,6 @@ import useGenerateQrCode from './hooks/use-generate-qrcode';
 import SystemStatus from './components/system-status';
 import PasteAction from '@/components/common/action-button/paste';
 import DeleteAction from '@/components/common/action-button/delete';
-import _isNull from 'lodash/isNull';
-import _isEmpty from 'lodash/isEmpty';
 import Textarea from '@/components/common/textarea';
 import Appearance from './components/appearance';
 import Label from '@/components/common/label';
@@ -74,7 +74,7 @@ export default function QrCodeGenerator() {
           <PasteAction onClick={setInputText} />
           <DeleteAction
             onClick={onClear}
-            disabled={_isNull(inputText) || _isEmpty(inputText)}
+            disabled={isNull(inputText) || isEmpty(inputText)}
           />
         </div>
       </div>

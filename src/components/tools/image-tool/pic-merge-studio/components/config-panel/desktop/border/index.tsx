@@ -5,6 +5,7 @@ import type { CanvasBorder } from '../../../../types/config';
 import clsx from 'clsx';
 import { Ban, SquareDashedTopSolid } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { isUndefined } from 'lodash';
 
 import Label from '@/components/common/label';
 import Button from '@/components/common/button';
@@ -12,8 +13,6 @@ import Slider from '@/components/common/slider';
 import CheckBox from '@/components/common/checkbox';
 import ColorPicker from '../color-picker';
 import { PresetBorderColors } from '../../data/background';
-
-import _isUndefined from 'lodash/isUndefined';
 
 type Props = {
   border: CanvasBorder & { showOuter?: boolean };
@@ -80,7 +79,7 @@ export default function Border({
       {/* Pure Colors */}
       <div className="space-y-4 rounded-xl bg-neutral-50 p-4 dark:bg-neutral-800/50">
         {/* Show Outer Border */}
-        {!_isUndefined(showOuter) && (
+        {!isUndefined(showOuter) && (
           <div>
             <CheckBox
               options={['Outer Border']}

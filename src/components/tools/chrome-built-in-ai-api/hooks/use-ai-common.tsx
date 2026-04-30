@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import _isNull from 'lodash/isNull';
+import { isNull } from 'lodash';
 
 export default function useAiCommon() {
   const [isApiSupported, setIsApiSupported] = useState<boolean | null>(null);
@@ -11,8 +11,8 @@ export default function useAiCommon() {
   const [downloadProgress, setDownloadProgress] = useState<number | null>(null);
 
   const hasCheckedAIStatus = !(
-    _isNull(isApiSupported) ||
-    (isApiSupported && _isNull(availability))
+    isNull(isApiSupported) ||
+    (isApiSupported && isNull(availability))
   );
 
   const shouldDownloadModel = ['downloadable', 'downloading'].includes(

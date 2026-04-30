@@ -1,14 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { defaults, isNull } from 'lodash';
 
 import useAiCommon from './use-ai-common';
 import browserUtils from '@/utils/browser-utils';
-
-import _defaults from 'lodash/defaults';
-import _isNull from 'lodash/isNull';
-import _startsWith from 'lodash/startsWith';
-import _size from 'lodash/size';
 
 const Options: AIProofreaderCreateOptions = {
   includeCorrectionTypes: true,
@@ -86,7 +82,7 @@ export default function useAiProofreader() {
         if (proofreader) proofreader?.destroy?.();
         setProofreader(null);
         await browserUtils.sleep(500);
-        const newOptions = _defaults(options, Options);
+        const newOptions = defaults(options, Options);
         const newProofreader = await window.Proofreader.create(newOptions);
         setOptions(newOptions);
         setProofreader(newProofreader);
@@ -136,7 +132,7 @@ export default function useAiProofreader() {
     error,
     errorMessage,
     options,
-    isOptionUpdating: _isNull(proofreader),
+    isOptionUpdating: isNull(proofreader),
     proofread,
     updateProofreader,
     shouldDownloadModel,

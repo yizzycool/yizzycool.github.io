@@ -2,6 +2,7 @@
 
 import { LoaderCircle } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { isEqual } from 'lodash';
 
 import useWindowDevice from '@/hooks/window/use-window-device';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
@@ -11,8 +12,6 @@ import ConfigDialog from '@/components/common/dialog/config';
 import Button from '@/components/common/button';
 import Divider from '@/components/common/divider';
 import Snackbar from '@/components/common/snackbar';
-
-import _isEqual from 'lodash/isEqual';
 
 const Settings = [
   {
@@ -55,7 +54,7 @@ export default function Config({
   const { isMobile } = useWindowDevice();
 
   const buttonDisabled = useMemo(() => {
-    return _isEqual(options, newOptions) || isOptionUpdating;
+    return isEqual(options, newOptions) || isOptionUpdating;
   }, [options, newOptions, isOptionUpdating]);
 
   const onChange = (key: string, value: string) => {

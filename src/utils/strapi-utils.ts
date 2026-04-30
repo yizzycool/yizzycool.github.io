@@ -2,8 +2,7 @@ import type { BlogMediaFormat } from '@/types/blog/media';
 
 import urlJoin from 'url-join';
 import qs from 'qs';
-
-import _defaults from 'lodash/defaults';
+import { defaults } from 'lodash';
 
 type QueryObject = {
   status: 'published' | 'draft';
@@ -78,7 +77,7 @@ const strapiUtils = {
           'slug',
           'readTime',
         ],
-        pagination: _defaults(pagination, PAGINATION),
+        pagination: defaults(pagination, PAGINATION),
         filters,
         sort: ['createdAt:desc'],
       };
@@ -161,7 +160,7 @@ const strapiUtils = {
             fields: ['slug'],
           },
         },
-        pagination: _defaults(pagination, PAGINATION),
+        pagination: defaults(pagination, PAGINATION),
         filters,
       };
       return qs.stringify(queryObject);
@@ -185,7 +184,7 @@ const strapiUtils = {
       const queryObject: QueryObject = {
         status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
         fields: ['slug'],
-        pagination: _defaults(pagination, PAGINATION),
+        pagination: defaults(pagination, PAGINATION),
         filters,
       };
       return qs.stringify(queryObject);
@@ -204,7 +203,7 @@ const strapiUtils = {
         populate: ['tags', 'category'],
         fields: ['title', 'description', 'slug'],
         filters,
-        pagination: _defaults(pagination, PAGINATION),
+        pagination: defaults(pagination, PAGINATION),
       };
       return qs.stringify(queryObject);
     },

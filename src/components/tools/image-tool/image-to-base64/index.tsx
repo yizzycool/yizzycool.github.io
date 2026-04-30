@@ -3,9 +3,11 @@
 import clsx from 'clsx';
 import { FileCode, ImageIcon } from 'lucide-react';
 import { useState } from 'react';
-import imageUtils from '@/utils/image-utils';
+import { isNull, size } from 'lodash';
 import Image from 'next/image';
 import { Textarea } from '@headlessui/react';
+
+import imageUtils from '@/utils/image-utils';
 import HeaderBlock from '../../components/header-block';
 import FilePicker from '@/components/common/file-picker';
 import CopyAction from '@/components/common/action-button/copy';
@@ -13,9 +15,6 @@ import ImageInfoTag from '../components/ImageInfoTag';
 import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
-import _isNull from 'lodash/isNull';
-import _isEmpty from 'lodash/isEmpty';
-import _size from 'lodash/size';
 
 type ImageInfo = {
   image: HTMLImageElement | null;
@@ -38,7 +37,7 @@ export default function ImageToBase64() {
   const [imageInfo, setImageInfo] = useState<ImageInfo>(DefaultImageInfo);
 
   const transferToBase64 = async (file: File) => {
-    if (_isNull(file)) return;
+    if (isNull(file)) return;
     setImageInfo(DefaultImageInfo);
     try {
       const base64 = await imageUtils.blobToBase64(file);
@@ -88,7 +87,7 @@ export default function ImageToBase64() {
                   'backgrop-blur'
                 )}
               >
-                {!imageInfo.error && !_isNull(imageInfo.image) && (
+                {!imageInfo.error && !isNull(imageInfo.image) && (
                   <>
                     <Image
                       width={0}
@@ -134,7 +133,7 @@ export default function ImageToBase64() {
               />
               {/* Char count block */}
               <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
-                {_size(base64)} chars
+                {size(base64)} chars
               </div>
             </div>
           </div>

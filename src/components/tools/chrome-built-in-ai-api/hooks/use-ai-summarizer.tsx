@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import browserUtils from '@/utils/browser-utils';
-import _defaults from 'lodash/defaults';
-import _isNull from 'lodash/isNull';
+import { defaults, isNull } from 'lodash';
+
 import useAiCommon from './use-ai-common';
+import browserUtils from '@/utils/browser-utils';
 
 const Options: AISummarizerCreateOptions = {
   sharedContext: '',
@@ -83,7 +83,7 @@ export default function useAiSummarizer() {
       if (summarizer) summarizer?.destroy?.();
       setSummarizer(null);
       await browserUtils.sleep(500);
-      const newOptions = _defaults(options, Options);
+      const newOptions = defaults(options, Options);
       const newSummarizer = await window.Summarizer.create(newOptions);
       setOptions(newOptions);
       setSummarizer(newSummarizer);
@@ -147,7 +147,7 @@ export default function useAiSummarizer() {
     availability,
     error,
     options,
-    isOptionUpdating: _isNull(summarizer),
+    isOptionUpdating: isNull(summarizer),
     summarize,
     summarizeStreaming,
     updateSummarizer,

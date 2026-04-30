@@ -11,8 +11,6 @@ import {
 import Label from '@/components/common/label';
 import Button from '@/components/common/button';
 
-import _xor from 'lodash/xor';
-
 type Props = {
   setLayer: (type: 'front' | 'back' | 'forward' | 'backward') => void;
 };

@@ -1,20 +1,21 @@
 'use client';
 
+import type { BlogArticle } from '@/types/blog';
+
 import clsx from 'clsx';
 import urlJoin from 'url-join';
-import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import Link from 'next/link';
+import { get, map } from 'lodash';
+
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import Badge from '@/components/common/badge';
-import { BlogArticle } from '@/types/blog';
-import _get from 'lodash/get';
-import _map from 'lodash/map';
 
 type Props = { article: BlogArticle };
 
 export default function Tags({ article }: Props) {
   const { getFadeUpClass } = useGetTransitionClass();
 
-  const data = _get(article, 'data.0') || {};
+  const data = get(article, 'data.0') || {};
   const { tags } = data;
 
   return (
@@ -25,7 +26,7 @@ export default function Tags({ article }: Props) {
       )}
       aria-label="article tags"
     >
-      {_map(
+      {map(
         tags,
         ({ name, slug }) =>
           !!slug && (

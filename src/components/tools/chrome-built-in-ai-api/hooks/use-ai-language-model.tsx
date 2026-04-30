@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { isNull, defaults } from 'lodash';
+
 import useAiCommon from './use-ai-common';
 import browserUtils from '@/utils/browser-utils';
-import _isNull from 'lodash/isNull';
-import _defaults from 'lodash/defaults';
 
 const Options: AILanguageModelCreateOptions = {
   topK: 3,
@@ -82,7 +82,7 @@ export default function useAiLanguageModel() {
       if (session) session?.destroy?.();
       setSession(null);
       await browserUtils.sleep(500);
-      const newOptions = _defaults(options, Options);
+      const newOptions = defaults(options, Options);
       const newSession = await window.LanguageModel.create(newOptions);
       setOptions(newOptions);
       setSession(newSession);
@@ -148,7 +148,7 @@ export default function useAiLanguageModel() {
     availability,
     error,
     options,
-    isOptionUpdating: _isNull(session),
+    isOptionUpdating: isNull(session),
     session,
     prompt,
     promptStreaming,

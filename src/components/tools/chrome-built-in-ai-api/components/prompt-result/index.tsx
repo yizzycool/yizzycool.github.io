@@ -1,11 +1,10 @@
 import clsx from 'clsx';
 import { Cpu, List, ScrollText } from 'lucide-react';
+import { isEmpty } from 'lodash';
 
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import CopyAction from '@/components/common/action-button/copy';
 import Label from '@/components/common/label';
-
-import _isEmpty from 'lodash/isEmpty';
 
 type Props = {
   results: string;
@@ -21,7 +20,7 @@ export default function PromptResult({ results, isProcessing }: Props) {
       >
         <Label icon={List}>Result</Label>
         <div className="flex items-center gap-2 self-end sm:self-auto">
-          <CopyAction content={results} disabled={_isEmpty(results)} />
+          <CopyAction content={results} disabled={isEmpty(results)} />
         </div>
       </div>
       <div
@@ -32,7 +31,7 @@ export default function PromptResult({ results, isProcessing }: Props) {
           'backdrop-blur'
         )}
       >
-        {_isEmpty(results) ? (
+        {isEmpty(results) ? (
           <div className="m-auto flex h-full flex-col items-center justify-center text-center text-lg font-bold text-neutral-500">
             {isProcessing ? (
               <>

@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import _isNull from 'lodash/isNull';
+import { isNull } from 'lodash';
 
 export default function useApiCommon() {
   const [isApiSupported, setIsApiSupported] = useState<boolean | null>(null);
   const [error, setError] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const hasCheckedApiStatus = !_isNull(isApiSupported);
+  const hasCheckedApiStatus = !isNull(isApiSupported);
 
   return {
     isApiSupported,

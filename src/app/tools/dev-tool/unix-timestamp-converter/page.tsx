@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
+
 import UnixTimestampConverter from '@/components/tools/dev-tool/unix-timestamp-converter';
-import { ToolKeys } from '@/data/tools';
 import toolsMetadataUtils from '@/utils/tools/metadata/tools-metadata-utls';
 import seoUtils from '@/utils/seo-utils';
-import _defaultsDeep from 'lodash/defaultsDeep';
+import { ToolKeys } from '@/data/tools';
 
 const toolKey = ToolKeys.unixTimestampConverter;
 

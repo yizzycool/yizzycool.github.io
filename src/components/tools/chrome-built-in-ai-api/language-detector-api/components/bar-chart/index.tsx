@@ -2,7 +2,6 @@
 
 import clsx from 'clsx';
 import { useMemo } from 'react';
-import intlUtils from '@/utils/intl-utils';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -14,11 +13,9 @@ import {
   Legend,
   TooltipItem,
 } from 'chart.js';
-import _isNull from 'lodash/isNull';
-import _map from 'lodash/map';
-import _head from 'lodash/head';
-import _round from 'lodash/round';
-import _slice from 'lodash/slice';
+import { isNull, map, head, round, slice } from 'lodash';
+
+import intlUtils from '@/utils/intl-utils';
 
 ChartJS.register(
   CategoryScale,
@@ -72,17 +69,17 @@ export default function BarChart({
   results: Array<LanguageDetectionResult> | null;
 }) {
   const data = useMemo(() => {
-    if (_isNull(results)) return null;
-    const slicedResults = _slice(results, 0, 20);
+    if (isNull(results)) return null;
+    const slicedResults = slice(results, 0, 20);
 
     return {
-      labels: _map(slicedResults, (result) =>
+      labels: map(slicedResults, (result) =>
         intlUtils.languageTagToHumanReadable(result.detectedLanguage)
       ),
       datasets: [
         {
           label: 'Confidence',
-          data: _map(slicedResults, (result) => result.confidence),
+          data: map(slicedResults, (result) => result.confidence),
           backgroundColor: (context: { dataIndex: number }) => {
             if (context.dataIndex === 0) {
               return 'rgba(21, 121, 86, 0.9)';
@@ -97,9 +94,9 @@ export default function BarChart({
     };
   }, [results]);
 
-  const topData = _head(results);
+  const topData = head(results);
 
-  if (_isNull(results) || _isNull(data)) return null;
+  if (isNull(results) || isNull(data)) return null;
 
   return (
     <div className="flex w-full flex-col">
@@ -129,7 +126,7 @@ export default function BarChart({
             Confidence
           </div>
           <div className="mt-1 text-2xl font-bold text-neutral-900 dark:text-neutral-50">
-            {_round((topData?.confidence || 0) * 100, 1)}%
+            {round((topData?.confidence || 0) * 100, 1)}%
           </div>
         </div>
       </div>

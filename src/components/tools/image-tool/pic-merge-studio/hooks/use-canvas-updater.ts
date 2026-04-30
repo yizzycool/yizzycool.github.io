@@ -1,18 +1,13 @@
 import type { FabricHelperCanvasUpdater } from '../types/fabric-helper';
 import type { ConfigHelper } from '../types/config-helper';
+import type { FabricInternalStates } from './use-fabric';
 
 import * as fabric from 'fabric'; // v6
 
 import useCommon from './use-common';
 import colorUtils from '@/utils/color-utils';
-import { FabricImageConfig, type FabricInternalStates } from './use-fabric';
+import { FabricImageConfig } from './use-fabric';
 import { DefaultCanvasConfig } from '..';
-
-import _forEach from 'lodash/forEach';
-import _hasIn from 'lodash/hasIn';
-import _isArray from 'lodash/isArray';
-import _flatMap from 'lodash/flatMap';
-import _filter from 'lodash/filter';
 
 type Props = {
   refs: {

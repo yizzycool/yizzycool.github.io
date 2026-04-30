@@ -3,14 +3,10 @@
 import clsx from 'clsx';
 import { Bot, SendHorizonal } from 'lucide-react';
 import { ChangeEventHandler, useRef, useState } from 'react';
+import { slice, last, size, isEmpty, trim } from 'lodash';
+
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import Button from '@/components/common/button';
-import _slice from 'lodash/slice';
-import _last from 'lodash/last';
-import _size from 'lodash/size';
-import _split from 'lodash/split';
-import _isEmpty from 'lodash/isEmpty';
-import _trim from 'lodash/trim';
 
 interface PromptResult {
   role: 'user' | 'assistant' | 'system';
@@ -50,7 +46,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
 
   const process = async () => {
     if (!textRef.current) return;
-    if (_isEmpty(_trim(textRef.current.innerText))) return;
+    if (isEmpty(trim(textRef.current.innerText))) return;
 
     if (textRef.current) {
       textRef.current.innerHTML = '';
@@ -62,10 +58,10 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
     setIsProcessing(true);
     await promptStreaming(text, (chunk) => {
       setResults((prev) => [
-        ..._slice(prev, 0, -1),
+        ...slice(prev, 0, -1),
         {
-          role: (_last(prev) as PromptResult).role,
-          content: (_last(prev) as PromptResult).content + chunk,
+          role: (last(prev) as PromptResult).role,
+          content: (last(prev) as PromptResult).content + chunk,
         },
       ]);
     });
@@ -97,7 +93,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
                   <div className="relative mx-2 inline-block rounded-full bg-gradient-to-br from-indigo-500 to-blue-600 p-1">
                     <Bot size={16} className="text-white" />
                     {/* Spinner Ring - Only visible during processing */}
-                    {isProcessing && idx === _size(results) - 1 && (
+                    {isProcessing && idx === size(results) - 1 && (
                       <div className="absolute -inset-1 animate-spin rounded-full border-2 border-transparent border-r-indigo-500 border-t-blue-500" />
                     )}
                   </div>
@@ -134,7 +130,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
           )}
         >
           {/* Placeholder  */}
-          {_isEmpty(text) && (
+          {isEmpty(text) && (
             <div
               className={clsx(
                 'absolute inset-0 flex items-center px-4 py-2',
@@ -167,7 +163,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
             icon={SendHorizonal}
             iconStrokeWidth={2}
             iconClassName=""
-            disabled={_isEmpty(text)}
+            disabled={isEmpty(text)}
           />
         </div>
       </div>

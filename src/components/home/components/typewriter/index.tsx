@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import _random from 'lodash/random';
+import { random } from 'lodash';
 
 const Phrases = [
   'Clean design meets chill engineering.',
@@ -45,7 +45,7 @@ export default function Typewritter() {
   const typeText = () => {
     // Typing characters
     if (text.length < Phrases[index].length) {
-      const randomTime = _random(0, 20);
+      const randomTime = random(0, 20);
       timeoutRef.current = setTimeout(() => {
         setText(Phrases[index].slice(0, text.length + 1));
       }, typingSpeed + randomTime);

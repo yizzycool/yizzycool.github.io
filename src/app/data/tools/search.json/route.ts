@@ -1,3 +1,5 @@
+import { flatMap, map } from 'lodash';
+
 import {
   ToolDescriptions,
   ToolGroupItems,
@@ -9,16 +11,13 @@ import {
 } from '@/data/tools';
 import { ToolTags } from '@/data/tools/tags';
 
-import _flatMap from 'lodash/flatMap';
-import _map from 'lodash/map';
-
 export const dynamic = 'force-static';
 
 export async function GET() {
-  const filteredData: Array<DataForSearch> = _flatMap(
+  const filteredData: Array<DataForSearch> = flatMap(
     ToolGroupKeysOrder,
     (groupKey) =>
-      _map(ToolGroupItems[groupKey], (itemKey) => ({
+      map(ToolGroupItems[groupKey], (itemKey) => ({
         page: 'tools',
         title: ToolTitles[itemKey],
         description: ToolDescriptions[itemKey],

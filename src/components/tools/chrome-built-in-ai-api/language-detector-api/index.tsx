@@ -3,6 +3,8 @@
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
 import { ChartColumn, PenLine } from 'lucide-react';
+import { isNull, isEmpty, size } from 'lodash';
+
 import useAiLanguageDetector from '../hooks/use-ai-language-detector';
 import HeaderBlock from '../../components/header-block';
 import BarChart from './components/bar-chart';
@@ -16,10 +18,6 @@ import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
 import { UnsupportedApiTypes } from '../data/unsupported-types';
-import _isNull from 'lodash/isNull';
-import _isEmpty from 'lodash/isEmpty';
-import _values from 'lodash/values';
-import _size from 'lodash/size';
 
 export default function LanguageDetectorApi() {
   const [text, setText] = useState('');
@@ -61,7 +59,7 @@ export default function LanguageDetectorApi() {
   };
 
   const detectString = async (text: string) => {
-    if (_isEmpty(text)) {
+    if (isEmpty(text)) {
       setResults(null);
     } else {
       const results = await detect(text);
@@ -97,10 +95,7 @@ export default function LanguageDetectorApi() {
               </Label>
               <div className="flex items-center gap-2 self-end sm:self-auto">
                 <PasteAction onClick={onPasteText} />
-                <DeleteAction
-                  onClick={onClearClick}
-                  disabled={_isEmpty(text)}
-                />
+                <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
               </div>
             </div>
             <Textarea
@@ -112,7 +107,7 @@ export default function LanguageDetectorApi() {
             />
             {/* Char count block */}
             <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
-              {_size(text)} chars
+              {size(text)} chars
             </div>
           </div>
 
@@ -127,7 +122,7 @@ export default function LanguageDetectorApi() {
               'backdrop-blur'
             )}
           >
-            {_isNull(results) ? (
+            {isNull(results) ? (
               <div className="m-auto text-center text-lg font-bold text-neutral-500">
                 <ChartColumn className="mx-auto mb-4 block" size={40} />
                 <div>Waiting for input...</div>

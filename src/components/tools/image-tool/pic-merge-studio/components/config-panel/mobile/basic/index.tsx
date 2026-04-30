@@ -10,8 +10,6 @@ import BottomDrawer from '../bottom-drawer';
 import GroupTitle from '../group-title';
 import Button from '@/components/common/button';
 
-import _xor from 'lodash/xor';
-
 type Props = {
   hasImageSrc: boolean;
   replaceImage: (file: File) => void;

@@ -2,8 +2,6 @@
  * Keep this file as a Server Component because it is imported by @/src/app/sitemap.ts,
  * and only Server Components can be imported in that context.
  */
-import _fromPairs from 'lodash/fromPairs';
-import _findKey from 'lodash/findKey';
 
 import {
   ArrowLeftRight,
@@ -24,6 +22,7 @@ import {
   ScanFace,
   SpellCheck,
 } from 'lucide-react';
+import { fromPairs, findKey } from 'lodash';
 
 // Tool Groups
 
@@ -216,9 +215,9 @@ export const ToolSlugs = {
   [ToolKeys.chromeTextDetector]: 'text-detector',
 };
 
-export const ToolUrls = _fromPairs(
+export const ToolUrls = fromPairs(
   Object.values(ToolKeys).map((toolKey) => {
-    const toolGroupKey = _findKey(ToolGroupItems, (value) =>
+    const toolGroupKey = findKey(ToolGroupItems, (value) =>
       value.includes(toolKey)
     ) as string;
     return [

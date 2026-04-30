@@ -1,12 +1,13 @@
 import urlJoin from 'url-join';
+import { findKey } from 'lodash';
+
 import { ToolGroupItems, ToolGroupSlugs, ToolSlugs } from '@/data/tools';
-import _findKey from 'lodash/findKey';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN || '';
 
 const dataProcessUtils = {
   getToolGroupKeyByToolKey: (toolKey: string): keyof typeof ToolGroupSlugs => {
-    return _findKey(ToolGroupItems, (value) =>
+    return findKey(ToolGroupItems, (value) =>
       value.includes(toolKey)
     ) as string;
   },

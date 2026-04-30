@@ -1,9 +1,10 @@
 'use client';
 
 import { MouseEventHandler } from 'react';
-import Button from '@/components/common/button';
 import { CheckCircle2, DownloadCloud, Loader2, Zap } from 'lucide-react';
-import _isNull from 'lodash/isNull';
+import { isNull } from 'lodash';
+
+import Button from '@/components/common/button';
 
 export default function ModelDownloadCard({
   onClick = () => {},
@@ -12,7 +13,7 @@ export default function ModelDownloadCard({
   onClick?: MouseEventHandler;
   progress?: number | null;
 }) {
-  const isDownloading = !_isNull(progress);
+  const isDownloading = !isNull(progress);
 
   return (
     <div className="flex flex-col items-center justify-center px-6 text-center duration-500 animate-in fade-in">

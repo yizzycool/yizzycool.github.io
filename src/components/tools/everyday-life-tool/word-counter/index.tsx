@@ -2,6 +2,8 @@
 
 import { Info, TextAlignStart } from 'lucide-react';
 import { useState } from 'react';
+import { isNull, isEmpty } from 'lodash';
+
 import Snackbar from '@/components/common/snackbar';
 import HeaderBlock from '../../components/header-block';
 import SectionGap from '../../components/section-gap';
@@ -9,8 +11,6 @@ import PasteAction from '@/components/common/action-button/paste';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
 import Label from '@/components/common/label';
-import _isNull from 'lodash/isNull';
-import _isEmpty from 'lodash/isEmpty';
 import Tools from './components/tools';
 import Metrics from './components/metrics';
 
@@ -39,7 +39,7 @@ export default function WordCounter() {
           <PasteAction onClick={setText} />
           <DeleteAction
             onClick={onClear}
-            disabled={_isNull(text) || _isEmpty(text)}
+            disabled={isNull(text) || isEmpty(text)}
           />
         </div>
       </div>

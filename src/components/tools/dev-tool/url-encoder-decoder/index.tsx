@@ -1,7 +1,10 @@
 'use client';
 
 import type { ChangeEvent } from 'react';
+
 import { useState } from 'react';
+import { isNull, isEmpty } from 'lodash';
+
 import browserUtils from '@/utils/browser-utils';
 import { Code, FileCode, FileCode2, Link2 } from 'lucide-react';
 import HeaderBlock from '../../components/header-block';
@@ -14,8 +17,6 @@ import PasteAction from '@/components/common/action-button/paste';
 import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
-import _isNull from 'lodash/isNull';
-import _isEmpty from 'lodash/isEmpty';
 
 export default function UrlEncoderDecoder() {
   const [input, setInput] = useState<string>('');
@@ -71,7 +72,7 @@ export default function UrlEncoderDecoder() {
           <PasteAction onClick={setInput} />
           <DeleteAction
             onClick={onClearClick}
-            disabled={_isNull(input) || _isEmpty(input)}
+            disabled={isNull(input) || isEmpty(input)}
           />
         </div>
       </div>
@@ -107,7 +108,7 @@ export default function UrlEncoderDecoder() {
           display="icon"
           onClick={onSwapClick}
           size="lg"
-          disabled={_isEmpty(input) || _isEmpty(output)}
+          disabled={isEmpty(input) || isEmpty(output)}
         />
       </div>
 
@@ -121,7 +122,7 @@ export default function UrlEncoderDecoder() {
         <div className="flex items-center gap-2 self-end sm:self-auto">
           <CopyAction
             content={output}
-            disabled={_isNull(output) || _isEmpty(output)}
+            disabled={isNull(output) || isEmpty(output)}
           />
         </div>
       </div>

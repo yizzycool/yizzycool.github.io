@@ -1,9 +1,9 @@
 'use client';
 
 import { GraduationCap } from 'lucide-react';
-import EducationData from './data/educations.json';
+
 import RevealSection from '@/components/common/reveal-section';
-import _get from 'lodash/get';
+import EducationData from './data/educations.json';
 
 export default function Education() {
   return (

@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
+
 import urlJoin from 'url-join';
+import { get, map, flatMap, range } from 'lodash';
+
+import Articles from '@/components/blog/articles';
 import seoUtils from '@/utils/seo-utils';
 import strapiUtils from '@/utils/strapi-utils';
-import Articles from '@/components/blog/articles';
-import _get from 'lodash/get';
-import _map from 'lodash/map';
-import _flatMap from 'lodash/flatMap';
-import _range from 'lodash/range';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN as string;
 
@@ -21,7 +20,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category: categorySlug, page } = await params;
   const articles = await fetchArticles(categorySlug, page);
-  const category = _get(articles, ['data', 0, 'category']);
+  const category = get(articles, ['data', 0, 'category']);
   const { name, slug } = category;
 
   const url = urlJoin(
@@ -73,7 +72,7 @@ export async function generateStaticParams() {
       `${process.env.STRAPI_URL}/api/categories?${queryString}`
     );
     const categories = await response.json();
-    return _map(categories.data, ({ slug }) => slug);
+    return map(categories.data, ({ slug }) => slug);
   };
 
   const generatePageSlugs = async (categorySlug: string) => {
@@ -89,16 +88,16 @@ export async function generateStaticParams() {
       `${process.env.STRAPI_URL}/api/articles?${queryString}`
     );
     const articles = await response.json();
-    return _get(articles, ['meta', 'pagination', 'pageCount']);
+    return get(articles, ['meta', 'pagination', 'pageCount']);
   };
 
   const categorySlugs = await generateCategorySlugs();
   const pageCounts = await Promise.all(
-    _map(categorySlugs, (slug) => generatePageSlugs(slug))
+    map(categorySlugs, (slug) => generatePageSlugs(slug))
   );
 
-  return _flatMap(categorySlugs, (slug, index) => {
-    return _map(_range(1, pageCounts[index] + 1), (page) => ({
+  return flatMap(categorySlugs, (slug, index) => {
+    return map(range(1, pageCounts[index] + 1), (page) => ({
       category: slug,
       page: page.toString(),
     }));

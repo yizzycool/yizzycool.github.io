@@ -3,6 +3,8 @@
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
 import { ArrowRightLeft } from 'lucide-react';
+import { isNull, isEmpty, size } from 'lodash';
+
 import useAiTranslator from '../hooks/use-ai-translator';
 import HeaderBlock from '../../components/header-block';
 import LanguageSelector from './components/language-selector';
@@ -16,10 +18,6 @@ import InlineDownloadCard from './components/inline-download-card';
 import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import { UnsupportedApiTypes } from '../data/unsupported-types';
-import _isNull from 'lodash/isNull';
-import _isEmpty from 'lodash/isEmpty';
-import _values from 'lodash/values';
-import _size from 'lodash/size';
 
 export default function TranslatorApi() {
   const [text, setText] = useState('');
@@ -53,7 +51,7 @@ export default function TranslatorApi() {
   };
 
   const translateString = async (text: string) => {
-    if (_isEmpty(text)) {
+    if (isEmpty(text)) {
       setTranslation('');
     } else {
       const result = await translate(text);
@@ -84,7 +82,7 @@ export default function TranslatorApi() {
         <LoadingSkeleton />
       ) : !isApiSupported ? (
         <UnsupportedCard apiType={UnsupportedApiTypes.chromeTranslatorApi} />
-      ) : _isNull(translator) && shouldDownloadModel ? (
+      ) : isNull(translator) && shouldDownloadModel ? (
         <ModelDownloadCard
           onClick={downloadModel}
           progress={downloadProgress}
@@ -155,10 +153,10 @@ export default function TranslatorApi() {
                   <SpeakAction
                     display="icon"
                     size="sm"
-                    disabled={_isEmpty(text)}
+                    disabled={isEmpty(text)}
                     content={text}
                   />
-                  <div className="text-xs opacity-50">{_size(text)} chars</div>
+                  <div className="text-xs opacity-50">{size(text)} chars</div>
                 </div>
               </div>
 
@@ -179,13 +177,13 @@ export default function TranslatorApi() {
                   <SpeakAction
                     display="icon"
                     size="sm"
-                    disabled={_isEmpty(translation)}
+                    disabled={isEmpty(translation)}
                     content={translation}
                   />
                   <CopyAction
                     variant="ghost"
                     content={translation}
-                    disabled={_isEmpty(translation)}
+                    disabled={isEmpty(translation)}
                   />
                 </div>
 

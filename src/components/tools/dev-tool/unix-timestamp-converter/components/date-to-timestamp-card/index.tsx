@@ -2,12 +2,12 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { CalendarDays } from 'lucide-react';
+import { isNumber } from 'lodash';
+
 import Card from '@/components/common/card';
 import DateInput from './components/date-input';
 import CopyAction from '@/components/common/action-button/copy';
 import CardTitle from '@/components/common/card/title';
-
-import _isNumber from 'lodash/isNumber';
 
 type DateInput = {
   year?: number;
@@ -39,7 +39,7 @@ export default function DateToTimestampCard() {
   const convertedTimestamp = useMemo(() => {
     try {
       const { year, month, day, hour, minute, second } = dateInput;
-      if (!_isNumber(year) || !_isNumber(month)) return;
+      if (!isNumber(year) || !isNumber(month)) return;
       const date = new Date(
         Date.UTC(year, month - 1, day, hour, minute, second)
       );

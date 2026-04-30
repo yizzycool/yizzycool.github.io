@@ -1,11 +1,13 @@
 'use client';
 
-import { ActionButtonProps } from '@/types/common/action-button';
+import type { ActionButtonProps } from '@/types/common/action-button';
+
 import { Volume2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { isNull } from 'lodash';
+
 import useDisplay from '../hooks/use-display';
 import Button from '../../button';
-import _isNull from 'lodash/isNull';
 
 interface Props extends ActionButtonProps {
   content: string;
@@ -34,7 +36,7 @@ export default function SpeakAction({
     window.speechSynthesis.speak(utterance);
   };
 
-  if (_isNull(isSpeechSupported) || isSpeechSupported === false) {
+  if (isNull(isSpeechSupported) || isSpeechSupported === false) {
     return null;
   }
 

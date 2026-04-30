@@ -4,14 +4,12 @@ import type { FabricInternalStates } from './use-fabric';
 import type { FabricHelperGridUpdater } from '../types/fabric-helper';
 
 import * as fabric from 'fabric';
+import { flatMap } from 'lodash';
 
 import useCommon from './use-common';
 import useGridLogic from './use-grid-logic';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import { DefaultCanvasConfig } from '..';
-
-import _range from 'lodash/range';
-import _flatMap from 'lodash/flatMap';
 
 type Props = {
   refs: {
@@ -91,7 +89,7 @@ export default function useGridUpdater({
       return;
 
     // To find empty image
-    const emptyImagePosition = _flatMap(gridRef.current.cells, (row, i) => {
+    const emptyImagePosition = flatMap(gridRef.current.cells, (row, i) => {
       return row
         .map((cell, j) => {
           return [i, j, !cell.element.getSrc?.()];

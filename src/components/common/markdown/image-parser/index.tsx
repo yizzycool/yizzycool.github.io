@@ -13,9 +13,7 @@ import {
 } from 'motion/react';
 import { useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
-
-import _entries from 'lodash/entries';
-import _join from 'lodash/join';
+import { entries, join } from 'lodash';
 
 // Tranform `http://localhost:1337/<path>` or `http://127.0.0.1:1337/<path>` to `/strapi/<path>` under production mode
 const strapiMediaUrl = process.env.NEXT_PUBLIC_STRAPI_MEDIA_URL;
@@ -61,7 +59,7 @@ export default function ImageParser(
   // Generate unique layoutId to prevent collision
   const imgLayoutId = useMemo(() => {
     const { start, end } = node?.position || {};
-    return `${url}-${_join(_entries(start))}-${_join(_entries(end))}`;
+    return `${url}-${join(entries(start))}-${join(entries(end))}`;
   }, [node, url]);
 
   if (!url)

@@ -17,6 +17,7 @@ import {
   Search,
   SearchX,
 } from 'lucide-react';
+import { sortBy, get, filter, map } from 'lodash';
 
 import useSearchContent from './hooks/use-search-content';
 import useKeyboardNavigation from './hooks/use-keyboard-navigation';
@@ -24,12 +25,6 @@ import Button from '../../button';
 import BaseDialog from '../base';
 import Badge from '../../badge';
 import ResultCard from './components/result-card';
-
-import _sortBy from 'lodash/sortBy';
-import _get from 'lodash/get';
-import _filter from 'lodash/filter';
-import _findKey from 'lodash/findKey';
-import _map from 'lodash/map';
 
 interface Props {
   deviceType: 'desktop' | 'mobile';
@@ -51,18 +46,18 @@ export default function SearchDialog({ deviceType }: Props) {
   //  [searchResultForBlog, searchResultForTools] or [searchResultForTools, searchResultForBlog].
   //  Depends on the score of first item of each results
   const filteredResults = useMemo(() => {
-    const sortedResults = _sortBy(
+    const sortedResults = sortBy(
       [searchResultForBlog, searchResultForTools],
-      (item) => _get(item, [0, 'score'], 1)
+      (item) => get(item, [0, 'score'], 1)
     );
 
     // insert index
     let idx = 0;
-    const sortedResultsWithIndex = _map(sortedResults, (row) =>
-      _map(row, (item) => ({ ...item, idx: idx++ }))
+    const sortedResultsWithIndex = map(sortedResults, (row) =>
+      map(row, (item) => ({ ...item, idx: idx++ }))
     );
 
-    return _filter(sortedResultsWithIndex, (res) => res.length > 0);
+    return filter(sortedResultsWithIndex, (res) => res.length > 0);
   }, [searchResultForBlog, searchResultForTools]);
 
   const { focusIndex, onPointerEnter, onDialogKeyDown } = useKeyboardNavigation(
@@ -107,7 +102,7 @@ export default function SearchDialog({ deviceType }: Props) {
   const closeDialog = () => setIsOpen(false);
 
   const getPageName = (results: Array<FuseResult<DataForSearch>>) =>
-    _get(results, [0, 'item', 'page'], '');
+    get(results, [0, 'item', 'page'], '');
 
   const getPageCategory = (results: Array<FuseResult<DataForSearch>>) => {
     const pageName = getPageName(results);

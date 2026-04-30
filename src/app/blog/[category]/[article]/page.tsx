@@ -8,17 +8,12 @@ import remarkRehype from 'remark-rehype';
 import rehypeSlug from 'rehype-slug';
 import { toc as rehypeToc } from '@jsdevtools/rehype-toc';
 import rehypeStringify from 'rehype-stringify';
+import { get, size, flatMap, map, findIndex } from 'lodash';
 
+import Article from '@/components/blog/article';
 import seoUtils from '@/utils/seo-utils';
 import strapiUtils from '@/utils/strapi-utils';
-import Article from '@/components/blog/article';
 import { fetchCategoryArticles } from '../../layout';
-
-import _get from 'lodash/get';
-import _size from 'lodash/size';
-import _flatMap from 'lodash/flatMap';
-import _map from 'lodash/map';
-import _findIndex from 'lodash/findIndex';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN || '/';
 
@@ -33,8 +28,8 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { article: articleSlug } = await params;
   const article = await fetchArticle(articleSlug);
-  const data = _get(article, ['data', 0]) || {};
-  const categorySlug = _get(data, ['category', 'slug']);
+  const data = get(article, ['data', 0]) || {};
+  const categorySlug = get(data, ['category', 'slug']);
 
   const url = urlJoin(
     domain,
@@ -87,8 +82,8 @@ export async function generateStaticParams() {
   const categories = await response.json();
   const { data } = categories;
 
-  return _flatMap(data, ({ slug: categorySlug, articles }) =>
-    _map(articles, ({ slug }) => ({
+  return flatMap(data, ({ slug: categorySlug, articles }) =>
+    map(articles, ({ slug }) => ({
       category: categorySlug,
       article: slug,
     }))
@@ -112,23 +107,23 @@ const getPrevNextArticle = (
   categoryArticles: BlogCategory,
   article: BlogArticle
 ) => {
-  const allArticles = _flatMap(categoryArticles.data, (data) =>
-    _map(data.articles, (article) => {
+  const allArticles = flatMap(categoryArticles.data, (data) =>
+    map(data.articles, (article) => {
       return {
         ...article,
         category: data,
       };
     })
   );
-  const articleId = _get(article, ['data', 0, 'id']);
-  const index = _findIndex(allArticles, (article) => article.id === articleId);
-  const prevArticle = _get(allArticles, index - 1, null);
-  const nextArticle = _get(allArticles, index + 1, null);
+  const articleId = get(article, ['data', 0, 'id']);
+  const index = findIndex(allArticles, (article) => article.id === articleId);
+  const prevArticle = get(allArticles, index - 1, null);
+  const nextArticle = get(allArticles, index + 1, null);
   return { prevArticle, nextArticle };
 };
 
 const parseToc = async (article: BlogArticle) => {
-  const data = _get(article, 'data.0') || {};
+  const data = get(article, 'data.0') || {};
   const { content } = data;
 
   const toc = await unified()
@@ -142,7 +137,7 @@ const parseToc = async (article: BlogArticle) => {
   const regex = /<nav class="toc">.*?<\/nav>/;
   const result = String(toc).match(regex);
 
-  if (_size(result) < 1) return '';
+  if (size(result) < 1) return '';
   return result?.[0] || '';
 };
 

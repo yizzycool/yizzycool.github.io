@@ -1,14 +1,12 @@
 import type { Metadata } from 'next';
 import type { BlogTagData } from '@/types/blog/tag';
+
 import urlJoin from 'url-join';
+import { get, map, flatMap, range, find } from 'lodash';
+
+import Articles from '@/components/blog/articles';
 import seoUtils from '@/utils/seo-utils';
 import strapiUtils from '@/utils/strapi-utils';
-import Articles from '@/components/blog/articles';
-import _get from 'lodash/get';
-import _map from 'lodash/map';
-import _flatMap from 'lodash/flatMap';
-import _range from 'lodash/range';
-import _find from 'lodash/find';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN as string;
 
@@ -23,8 +21,8 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { tag: tagSlug, page } = await params;
   const articles = await fetchArticles(tagSlug, page);
-  const tags = _get(articles, ['data', 0, 'tags']);
-  const tag = _find(tags, (t) => t.slug === tagSlug) || {};
+  const tags = get(articles, ['data', 0, 'tags']);
+  const tag = find(tags, (t) => t.slug === tagSlug) || {};
   const { name, slug } = tag as BlogTagData;
 
   const url = urlJoin(
@@ -82,7 +80,7 @@ export async function generateStaticParams() {
     const articles = await response.json();
     const { data } = articles;
 
-    return _map(data, ({ slug }) => slug);
+    return map(data, ({ slug }) => slug);
   };
 
   const generatePageSlugs = async (tagSlug: string) => {
@@ -98,16 +96,16 @@ export async function generateStaticParams() {
       `${process.env.STRAPI_URL}/api/articles?${queryString}`
     );
     const articles = await response.json();
-    return _get(articles, ['meta', 'pagination', 'pageCount']);
+    return get(articles, ['meta', 'pagination', 'pageCount']);
   };
 
   const tagSlugs = await generateTagSlugs();
   const pageCounts = await Promise.all(
-    _map(tagSlugs, (slug) => generatePageSlugs(slug))
+    map(tagSlugs, (slug) => generatePageSlugs(slug))
   );
 
-  return _flatMap(tagSlugs, (slug, index) => {
-    return _map(_range(1, pageCounts[index] + 1), (page) => ({
+  return flatMap(tagSlugs, (slug, index) => {
+    return map(range(1, pageCounts[index] + 1), (page) => ({
       tag: slug,
       page: page.toString(),
     }));

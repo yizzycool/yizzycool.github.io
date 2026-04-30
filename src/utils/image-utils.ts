@@ -1,6 +1,4 @@
-import _size from 'lodash/size';
-import _range from 'lodash/range';
-import _round from 'lodash/round';
+import { size, range, round } from 'lodash';
 
 const imageUtils = {
   newImageFromBase64: (base64: string): Promise<HTMLImageElement> => {
@@ -46,7 +44,7 @@ const imageUtils = {
   },
   parseTypeFromBase64: (base64: string): string => {
     const matches = base64.match(/^data:(image\/[a-z]+);/);
-    if (matches && _size(matches) >= 2) {
+    if (matches && size(matches) >= 2) {
       return matches[1];
     } else {
       return '';
@@ -55,14 +53,14 @@ const imageUtils = {
   toHumanReadableSize: (size: number): string => {
     const units = ['B', 'KB', 'MB', 'GB', 'TB'];
     const step = 1000;
-    for (const idx of _range(units.length)) {
+    for (const idx of range(units.length)) {
       if (size < step) {
-        return `${_round(size, 1)} ${units[idx]}`;
+        return `${round(size, 1)} ${units[idx]}`;
       } else {
         size /= step;
       }
     }
-    return `${_round(size, 1)} ${units[units.length - 1]}`;
+    return `${round(size, 1)} ${units[units.length - 1]}`;
   },
 };
 

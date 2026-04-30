@@ -1,5 +1,8 @@
 import type { MetadataRoute } from 'next';
+
 import urlJoin from 'url-join';
+import { map, flatMap } from 'lodash';
+
 import { generateStaticParams as generateCategoryArticles } from './blog/[category]/[article]/page';
 import { generateStaticParams as generateCategories } from './blog/category/[category]/page';
 import { generateStaticParams as generateCategoryPages } from './blog/category/[category]/page/[page]/page';
@@ -7,8 +10,6 @@ import { generateStaticParams as generatePages } from './blog/page/[page]/page';
 import { generateStaticParams as generateTags } from './blog/tag/[tag]/page';
 import { generateStaticParams as generateTagPages } from './blog/tag/[tag]/page/[page]/page';
 import { Tools } from '@/data/tools';
-import _map from 'lodash/map';
-import _flatMap from 'lodash/flatMap';
 
 export const dynamic = 'force-static';
 
@@ -22,21 +23,18 @@ const generateBlogData = async (): Promise<MetadataRoute.Sitemap> => {
 
   // /blog/[category]/[article]
   const categoryArticles = await generateCategoryArticles();
-  const categoryArticleUrls = _map(
-    categoryArticles,
-    ({ category, article }) => {
-      return {
-        url: urlJoin(domain, '/blog', category, article),
-        lastModified,
-        changeFrequency,
-        priority,
-      };
-    }
-  );
+  const categoryArticleUrls = map(categoryArticles, ({ category, article }) => {
+    return {
+      url: urlJoin(domain, '/blog', category, article),
+      lastModified,
+      changeFrequency,
+      priority,
+    };
+  });
 
   // /blog/category/[category]
   const categories = await generateCategories();
-  const categoryUrls = _map(categories, ({ category }) => {
+  const categoryUrls = map(categories, ({ category }) => {
     return {
       url: urlJoin(domain, '/blog/category', category),
       lastModified,
@@ -47,7 +45,7 @@ const generateBlogData = async (): Promise<MetadataRoute.Sitemap> => {
 
   // /blog/category/[category]/page/[page]
   const categoriePages = await generateCategoryPages();
-  const categoryPageUrls = _map(categoriePages, ({ category, page }) => {
+  const categoryPageUrls = map(categoriePages, ({ category, page }) => {
     return {
       url: urlJoin(domain, '/blog/category', category, '/page', page),
       lastModified,
@@ -58,7 +56,7 @@ const generateBlogData = async (): Promise<MetadataRoute.Sitemap> => {
 
   // /blog/page/[page]
   const pages = await generatePages();
-  const pageUrls = _map(pages, ({ page }) => {
+  const pageUrls = map(pages, ({ page }) => {
     return {
       url: urlJoin(domain, '/blog/page', page),
       lastModified,
@@ -69,7 +67,7 @@ const generateBlogData = async (): Promise<MetadataRoute.Sitemap> => {
 
   // /blog/tag/[tag]
   const tags = await generateTags();
-  const tagUrls = _map(tags, ({ tag }) => {
+  const tagUrls = map(tags, ({ tag }) => {
     return {
       url: urlJoin(domain, '/blog/tag', tag),
       lastModified,
@@ -80,7 +78,7 @@ const generateBlogData = async (): Promise<MetadataRoute.Sitemap> => {
 
   // /blog/tag/[tag]/page/[page]
   const tagPages = await generateTagPages();
-  const tagPageUrls = _map(tagPages, ({ tag, page }) => {
+  const tagPageUrls = map(tagPages, ({ tag, page }) => {
     return {
       url: urlJoin(domain, '/blog/tag', tag, '/page', page),
       lastModified,
@@ -99,8 +97,8 @@ const generateBlogData = async (): Promise<MetadataRoute.Sitemap> => {
   ];
 };
 
-const ToolsSitemap: MetadataRoute.Sitemap = _flatMap(Tools, (tool) =>
-  _map(tool.items, (item) => ({
+const ToolsSitemap: MetadataRoute.Sitemap = flatMap(Tools, (tool) =>
+  map(tool.items, (item) => ({
     url: urlJoin(domain, item.href),
     lastModified,
     changeFrequency: 'weekly',

@@ -1,11 +1,14 @@
 'use client';
 
-import clsx from 'clsx';
 import type { ChangeEvent } from 'react';
-import { useRef, useState } from 'react';
-import imageUtils from '@/utils/image-utils';
-import Image from 'next/image';
+
+import clsx from 'clsx';
 import { FileText, ImageIcon, View } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { isNull, isEmpty, size } from 'lodash';
+import Image from 'next/image';
+
+import imageUtils from '@/utils/image-utils';
 import HeaderBlock from '../../components/header-block';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
@@ -15,9 +18,6 @@ import CopyAction from '@/components/common/action-button/copy';
 import ImageInfoTag from '../components/ImageInfoTag';
 import SectionGap from '../../components/section-gap';
 import Label from '@/components/common/label';
-import _isNull from 'lodash/isNull';
-import _isEmpty from 'lodash/isEmpty';
-import _size from 'lodash/size';
 
 type ImageInfo = {
   blob: Blob | null;
@@ -40,8 +40,8 @@ export default function Base64ToImage() {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const transferToImage = async (base64String: string | undefined = base64) => {
-    if (_isNull(base64String)) return;
-    if (_isEmpty(base64String)) {
+    if (isNull(base64String)) return;
+    if (isEmpty(base64String)) {
       setImageInfo(DefaultImageInfo);
       return;
     }
@@ -94,7 +94,7 @@ export default function Base64ToImage() {
         </Label>
         <div className="flex items-center gap-2 self-end sm:self-auto">
           <PasteAction onClick={onPasteBase64} />
-          <DeleteAction onClick={onClearBase64} disabled={_isEmpty(base64)} />
+          <DeleteAction onClick={onClearBase64} disabled={isEmpty(base64)} />
         </div>
       </div>
       <Textarea
@@ -106,7 +106,7 @@ export default function Base64ToImage() {
       />
       {/* Char count block */}
       <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
-        {_size(base64)} chars
+        {size(base64)} chars
       </div>
 
       <SectionGap />
@@ -131,7 +131,7 @@ export default function Base64ToImage() {
           'bg-white/80 dark:bg-neutral-900/80'
         )}
       >
-        {_isNull(imageInfo.image) ? (
+        {isNull(imageInfo.image) ? (
           <div className="m-auto text-center text-lg font-bold text-neutral-500">
             <ImageIcon className="mx-auto mb-4 block" size={40} />
             <div>Image will be displayed here</div>

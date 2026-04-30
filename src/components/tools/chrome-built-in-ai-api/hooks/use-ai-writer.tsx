@@ -1,12 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { defaults, isNull, startsWith, size } from 'lodash';
+
 import useAiCommon from './use-ai-common';
 import browserUtils from '@/utils/browser-utils';
-import _defaults from 'lodash/defaults';
-import _isNull from 'lodash/isNull';
-import _startsWith from 'lodash/startsWith';
-import _size from 'lodash/size';
 
 const Options: AIWriterCreateOptions = {
   sharedContext: '',
@@ -77,7 +75,7 @@ export default function useAiWriter() {
         if (writer) writer?.destroy?.();
         setWriter(null);
         await browserUtils.sleep(500);
-        const newOptions = _defaults(options, Options);
+        const newOptions = defaults(options, Options);
         const newWriter = await window.Writer.create(newOptions);
         setOptions(newOptions);
         setWriter(newWriter);
@@ -125,8 +123,8 @@ export default function useAiWriter() {
       let prevChunk = '';
       const stream = await writer.writeStreaming(text);
       for await (const chunk of stream) {
-        const filteredChunk = _startsWith(chunk, prevChunk)
-          ? chunk.substring(_size(prevChunk))
+        const filteredChunk = startsWith(chunk, prevChunk)
+          ? chunk.substring(size(prevChunk))
           : chunk;
         callback(filteredChunk);
         results += filteredChunk;
@@ -147,7 +145,7 @@ export default function useAiWriter() {
     availability,
     error,
     options,
-    isOptionUpdating: _isNull(writer),
+    isOptionUpdating: isNull(writer),
     write,
     writeStreaming,
     updateWriter,

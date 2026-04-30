@@ -1,8 +1,9 @@
 'use client';
 
-import Badge from '@/components/common/badge';
 import clsx from 'clsx';
-import _isNull from 'lodash/isNull';
+import { isNull } from 'lodash';
+
+import Badge from '@/components/common/badge';
 
 type Props = {
   isSystemReady: boolean | null;
@@ -15,7 +16,7 @@ export default function SystemStatus({ isSystemReady }: Props) {
         <span
           className={clsx(
             'mr-2 h-2 w-2 animate-pulse rounded-full',
-            _isNull(isSystemReady)
+            isNull(isSystemReady)
               ? 'bg-gray-500'
               : isSystemReady
                 ? 'bg-green-500'
@@ -24,10 +25,10 @@ export default function SystemStatus({ isSystemReady }: Props) {
         ></span>
         <div
           className={clsx(
-            !_isNull(isSystemReady) && !isSystemReady && 'text-red-400'
+            !isNull(isSystemReady) && !isSystemReady && 'text-red-400'
           )}
         >
-          {_isNull(isSystemReady)
+          {isNull(isSystemReady)
             ? 'Checking...'
             : isSystemReady
               ? 'System Ready'

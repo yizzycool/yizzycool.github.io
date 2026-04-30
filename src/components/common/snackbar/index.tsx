@@ -9,8 +9,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 
-import _isFunction from 'lodash/isFunction';
-
 const DefaultContents = {
   primary: '',
   secondary: '',

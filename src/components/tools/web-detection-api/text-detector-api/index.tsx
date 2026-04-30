@@ -2,9 +2,10 @@
 
 import { Square, Trash2 } from 'lucide-react';
 import { useMemo } from 'react';
+import { isNull, map } from 'lodash';
+
 import useCommonFunction from '../hooks/use-common-function';
 import useTextDetector from '../hooks/use-text-detector';
-import { UnsupportedApiTypes } from '../data/unsupported-types';
 import HeaderBlock from '../../components/header-block';
 import LoadingSkeleton from '../components/loading-skeleton';
 import Empty from '../components/empty';
@@ -22,11 +23,7 @@ import ResultCanvas, {
 } from '../components/result-canvas';
 import DetectionResult from '../components/detection-result';
 import RawData from '../components/raw-data';
-import _isNull from 'lodash/isNull';
-import _map from 'lodash/map';
-import _fromPairs from 'lodash/fromPairs';
-import _isEmpty from 'lodash/isEmpty';
-import _filter from 'lodash/filter';
+import { UnsupportedApiTypes } from '../data/unsupported-types';
 
 const TabList: Array<WebDetectionFileType> = ['image', 'video', 'webcam'];
 
@@ -59,11 +56,11 @@ export default function TextDetectorApi() {
   } = useCommonFunction({ detect });
 
   const transformedResults = useMemo(() => {
-    if (_isNull(results) || !resultRef?.current) return [];
+    if (isNull(results) || !resultRef?.current) return [];
     const { clientWidth } = resultRef.current as HTMLDivElement;
     const { width } = canvasRef.current as HTMLCanvasElement;
     const ratio = clientWidth / width;
-    return _map(results as TextDetectionResults, (result) => {
+    return map(results as TextDetectionResults, (result) => {
       const { boundingBox, cornerPoints, rawValue } = result;
       return {
         ...result,
@@ -79,7 +76,7 @@ export default function TextDetectorApi() {
           x: boundingBox.x * ratio,
           y: boundingBox.y * ratio,
         },
-        cornerPoints: _map(cornerPoints, ({ x, y }) => {
+        cornerPoints: map(cornerPoints, ({ x, y }) => {
           return {
             x: x * ratio,
             y: y * ratio,

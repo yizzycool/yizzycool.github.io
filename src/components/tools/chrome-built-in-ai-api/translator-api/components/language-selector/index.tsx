@@ -2,13 +2,12 @@
 
 import clsx from 'clsx';
 import { MouseEvent, useMemo, useState } from 'react';
-import intlUtils from '@/utils/intl-utils';
 import { Check, ChevronDown, Globe, Search, X } from 'lucide-react';
+import { isEmpty, filter, startsWith } from 'lodash';
+
+import intlUtils from '@/utils/intl-utils';
 import BaseDialog from '@/components/common/dialog/base';
 import ISO6391 from '@/components/tools/chrome-built-in-ai-api/translator-api/data/iso-639-1';
-import _isEmpty from 'lodash/isEmpty';
-import _filter from 'lodash/filter';
-import _startsWith from 'lodash/startsWith';
 
 export default function LanguageSelector({
   params,
@@ -36,10 +35,10 @@ export default function LanguageSelector({
   }, []);
 
   const filteredLanguages = useMemo(() => {
-    if (_isEmpty(searchQuery)) return languages;
-    return _filter(languages, ({ name, localName }) => {
+    if (isEmpty(searchQuery)) return languages;
+    return filter(languages, ({ name, localName }) => {
       return (
-        _startsWith(name, searchQuery) || _startsWith(localName, searchQuery)
+        startsWith(name, searchQuery) || startsWith(localName, searchQuery)
       );
     });
   }, [languages, searchQuery]);

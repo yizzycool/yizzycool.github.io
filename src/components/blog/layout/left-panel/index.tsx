@@ -5,12 +5,10 @@ import type { BlogCategory } from '@/types/blog';
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { get } from 'lodash';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import CategoryAccordionItem from './components/category-accordion-item';
-
-import _get from 'lodash/get';
-import _map from 'lodash/map';
 
 type Props = {
   categoryArticles: BlogCategory;
@@ -27,7 +25,7 @@ export default function LeftPanel({
 
   const { getFadeUpClass } = useGetTransitionClass();
 
-  const data = _get(categoryArticles, ['data']) || [];
+  const data = get(categoryArticles, ['data']) || [];
 
   return (
     <aside

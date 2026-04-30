@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
+import { defaultsDeep } from 'lodash';
+
 import { ToolMetadata } from '@/data/tools/metadata';
 import dataProcessUtils from '../data/data-process-utils';
-import _defaultsDeep from 'lodash/defaultsDeep';
-import _findKey from 'lodash/findKey';
 
 const toolsMetadataUtils = {
   generateMetadata: (toolKey: string): Metadata => {
@@ -21,7 +21,7 @@ const toolsMetadataUtils = {
       },
     };
 
-    return _defaultsDeep(customMetadata, ToolMetadata[toolKey]);
+    return defaultsDeep(customMetadata, ToolMetadata[toolKey]);
   },
 };
 

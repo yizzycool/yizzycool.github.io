@@ -6,11 +6,10 @@ import { usePathname } from 'next/navigation';
 import { motion } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
+import { map } from 'lodash';
 
 import strapiUtils from '@/utils/strapi-utils';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-
-import _map from 'lodash/map';
 
 type Props = {
   category: BlogCategoryData;
@@ -72,7 +71,7 @@ export default function CategoryAccordionItem({ category, onClick }: Props) {
           getFadeUpClass('animate-delay-200')
         )}
       >
-        {_map(category.articles, (article) => {
+        {map(category.articles, (article) => {
           const articleUrl = strapiUtils.toBlogCategoryArticleUrl(
             category.slug,
             article.slug

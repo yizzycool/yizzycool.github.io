@@ -1,13 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
 import HeaderBlock from '../../components/header-block';
 import SectionGap from '../../components/section-gap';
 import PatternCard from './components/pattern-card';
 import TestCard from './components/test-card';
 import DetailCard from './components/detail-card';
-
-import _filter from 'lodash/filter';
 
 export type RegexColorType = {
   bg: string;

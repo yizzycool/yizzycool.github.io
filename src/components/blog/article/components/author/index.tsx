@@ -1,16 +1,18 @@
-import { BlogArticle } from '@/types/blog';
-import { useMemo } from 'react';
-import strapiUtils from '@/utils/strapi-utils';
-import { CircleUserRound } from 'lucide-react';
+import type { BlogArticle } from '@/types/blog';
+
 import Image from 'next/image';
-import _get from 'lodash/get';
+import { useMemo } from 'react';
+import { CircleUserRound } from 'lucide-react';
+import { get } from 'lodash';
+
+import strapiUtils from '@/utils/strapi-utils';
 
 export default function Author({ article }: { article: BlogArticle }) {
-  const data = _get(article, 'data.0') || {};
+  const data = get(article, 'data.0') || {};
   const { author, updatedAt } = data;
 
   const avatarUrl = useMemo(() => {
-    const avatarPath = _get(author, 'avatar.formats.thumbnail.url') || '';
+    const avatarPath = get(author, 'avatar.formats.thumbnail.url') || '';
     return avatarPath ? strapiUtils.toMediaUrl(avatarPath) : '';
   }, [author]);
 

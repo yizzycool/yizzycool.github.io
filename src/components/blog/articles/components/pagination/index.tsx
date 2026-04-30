@@ -1,6 +1,7 @@
 'use client';
 
 import type { BlogArticle } from '@/types/blog';
+
 import clsx from 'clsx';
 import urlJoin from 'url-join';
 import { useMemo } from 'react';
@@ -12,9 +13,10 @@ import {
   ChevronsRight,
   LucideIcon,
 } from 'lucide-react';
+import { range } from 'lodash';
+
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import RevealSection from '@/components/common/reveal-section';
-import _range from 'lodash/range';
 
 type Props = {
   articles: BlogArticle;
@@ -50,7 +52,7 @@ export default function Pagination({ articles }: Props) {
       start = Math.max(1, pageCount - maxVisible + 1);
     }
 
-    return _range(start, end + 1);
+    return range(start, end + 1);
   }, [page, pageCount]);
 
   const redirectToPage = (nextPage: number) => {

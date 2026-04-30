@@ -9,6 +9,7 @@ import {
   SpellCheck2,
   X,
 } from 'lucide-react';
+import { forEach, map, isEmpty, join } from 'lodash';
 
 import Label from '@/components/common/label';
 import CopyAction from '@/components/common/action-button/copy';
@@ -18,12 +19,6 @@ import {
   TooltipRoot,
   TooltipTrigger,
 } from '@/components/common/tooltip';
-
-import _forEach from 'lodash/forEach';
-import _filter from 'lodash/filter';
-import _map from 'lodash/map';
-import _isEmpty from 'lodash/isEmpty';
-import _join from 'lodash/join';
 
 const Colors: Record<CorrectionType, ColorType> = {
   spelling: {
@@ -90,8 +85,8 @@ export default function Result({ text, result, isProcessing }: Props) {
   const [highlightList, setHighlightList] = useState<HighlightList>([]);
 
   const copyText = useMemo(() => {
-    return _join(
-      _map(highlightList, ({ applySuggestion, text, correction }) => {
+    return join(
+      map(highlightList, ({ applySuggestion, text, correction }) => {
         if (applySuggestion) return correction;
         else return text;
       })
@@ -104,7 +99,7 @@ export default function Result({ text, result, isProcessing }: Props) {
 
       let lastIndex = 0;
 
-      _forEach(
+      forEach(
         result?.corrections,
         ({ correction, startIndex, endIndex, type }) => {
           // Handle for input with no suggestion
@@ -152,7 +147,7 @@ export default function Result({ text, result, isProcessing }: Props) {
 
   const onApplyAll = () => {
     setHighlightList((prev) =>
-      _map(prev, (chunk) => {
+      map(prev, (chunk) => {
         if (!chunk.error) return chunk;
         return { ...chunk, applySuggestion: true };
       })
@@ -176,7 +171,7 @@ export default function Result({ text, result, isProcessing }: Props) {
           >
             Apply All
           </Button>
-          <CopyAction content={copyText} disabled={_isEmpty(copyText)} />
+          <CopyAction content={copyText} disabled={isEmpty(copyText)} />
         </div>
       </div>
 
@@ -188,7 +183,7 @@ export default function Result({ text, result, isProcessing }: Props) {
           'backdrop-blur'
         )}
       >
-        {_isEmpty(result) ? (
+        {isEmpty(result) ? (
           <div className="m-auto flex h-full flex-col items-center justify-center text-center text-lg font-bold text-neutral-500">
             {isProcessing ? (
               <>

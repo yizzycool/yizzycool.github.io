@@ -1,25 +1,25 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { get, invert } from 'lodash';
+
 import {
   ToolDescriptions,
   ToolIcons,
   ToolTitles,
   ToolUrls,
 } from '@/data/tools';
-import _get from 'lodash/get';
-import _invert from 'lodash/invert';
 
-const InvertToolUrls = _invert(ToolUrls);
+const InvertToolUrls = invert(ToolUrls);
 
 export default function HeaderBlock() {
   const pathname = usePathname();
 
-  const toolKey = _get(InvertToolUrls, pathname, '');
+  const toolKey = get(InvertToolUrls, pathname, '');
 
-  const Icon = _get(ToolIcons, toolKey);
-  const title = _get(ToolTitles, toolKey);
-  const desc = _get(ToolDescriptions, toolKey);
+  const Icon = get(ToolIcons, toolKey);
+  const title = get(ToolTitles, toolKey);
+  const desc = get(ToolDescriptions, toolKey);
 
   return (
     <header>

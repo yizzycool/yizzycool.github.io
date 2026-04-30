@@ -1,8 +1,9 @@
 import type { BlogArticleData } from '@/types/blog/article';
+
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
+
 import strapiUtils from '@/utils/strapi-utils';
-import _get from 'lodash/get';
 
 type Props = {
   article: BlogArticleData;

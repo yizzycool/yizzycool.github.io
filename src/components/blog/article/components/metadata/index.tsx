@@ -4,17 +4,15 @@ import type { BlogArticle } from '@/types/blog';
 
 import clsx from 'clsx';
 import { Clock, RefreshCw } from 'lucide-react';
+import { get } from 'lodash';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import Divider from '@/components/common/divider';
 
-import _get from 'lodash/get';
-import _map from 'lodash/map';
-
 type Props = { article: BlogArticle };
 
 export default function Metadata({ article }: Props) {
-  const data = _get(article, 'data.0') || {};
+  const data = get(article, 'data.0') || {};
   const { updatedAt, publishedAt, readTime } = data;
 
   const publishDate = new Date((publishedAt ?? updatedAt) as string);

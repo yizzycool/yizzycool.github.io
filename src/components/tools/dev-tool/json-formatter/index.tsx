@@ -1,6 +1,7 @@
 'use client';
 
 import type { ChangeEvent } from 'react';
+
 import { useRef, useState } from 'react';
 import {
   Braces,
@@ -10,6 +11,8 @@ import {
   Maximize2,
   Minimize2,
 } from 'lucide-react';
+import { isNull, isEmpty, size } from 'lodash';
+
 import HeaderBlock from '../../components/header-block';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
@@ -19,9 +22,6 @@ import SectionGap from '../../components/section-gap';
 import ButtonTabs from '@/components/common/tabs/button';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
-import _isNull from 'lodash/isNull';
-import _isEmpty from 'lodash/isEmpty';
-import _size from 'lodash/size';
 
 const TabItems = ['Format', 'Minify'];
 
@@ -116,7 +116,7 @@ export default function JsonFormatter() {
         </Label>
         <div className="flex items-center gap-2 self-end sm:self-auto">
           <PasteAction onClick={onPaste} />
-          <DeleteAction onClick={onClear} disabled={_isEmpty(input)} />
+          <DeleteAction onClick={onClear} disabled={isEmpty(input)} />
         </div>
       </div>
       <Textarea
@@ -128,7 +128,7 @@ export default function JsonFormatter() {
       />
       {/* Char count block */}
       <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
-        {_size(input)} chars
+        {size(input)} chars
       </div>
 
       <SectionGap />
@@ -141,7 +141,7 @@ export default function JsonFormatter() {
         <div className="flex items-center gap-2 self-end sm:self-auto">
           <CopyAction
             content={output}
-            disabled={_isNull(output) || _isEmpty(output)}
+            disabled={isNull(output) || isEmpty(output)}
           />
         </div>
       </div>

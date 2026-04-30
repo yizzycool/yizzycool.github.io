@@ -4,14 +4,11 @@ import type { FabricInternalStates } from './use-fabric';
 import type { FabricFilterParams } from '../types/fabric-filter';
 
 import * as fabric from 'fabric'; // v6
+import { find, fromPairs, get, keys } from 'lodash';
+
 import useCommon from './use-common';
 import colorUtils from '@/utils/color-utils';
 import { FabricFilterMap } from '../data/fabric-filters';
-
-import _find from 'lodash/find';
-import _fromPairs from 'lodash/fromPairs';
-import _keys from 'lodash/keys';
-import _get from 'lodash/get';
 
 type Props = {
   refs: {
@@ -198,14 +195,14 @@ export default function useImageUpdater({
     if (!image) return;
 
     const extractParams = (filterType: string) => {
-      const filter = _find(image.filters, (f) => f.type === filterType);
-      const keys = _keys(FabricFilterMap[filterType].params);
-      return _fromPairs(
-        keys.map((key) => {
+      const filter = find(image.filters, (f) => f.type === filterType);
+      const filterKeys = keys(FabricFilterMap[filterType].params);
+      return fromPairs(
+        filterKeys.map((key) => {
           const value =
-            _get(params, key) ||
-            _get(FabricFilterMap, [filterType, 'params', key, 'default']) ||
-            _get(filter, key);
+            get(params, key) ||
+            get(FabricFilterMap, [filterType, 'params', key, 'default']) ||
+            get(filter, key);
           return [key, value];
         })
       );

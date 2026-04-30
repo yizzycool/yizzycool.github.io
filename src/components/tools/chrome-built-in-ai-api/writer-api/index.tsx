@@ -3,6 +3,7 @@
 import { UnsupportedApiTypes } from '../data/unsupported-types';
 import { LoaderCircle, PencilLine, PenLine } from 'lucide-react';
 import { ChangeEventHandler, useState } from 'react';
+import { isEmpty, size } from 'lodash';
 
 import useAiWriter from '../hooks/use-ai-writer';
 import browserUtils from '@/utils/browser-utils';
@@ -19,10 +20,6 @@ import PromptResult from '../components/prompt-result';
 import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
-
-import _isEmpty from 'lodash/isEmpty';
-import _size from 'lodash/size';
-import _range from 'lodash/range';
 
 export default function WriterApi() {
   const [text, setText] = useState('');
@@ -110,7 +107,7 @@ export default function WriterApi() {
             </Label>
             <div className="flex items-center gap-2 self-end sm:self-auto">
               <PasteAction onClick={onPasteText} />
-              <DeleteAction onClick={onClearClick} disabled={_isEmpty(text)} />
+              <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
             </div>
           </div>
           <Textarea
@@ -122,7 +119,7 @@ export default function WriterApi() {
           />
           {/* Char count block */}
           <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
-            {_size(text)} chars
+            {size(text)} chars
           </div>
 
           <SectionGap size="sm" />
@@ -134,7 +131,7 @@ export default function WriterApi() {
               size="sm"
               rounded="lg"
               onClick={onProcessClick}
-              disabled={_isEmpty(text) || isProcessing}
+              disabled={isEmpty(text) || isProcessing}
               iconClassName={isProcessing ? 'animate-spin' : ''}
             >
               {isProcessing ? 'Writing...' : 'Write'}

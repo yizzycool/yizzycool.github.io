@@ -1,16 +1,18 @@
 import type { BlogArticle } from '@/types/blog';
+
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
+import { get } from 'lodash';
+
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import strapiUtils from '@/utils/strapi-utils';
-import _get from 'lodash/get';
 
 type Props = {
   article: BlogArticle;
 };
 
 export default function Banner({ article }: Props) {
-  const data = _get(article, 'data.0') || {};
+  const data = get(article, 'data.0') || {};
   const { banner } = data;
 
   const [bannerLoaded, setBannerLoaded] = useState(false);

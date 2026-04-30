@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import _values from 'lodash/values';
+import { values } from 'lodash';
 
 export type GlimmerBackgroundConfig = {
   // Ensure all elements utilize Tailwind CSS classes for styling.
@@ -40,7 +40,7 @@ export default function GlimmerBackground({ configs = [{}] }: Props) {
           key={idx}
           className={clsx(
             'absolute rounded-full mix-blend-multiply',
-            ..._values(config)
+            ...values(config)
           )}
         />
       ))}

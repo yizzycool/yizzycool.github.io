@@ -7,8 +7,6 @@ import { useRef } from 'react';
 import Label from '@/components/common/label';
 import Button from '@/components/common/button';
 
-import _xor from 'lodash/xor';
-
 type Props = {
   hasImageSrc: boolean;
   replaceImage: (file: File) => void;

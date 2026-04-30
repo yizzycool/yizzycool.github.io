@@ -8,8 +8,6 @@ import clsx from 'clsx';
 
 import strapiUtils from '@/utils/strapi-utils';
 
-import _get from 'lodash/get';
-
 type Props = {
   type: 'prev' | 'next';
   article: BlogArticleData | null;

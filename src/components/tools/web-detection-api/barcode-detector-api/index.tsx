@@ -2,9 +2,10 @@
 
 import { Square, Trash2 } from 'lucide-react';
 import { useMemo } from 'react';
+import { isNull, map, get } from 'lodash';
+
 import useCommonFunction from '../hooks/use-common-function';
 import useBarcodeDetector from '../hooks/use-barcode-detector';
-import { UnsupportedApiTypes } from '../data/unsupported-types';
 import HeaderBlock from '../../components/header-block';
 import LoadingSkeleton from '../components/loading-skeleton';
 import Empty from '../components/empty';
@@ -22,10 +23,7 @@ import ResultCanvas, {
 import DetectionResult from '../components/detection-result';
 import RawData from '../components/raw-data';
 import Snackbar from '@/components/common/snackbar';
-import _isNull from 'lodash/isNull';
-import _map from 'lodash/map';
-import _fromPairs from 'lodash/fromPairs';
-import _get from 'lodash/get';
+import { UnsupportedApiTypes } from '../data/unsupported-types';
 
 const TabList: Array<WebDetectionFileType> = ['image', 'video', 'webcam'];
 
@@ -74,15 +72,15 @@ export default function BarcodeDetectorApi() {
   } = useCommonFunction({ detect });
 
   const transformedResults = useMemo(() => {
-    if (_isNull(results) || !resultRef?.current) return [];
+    if (isNull(results) || !resultRef?.current) return [];
     const { clientWidth } = resultRef.current as HTMLDivElement;
     const { width } = canvasRef.current as HTMLCanvasElement;
     const ratio = clientWidth / width;
-    return _map(results as BarcodeDetectionResults, (result) => {
+    return map(results as BarcodeDetectionResults, (result) => {
       const { boundingBox, cornerPoints, format, rawValue } = result;
       return {
         ...result,
-        label: _get(ReadableMap, format, format),
+        label: get(ReadableMap, format, format),
         text: rawValue,
         boundingBox: {
           bottom: boundingBox.bottom * ratio,
@@ -94,7 +92,7 @@ export default function BarcodeDetectorApi() {
           x: boundingBox.x * ratio,
           y: boundingBox.y * ratio,
         },
-        cornerPoints: _map(cornerPoints, ({ x, y }) => {
+        cornerPoints: map(cornerPoints, ({ x, y }) => {
           return {
             x: x * ratio,
             y: y * ratio,

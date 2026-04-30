@@ -2,9 +2,10 @@
 
 import { Square, Trash2 } from 'lucide-react';
 import { useMemo } from 'react';
+import { isNull, map } from 'lodash';
+
 import useCommonFunction from '../hooks/use-common-function';
 import useFaceDetector from '../hooks/use-face-detector';
-import { UnsupportedApiTypes } from '../data/unsupported-types';
 import LoadingSkeleton from '../components/loading-skeleton';
 import HeaderBlock from '../../components/header-block';
 import Empty from '../components/empty';
@@ -22,9 +23,7 @@ import ResultCanvas, {
 } from '../components/result-canvas';
 import DetectionResult from '../components/detection-result';
 import RawData from '../components/raw-data';
-import _isNull from 'lodash/isNull';
-import _map from 'lodash/map';
-import _fromPairs from 'lodash/fromPairs';
+import { UnsupportedApiTypes } from '../data/unsupported-types';
 
 const TabList: Array<WebDetectionFileType> = ['image', 'video', 'webcam'];
 
@@ -57,11 +56,11 @@ export default function FaceDetectorApi() {
   } = useCommonFunction({ detect });
 
   const transformedResults = useMemo(() => {
-    if (_isNull(results) || !resultRef?.current) return [];
+    if (isNull(results) || !resultRef?.current) return [];
     const { clientWidth } = resultRef.current as HTMLDivElement;
     const { width } = canvasRef.current as HTMLCanvasElement;
     const ratio = clientWidth / width;
-    return _map(results as FaceDetectionResults, (result, idx) => {
+    return map(results as FaceDetectionResults, (result, idx) => {
       const { boundingBox, landmarks } = result;
       return {
         ...result,
@@ -76,10 +75,10 @@ export default function FaceDetectorApi() {
           x: boundingBox.x * ratio,
           y: boundingBox.y * ratio,
         },
-        landmarks: _map(landmarks, (landmark) => {
+        landmarks: map(landmarks, (landmark) => {
           return {
             ...landmark,
-            locations: _map(landmark.locations, ({ x, y }) => ({
+            locations: map(landmark.locations, ({ x, y }) => ({
               x: x * ratio,
               y: y * ratio,
             })),

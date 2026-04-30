@@ -1,11 +1,13 @@
 'use client';
 
-import { ActionButtonProps } from '@/types/common/action-button';
+import type { ActionButtonProps } from '@/types/common/action-button';
+
 import { Clipboard } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import { find } from 'lodash';
+
 import useDisplay from '../hooks/use-display';
 import Button from '../../button';
-import _find from 'lodash/find';
 
 type InputType = 'string' | 'image';
 
@@ -54,7 +56,7 @@ export default function PasteAction<T extends InputType>({
       for (const item of clipboardContents) {
         if (item.types.includes('image/')) {
           const mimeType =
-            _find(item.types, (type) => type.startsWith('image/')) || '';
+            find(item.types, (type) => type.startsWith('image/')) || '';
           const blob = await item.getType(mimeType);
           (onClick as OnImagePaste)(blob);
         }

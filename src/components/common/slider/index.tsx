@@ -2,7 +2,6 @@
 
 import { Description, Field, Label } from '@headlessui/react';
 import clsx from 'clsx';
-import _toNumber from 'lodash/toNumber';
 
 type Props = {
   title?: string;

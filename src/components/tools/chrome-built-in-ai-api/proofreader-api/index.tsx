@@ -2,9 +2,9 @@
 
 import { LoaderCircle, PenLine, WandSparkles } from 'lucide-react';
 import { ChangeEventHandler, useState } from 'react';
+import { isEmpty, size } from 'lodash';
 
 import useAiProofreader from '../hooks/use-ai-proofreader';
-import browserUtils from '@/utils/browser-utils';
 import HeaderBlock from '../../components/header-block';
 import LoadingSkeleton from '../components/loading-skeleton';
 import UnsupportedCard from '../components/unsupported-card';
@@ -17,14 +17,8 @@ import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
 import Result from './components/result';
+import browserUtils from '@/utils/browser-utils';
 import { UnsupportedApiTypes } from '../data/unsupported-types';
-
-import _isNull from 'lodash/isNull';
-import _isEmpty from 'lodash/isEmpty';
-import _size from 'lodash/size';
-import _slice from 'lodash/slice';
-import _last from 'lodash/last';
-import _range from 'lodash/range';
 
 export default function ProofreaderApi() {
   const [text, setText] = useState('');
@@ -115,7 +109,7 @@ export default function ProofreaderApi() {
             </Label>
             <div className="flex items-center gap-2 self-end sm:self-auto">
               <PasteAction onClick={onPasteText} />
-              <DeleteAction onClick={onClearClick} disabled={_isEmpty(text)} />
+              <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
             </div>
           </div>
           <Textarea
@@ -127,7 +121,7 @@ export default function ProofreaderApi() {
           />
           {/* Char count block */}
           <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
-            {_size(text)} chars
+            {size(text)} chars
           </div>
 
           <SectionGap size="sm" />
@@ -139,7 +133,7 @@ export default function ProofreaderApi() {
               size="sm"
               rounded="lg"
               onClick={onProcessClick}
-              disabled={_isEmpty(text) || isProcessing}
+              disabled={isEmpty(text) || isProcessing}
               iconClassName={isProcessing ? 'animate-spin' : ''}
             >
               {isProcessing ? 'Proofreading...' : 'Proofread'}

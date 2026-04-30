@@ -1,11 +1,13 @@
 'use client';
 
 import type { ActionButtonProps } from '@/types/common/action-button';
+
 import { Share2 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import { isNil } from 'lodash';
+
 import useDisplay from '../hooks/use-display';
 import Button from '../../button';
-import _isNil from 'lodash/isNil';
 
 interface Props extends ActionButtonProps {
   content?: string | File | null | undefined;
@@ -34,7 +36,7 @@ export default function ShareAction({
   const mimeType = useMemo(() => {
     if (typeof content === 'string') {
       return 'text/plain';
-    } else if (_isNil(content)) {
+    } else if (isNil(content)) {
       return '';
     } else {
       return content.type;
@@ -48,7 +50,7 @@ export default function ShareAction({
         text: shareText,
         url: content,
       };
-    } else if (_isNil(content)) {
+    } else if (isNil(content)) {
       return {};
     } else {
       return {
@@ -61,7 +63,7 @@ export default function ShareAction({
 
   const isButtonDisabled = useMemo(() => {
     return (
-      disabled || _isNil(content) || !isMimeTypeSupported || !isActionSupported
+      disabled || isNil(content) || !isMimeTypeSupported || !isActionSupported
     );
   }, [disabled, content, isMimeTypeSupported, isActionSupported]);
 

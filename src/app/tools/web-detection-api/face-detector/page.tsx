@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
+
 import FaceDetectorApi from '@/components/tools/web-detection-api/face-detector-api';
-import { ToolKeys } from '@/data/tools';
 import toolsMetadataUtils from '@/utils/tools/metadata/tools-metadata-utls';
 import seoUtils from '@/utils/seo-utils';
-import _defaultsDeep from 'lodash/defaultsDeep';
+import { ToolKeys } from '@/data/tools';
 
 const toolKey = ToolKeys.chromeFaceDetector;
 
