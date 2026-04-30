@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { ImageIcon, MousePointerClick } from 'lucide-react';
 
 export default function EmptyState() {
@@ -11,13 +11,13 @@ export default function EmptyState() {
         <div className="relative">
           <div className="h-32 w-32">
             <div
-              className={clsx(
+              className={cn(
                 'h-8 w-32',
                 'animate-bounce [animation-duration:_3000ms]'
               )}
             >
               <div
-                className={clsx(
+                className={cn(
                   'flex h-32 w-32 items-center justify-center rounded-[48px] shadow-2xl',
                   'bg-white dark:bg-neutral-800',
                   'border border-neutral-100 dark:border-neutral-700'
@@ -32,7 +32,7 @@ export default function EmptyState() {
             </div>
           </div>
           <div
-            className={clsx(
+            className={cn(
               'absolute -bottom-2 -right-2 flex h-16 w-16 items-center justify-center rounded-3xl shadow-xl',
               'bg-neutral-900 dark:bg-white',
               'border-4 border-white dark:border-neutral-900',

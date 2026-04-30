@@ -1,7 +1,7 @@
 'use client';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 
 export default function HeaderBlock() {
   const { getFadeUpClass } = useGetTransitionClass();
@@ -9,7 +9,7 @@ export default function HeaderBlock() {
   return (
     <div className="text-center md:text-left">
       <h1
-        className={clsx(
+        className={cn(
           'mb-4 text-4xl font-extrabold tracking-tight md:text-5xl',
           getFadeUpClass('animate-delay-100')
         )}
@@ -20,7 +20,7 @@ export default function HeaderBlock() {
         </span>
       </h1>
       <p
-        className={clsx(
+        className={cn(
           'text-lg text-neutral-600 dark:text-neutral-400',
           getFadeUpClass('animate-delay-200')
         )}

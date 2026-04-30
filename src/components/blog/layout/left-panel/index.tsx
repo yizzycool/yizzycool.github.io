@@ -2,7 +2,7 @@
 
 import type { BlogCategory } from '@/types/blog';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { get } from 'lodash';
@@ -29,10 +29,10 @@ export default function LeftPanel({
 
   return (
     <aside
-      className={clsx(
+      className={cn(
         getFadeUpClass(),
         side === 'leftPanel' &&
-          clsx(
+          cn(
             'sticky top-[68px] h-[calc(100dvh_-_68px)] w-[300px] shrink-0 overflow-y-auto',
             'hidden lg:block',
             'border-r border-neutral-400/20',
@@ -47,7 +47,7 @@ export default function LeftPanel({
             {/* All Articles */}
             <h2>
               <Link
-                className={clsx(
+                className={cn(
                   'flex items-center rounded-md p-2 font-bold',
                   'hover:bg-sky-600/10',
                   'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500',

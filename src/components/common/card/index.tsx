@@ -1,7 +1,8 @@
 'use client';
 
 import type { Animation, Rounded } from '@/types/common';
-import clsx from 'clsx';
+
+import { cn } from '@/utils/cn';
 
 type Props = {
   className?: string;
@@ -35,7 +36,7 @@ export default function Card({
 
   return (
     <div
-      className={clsx(
+      className={cn(
         'border p-6 text-left',
         'border-neutral-200 dark:border-neutral-700',
         'bg-white/80 dark:bg-neutral-900/80',

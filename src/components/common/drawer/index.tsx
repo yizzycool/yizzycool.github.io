@@ -2,7 +2,7 @@
 
 import type { Rounded } from '@/types/common';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Transition, TransitionChild } from '@headlessui/react';
 import { createPortal } from 'react-dom';
 
@@ -78,7 +78,7 @@ export default function Drawer({
       <Wrapper
         isOpen={isOpen}
         usePortal={usePortal}
-        className={clsx(
+        className={cn(
           usePortal ? 'fixed z-50' : 'absolute z-10',
           'inset-0 flex items-center justify-center p-4 focus:outline-none sm:p-8 md:p-12',
           wrapperClassName
@@ -112,7 +112,7 @@ export default function Drawer({
           unmount={false}
         >
           <div
-            className={clsx(
+            className={cn(
               'absolute flex flex-col overflow-hidden shadow-2xl',
               'bg-white/90 backdrop-blur-md dark:bg-neutral-900/95',
               positions[side],

@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { createPortal } from 'react-dom';
 import {
   CloseButton,
@@ -23,7 +23,7 @@ export default function ToolsSelectorDesktop() {
       {/* Tools */}
       <Popover as="li" className="group relative">
         <PopoverButton
-          className={clsx(
+          className={cn(
             'ml-4 flex items-center gap-2 transition-opacity',
             'focus:outline-none',
             'data-[active]:text-black data-[hover]:text-black',
@@ -42,7 +42,7 @@ export default function ToolsSelectorDesktop() {
             gap: 24,
             padding: 16,
           }}
-          className={clsx(
+          className={cn(
             'origin-top-right focus:outline-none',
             'rounded-md py-2 text-sm/6 font-semibold',
             'border border-neutral-800/20 dark:border-white/20',
@@ -67,7 +67,7 @@ export default function ToolsSelectorDesktop() {
                   <li key={item.name}>
                     <CloseButton
                       as={Link}
-                      className={clsx(
+                      className={cn(
                         'mt-2 flex items-center pr-12',
                         'transition-all duration-300',
                         'text-gray-600 hover:text-sky-500 dark:text-gray-50 dark:hover:text-sky-500'

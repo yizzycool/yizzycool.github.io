@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { values } from 'lodash';
 
 export type GlimmerBackgroundConfig = {
@@ -38,7 +38,7 @@ export default function GlimmerBackground({ configs = [{}] }: Props) {
       {configs.map((config, idx) => (
         <div
           key={idx}
-          className={clsx(
+          className={cn(
             'absolute rounded-full mix-blend-multiply',
             ...values(config)
           )}

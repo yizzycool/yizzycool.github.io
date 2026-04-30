@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import {
   oneDark,
@@ -21,7 +21,7 @@ export default function CodeBlock({ match, code, rest }: Props) {
 
   return (
     <div
-      className={clsx(
+      className={cn(
         'rounded-md bg-neutral-100 dark:bg-neutral-800',
         'border border-neutral-200 dark:border-neutral-700'
       )}

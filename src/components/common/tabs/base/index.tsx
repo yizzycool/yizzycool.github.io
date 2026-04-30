@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useEffect, useState } from 'react';
 
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
@@ -45,7 +45,7 @@ export default function BaseTabs({
   };
 
   return (
-    <div className={clsx('flex', className)}>
+    <div className={cn('flex', className)}>
       {tabs.map((mode) => (
         <Button
           key={mode}

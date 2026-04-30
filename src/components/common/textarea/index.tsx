@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Description, Field, Label, Textarea as TA } from '@headlessui/react';
 import { ChangeEvent } from 'react';
 
@@ -38,7 +38,7 @@ export default function Textarea({
         </Description>
       )}
       <TA
-        className={clsx(
+        className={cn(
           'block w-full rounded-lg border px-4 py-3',
           'resize-none text-sm leading-relaxed outline-none',
           'border-neutral-200 dark:border-neutral-700',

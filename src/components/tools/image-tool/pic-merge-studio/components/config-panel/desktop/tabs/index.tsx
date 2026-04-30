@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useState } from 'react';
 
 import BaseTabs from '@/components/common/tabs/base';
@@ -31,7 +31,7 @@ export default function Tabs({ tabs, discardActiveObject, children }: Props) {
       />
       <div className="flex-1 overflow-hidden">
         <div
-          className={clsx(
+          className={cn(
             'flex flex-1 flex-nowrap transition-all duration-500',
             'h-full *:min-w-full'
           )}

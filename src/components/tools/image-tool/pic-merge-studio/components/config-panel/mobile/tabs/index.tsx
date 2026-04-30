@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Frame, Image, LucideIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { zip } from 'lodash';
@@ -66,7 +66,7 @@ export default function Tabs({ discardActiveObject, children }: Props) {
             variant="ghost"
             rounded="none"
             onClick={() => onChange(tab)}
-            className={clsx(
+            className={cn(
               'flex-col items-center space-y-2 hover:bg-transparent dark:hover:bg-transparent',
               activeTab === tab && 'text-sky-600 dark:text-sky-600'
             )}

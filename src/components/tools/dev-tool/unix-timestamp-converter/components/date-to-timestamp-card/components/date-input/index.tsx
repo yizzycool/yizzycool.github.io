@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 
 type Props = {
   label: string;
@@ -18,7 +18,7 @@ export default function DateInput({ label, value, onChange, min, max }: Props) {
         min={min}
         max={max}
         onChange={(e) => onChange(e.target.value)}
-        className={clsx(
+        className={cn(
           'w-full rounded-md border border-neutral-200 px-2 py-2 text-center font-mono outline-none',
           'bg-white focus:border-neutral-400',
           'dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-500'

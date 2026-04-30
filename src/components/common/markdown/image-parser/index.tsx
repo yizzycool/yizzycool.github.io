@@ -2,7 +2,7 @@
 
 import type { ExtraProps } from 'react-markdown';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import urlJoin from 'url-join';
 import { ImageOff } from 'lucide-react';
 import {
@@ -67,7 +67,7 @@ export default function ImageParser(
       <ImageOff
         size={30}
         strokeWidth={1}
-        className={clsx('opacity-50', aligns[align])}
+        className={cn('opacity-50', aligns[align])}
       />
     );
 
@@ -77,7 +77,7 @@ export default function ImageParser(
         src={url}
         {...(rest as Partial<Omit<HTMLMotionProps<'img'>, 'ref'>>)}
         loading="lazy"
-        className={clsx('my-0 cursor-zoom-in', aligns[align])}
+        className={cn('my-0 cursor-zoom-in', aligns[align])}
         style={{ width, height }}
         layoutId={imgLayoutId}
         onClick={() => setIsFullscreen(true)}
@@ -90,7 +90,7 @@ export default function ImageParser(
               src={url}
               {...(rest as Partial<Omit<HTMLMotionProps<'img'>, 'ref'>>)}
               loading="lazy"
-              className={clsx(
+              className={cn(
                 'object-contain',
                 'max-w-[calc(100vw_-_40px)] md:max-w-[90vw]',
                 'max-h-[calc(100dvh_-_40px)] md:max-h-[85dvh]'

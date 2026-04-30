@@ -2,7 +2,7 @@
 
 import type { BlogCategory } from '@/types/blog';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
@@ -35,7 +35,7 @@ export default function Navbar({ categoryArticles }: Props) {
 
   return (
     <header
-      className={clsx(
+      className={cn(
         'fixed top-0 z-50 w-full border-b transition-all duration-300',
         headerExpanded
           ? 'border-transparent bg-transparent py-4'

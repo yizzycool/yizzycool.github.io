@@ -7,7 +7,7 @@ import type {
 } from './types/config';
 import type { ConfigHelper } from './types/config-helper';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useRef, useState } from 'react';
 
 import useFabric from './hooks/use-fabric';
@@ -91,7 +91,7 @@ export default function PicMergeStudio() {
 
   return (
     <div
-      className={clsx(
+      className={cn(
         'relative grid w-full lg:grid-cols-[1fr_300px]',
         'transition-all duration-500 ease-in'
       )}
@@ -104,7 +104,7 @@ export default function PicMergeStudio() {
         {/* Canvas Block */}
         <div
           ref={containerRef}
-          className={clsx(
+          className={cn(
             'relative h-[calc(100dvh_-_300px)] w-full flex-1 overflow-hidden lg:h-[calc(100dvh_-_100px)]',
             'bg-[radial-gradient(#e5e7eb_1.5px,transparent_1.5px)] [background-size:32px_32px] dark:bg-[radial-gradient(#1f2937_1.5px,transparent_1.5px)]'
           )}

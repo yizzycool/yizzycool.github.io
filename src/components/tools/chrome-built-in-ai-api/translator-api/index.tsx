@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useRef, useState } from 'react';
 import { ArrowRightLeft } from 'lucide-react';
 import { isNull, isEmpty, size } from 'lodash';
@@ -90,7 +90,7 @@ export default function TranslatorApi() {
       ) : (
         <>
           <div
-            className={clsx(
+            className={cn(
               'flex flex-col justify-center rounded-xl border backdrop-blur',
               'border-neutral-200 dark:border-neutral-700',
               'bg-white/80 dark:bg-neutral-900/80',
@@ -100,7 +100,7 @@ export default function TranslatorApi() {
           >
             {/* Lauguage selector block */}
             <div
-              className={clsx(
+              className={cn(
                 'flex w-full items-center justify-stretch gap-3 p-2',
                 'border-b border-neutral-200 dark:border-neutral-700'
               )}
@@ -113,7 +113,7 @@ export default function TranslatorApi() {
                 />
               </div>
               <button
-                className={clsx('mx-auto block cursor-pointer px-4')}
+                className={cn('mx-auto block cursor-pointer px-4')}
                 onClick={switchSourceTargetLanguage}
               >
                 <ArrowRightLeft className="" size={16} />
@@ -131,14 +131,14 @@ export default function TranslatorApi() {
             <div className="flex flex-col sm:flex-row">
               {/* input */}
               <div
-                className={clsx(
+                className={cn(
                   'relative flex h-56 w-full flex-col sm:h-[350px]',
                   'border-b border-neutral-200 sm:border-b-0 sm:border-r dark:border-neutral-700'
                 )}
               >
                 <textarea
                   id="input"
-                  className={clsx(
+                  className={cn(
                     'block w-full flex-1 resize-none bg-transparent px-3 py-2 focus:outline-none',
                     'text-neutral-700 dark:text-neutral-200',
                     'placeholder-neutral-400 dark:placeholder-neutral-500'
@@ -164,7 +164,7 @@ export default function TranslatorApi() {
               <div className="relative flex h-64 w-full flex-col sm:h-[350px]">
                 <textarea
                   id="output"
-                  className={clsx(
+                  className={cn(
                     'block h-full w-full flex-1 resize-none bg-transparent px-3 py-2 focus:outline-none',
                     'text-neutral-700 dark:text-neutral-200',
                     'placeholder-neutral-400 dark:placeholder-neutral-500'

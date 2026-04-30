@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { themes } from 'prism-react-renderer';
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
 import { useEffect, useMemo, useState } from 'react';
@@ -91,7 +91,7 @@ export default function ReactLive({ code = '', metadata }: Props) {
       {...liveProviderConfig}
     >
       <div
-        className={clsx(
+        className={cn(
           'relative flex h-96 w-full flex-col overflow-hidden',
           'rounded-md bg-neutral-100 dark:bg-neutral-800',
           'border border-neutral-200 dark:border-neutral-700'
@@ -99,7 +99,7 @@ export default function ReactLive({ code = '', metadata }: Props) {
       >
         {/* Header - language + copy button */}
         <div
-          className={clsx(
+          className={cn(
             'flex items-center justify-between px-3 py-2',
             'text-xs text-gray-600 dark:text-gray-300',
             'overflow-x-auto'
@@ -143,7 +143,7 @@ export default function ReactLive({ code = '', metadata }: Props) {
           </div>
         </div>
         <div
-          className={clsx(
+          className={cn(
             'h-full w-full flex-1 overflow-hidden *:h-full *:overflow-auto',
             mode === 'preview' ? 'block' : 'hidden'
           )}
@@ -152,7 +152,7 @@ export default function ReactLive({ code = '', metadata }: Props) {
             <iframe
               src={htmlStringBlobUrl}
               sandbox="allow-scripts"
-              className={clsx('h-full w-full')}
+              className={cn('h-full w-full')}
               style={{
                 background: isDark ? ONE_DARK_BG : ONE_LIGHT_BG,
               }}
@@ -166,7 +166,7 @@ export default function ReactLive({ code = '', metadata }: Props) {
           )}
         </div>
         <div
-          className={clsx(
+          className={cn(
             'flex-1 overflow-y-auto',
             mode === 'code' ? 'block' : 'hidden',
             'flex p-[1em]'
@@ -180,7 +180,7 @@ export default function ReactLive({ code = '', metadata }: Props) {
             {Array.from({ length: lineCount }).map((_, idx) => (
               <span
                 key={idx}
-                className={clsx('min-w-[2.25em] pr-[1em]')}
+                className={cn('min-w-[2.25em] pr-[1em]')}
                 style={{
                   color: isDark ? '#5c6370' : '#a0a1a7',
                   fontFamily:
@@ -202,7 +202,7 @@ export default function ReactLive({ code = '', metadata }: Props) {
         </div>
         {liveProviderConfig.language !== 'html' && (
           <LiveError
-            className={clsx(
+            className={cn(
               'absolute bottom-4 right-4 max-w-[calc(100%_-_8px)]',
               'm-0 block !px-3 !py-1.5 text-xs',
               'break-all text-left font-medium transition-all duration-300',

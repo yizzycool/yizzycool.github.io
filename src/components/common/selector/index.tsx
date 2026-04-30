@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { ChangeEvent } from 'react';
 import { Description, Field, Label, Select } from '@headlessui/react';
 import { ChevronDown } from 'lucide-react';
@@ -28,7 +28,7 @@ export default function Selector({
       )}
       <div className="relative">
         <Select
-          className={clsx(
+          className={cn(
             'block w-full appearance-none rounded-lg border px-4 py-2 font-mono text-sm leading-relaxed outline-none',
             'focus:border-transparent focus:ring-2 focus:ring-blue-500',
             'border-gray-200 bg-white text-gray-700 placeholder-gray-400',

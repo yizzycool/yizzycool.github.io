@@ -2,7 +2,7 @@
 
 import type { BlogArticle } from '@/types/blog';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useMemo } from 'react';
 import { get, find } from 'lodash';
 
@@ -40,7 +40,7 @@ export default function Articles({ articles, categorySlug, tagSlug }: Props) {
 
       {/* All articles, <Category>, or <Tag> */}
       <div
-        className={clsx(
+        className={cn(
           'mb-6 mt-12 flex items-center justify-between',
           getFadeUpClass('animate-delay-300')
         )}

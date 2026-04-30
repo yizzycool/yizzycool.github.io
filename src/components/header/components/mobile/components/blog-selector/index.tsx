@@ -2,7 +2,7 @@
 
 import type { BlogCategory } from '@/types/blog';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { ChevronDown, Newspaper } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useState } from 'react';
@@ -22,7 +22,7 @@ export default function BlogSelectorMobile({
     <>
       <div className="group" data-open={isOpen}>
         <button
-          className={clsx(
+          className={cn(
             'flex w-full items-center justify-between rounded-lg px-3 py-4',
             'transition-all duration-300',
             'hover:bg-neutral-200 dark:hover:bg-neutral-800/50'

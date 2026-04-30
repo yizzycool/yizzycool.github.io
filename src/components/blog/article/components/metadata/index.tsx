@@ -2,7 +2,7 @@
 
 import type { BlogArticle } from '@/types/blog';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Clock, RefreshCw } from 'lucide-react';
 import { get } from 'lodash';
 
@@ -26,7 +26,7 @@ export default function Metadata({ article }: Props) {
 
   return (
     <div
-      className={clsx(
+      className={cn(
         'flex flex-wrap items-center gap-x-4 gap-y-2',
         'mb-6 text-sm',
         'text-neutral-500 dark:text-neutral-400',

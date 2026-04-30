@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 
 export default function ImageInfoTag({
   title = '',
@@ -9,7 +9,7 @@ export default function ImageInfoTag({
 }) {
   return (
     <div
-      className={clsx(
+      className={cn(
         'flex items-center gap-2 rounded-full px-3 py-1.5 font-mono text-xs text-white shadow-lg backdrop-blur-md',
         'border border-white/10',
         'bg-neutral-900/80 dark:bg-neutral-800/80'

@@ -2,7 +2,7 @@
 
 import type { ChangeEvent } from 'react';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { FileText, ImageIcon, View } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { isNull, isEmpty, size } from 'lodash';
@@ -124,7 +124,7 @@ export default function Base64ToImage() {
         </div>
       </div>
       <div
-        className={clsx(
+        className={cn(
           'relative flex h-[300px] w-full flex-col items-center rounded-lg p-4',
           'border border-neutral-200 dark:border-neutral-700',
           'backgrop-blur',

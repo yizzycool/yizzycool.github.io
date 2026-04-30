@@ -1,6 +1,6 @@
 import type { BlogArticleData } from '@/types/blog/article';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useEffect, useRef, useState } from 'react';
 
 import strapiUtils from '@/utils/strapi-utils';
@@ -30,7 +30,7 @@ export default function Banner({ article }: Props) {
     // eslint-disable-next-line @next/next/no-img-element
     <img
       ref={imgRef}
-      className={clsx(
+      className={cn(
         'h-full w-full transform object-cover transition-transform duration-700 ease-out group-hover:scale-105',
         bannerLoaded ? 'opacity-100' : 'opacity-0'
       )}

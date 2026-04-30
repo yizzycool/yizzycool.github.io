@@ -3,7 +3,7 @@
 import type { ConfigHelper } from '../../../../types/config-helper';
 import type { CanvasGridConfig } from '../../../../types/config';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Grid2x2 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -87,7 +87,7 @@ export default function CanvasLayout({
 
       {/* Grid System */}
       <div
-        className={clsx(
+        className={cn(
           'grid grid-cols-2 gap-4 text-left transition-all duration-500',
           !isGridLayout && 'h-0 overflow-hidden opacity-30'
         )}
@@ -107,7 +107,7 @@ export default function CanvasLayout({
               type="number"
               value={gridSize[key] || ''}
               onChange={(e) => handleCanvasSize(key, e.target.value)}
-              className={clsx(
+              className={cn(
                 'm-0 w-full',
                 'rounded-lg outline-none focus:ring-2 focus:ring-blue-500',
                 'px-4 py-3 text-sm font-bold transition-all',

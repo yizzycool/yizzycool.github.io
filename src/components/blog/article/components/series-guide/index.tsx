@@ -2,7 +2,7 @@
 
 import type { BlogCollectionData } from '@/types/blog/collection';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { ChevronDown, Layers } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useMemo, useState } from 'react';
@@ -34,10 +34,10 @@ export default function SeriesGuide({ collection, slug }: Props) {
 
   return (
     <section
-      className={clsx('mx-auto my-12', getFadeUpClass('animate-delay-200'))}
+      className={cn('mx-auto my-12', getFadeUpClass('animate-delay-200'))}
     >
       <nav
-        className={clsx(
+        className={cn(
           'relative overflow-hidden transition-all duration-300',
           'bg-neutral-50/50 backdrop-blur-md dark:bg-neutral-900/50',
           'rounded-2xl border-2 border-neutral-200 dark:border-neutral-800'
@@ -68,7 +68,7 @@ export default function SeriesGuide({ collection, slug }: Props) {
           </div>
           <ChevronDown
             size={20}
-            className={clsx(
+            className={cn(
               'text-neutral-400 transition-all duration-300',
               isOpen && 'rotate-180'
             )}
@@ -93,7 +93,7 @@ export default function SeriesGuide({ collection, slug }: Props) {
                     category.slug,
                     slug
                   )}
-                  className={clsx(
+                  className={cn(
                     'flex items-center gap-3 rounded-xl p-3 transition-all duration-200',
                     currentIndex === idx
                       ? 'bg-white ring-1 ring-neutral-200 dark:bg-neutral-800 dark:ring-neutral-700'
@@ -101,7 +101,7 @@ export default function SeriesGuide({ collection, slug }: Props) {
                   )}
                 >
                   <div
-                    className={clsx(
+                    className={cn(
                       'flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-black transition-all',
                       currentIndex === idx
                         ? 'bg-blue-600 text-white'
@@ -111,7 +111,7 @@ export default function SeriesGuide({ collection, slug }: Props) {
                     {idx + 1}
                   </div>
                   <span
-                    className={clsx(
+                    className={cn(
                       'font-semibold leading-relaxed',
                       currentIndex === idx
                         ? 'text-neutral-900 dark:text-white'

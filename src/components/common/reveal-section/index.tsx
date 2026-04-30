@@ -1,7 +1,7 @@
 'use client';
 
 import useIntersectionObserver from '@/hooks/window/use-intersection-observer';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useRef } from 'react';
 
 type Props = {
@@ -27,7 +27,7 @@ export default function RevealSection({
   return (
     <div
       ref={ref}
-      className={clsx(
+      className={cn(
         'transform transition-all duration-1000 ease-out',
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0',
         className

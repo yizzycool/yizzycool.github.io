@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useEffect, useMemo, useState } from 'react';
 import {
   BookCheck,
@@ -176,7 +176,7 @@ export default function Result({ text, result, isProcessing }: Props) {
       </div>
 
       <div
-        className={clsx(
+        className={cn(
           'relative h-[300px] w-full overflow-y-auto rounded-lg border px-4 py-3',
           'border-neutral-200 dark:border-neutral-700',
           'bg-white/80 dark:bg-neutral-900/80',
@@ -213,7 +213,7 @@ export default function Result({ text, result, isProcessing }: Props) {
                       <TooltipTrigger>
                         <span
                           key={idx}
-                          className={clsx(
+                          className={cn(
                             'transition-colors duration-300',
                             color?.hoverBg,
                             'border-b-2',
@@ -229,7 +229,7 @@ export default function Result({ text, result, isProcessing }: Props) {
                       >
                         <div
                           key={idx}
-                          className={clsx(
+                          className={cn(
                             'max-w-[min(90vw,_300px)] overflow-hidden',
                             'rounded-lg bg-blue-100 p-4 shadow-lg dark:bg-gray-800',
                             'text-xs text-neutral-700 dark:text-neutral-200',
@@ -241,7 +241,7 @@ export default function Result({ text, result, isProcessing }: Props) {
                             {type}
                           </div>
                           <div
-                            className={clsx(
+                            className={cn(
                               'space-y-4 overflow-hidden rounded',
                               'bg-black/10 p-2 dark:bg-white/10'
                             )}

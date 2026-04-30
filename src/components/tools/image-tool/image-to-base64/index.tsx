@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { FileCode, ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { isNull, size } from 'lodash';
@@ -80,7 +80,7 @@ export default function ImageToBase64() {
                 <Label icon={ImageIcon}>Image Preview</Label>
               </div>
               <div
-                className={clsx(
+                className={cn(
                   'relative flex h-[300px] w-full flex-col items-center rounded-lg border p-4',
                   'border-neutral-200 dark:border-neutral-700',
                   'bg-white/80 dark:bg-neutral-900/80',
@@ -118,7 +118,7 @@ export default function ImageToBase64() {
                 <CopyAction content={base64} />
               </div>
               <Textarea
-                className={clsx(
+                className={cn(
                   'h-[300px] w-full rounded-lg border px-4 py-3',
                   'resize-none font-mono text-sm leading-relaxed outline-none',
                   'border-neutral-200 dark:border-neutral-700',

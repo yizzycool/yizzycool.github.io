@@ -1,7 +1,7 @@
 'use client';
 
 import type { LucideIcon } from 'lucide-react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 
 type Props = {
   icon?: LucideIcon;
@@ -15,7 +15,7 @@ export default function CardTitle({
   className = '',
 }: Props) {
   return (
-    <div className={clsx('flex items-center gap-2', className)}>
+    <div className={cn('flex items-center gap-2', className)}>
       {!!Icon && <Icon className="h-5 w-5 text-neutral-500" />}
       {!!children && <h3 className="text-lg font-semibold">{children}</h3>}
     </div>

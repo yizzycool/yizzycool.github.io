@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { ChevronDown, List } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
@@ -18,13 +18,13 @@ export default function TocMobile({ toc }: Props) {
 
   return (
     <section
-      className={clsx(
+      className={cn(
         'mx-auto my-12 block lg:hidden',
         getFadeUpClass('animate-delay-200')
       )}
     >
       <nav
-        className={clsx(
+        className={cn(
           'relative overflow-hidden transition-all duration-300',
           'bg-neutral-50/50 backdrop-blur-md dark:bg-neutral-900/50',
           'rounded-2xl border-2 border-neutral-200 dark:border-neutral-800'
@@ -53,7 +53,7 @@ export default function TocMobile({ toc }: Props) {
           </div>
           <ChevronDown
             size={20}
-            className={clsx(
+            className={cn(
               'text-neutral-400 transition-all duration-300',
               isOpen && 'rotate-180'
             )}
@@ -71,7 +71,7 @@ export default function TocMobile({ toc }: Props) {
               className="overflow-hidden border-t border-neutral-200 dark:border-neutral-800"
             >
               <div
-                className={clsx(
+                className={cn(
                   'p-4 text-sm leading-normal',
                   '[&_*]:space-y-4 [&_*]:transition-all [&_*]:duration-300',
                   '[&_a:hover]:brightness-200 [&_a]:block',

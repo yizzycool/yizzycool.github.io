@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useRef, useState } from 'react';
 import { Image, LucideIcon, Upload } from 'lucide-react';
 
@@ -79,7 +79,7 @@ export default function FilePicker({
 
   return (
     <div
-      className={clsx(
+      className={cn(
         'group flex w-full cursor-pointer flex-col items-center rounded-lg px-4 py-12 transition-all sm:px-8',
         '[&_*]:pointer-events-none',
         'border-2 border-dashed border-neutral-300 hover:border-neutral-400 dark:border-neutral-700 dark:hover:border-neutral-600',
@@ -95,7 +95,7 @@ export default function FilePicker({
       data-dragging={isDragging}
     >
       <div
-        className={clsx(
+        className={cn(
           'pointer-events-none w-fit rounded-full bg-neutral-200 p-4 dark:bg-neutral-700',
           'data-[dragging=true]:bg-neutral-200 data-[dragging=true]:dark:bg-neutral-800'
         )}

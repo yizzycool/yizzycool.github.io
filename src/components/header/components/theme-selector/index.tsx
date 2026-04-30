@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { ForwardRefExoticComponent, RefAttributes, SVGProps } from 'react';
 import {
   CloseButton,
@@ -49,7 +49,7 @@ export default function ThemeSelector() {
   return (
     <Popover className="group relative flex justify-start">
       <PopoverButton
-        className={clsx(
+        className={cn(
           'flex items-center',
           'transition-all duration-200',
           'rounded-full p-2 focus:outline-none',
@@ -70,7 +70,7 @@ export default function ThemeSelector() {
       <PopoverPanel
         transition
         anchor="bottom end"
-        className={clsx(
+        className={cn(
           'z-50 mt-5 origin-top-right rounded-md py-2 text-sm/6 font-semibold',
           'border border-neutral-800/20 dark:border-white/20',
           'bg-white/95 backdrop-blur-lg dark:bg-neutral-800',
@@ -82,7 +82,7 @@ export default function ThemeSelector() {
         {Buttons.map((button, idx) => (
           <CloseButton
             key={idx}
-            className={clsx(
+            className={cn(
               'flex w-full cursor-pointer px-4 py-1 pr-6 hover:bg-sky-100/50 dark:hover:bg-neutral-700/50',
               'transition-all duration-300'
             )}

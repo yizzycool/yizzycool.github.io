@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import {
   arrow,
   autoUpdate,
@@ -165,12 +165,12 @@ export function TooltipPopup({
         ref={setTooltip}
         style={{ ...floating!.floatingStyles, ...styles }}
         {...interactions!.getFloatingProps()}
-        className={clsx('z-50', className)}
+        className={cn('z-50', className)}
       >
         {showArrow && (
           <div
             ref={arrowRef}
-            className={clsx('absolute size-3 rotate-45', arrowClassName)}
+            className={cn('absolute size-3 rotate-45', arrowClassName)}
             style={{
               left: floating!.middlewareData.arrow?.x ?? '',
               top: floating!.middlewareData.arrow?.y ?? '',

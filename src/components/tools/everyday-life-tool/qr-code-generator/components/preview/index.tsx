@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { LoaderCircle, QrCode } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -22,14 +22,14 @@ export default function Preview({ qrCodeUrl, inputText }: Props) {
 
   return (
     <div
-      className={clsx(
+      className={cn(
         'group relative mx-auto w-fit p-6',
         'overflow-hidden rounded-2xl',
         'border border-neutral-200 dark:border-neutral-700'
       )}
     >
       <div
-        className={clsx(
+        className={cn(
           'absolute -inset-4 z-10 backdrop-blur-sm',
           'pointer-events-none bg-neutral-100/50 dark:bg-neutral-800/50',
           'transition-opacity duration-300',
@@ -41,7 +41,7 @@ export default function Preview({ qrCodeUrl, inputText }: Props) {
       </div>
 
       <div
-        className={clsx(
+        className={cn(
           'relative',
           'transition-transform duration-500 hover:scale-[1.02] dark:border-neutral-800'
         )}

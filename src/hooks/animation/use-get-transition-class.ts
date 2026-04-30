@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useEffect, useState } from 'react';
 
 type Props = {
@@ -15,7 +15,7 @@ export default function useGetTransitionClass({ loaded = true }: Props = {}) {
   const slideBaseClass = 'animate-duration-1000';
 
   const getFadeUpClass = (delay = 'animate-delay-0') =>
-    clsx(
+    cn(
       slideBaseClass,
       delay,
       mounted && loaded ? 'animate-fade-up' : 'opacity-0'

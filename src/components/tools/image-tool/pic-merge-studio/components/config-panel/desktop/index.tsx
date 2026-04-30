@@ -3,7 +3,7 @@
 import type { FabricHelper } from '../../../types/fabric-helper';
 import type { ConfigHelper } from '../../../types/config-helper';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Download } from 'lucide-react';
 
 import Button from '@/components/common/button';
@@ -36,7 +36,7 @@ export default function ConfigPanelDesktop({
 
   return (
     <div
-      className={clsx(
+      className={cn(
         'sticky top-[68px] h-[calc(100dvh_-_68px)]',
         '-mb-20 -mr-4 -mt-8 sm:-mr-6 lg:-mr-12 lg:-mt-12',
         'overflow-hidden'

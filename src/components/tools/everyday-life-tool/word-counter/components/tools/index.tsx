@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { ArrowDown, ArrowUp, Eraser, Type, Wand2 } from 'lucide-react';
 import { capitalize } from 'lodash';
 
@@ -49,7 +49,7 @@ export default function Tools({ setText }: Props) {
 
   return (
     <div
-      className={clsx(
+      className={cn(
         'flex flex-wrap items-center gap-2 p-2',
         'rounded-2xl rounded-t-none',
         'bg-white dark:bg-neutral-900',
@@ -58,7 +58,7 @@ export default function Tools({ setText }: Props) {
     >
       <Label
         icon={Wand2}
-        className={clsx(
+        className={cn(
           'mr-2 flex items-center px-3',
           'text-xs font-black uppercase tracking-widest',
           'border-r border-neutral-200 dark:border-neutral-700',

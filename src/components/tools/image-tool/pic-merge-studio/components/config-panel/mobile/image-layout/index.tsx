@@ -19,7 +19,7 @@ import {
   SquareSquare,
   TextAlignStart,
 } from 'lucide-react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 
 import { useControlDrawer } from '../hooks/use-control-drawer';
 import Button from '@/components/common/button';
@@ -151,7 +151,7 @@ export default function ImageLayout({ setAlignment, setObjectFit }: Props) {
                   onClick={() => setObjectFit('contain')}
                 >
                   <div
-                    className={clsx(
+                    className={cn(
                       'flex h-[18px] w-[18px] items-center justify-center rounded-sm',
                       'border-2 border-neutral-900 dark:border-neutral-100'
                     )}
@@ -168,7 +168,7 @@ export default function ImageLayout({ setAlignment, setObjectFit }: Props) {
                   <div className="relative flex h-[18px] w-[24px] items-center">
                     <div className="h-[18px] w-[16px] bg-sky-200 dark:bg-sky-900" />
                     <div
-                      className={clsx(
+                      className={cn(
                         'h-[18px] w-[18px] overflow-hidden rounded-sm',
                         'border-2 border-neutral-900 dark:border-neutral-100'
                       )}

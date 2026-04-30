@@ -1,6 +1,6 @@
 import { type BlogCategoryData } from '@/types/blog/category';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion } from 'motion/react';
@@ -39,7 +39,7 @@ export default function CategoryAccordionItem({ category, onClick }: Props) {
     <li>
       <h2>
         <button
-          className={clsx(
+          className={cn(
             'group mt-1 flex w-full items-center justify-between rounded-md p-2 font-bold',
             'hover:bg-sky-600/10',
             'data-[active=true]:bg-sky-600/10 data-[active-article=true]:text-sky-500',
@@ -52,7 +52,7 @@ export default function CategoryAccordionItem({ category, onClick }: Props) {
           {category.name}
           <ChevronDown
             size={16}
-            className={clsx(
+            className={cn(
               'text-neutral-400 transition-transform duration-300',
               isOpen && 'rotate-180'
             )}
@@ -66,7 +66,7 @@ export default function CategoryAccordionItem({ category, onClick }: Props) {
           opacity: 1,
         }}
         transition={{ duration: 0.3, ease: 'easeInOut' }}
-        className={clsx(
+        className={cn(
           'ml-4 overflow-hidden border-neutral-400/50 pl-1 lg:border-l',
           getFadeUpClass('animate-delay-200')
         )}
@@ -79,7 +79,7 @@ export default function CategoryAccordionItem({ category, onClick }: Props) {
           return (
             <li key={article.shortTitle}>
               <Link
-                className={clsx(
+                className={cn(
                   'my-1 flex cursor-pointer items-center rounded-md p-2 text-sm',
                   'hover:bg-sky-600/10',
                   'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500'

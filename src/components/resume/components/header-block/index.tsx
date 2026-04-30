@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import SocialIcons from '@/components/common/social-icons';
 
@@ -10,7 +10,7 @@ export default function HeaderBlock() {
   return (
     <header>
       <h1
-        className={clsx(
+        className={cn(
           'text-center md:text-left',
           'bg-clip-text pb-4 text-4xl font-extrabold tracking-tight text-transparent md:text-6xl',
           'bg-gradient-to-r from-neutral-900 to-neutral-500',
@@ -21,7 +21,7 @@ export default function HeaderBlock() {
         Senior Front-end Engineer
       </h1>
       <div
-        className={clsx(
+        className={cn(
           'text-center md:text-left',
           'max-w-2xl text-lg leading-relaxed text-neutral-600 md:text-xl dark:text-neutral-400',
           getFadeUpClass('animate-delay-200')

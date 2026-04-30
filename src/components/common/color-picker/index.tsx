@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 
 type Props = {
   value: string;
@@ -23,7 +23,7 @@ export default function ColorPicker({
       type="color"
       value={value}
       onChange={onChange}
-      className={clsx(
+      className={cn(
         'h-10 w-10 cursor-pointer rounded-lg bg-transparent',
         className
       )}

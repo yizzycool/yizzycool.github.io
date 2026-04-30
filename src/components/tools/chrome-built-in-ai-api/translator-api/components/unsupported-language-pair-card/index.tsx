@@ -1,5 +1,5 @@
 import intlUtils from '@/utils/intl-utils';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Languages } from 'lucide-react';
 
 export default function UnsupportedLanguagePairCard({
@@ -13,7 +13,7 @@ export default function UnsupportedLanguagePairCard({
       <div className="absolute -inset-1 animate-pulse-glow rounded-3xl bg-gradient-to-r from-blue-600/30 to-purple-600/30 blur" />
 
       <div
-        className={clsx(
+        className={cn(
           'relative flex max-w-sm flex-col items-center rounded-3xl border p-5',
           'border-gray-100 bg-white shadow-xl',
           'dark:border-gray-700/50 dark:bg-[#1f1f1f]'
@@ -23,7 +23,7 @@ export default function UnsupportedLanguagePairCard({
         <div className="relative mb-3 flex h-16 w-16 items-center justify-center">
           {/* Outer Ring (Slow Spin) */}
           <div
-            className={clsx(
+            className={cn(
               'absolute inset-0 animate-[spin_4s_linear_infinite] rounded-full border-[3px]',
               'border-gray-200 border-t-blue-500/50',
               'dark:border-gray-700/30 dark:border-t-blue-500/50',
@@ -32,7 +32,7 @@ export default function UnsupportedLanguagePairCard({
           />
           {/* Inner Ring (Reverse Spin) */}
           <div
-            className={clsx(
+            className={cn(
               'absolute inset-2 animate-[spin_3s_linear_infinite_reverse] rounded-full border-[3px]',
               'border-gray-200 border-b-purple-500/50',
               'dark:border-gray-700/30 dark:border-b-purple-500/50'
@@ -41,7 +41,7 @@ export default function UnsupportedLanguagePairCard({
 
           {/* Center Icon */}
           <div
-            className={clsx(
+            className={cn(
               'relative z-10 flex h-6 w-6 items-center justify-center rounded-full shadow-inner',
               'bg-gray-800 text-gray-400',
               'dark:bg-gray-800 dark:text-gray-400'
@@ -56,7 +56,7 @@ export default function UnsupportedLanguagePairCard({
 
         {/* Text Content */}
         <h3
-          className={clsx(
+          className={cn(
             'mb-2 text-xl font-bold tracking-tight',
             'text-gray-900',
             'dark:text-gray-200'

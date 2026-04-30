@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import Card from '@/components/common/card';
 import { Hash, Info } from 'lucide-react';
 import { RegexColors } from '../..';
@@ -22,7 +22,7 @@ export default function DetailCard({ matches }: Props) {
           {matches.slice(0, 50).map((match, i) => (
             <div
               key={i}
-              className={clsx(
+              className={cn(
                 'rounded-lg border p-3 transition-all animate-in slide-in-from-right-4',
                 'border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900',
                 'hover:shadow-md'
@@ -50,7 +50,7 @@ export default function DetailCard({ matches }: Props) {
                   {match.slice(1).map((group, gi) => (
                     <div key={gi} className="flex gap-2 font-mono text-sm">
                       <span
-                        className={clsx(
+                        className={cn(
                           'font-bold opacity-70',
                           RegexColors[gi % RegexColors.length].text
                         )}

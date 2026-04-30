@@ -2,7 +2,7 @@
 
 import type { CanvasBorder } from '../../../../types/config';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Ban, Palette, SquareDashedTopSolid } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { isUndefined } from 'lodash';
@@ -108,7 +108,7 @@ export default function Border({
                 size="sm"
                 bordered
                 onClick={resetBorder}
-                className={clsx(
+                className={cn(
                   'aspect-square w-full',
                   'border-2 !p-0 transition-all',
                   isColorActive('') && 'border-sky-500 dark:border-sky-600'
@@ -126,11 +126,11 @@ export default function Border({
                   size="sm"
                   bordered
                   onClick={() => handleColorSelect(hex)}
-                  className={clsx(
+                  className={cn(
                     'aspect-square w-full',
                     'border-2 !p-0 transition-all',
                     isColorActive(hex) &&
-                      clsx(
+                      cn(
                         'text-sky-600 dark:text-sky-600',
                         'border-sky-500 dark:border-sky-600'
                       )

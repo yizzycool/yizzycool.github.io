@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -101,7 +101,7 @@ export default function BarChart({
   return (
     <div className="flex w-full flex-col">
       <div
-        className={clsx(
+        className={cn(
           'mb-8 flex justify-between border-b pb-8',
           'border-neutral-200 dark:border-neutral-700'
         )}

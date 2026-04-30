@@ -2,7 +2,7 @@
 
 import type { CanvasBackground } from '../../../../types/config';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Palette } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -85,11 +85,11 @@ export default function Background({ background, setBackgroundColor }: Props) {
                 size="sm"
                 bordered
                 onClick={() => handleColorSelect(hex)}
-                className={clsx(
+                className={cn(
                   'aspect-square w-full',
                   'border-2 !p-0 transition-all',
                   isColorActive(hex) &&
-                    clsx(
+                    cn(
                       'text-sky-600 dark:text-sky-600',
                       'border-sky-500 dark:border-sky-600',
                       'bg-sky-100/50 dark:bg-sky-900/50',

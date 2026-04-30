@@ -2,7 +2,7 @@
 
 import type { filters } from 'fabric';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import { xor } from 'lodash';
@@ -44,10 +44,10 @@ export default function Filters({ filters, setFilters }: Props) {
             className="relative cursor-pointer space-y-1"
           >
             <div
-              className={clsx(
+              className={cn(
                 'aspect-square rounded border border-transparent p-1',
                 isActive(type) &&
-                  clsx(
+                  cn(
                     'text-sky-600 dark:text-sky-600',
                     'border-sky-500 dark:border-sky-600',
                     'bg-sky-100/50 dark:bg-sky-900/50',
@@ -56,7 +56,7 @@ export default function Filters({ filters, setFilters }: Props) {
               )}
             >
               <div
-                className={clsx(
+                className={cn(
                   'relative h-full w-full overflow-hidden rounded-sm'
                 )}
               >
@@ -72,7 +72,7 @@ export default function Filters({ filters, setFilters }: Props) {
             {/* Order number */}
             {isActive(type) && (
               <div
-                className={clsx(
+                className={cn(
                   'absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2',
                   'flex h-5 w-5 items-center justify-center overflow-hidden rounded-full',
                   'border-2 border-neutral-900/70 dark:border-white/50',

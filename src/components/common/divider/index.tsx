@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 
 type Props = {
   orientation?: 'vertical' | 'horizontal';
@@ -13,7 +13,7 @@ export default function Divider({
 }: Props) {
   return (
     <div
-      className={clsx(
+      className={cn(
         'bg-neutral-200 dark:bg-neutral-700',
         orientation === 'vertical' ? 'w-px self-stretch' : 'h-px w-full',
         className

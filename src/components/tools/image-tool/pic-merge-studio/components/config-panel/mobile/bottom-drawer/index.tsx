@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { X } from 'lucide-react';
 import { Transition, TransitionChild } from '@headlessui/react';
 import { useEffect, useState } from 'react';
@@ -56,7 +56,7 @@ export default function BottomDrawer({ isOpen, onClose, children }: Props) {
         unmount={false}
       >
         <div
-          className={clsx(
+          className={cn(
             'absolute bottom-0 left-0 right-0 min-h-[200px] overflow-hidden',
             'rounded-t-3xl',
             'bg-white/80 backdrop-blur dark:bg-neutral-900/80'

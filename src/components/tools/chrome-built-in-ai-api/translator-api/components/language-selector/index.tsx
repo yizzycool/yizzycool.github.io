@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { MouseEvent, useMemo, useState } from 'react';
 import { Check, ChevronDown, Globe, Search, X } from 'lucide-react';
 import { isEmpty, filter, startsWith } from 'lodash';
@@ -60,7 +60,7 @@ export default function LanguageSelector({
   return (
     <div className="text-sm font-semibold">
       <button
-        className={clsx(
+        className={cn(
           'm-auto flex items-center justify-center rounded-md px-3 py-2 transition-all',
           'hover:bg-neutral-200 dark:hover:bg-neutral-700',
           'text-neutral-500 dark:text-neutral-400'
@@ -85,7 +85,7 @@ export default function LanguageSelector({
         </div>
         {/* Header: title and search */}
         <div
-          className={clsx(
+          className={cn(
             'z-10 flex flex-col',
             'bg-white dark:bg-[#111]',
             'border-b border-slate-100 dark:border-white/5'
@@ -101,7 +101,7 @@ export default function LanguageSelector({
               <input
                 type="text"
                 placeholder="Search language..."
-                className={clsx(
+                className={cn(
                   'w-full rounded-2xl border-none py-3.5 pl-12 pr-4 font-medium outline-none transition-all',
                   'bg-neutral-100 dark:bg-white/5',
                   'text-neutral-900 placeholder:text-neutral-400 dark:text-neutral-100',

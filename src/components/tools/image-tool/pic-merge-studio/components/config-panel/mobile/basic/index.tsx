@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Image, LayersIcon, Replace, Trash2, Upload } from 'lucide-react';
 import { useRef } from 'react';
 
@@ -50,7 +50,7 @@ export default function Basic({
               bordered
               icon={hasImageSrc ? Replace : Upload}
               onClick={handleReplace}
-              className={clsx('font-black', !hasImageSrc && 'col-span-2')}
+              className={cn('font-black', !hasImageSrc && 'col-span-2')}
             >
               {hasImageSrc ? 'Replace' : 'Upload'}
             </Button>

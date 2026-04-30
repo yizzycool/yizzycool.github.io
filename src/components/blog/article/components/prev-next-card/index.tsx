@@ -4,7 +4,7 @@ import type { BlogArticleData } from '@/types/blog/article';
 
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 
 import strapiUtils from '@/utils/strapi-utils';
 
@@ -24,7 +24,7 @@ export default function PrevNextCard({ type, article: data }: Props) {
     <li>
       <Link
         href={strapiUtils.toBlogCategoryArticleUrl(category.slug, data.slug)}
-        className={clsx(
+        className={cn(
           'group relative flex items-center gap-4',
           'rounded-2xl border p-6 transition-all duration-300 ease-out',
           'border-neutral-200 hover:border-blue-500 dark:border-neutral-700 dark:hover:border-blue-400',
@@ -35,7 +35,7 @@ export default function PrevNextCard({ type, article: data }: Props) {
         {/* ArrowLeft */}
         {!isNext && (
           <div
-            className={clsx(
+            className={cn(
               'flex h-10 w-10 min-w-10 items-center justify-center rounded-full transition-colors duration-300',
               'text-neutral-600 group-hover:text-blue-600 dark:text-neutral-400 dark:group-hover:text-blue-400',
               'bg-neutral-100 group-hover:bg-blue-50 dark:bg-neutral-800 dark:group-hover:bg-blue-900/30'
@@ -50,7 +50,7 @@ export default function PrevNextCard({ type, article: data }: Props) {
 
         <div className="flex flex-col overflow-hidden">
           <span
-            className={clsx(
+            className={cn(
               'mb-1 text-xs font-bold uppercase tracking-wider transition-colors duration-300',
               'text-neutral-400 group-hover:text-blue-500 dark:text-neutral-500 dark:group-hover:text-blue-400'
             )}
@@ -58,7 +58,7 @@ export default function PrevNextCard({ type, article: data }: Props) {
             {isNext ? '下一篇文章' : '上一篇文章'}
           </span>
           <h3
-            className={clsx(
+            className={cn(
               'line-clamp-1 text-base font-semibold transition-colors duration-300',
               'text-neutral-800 group-hover:text-blue-600 md:text-lg dark:text-neutral-100 dark:group-hover:text-blue-300'
             )}
@@ -75,7 +75,7 @@ export default function PrevNextCard({ type, article: data }: Props) {
         {/* ArrowRight */}
         {isNext && (
           <div
-            className={clsx(
+            className={cn(
               'flex h-10 w-10 min-w-10 items-center justify-center rounded-full transition-colors duration-300',
               'text-neutral-600 group-hover:text-blue-600 dark:text-neutral-400 dark:group-hover:text-blue-400',
               'bg-neutral-100 group-hover:bg-blue-50 dark:bg-neutral-800 dark:group-hover:bg-blue-900/30'

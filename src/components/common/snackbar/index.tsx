@@ -3,7 +3,7 @@
 import type { Rounded } from '@/types/common';
 import type { ButtonSize, ButtonVariant } from '@/types/common/button';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { LucideIcon, X } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
@@ -87,7 +87,7 @@ export default function Snackbar({
     setMessage(content);
   }, [content]);
 
-  const baseStyles = clsx(
+  const baseStyles = cn(
     'fixed z-[60] flex justify-center backdrop-blur-md overflow-hidden',
     'transition-all duration-300 font-medium text-left break-all'
   );
@@ -100,27 +100,27 @@ export default function Snackbar({
   };
 
   const variants = {
-    primary: clsx(
+    primary: cn(
       'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 border-white dark:border-black'
     ),
-    secondary: clsx(
+    secondary: cn(
       'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100 border-neutral-600 dark:border-neutral-400'
     ),
-    ghost: clsx('text-neutral-600 dark:text-neutral-400 border-neutral-500/20'),
-    outline: clsx(
+    ghost: cn('text-neutral-600 dark:text-neutral-400 border-neutral-500/20'),
+    outline: cn(
       'border border-neutral-200 text-neutral-700 dark:border-neutral-700 dark:text-neutral-300'
     ),
-    error: clsx(
+    error: cn(
       'text-red-600 dark:text-red-400 bg-red-100/50 dark:bg-red-800/10 border-red-500/20'
     ),
-    'dark-sky': clsx('text-white bg-sky-600 dark:bg-sky-900 border-sky-500/20'),
-    neutral: clsx(
+    'dark-sky': cn('text-white bg-sky-600 dark:bg-sky-900 border-sky-500/20'),
+    neutral: cn(
       'bg-neutral-100 border-neutral-500/20 text-neutral-600 dark:bg-neutral-700 dark:text-neutral-400'
     ),
-    success: clsx(
+    success: cn(
       'bg-green-500/10 border-green-500/20 text-green-600 dark:text-green-400'
     ),
-    blue: clsx(
+    blue: cn(
       'bg-blue-100 border-blue-500/20 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400'
     ),
   };
@@ -166,7 +166,7 @@ export default function Snackbar({
 
   return (
     <div
-      className={clsx(
+      className={cn(
         getFadeUpClass(),
         baseStyles,
         variants[variant],
@@ -184,7 +184,7 @@ export default function Snackbar({
       {Icon && (
         <Icon
           size={iconSize}
-          className={clsx(iconMargin, iconClassName)}
+          className={cn(iconMargin, iconClassName)}
           strokeWidth={iconStrokeWidth}
         />
       )}

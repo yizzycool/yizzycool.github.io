@@ -1,7 +1,7 @@
 'use client';
 
 import { Description, Field, Label } from '@headlessui/react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 
 type Props = {
   title?: string;
@@ -43,7 +43,7 @@ export default function Slider({
       )}
       <input
         id={id}
-        className={clsx(
+        className={cn(
           'mt-4 h-2 w-full cursor-pointer appearance-none rounded-lg bg-neutral-200 dark:bg-neutral-700',
           '[&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none',
           '[&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500 [&::-webkit-slider-thumb]:transition-colors',

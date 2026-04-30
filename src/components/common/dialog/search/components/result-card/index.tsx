@@ -2,7 +2,7 @@
 
 import type { FuseResult } from 'fuse.js';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import urlJoin from 'url-join';
 import { CornerDownLeft, FileText, LucideIcon } from 'lucide-react';
 import { useMemo } from 'react';
@@ -47,7 +47,7 @@ export default function ResultCard({
   return (
     <Link
       id={`search-result-${data.idx}`}
-      className={clsx(
+      className={cn(
         'relative flex w-full items-start gap-3 rounded-xl p-3 text-left transition-colors',
         focused && 'bg-neutral-50 dark:bg-neutral-800/60'
       )}
@@ -57,7 +57,7 @@ export default function ResultCard({
     >
       {/* Left: Icon Box */}
       <div
-        className={clsx(
+        className={cn(
           'mt-1 shrink-0 rounded-lg p-2 transition-colors',
           'text-neutral-500 dark:text-neutral-400',
           'bg-neutral-100 dark:bg-neutral-800',
@@ -73,7 +73,7 @@ export default function ResultCard({
         {/* Title Row */}
         <div className="mb-1.5 flex items-center justify-between">
           <span
-            className={clsx(
+            className={cn(
               'truncate text-[15px] font-medium transition-colors',
               'text-neutral-900 dark:text-neutral-200',
               focused && 'text-blue-500 dark:text-blue-500'
@@ -94,7 +94,7 @@ export default function ResultCard({
 
       {/* Right: Enter Icon (Only visible on hover) */}
       <div
-        className={clsx(
+        className={cn(
           'absolute right-4 top-1/2',
           'text-neutral-400 dark:text-neutral-500',
           'transition-all duration-200',

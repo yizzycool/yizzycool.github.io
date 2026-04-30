@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 
@@ -13,7 +13,7 @@ export default function TocDesktop({ toc }: Props) {
 
   return (
     <aside
-      className={clsx(
+      className={cn(
         'sticky top-[68px] h-[calc(100dvh_-_68px)] w-[270px] shrink-0 overflow-y-auto',
         'hidden lg:block',
         'border-l border-neutral-400/20',
@@ -22,11 +22,11 @@ export default function TocDesktop({ toc }: Props) {
       )}
     >
       <nav aria-label="table of content">
-        <h2 className={clsx('font-bold', getFadeUpClass('animate-delay-150'))}>
+        <h2 className={cn('font-bold', getFadeUpClass('animate-delay-150'))}>
           Table of Content
         </h2>
         <div
-          className={clsx(
+          className={cn(
             'mt-6 text-sm leading-normal',
             '[&_*]:space-y-3 [&_*]:transition-all [&_*]:duration-300',
             '[&_a:hover]:brightness-200 [&_a]:block',

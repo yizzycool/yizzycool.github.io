@@ -2,7 +2,7 @@
 
 import type { LucideIcon } from 'lucide-react';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 
 type Props = {
   text: string;
@@ -17,7 +17,7 @@ export default function GroupTitle({
 }: Props) {
   return (
     <div
-      className={clsx(
+      className={cn(
         'flex items-center gap-2 text-neutral-600 dark:text-neutral-300',
         className
       )}

@@ -2,7 +2,7 @@
 
 import type { BlogArticle } from '@/types/blog';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import urlJoin from 'url-join';
@@ -22,7 +22,7 @@ export default function Breadcrumb({ article }: Props) {
   return (
     <nav aria-label="breadcrumb">
       <ol
-        className={clsx(
+        className={cn(
           'mb-8 flex items-center gap-1 text-sm text-neutral-500 dark:text-neutral-400',
           getFadeUpClass()
         )}

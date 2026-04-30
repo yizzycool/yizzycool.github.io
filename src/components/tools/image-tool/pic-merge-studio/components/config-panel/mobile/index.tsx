@@ -3,7 +3,7 @@
 import type { ConfigHelper } from '../../../types/config-helper';
 import type { FabricHelper } from '../../../types/fabric-helper';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 
 import Tabs from './tabs';
 import UploadBlock from './upload-block';
@@ -33,7 +33,7 @@ export default function ConfigPanelMobile({
 
   return (
     <div
-      className={clsx(
+      className={cn(
         'sticky bottom-0 border-t border-neutral-700',
         'w-[100vw] min-w-[100vw] max-w-[100vw]',
         '-mx-4 -mb-20 mt-20 sm:-mx-6',

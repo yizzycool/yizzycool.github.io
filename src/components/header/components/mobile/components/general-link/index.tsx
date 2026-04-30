@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 
@@ -17,7 +17,7 @@ export default function GeneralLink({
 }: Props) {
   return (
     <Link
-      className={clsx(
+      className={cn(
         'block rounded-lg px-3 py-4 font-medium',
         'transition-all duration-300',
         'hover:bg-neutral-200 dark:hover:bg-neutral-800/50'

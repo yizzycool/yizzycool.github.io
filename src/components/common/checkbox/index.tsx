@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Check } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -44,7 +44,7 @@ export default function CheckBox<T extends readonly string[]>({
   const themeWrappers = {
     base: 'space-y-4',
     card: 'grid grid-cols-1 gap-4',
-    list: clsx(
+    list: cn(
       'overflow-hidden rounded-xl',
       'divide-y divide-neutral-100 dark:divide-neutral-800',
       'border border-neutral-200 dark:border-neutral-700',
@@ -54,13 +54,13 @@ export default function CheckBox<T extends readonly string[]>({
 
   const themeLabels = {
     base: 'flex items-center space-x-3 cursor-pointer group',
-    card: clsx(
+    card: cn(
       'relative flex flex-col p-5 rounded-2xl cursor-pointer transition-all overflow-hidden',
       'border-2 border-neutral-200 dark:border-neutral-700',
       'hover:border-neutral-400 dark:hover:border-neutral-600',
       'peer-checked:border-neutral-900 has-[:checked]:border-neutral-900 has-[:checked]:bg-neutral-50 dark:has-[:checked]:bg-neutral-900/50'
     ),
-    list: clsx(
+    list: cn(
       'group flex cursor-pointer items-center justify-between p-4',
       'transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50'
     ),
@@ -83,19 +83,15 @@ export default function CheckBox<T extends readonly string[]>({
 
   return (
     <div
-      className={clsx(
-        baseWrapperStyles,
-        themeWrappers[theme],
-        wrapperClassName
-      )}
+      className={cn(baseWrapperStyles, themeWrappers[theme], wrapperClassName)}
     >
       {options.map((option, idx) => (
         <label
           key={option + idx}
-          className={clsx(themeLabels[theme], labelClassName)}
+          className={cn(themeLabels[theme], labelClassName)}
         >
           <div
-            className={clsx(
+            className={cn(
               theme === 'card'
                 ? 'flex flex-row-reverse items-start justify-between'
                 : 'flex items-center space-x-4'
@@ -104,7 +100,7 @@ export default function CheckBox<T extends readonly string[]>({
             <div className="relative flex items-center">
               <input
                 type="checkbox"
-                className={clsx(
+                className={cn(
                   'peer h-5 w-5 cursor-pointer appearance-none transition-all',
                   'border border-neutral-300 dark:border-neutral-700',
                   iconStyles[iconStyle]
@@ -114,7 +110,7 @@ export default function CheckBox<T extends readonly string[]>({
               />
               {iconStyle === 'tick' ? (
                 <Check
-                  className={clsx(
+                  className={cn(
                     'pointer-events-none transition-all',
                     'absolute left-1/2 top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2',
                     'stroke-white opacity-0 peer-checked:opacity-100 dark:stroke-neutral-900'
@@ -123,7 +119,7 @@ export default function CheckBox<T extends readonly string[]>({
                 />
               ) : (
                 <div
-                  className={clsx(
+                  className={cn(
                     'absolute inset-0 m-1',
                     'bg-neutral-900 dark:bg-neutral-100',
                     'scale-0 transition-transform peer-checked:scale-100',

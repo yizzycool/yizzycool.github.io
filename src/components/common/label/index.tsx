@@ -1,7 +1,7 @@
 'use client';
 
 import type { LucideIcon } from 'lucide-react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 
 type Props = {
   htmlFor?: string;
@@ -19,14 +19,14 @@ export default function Label({
   return !!htmlFor ? (
     <label
       htmlFor={htmlFor}
-      className={clsx('block flex items-center gap-2 font-semibold', className)}
+      className={cn('block flex items-center gap-2 font-semibold', className)}
     >
       {!!Icon && <Icon className="inline-block" size={16} />}
       <span>{children}</span>
     </label>
   ) : (
     <div
-      className={clsx('block flex items-center gap-2 font-semibold', className)}
+      className={cn('block flex items-center gap-2 font-semibold', className)}
     >
       {!!Icon && <Icon className="inline-block" size={16} />}
       <span>{children}</span>

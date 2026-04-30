@@ -2,7 +2,7 @@
 
 import type { ExtraProps } from 'react-markdown';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { ExternalLink } from 'lucide-react';
 
 export default function LinkParser(
@@ -32,7 +32,7 @@ export default function LinkParser(
       href={href}
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
-      className={clsx(
+      className={cn(
         'font-medium transition-all duration-300 ease-in-out',
         // make underline with background gradient
         'bg-no-repeat [background-position:0_100%] [background-size:0%_2px]',
@@ -44,7 +44,7 @@ export default function LinkParser(
       {children}
       {isExternal && (
         <ExternalLink
-          className={clsx(
+          className={cn(
             'ml-1 inline-flex h-4 w-4 align-middle',
             '-translate-y-0.5'
           )}

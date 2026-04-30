@@ -1,6 +1,6 @@
 import type { BlogArticle } from '@/types/blog';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useEffect, useRef, useState } from 'react';
 import { get } from 'lodash';
 
@@ -33,7 +33,7 @@ export default function Banner({ article }: Props) {
 
   return (
     <figure
-      className={clsx(
+      className={cn(
         'relative mb-20 mt-10',
         getFadeUpClass('animate-delay-300')
       )}
@@ -41,7 +41,7 @@ export default function Banner({ article }: Props) {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         ref={imgRef}
-        className={clsx(
+        className={cn(
           'aspect-video w-full object-cover',
           bannerLoaded ? 'opacity-100' : 'opacity-0'
         )}

@@ -2,7 +2,7 @@
 
 import type { BlogCategory } from '@/types/blog';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Home, Menu, UserRound, X } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
@@ -55,7 +55,7 @@ export default function HeaderMobile({
         className="w-screen !max-w-md"
       >
         <div
-          className={clsx(
+          className={cn(
             'flex h-full flex-col overflow-hidden py-6 shadow-2xl',
             'bg-white/90 backdrop-blur-md dark:bg-neutral-900/95'
           )}

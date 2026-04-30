@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useMemo } from 'react';
 import { forEach, map, isUndefined } from 'lodash';
 
@@ -40,7 +40,7 @@ export default function PatternVisualizer({ pattern }: Props) {
     if (idx in groupInfo) {
       const groupIdx = groupInfo[idx];
       const color = RegexColors[groupIdx % RegexColors.length];
-      return clsx('font-bold', color.text);
+      return cn('font-bold', color.text);
     }
   };
 

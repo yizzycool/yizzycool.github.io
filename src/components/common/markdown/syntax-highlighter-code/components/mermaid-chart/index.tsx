@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -90,7 +90,7 @@ export default function MermaidChart({ code, metadata }: Props) {
         layoutId={randomLayoutId}
         dangerouslySetInnerHTML={{ __html: svg }}
         onClick={() => setIsFullscreen(true)}
-        className={clsx(
+        className={cn(
           'block max-h-[400px] w-fit max-w-full',
           '*:h-full *:max-h-[400px] *:max-w-full',
           'cursor-zoom-in',
@@ -103,7 +103,7 @@ export default function MermaidChart({ code, metadata }: Props) {
           <ImagePopup onClose={() => setIsFullscreen(false)}>
             <motion.div
               layoutId={randomLayoutId}
-              className={clsx(
+              className={cn(
                 'max-w-[calc(100vw_-_40px)] md:max-w-[90vw]',
                 'max-h-[calc(100dvh_-_40px)] md:max-h-[85dvh]',
                 '*:h-full *:w-full'

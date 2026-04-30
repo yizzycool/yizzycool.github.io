@@ -3,7 +3,7 @@
 import type { Rounded } from '@/types/common';
 import type { BadgeSize, BadgeVariant } from '@/types/common/badge';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { LucideIcon } from 'lucide-react';
 import { useMemo } from 'react';
 
@@ -53,11 +53,11 @@ export default function Badge({
   };
 
   const sizes = {
-    xs: clsx('text-xs', !!children ? 'px-2 py-0.5' : 'p-1'),
-    sm: clsx('text-sm', !!children ? 'px-3 py-1' : 'p-1.5'),
-    base: clsx('text-base', !!children ? 'px-4 py-1.5' : 'p-2'),
-    lg: clsx('text-lg', !!children ? 'px-5 py-2' : 'p-2.5'),
-    xl: clsx('text-xl', !!children ? 'px-6 py-2.5 ' : 'p-3'),
+    xs: cn('text-xs', !!children ? 'px-2 py-0.5' : 'p-1'),
+    sm: cn('text-sm', !!children ? 'px-3 py-1' : 'p-1.5'),
+    base: cn('text-base', !!children ? 'px-4 py-1.5' : 'p-2'),
+    lg: cn('text-lg', !!children ? 'px-5 py-2' : 'p-2.5'),
+    xl: cn('text-xl', !!children ? 'px-6 py-2.5 ' : 'p-3'),
   };
 
   const roundeds = {

@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Code2, Layers, LayoutTemplate, Terminal } from 'lucide-react';
 import { useState } from 'react';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
@@ -56,7 +56,7 @@ export default function Intro() {
             {/* Headlines */}
             <div className="flex w-full flex-col items-center space-y-4 lg:items-start">
               <h2
-                className={clsx(
+                className={cn(
                   'text-4xl font-extrabold tracking-tight text-neutral-900 md:text-5xl lg:text-7xl dark:text-white',
                   getFadeUpClass('animate-delay-200')
                 )}
@@ -68,7 +68,7 @@ export default function Intro() {
               </h2>
 
               <div
-                className={clsx(
+                className={cn(
                   'flex h-12 items-center justify-center text-xl font-medium text-neutral-500 md:text-2xl lg:justify-start dark:text-neutral-400',
                   getFadeUpClass('animate-delay-300')
                 )}
@@ -79,7 +79,7 @@ export default function Intro() {
 
             {/* Description */}
             <p
-              className={clsx(
+              className={cn(
                 'text-md max-w-lg leading-relaxed text-neutral-500 dark:text-neutral-400',
                 getFadeUpClass('animate-delay-500')
               )}
@@ -91,7 +91,7 @@ export default function Intro() {
 
             {/* Tech Stack */}
             <div
-              className={clsx(
+              className={cn(
                 'flex flex-wrap justify-center gap-3 lg:justify-start',
                 getFadeUpClass('animate-delay-700')
               )}
@@ -120,7 +120,7 @@ export default function Intro() {
           </div>
           {/* Right Column - Avatar */}
           <div
-            className={clsx(
+            className={cn(
               'relative order-1 flex justify-center lg:order-2 lg:justify-end',
               getFadeUpClass('animate-delay-500')
             )}
@@ -128,7 +128,7 @@ export default function Intro() {
             <div className="group relative">
               {/* Offset Border */}
               <div
-                className={clsx(
+                className={cn(
                   'absolute left-4 top-4 h-full w-full rounded-2xl border-2 border-neutral-300 dark:border-neutral-700',
                   'transition-transform duration-500 group-hover:translate-x-2 group-hover:translate-y-2'
                 )}
@@ -136,7 +136,7 @@ export default function Intro() {
 
               {/* Image Card */}
               <div
-                className={clsx(
+                className={cn(
                   'relative h-72 w-72 overflow-hidden rounded-2xl border-2 border-neutral-900 bg-white shadow-2xl md:h-96 md:w-96 dark:border-white dark:bg-neutral-900',
                   'transition-transform duration-500 hover:-translate-y-2'
                 )}
@@ -145,7 +145,7 @@ export default function Intro() {
                   priority
                   fetchPriority="high"
                   loading="eager"
-                  className={clsx(
+                  className={cn(
                     'm-auto rounded object-contain object-center',
                     'group-hover:contrast-110 transition-all duration-500 ease-in-out group-hover:scale-110',
                     avatarLoaded ? 'opacity-100' : 'opacity-0'
@@ -160,7 +160,7 @@ export default function Intro() {
 
               {/* Top Right gogogo */}
               <div
-                className={clsx(
+                className={cn(
                   'pointer-events-none absolute -right-12 -top-16 z-20 opacity-0',
                   'transition-all duration-300 group-hover:-translate-y-2 group-hover:translate-x-2 group-hover:opacity-100'
                 )}
@@ -192,7 +192,7 @@ export default function Intro() {
 
         {/* Footer Hint */}
         <div
-          className={clsx(
+          className={cn(
             'mt-12 w-full text-center',
             getFadeUpClass('animate-delay-[1200ms]')
           )}

@@ -1,6 +1,6 @@
 import 'katex/dist/katex.min.css'; // Katex
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math'; // Katex
@@ -12,7 +12,7 @@ import SyntaxHighlighterCode from '../syntax-highlighter-code';
 import LinkParser from '../link-parser';
 import ImageParser from '../image-parser';
 
-const ProseClass = clsx(
+const ProseClass = cn(
   // prose - base setup
   'prose',
   'prose-neutral',
@@ -47,7 +47,7 @@ type Props = {
 export default function ProseMarkdown({ children, className = '' }: Props) {
   return (
     <Markdown
-      className={clsx(ProseClass, className)}
+      className={cn(ProseClass, className)}
       remarkPlugins={[remarkMath, [remarkGfm, { singleTilde: false }]]}
       rehypePlugins={[rehypeKatex, rehypeRaw, rehypeSlug]}
       components={{

@@ -1,6 +1,6 @@
 import type { RegexColorType } from '../../../..';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useMemo } from 'react';
 import { forEach, filter, map } from 'lodash';
 
@@ -116,7 +116,7 @@ export default function HighlightMark({
   return (
     <div
       aria-hidden="true"
-      className={clsx(
+      className={cn(
         'absolute inset-0 z-10 w-full px-4 py-3',
         'pointer-events-none select-none',
         'whitespace-pre-wrap break-words font-mono text-base leading-loose',
@@ -130,7 +130,7 @@ export default function HighlightMark({
               isGroup ? (
                 <span
                   key={idx}
-                  className={clsx(
+                  className={cn(
                     'rounded-sm transition-colors duration-200',
                     color?.bg
                   )}
@@ -143,7 +143,7 @@ export default function HighlightMark({
             )}
             {/* Ring */}
             <div
-              className={clsx(
+              className={cn(
                 'absolute -bottom-[2px] -left-[2px] -right-[2px] -top-[2px]',
                 'rounded-sm border border-neutral-400/50 dark:border-neutral-400/50'
               )}

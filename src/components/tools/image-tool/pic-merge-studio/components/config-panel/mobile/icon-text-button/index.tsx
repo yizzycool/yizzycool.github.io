@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { LucideIcon } from 'lucide-react';
 
 import Button from '@/components/common/button';
@@ -17,7 +17,7 @@ export default function IconTextButton({ icon: Icon, text, onClick }: Props) {
       variant="ghost"
       rounded="none"
       onClick={onClick}
-      className={clsx(
+      className={cn(
         'flex-col items-center space-y-2 !px-2 hover:bg-transparent dark:hover:bg-transparent'
       )}
     >

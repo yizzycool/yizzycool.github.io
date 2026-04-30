@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Type } from 'lucide-react';
 import Badge from '@/components/common/badge';
 import Card from '@/components/common/card';
@@ -47,7 +47,7 @@ export default function TestCard({
 
       {/* Textarea + Highlighting Overlay */}
       <div
-        className={clsx(
+        className={cn(
           'relative h-[300px] overflow-auto',
           'rounded-lg border border-neutral-200 dark:border-neutral-700',
           'bg-white/80 dark:bg-neutral-900/80',
@@ -65,7 +65,7 @@ export default function TestCard({
 
         <textarea
           id="regex-tester-textarea"
-          className={clsx(
+          className={cn(
             'block min-h-full w-full bg-transparent px-4 py-3',
             'resize-none text-base leading-loose outline-none',
             'text-neutral-700 dark:text-neutral-200',

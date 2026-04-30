@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Bot, SendHorizonal } from 'lucide-react';
 import { ChangeEventHandler, useRef, useState } from 'react';
 import { slice, last, size, isEmpty, trim } from 'lodash';
@@ -84,10 +84,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
               <div
                 key={`${result.role}-${idx}`}
                 id={`${result.role}-${idx}`}
-                className={clsx(
-                  'relative flex items-start',
-                  idx !== 0 && 'mt-8'
-                )}
+                className={cn('relative flex items-start', idx !== 0 && 'mt-8')}
               >
                 {result.role === 'assistant' && (
                   <div className="relative mx-2 inline-block rounded-full bg-gradient-to-br from-indigo-500 to-blue-600 p-1">
@@ -99,7 +96,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
                   </div>
                 )}
                 <ProseMarkdown
-                  className={clsx(
+                  className={cn(
                     'w-fit !max-w-[80%]',
                     result.role === 'user' &&
                       'ml-auto !max-w-[60%] rounded-xl bg-neutral-800 px-5 py-2'
@@ -113,7 +110,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
         </div>
       </div>
       <div
-        className={clsx(
+        className={cn(
           'sticky -bottom-1 left-0 right-0',
           'bg-gradient-to-t from-neutral-900 from-50% to-transparent',
           '-mx-4 sm:-mx-6 lg:-mx-12',
@@ -122,7 +119,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
         )}
       >
         <div
-          className={clsx(
+          className={cn(
             'relative flex w-full items-center rounded-[30px] border px-4 py-2 transition-colors',
             'border-neutral-200 dark:border-neutral-700',
             'bg-white/20 dark:bg-neutral-900/20',
@@ -132,7 +129,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
           {/* Placeholder  */}
           {isEmpty(text) && (
             <div
-              className={clsx(
+              className={cn(
                 'absolute inset-0 flex items-center px-4 py-2',
                 'pointer-events-none text-sm leading-relaxed',
                 'text-neutral-400 dark:text-neutral-500'
@@ -144,7 +141,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
           <div
             ref={textRef}
             contentEditable
-            className={clsx(
+            className={cn(
               'max-h-[120px] flex-1 overflow-y-auto bg-transparent',
               'font-mono text-sm leading-relaxed focus:outline-none',
               'text-neutral-700 dark:text-neutral-200'

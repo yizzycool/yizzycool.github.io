@@ -2,7 +2,7 @@
 
 import type { ExtraProps } from 'react-markdown';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 
 import CodeBlock from './components/code-block';
 import ReactLive from './components/react-live';
@@ -28,7 +28,7 @@ export default function SyntaxHighlighterCode(
   ) : (
     <code
       {...rest}
-      className={clsx(
+      className={cn(
         // To customize `Prose` styles of '@tailwindcss/typography'
         // customize <code> for inline code
         'rounded-sm px-1.5 py-0.5 font-mono text-sm font-normal',

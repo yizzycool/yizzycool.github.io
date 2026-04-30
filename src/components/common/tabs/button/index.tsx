@@ -2,7 +2,7 @@ import type { ButtonSize, ButtonVariant } from '@/types/common/button';
 import type { LucideIcon } from 'lucide-react';
 import type { Rounded } from '@/types/common';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useEffect, useState } from 'react';
 
 import Button from '@/components/common/button';
@@ -73,10 +73,10 @@ export default function ButtonTabs({
           rounded={rounded}
           onClick={() => onTabClick(mode)}
           icon={tabIcons[idx]}
-          className={clsx(
+          className={cn(
             className,
             tab === mode &&
-              clsx(
+              cn(
                 'text-sky-600 dark:text-sky-600',
                 'border-sky-500 dark:border-sky-600',
                 'bg-sky-100/50 dark:bg-sky-900/50',

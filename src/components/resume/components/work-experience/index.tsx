@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import {
   Briefcase,
   Building2,
@@ -51,7 +51,7 @@ export default function WorkExperience() {
             {data.descriptions.map((desc) => (
               <RevealSection key={desc.title}>
                 <div
-                  className={clsx(
+                  className={cn(
                     'flex gap-6 overflow-hidden rounded-lg px-8 py-8',
                     'ring-1 ring-inset ring-black/10 dark:ring-white/10',
                     'bg-black/5 dark:bg-white/5'

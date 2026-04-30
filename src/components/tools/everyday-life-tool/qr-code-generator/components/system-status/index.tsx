@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { isNull } from 'lodash';
 
 import Badge from '@/components/common/badge';
@@ -14,7 +14,7 @@ export default function SystemStatus({ isSystemReady }: Props) {
     <div className="flex items-center justify-end">
       <Badge bordered>
         <span
-          className={clsx(
+          className={cn(
             'mr-2 h-2 w-2 animate-pulse rounded-full',
             isNull(isSystemReady)
               ? 'bg-gray-500'
@@ -24,7 +24,7 @@ export default function SystemStatus({ isSystemReady }: Props) {
           )}
         ></span>
         <div
-          className={clsx(
+          className={cn(
             !isNull(isSystemReady) && !isSystemReady && 'text-red-400'
           )}
         >

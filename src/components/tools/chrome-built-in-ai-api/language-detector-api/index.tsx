@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { useRef, useState } from 'react';
 import { ChartColumn, PenLine } from 'lucide-react';
 import { isNull, isEmpty, size } from 'lodash';
@@ -115,7 +115,7 @@ export default function LanguageDetectorApi() {
 
           {/* Output */}
           <div
-            className={clsx(
+            className={cn(
               'relative flex min-h-[300px] w-full flex-col items-center rounded-lg border p-6',
               'border-neutral-200 dark:border-neutral-700',
               'bg-white/80 dark:bg-neutral-900/80',

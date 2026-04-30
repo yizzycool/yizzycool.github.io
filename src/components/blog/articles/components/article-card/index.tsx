@@ -1,7 +1,7 @@
 'use client';
 
 import type { BlogArticleData } from '@/types/blog/article';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { ArrowRight, Clock, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
@@ -35,7 +35,7 @@ export default function ArticleCard({ article }: Props) {
       >
         <article
           key={article.id}
-          className={clsx(
+          className={cn(
             'group relative overflow-hidden rounded-2xl border fill-mode-backwards',
             'transition-transform duration-300',
             'bg-white dark:bg-neutral-900/40',

@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Transition, TransitionChild } from '@headlessui/react';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
@@ -73,7 +73,7 @@ export default function BaseDialog({
           unmount={false}
         >
           <div
-            className={clsx(
+            className={cn(
               'relative flex max-h-full w-fit max-w-4xl flex-col overflow-hidden rounded-3xl shadow-2xl',
               'bg-white dark:bg-[#111]',
               'border border-neutral-200 dark:border-neutral-700',

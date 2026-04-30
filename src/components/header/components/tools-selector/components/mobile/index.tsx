@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { ChevronDown, PenTool } from 'lucide-react';
 import { motion } from 'motion/react';
 import { usePathname } from 'next/navigation';
@@ -21,7 +21,7 @@ export default function ToolsSelectorMobile({
   return (
     <li className="group" data-open={isOpen}>
       <button
-        className={clsx(
+        className={cn(
           'flex w-full items-center justify-between rounded-lg px-3 py-4',
           'transition-all duration-300',
           'hover:bg-neutral-200 dark:hover:bg-neutral-800/50'
@@ -53,7 +53,7 @@ export default function ToolsSelectorMobile({
                 {tool.items.map((item) => (
                   <li key={item.name}>
                     <Link
-                      className={clsx(
+                      className={cn(
                         'mt-2 flex items-center text-sm',
                         'transition-all duration-300',
                         'hover:text-sky-500 dark:hover:text-sky-500',

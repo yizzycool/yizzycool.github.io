@@ -2,7 +2,7 @@
 
 import type { CanvasSize } from '../../../../types/config';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Move, Proportions } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { clamp } from 'lodash';
@@ -109,11 +109,11 @@ export default function AspectRatio({ size, setSize }: Props) {
             size="sm"
             bordered
             onClick={() => handleRatioSelect(ratio)}
-            className={clsx(
+            className={cn(
               'justify-between gap-4 text-left',
               ratio.isCustom && 'col-span-full',
               isRatioActive(ratio) &&
-                clsx(
+                cn(
                   'text-sky-600 dark:text-sky-600',
                   'border-sky-500 dark:border-sky-600',
                   'bg-sky-100/50 dark:bg-sky-900/50',
@@ -134,14 +134,14 @@ export default function AspectRatio({ size, setSize }: Props) {
               />
             ) : ratio.width && ratio.height ? (
               <div
-                className={clsx(
+                className={cn(
                   'border transition-all duration-200',
                   isRatioActive(ratio)
-                    ? clsx(
+                    ? cn(
                         'border-sky-500 dark:border-sky-600',
                         'bg-sky-100/50 dark:bg-sky-900/50'
                       )
-                    : clsx(
+                    : cn(
                         'border-neutral-400 dark:border-neutral-500',
                         'bg-neutral-100/50 dark:bg-neutral-800/50'
                       ),
@@ -158,7 +158,7 @@ export default function AspectRatio({ size, setSize }: Props) {
 
       {/* Custom Inputs */}
       <div
-        className={clsx(
+        className={cn(
           'grid grid-cols-2 gap-4 text-left transition-all duration-500',
           !isCustomSize && 'h-0 overflow-hidden opacity-30'
         )}
@@ -182,7 +182,7 @@ export default function AspectRatio({ size, setSize }: Props) {
               onChange={(e) => handleCustomSize(key, e.target.value)}
               onKeyDown={handleKeyDown}
               onBlur={handleBlur}
-              className={clsx(
+              className={cn(
                 'm-0 w-full',
                 'rounded-lg outline-none focus:ring-2 focus:ring-blue-500',
                 'px-4 py-3 text-sm font-bold transition-all',

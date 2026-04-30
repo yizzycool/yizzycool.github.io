@@ -2,7 +2,7 @@
 
 import type { BlogArticle } from '@/types/blog';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import urlJoin from 'url-join';
 import Link from 'next/link';
 import { get, map } from 'lodash';
@@ -20,7 +20,7 @@ export default function Tags({ article }: Props) {
 
   return (
     <ul
-      className={clsx(
+      className={cn(
         'mb-6 flex flex-wrap gap-2',
         getFadeUpClass('animate-delay-150')
       )}

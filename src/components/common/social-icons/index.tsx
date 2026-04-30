@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import SocialIcon from '../social-icon';
@@ -40,7 +40,7 @@ export default function SocialIcons({
 
   return (
     <div
-      className={clsx(
+      className={cn(
         'flex flex-wrap gap-2',
         transition && getFadeUpClass(delay),
         className

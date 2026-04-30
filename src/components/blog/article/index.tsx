@@ -3,7 +3,7 @@
 import type { BlogArticle } from '@/types/blog';
 import type { BlogArticleData } from '@/types/blog/article';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { get } from 'lodash';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
@@ -42,7 +42,7 @@ export default function Article({
         <header>
           {/* Title */}
           <h1
-            className={clsx(
+            className={cn(
               'mb-6 text-4xl font-extrabold leading-normal tracking-tight',
               getFadeUpClass('animate-delay-100')
             )}
@@ -57,7 +57,7 @@ export default function Article({
 
         {/* Separator */}
         <div
-          className={clsx(
+          className={cn(
             'my-6 border-b border-neutral-200 dark:border-neutral-700',
             getFadeUpClass('animate-delay-200')
           )}
@@ -74,7 +74,7 @@ export default function Article({
         <section>
           {/* Main Content */}
           <ProseMarkdown
-            className={clsx(
+            className={cn(
               '[&_*]:scroll-mt-20',
               getFadeUpClass('animate-delay-300')
             )}
@@ -85,11 +85,11 @@ export default function Article({
 
         {/* Prev/Next Article */}
         <nav
-          className={clsx('mt-20', getFadeUpClass('animate-delay-300'))}
+          className={cn('mt-20', getFadeUpClass('animate-delay-300'))}
           aria-label="previous article and next article"
         >
           <ul
-            className={clsx(
+            className={cn(
               'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2'
             )}
           >

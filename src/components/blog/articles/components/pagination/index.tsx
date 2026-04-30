@@ -2,7 +2,7 @@
 
 import type { BlogArticle } from '@/types/blog';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import urlJoin from 'url-join';
 import { useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
@@ -69,7 +69,7 @@ export default function Pagination({ articles }: Props) {
   return (
     <RevealSection>
       <div
-        className={clsx(
+        className={cn(
           'mt-12 flex items-center justify-center gap-2 py-8',
           getFadeUpClass('animate-delay-100')
         )}
@@ -93,7 +93,7 @@ export default function Pagination({ articles }: Props) {
             <button
               key={p}
               onClick={() => redirectToPage(p)}
-              className={clsx(
+              className={cn(
                 'flex h-10 w-10 items-center justify-center rounded-lg font-bold transition-all',
                 p === page
                   ? 'scale-110 bg-blue-600 text-white shadow-lg shadow-blue-500/25'
@@ -135,7 +135,7 @@ const LeftRightButton = ({
     <button
       onClick={onClick}
       disabled={disabled}
-      className={clsx(
+      className={cn(
         'rounded-lg p-2 transition-all disabled:opacity-30',
         'border border-neutral-200 dark:border-neutral-800',
         'hover:[&:not(:disabled)]:bg-neutral-100 dark:hover:[&:not(:disabled)]:bg-neutral-800'
