@@ -20,12 +20,12 @@ export default function BlogSelectorMobile({
 
   return (
     <>
-      <div className="group">
+      <div className="group" data-open={isOpen}>
         <button
           className={clsx(
             'flex w-full items-center justify-between rounded-lg px-3 py-4',
             'transition-all duration-300',
-            'data-[hover]:bg-neutral-200 dark:data-[hover]:bg-neutral-800/50'
+            'hover:bg-neutral-200 dark:hover:bg-neutral-800/50'
           )}
           onClick={() => setIsOpen((prev) => !prev)}
         >
@@ -33,7 +33,7 @@ export default function BlogSelectorMobile({
             <Newspaper size={20} />
             <span className="font-medium">Blog</span>
           </div>
-          <ChevronDown className="size-5 transition-all duration-300 group-data-[open]:rotate-180" />
+          <ChevronDown className="size-5 transition-all duration-300 group-data-[open=true]:rotate-180" />
         </button>
         <motion.div
           initial={false}
