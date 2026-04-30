@@ -4,23 +4,25 @@ import type { BlogCategory } from '@/types/blog';
 
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import Link from 'next/link';
-import strapiUtils from '@/utils/strapi-utils';
+import CategoryAccordionItem from './components/category-accordion-item';
 
 import _get from 'lodash/get';
 import _map from 'lodash/map';
+
+type Props = {
+  categoryArticles: BlogCategory;
+  side?: 'leftPanel' | 'headerBlogSelector';
+  onClick?: () => void;
+};
 
 export default function LeftPanel({
   categoryArticles,
   side = 'leftPanel',
   onClick = () => {},
-}: {
-  categoryArticles: BlogCategory;
-  side?: 'leftPanel' | 'headerBlogSelector';
-  onClick?: () => void;
-}) {
+}: Props) {
   const pathname = usePathname();
 
   const { getFadeUpClass } = useGetTransitionClass();
@@ -42,19 +44,10 @@ export default function LeftPanel({
       )}
     >
       <nav aria-label="Articles list">
-        {/* Title */}
-        <h2
-          className={clsx(
-            'mb-4 px-2 text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500',
-            getFadeUpClass('animate-delay-100')
-          )}
-        >
-          Categories
-        </h2>
         <ul>
-          {/* All Articles */}
           <li>
-            <h3>
+            {/* All Articles */}
+            <h2>
               <Link
                 className={clsx(
                   'flex items-center rounded-md p-2 font-bold',
@@ -68,62 +61,15 @@ export default function LeftPanel({
               >
                 All Artices
               </Link>
-            </h3>
+            </h2>
+            {/* Articles by category  */}
             <ul>
-              {/* Categories */}
               {data.map((category) => (
-                <li key={category.name}>
-                  <h3>
-                    <Link
-                      className={clsx(
-                        'mt-1 flex items-center rounded-md p-2 font-bold',
-                        'hover:bg-sky-600/10',
-                        'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500',
-                        getFadeUpClass('animate-delay-150')
-                      )}
-                      href={strapiUtils.toBlogCategoryUrl(category.slug)}
-                      data-active={
-                        pathname ===
-                        strapiUtils.toBlogCategoryUrl(category.slug)
-                      }
-                      onClick={onClick}
-                    >
-                      {category.name}
-                    </Link>
-                  </h3>
-                  <ul
-                    className={clsx(
-                      'ml-4 border-neutral-400/50 pl-1 lg:border-l',
-                      getFadeUpClass('animate-delay-200')
-                    )}
-                  >
-                    {_map(category.articles, (article) => (
-                      <li key={article.shortTitle}>
-                        <Link
-                          className={clsx(
-                            'my-1 flex cursor-pointer items-center rounded-md p-2 text-sm',
-                            'hover:bg-sky-600/10',
-                            'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500'
-                          )}
-                          href={strapiUtils.toBlogCategoryArticleUrl(
-                            category.slug,
-                            article.slug
-                          )}
-                          data-active={
-                            pathname ===
-                            strapiUtils.toBlogCategoryArticleUrl(
-                              category.slug,
-                              article.slug
-                            )
-                          }
-                          onClick={onClick}
-                        >
-                          {article.shortTitle}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
+                <CategoryAccordionItem
+                  key={category.name}
+                  category={category}
+                  onClick={onClick}
+                />
               ))}
             </ul>
           </li>
