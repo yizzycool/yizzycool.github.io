@@ -1,7 +1,7 @@
 import { type BlogCategoryData } from '@/types/blog/category';
 
 import { cn } from '@/utils/cn';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
@@ -16,7 +16,10 @@ type Props = {
   onClick?: () => void;
 };
 
-export default function CategoryAccordionItem({ category, onClick }: Props) {
+export default function CategoryAccordionItem({
+  category,
+  onClick = () => {},
+}: Props) {
   const pathname = usePathname();
   const { getFadeUpClass } = useGetTransitionClass();
 
@@ -30,10 +33,13 @@ export default function CategoryAccordionItem({ category, onClick }: Props) {
 
   const [isOpen, setIsOpen] = useState(isActive);
 
-  const handleCategoryClick = () => {
-    setIsOpen((prev) => !prev);
-    if (onClick) onClick();
-  };
+  // Sync open state with pathname changes to ensure active category is expanded
+  useEffect(() => {
+    if (!isActive) return;
+    setIsOpen(true);
+  }, [isActive]);
+
+  const handleCategoryClick = () => setIsOpen((prev) => !prev);
 
   return (
     <li>

@@ -115,7 +115,7 @@ export default function HeaderMobile({
               className="justify-center"
             />
             <p className="mt-4 text-center text-xs text-neutral-400 dark:text-neutral-500">
-              © 2025 Yizzy Peasy.
+              © 2026 Yizzy Peasy.
             </p>
           </footer>
         </div>
