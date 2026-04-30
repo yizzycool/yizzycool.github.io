@@ -5,10 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:dev": "env-cmd -f .env.development next build",
     "start": "next start",
     "lint": "next lint",
     "static-server": "node ./servers/static-server.js",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.17",
@@ -47,6 +49,7 @@
     "url-join": "^5.0.0"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.2.4",
     "@tailwindcss/typography": "^0.5.19",
     "@types/hammerjs": "^2.0.46",
     "@types/lodash": "^4.17.12",
@@ -58,6 +61,8 @@
     "@typescript-eslint/eslint-plugin": "^8.21.0",
     "@typescript-eslint/parser": "^8.21.0",
     "autoprefixer": "^10.4.20",
+    "cross-env": "^10.1.0",
+    "env-cmd": "^11.0.0",
     "eslint": "^9.19.0",
     "eslint-config-next": "^15.1.6",
     "eslint-config-prettier": "^9.1.0",
