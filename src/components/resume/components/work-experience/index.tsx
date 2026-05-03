@@ -20,7 +20,9 @@ export default function WorkExperience() {
           <Briefcase size={28} />
         </div>
         <div>
-          <h2 className="text-3xl font-bold">Work Experience</h2>
+          <h2 className="text-3xl font-bold dark:text-neutral-200">
+            Work Experience
+          </h2>
           <p className="text-neutral-500 dark:text-neutral-400">
             My professional journey
           </p>
@@ -58,13 +60,8 @@ export default function WorkExperience() {
                   )}
                 >
                   <div>
-                    <JobIcon
-                      iconType={desc.iconType}
-                      className="mt-1 h-6 w-6 text-sky-600"
-                    />
-                  </div>
-                  <div>
-                    <div className="text-lg font-bold text-black dark:text-white">
+                    <div className="flex items-center gap-3 text-lg font-bold text-black dark:text-neutral-100">
+                      <JobIcon iconType={desc.iconType} />
                       {desc.title}
                     </div>
                     <div className="mt-4 flex flex-wrap gap-2">
@@ -97,19 +94,13 @@ export default function WorkExperience() {
   );
 }
 
-function JobIcon({
-  iconType,
-  className = '',
-}: {
-  iconType: string;
-  className: string;
-}) {
+function JobIcon({ iconType, size = 20 }: { iconType: string; size?: number }) {
   if (iconType === 'pencil-square') {
-    return <SquarePen className={className} />;
+    return <SquarePen size={size} />;
   } else if (iconType === 'sparkles') {
-    return <WandSparkles className={className} />;
+    return <WandSparkles size={size} />;
   } else if (iconType === 'circle-stack') {
-    return <Layers className={className} />;
+    return <Layers size={size} />;
   }
   return null;
 }

@@ -26,15 +26,19 @@ const ProseClass = cn(
   'dark:prose-a:text-blue-400',
   'prose-a:no-underline',
 
-  // code block
+  // customize code block
   'prose-pre:p-0',
   'prose-pre:bg-transparent',
 
-  // blockquote
+  // customize blockquote
   '[&_blockquote_*::before]:content-none',
   '[&_blockquote_*::after]:content-none',
   '[&_blockquote_*:not(i)]:not-italic',
   '[&_blockquote_*:not(strong)]:font-normal',
+
+  // customize h3
+  'prose-h2:mt-16',
+  'prose-h3:mt-12',
 
   'leading-loose'
 );

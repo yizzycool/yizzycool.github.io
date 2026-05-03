@@ -14,7 +14,9 @@ export default function Education() {
             <GraduationCap size={28} />
           </div>
           <div>
-            <h2 className="text-3xl font-bold">Education</h2>
+            <h2 className="text-3xl font-bold dark:text-neutral-200">
+              Education
+            </h2>
             <p className="text-neutral-500 dark:text-neutral-400">
               Academic background
             </p>

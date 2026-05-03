@@ -14,7 +14,7 @@ export default function Resume() {
       <WorkExperience />
 
       {/* Separator */}
-      <div className="my-20 border-t border-transparent" />
+      <div className="my-20 border-t border-neutral-500/30" />
       <Education />
     </div>
   );

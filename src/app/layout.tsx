@@ -1,7 +1,7 @@
 import '@/styles/globals.css';
 import urlJoin from 'url-join';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Noto_Sans_TC } from 'next/font/google';
 import Script from 'next/script';
 
 import seoUtils from '@/utils/seo-utils';
@@ -61,13 +61,23 @@ const inter = Inter({
   display: 'swap',
 });
 
+const notoSansTC = Noto_Sans_TC({
+  preload: false,
+  variable: '--font-noto-sans-tc',
+  display: 'swap',
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={inter.variable}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${inter.variable} ${notoSansTC.variable}`}
+    >
       <head>
         {!!gtmId && (
           <Script id="gtm" strategy="lazyOnload">
@@ -87,7 +97,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="overflow-x-hidden bg-gray-50 text-neutral-700 antialiased dark:bg-neutral-900 dark:text-neutral-300">
+      <body className="overflow-x-hidden bg-gray-50 text-neutral-700 antialiased dark:bg-neutral-900 dark:text-neutral-400">
         {!!gtmId && (
           <noscript>
             <iframe

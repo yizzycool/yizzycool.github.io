@@ -36,14 +36,19 @@ export default function Article({
 
   return (
     <>
-      <article className="mx-auto flex-grow overflow-hidden px-5 pb-10 pt-5 lg:max-w-screen-lg lg:px-8 lg:py-10">
+      <article
+        className={cn(
+          'mx-auto flex-grow overflow-hidden lg:max-w-screen-lg',
+          'px-5 pb-10 pt-5 lg:px-8 lg:py-10 xl:px-16'
+        )}
+      >
         <Breadcrumb article={article} />
 
         <header>
           {/* Title */}
           <h1
             className={cn(
-              'mb-6 text-4xl font-extrabold leading-normal tracking-tight',
+              'mb-6 text-4xl font-extrabold leading-normal tracking-tight dark:text-neutral-200',
               getFadeUpClass('animate-delay-100')
             )}
           >

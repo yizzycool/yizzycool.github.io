@@ -16,7 +16,9 @@ export default function HeaderDesktop() {
           height="30"
           alt="Logo"
         />
-        <div className="ml-4 text-xl font-bold">Yizzy Peasy</div>
+        <div className="ml-3 text-lg font-bold dark:text-neutral-100">
+          Yizzy Peasy
+        </div>
       </Link>
 
       <div className="items-centexr flex flex-1 justify-end px-4">

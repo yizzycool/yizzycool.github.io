@@ -29,6 +29,7 @@ module.exports = {
       fontFamily: {
         sans: [
           'var(--font-inter)',
+          'var(--font-noto-sans-tc)',
           'ui-sans-serif',
           'system-ui',
           'sans-serif',
@@ -39,6 +40,7 @@ module.exports = {
         ],
         serif: [
           'var(--font-inter)',
+          'var(--font-noto-sans-tc)',
           'ui-serif',
           'Georgia',
           'Cambria',
@@ -48,6 +50,7 @@ module.exports = {
         ],
         mono: [
           'var(--font-inter)',
+          'var(--font-noto-sans-tc)',
           'ui-monospace',
           'SFMono-Regular',
           'Menlo',
@@ -57,6 +60,14 @@ module.exports = {
           'Courier New',
           'monospace',
         ],
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            color: 'inherit',
+            fontFamily: 'inherit',
+          },
+        },
       },
     },
   },

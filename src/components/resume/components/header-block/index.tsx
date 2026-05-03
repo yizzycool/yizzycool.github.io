@@ -8,7 +8,7 @@ export default function HeaderBlock() {
   const { getFadeUpClass } = useGetTransitionClass();
 
   return (
-    <header>
+    <header className="mx-auto max-w-screen-xl">
       <h1
         className={cn(
           'text-center md:text-left',

@@ -42,7 +42,7 @@ export default function Metadata({ article }: Props) {
 
       <span className="flex items-center gap-2">
         <Clock size={14} />
-        <span>{readTime} min read</span>
+        <span>{readTime * 2} min read</span>
       </span>
     </div>
   );
