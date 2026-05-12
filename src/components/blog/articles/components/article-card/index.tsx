@@ -2,7 +2,7 @@
 
 import type { BlogArticleData } from '@/types/blog/article';
 import { cn } from '@/utils/cn';
-import { ArrowRight, Clock, RefreshCw } from 'lucide-react';
+import { ArrowRight, Clock, Folder, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import strapiUtils from '@/utils/strapi-utils';
@@ -50,17 +50,17 @@ export default function ArticleCard({ article }: Props) {
               {/* Mask */}
               <div className="absolute inset-0 z-10 bg-neutral-900/10 transition-colors group-hover:bg-transparent" />
               <Banner article={article} />
-              {/* Floating Tag over Image */}
-              <div className="absolute left-4 top-4 z-20">
-                <Badge>{article.category.name}</Badge>
-              </div>
             </div>
 
             {/* Content Container */}
             <div className="flex flex-col justify-between p-6 md:w-2/3">
               <div>
                 {/* Metadata */}
-                <div className="mb-3 flex items-center gap-3 text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                <div className="mb-3 flex flex-wrap items-center gap-3 text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                  <span className="flex items-center gap-1">
+                    <Folder size={12} />
+                    {article.category.name}
+                  </span>
                   <span className="flex items-center gap-1">
                     <RefreshCw size={12} />
                     {dateString}
