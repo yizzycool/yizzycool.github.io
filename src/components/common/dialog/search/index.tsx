@@ -133,7 +133,7 @@ export default function SearchDialog({ deviceType }: Props) {
         {deviceType === 'desktop' && (
           <>
             <span className="mr-4 flex-1 text-left">Search...</span>
-            <Badge rounded="md" bordered={true}>
+            <Badge rounded="md" bordered={true} className="gap-1">
               <span>⌘</span>
               <span>K</span>
             </Badge>

@@ -23,7 +23,7 @@ export default function HeaderBlock() {
 
   return (
     <header>
-      <div className="mb-2 flex items-center gap-3">
+      <div className="mb-2 flex items-center gap-3 dark:text-neutral-200">
         {!!Icon && <Icon size={24} />}
         {!!title && <h1 className="text-left text-2xl font-bold">{title}</h1>}
       </div>

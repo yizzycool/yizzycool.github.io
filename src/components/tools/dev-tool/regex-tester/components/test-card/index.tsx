@@ -3,6 +3,7 @@ import { Type } from 'lucide-react';
 import Badge from '@/components/common/badge';
 import Card from '@/components/common/card';
 import HighlightMark from './components/highlight-mark';
+import CardTitle from '@/components/common/card/title';
 
 type Props = {
   pattern: string;
@@ -36,12 +37,7 @@ export default function TestCard({
   return (
     <Card>
       <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-neutral-500">
-          <Type className="h-4 w-4" />
-          <h2 className="text-sm font-semibold uppercase tracking-wider">
-            Test String
-          </h2>
-        </div>
+        <CardTitle icon={Type}>Test String</CardTitle>
         <Badge>{matches.length} Matches</Badge>
       </div>
 

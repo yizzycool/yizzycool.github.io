@@ -10,6 +10,9 @@ type Props = {
   children: React.ReactNode;
 };
 
+const defaultClass =
+  'flex items-center gap-2 font-semibold dark:text-neutral-300';
+
 export default function Label({
   htmlFor,
   icon: Icon,
@@ -17,15 +20,12 @@ export default function Label({
   children,
 }: Props) {
   return !!htmlFor ? (
-    <label
-      htmlFor={htmlFor}
-      className={cn('flex items-center gap-2 font-semibold', className)}
-    >
+    <label htmlFor={htmlFor} className={cn(defaultClass, className)}>
       {!!Icon && <Icon className="inline-block" size={16} />}
       <span>{children}</span>
     </label>
   ) : (
-    <div className={cn('flex items-center gap-2 font-semibold', className)}>
+    <div className={cn(defaultClass, className)}>
       {!!Icon && <Icon className="inline-block" size={16} />}
       <span>{children}</span>
     </div>

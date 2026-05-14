@@ -2,6 +2,7 @@ import { cn } from '@/utils/cn';
 import Card from '@/components/common/card';
 import { Hash, Info } from 'lucide-react';
 import { RegexColors } from '../..';
+import CardTitle from '@/components/common/card/title';
 
 type Props = {
   matches: Array<RegExpExecArray>;
@@ -10,20 +11,17 @@ type Props = {
 export default function DetailCard({ matches }: Props) {
   return (
     <Card>
-      <div className="mb-6 flex items-center gap-2 text-neutral-500">
-        <Hash className="h-4 w-4" />
-        <h2 className="text-sm font-semibold uppercase tracking-wider">
-          Match Details
-        </h2>
-      </div>
+      <CardTitle icon={Hash} className="mb-4">
+        Match Details
+      </CardTitle>
 
       {matches.length > 0 ? (
-        <div className="custom-scrollbar space-y-6 overflow-y-auto pr-2">
+        <div className="space-y-6 pr-2">
           {matches.slice(0, 50).map((match, i) => (
             <div
               key={i}
               className={cn(
-                'rounded-lg border p-3 transition-all animate-in slide-in-from-right-4',
+                'rounded-lg border p-3',
                 'border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900',
                 'hover:shadow-md'
               )}

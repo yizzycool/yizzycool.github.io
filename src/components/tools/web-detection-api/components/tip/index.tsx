@@ -2,7 +2,7 @@ import { Lightbulb } from 'lucide-react';
 
 export default function Tip() {
   return (
-    <div className="flex items-start gap-3 text-left">
+    <div className="flex w-fit items-center gap-3 rounded-md bg-sky-500/5 px-4 py-2 text-left">
       <div className="shrink-0 rounded-lg bg-yellow-100 p-2 text-yellow-600 dark:bg-yellow-900/30">
         <Lightbulb size={18} />
       </div>

@@ -59,7 +59,7 @@ export default function ToolsSelectorDesktop() {
               className="space-y-4 p-4 transition-all duration-300 hover:bg-gray-100/50 dark:hover:bg-neutral-700/20"
             >
               {/* <div className="w-full"> */}
-              <span className="text-sm font-bold tracking-wide text-neutral-500 dark:text-neutral-400">
+              <span className="text-sm font-bold tracking-wide text-neutral-500 dark:text-neutral-300">
                 {tool.name}
               </span>
               <ul>
@@ -70,7 +70,7 @@ export default function ToolsSelectorDesktop() {
                       className={cn(
                         'mt-2 flex items-center pr-12',
                         'transition-all duration-300',
-                        'text-gray-600 hover:text-sky-500 dark:text-gray-50 dark:hover:text-sky-500'
+                        'hover:text-sky-500 dark:hover:text-sky-500'
                       )}
                       href={item.href}
                     >

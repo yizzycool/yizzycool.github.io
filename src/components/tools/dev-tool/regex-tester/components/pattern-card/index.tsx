@@ -5,6 +5,7 @@ import CopyAction from '@/components/common/action-button/copy';
 import Card from '@/components/common/card';
 import PatternVisualizer from './components/pattern-visualizer';
 import FlagSelector from './components/flag-selector';
+import CardTitle from '@/components/common/card/title';
 
 type Props = {
   pattern: string;
@@ -24,16 +25,11 @@ export default function PatternCard({
   return (
     <Card>
       <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-neutral-500">
-          <Settings2 className="h-4 w-4" />
-          <h2 className="text-sm font-semibold uppercase tracking-wider">
-            Regular Expression
-          </h2>
-        </div>
+        <CardTitle icon={Settings2}>Regular Expression</CardTitle>
         <CopyAction variant="ghost" content={pattern} />
       </div>
 
-      <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4 ring-blue-500 transition-all focus-within:ring-2 dark:border-neutral-800 dark:bg-neutral-950">
+      <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4 ring-blue-500 focus-within:ring-2 dark:border-neutral-800 dark:bg-neutral-950">
         <div className="mb-2 flex items-center gap-2 font-mono text-lg">
           <span className="text-neutral-400">/</span>
           <input
