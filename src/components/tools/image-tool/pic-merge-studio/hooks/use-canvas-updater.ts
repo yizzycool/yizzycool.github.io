@@ -160,6 +160,7 @@ export default function useCanvasUpdater({
         format: canvasConfig.exportFormat,
         quality: 0.9,
         multiplier: 2,
+        enableRetinaScaling: false, // to prevent wrong output canvas size
       });
       download(dataUrl, `${filename}.${canvasConfig.exportFormat}`);
     }
