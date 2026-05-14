@@ -19,15 +19,13 @@ export default function Label({
   return !!htmlFor ? (
     <label
       htmlFor={htmlFor}
-      className={cn('block flex items-center gap-2 font-semibold', className)}
+      className={cn('flex items-center gap-2 font-semibold', className)}
     >
       {!!Icon && <Icon className="inline-block" size={16} />}
       <span>{children}</span>
     </label>
   ) : (
-    <div
-      className={cn('block flex items-center gap-2 font-semibold', className)}
-    >
+    <div className={cn('flex items-center gap-2 font-semibold', className)}>
       {!!Icon && <Icon className="inline-block" size={16} />}
       <span>{children}</span>
     </div>
