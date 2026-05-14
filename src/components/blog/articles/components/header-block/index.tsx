@@ -11,6 +11,7 @@ export default function HeaderBlock() {
       <h1
         className={cn(
           'mb-4 text-4xl font-extrabold tracking-tight md:text-5xl',
+          'dark:text-neutral-300',
           getFadeUpClass('animate-delay-100')
         )}
       >

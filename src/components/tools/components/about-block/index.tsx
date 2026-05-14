@@ -21,11 +21,11 @@ export default function AboutBlock() {
     <div className="mt-20 border-t border-neutral-200 pt-12 text-left opacity-80 dark:border-neutral-700">
       <div className="mb-4 flex items-center gap-2 text-neutral-500">
         <Info size={18} />
-        <h2 className="text-sm font-bold uppercase tracking-widest">
+        <h2 className="text-sm font-bold uppercase tracking-wider">
           About {title}
         </h2>
       </div>
-      <p className="text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
+      <p className="text-sm leading-relaxed tracking-wide text-neutral-500 dark:text-neutral-400">
         {about}
       </p>
     </div>
