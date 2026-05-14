@@ -9,7 +9,7 @@ import UnsupportedCard from '../components/unsupported-card';
 import ModelDownloadCard from '../components/model-download-card';
 import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
-import { UnsupportedApiTypes } from '../data/unsupported-types';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 
 export default function PromptApi() {
   const {
@@ -40,7 +40,7 @@ export default function PromptApi() {
       {!hasCheckedAIStatus ? (
         <LoadingSkeleton />
       ) : !isApiSupported ? (
-        <UnsupportedCard apiType={UnsupportedApiTypes.chromePromptApi} />
+        <UnsupportedCard apiType={UNSUPPORTED_API_TYPES.chromePromptApi} />
       ) : shouldDownloadModel ? (
         <ModelDownloadCard
           onClick={downloadModel}

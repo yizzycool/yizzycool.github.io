@@ -11,21 +11,21 @@ import { cn } from '@/utils/cn';
 import { useRef, useState } from 'react';
 
 import useFabric from './hooks/use-fabric';
-import {
-  PresetBackgroundColors,
-  PresetBorderColors,
-} from './components/config-panel/data/background';
 import HeaderBlock from '../../components/header-block';
 import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Config from './components/config-panel';
+import {
+  PRESET_BACKGROUND_COLORS,
+  PRESET_BORDER_COLORS,
+} from './components/config-panel/data/background';
 
-export const DefaultCanvasConfig: CanvasConfig = {
+export const DEFAULT_CANVAS_CONFIG: CanvasConfig = {
   layout: 'free',
   size: { width: 1080, height: 1080 },
   background: {
     type: 'color',
-    color: { color: PresetBackgroundColors[0], opacity: 1 },
+    color: { color: PRESET_BACKGROUND_COLORS[0], opacity: 1 },
   },
   border: { width: 0, color: '', opacity: 1 },
   exportFormat: 'png',
@@ -36,18 +36,18 @@ export const DefaultCanvasConfig: CanvasConfig = {
     border: {
       showOuter: false,
       width: 25,
-      color: PresetBorderColors[0],
+      color: PRESET_BORDER_COLORS[0],
       opacity: 1,
     },
   },
 };
 
-const DefaultGlobalImageConfig: GlobalImageConfig = {
+const defaultGlobalImageConfig: GlobalImageConfig = {
   border: { width: 0, color: '', opacity: 1 },
   radius: 0,
 };
 
-const DefaultImageConfig: ImageConfig = {
+const defaultImageConfig: ImageConfig = {
   opacity: 1,
   border: { width: 0, color: '', opacity: 1 },
   angle: 0,
@@ -61,11 +61,11 @@ const DefaultImageConfig: ImageConfig = {
 };
 
 export default function PicMergeStudio() {
-  const [canvasConfig, setCanvasConfig] = useState(DefaultCanvasConfig);
+  const [canvasConfig, setCanvasConfig] = useState(DEFAULT_CANVAS_CONFIG);
   const [globalImageConfig, setGlobalImageConfig] = useState(
-    DefaultGlobalImageConfig
+    defaultGlobalImageConfig
   );
-  const [imageConfig, setImageConfig] = useState(DefaultImageConfig);
+  const [imageConfig, setImageConfig] = useState(defaultImageConfig);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -123,7 +123,6 @@ export default function PicMergeStudio() {
         open={false}
         onClose={() => {}}
         // open={error}
-        // onClose={() => setImageInfo(DefaultImageInfo)}
       />
     </div>
   );

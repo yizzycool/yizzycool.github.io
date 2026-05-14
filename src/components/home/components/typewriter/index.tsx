@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { random } from 'lodash';
 
-const Phrases = [
+const phrases = [
   'Clean design meets chill engineering.',
   'Simple ideas, thoughtfully engineered.',
 ];
@@ -44,10 +44,10 @@ export default function Typewritter() {
 
   const typeText = () => {
     // Typing characters
-    if (text.length < Phrases[index].length) {
+    if (text.length < phrases[index].length) {
       const randomTime = random(0, 20);
       timeoutRef.current = setTimeout(() => {
-        setText(Phrases[index].slice(0, text.length + 1));
+        setText(phrases[index].slice(0, text.length + 1));
       }, typingSpeed + randomTime);
     } else {
       // Finished typing → wait → start deleting
@@ -66,7 +66,7 @@ export default function Typewritter() {
     } else {
       // Move to next phrase
       setIsDeleting(false);
-      setIndex((prev) => (prev + 1) % Phrases.length);
+      setIndex((prev) => (prev + 1) % phrases.length);
     }
   };
 

@@ -15,16 +15,16 @@ type Props = {
   setLayer: (type: 'front' | 'back' | 'forward' | 'backward') => void;
 };
 
-const Layers = ['front', 'back', 'forward', 'backward'] as const;
+const layers = ['front', 'back', 'forward', 'backward'] as const;
 
-const LayersName = {
+const layersName = {
   front: 'To Front',
   back: 'To Back',
   forward: 'Forward',
   backward: 'Backward',
 };
 
-const LayersIconMap = {
+const layersIconMap = {
   front: ChevronsUp,
   back: ChevronsDown,
   forward: ChevronUp,
@@ -42,17 +42,17 @@ export default function Arrangement({ setLayer }: Props) {
       </Label>
 
       <div className="grid grid-cols-2 gap-2">
-        {Layers.map((layer) => (
+        {layers.map((layer) => (
           <Button
             variant="ghost"
             size="sm"
             bordered
-            icon={LayersIconMap[layer]}
+            icon={layersIconMap[layer]}
             key={layer}
             onClick={() => setLayer(layer)}
             className="font-black"
           >
-            {LayersName[layer]}
+            {layersName[layer]}
           </Button>
         ))}
       </div>

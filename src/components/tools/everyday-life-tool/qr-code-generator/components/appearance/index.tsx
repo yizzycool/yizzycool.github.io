@@ -2,7 +2,7 @@
 
 import Label from '@/components/common/label';
 import { Palette } from 'lucide-react';
-import { QrCodeColorPresets } from '../..';
+import { qrCodeColorPresets } from '../..';
 import ColorPicker from '@/components/common/color-picker';
 import Card from '@/components/common/card';
 
@@ -50,7 +50,7 @@ export default function Appearance({
             Presets
           </span>
           <div className="mt-2 flex flex-wrap gap-2">
-            {QrCodeColorPresets.map((p) => (
+            {qrCodeColorPresets.map((p) => (
               <button
                 key={p.name}
                 onClick={() => {

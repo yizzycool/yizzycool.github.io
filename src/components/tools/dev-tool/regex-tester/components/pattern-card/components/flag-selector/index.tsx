@@ -1,10 +1,18 @@
-import { RegexFlags } from '../../../..';
 import Button from '@/components/common/button';
 
 type Props = {
   flags: string;
   setFlags: React.Dispatch<React.SetStateAction<string>>;
 };
+
+export const regexFlags = [
+  { key: 'g', label: 'global' },
+  { key: 'i', label: 'ignore case' },
+  { key: 'm', label: 'multiline' },
+  { key: 's', label: 'dotAll' },
+  { key: 'u', label: 'unicode' },
+  { key: 'y', label: 'sticky' },
+];
 
 export default function FlagSelector({ flags, setFlags }: Props) {
   const toggleFlag = (flag: string) => {
@@ -17,7 +25,7 @@ export default function FlagSelector({ flags, setFlags }: Props) {
 
   return (
     <div className="mt-6 flex flex-wrap gap-2">
-      {RegexFlags.map((f) => (
+      {regexFlags.map((f) => (
         <Button
           key={f.key}
           variant={flags.includes(f.key) ? 'primary' : 'ghost'}

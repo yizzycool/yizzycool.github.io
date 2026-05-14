@@ -12,7 +12,7 @@ import Button from '@/components/common/button';
 import Slider from '@/components/common/slider';
 import CheckBox from '@/components/common/checkbox';
 import ColorPicker from '../color-picker';
-import { PresetBorderColors } from '../../data/background';
+import { PRESET_BORDER_COLORS } from '../../data/background';
 
 type Props = {
   border: CanvasBorder & { showOuter?: boolean };
@@ -34,7 +34,7 @@ export default function Border({
   const [customColors, setCustomColors] = useState<string[]>([]);
 
   const colors = useMemo(() => {
-    return [...customColors, ...PresetBorderColors];
+    return [...customColors, ...PRESET_BORDER_COLORS];
   }, [customColors]);
 
   const handleColorSelect = (hex: string) => {
@@ -137,7 +137,7 @@ export default function Border({
             </Button>
           </div>
           {/* Preset Colors */}
-          {[...customColors, ...PresetBorderColors].map((hex) => (
+          {[...customColors, ...PRESET_BORDER_COLORS].map((hex) => (
             <div key={hex} className="aspect-square w-full">
               <Button
                 variant="ghost"

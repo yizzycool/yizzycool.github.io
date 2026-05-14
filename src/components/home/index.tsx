@@ -9,7 +9,7 @@ import Typewritter from './components/typewriter';
 import Badge from '@/components/common/badge';
 import SocialIcons from '../common/social-icons';
 
-const TechStacks = [
+const techStacks = [
   {
     label: 'Next.js',
     icon: Code2,
@@ -96,7 +96,7 @@ export default function Intro() {
                 getFadeUpClass('animate-delay-700')
               )}
             >
-              {TechStacks.map(({ label, icon }) => (
+              {techStacks.map(({ label, icon }) => (
                 <Badge
                   key={label}
                   icon={icon}

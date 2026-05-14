@@ -1,7 +1,7 @@
 'use client';
 
 import type { CanvasSize } from '../../../../types/config';
-import type { ConfitRatioType } from '../../data/aspect-ratio';
+import type { CanvasRatioType } from '../../data/aspect-ratio';
 
 import { cn } from '@/utils/cn';
 import { Check, Move, Proportions } from 'lucide-react';
@@ -14,16 +14,16 @@ import Button from '@/components/common/button';
 import IconTextButton from '../icon-text-button';
 import BottomDrawer from '../bottom-drawer';
 import GroupTitle from '../group-title';
-import { DefaultCanvasConfig } from '../../../..';
-import { PresetAspectRatios } from '../../data/aspect-ratio';
+import { DEFAULT_CANVAS_CONFIG } from '../../../..';
+import { PRESET_ASPECT_RATIOS } from '../../data/aspect-ratio';
 
-const MobilePresetAspectRatios: ConfitRatioType[] = [
+const mobilePresetAspectRatios: CanvasRatioType[] = [
   {
     title: 'Custom',
     desc: 'Custom Size',
     isCustom: true,
-  } as ConfitRatioType,
-  ...PresetAspectRatios.slice(0, PresetAspectRatios.length - 1),
+  } as CanvasRatioType,
+  ...PRESET_ASPECT_RATIOS.slice(0, PRESET_ASPECT_RATIOS.length - 1),
 ];
 
 const MIN_SIZE = 512;
@@ -47,7 +47,7 @@ type Props = {
 export default function AspectRatio({ size, setSize }: Props) {
   const [isCustomSize, setIsCustomSize] = useState(false);
   const [inputSize, setInputSize] = useState<CanvasSize>(
-    DefaultCanvasConfig.size
+    DEFAULT_CANVAS_CONFIG.size
   );
 
   const refCallback = usePreventNumberWheel();
@@ -64,7 +64,7 @@ export default function AspectRatio({ size, setSize }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [size]);
 
-  const handleRatioSelect = (ratio: ConfitRatioType) => {
+  const handleRatioSelect = (ratio: CanvasRatioType) => {
     if (ratio.title === 'Custom') {
       setIsCustomSize(true);
     } else if (ratio.width && ratio.height) {
@@ -97,7 +97,7 @@ export default function AspectRatio({ size, setSize }: Props) {
     setSize(inputSize.width, inputSize.height);
   };
 
-  const isRatioActive = (ratio: ConfitRatioType) => {
+  const isRatioActive = (ratio: CanvasRatioType) => {
     if (isCustomSize) {
       return ratio.title === 'Custom';
     } else {
@@ -114,7 +114,7 @@ export default function AspectRatio({ size, setSize }: Props) {
           <GroupTitle text="Size" icon={Proportions} />
 
           <div className="flex max-w-full gap-3 overflow-x-auto pb-4">
-            {MobilePresetAspectRatios.map((ratio) => (
+            {mobilePresetAspectRatios.map((ratio) => (
               <Button
                 key={ratio.title}
                 variant="ghost"

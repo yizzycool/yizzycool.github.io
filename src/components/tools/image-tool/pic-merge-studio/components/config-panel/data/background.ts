@@ -1,4 +1,4 @@
-export const PresetBackgroundColors = [
+export const PRESET_BACKGROUND_COLORS = [
   '#1F2933',
   '#2A2F3A',
   '#2F3441',
@@ -22,7 +22,7 @@ export const PresetBackgroundColors = [
   '#EFEDE7',
 ];
 
-export const PresetBorderColors = [
+export const PRESET_BORDER_COLORS = [
   '#EADFD6',
   '#F2D7E4',
   '#E6DBFA',
@@ -46,14 +46,14 @@ export const PresetBorderColors = [
   '#3F3F46',
 ];
 
-export const PresetBackgroundGradients = [
+export const PRESET_BACKGROUND_GRADIENTS = [
   { name: 'Sunset', color: 'linear-gradient(to right, #ff5f6d, #ffc371)' },
   { name: 'Ocean', color: 'linear-gradient(to right, #2193b0, #6dd5ed)' },
   { name: 'Lush', color: 'linear-gradient(to right, #56ab2f, #a8e063)' },
   { name: 'Purple', color: 'linear-gradient(to right, #834d9b, #d04ed6)' },
 ];
 
-export const PresetBackgroundImages = [
+export const PRESET_BACKGROUND_IMAGES = [
   'https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=400&q=60',
   'https://images.unsplash.com/photo-1557682250-33bd709cbe85?auto=format&fit=crop&w=400&q=60',
   'https://images.unsplash.com/photo-1508615039623-a25605d2b022?auto=format&fit=crop&w=400&q=60',

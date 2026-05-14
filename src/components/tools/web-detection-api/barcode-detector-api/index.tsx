@@ -1,5 +1,7 @@
 'use client';
 
+import type { WebDetectionFileType } from '../components/result-canvas';
+
 import { Square, Trash2 } from 'lucide-react';
 import { useMemo } from 'react';
 import { isNull, map, get } from 'lodash';
@@ -17,13 +19,11 @@ import Tip from '../components/tip';
 import Card from '@/components/common/card';
 import BaseTabs from '@/components/common/tabs/base';
 import Button from '@/components/common/button';
-import ResultCanvas, {
-  WebDetectionFileType,
-} from '../components/result-canvas';
+import ResultCanvas from '../components/result-canvas';
 import DetectionResult from '../components/detection-result';
 import RawData from '../components/raw-data';
 import Snackbar from '@/components/common/snackbar';
-import { UnsupportedApiTypes } from '../data/unsupported-types';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 
 const TabList: Array<WebDetectionFileType> = ['image', 'video', 'webcam'];
 
@@ -112,7 +112,9 @@ export default function BarcodeDetectorApi() {
       {!hasCheckedApiStatus ? (
         <LoadingSkeleton />
       ) : !isApiSupported ? (
-        <UnsupportedCard apiType={UnsupportedApiTypes.webApiBarcodeDetector} />
+        <UnsupportedCard
+          apiType={UNSUPPORTED_API_TYPES.webApiBarcodeDetector}
+        />
       ) : (
         <>
           <Tip />

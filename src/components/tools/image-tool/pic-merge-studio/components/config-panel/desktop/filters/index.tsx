@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { xor } from 'lodash';
 
 import Label from '@/components/common/label';
-import { FabricFilterTypeList } from '../../../../data/fabric-filters';
+import { FABRIC_FILTER_TYPE_LIST } from '../../../../data/fabric-filters';
 
 type Props = {
   filters: filters.BaseFilter<string>[];
@@ -19,7 +19,7 @@ export default function Filters({ filters, setFilters }: Props) {
   const activeFilterList = filters.map((f) => f.type);
 
   const updateFilter = (filter: string) => {
-    if (!FabricFilterTypeList.includes(filter)) return;
+    if (!FABRIC_FILTER_TYPE_LIST.includes(filter)) return;
     setFilters(xor(activeFilterList, [filter]));
   };
 
@@ -37,7 +37,7 @@ export default function Filters({ filters, setFilters }: Props) {
       </Label>
 
       <div className="grid grid-cols-4 gap-2">
-        {FabricFilterTypeList.map((type) => (
+        {FABRIC_FILTER_TYPE_LIST.map((type) => (
           <div
             key={type}
             onClick={() => updateFilter(type)}

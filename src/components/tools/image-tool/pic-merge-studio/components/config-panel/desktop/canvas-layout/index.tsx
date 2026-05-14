@@ -11,9 +11,9 @@ import usePreventNumberWheel from '@/hooks/dom/use-prevent-number-wheel';
 import Label from '@/components/common/label';
 import ButtonTabs from '@/components/common/tabs/button';
 import Button from '@/components/common/button';
-import { DefaultCanvasConfig } from '../../../..';
+import { DEFAULT_CANVAS_CONFIG } from '../../../..';
 
-const LayoutPresets = ['Free Collage', 'Grid Layout'];
+const layoutPresets = ['Free Collage', 'Grid Layout'];
 
 const GridSizes: Array<{ key: 'rows' | 'cols'; label: string }> = [
   {
@@ -37,13 +37,13 @@ export default function CanvasLayout({
   switchToGridLayout,
   switchToFreeLayout,
 }: Props) {
-  const [mode, setMode] = useState(LayoutPresets[0]);
+  const [mode, setMode] = useState(layoutPresets[0]);
   const [gridSize, setGridSize] = useState<Partial<CanvasGridConfig>>({
-    rows: DefaultCanvasConfig.gridConfig.rows,
-    cols: DefaultCanvasConfig.gridConfig.cols,
+    rows: DEFAULT_CANVAS_CONFIG.gridConfig.rows,
+    cols: DEFAULT_CANVAS_CONFIG.gridConfig.cols,
   });
 
-  const isGridLayout = mode === LayoutPresets[1];
+  const isGridLayout = mode === layoutPresets[1];
 
   const refCallback = usePreventNumberWheel();
 
@@ -51,7 +51,7 @@ export default function CanvasLayout({
     setMode(mode);
     if (
       configHelper.canvasConfig.layout !== 'free' &&
-      mode === LayoutPresets[0]
+      mode === layoutPresets[0]
     ) {
       switchToFreeLayout();
     }
@@ -65,7 +65,7 @@ export default function CanvasLayout({
   };
 
   const handleApplyGrid = () => {
-    setMode(LayoutPresets[1]);
+    setMode(layoutPresets[1]);
     switchToGridLayout(gridSize.rows!, gridSize.cols!);
   };
 
@@ -79,7 +79,7 @@ export default function CanvasLayout({
       </Label>
 
       <ButtonTabs
-        tabs={LayoutPresets}
+        tabs={layoutPresets}
         onChange={handleModeSelect}
         size="sm"
         className="font-black uppercase"

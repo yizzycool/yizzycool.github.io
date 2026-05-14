@@ -10,7 +10,7 @@ import { xor } from 'lodash';
 import { useControlDrawer } from '../hooks/use-control-drawer';
 import IconTextButton from '../icon-text-button';
 import BottomDrawer from '../bottom-drawer';
-import { FabricFilterTypeList } from '../../../../data/fabric-filters';
+import { FABRIC_FILTER_TYPE_LIST } from '../../../../data/fabric-filters';
 
 type Props = {
   filters: filters.BaseFilter<string>[];
@@ -23,7 +23,7 @@ export default function Filters({ filters, setFilters }: Props) {
   const { isOpen, openDrawer, closeDrawer } = useControlDrawer();
 
   const updateFilter = (filter: string) => {
-    if (!FabricFilterTypeList.includes(filter)) return;
+    if (!FABRIC_FILTER_TYPE_LIST.includes(filter)) return;
     setFilters(xor(activeFilterList, [filter]));
   };
 
@@ -37,7 +37,7 @@ export default function Filters({ filters, setFilters }: Props) {
 
       <BottomDrawer isOpen={isOpen} onClose={closeDrawer}>
         <div className="flex max-w-full gap-2 overflow-x-auto p-4 pb-4">
-          {FabricFilterTypeList.map((type) => (
+          {FABRIC_FILTER_TYPE_LIST.map((type) => (
             <div
               key={type}
               onClick={() => updateFilter(type)}

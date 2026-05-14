@@ -1,6 +1,5 @@
 'use client';
 
-import { UnsupportedApiTypes } from '../data/unsupported-types';
 import { LoaderCircle, PenLine, Sparkles } from 'lucide-react';
 import { ChangeEventHandler, useState } from 'react';
 import { isEmpty, size } from 'lodash';
@@ -20,6 +19,7 @@ import PromptResult from '../components/prompt-result';
 import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 
 export default function SummarizerApi() {
   const [text, setText] = useState('');
@@ -85,7 +85,7 @@ export default function SummarizerApi() {
       {!hasCheckedAIStatus ? (
         <LoadingSkeleton />
       ) : !isApiSupported ? (
-        <UnsupportedCard apiType={UnsupportedApiTypes.chromeSummarizerApi} />
+        <UnsupportedCard apiType={UNSUPPORTED_API_TYPES.chromeSummarizerApi} />
       ) : shouldDownloadModel ? (
         <ModelDownloadCard
           onClick={downloadModel}

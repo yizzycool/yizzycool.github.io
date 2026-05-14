@@ -34,7 +34,7 @@ const RoundedMap: Record<Rounded, string> = {
   full: 'rounded-full',
 };
 
-const RoundedSideMap: Record<Side, (r: string) => string> = {
+const roundedMapideMap: Record<Side, (r: string) => string> = {
   top: (r) => r.replace('rounded', 'rounded-b'),
   bottom: (r) => r.replace('rounded', 'rounded-t'),
   left: (r) => r.replace('rounded', 'rounded-r'),
@@ -116,7 +116,7 @@ export default function Drawer({
               'absolute flex flex-col overflow-hidden shadow-2xl',
               'bg-white/90 backdrop-blur-md dark:bg-neutral-900/95',
               positions[side],
-              RoundedSideMap[side](RoundedMap[rounded]),
+              roundedMapideMap[side](RoundedMap[rounded]),
               className
             )}
           >

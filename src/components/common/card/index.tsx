@@ -11,7 +11,7 @@ type Props = {
   children?: React.ReactNode;
 };
 
-const Roundeds = {
+const roundedMap = {
   none: 'rounded-none',
   sm: 'rounded-sm',
   base: 'rounded',
@@ -41,7 +41,7 @@ export default function Card({
         'border-neutral-200 dark:border-neutral-700',
         'bg-white/80 dark:bg-neutral-900/80',
         animations[animation],
-        Roundeds[rounded],
+        roundedMap[rounded],
         className
       )}
     >

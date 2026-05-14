@@ -60,7 +60,7 @@ export default function Badge({
     xl: cn('text-xl', !!children ? 'px-6 py-2.5 ' : 'p-3'),
   };
 
-  const roundeds = {
+  const roundedMap = {
     none: 'rounded-none',
     sm: 'rounded-sm',
     base: 'rounded',
@@ -92,7 +92,7 @@ export default function Badge({
 
   return (
     <div
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${roundeds[rounded]} ${bordered ? 'border' : ''} ${className} `}
+      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${roundedMap[rounded]} ${bordered ? 'border' : ''} ${className} `}
     >
       {Icon && (
         <Icon

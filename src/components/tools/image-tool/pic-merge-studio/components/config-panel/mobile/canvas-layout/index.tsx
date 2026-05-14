@@ -14,9 +14,9 @@ import Button from '@/components/common/button';
 import BottomDrawer from '../bottom-drawer';
 import IconTextButton from '../icon-text-button';
 import GroupTitle from '../group-title';
-import { DefaultCanvasConfig } from '../../../..';
+import { DEFAULT_CANVAS_CONFIG } from '../../../..';
 
-const LayoutPresets = ['Free Collage', 'Grid Layout'];
+const layoutPresets = ['Free Collage', 'Grid Layout'];
 
 const GridSizes: Array<{ key: 'rows' | 'cols'; label: string }> = [
   {
@@ -40,13 +40,13 @@ export default function CanvasLayout({
   switchToGridLayout,
   switchToFreeLayout,
 }: Props) {
-  const [mode, setMode] = useState(LayoutPresets[0]);
+  const [mode, setMode] = useState(layoutPresets[0]);
   const [gridSize, setGridSize] = useState<Partial<CanvasGridConfig>>({
-    rows: DefaultCanvasConfig.gridConfig.rows,
-    cols: DefaultCanvasConfig.gridConfig.cols,
+    rows: DEFAULT_CANVAS_CONFIG.gridConfig.rows,
+    cols: DEFAULT_CANVAS_CONFIG.gridConfig.cols,
   });
 
-  const isGridLayout = mode === LayoutPresets[1];
+  const isGridLayout = mode === layoutPresets[1];
 
   const { isOpen, openDrawer, closeDrawer } = useControlDrawer();
 
@@ -56,7 +56,7 @@ export default function CanvasLayout({
     setMode(mode);
     if (
       configHelper.canvasConfig.layout !== 'free' &&
-      mode === LayoutPresets[0]
+      mode === layoutPresets[0]
     ) {
       switchToFreeLayout();
     }
@@ -71,7 +71,7 @@ export default function CanvasLayout({
 
   const handleApplyGrid = () => {
     if (!isGridLayout) return;
-    setMode(LayoutPresets[1]);
+    setMode(layoutPresets[1]);
     switchToGridLayout(gridSize.rows!, gridSize.cols!);
   };
 
@@ -83,9 +83,9 @@ export default function CanvasLayout({
         <div className="relative space-y-4 p-4">
           <GroupTitle text="Layout" icon={Grid2x2} />
           <ButtonTabs
-            tabs={LayoutPresets}
+            tabs={layoutPresets}
             defaultActiveTab={
-              isGridLayout ? LayoutPresets[1] : LayoutPresets[0]
+              isGridLayout ? layoutPresets[1] : layoutPresets[0]
             }
             onChange={handleModeSelect}
             size="xs"

@@ -1,6 +1,7 @@
 'use client';
 
 import type { CanvasSize } from '../../../../types/config';
+import type { CanvasRatioType } from '../../data/aspect-ratio';
 
 import { cn } from '@/utils/cn';
 import { Move, Proportions } from 'lucide-react';
@@ -10,11 +11,8 @@ import { clamp } from 'lodash';
 import usePreventNumberWheel from '@/hooks/dom/use-prevent-number-wheel';
 import Label from '@/components/common/label';
 import Button from '@/components/common/button';
-import { DefaultCanvasConfig } from '../../../..';
-import {
-  PresetAspectRatios,
-  type ConfitRatioType,
-} from '../../data/aspect-ratio';
+import { DEFAULT_CANVAS_CONFIG } from '../../../..';
+import { PRESET_ASPECT_RATIOS } from '../../data/aspect-ratio';
 
 const MIN_SIZE = 512;
 const MAX_SIZE = 4096;
@@ -37,7 +35,7 @@ type Props = {
 export default function AspectRatio({ size, setSize }: Props) {
   const [isCustomSize, setIsCustomSize] = useState(false);
   const [inputSize, setInputSize] = useState<CanvasSize>(
-    DefaultCanvasConfig.size
+    DEFAULT_CANVAS_CONFIG.size
   );
 
   const refCallback = usePreventNumberWheel();
@@ -52,7 +50,7 @@ export default function AspectRatio({ size, setSize }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [size]);
 
-  const handleRatioSelect = (ratio: ConfitRatioType) => {
+  const handleRatioSelect = (ratio: CanvasRatioType) => {
     if (ratio.title === 'Custom Size') {
       setIsCustomSize(true);
     } else if (ratio.width && ratio.height) {
@@ -84,7 +82,7 @@ export default function AspectRatio({ size, setSize }: Props) {
     setSize(inputSize.width, inputSize.height);
   };
 
-  const isRatioActive = (ratio: ConfitRatioType) => {
+  const isRatioActive = (ratio: CanvasRatioType) => {
     if (isCustomSize) {
       return ratio.title === 'Custom Size';
     } else {
@@ -101,7 +99,7 @@ export default function AspectRatio({ size, setSize }: Props) {
         Size
       </Label>
       <div className="grid grid-cols-2 gap-3">
-        {PresetAspectRatios.map((ratio) => (
+        {PRESET_ASPECT_RATIOS.map((ratio) => (
           <Button
             key={ratio.title}
             variant="ghost"

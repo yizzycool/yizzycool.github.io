@@ -8,7 +8,7 @@ import { useMemo, useState } from 'react';
 import { isUndefined } from 'lodash';
 
 import { useControlDrawer } from '../hooks/use-control-drawer';
-import { PresetBorderColors } from '../../data/background';
+import { PRESET_BORDER_COLORS } from '../../data/background';
 import Button from '@/components/common/button';
 import Slider from '@/components/common/slider';
 import ColorPicker from '../color-picker';
@@ -39,7 +39,7 @@ export default function Border({
   const { isOpen, openDrawer, closeDrawer } = useControlDrawer();
 
   const colors = useMemo(() => {
-    return [...customColors, ...PresetBorderColors];
+    return [...customColors, ...PRESET_BORDER_COLORS];
   }, [customColors]);
 
   const handleColorSelect = (hex: string) => {
@@ -118,7 +118,7 @@ export default function Border({
               </Button>
             </div>
             {/* Preset Colors */}
-            {[...customColors, ...PresetBorderColors].map((hex) => (
+            {[...customColors, ...PRESET_BORDER_COLORS].map((hex) => (
               <div key={hex} className="aspect-square w-full">
                 <Button
                   variant="ghost"

@@ -1,4 +1,4 @@
-import { FabricFilterList } from '../data/fabric-filters';
+import { FABRIC_FILTER_LIST } from '../data/fabric-filters';
 
 type FabricFilterColorParam = {
   type: string;
@@ -41,7 +41,7 @@ export type FabricFilterParams = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const SupportedFabricFilterTypeList = [...FabricFilterList] as const;
+const SupportedFabricFilterTypeList = [...FABRIC_FILTER_LIST] as const;
 
 export type SupportedFabricFilterType =
   (typeof SupportedFabricFilterTypeList)[number];

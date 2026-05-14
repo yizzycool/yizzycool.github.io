@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { ToolsSelectorDesktop } from '../../../tools-selector';
 
-const NavigationData = [
+const navigationData = [
   {
     link: '/',
     title: 'Home',
@@ -22,7 +22,7 @@ export default function Navigation() {
   return (
     <nav className="px-4">
       <ul className="flex items-center justify-end px-4">
-        {NavigationData.map(({ link, title }) => (
+        {navigationData.map(({ link, title }) => (
           <li key={link}>
             <Link
               className="group relative mx-4 transition-opacity hover:text-black hover:dark:text-white"

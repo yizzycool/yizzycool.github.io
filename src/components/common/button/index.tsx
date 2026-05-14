@@ -88,7 +88,7 @@ export default function Button({
     xl: cn('text-xl', !!children ? 'px-7 py-3.5 ' : 'p-4'),
   };
 
-  const roundeds = {
+  const roundedMap = {
     none: 'rounded-none',
     sm: 'rounded-sm',
     base: 'rounded',
@@ -127,7 +127,7 @@ export default function Button({
     <button
       onClick={onButtonClick}
       disabled={disabled}
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${roundeds[rounded]} ${className} ${bordered ? 'border' : ''}`}
+      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${roundedMap[rounded]} ${className} ${bordered ? 'border' : ''}`}
       aria-label={ariaLabel}
     >
       {Icon && (

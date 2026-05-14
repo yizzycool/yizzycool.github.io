@@ -8,7 +8,7 @@ import { find, fromPairs, get, keys } from 'lodash';
 
 import useCommon from './use-common';
 import colorUtils from '@/utils/color-utils';
-import { FabricFilterMap } from '../data/fabric-filters';
+import { FABRIC_FILTER_MAP } from '../data/fabric-filters';
 
 type Props = {
   refs: {
@@ -196,12 +196,12 @@ export default function useImageUpdater({
 
     const extractParams = (filterType: string) => {
       const filter = find(image.filters, (f) => f.type === filterType);
-      const filterKeys = keys(FabricFilterMap[filterType].params);
+      const filterKeys = keys(FABRIC_FILTER_MAP[filterType].params);
       return fromPairs(
         filterKeys.map((key) => {
           const value =
             get(params, key) ||
-            get(FabricFilterMap, [filterType, 'params', key, 'default']) ||
+            get(FABRIC_FILTER_MAP, [filterType, 'params', key, 'default']) ||
             get(filter, key);
           return [key, value];
         })
@@ -211,7 +211,7 @@ export default function useImageUpdater({
     // Create Fabric Filters
     const fabricFilters = filters.map((filterType) => {
       const params = extractParams(filterType);
-      return new FabricFilterMap[filterType].filter(params);
+      return new FABRIC_FILTER_MAP[filterType].filter(params);
     });
 
     // Update states

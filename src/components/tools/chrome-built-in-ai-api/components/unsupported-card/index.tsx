@@ -1,8 +1,8 @@
 'use client';
 
 import {
-  ChromeBuiltInAiApiFlags,
-  ChromeBuiltInAiApiNames,
+  CHROME_BUILT_IN_AI_API_FLAGS,
+  CHROME_BUILT_IN_AI_API_NAMES,
   UnsupportedApiType,
 } from '../../data/unsupported-types';
 import { AlertTriangle, ExternalLink, Settings } from 'lucide-react';
@@ -27,7 +27,7 @@ export default function UnsupportedCard({
           Browser Not Supported
         </h2>
         <p className="mb-8 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
-          Chrome's built-in AI ({ChromeBuiltInAiApiNames[apiType]}) is not
+          Chrome's built-in AI ({CHROME_BUILT_IN_AI_API_NAMES[apiType]}) is not
           available on this device or browser configuration.
         </p>
 
@@ -64,7 +64,7 @@ export default function UnsupportedCard({
               <span className="text-neutral-400">
                 Enable{' '}
                 <code className="rounded bg-neutral-200 px-1 dark:bg-neutral-700">
-                  {ChromeBuiltInAiApiFlags[apiType]}
+                  {CHROME_BUILT_IN_AI_API_FLAGS[apiType]}
                 </code>{' '}
                 in chrome://flags.
               </span>

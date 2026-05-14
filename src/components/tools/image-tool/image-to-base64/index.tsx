@@ -24,7 +24,7 @@ type ImageInfo = {
   blob: Blob | null;
 };
 
-const DefaultImageInfo: ImageInfo = {
+const defaultImageInfo: ImageInfo = {
   image: null,
   width: 0,
   height: 0,
@@ -34,11 +34,11 @@ const DefaultImageInfo: ImageInfo = {
 
 export default function ImageToBase64() {
   const [base64, setBase64] = useState<string>('');
-  const [imageInfo, setImageInfo] = useState<ImageInfo>(DefaultImageInfo);
+  const [imageInfo, setImageInfo] = useState<ImageInfo>(defaultImageInfo);
 
   const transferToBase64 = async (file: File) => {
     if (isNull(file)) return;
-    setImageInfo(DefaultImageInfo);
+    setImageInfo(defaultImageInfo);
     try {
       const base64 = await imageUtils.blobToBase64(file);
       const image = await imageUtils.newImageFromBlob(file);
@@ -143,7 +143,7 @@ export default function ImageToBase64() {
       <Snackbar
         variant="error"
         open={imageInfo.error}
-        onClose={() => setImageInfo(DefaultImageInfo)}
+        onClose={() => setImageInfo(defaultImageInfo)}
         content="Uploaded image is not supported now. Please choose another image and try again."
       />
     </>

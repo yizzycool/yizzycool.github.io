@@ -17,7 +17,7 @@ import UnsupportedLanguagePairCard from './components/unsupported-language-pair-
 import InlineDownloadCard from './components/inline-download-card';
 import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
-import { UnsupportedApiTypes } from '../data/unsupported-types';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 
 export default function TranslatorApi() {
   const [text, setText] = useState('');
@@ -81,7 +81,7 @@ export default function TranslatorApi() {
       {!hasCheckedAIStatus ? (
         <LoadingSkeleton />
       ) : !isApiSupported ? (
-        <UnsupportedCard apiType={UnsupportedApiTypes.chromeTranslatorApi} />
+        <UnsupportedCard apiType={UNSUPPORTED_API_TYPES.chromeTranslatorApi} />
       ) : isNull(translator) && shouldDownloadModel ? (
         <ModelDownloadCard
           onClick={downloadModel}

@@ -18,16 +18,16 @@ type Props = {
   setLayer: (type: 'front' | 'back' | 'forward' | 'backward') => void;
 };
 
-const Layers = ['front', 'back', 'forward', 'backward'] as const;
+const layers = ['front', 'back', 'forward', 'backward'] as const;
 
-const LayersName = {
+const layersName = {
   front: 'To Front',
   back: 'To Back',
   forward: 'Forward',
   backward: 'Backward',
 };
 
-const LayersIconMap = {
+const layersIconMap = {
   front: ChevronsUp,
   back: ChevronsDown,
   forward: ChevronUp,
@@ -49,17 +49,17 @@ export default function Arrangement({ setLayer }: Props) {
         <div className="space-y-4 p-4">
           <GroupTitle text="Arrangement" icon={LayersIcon} />
           <div className="flex max-w-full gap-2 overflow-x-auto pb-4">
-            {Layers.map((layer) => (
+            {layers.map((layer) => (
               <Button
                 variant="ghost"
                 size="sm"
                 bordered
-                icon={LayersIconMap[layer]}
+                icon={layersIconMap[layer]}
                 key={layer}
                 onClick={() => setLayer(layer)}
                 className="whitespace-nowrap font-black"
               >
-                {LayersName[layer]}
+                {layersName[layer]}
               </Button>
             ))}
           </div>

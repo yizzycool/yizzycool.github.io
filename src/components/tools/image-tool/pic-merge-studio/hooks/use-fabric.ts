@@ -15,11 +15,11 @@ import useCommon from './use-common';
 import useGridUpdater from './use-grid-updater';
 import colorUtils from '@/utils/color-utils';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
-import { DefaultCanvasConfig } from '..';
+import { DEFAULT_CANVAS_CONFIG } from '..';
 
 // let fabric = null;
 
-export const FabricControlConfig = {
+export const FABRIC_CONTROL_CONFIG = {
   strokeUniform: true,
   borderColor: '#12a29282',
   cornerColor: '#12a29282',
@@ -31,7 +31,7 @@ export const FabricControlConfig = {
   touchCornerSize: 40,
 };
 
-export const FabricImageConfig = {
+export const FABRIC_IMAGE_CONFIG = {
   lockScalingFlip: true,
   lockSkewingX: true,
   lockSkewingY: true,
@@ -39,7 +39,7 @@ export const FabricImageConfig = {
   strokeWidth: 0,
   _strokeWidthRatio: 0,
   stroke: '',
-  ...FabricControlConfig,
+  ...FABRIC_CONTROL_CONFIG,
 };
 
 export type FabricInternalStates = {
@@ -126,14 +126,14 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
 
     // Create a Canvas
     const canvas = new fabric.Canvas(canvasRef.current, {
-      backgroundColor: DefaultCanvasConfig.background.color?.color,
+      backgroundColor: DEFAULT_CANVAS_CONFIG.background.color?.color,
       selection: false,
       enableRetinaScaling: true,
     });
     fabricCanvasRef.current = canvas;
     fabricCanvasRef.current.setDimensions({
-      width: DefaultCanvasConfig.size.width,
-      height: DefaultCanvasConfig.size.height,
+      width: DEFAULT_CANVAS_CONFIG.size.width,
+      height: DEFAULT_CANVAS_CONFIG.size.height,
     });
 
     // Create border rect

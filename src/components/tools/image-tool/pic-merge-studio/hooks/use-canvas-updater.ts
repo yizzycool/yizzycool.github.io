@@ -6,8 +6,8 @@ import * as fabric from 'fabric'; // v6
 
 import useCommon from './use-common';
 import colorUtils from '@/utils/color-utils';
-import { FabricImageConfig } from './use-fabric';
-import { DefaultCanvasConfig } from '..';
+import { FABRIC_IMAGE_CONFIG } from './use-fabric';
+import { DEFAULT_CANVAS_CONFIG } from '..';
 
 type Props = {
   refs: {
@@ -83,7 +83,7 @@ export default function useCanvasUpdater({
         scaleY: scale,
         left: scaledWidth / 2 + 100 + idx * 50,
         top: scaledHeight / 2 + 100 + idx * 50,
-        ...FabricImageConfig,
+        ...FABRIC_IMAGE_CONFIG,
         clipPath: null,
       });
     });
@@ -124,7 +124,7 @@ export default function useCanvasUpdater({
         scaleY: scale,
         left: scaledWidth / 2 + shiftOffset * 2 + shiftOffset * idx,
         top: scaledHeight / 2 + shiftOffset * 2 + shiftOffset * idx,
-        ...FabricImageConfig,
+        ...FABRIC_IMAGE_CONFIG,
       });
       fabricCanvasRef.current.add(img);
       if (idx === files.length - 1) {
@@ -249,7 +249,7 @@ export default function useCanvasUpdater({
     // Update states
     setCanvasConfig((prev) => ({
       ...prev,
-      border: DefaultCanvasConfig.border,
+      border: DEFAULT_CANVAS_CONFIG.border,
     }));
 
     // Update Fabric Canvas

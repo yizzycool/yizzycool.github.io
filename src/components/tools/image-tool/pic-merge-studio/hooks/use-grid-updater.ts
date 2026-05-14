@@ -9,7 +9,7 @@ import { flatMap } from 'lodash';
 import useCommon from './use-common';
 import useGridLogic from './use-grid-logic';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
-import { DefaultCanvasConfig } from '..';
+import { DEFAULT_CANVAS_CONFIG } from '..';
 
 type Props = {
   refs: {
@@ -277,11 +277,11 @@ export default function useGridUpdater({
       ...prev,
       gridConfig: {
         ...prev.gridConfig,
-        border: DefaultCanvasConfig.gridConfig.border,
+        border: DEFAULT_CANVAS_CONFIG.gridConfig.border,
       },
     }));
 
-    updateEdges(DefaultCanvasConfig.gridConfig.border);
+    updateEdges(DEFAULT_CANVAS_CONFIG.gridConfig.border);
   };
 
   const setAlignment = (horizontal: string, vertical: string) => {

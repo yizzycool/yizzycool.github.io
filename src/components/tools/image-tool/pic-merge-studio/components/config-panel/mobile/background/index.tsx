@@ -7,7 +7,7 @@ import { Palette } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 import { useControlDrawer } from '../hooks/use-control-drawer';
-import { PresetBackgroundColors } from '../../data/background';
+import { PRESET_BACKGROUND_COLORS } from '../../data/background';
 import Button from '@/components/common/button';
 import Slider from '@/components/common/slider';
 import ColorPicker from '../color-picker';
@@ -29,7 +29,7 @@ export default function Background({ background, setBackgroundColor }: Props) {
   const { isOpen, openDrawer, closeDrawer } = useControlDrawer();
 
   const colors = useMemo(() => {
-    return [...customColors, ...PresetBackgroundColors];
+    return [...customColors, ...PRESET_BACKGROUND_COLORS];
   }, [customColors]);
 
   const handleColorSelect = (hex: string) => {

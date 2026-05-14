@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Roundeds = [
+const roundedMap = [
   'none',
   'sm',
   'base',
@@ -14,6 +14,6 @@ const Roundeds = [
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Animations = ['none', 'fade-in'] as const;
 
-export type Rounded = (typeof Roundeds)[number];
+export type Rounded = (typeof roundedMap)[number];
 
 export type Animation = (typeof Animations)[number];

@@ -9,7 +9,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 
-const DefaultContents = {
+const defaultContents = {
   primary: '',
   secondary: '',
   ghost: '',
@@ -60,7 +60,7 @@ export default function Snackbar({
   content,
 }: Props) {
   const [message, setMessage] = useState(
-    content || DefaultContents[variant] || ''
+    content || defaultContents[variant] || ''
   );
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -133,7 +133,7 @@ export default function Snackbar({
     xl: 'text-xl px-7 py-3.5 ',
   };
 
-  const roundeds = {
+  const roundedMap = {
     none: 'rounded-none',
     sm: 'rounded-sm',
     base: 'rounded',
@@ -171,7 +171,7 @@ export default function Snackbar({
         baseStyles,
         variants[variant],
         sizes[size],
-        roundeds[rounded],
+        roundedMap[rounded],
         className,
         bordered && 'border',
         open ? 'opacity-100' : 'pointer-events-none opacity-0'

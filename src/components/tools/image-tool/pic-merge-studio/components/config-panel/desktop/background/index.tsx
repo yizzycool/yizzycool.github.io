@@ -10,7 +10,7 @@ import Label from '@/components/common/label';
 import Button from '@/components/common/button';
 import Slider from '@/components/common/slider';
 import ColorPicker from '../color-picker';
-import { PresetBackgroundColors } from '../../data/background';
+import { PRESET_BACKGROUND_COLORS } from '../../data/background';
 
 type Props = {
   background: CanvasBackground;
@@ -24,7 +24,7 @@ export default function Background({ background, setBackgroundColor }: Props) {
   const [customColors, setCustomColors] = useState<string[]>([]);
 
   const colors = useMemo(() => {
-    return [...customColors, ...PresetBackgroundColors];
+    return [...customColors, ...PRESET_BACKGROUND_COLORS];
   }, [customColors]);
 
   const handleColorSelect = (hex: string) => {

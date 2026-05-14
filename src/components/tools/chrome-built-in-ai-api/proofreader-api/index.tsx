@@ -18,7 +18,7 @@ import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
 import Result from './components/result';
 import browserUtils from '@/utils/browser-utils';
-import { UnsupportedApiTypes } from '../data/unsupported-types';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 
 export default function ProofreaderApi() {
   const [text, setText] = useState('');
@@ -94,7 +94,7 @@ export default function ProofreaderApi() {
       {!hasCheckedAIStatus ? (
         <LoadingSkeleton />
       ) : !isApiSupported ? (
-        <UnsupportedCard apiType={UnsupportedApiTypes.chromeProofreaderApi} />
+        <UnsupportedCard apiType={UNSUPPORTED_API_TYPES.chromeProofreaderApi} />
       ) : shouldDownloadModel ? (
         <ModelDownloadCard
           onClick={downloadModel}

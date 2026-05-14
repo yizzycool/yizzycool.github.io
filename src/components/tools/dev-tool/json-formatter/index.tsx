@@ -23,10 +23,10 @@ import ButtonTabs from '@/components/common/tabs/button';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
 
-const TabItems = ['Format', 'Minify'];
+const tabItems = ['Format', 'Minify'];
 
 export default function JsonFormatter() {
-  const [tab, setTab] = useState(TabItems[0]);
+  const [tab, setTab] = useState(tabItems[0]);
   const [input, setInput] = useState<string>('');
   const [output, setOutput] = useState<string>('');
   const [error, setError] = useState(false);
@@ -34,7 +34,7 @@ export default function JsonFormatter() {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const processJson = (jsonString: string) => {
-    if (tab === TabItems[0]) {
+    if (tab === tabItems[0]) {
       handleFormat(jsonString);
     } else {
       handleMinify(jsonString);
@@ -89,7 +89,7 @@ export default function JsonFormatter() {
 
   const onTabChanged = (newTab: string) => {
     setTab(newTab);
-    if (newTab === TabItems[0]) {
+    if (newTab === tabItems[0]) {
       handleFormat(input);
     } else {
       handleMinify(input);
@@ -104,7 +104,7 @@ export default function JsonFormatter() {
 
       {/* Tabs */}
       <ButtonTabs
-        tabs={TabItems}
+        tabs={tabItems}
         tabIcons={[Maximize2, Minimize2]}
         onChange={onTabChanged}
       />

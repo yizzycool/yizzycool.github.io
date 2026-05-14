@@ -1,7 +1,7 @@
 import type { FabricFilterConfig } from '../types/fabric-filter';
 import * as fabric from 'fabric';
 
-export const FabricFilterList = [
+export const FABRIC_FILTER_LIST = [
   fabric.filters.BlackWhite,
   fabric.filters.BlendColor,
   // fabric.filters.BlendImage,
@@ -29,7 +29,7 @@ export const FabricFilterList = [
   fabric.filters.Vintage,
 ];
 
-export const FabricFilterTypeList = [
+export const FABRIC_FILTER_TYPE_LIST = [
   fabric.filters.BlackWhite.type,
   fabric.filters.BlendColor.type,
   // fabric.filters.BlendImage.type,
@@ -57,7 +57,7 @@ export const FabricFilterTypeList = [
   fabric.filters.Vintage.type,
 ];
 
-export const FabricFilterMap: FabricFilterConfig = {
+export const FABRIC_FILTER_MAP: FabricFilterConfig = {
   [fabric.filters.BlackWhite.type]: {
     filterType: 'fixed',
     filter: fabric.filters.BlackWhite,

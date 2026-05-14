@@ -1,11 +1,11 @@
 'use client';
 
-import {
-  WebDetectApiNames,
-  UnsupportedApiType,
-} from '../../data/unsupported-types';
+import type { UnsupportedApiType } from '../../data/unsupported-types';
+
 import { AlertTriangle, Cpu, ExternalLink, Settings } from 'lucide-react';
+
 import Button from '@/components/common/button';
+import { WEB_DETECT_API_NAMES } from '../../data/unsupported-types';
 
 export default function UnsupportedCard({
   apiType,
@@ -25,8 +25,8 @@ export default function UnsupportedCard({
           Browser Not Supported
         </h2>
         <p className="mb-8 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
-          The Web Detector API ({WebDetectApiNames[apiType]}) is not available
-          on this device or browser configuration.
+          The Web Detector API ({WEB_DETECT_API_NAMES[apiType]}) is not
+          available on this device or browser configuration.
         </p>
 
         {/* Checklist */}

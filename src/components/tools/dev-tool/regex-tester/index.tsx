@@ -42,15 +42,6 @@ export const RegexColors: Array<RegexColorType> = [
   },
 ];
 
-export const RegexFlags = [
-  { key: 'g', label: 'global' },
-  { key: 'i', label: 'ignore case' },
-  { key: 'm', label: 'multiline' },
-  { key: 's', label: 'dotAll' },
-  { key: 'u', label: 'unicode' },
-  { key: 'y', label: 'sticky' },
-];
-
 export default function RegexTester() {
   const [pattern, setPattern] = useState('(\\w+)@(\\w+)\\.(\\w+)');
   const [flags, setFlags] = useState('g');

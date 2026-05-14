@@ -13,7 +13,7 @@ import Button from '@/components/common/button';
 import Divider from '@/components/common/divider';
 import Snackbar from '@/components/common/snackbar';
 
-const Settings = [
+const settings = [
   {
     key: 'tone',
     title: 'Tone',
@@ -84,7 +84,7 @@ export default function Config({
               onChange={(e) => onChange('sharedContext', e.target.value)}
             />
           </div>
-          {Settings.map((setting) => (
+          {settings.map((setting) => (
             <div key={setting.key} className="mt-8">
               <Selector
                 title={setting.title}

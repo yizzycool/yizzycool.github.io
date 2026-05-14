@@ -6,7 +6,7 @@ import * as fabric from 'fabric';
 import { range } from 'lodash';
 
 import useCommon from './use-common';
-import { FabricImageConfig, type FabricInternalStates } from './use-fabric';
+import { FABRIC_IMAGE_CONFIG, type FabricInternalStates } from './use-fabric';
 import colorUtils from '@/utils/color-utils';
 
 type Props = {
@@ -99,7 +99,7 @@ export default function useGridLogic({
             scaleY: scale,
             left: x + cellWidth / 2,
             top: y + cellHeight / 2,
-            ...FabricImageConfig,
+            ...FABRIC_IMAGE_CONFIG,
           });
         } else {
           const imageEl = new Image();
@@ -108,7 +108,7 @@ export default function useGridLogic({
             height: cellHeight,
             left: x + cellWidth / 2,
             top: y + cellHeight / 2,
-            ...FabricImageConfig,
+            ...FABRIC_IMAGE_CONFIG,
             lockMovementX: true,
             lockMovementY: true,
             lockRotation: true,

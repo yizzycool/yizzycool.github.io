@@ -26,7 +26,7 @@ type ImageInfo = {
   height: number;
 };
 
-const DefaultImageInfo: ImageInfo = {
+const defaultImageInfo: ImageInfo = {
   blob: null,
   image: null,
   width: 0,
@@ -35,14 +35,14 @@ const DefaultImageInfo: ImageInfo = {
 
 export default function Base64ToImage() {
   const [base64, setBase64] = useState<string>('');
-  const [imageInfo, setImageInfo] = useState<ImageInfo>(DefaultImageInfo);
+  const [imageInfo, setImageInfo] = useState<ImageInfo>(defaultImageInfo);
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const transferToImage = async (base64String: string | undefined = base64) => {
     if (isNull(base64String)) return;
     if (isEmpty(base64String)) {
-      setImageInfo(DefaultImageInfo);
+      setImageInfo(defaultImageInfo);
       return;
     }
     try {
@@ -58,7 +58,7 @@ export default function Base64ToImage() {
       setImageInfo({ image, width, height, blob });
     } catch (_e) {
       console.log('An error occurred while converting image');
-      setImageInfo(DefaultImageInfo);
+      setImageInfo(defaultImageInfo);
     }
   };
 

@@ -1,4 +1,4 @@
-export type ConfitRatioType = {
+export type CanvasRatioType = {
   title: string;
   desc?: string;
   width?: number;
@@ -6,7 +6,7 @@ export type ConfitRatioType = {
   isCustom?: boolean;
 };
 
-export const PresetAspectRatios: ConfitRatioType[] = [
+export const PRESET_ASPECT_RATIOS: CanvasRatioType[] = [
   {
     title: '1:1',
     width: 1080,

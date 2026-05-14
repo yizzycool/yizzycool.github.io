@@ -17,7 +17,7 @@ import ModelDownloadCard from '../components/model-download-card';
 import SectionGap from '../../components/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
-import { UnsupportedApiTypes } from '../data/unsupported-types';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 
 export default function LanguageDetectorApi() {
   const [text, setText] = useState('');
@@ -78,7 +78,7 @@ export default function LanguageDetectorApi() {
         <LoadingSkeleton />
       ) : !isApiSupported ? (
         <UnsupportedCard
-          apiType={UnsupportedApiTypes.chromeLanguageDetectorApi}
+          apiType={UNSUPPORTED_API_TYPES.chromeLanguageDetectorApi}
         />
       ) : shouldDownloadModel ? (
         <ModelDownloadCard

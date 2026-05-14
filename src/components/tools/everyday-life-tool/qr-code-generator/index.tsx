@@ -19,7 +19,7 @@ import Preview from './components/preview';
 import ActionButtons from './components/action-buttons';
 
 // Handle color preset selection
-export const QrCodeColorPresets = [
+export const qrCodeColorPresets = [
   { name: 'Classic', fg: '#000000', bg: '#ffffff' },
   { name: 'Midnight', fg: '#171717', bg: '#f5f5f5' },
   { name: 'Indigo (Katsuiro)', fg: '#181b39', bg: '#f0f4f8' },
@@ -88,7 +88,7 @@ export default function QrCodeGenerator() {
 
       <SectionGap />
 
-      {/* Settings */}
+      {/* SETTINGS */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <Appearance
           fgColor={fgColor}

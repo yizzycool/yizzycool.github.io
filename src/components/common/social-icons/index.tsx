@@ -17,13 +17,13 @@ type Props = {
   iconSize?: number;
 };
 
-const IconMap = {
+const iconMap = {
   github: Github,
   linkedin: Linkedin,
   email: Mail,
 };
 
-const HrefMap = {
+const hrefMap = {
   github: 'https://github.com/yizzycool',
   linkedin: 'https://www.linkedin.com/in/yizzy/',
   email: 'mailto:chsh110768@gmail.com',
@@ -49,8 +49,8 @@ export default function SocialIcons({
       {types.map((type) => (
         <SocialIcon
           key={type}
-          icon={IconMap[type]}
-          href={HrefMap[type]}
+          icon={iconMap[type]}
+          href={hrefMap[type]}
           size={iconSize}
         />
       ))}
