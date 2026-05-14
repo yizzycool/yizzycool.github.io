@@ -196,8 +196,7 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
 
     const scale = Math.min(
       containerWidth / canvasSize.width,
-      containerHeight / canvasSize.height,
-      1
+      containerHeight / canvasSize.height
     );
 
     // Update canvas wrapper

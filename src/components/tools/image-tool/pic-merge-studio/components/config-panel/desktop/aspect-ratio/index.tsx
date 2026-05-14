@@ -14,7 +14,7 @@ import Button from '@/components/common/button';
 import { DEFAULT_CANVAS_CONFIG } from '../../../..';
 import { PRESET_ASPECT_RATIOS } from '../../data/aspect-ratio';
 
-const MIN_SIZE = 512;
+const MIN_SIZE = 1;
 const MAX_SIZE = 4096;
 const CustomSizes: Array<{ key: 'width' | 'height'; label: string }> = [
   {
@@ -39,6 +39,10 @@ export default function AspectRatio({ size, setSize }: Props) {
   );
 
   const refCallback = usePreventNumberWheel();
+
+  // Determine whether apply button is disabled or not
+  const isApplyDisabled =
+    size.width === inputSize.width && size.height === inputSize.height;
 
   // Sync inputSize with canvasSize
   useEffect(() => {
@@ -79,6 +83,8 @@ export default function AspectRatio({ size, setSize }: Props) {
   };
 
   const handleApply = () => {
+    if (isApplyDisabled) return;
+
     setSize(inputSize.width, inputSize.height);
   };
 
@@ -166,7 +172,7 @@ export default function AspectRatio({ size, setSize }: Props) {
           <div key={key} className="mt-2 space-y-2">
             <label
               htmlFor={`size-${key}`}
-              className="block pl-1 text-xs font-bold uppercase tracking-widest text-neutral-400"
+              className="block pl-1 text-xs font-bold uppercase tracking-wider text-neutral-400"
             >
               {label}
             </label>
@@ -192,12 +198,16 @@ export default function AspectRatio({ size, setSize }: Props) {
             />
           </div>
         ))}
+        <p className="col-span-2 -my-1 text-center text-xs text-neutral-400 dark:text-neutral-500">
+          Max supported size: {MAX_SIZE}px
+        </p>
         <Button
           variant="primary"
           rounded="full"
           size="sm"
           className="col-span-2 font-black"
           onClick={handleApply}
+          disabled={isApplyDisabled}
         >
           Apply
         </Button>
