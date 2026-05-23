@@ -348,6 +348,20 @@ export const ToolMetadata = {
 };
 
 export const ToolJsonLdSoftwareApplication = {
+  [ToolKeys.taiwanLiveCams]: {
+    name: '臺灣即時影像 – 新北市景點與路況鏡頭首發',
+    applicationCategory: 'Utility',
+    description:
+      '免費線上臺灣即時影像工具。首波完整上線新北市熱門景點、城市地標與主要交通路段的即時視訊鏡頭，全臺其他縣市陸續解鎖中！',
+    featureList: [
+      '即時景點影像',
+      '即時路況監測',
+      '人潮即時掌握',
+      '多鏡頭快速切換',
+      '全臺縣市支援',
+    ],
+  },
+
   [ToolKeys.qrCodeGenerator]: {
     name: 'QR Code Generator',
     applicationCategory: 'Utility',
