@@ -13,7 +13,7 @@ import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 
 import useMounted from '@/hooks/lifecycle/use-mounted';
-import { Tools } from '@/data/tools';
+import { ToolDataForFeaturePanel } from '@/data/tools';
 
 export default function ToolsSelectorDesktop() {
   const isMounted = useMounted();
@@ -53,7 +53,7 @@ export default function ToolsSelectorDesktop() {
             'data-[open]:z-10 data-[open]:translate-y-0 data-[open]:opacity-100'
           )}
         >
-          {Tools.map((tool) => (
+          {ToolDataForFeaturePanel.map((tool) => (
             <li
               key={tool.name}
               className="space-y-4 p-4 transition-all duration-300 hover:bg-gray-100/50 dark:hover:bg-neutral-700/20"

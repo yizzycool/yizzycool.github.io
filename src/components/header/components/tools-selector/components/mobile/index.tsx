@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import Link from 'next/link';
 
-import { Tools } from '@/data/tools';
+import { ToolDataForFeaturePanel } from '@/data/tools';
 
 export default function ToolsSelectorMobile({
   closeSidePanel,
@@ -44,7 +44,7 @@ export default function ToolsSelectorMobile({
         style={{ overflow: 'hidden' }}
       >
         <ul className="ml-4 overflow-hidden border-l border-neutral-400/50">
-          {Tools.map((tool) => (
+          {ToolDataForFeaturePanel.map((tool) => (
             <li key={tool.name} className="space-y-4 p-4">
               <span className="text-sm font-bold tracking-wide text-neutral-500 dark:text-neutral-400">
                 {tool.name}
