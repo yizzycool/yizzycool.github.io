@@ -23,15 +23,21 @@ export default function HeaderBlock() {
 
   return (
     <header>
-      <div className="mb-2 flex items-center gap-3 dark:text-neutral-200">
-        {!!Icon && <Icon size={24} />}
-        {!!title && <h1 className="text-left text-2xl font-bold">{title}</h1>}
+      <div className="mb-2 flex items-start gap-4 text-left dark:text-neutral-200">
+        {!!Icon && (
+          <div className="mt-1 rounded-xl bg-blue-600 p-2 text-white shadow-lg shadow-blue-600/20">
+            <Icon size={24} />
+          </div>
+        )}
+        <div>
+          {!!title && <h1 className="text-2xl font-bold">{title}</h1>}
+          {!!desc && (
+            <h2 className="mt-0.5 text-sm text-gray-500 md:text-base dark:text-neutral-400">
+              {desc}
+            </h2>
+          )}
+        </div>
       </div>
-      {!!desc && (
-        <h2 className="mt-4 text-left text-sm text-gray-500 md:text-base dark:text-neutral-400">
-          {desc}
-        </h2>
-      )}
     </header>
   );
 }

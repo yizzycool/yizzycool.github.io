@@ -1,0 +1,77 @@
+{
+  "UpdateTime": "2026-05-16T03:37:42+08:00",
+  "UpdateInterval": 21600,
+  "SrcUpdateTime": "2026-05-16T02:10:13+08:00",
+  "SrcUpdateInterval": 86400,
+  "AuthorityCode": "THB",
+  "LinkVersion": "25.12.1",
+  "CCTVs": [
+    {
+      "CCTVID": "CCTV-26-014A-031-001",
+      "SubAuthorityCode": "THB-2R",
+      "LinkID": "3001410103263M",
+      "VideoStreamURL": "https://cctv-ss04.thb.gov.tw:443/T14A-31K+500",
+      "VideoImageURL": "https://cctv-ss04.thb.gov.tw:443/T14A-31K+500/snapshot",
+      "LocationType": 6,
+      "PositionLon": 121.276621,
+      "PositionLat": 24.137219,
+      "SurveillanceDescription": "合歡山武嶺亭",
+      "RoadID": "300141",
+      "RoadName": "台14甲線",
+      "RoadClass": 3,
+      "RoadDirection": "W",
+      "LocationMile": "31K+500"
+    },
+    {
+      "CCTVID": "CCTV-26-014A-006-001",
+      "SubAuthorityCode": "THB-2R",
+      "LinkID": "3001410000807M",
+      "VideoStreamURL": "https://cctv-ss04.thb.gov.tw:443/T14A-006K+950",
+      "VideoImageURL": "https://cctv-ss04.thb.gov.tw:443/T14A-006K+950/snapshot",
+      "LocationType": 6,
+      "PositionLon": 121.1579288,
+      "PositionLat": 24.042166,
+      "SurveillanceDescription": "清境農場仁愛鄉-仁和路清境國小前100M(順樁)",
+      "RoadID": "300141",
+      "RoadName": "台14甲線",
+      "RoadClass": 3,
+      "RoadDirection": "E",
+      "LocationMile": "6K+950"
+    },
+    {
+      "CCTVID": "T000128",
+      "LinkID": "6000780600030A",
+      "VideoStreamURL": "https://hls.bote.gov.taipei/live/index.html?id=128",
+      "LocationType": 1,
+      "PositionLon": 121.56555,
+      "PositionLat": 25.03283,
+      "SurveillanceType": -1,
+      "RoadID": "600078A",
+      "RoadName": "信義路五段",
+      "RoadClass": 6,
+      "RoadDirection": "W"
+    },
+    {
+      "CCTVID": "64000C000307",
+      "LinkID": "6203590000010E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam119",
+      "LocationType": 1,
+      "PositionLon": 120.29327,
+      "PositionLat": 22.61886,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "海邊路、新田路",
+      "RoadID": "620359E",
+      "RoadName": "海邊路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    }
+  ],
+  "Count": 4,
+  "lastUpdated": "2026-05-16T07:07:01.483Z"
+}

@@ -1,0 +1,5287 @@
+{
+  "UpdateTime": "2026-05-15T22:37:41+08:00",
+  "UpdateInterval": 21600,
+  "SrcUpdateTime": "2026-05-15T00:00:00+08:00",
+  "SrcUpdateInterval": 86400,
+  "AuthorityCode": "KHH",
+  "CCTVs": [
+    {
+      "CCTVID": "64000C000004",
+      "LinkID": "6193140000040E",
+      "VideoStreamURL": "https://cctv10.kctmc.nat.gov.tw/9a3f2abe/",
+      "LocationType": 1,
+      "PositionLon": 120.29296,
+      "PositionLat": 22.63687,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中華三路、建國三路",
+      "RoadID": "619314E",
+      "RoadName": "中華二路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000005",
+      "LinkID": "6193130000030E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/0dfc3403/",
+      "LocationType": 1,
+      "PositionLon": 120.29457,
+      "PositionLat": 22.63275,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中華三路、七賢二路",
+      "RoadID": "619313E",
+      "RoadName": "中華三路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000007",
+      "LinkID": "6209540400090E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/3ce56dae/",
+      "LocationType": 1,
+      "PositionLon": 120.34445,
+      "PositionLat": 22.63626,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "澄清路、九如一路",
+      "RoadID": "620954E",
+      "RoadName": "澄清路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000008",
+      "LinkID": "6193110000140E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/648b7b0d/",
+      "LocationType": 1,
+      "PositionLon": 120.29219,
+      "PositionLat": 22.6531,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中華一路、大順一路",
+      "RoadID": "619311E",
+      "RoadName": "中華一路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000010",
+      "LinkID": "2001200000140E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/a276c8c1/",
+      "LocationType": 1,
+      "PositionLon": 120.31049,
+      "PositionLat": 22.68129,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "博愛四路、大中二路",
+      "RoadID": "200120",
+      "RoadName": "高雄都會快速道路",
+      "RoadClass": 2,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000011",
+      "LinkID": "0000101072050E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/77c23c50/",
+      "LocationType": 1,
+      "PositionLon": 120.3358,
+      "PositionLat": 22.62693,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中正路交流道南下入口 ",
+      "RoadID": "000010",
+      "RoadName": "國道1號",
+      "RoadClass": 0,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000012",
+      "LinkID": "0000101172020E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/367d924c/",
+      "LocationType": 1,
+      "PositionLon": 120.33662,
+      "PositionLat": 22.62668,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中正路交流道北上入口",
+      "RoadID": "000010",
+      "RoadName": "國道1號",
+      "RoadClass": 0,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000013",
+      "LinkID": "3000100137285E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/1cf29d9d/",
+      "LocationType": 2,
+      "PositionLon": 120.32091,
+      "PositionLat": 22.68789,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "民族一路、華夏路",
+      "RoadID": "300010",
+      "RoadName": "台1線",
+      "RoadClass": 3,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000014",
+      "LinkID": "3000100037645E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/9e00aa3e/",
+      "LocationType": 2,
+      "PositionLon": 120.31554,
+      "PositionLat": 22.65543,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "民族一路、大順二路",
+      "RoadID": "300010",
+      "RoadName": "台1線",
+      "RoadClass": 3,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000016",
+      "LinkID": "6196780000110E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/cc93eb05/",
+      "LocationType": 1,
+      "PositionLon": 120.31499,
+      "PositionLat": 22.64772,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "民族一路、建工路(東北角)",
+      "RoadID": "619678E",
+      "RoadName": "民族一路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000017",
+      "LinkID": "6196790000010E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/dfb23efc/",
+      "LocationType": 1,
+      "PositionLon": 120.31374,
+      "PositionLat": 22.63649,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "民族二路、河南一路",
+      "RoadID": "619679E",
+      "RoadName": "民族二路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000018",
+      "LinkID": "6196790000020E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/331a404b/",
+      "LocationType": 1,
+      "PositionLon": 120.31368,
+      "PositionLat": 22.63528,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "民族二路、八德一路",
+      "RoadID": "619679E",
+      "RoadName": "民族二路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000019",
+      "LinkID": "6197840400020E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/88b6eddf/",
+      "LocationType": 2,
+      "PositionLon": 120.31423,
+      "PositionLat": 22.62754,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "光華一路、五福一路",
+      "RoadID": "619784E",
+      "RoadName": "光華一路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000020",
+      "LinkID": "6200950000070E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/335e2702/",
+      "LocationType": 1,
+      "PositionLon": 120.29095,
+      "PositionLat": 22.62069,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "河東路、五福三路",
+      "RoadID": "620095E",
+      "RoadName": "河東路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000021",
+      "LinkID": "6192200300080E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/c2b6db7f/",
+      "LocationType": 1,
+      "PositionLon": 120.33828,
+      "PositionLat": 22.56998,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山四路、平和東路",
+      "RoadID": "619220E",
+      "RoadName": "中山四路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000022",
+      "LinkID": "6200880400000E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam066",
+      "LocationType": 1,
+      "PositionLon": 120.3359,
+      "PositionLat": 22.62398,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "武營路、三多一路",
+      "RoadID": "620088E",
+      "RoadName": "武營路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000023",
+      "LinkID": "6198340400090E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam067",
+      "LocationType": 1,
+      "PositionLon": 120.30639,
+      "PositionLat": 22.59191,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "成功二路、擴建路",
+      "RoadID": "619834E",
+      "RoadName": "成功二路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000025",
+      "LinkID": "3001700022647E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/fbcb389f/",
+      "LocationType": 6,
+      "PositionLon": 120.29713,
+      "PositionLat": 22.62598,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中華三路、民生二路(東北角)",
+      "RoadID": "300170",
+      "RoadName": "台17線",
+      "RoadClass": 3,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000026",
+      "LinkID": "3001700122666E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/cf116a1c/",
+      "LocationType": 6,
+      "PositionLon": 120.29739,
+      "PositionLat": 22.62578,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中華三路、民生二路(東南角)",
+      "RoadID": "300170",
+      "RoadName": "台17線",
+      "RoadClass": 3,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000028",
+      "LinkID": "6193150000060E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/db9c47e1/",
+      "LocationType": 2,
+      "PositionLon": 120.30213,
+      "PositionLat": 22.61325,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中華四路、三多四路",
+      "RoadID": "619315E",
+      "RoadName": "中華四路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000029",
+      "LinkID": "6208100300000E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/1bf7c662/",
+      "LocationType": 1,
+      "PositionLon": 120.269,
+      "PositionLat": 22.60913,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "旗津三路、安樂巷(中洲三路687巷)",
+      "RoadID": "620810E",
+      "RoadName": "旗津三路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000030",
+      "LinkID": "6208090300000E",
+      "VideoStreamURL": "https://cctv10.kctmc.nat.gov.tw/f473f4cc/",
+      "LocationType": 1,
+      "PositionLon": 120.28749,
+      "PositionLat": 22.58653,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "旗津三路、北汕巷",
+      "RoadID": "620809E",
+      "RoadName": "旗津二路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000031",
+      "LinkID": "6208100300010E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/b44727ae/",
+      "LocationType": 1,
+      "PositionLon": 120.27535,
+      "PositionLat": 22.60149,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "旗津三路、中洲三路(中洲三路297巷)",
+      "RoadID": "620810E",
+      "RoadName": "旗津三路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000032",
+      "LinkID": "6208090700000E",
+      "VideoStreamURL": "https://cctv10.kctmc.nat.gov.tw/f64dcc3a/",
+      "LocationType": 1,
+      "PositionLon": 120.28484,
+      "PositionLat": 22.58963,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "旗津三路、中洲二路207巷",
+      "RoadID": "620809E",
+      "RoadName": "旗津二路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000033",
+      "LinkID": "0001000100040E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/6d9cd242/",
+      "LocationType": 4,
+      "PositionLon": 120.31905,
+      "PositionLat": 22.67892,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "大中一路、民族一路",
+      "RoadID": "000100",
+      "RoadName": "國道10號",
+      "RoadClass": 0,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000035",
+      "LinkID": "2001200100000E",
+      "VideoStreamURL": "wss://cctv8.kctmc.nat.gov.tw/flv/fd26ffee",
+      "LocationType": 2,
+      "PositionLon": 120.29771,
+      "PositionLat": 22.67865,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "翠華路、崇德路(新庄仔路)",
+      "RoadID": "200120",
+      "RoadName": "高雄都會快速道路",
+      "RoadClass": 2,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000036",
+      "LinkID": "6193160400070E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/3d7b717d/",
+      "LocationType": 1,
+      "PositionLon": 120.30979,
+      "PositionLat": 22.59366,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中華五路、凱旋四路",
+      "RoadID": "619316E",
+      "RoadName": "中華五路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000038",
+      "LinkID": "6190800700010E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/b2d221a4/",
+      "LocationType": 1,
+      "PositionLon": 120.32181,
+      "PositionLat": 22.67751,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "大中一路、榮總路",
+      "RoadID": "619080E",
+      "RoadName": "大中一路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000039",
+      "LinkID": "6200210200060E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/338193de/",
+      "LocationType": 1,
+      "PositionLon": 120.31557,
+      "PositionLat": 22.65972,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "民族一路、明誠二路",
+      "RoadID": "620021E",
+      "RoadName": "明誠二路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000040",
+      "LinkID": "6192200300110E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/f0bc5029/",
+      "LocationType": 1,
+      "PositionLon": 120.34947,
+      "PositionLat": 22.56935,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山四路、沿海一路(宏平路)",
+      "RoadID": "619220E",
+      "RoadName": "中山四路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000041",
+      "LinkID": "6192200700020E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/730cc765/",
+      "LocationType": 1,
+      "PositionLon": 120.31888,
+      "PositionLat": 22.59283,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山四路、鎮海路",
+      "RoadID": "619220E",
+      "RoadName": "中山四路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000043",
+      "LinkID": "3000150100000E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/ab95a92c/",
+      "LocationType": 1,
+      "PositionLon": 120.31427,
+      "PositionLat": 22.64044,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "民族一路、九如一路",
+      "RoadID": "300015",
+      "RoadName": "台1戊線",
+      "RoadClass": 3,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000044",
+      "LinkID": "6193110400090E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/55f8fc17/",
+      "LocationType": 1,
+      "PositionLon": 120.29225,
+      "PositionLat": 22.66121,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中華一路、明誠三路",
+      "RoadID": "619311E",
+      "RoadName": "中華一路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000045",
+      "LinkID": "6208600100060E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/cbc10d4b/",
+      "LocationType": 1,
+      "PositionLon": 120.3029,
+      "PositionLat": 22.68569,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "翠華路、大中二路",
+      "RoadID": "620860E",
+      "RoadName": "翠華路",
+      "RoadClass": 6,
+      "RoadDirection": "NE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000046",
+      "LinkID": "6202880400010E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam238",
+      "LocationType": 1,
+      "PositionLon": 120.28844,
+      "PositionLat": 22.66132,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "美術東二路、明誠四路",
+      "RoadID": "620288E",
+      "RoadName": "美術東二路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000047",
+      "LinkID": "6190120200070E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/4f0415e9/",
+      "LocationType": 1,
+      "PositionLon": 120.33673,
+      "PositionLat": 22.63753,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "九如一路、高速公路(西側)",
+      "RoadID": "619012E",
+      "RoadName": "九如一路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000048",
+      "LinkID": "3001700121870E",
+      "VideoStreamURL": "https://cctv7.kctmc.nat.gov.tw/cgi-bin/live.cgi?cam=19&stream=1",
+      "LocationType": 1,
+      "PositionLon": 120.30283,
+      "PositionLat": 22.68886,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "翠華路、明潭路",
+      "RoadID": "300170",
+      "RoadName": "台17線",
+      "RoadClass": 3,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000050",
+      "LinkID": "6201100700010E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/c5e8bdda/",
+      "LocationType": 1,
+      "PositionLon": 120.36297,
+      "PositionLat": 22.55366,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "沿海二路、茂大街",
+      "RoadID": "620110E",
+      "RoadName": "沿海二路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000051",
+      "LinkID": "6206780200010E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/f640fde7/",
+      "LocationType": 1,
+      "PositionLon": 120.32488,
+      "PositionLat": 22.72172,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "高楠公路、楠陽路",
+      "RoadID": "620678E",
+      "RoadName": "楠陽路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000052",
+      "LinkID": "6203920500050E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam107",
+      "LocationType": 1,
+      "PositionLon": 120.32451,
+      "PositionLat": 22.70666,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "高楠公路、水管路",
+      "RoadID": "620392E",
+      "RoadName": "高楠公路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000053",
+      "LinkID": "6203920400030E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/d7c338f4/",
+      "LocationType": 1,
+      "PositionLon": 120.32207,
+      "PositionLat": 22.72572,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "高楠公路、加昌路",
+      "RoadID": "620392E",
+      "RoadName": "高楠公路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000054",
+      "LinkID": "3000100037416E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/17b088d3/",
+      "LocationType": 1,
+      "PositionLon": 120.31705,
+      "PositionLat": 22.66824,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "民族一路、天祥二路",
+      "RoadID": "300010",
+      "RoadName": "台1線",
+      "RoadClass": 3,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000055",
+      "LinkID": "6198550400020E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/4632fb0e/",
+      "LocationType": 1,
+      "PositionLon": 120.30876,
+      "PositionLat": 22.64504,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "自由一路、十全一路",
+      "RoadID": "619855E",
+      "RoadName": "自由一路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000057",
+      "LinkID": "3001700121747E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/6499d209/",
+      "LocationType": 1,
+      "PositionLon": 120.30262,
+      "PositionLat": 22.69937,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "左楠路、翠華路、左營大路\n",
+      "RoadID": "300170",
+      "RoadName": "台17線",
+      "RoadClass": 3,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000058",
+      "LinkID": "0001001001000E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/6b30a4c5/",
+      "LocationType": 1,
+      "PositionLon": 120.3137,
+      "PositionLat": 22.67928,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "自由四路、大中二路",
+      "RoadID": "000100",
+      "RoadName": "國道10號",
+      "RoadClass": 0,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000059",
+      "LinkID": "6198570400060E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/539a4fc0/",
+      "LocationType": 1,
+      "PositionLon": 120.30973,
+      "PositionLat": 22.66871,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "自由三路、新庄仔路",
+      "RoadID": "619857E",
+      "RoadName": "自由三路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000060",
+      "LinkID": "6191460600100E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/1d9aa609/",
+      "LocationType": 1,
+      "PositionLon": 120.30885,
+      "PositionLat": 22.65663,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "自由二路、大順一路",
+      "RoadID": "619146E",
+      "RoadName": "大順一路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000061",
+      "LinkID": "6198100700010E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/f6ad1a36/",
+      "LocationType": 1,
+      "PositionLon": 120.30911,
+      "PositionLat": 22.65002,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "自由一路、同盟一路",
+      "RoadID": "619810E",
+      "RoadName": "同盟一路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000062",
+      "LinkID": "6196520600060E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/0840dedd/",
+      "LocationType": 1,
+      "PositionLon": 120.31046,
+      "PositionLat": 22.62761,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "民權一路、民生一路",
+      "RoadID": "619652E",
+      "RoadName": "民生一路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000063",
+      "LinkID": "6196970400010E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/7980745e/",
+      "LocationType": 1,
+      "PositionLon": 120.31087,
+      "PositionLat": 22.62646,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "民權一路、五福一路",
+      "RoadID": "619697E",
+      "RoadName": "民權一路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000064",
+      "LinkID": "6196970400060E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/2fcf5010/",
+      "LocationType": 1,
+      "PositionLon": 120.31433,
+      "PositionLat": 22.6173,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "民權一路、三多三路",
+      "RoadID": "619697E",
+      "RoadName": "民權一路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000065",
+      "LinkID": "6196980500020E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/cbad8acc/",
+      "LocationType": 1,
+      "PositionLon": 120.31325,
+      "PositionLat": 22.61014,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "民權二路、一心二路",
+      "RoadID": "619698E",
+      "RoadName": "民權二路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000066",
+      "LinkID": "3000100037797E",
+      "VideoStreamURL": "https://cctv10.kctmc.nat.gov.tw/4cb41b6b/",
+      "LocationType": 6,
+      "PositionLon": 120.31436,
+      "PositionLat": 22.64443,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "民族一路、十全一路",
+      "RoadID": "300010",
+      "RoadName": "台1線",
+      "RoadClass": 3,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000067",
+      "LinkID": "6197850400020E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/861c80fd/",
+      "LocationType": 1,
+      "PositionLon": 120.31667,
+      "PositionLat": 22.6087,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "光華二路、一心一路",
+      "RoadID": "619785E",
+      "RoadName": "光華二路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000069",
+      "LinkID": "6206300700126E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/cfd9f7d6/",
+      "LocationType": 1,
+      "PositionLon": 120.32006,
+      "PositionLat": 22.57175,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "新生路、后安路",
+      "RoadID": "620630E",
+      "RoadName": "新生路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000072",
+      "LinkID": "6190530600070E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/166157d9/",
+      "LocationType": 1,
+      "PositionLon": 120.33676,
+      "PositionLat": 22.62401,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "三多一路、高速公路(東側)",
+      "RoadID": "619053E",
+      "RoadName": "三多一路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000075",
+      "LinkID": "6195590100020E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/626b0e00/",
+      "LocationType": 1,
+      "PositionLon": 120.28412,
+      "PositionLat": 22.63395,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "建國三路、河西路(北端街)\r\n",
+      "RoadID": "619559E",
+      "RoadName": "北端街",
+      "RoadClass": 6,
+      "RoadDirection": "NE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000077",
+      "LinkID": "6191460600060E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam112",
+      "LocationType": 2,
+      "PositionLon": 120.30329,
+      "PositionLat": 22.6562,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "大順一路、博愛二路",
+      "RoadID": "619146E",
+      "RoadName": "大順一路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000078",
+      "LinkID": "6193440500020E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/62e71b00/",
+      "LocationType": 1,
+      "PositionLon": 120.35723,
+      "PositionLat": 22.56074,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "沿海二路、中鋼路",
+      "RoadID": "619344E",
+      "RoadName": "中鋼路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000079",
+      "LinkID": "6198630000040E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/1dd04532/",
+      "LocationType": 1,
+      "PositionLon": 120.29647,
+      "PositionLat": 22.63792,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "自立一路、建國三路",
+      "RoadID": "619863E",
+      "RoadName": "自立一路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000080",
+      "LinkID": "6190540600060E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/2c08d766/",
+      "LocationType": 1,
+      "PositionLon": 120.32526,
+      "PositionLat": 22.62072,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "凱旋二路、三多二路",
+      "RoadID": "619054E",
+      "RoadName": "三多二路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000081",
+      "LinkID": "6196980500000E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/afcdd0a1/",
+      "LocationType": 1,
+      "PositionLon": 120.30894,
+      "PositionLat": 22.60501,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山三路、民權二路",
+      "RoadID": "619698E",
+      "RoadName": "民權二路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000082",
+      "LinkID": "3001702123062E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/3cb70392/",
+      "LocationType": 2,
+      "PositionLon": 120.31642,
+      "PositionLat": 22.59628,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山三路、凱旋四路",
+      "RoadID": "300170",
+      "RoadName": "台17線",
+      "RoadClass": 3,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000083",
+      "LinkID": "6208930500010E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/47e2aeaf/",
+      "LocationType": 1,
+      "PositionLon": 120.35025,
+      "PositionLat": 22.52492,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "沿海四路、中林路",
+      "RoadID": "620893E",
+      "RoadName": "鳳華路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000084",
+      "LinkID": "6195850400000E",
+      "VideoStreamURL": "https://cctv7.kctmc.nat.gov.tw/cgi-bin/live.cgi?cam=17&stream=1",
+      "LocationType": 1,
+      "PositionLon": 120.30463,
+      "PositionLat": 22.7178,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "左楠路、加昌路",
+      "RoadID": "619585E",
+      "RoadName": "左楠路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000085",
+      "LinkID": "6202360700030E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/5470f3c8/",
+      "LocationType": 1,
+      "PositionLon": 120.34235,
+      "PositionLat": 22.62474,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中正一路、三多一路(建軍路)",
+      "RoadID": "620236E",
+      "RoadName": "建軍路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000088",
+      "LinkID": "6195460600010E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/47009f84/",
+      "LocationType": 6,
+      "PositionLon": 120.29143,
+      "PositionLat": 22.71319,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "軍校路、加昌路",
+      "RoadID": "619546E",
+      "RoadName": "加昌路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000089",
+      "LinkID": "6195870000000E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/7f88ff35/",
+      "LocationType": 1,
+      "PositionLon": 120.28659,
+      "PositionLat": 22.67219,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "左營大路、鼓山三路(北門)",
+      "RoadID": "619587E",
+      "RoadName": "左營大路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000090",
+      "LinkID": "6203340600019E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/fcd4f79a/",
+      "LocationType": 1,
+      "PositionLon": 120.31384,
+      "PositionLat": 22.5987,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山三路、時代大道",
+      "RoadID": "620334E",
+      "RoadName": "時代大道",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000091",
+      "LinkID": "6190020300000E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/8944fa53/",
+      "LocationType": 1,
+      "PositionLon": 120.30458,
+      "PositionLat": 22.61394,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山二路、三多三路",
+      "RoadID": "619002E",
+      "RoadName": "一心二路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000092",
+      "LinkID": "6192200700040E",
+      "VideoStreamURL": "https://cctv10.kctmc.nat.gov.tw/275a9ab3/",
+      "LocationType": 6,
+      "PositionLon": 120.32231,
+      "PositionLat": 22.58855,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山四路、五甲三路",
+      "RoadID": "619220E",
+      "RoadName": "中山四路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000093",
+      "LinkID": "6195390600000E",
+      "VideoStreamURL": "https://cctv7.kctmc.nat.gov.tw/cgi-bin/live.cgi?cam=20&stream=1",
+      "LocationType": 2,
+      "PositionLon": 120.30254,
+      "PositionLat": 22.70087,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "左楠路、世運大道",
+      "RoadID": "619539E",
+      "RoadName": "世運大道",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000094",
+      "LinkID": "6190120600070E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/ac996f46/",
+      "LocationType": 1,
+      "PositionLon": 120.33758,
+      "PositionLat": 22.6375,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "九如一路、高速公路(東側)",
+      "RoadID": "619012E",
+      "RoadName": "九如一路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000095",
+      "LinkID": "6206970600060E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/2dd59883/",
+      "LocationType": 1,
+      "PositionLon": 120.33907,
+      "PositionLat": 22.60611,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "瑞隆路、保泰路",
+      "RoadID": "620697E",
+      "RoadName": "瑞隆路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000096",
+      "LinkID": "6192180300070E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam072",
+      "LocationType": 1,
+      "PositionLon": 120.31567,
+      "PositionLat": 22.59579,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山三路、凱旋四路(輕軌旁)",
+      "RoadID": "619218E",
+      "RoadName": "中山三路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000097",
+      "LinkID": "6192500600010E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/38cd3775/",
+      "LocationType": 1,
+      "PositionLon": 120.32166,
+      "PositionLat": 22.62998,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中正一路、凱旋二路",
+      "RoadID": "619250E",
+      "RoadName": "中正二路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000098",
+      "LinkID": "6201310500050E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/dc1f79cf/",
+      "LocationType": 1,
+      "PositionLon": 120.33208,
+      "PositionLat": 22.57667,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山四路、金福路",
+      "RoadID": "620131E",
+      "RoadName": "金福路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000099",
+      "LinkID": "6193130000050E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/b0164bc5/",
+      "LocationType": 1,
+      "PositionLon": 120.29585,
+      "PositionLat": 22.62942,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中正四路、中華三路",
+      "RoadID": "619313E",
+      "RoadName": "中華三路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000100",
+      "LinkID": "6203590400030E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam210",
+      "LocationType": 1,
+      "PositionLon": 120.29366,
+      "PositionLat": 22.61723,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "海邊路、青年二路",
+      "RoadID": "620359E",
+      "RoadName": "海邊路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000101",
+      "LinkID": "6205090500000E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/c5dc47b3/",
+      "LocationType": 2,
+      "PositionLon": 120.30371,
+      "PositionLat": 22.67069,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "博愛三路、新莊仔路",
+      "RoadID": "620509E",
+      "RoadName": "博愛三路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000102",
+      "LinkID": "6205080000000E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/cace7432/",
+      "LocationType": 1,
+      "PositionLon": 120.30326,
+      "PositionLat": 22.6659,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "博愛二路、裕誠路",
+      "RoadID": "620508E",
+      "RoadName": "博愛二路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000103",
+      "LinkID": "6192150400130E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/75ebb7f4/",
+      "LocationType": 1,
+      "PositionLon": 120.30235,
+      "PositionLat": 22.636,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山一路、八德二路(西北角)",
+      "RoadID": "619215E",
+      "RoadName": "中山一路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000105",
+      "LinkID": "6193580200000E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/684eee81/",
+      "LocationType": 2,
+      "PositionLon": 120.30101,
+      "PositionLat": 22.62314,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山一路、五福二路",
+      "RoadID": "619358E",
+      "RoadName": "五福二路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000106",
+      "LinkID": "6195390600000E",
+      "VideoStreamURL": "https://cctv7.kctmc.nat.gov.tw/cgi-bin/live.cgi?cam=13&stream=1",
+      "LocationType": 6,
+      "PositionLon": 120.29365,
+      "PositionLat": 22.70057,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "世運大道、國訓中心前",
+      "RoadID": "619539E",
+      "RoadName": "世運大道",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000108",
+      "LinkID": "6202370600080E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam130",
+      "LocationType": 1,
+      "PositionLon": 120.3257,
+      "PositionLat": 22.63285,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "建國一路、大順三路",
+      "RoadID": "620237E",
+      "RoadName": "建國一路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000109",
+      "LinkID": "6192540600010E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/ea1b170c/",
+      "LocationType": 1,
+      "PositionLon": 120.28885,
+      "PositionLat": 22.62703,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "河東路、中正四路",
+      "RoadID": "619254E",
+      "RoadName": "中正四路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000110",
+      "LinkID": "6202300200100E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/50204bfc/",
+      "LocationType": 1,
+      "PositionLon": 120.32935,
+      "PositionLat": 22.6523,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "大昌一路、建工路",
+      "RoadID": "620230E",
+      "RoadName": "建工路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000111",
+      "LinkID": "6202390600000E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/d5ce1b72/",
+      "LocationType": 1,
+      "PositionLon": 120.30348,
+      "PositionLat": 22.63771,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "建國二路、南華路",
+      "RoadID": "620239E",
+      "RoadName": "建國二路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000113",
+      "LinkID": "6193600200050E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/9e10f162/",
+      "LocationType": 2,
+      "PositionLon": 120.29504,
+      "PositionLat": 22.62115,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "成功一路、五福三路 ",
+      "RoadID": "619360E",
+      "RoadName": "五福三路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000114",
+      "LinkID": "6190080600070E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/44384437/",
+      "LocationType": 1,
+      "PositionLon": 120.31669,
+      "PositionLat": 22.63365,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "七賢一路、和平一路",
+      "RoadID": "619008E",
+      "RoadName": "七賢一路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000115",
+      "LinkID": "6198630400030E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/51d496c0/",
+      "LocationType": 1,
+      "PositionLon": 120.29617,
+      "PositionLat": 22.64182,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "九如二路、自立一路",
+      "RoadID": "619863E",
+      "RoadName": "自立一路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000116",
+      "LinkID": "6190130600026E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/ae6689ba/",
+      "LocationType": 1,
+      "PositionLon": 120.30183,
+      "PositionLat": 22.64131,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "九如二路、重慶街",
+      "RoadID": "619013E",
+      "RoadName": "九如二路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000118",
+      "LinkID": "6202370600010E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/23908645/",
+      "LocationType": 1,
+      "PositionLon": 120.31684,
+      "PositionLat": 22.63493,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "建國一路、和平一路",
+      "RoadID": "620237E",
+      "RoadName": "建國一路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000121",
+      "LinkID": "6208600400110E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam268",
+      "LocationType": 2,
+      "PositionLon": 120.29112,
+      "PositionLat": 22.67207,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "翠華路、華榮路",
+      "RoadID": "620860E",
+      "RoadName": "翠華路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000122",
+      "LinkID": "6203290000000E",
+      "VideoStreamURL": "https://cctv10.kctmc.nat.gov.tw/63cb5e00/",
+      "LocationType": 1,
+      "PositionLon": 120.26951,
+      "PositionLat": 22.62447,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "哨船街、臨海二路",
+      "RoadID": "620329E",
+      "RoadName": "哨船街",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000123",
+      "LinkID": "6209760000070E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam151",
+      "LocationType": 1,
+      "PositionLon": 120.26614,
+      "PositionLat": 22.61837,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "蓮海路-中山大學大門停車場出口",
+      "RoadID": "620976E",
+      "RoadName": "蓮海路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000124",
+      "LinkID": "6210720400000E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/ddb9fc98/",
+      "LocationType": 1,
+      "PositionLon": 120.27016,
+      "PositionLat": 22.61977,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鼓山渡輪站",
+      "RoadID": "621072E",
+      "RoadName": "濱海二路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000125",
+      "LinkID": "6207700100060E",
+      "VideoStreamURL": "https://cctv10.kctmc.nat.gov.tw/7929797a/",
+      "LocationType": 1,
+      "PositionLon": 120.275,
+      "PositionLat": 22.62119,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鼓山一路、臨海二路(東南角)",
+      "RoadID": "620770E",
+      "RoadName": "鼓山一路",
+      "RoadClass": 6,
+      "RoadDirection": "NE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000126",
+      "LinkID": "6207700500020E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/59887ec6/",
+      "LocationType": 1,
+      "PositionLon": 120.27809,
+      "PositionLat": 22.62638,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "五福四路、鼓山一路",
+      "RoadID": "620770E",
+      "RoadName": "鼓山一路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000127",
+      "LinkID": "6192540600010E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/a1c8677c/",
+      "LocationType": 1,
+      "PositionLon": 120.28781,
+      "PositionLat": 22.6267,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中正四路、河西路",
+      "RoadID": "619254E",
+      "RoadName": "中正四路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000128",
+      "LinkID": "6190100500010E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/f6272c2c/",
+      "LocationType": 1,
+      "PositionLon": 120.28026,
+      "PositionLat": 22.62283,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "公園二路、七賢三路",
+      "RoadID": "619010E",
+      "RoadName": "七賢三路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000129",
+      "LinkID": "6190100500020E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/ab1f7cfb/",
+      "LocationType": 1,
+      "PositionLon": 120.28136,
+      "PositionLat": 22.62478,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "五福四路、七賢三路",
+      "RoadID": "619010E",
+      "RoadName": "七賢三路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000130",
+      "LinkID": "6193620700060E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/d3d8fb44/",
+      "LocationType": 1,
+      "PositionLon": 120.28948,
+      "PositionLat": 22.62079,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "五福四路、河西路",
+      "RoadID": "619362E",
+      "RoadName": "五福四路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000131",
+      "LinkID": "3000150000035E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/d8b240d7/",
+      "LocationType": 1,
+      "PositionLon": 120.31368,
+      "PositionLat": 22.63732,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "建國二路、民族一路",
+      "RoadID": "300015",
+      "RoadName": "台1戊線",
+      "RoadClass": 3,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000132",
+      "LinkID": "6202370600140E",
+      "VideoStreamURL": "https://cctv10.kctmc.nat.gov.tw/e8b62c75/",
+      "LocationType": 1,
+      "PositionLon": 120.33726,
+      "PositionLat": 22.63028,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "建國一路-高速公路(東側)",
+      "RoadID": "620237E",
+      "RoadName": "建國一路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000133",
+      "LinkID": "6202370600120E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/bb8066bb/",
+      "LocationType": 1,
+      "PositionLon": 120.33558,
+      "PositionLat": 22.6308,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "建國一路-高速公路(西側)",
+      "RoadID": "620237E",
+      "RoadName": "建國一路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000136",
+      "LinkID": "6203500200000E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/20e79ac7/",
+      "LocationType": 1,
+      "PositionLon": 120.26939,
+      "PositionLat": 22.61409,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "旗津渡輪站",
+      "RoadID": "620350E",
+      "RoadName": "海岸路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000138",
+      "LinkID": "6198340000060E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/205190e4/",
+      "LocationType": 1,
+      "PositionLon": 120.30485,
+      "PositionLat": 22.59571,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "成功二路、時代大道",
+      "RoadID": "619834E",
+      "RoadName": "成功二路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000139",
+      "LinkID": "6198340000000E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/eb212f16/",
+      "LocationType": 1,
+      "PositionLon": 120.29913,
+      "PositionLat": 22.61055,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "成功二路、新光路",
+      "RoadID": "619834E",
+      "RoadName": "成功二路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000142",
+      "LinkID": "6201310100030E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/2c95f08f/",
+      "LocationType": 6,
+      "PositionLon": 120.32853,
+      "PositionLat": 22.57106,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "金福路、平和路(草衙三路)",
+      "RoadID": "620131E",
+      "RoadName": "金福路",
+      "RoadClass": 6,
+      "RoadDirection": "NE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000143",
+      "LinkID": "6206300700030E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/0dfda559/",
+      "LocationType": 1,
+      "PositionLon": 120.31229,
+      "PositionLat": 22.58072,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "新生路、新衙路",
+      "RoadID": "620630E",
+      "RoadName": "新生路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000144",
+      "LinkID": "6208080300000E",
+      "VideoStreamURL": "https://cctv10.kctmc.nat.gov.tw/0414881a/",
+      "LocationType": 2,
+      "PositionLon": 120.29915,
+      "PositionLat": 22.57064,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "旗津一路、廣澤街、敦和街",
+      "RoadID": "620808E",
+      "RoadName": "旗津一路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000145",
+      "LinkID": "6208310100025E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam035",
+      "LocationType": 1,
+      "PositionLon": 120.3229,
+      "PositionLat": 22.58181,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "漁港路、草衙二路",
+      "RoadID": "620831E",
+      "RoadName": "漁港路",
+      "RoadClass": 6,
+      "RoadDirection": "NE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000147",
+      "LinkID": "6200200600030E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/d479b14d/",
+      "LocationType": 1,
+      "PositionLon": 120.33052,
+      "PositionLat": 22.66013,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "明誠一路、金鼎路",
+      "RoadID": "620020E",
+      "RoadName": "明誠一路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000149",
+      "LinkID": "0000101170080E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/5a9e8fda/",
+      "LocationType": 1,
+      "PositionLon": 120.33497,
+      "PositionLat": 22.73781,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "旗楠路、楠梓交流道",
+      "RoadID": "000010",
+      "RoadName": "國道1號",
+      "RoadClass": 0,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000151",
+      "LinkID": "6197950600070E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/ef046a1d/",
+      "LocationType": 1,
+      "PositionLon": 120.36191,
+      "PositionLat": 22.62554,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "光遠路、經武路、維新路",
+      "RoadID": "619795E",
+      "RoadName": "光遠路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000152",
+      "LinkID": "6206960600020E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/e6091254/",
+      "LocationType": 1,
+      "PositionLon": 120.34096,
+      "PositionLat": 22.60619,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "瑞隆東路出口閘道南向路口",
+      "RoadID": "620696E",
+      "RoadName": "瑞隆東路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000153",
+      "LinkID": "6207550200030E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/66435e93/",
+      "LocationType": 1,
+      "PositionLon": 120.35889,
+      "PositionLat": 22.59011,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "台88鳳山交流道、鳳頂路東側",
+      "RoadID": "620755E",
+      "RoadName": "過埤路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000154",
+      "LinkID": "6207550600050E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/c53f7089/",
+      "LocationType": 1,
+      "PositionLon": 120.35888,
+      "PositionLat": 22.59042,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "台88鳳山交流道、鳳頂路西側",
+      "RoadID": "620755E",
+      "RoadName": "過埤路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000156",
+      "LinkID": "6197830200000E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/b5506346/",
+      "LocationType": 1,
+      "PositionLon": 120.33954,
+      "PositionLat": 22.62949,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山西路、光復路二段",
+      "RoadID": "619783E",
+      "RoadName": "光復路二段",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000157",
+      "LinkID": "6192330300000E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/b0d084ee/",
+      "LocationType": 1,
+      "PositionLon": 120.3566,
+      "PositionLat": 22.62604,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山路、光遠路",
+      "RoadID": "619233E",
+      "RoadName": "中山路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000158",
+      "LinkID": "4018320000281E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/bd3bd23d/",
+      "LocationType": 1,
+      "PositionLon": 120.34664,
+      "PositionLat": 22.64785,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "澄清路、本館路",
+      "RoadID": "401832",
+      "RoadName": "183乙",
+      "RoadClass": 4,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000160",
+      "LinkID": "6200210200030E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/92071f53/",
+      "LocationType": 2,
+      "PositionLon": 120.30904,
+      "PositionLat": 22.66108,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "自由二路、明誠二路",
+      "RoadID": "620021E",
+      "RoadName": "明誠二路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000161",
+      "LinkID": "4018600000757E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/c1052385/",
+      "LocationType": 6,
+      "PositionLon": 120.29709,
+      "PositionLat": 22.78457,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "岡山南路、介壽東路",
+      "RoadID": "401860",
+      "RoadName": "186",
+      "RoadClass": 4,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000163",
+      "LinkID": "6207800200000E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/9e8c971f/",
+      "LocationType": 1,
+      "PositionLon": 120.29851,
+      "PositionLat": 22.80743,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "成功路、嘉新東路",
+      "RoadID": "620780E",
+      "RoadName": "嘉新東路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000165",
+      "LinkID": "4018600100528E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/554e455c/",
+      "LocationType": 1,
+      "PositionLon": 120.2885,
+      "PositionLat": 22.79069,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "柳橋西路與(中華路、仁壽路口)",
+      "RoadID": "401860",
+      "RoadName": "186",
+      "RoadClass": 4,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000167",
+      "LinkID": "3000100036043E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/4a967b28/",
+      "LocationType": 1,
+      "PositionLon": 120.29908,
+      "PositionLat": 22.79236,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山北路、中山南路",
+      "RoadID": "300010",
+      "RoadName": "台1線",
+      "RoadClass": 3,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000168",
+      "LinkID": "3000100036230E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam272",
+      "LocationType": 3,
+      "PositionLon": 120.29881,
+      "PositionLat": 22.78001,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山南路、岡山南路",
+      "RoadID": "300010",
+      "RoadName": "台1線",
+      "RoadClass": 3,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000169",
+      "LinkID": "6204130700000E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/558e85c5/",
+      "LocationType": 1,
+      "PositionLon": 120.34535,
+      "PositionLat": 22.62165,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-國泰路二段、南京路西南角",
+      "RoadID": "620413E",
+      "RoadName": "國泰路二段",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000170",
+      "LinkID": "6204130300020E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/716795c3/",
+      "LocationType": 1,
+      "PositionLon": 120.34922,
+      "PositionLat": 22.61884,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-國泰路二段、青年路一段東北角",
+      "RoadID": "620413E",
+      "RoadName": "國泰路二段",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000171",
+      "LinkID": "4018300101180E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/ac2ce75d/",
+      "LocationType": 3,
+      "PositionLon": 120.35338,
+      "PositionLat": 22.61655,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-國泰路二段、五甲二路西北角",
+      "RoadID": "401830",
+      "RoadName": "183",
+      "RoadClass": 4,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000174",
+      "LinkID": "4018800100506E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam093",
+      "LocationType": 2,
+      "PositionLon": 120.38466,
+      "PositionLat": 22.58957,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-縣188、內坑路",
+      "RoadID": "401880",
+      "RoadName": "188",
+      "RoadClass": 4,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000175",
+      "LinkID": "6208750400010E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/7b435e24/",
+      "LocationType": 2,
+      "PositionLon": 120.40492,
+      "PositionLat": 22.58703,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-縣188、鳳林路北側",
+      "RoadID": "620875E",
+      "RoadName": "鳳林二路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000177",
+      "LinkID": "4018800100894E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam133",
+      "LocationType": 2,
+      "PositionLon": 120.41981,
+      "PositionLat": 22.58889,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-縣188、光明路西側",
+      "RoadID": "401880",
+      "RoadName": "188",
+      "RoadClass": 4,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000178",
+      "LinkID": "4018800000730E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/cedcf37d/",
+      "LocationType": 2,
+      "PositionLon": 120.42016,
+      "PositionLat": 22.58925,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-縣188、光明路東側",
+      "RoadID": "401880",
+      "RoadName": "188",
+      "RoadClass": 4,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000179",
+      "LinkID": "6205790000000E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/50dc8e4b/",
+      "LocationType": 1,
+      "PositionLon": 120.42895,
+      "PositionLat": 22.59163,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-縣188、華中路東南角",
+      "RoadID": "620579E",
+      "RoadName": "華中路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000181",
+      "LinkID": "6206960600040E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/a32d1d17/",
+      "LocationType": 1,
+      "PositionLon": 120.34647,
+      "PositionLat": 22.60688,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-五甲一路、瑞隆東路西北角",
+      "RoadID": "620696E",
+      "RoadName": "瑞隆東路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000182",
+      "LinkID": "6193500100080E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam038",
+      "LocationType": 1,
+      "PositionLon": 120.34578,
+      "PositionLat": 22.6047,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-五甲一路、南京路東南角",
+      "RoadID": "619350E",
+      "RoadName": "五甲一路",
+      "RoadClass": 6,
+      "RoadDirection": "NE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000183",
+      "LinkID": "6209542400160E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/7bbb0e09/",
+      "LocationType": 1,
+      "PositionLon": 120.34432,
+      "PositionLat": 22.6362,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "九如一路、澄清路",
+      "RoadID": "620954E",
+      "RoadName": "澄清路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000185",
+      "LinkID": "3000150100628E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/4b6632c7/",
+      "LocationType": 1,
+      "PositionLon": 120.36789,
+      "PositionLat": 22.62277,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-中山東路、光遠東路西南角",
+      "RoadID": "300015",
+      "RoadName": "台1戊線",
+      "RoadClass": 3,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000187",
+      "LinkID": "6203660300090E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/115982e6/",
+      "LocationType": 2,
+      "PositionLon": 120.40114,
+      "PositionLat": 22.6392,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-鳳屏一路、光明路三段西南角",
+      "RoadID": "620366E",
+      "RoadName": "神農路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000188",
+      "LinkID": "6197762000060E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/2bdc8df5/",
+      "LocationType": 6,
+      "PositionLon": 120.40183,
+      "PositionLat": 22.63964,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-鳳屏一路、光明路三段東北角",
+      "RoadID": "619776E",
+      "RoadName": "光明路三段",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000189",
+      "LinkID": "6208890600030E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/e83a15ce/",
+      "LocationType": 2,
+      "PositionLon": 120.41707,
+      "PositionLat": 22.64186,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-鳳屏一路、九和路西側",
+      "RoadID": "620889E",
+      "RoadName": "鳳屏二路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000190",
+      "LinkID": "6211610000000E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/60c7b824/",
+      "LocationType": 1,
+      "PositionLon": 120.41822,
+      "PositionLat": 22.64206,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-鳳屏一路、九和路西北角",
+      "RoadID": "621161E",
+      "RoadName": "河堤路一段",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000191",
+      "LinkID": "6197760000010E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/d4a2d7a4/",
+      "LocationType": 2,
+      "PositionLon": 120.40243,
+      "PositionLat": 22.63594,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-光明路三段、江山路南側",
+      "RoadID": "619776E",
+      "RoadName": "光明路三段",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000194",
+      "LinkID": "3000100039046E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/6680bd18/",
+      "LocationType": 1,
+      "PositionLon": 120.42882,
+      "PositionLat": 22.64483,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "高屏大橋往東上橋匝道口(南側)",
+      "RoadID": "300010",
+      "RoadName": "台1線",
+      "RoadClass": 3,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000195",
+      "LinkID": "4018800101023E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/9ac5537e/",
+      "LocationType": 1,
+      "PositionLon": 120.43309,
+      "PositionLat": 22.59282,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "萬大大橋往西下橋匝道口(北側)",
+      "RoadID": "401880",
+      "RoadName": "188",
+      "RoadClass": 4,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000197",
+      "LinkID": "6197480600010E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam105",
+      "LocationType": 1,
+      "PositionLon": 120.41267,
+      "PositionLat": 22.49777,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "雙園大橋西向下橋(北側)",
+      "RoadID": "619748E",
+      "RoadName": "石化二路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000198",
+      "LinkID": "6204690300040E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/2a6048ac/",
+      "LocationType": 1,
+      "PositionLon": 120.44715,
+      "PositionLat": 22.76494,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "台29、斜張橋南側",
+      "RoadID": "620469E",
+      "RoadName": "統嶺路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000201",
+      "LinkID": "6207140100000E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/1d198f24/",
+      "LocationType": 1,
+      "PositionLon": 120.37947,
+      "PositionLat": 22.70054,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "水管三路、義大二路(林山巷)東南角",
+      "RoadID": "620714E",
+      "RoadName": "義大二路",
+      "RoadClass": 6,
+      "RoadDirection": "NE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000202",
+      "LinkID": "0001001001000E",
+      "VideoStreamURL": "https://cctv10.kctmc.nat.gov.tw/b41c1fee/",
+      "LocationType": 2,
+      "PositionLon": 120.31364,
+      "PositionLat": 22.67908,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "大中二路、自由三路(東南角)",
+      "RoadID": "000100",
+      "RoadName": "國道10號",
+      "RoadClass": 0,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000203",
+      "LinkID": "3000100037379E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/7e930c00/",
+      "LocationType": 6,
+      "PositionLon": 120.31875,
+      "PositionLat": 22.67932,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "大中二路、民族一路(西北角)",
+      "RoadID": "300010",
+      "RoadName": "台1線",
+      "RoadClass": 3,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000204",
+      "LinkID": "6207600400000E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/02c80573/",
+      "LocationType": 1,
+      "PositionLon": 120.32325,
+      "PositionLat": 22.67703,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "大中一路、鼎中路北側",
+      "RoadID": "620760E",
+      "RoadName": "鼎中路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000206",
+      "LinkID": "6210350400050E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/c3911f71/",
+      "LocationType": 1,
+      "PositionLon": 120.33201,
+      "PositionLat": 22.72101,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "高速公路(南下交流道)、鳳楠路(西南角)",
+      "RoadID": "621035E",
+      "RoadName": "興西路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000207",
+      "LinkID": "6208630700000E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/3917f2da/",
+      "LocationType": 1,
+      "PositionLon": 120.33317,
+      "PositionLat": 22.72064,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "高速公路(興西路)、鳳仁路(東北角)",
+      "RoadID": "620863E",
+      "RoadName": "鳳仁路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000209",
+      "LinkID": "6193800600005E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam094",
+      "LocationType": 1,
+      "PositionLon": 120.33229,
+      "PositionLat": 22.67289,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "仁雄路、鼎力路(路橋北側)",
+      "RoadID": "619380E",
+      "RoadName": "仁雄路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000210",
+      "LinkID": "6196320300030E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/82f512e5/",
+      "LocationType": 1,
+      "PositionLon": 120.33615,
+      "PositionLat": 22.65544,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "本館路、球場路(東南角)",
+      "RoadID": "619632E",
+      "RoadName": "本館路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000211",
+      "LinkID": "6205090500060E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/abb1696f/",
+      "LocationType": 1,
+      "PositionLon": 120.30798,
+      "PositionLat": 22.67882,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "博愛三路、曾子路(西南角)",
+      "RoadID": "620509E",
+      "RoadName": "博愛三路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000212",
+      "LinkID": "6210620200000E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/4ff10f0e/",
+      "LocationType": 1,
+      "PositionLon": 120.30334,
+      "PositionLat": 22.65427,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "博愛一路、龍德路(西南角)",
+      "RoadID": "621062E",
+      "RoadName": "龍德新路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000213",
+      "LinkID": "6205070400020E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/ea05668e/",
+      "LocationType": 1,
+      "PositionLon": 120.30328,
+      "PositionLat": 22.65166,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "博愛一路、同盟二路(西南角)",
+      "RoadID": "620507E",
+      "RoadName": "博愛一路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000214",
+      "LinkID": "6205070400040E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/36889489/",
+      "LocationType": 1,
+      "PositionLon": 120.30291,
+      "PositionLat": 22.6454,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "博愛一路、十全二路(西北角)",
+      "RoadID": "620507E",
+      "RoadName": "博愛一路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000215",
+      "LinkID": "6190810300030E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/5fac7064/",
+      "LocationType": 1,
+      "PositionLon": 120.30984,
+      "PositionLat": 22.68108,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "博愛三路、大中二路(西南角)",
+      "RoadID": "619081E",
+      "RoadName": "大中二路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000216",
+      "LinkID": "6205080000000E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/a017d086/",
+      "LocationType": 1,
+      "PositionLon": 120.30332,
+      "PositionLat": 22.66828,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "博愛二路、立信街266巷西北角(漢神巨蛋對面)",
+      "RoadID": "620508E",
+      "RoadName": "博愛二路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000219",
+      "LinkID": "3001700022906E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/5ac17eb6/",
+      "LocationType": 1,
+      "PositionLon": 120.30692,
+      "PositionLat": 22.60733,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山二路、復興三路(西北角)",
+      "RoadID": "300170",
+      "RoadName": "台17線",
+      "RoadClass": 3,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000220",
+      "LinkID": "6206370600020E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/60f1a317/",
+      "LocationType": 1,
+      "PositionLon": 120.30534,
+      "PositionLat": 22.61247,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山二路、新光路(東北角)",
+      "RoadID": "620637E",
+      "RoadName": "新光路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000221",
+      "LinkID": "6208540300000E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/9a4a8e39/",
+      "LocationType": 1,
+      "PositionLon": 120.32866,
+      "PositionLat": 22.58041,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山四路、中平路(西北角)",
+      "RoadID": "620854E",
+      "RoadName": "翠亨南路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000222",
+      "LinkID": "3001700123282E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/C000222/",
+      "LocationType": 1,
+      "PositionLon": 120.32956,
+      "PositionLat": 22.58033,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山四路、中安路(東南角)",
+      "RoadID": "300170",
+      "RoadName": "台17線",
+      "RoadClass": 3,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000223",
+      "LinkID": "6192810600020E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/ea8cc67a/",
+      "LocationType": 1,
+      "PositionLon": 120.33456,
+      "PositionLat": 22.58313,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中安路、明鳳七街(西北角)",
+      "RoadID": "619281E",
+      "RoadName": "中安路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000224",
+      "LinkID": "6198330400130E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/c50d5e7c/",
+      "LocationType": 1,
+      "PositionLon": 120.29841,
+      "PositionLat": 22.61199,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "三多五路、成功二路(西北角)",
+      "RoadID": "619833E",
+      "RoadName": "成功一路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000225",
+      "LinkID": "6198340000010E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/8c65100c/",
+      "LocationType": 1,
+      "PositionLon": 120.29922,
+      "PositionLat": 22.61049,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "成功二路、新光路(東南角)",
+      "RoadID": "619834E",
+      "RoadName": "成功二路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000227",
+      "LinkID": "6192490300020E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/b97d4b00/",
+      "LocationType": 1,
+      "PositionLon": 120.33235,
+      "PositionLat": 22.62799,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中正一路、輔仁路(西南角)",
+      "RoadID": "619249E",
+      "RoadName": "中正一路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000228",
+      "LinkID": "6208420400040E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/54ecdec4/",
+      "LocationType": 1,
+      "PositionLon": 120.32763,
+      "PositionLat": 22.62972,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中正一路、福德路(東北角)",
+      "RoadID": "620842E",
+      "RoadName": "福德二路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000229",
+      "LinkID": "6192490300070E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/58445e74/",
+      "LocationType": 1,
+      "PositionLon": 120.32351,
+      "PositionLat": 22.6297,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中正一路、河北路(東南角)",
+      "RoadID": "619249E",
+      "RoadName": "中正一路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000230",
+      "LinkID": "6192500600000E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/bf834bdc/",
+      "LocationType": 1,
+      "PositionLon": 120.31348,
+      "PositionLat": 22.63068,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中正二路、民族二路(東北角)",
+      "RoadID": "619250E",
+      "RoadName": "中正二路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000231",
+      "LinkID": "6192510200005E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/98cd6bd1/",
+      "LocationType": 6,
+      "PositionLon": 120.30222,
+      "PositionLat": 22.63136,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山一路、中正三路",
+      "RoadID": "619251E",
+      "RoadName": "中正三路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000235",
+      "LinkID": "3000100136391E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/74252f6d/",
+      "LocationType": 1,
+      "PositionLon": 120.30591,
+      "PositionLat": 22.76687,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "橋頭區-成功北路鐵道北路口",
+      "RoadID": "300010",
+      "RoadName": "台1線",
+      "RoadClass": 3,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000237",
+      "LinkID": "6211540600010E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/7366944f/",
+      "LocationType": 1,
+      "PositionLon": 120.31964,
+      "PositionLat": 22.7876,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "岡山區-介壽東路國一岡山交流道南出口",
+      "RoadID": "621154E",
+      "RoadName": "安招路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000239",
+      "LinkID": "4018600100941E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/fd7d11ee/",
+      "LocationType": 1,
+      "PositionLon": 120.31504,
+      "PositionLat": 22.78657,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "岡山區-介壽東路岡燕路口",
+      "RoadID": "401860",
+      "RoadName": "186",
+      "RoadClass": 4,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000242",
+      "LinkID": "3000100138323E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/c289c88a/",
+      "LocationType": 1,
+      "PositionLon": 120.362,
+      "PositionLat": 22.6355,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "建國路二段、鳳松路",
+      "RoadID": "300010",
+      "RoadName": "台1線",
+      "RoadClass": 3,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000244",
+      "LinkID": "6192310000040E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/2a8cf57e/",
+      "LocationType": 1,
+      "PositionLon": 120.26072,
+      "PositionLat": 22.85769,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "路竹區-中山路中華路口",
+      "RoadID": "619231E",
+      "RoadName": "中山路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000245",
+      "LinkID": "6192360300028E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/3a3bad81/",
+      "LocationType": 2,
+      "PositionLon": 120.24993,
+      "PositionLat": 22.88075,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "湖內區-中山路一段東方路口",
+      "RoadID": "619236E",
+      "RoadName": "中山路一段",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000247",
+      "LinkID": "6195390600000E",
+      "VideoStreamURL": "https://cctv7.kctmc.nat.gov.tw/cgi-bin/live.cgi?cam=16&stream=1",
+      "LocationType": 1,
+      "PositionLon": 120.29971,
+      "PositionLat": 22.70089,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "世運大道、勝利營區前",
+      "RoadID": "619539E",
+      "RoadName": "世運大道",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000250",
+      "LinkID": "6210440600000E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/7b136933/",
+      "LocationType": 1,
+      "PositionLon": 120.28107,
+      "PositionLat": 22.63622,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鼓山二路、興隆路(西北角)",
+      "RoadID": "621044E",
+      "RoadName": "興隆路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000251",
+      "LinkID": "6210440200010E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/cb0e5a7e/",
+      "LocationType": 1,
+      "PositionLon": 120.28123,
+      "PositionLat": 22.63611,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鼓山二路、興隆路(東南角)",
+      "RoadID": "621044E",
+      "RoadName": "興隆路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000252",
+      "LinkID": "6196290200020E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/3fbaad62/",
+      "LocationType": 1,
+      "PositionLon": 120.26323,
+      "PositionLat": 22.80738,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "岡山區-本洲路289號前路燈桿",
+      "RoadID": "619629E",
+      "RoadName": "本洲路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000253",
+      "LinkID": "6196340600010E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/3e287cbd/",
+      "LocationType": 1,
+      "PositionLon": 120.21388,
+      "PositionLat": 22.87621,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "湖內區-東方路一段正大路口(興達港門口)",
+      "RoadID": "619634E",
+      "RoadName": "正大路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000265",
+      "LinkID": "6208800400000E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/3e58bd9b/",
+      "LocationType": 2,
+      "PositionLon": 120.39645,
+      "PositionLat": 22.50713,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "林園區-鳳林路二段與忠孝東路交岔路口",
+      "RoadID": "620880E",
+      "RoadName": "鳳林路一段",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000267",
+      "LinkID": "3001700124697E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam271",
+      "LocationType": 2,
+      "PositionLon": 120.398,
+      "PositionLat": 22.50068,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "林園區-鳳林路一段與沿海路二段交岔路口",
+      "RoadID": "300170",
+      "RoadName": "台17線",
+      "RoadClass": 3,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000269",
+      "LinkID": "6201160200020E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/86554532/",
+      "LocationType": 2,
+      "PositionLon": 120.38175,
+      "PositionLat": 22.50343,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "沿海路二段與王公路、東林西路交岔路口(西)",
+      "RoadID": "620116E",
+      "RoadName": "沿海路四段",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000271",
+      "LinkID": "3001700124272E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/9f247eab/",
+      "LocationType": 1,
+      "PositionLon": 120.36122,
+      "PositionLat": 22.51311,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "小港區-沿海三路與沿海四路交岔路口",
+      "RoadID": "300170",
+      "RoadName": "台17線",
+      "RoadClass": 3,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000272",
+      "LinkID": "4018300000416E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/b9891e63/",
+      "LocationType": 2,
+      "PositionLon": 120.35291,
+      "PositionLat": 22.686,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "仁武區-鳳仁路與澄觀路交岔路口",
+      "RoadID": "401830",
+      "RoadName": "183",
+      "RoadClass": 4,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000273",
+      "LinkID": "6208630700020E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/2d82f051/",
+      "LocationType": 1,
+      "PositionLon": 120.34212,
+      "PositionLat": 22.70619,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "楠梓區-鳳仁路與水管路交岔路口",
+      "RoadID": "620863E",
+      "RoadName": "鳳仁路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000277",
+      "LinkID": "4018320000223E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/48d2cad0/",
+      "LocationType": 1,
+      "PositionLon": 120.34896,
+      "PositionLat": 22.65202,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳥松區-大埤南路與澄清路交岔路口",
+      "RoadID": "401832",
+      "RoadName": "183乙",
+      "RoadClass": 4,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000279",
+      "LinkID": "6194200600040E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/11a631f9/",
+      "LocationType": 1,
+      "PositionLon": 120.28556,
+      "PositionLat": 22.62023,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鹽埕區-大義街與公園二路交岔路口",
+      "RoadID": "619420E",
+      "RoadName": "公園二路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000280",
+      "LinkID": "6194200600020E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/1c1fa564/",
+      "LocationType": 1,
+      "PositionLon": 120.2827,
+      "PositionLat": 22.6216,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鹽埕區-大勇路與公園二路交岔路口",
+      "RoadID": "619420E",
+      "RoadName": "公園二路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000281",
+      "LinkID": "6198340000020E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/cbc0c2dc/",
+      "LocationType": 1,
+      "PositionLon": 120.29997,
+      "PositionLat": 22.60832,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "苓雅區-成功二路與林森四路交岔路口",
+      "RoadID": "619834E",
+      "RoadName": "成功二路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000283",
+      "LinkID": "6211000700000E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/bead0cfa/",
+      "LocationType": 1,
+      "PositionLon": 120.27748,
+      "PositionLat": 22.62021,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "臨海新路消防隊前",
+      "RoadID": "621100E",
+      "RoadName": "臨海新路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000284",
+      "LinkID": "6190530600000E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/44950c71/",
+      "LocationType": 1,
+      "PositionLon": 120.32783,
+      "PositionLat": 22.6216,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "三多二路、福德三路(東北角)",
+      "RoadID": "619053E",
+      "RoadName": "三多一路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000285",
+      "LinkID": "6190530600020E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/9def234c/",
+      "LocationType": 1,
+      "PositionLon": 120.33144,
+      "PositionLat": 22.62284,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "三多一路、河北路(東北角)",
+      "RoadID": "619053E",
+      "RoadName": "三多一路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000286",
+      "LinkID": "6200990700080E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/73b5a8a2/",
+      "LocationType": 1,
+      "PositionLon": 120.33114,
+      "PositionLat": 22.62273,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "三多一路、河南路(西南角)",
+      "RoadID": "620099E",
+      "RoadName": "河南路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000287",
+      "LinkID": "6190530200030E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/50bc6c50/",
+      "LocationType": 1,
+      "PositionLon": 120.33342,
+      "PositionLat": 22.62352,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "三多一路、輔仁路(東南角)",
+      "RoadID": "619053E",
+      "RoadName": "三多一路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000289",
+      "LinkID": "6190220200000E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam117",
+      "LocationType": 1,
+      "PositionLon": 120.32673,
+      "PositionLat": 22.61171,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "二聖路、凱旋三路(東南角)",
+      "RoadID": "619022E",
+      "RoadName": "二聖路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000290",
+      "LinkID": "6204990400010E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam270",
+      "LocationType": 1,
+      "PositionLon": 120.32652,
+      "PositionLat": 22.61713,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "英祥街、凱旋三路(西南角)",
+      "RoadID": "620499E",
+      "RoadName": "凱旋三路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000292",
+      "LinkID": "6204990000030E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/b8aef900/",
+      "LocationType": 1,
+      "PositionLon": 120.32544,
+      "PositionLat": 22.60897,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "賢明路、凱旋三路(東南角)",
+      "RoadID": "620499E",
+      "RoadName": "凱旋三路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000293",
+      "LinkID": "6204990000040E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/55ae3de9/",
+      "LocationType": 1,
+      "PositionLon": 120.32491,
+      "PositionLat": 22.60665,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "育樂路、凱旋三路(東南角)",
+      "RoadID": "620499E",
+      "RoadName": "凱旋三路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000294",
+      "LinkID": "6204990400050E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/f33c1871/",
+      "LocationType": 1,
+      "PositionLon": 120.32455,
+      "PositionLat": 22.60511,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "一心一路、凱旋四路(西南角)",
+      "RoadID": "620499E",
+      "RoadName": "凱旋三路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000295",
+      "LinkID": "6190010300020E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/d13c514b/",
+      "LocationType": 1,
+      "PositionLon": 120.32061,
+      "PositionLat": 22.60686,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "一心一路、和平二路(西南角)",
+      "RoadID": "619001E",
+      "RoadName": "一心一路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000299",
+      "LinkID": "6211240700000E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/128c9268/",
+      "LocationType": 1,
+      "PositionLon": 120.31126,
+      "PositionLat": 22.59343,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "凱旋四路、鎮興路",
+      "RoadID": "621124E",
+      "RoadName": "鎮興路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000300",
+      "LinkID": "6203500600010E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/f9581f01/",
+      "LocationType": 1,
+      "PositionLon": 120.26962,
+      "PositionLat": 22.61405,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "旗津渡輪站2",
+      "RoadID": "620350E",
+      "RoadName": "海岸路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000302",
+      "LinkID": "6211030100000E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/97358d57/",
+      "LocationType": 1,
+      "PositionLon": 120.30803,
+      "PositionLat": 22.59259,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "凱旋四路、前鎮街",
+      "RoadID": "621103E",
+      "RoadName": "擴建一路",
+      "RoadClass": 6,
+      "RoadDirection": "NE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000303",
+      "LinkID": "6198340400090E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/1cd65746/",
+      "LocationType": 1,
+      "PositionLon": 120.30566,
+      "PositionLat": 22.59341,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "成功二路、凱旋四路",
+      "RoadID": "619834E",
+      "RoadName": "成功二路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000305",
+      "LinkID": "6205280500010E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/2c7578ed/",
+      "LocationType": 1,
+      "PositionLon": 120.30483,
+      "PositionLat": 22.60647,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中華五路、復興三路",
+      "RoadID": "620528E",
+      "RoadName": "復興三路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000307",
+      "LinkID": "6203590000010E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam119",
+      "LocationType": 1,
+      "PositionLon": 120.29327,
+      "PositionLat": 22.61886,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "海邊路、新田路",
+      "RoadID": "620359E",
+      "RoadName": "海邊路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000308",
+      "LinkID": "6190100500000E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/2be121db/",
+      "LocationType": 1,
+      "PositionLon": 120.27913,
+      "PositionLat": 22.62093,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "七賢三路、蓬萊路",
+      "RoadID": "619010E",
+      "RoadName": "七賢三路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000309",
+      "LinkID": "6209750700000E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/e3f93f6f/",
+      "LocationType": 1,
+      "PositionLon": 120.27867,
+      "PositionLat": 22.61959,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "臨海新路、蓬萊路",
+      "RoadID": "620975E",
+      "RoadName": "蓬萊路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000310",
+      "LinkID": "6194770500070E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/87a46a03/",
+      "LocationType": 1,
+      "PositionLon": 120.31152,
+      "PositionLat": 22.68022,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "大中二路、文自路(西南角)",
+      "RoadID": "619477E",
+      "RoadName": "文自路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000311",
+      "LinkID": "6190130600056E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/b045c1d4/",
+      "LocationType": 1,
+      "PositionLon": 120.30834,
+      "PositionLat": 22.64092,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "九如二路、自由一路(西南角)",
+      "RoadID": "619013E",
+      "RoadName": "九如二路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000312",
+      "LinkID": "6196790000030E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/8bd155ee/",
+      "LocationType": 1,
+      "PositionLon": 120.31367,
+      "PositionLat": 22.63386,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "民族二路、七賢一路",
+      "RoadID": "619679E",
+      "RoadName": "民族二路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000313",
+      "LinkID": "6210980300010E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/2e4ef8f1/",
+      "LocationType": 1,
+      "PositionLon": 120.27331,
+      "PositionLat": 22.62223,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "臨海二路、麗雄街",
+      "RoadID": "621098E",
+      "RoadName": "臨海二路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000314",
+      "LinkID": "6208600400150E",
+      "VideoStreamURL": "wss://cctv8.kctmc.nat.gov.tw/flv/fa32c885",
+      "LocationType": 1,
+      "PositionLon": 120.2881,
+      "PositionLat": 22.66829,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中華一路、翠華路",
+      "RoadID": "620860E",
+      "RoadName": "翠華路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000315",
+      "LinkID": "6202370600140E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/f4587ee1/",
+      "LocationType": 1,
+      "PositionLon": 120.33837,
+      "PositionLat": 22.62991,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "建國一路、正義路",
+      "RoadID": "620237E",
+      "RoadName": "建國一路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000317",
+      "LinkID": "6201480400080E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/4a6130b2/",
+      "LocationType": 1,
+      "PositionLon": 120.34925,
+      "PositionLat": 22.62923,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "青年路二段、光復路一段",
+      "RoadID": "620148E",
+      "RoadName": "青年路二段",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000333",
+      "LinkID": "6211000300000E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/a885caaf/",
+      "LocationType": 1,
+      "PositionLon": 120.27487,
+      "PositionLat": 22.62123,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "臨海二路、鼓山一路(西南角)",
+      "RoadID": "621100E",
+      "RoadName": "臨海新路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000334",
+      "LinkID": "6208860700000E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/17746ed9/",
+      "LocationType": 1,
+      "PositionLon": 120.33978,
+      "PositionLat": 22.59584,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-高速公路東側、鳳南路",
+      "RoadID": "620886E",
+      "RoadName": "鳳南一路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000335",
+      "LinkID": "6204040400040E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/75f7e057/",
+      "LocationType": 1,
+      "PositionLon": 120.33876,
+      "PositionLat": 22.59577,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "鳳山區-高速公路西側、三商街",
+      "RoadID": "620404E",
+      "RoadName": "國1側車道(瑞隆路至五甲交流道)",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000336",
+      "LinkID": "6205260000000E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/759e1ca2/",
+      "LocationType": 1,
+      "PositionLon": 120.30873,
+      "PositionLat": 22.6375,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "建國二路、復興一路",
+      "RoadID": "620526E",
+      "RoadName": "復興一路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000337",
+      "LinkID": "6208600100040E",
+      "VideoStreamURL": "wss://cctv8.kctmc.nat.gov.tw/flv/996602cb",
+      "LocationType": 1,
+      "PositionLon": 120.29452,
+      "PositionLat": 22.67535,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "翠華路、新莊一路",
+      "RoadID": "620860E",
+      "RoadName": "翠華路",
+      "RoadClass": 6,
+      "RoadDirection": "NE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000338",
+      "LinkID": "6225920000000E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/c9653df7/",
+      "LocationType": 1,
+      "PositionLon": 120.30165,
+      "PositionLat": 22.63946,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "站西路",
+      "RoadID": "622592E",
+      "RoadName": "站西路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000341",
+      "LinkID": "6192150400110E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/abc0307b/",
+      "LocationType": 1,
+      "PositionLon": 120.30151,
+      "PositionLat": 22.63787,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "站西路、建國三路",
+      "RoadID": "619215E",
+      "RoadName": "中山一路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000342",
+      "LinkID": "6198560400080E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/f8a9e69f/",
+      "LocationType": 1,
+      "PositionLon": 120.30861,
+      "PositionLat": 22.65534,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "自由一路、龍德新路",
+      "RoadID": "619856E",
+      "RoadName": "自由二路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000343",
+      "LinkID": "6206560000010E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/c55d4471/",
+      "LocationType": 2,
+      "PositionLon": 120.3059,
+      "PositionLat": 22.65444,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "新順路、龍德新路",
+      "RoadID": "620656E",
+      "RoadName": "新順路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000344",
+      "LinkID": "6193620700050E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/d59616dd/",
+      "LocationType": 1,
+      "PositionLon": 120.28717,
+      "PositionLat": 22.62186,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "五福四路、大智路(大禮)",
+      "RoadID": "619362E",
+      "RoadName": "五福四路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000345",
+      "LinkID": "6205080000030E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/9e0ae049/",
+      "LocationType": 1,
+      "PositionLon": 120.30299,
+      "PositionLat": 22.66106,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "博愛二路、明誠二路",
+      "RoadID": "620508E",
+      "RoadName": "博愛二路",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000347",
+      "LinkID": "6205070400060E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/6e559e58/",
+      "LocationType": 1,
+      "PositionLon": 120.3037,
+      "PositionLat": 22.64115,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "九如二路、松江路",
+      "RoadID": "620507E",
+      "RoadName": "博愛一路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000348",
+      "LinkID": "6190530600070E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/1761ad24/",
+      "LocationType": 1,
+      "PositionLon": 120.34118,
+      "PositionLat": 22.62451,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "三多路、衛武營站3號出口",
+      "RoadID": "619053E",
+      "RoadName": "三多一路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000349",
+      "LinkID": "6204130300010E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/95ee1e78/",
+      "LocationType": 1,
+      "PositionLon": 120.34539,
+      "PositionLat": 22.62123,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "國泰路二段、議會路(南京路)",
+      "RoadID": "620413E",
+      "RoadName": "國泰路二段",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000351",
+      "LinkID": "6202390600000E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/02f22e11/",
+      "LocationType": 1,
+      "PositionLon": 120.30299,
+      "PositionLat": 22.63771,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "站東路南側路口",
+      "RoadID": "620239E",
+      "RoadName": "建國二路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000352",
+      "LinkID": "6203130300050E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/b88c2541/",
+      "LocationType": 1,
+      "PositionLon": 120.31086,
+      "PositionLat": 22.67904,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "文自路、重立路",
+      "RoadID": "620313E",
+      "RoadName": "重立路",
+      "RoadClass": 6,
+      "RoadDirection": "SE",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000353",
+      "LinkID": "6192220200010E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/dc3225a0/",
+      "LocationType": 1,
+      "PositionLon": 120.3436,
+      "PositionLat": 22.62813,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "府前路、中山西路(建國一路)",
+      "RoadID": "619222E",
+      "RoadName": "中山西路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000354",
+      "LinkID": "6209830600070E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/d48eabc7/",
+      "LocationType": 1,
+      "PositionLon": 120.34551,
+      "PositionLat": 22.61742,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "輜汽路、南京路",
+      "RoadID": "620983E",
+      "RoadName": "輜汽路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000355",
+      "LinkID": "3001700021211E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/cdad9a44/",
+      "LocationType": 1,
+      "PositionLon": 120.27303,
+      "PositionLat": 22.72664,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "新台17線、援港路",
+      "RoadID": "300170",
+      "RoadName": "台17線",
+      "RoadClass": 3,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000356",
+      "LinkID": "6200880400020E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/a9cb354f/",
+      "LocationType": 1,
+      "PositionLon": 120.3367,
+      "PositionLat": 22.61649,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "輜汽路、武營路",
+      "RoadID": "620088E",
+      "RoadName": "武營路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000357",
+      "LinkID": "6209200500000E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/260ed460/",
+      "LocationType": 1,
+      "PositionLon": 120.27945,
+      "PositionLat": 22.71532,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "新台17線、德民路",
+      "RoadID": "620920E",
+      "RoadName": "德民路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000359",
+      "LinkID": "6206530200030E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/bca63d13/",
+      "LocationType": 1,
+      "PositionLon": 120.34135,
+      "PositionLat": 22.61278,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "新富路、大明路",
+      "RoadID": "620653E",
+      "RoadName": "新富路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000360",
+      "LinkID": "6202040400030E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/fe2a3602/",
+      "LocationType": 1,
+      "PositionLon": 120.34552,
+      "PositionLat": 22.61311,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "新富路、南京路",
+      "RoadID": "620204E",
+      "RoadName": "南京路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000361",
+      "LinkID": "6206530200010E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/9f7f6e1b/",
+      "LocationType": 1,
+      "PositionLon": 120.33715,
+      "PositionLat": 22.61263,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "新富路、武營路",
+      "RoadID": "620653E",
+      "RoadName": "新富路",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000362",
+      "LinkID": "6201480000090E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/a11dfaba/",
+      "LocationType": 1,
+      "PositionLon": 120.3492,
+      "PositionLat": 22.62777,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中山西路、青年路二段",
+      "RoadID": "620148E",
+      "RoadName": "青年路二段",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000363",
+      "LinkID": "6201470000000E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/a4d8411f/",
+      "LocationType": 1,
+      "PositionLon": 120.34932,
+      "PositionLat": 22.62559,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "自由路、青年路一段",
+      "RoadID": "620147E",
+      "RoadName": "青年路一段",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000364",
+      "LinkID": "6197890710000E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/db91cb6d/",
+      "LocationType": 1,
+      "PositionLon": 120.34933,
+      "PositionLat": 22.62204,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "光華路、青年路一段",
+      "RoadID": "619789E",
+      "RoadName": "光華路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000365",
+      "LinkID": "6197820200000E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/465b35ba/",
+      "LocationType": 1,
+      "PositionLon": 120.35414,
+      "PositionLat": 22.62909,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "光復路、五權路",
+      "RoadID": "619782E",
+      "RoadName": "光復路一段",
+      "RoadClass": 6,
+      "RoadDirection": "E",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000366",
+      "LinkID": "6192490700050E",
+      "VideoStreamURL": "https://cctv1.kctmc.nat.gov.tw/a63a6101/",
+      "LocationType": 1,
+      "PositionLon": 120.34077,
+      "PositionLat": 22.62522,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中正一路、國軍802醫院前",
+      "RoadID": "619249E",
+      "RoadName": "中正一路",
+      "RoadClass": 6,
+      "RoadDirection": "NW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000367",
+      "LinkID": "6198620600006E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/aa9f613b/",
+      "LocationType": 1,
+      "PositionLon": 120.34776,
+      "PositionLat": 22.62527,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "議會路、自由路",
+      "RoadID": "619862E",
+      "RoadName": "自由路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000368",
+      "LinkID": "6192220600010E",
+      "VideoStreamURL": "https://cctv9.kctmc.nat.gov.tw/3477bb58/",
+      "LocationType": 1,
+      "PositionLon": 120.34225,
+      "PositionLat": 22.62844,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "建國一路、建軍路",
+      "RoadID": "619222E",
+      "RoadName": "中山西路",
+      "RoadClass": 6,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C000394",
+      "LinkID": "6250880000000E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/7f82a59c/",
+      "LocationType": 1,
+      "PositionLon": 120.3036,
+      "PositionLat": 22.63939,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "站東路",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C700002",
+      "LinkID": "3002800103169E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/143312d8/",
+      "LocationType": 6,
+      "PositionLon": 120.49541,
+      "PositionLat": 22.88302,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "旗屏一路、延平二路",
+      "RoadID": "300280",
+      "RoadName": "台28線",
+      "RoadClass": 3,
+      "RoadDirection": "W",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C700003",
+      "LinkID": "3000300140618E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam056",
+      "LocationType": 1,
+      "PositionLon": 120.48485,
+      "PositionLat": 22.88215,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中華路、延平二路",
+      "RoadID": "300030",
+      "RoadName": "台3線",
+      "RoadClass": 3,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C700005",
+      "LinkID": "6208020500050E",
+      "VideoStreamURL": "https://cctv3.kctmc.nat.gov.tw/9f4da9b0/",
+      "LocationType": 1,
+      "PositionLon": 120.47414,
+      "PositionLat": 22.87276,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "旗南一路、中華路",
+      "RoadID": "620802E",
+      "RoadName": "旗南一路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C700006",
+      "LinkID": "3000300040625E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam030",
+      "LocationType": 1,
+      "PositionLon": 120.48309,
+      "PositionLat": 22.87922,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "中華路、旗屏路",
+      "RoadID": "300030",
+      "RoadName": "台3線",
+      "RoadClass": 3,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C700008",
+      "LinkID": "6199800400060E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam267",
+      "LocationType": 1,
+      "PositionLon": 120.48307,
+      "PositionLat": 22.88356,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "旗山區_延平一路、德昌街(大同街)",
+      "RoadID": "619980E",
+      "RoadName": "延平一路",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C700009",
+      "LinkID": "3002900107442E",
+      "VideoStreamURL": "https://cctv4.kctmc.nat.gov.tw/0d6724a3/",
+      "LocationType": 1,
+      "PositionLon": 120.45897,
+      "PositionLat": 22.79939,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "旗南三路、內湖巷",
+      "RoadID": "300290",
+      "RoadName": "台29線",
+      "RoadClass": 3,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C700013",
+      "LinkID": "6209590000030E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/25313680/",
+      "LocationType": 1,
+      "PositionLon": 120.36012,
+      "PositionLat": 22.7032,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "澄觀路、水管路三段東側",
+      "RoadID": "620959E",
+      "RoadName": "澄觀路二段",
+      "RoadClass": 6,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C700014",
+      "LinkID": "6209590400020E",
+      "VideoStreamURL": "https://cctv2.kctmc.nat.gov.tw/f8c69310/",
+      "LocationType": 1,
+      "PositionLon": 120.35957,
+      "PositionLat": 22.70367,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "澄觀路、水管路三段西側",
+      "RoadID": "620959E",
+      "RoadName": "澄觀路二段",
+      "RoadClass": 6,
+      "RoadDirection": "S",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C700015",
+      "LinkID": "6203960500030E",
+      "VideoStreamURL": "https://cctv6.kctmc.nat.gov.tw/f6007b0d/",
+      "LocationType": 1,
+      "PositionLon": 120.30807,
+      "PositionLat": 22.68652,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "高鐵路、重信路",
+      "RoadID": "620396E",
+      "RoadName": "高鐵路",
+      "RoadClass": 6,
+      "RoadDirection": "SW",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    },
+    {
+      "CCTVID": "64000C700017",
+      "LinkID": "3002900108120E",
+      "VideoStreamURL": "https://cctv5.kctmc.nat.gov.tw/stream/?n=Cam031",
+      "LocationType": 1,
+      "PositionLon": 120.44818,
+      "PositionLat": 22.75462,
+      "SurveillanceType": -1,
+      "SurveillanceDescription": "大樹區-台29與統嶺路",
+      "RoadID": "300290",
+      "RoadName": "台29線",
+      "RoadClass": 3,
+      "RoadDirection": "N",
+      "RoadSection": {
+        "Start": "",
+        "End": ""
+      },
+      "LocationMile": "",
+      "LayoutMapURL": ""
+    }
+  ],
+  "Count": 264,
+  "lastUpdated": "2026-05-15T14:57:58.038Z"
+}

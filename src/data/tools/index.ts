@@ -7,6 +7,7 @@ import {
   ArrowLeftRight,
   Bot,
   CaseUpper,
+  Cctv,
   Clock,
   CodeXml,
   FileImage,
@@ -61,18 +62,23 @@ export const ToolGroupSlugs = {
 // Tools
 
 export const ToolKeys = {
+  // Everyday Life Tool
+  taiwanLiveCams: 'taiwanLiveCams',
   qrCodeGenerator: 'qrCodeGenerator',
   wordCounter: 'wordCounter',
 
+  // Developer Tools
   urlEncoderDecoder: 'urlEncoderDecoder',
   jsonFormatter: 'jsonFormatter',
   unixTimestampConverter: 'unixTimestampConverter',
   regexTester: 'regexTester',
 
+  // Image Tools
   picMergeStudio: 'picMergeStudio',
   base64ToImage: 'base64ToImage',
   imageToBase64: 'imageToBase64',
 
+  // Chrome AI APIs
   chromeAiTranslator: 'chromeAiTranslator',
   chromeAiLanguageDetector: 'chromeAiLanguageDetector',
   chromeAiSummarizer: 'chromeAiSummarizer',
@@ -81,6 +87,7 @@ export const ToolKeys = {
   chromeAiPrompt: 'chromeAiPrompt',
   chromeAiProofreader: 'chrochromeAiProofreadermeAi',
 
+  // Web Detector APIs
   chromeFaceDetector: 'chromeFaceDetector',
   chromeBarcodeDetector: 'chromeBarcodeDetector',
   chromeTextDetector: 'chromeTextDetector',
@@ -88,6 +95,7 @@ export const ToolKeys = {
 
 export const ToolGroupItems = {
   [ToolGroupKeys.everydayLifeTool]: [
+    ToolKeys.taiwanLiveCams,
     ToolKeys.qrCodeGenerator,
     ToolKeys.wordCounter,
   ],
@@ -119,6 +127,8 @@ export const ToolGroupItems = {
 };
 
 export const ToolTitles = {
+  // [ToolKeys.taiwanLiveCams]: '臺灣即時影像',
+  [ToolKeys.taiwanLiveCams]: '臺灣即時影像 (新北先行版)',
   [ToolKeys.qrCodeGenerator]: 'QR Code Generator',
   [ToolKeys.wordCounter]: 'Word Counter',
 
@@ -144,7 +154,16 @@ export const ToolTitles = {
   [ToolKeys.chromeTextDetector]: 'Text Detector',
 };
 
+const ToolTitlesForFeaturePanel = {
+  ...ToolTitles,
+  [ToolKeys.taiwanLiveCams]: 'Taiwan Live Cams',
+};
+
 export const ToolDescriptions = {
+  // [ToolKeys.taiwanLiveCams]:
+  //   '即時線上探索臺灣：匯集全臺熱門景點、城市地標與重要交通路段的即時畫面。',
+  [ToolKeys.taiwanLiveCams]:
+    '即時線上探索臺灣。首波匯集新北市熱門景點、城市地標與重要交通路段的即時畫面，全臺其他縣市正陸續解鎖中。',
   [ToolKeys.qrCodeGenerator]:
     'Generate QR codes instantly from text, URLs, or custom content with this free online QR code generator.',
   [ToolKeys.wordCounter]:
@@ -190,6 +209,7 @@ export const ToolDescriptions = {
 };
 
 export const ToolSlugs = {
+  [ToolKeys.taiwanLiveCams]: 'taiwan-live-cams',
   [ToolKeys.qrCodeGenerator]: 'qr-code-generator',
   [ToolKeys.wordCounter]: 'word-counter',
 
@@ -228,6 +248,7 @@ export const ToolUrls = fromPairs(
 );
 
 export const ToolIcons = {
+  [ToolKeys.taiwanLiveCams]: Cctv,
   [ToolKeys.qrCodeGenerator]: QrCode,
   [ToolKeys.wordCounter]: FileText,
 
@@ -260,6 +281,18 @@ export const Tools = ToolGroupKeysOrder.map((groupKey) => ({
     name: ToolTitles[toolKey],
     href: ToolUrls[toolKey],
     desc: ToolDescriptions[toolKey],
+    icon: {
+      component: ToolIcons[toolKey],
+    },
+  })),
+}));
+
+// Tools Data for Feature Panel (left side panel in tool pages)
+export const ToolDataForFeaturePanel = ToolGroupKeysOrder.map((groupKey) => ({
+  name: ToolGroupNames[groupKey],
+  items: ToolGroupItems[groupKey].map((toolKey) => ({
+    name: ToolTitlesForFeaturePanel[toolKey],
+    href: ToolUrls[toolKey],
     icon: {
       component: ToolIcons[toolKey],
     },

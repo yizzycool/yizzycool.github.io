@@ -1,6 +1,35 @@
 import { ToolKeys } from '.';
 
 export const ToolMetadata = {
+  [ToolKeys.taiwanLiveCams]: {
+    title: '臺灣即時影像 – 新北市景點與路況鏡頭首發 | Yizzy Peasy',
+    description:
+      '免費線上臺灣即時影像工具。首波完整上線新北市熱門景點、城市地標與主要交通路段的即時視訊鏡頭，全臺其他縣市陸續解鎖中！',
+    openGraph: {
+      title: '臺灣即時影像 – 新北市景點與路況鏡頭首發',
+      description:
+        '線上探索臺灣現況！第一階段搶先體驗新北市熱門觀光景點與交通要道即時畫面。輕鬆掌握現場人潮與即時路況，更多縣市持續接入中。',
+    },
+    twitter: {
+      title: '臺灣即時影像 – 新北市景點與路況鏡頭首發',
+      description:
+        '新北即時影像率先登場！一指切換新北市熱門景點與重要道路的即時鏡頭，全島其餘縣市正加緊趕工中，通勤、旅遊規劃必備。',
+    },
+    // title: '臺灣即時影像 – 線上觀看景點與路況鏡頭 | Yizzy Peasy',
+    // description:
+    //   '免費線上臺灣即時影像。一鍵探索全臺熱門景點、城市地標與主要交通路段的即時視訊鏡頭，出遊規劃與通勤路況一手掌握。',
+    // openGraph: {
+    //   title: '臺灣即時影像 – 線上觀看景點與路況鏡頭',
+    //   description:
+    //     '整合全臺熱門觀光景點、地標與交通要道的即時畫面。免出門即可線上探索臺灣，輕鬆掌握現場人潮與即時路況。',
+    // },
+    // twitter: {
+    //   title: '臺灣即時影像 – 線上觀看景點與路況鏡頭',
+    //   description:
+    //     '全島即時視訊帶您身歷其境！一指切換臺灣熱門景點與重要道路的即時鏡頭，通勤、旅遊規劃必備。',
+    // },
+  },
+
   [ToolKeys.qrCodeGenerator]: {
     title: 'QR Code Generator – Generate QR Codes Online | Yizzy Peasy',
     description:

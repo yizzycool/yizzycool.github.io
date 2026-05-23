@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 import { cn } from '@/utils/cn';
-import { Tools } from '@/data/tools';
+import { ToolDataForFeaturePanel } from '@/data/tools';
 
 export default function FeaturePanel() {
   const pathname = usePathname();
@@ -18,7 +18,7 @@ export default function FeaturePanel() {
     >
       <nav aria-label="Tools list">
         <ul>
-          {Tools.map((tool) => (
+          {ToolDataForFeaturePanel.map((tool) => (
             <li key={tool.name} className="mt-6">
               <h2 className="mb-2 font-bold text-neutral-500 dark:text-neutral-300">
                 {tool.name}
