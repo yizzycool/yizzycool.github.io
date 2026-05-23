@@ -2,7 +2,7 @@
 
 import type { TdxCctvInfo } from '@/data/tools/everyday-life-tool/taiwan-live-cams/cctv';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { flatMap, map } from 'lodash';
 import dynamic from 'next/dynamic';
 
@@ -44,7 +44,6 @@ export interface TdxCamera extends TdxCctvInfo {
 }
 
 export default function TaiwanLiveCams() {
-  const [mounted, setMounted] = useState(false);
   const [selectedCamera, setSelectedCamera] = useState<TdxCamera | null>(null);
 
   const { userLocation, handleGetLocation, error: _e } = useGeolocation();
@@ -65,16 +64,10 @@ export default function TaiwanLiveCams() {
     });
   }, [data]);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const handleSelectCamera = (cam: TdxCamera | null) => {
     setSelectedCamera(cam);
     if (!cam) return;
   };
-
-  if (!mounted) return null;
 
   return (
     <div lang="zh-TW" className="h-full w-full">
