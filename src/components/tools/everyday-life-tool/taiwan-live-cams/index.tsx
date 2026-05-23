@@ -79,9 +79,9 @@ export default function TaiwanLiveCams() {
         <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-800/50">
           <AlertTriangle className="h-4 w-4" />
         </div>
-        <p className="font-medium tracking-wide">
+        <p className="text-left font-medium tracking-wide">
           目前系統僅完成<strong className="mx-1 font-bold">新北市</strong>
-          地區的即時影像串接，其餘縣市的影像正在趕工中，敬請期待！
+          的即時影像串接，其餘縣市的影像正在趕工中，敬請期待！
         </p>
       </div>
 
