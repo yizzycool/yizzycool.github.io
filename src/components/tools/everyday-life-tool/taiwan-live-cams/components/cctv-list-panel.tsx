@@ -104,7 +104,13 @@ export default function CctvListPanel({
   }, [searchQuery, fuse, isComposing]);
 
   return (
-    <div className="flex h-full flex-col rounded-3xl border border-neutral-200 bg-white p-5 shadow-sm lg:col-span-4 lg:row-span-6 lg:min-h-0 dark:border-neutral-800 dark:bg-neutral-900">
+    <div
+      className={cn(
+        'flex h-[calc(100dvh_-_80px)] flex-col rounded-3xl border border-neutral-200 bg-white p-5 shadow-sm',
+        'lg:col-span-4 lg:row-span-6 lg:h-full',
+        'dark:border-neutral-800 dark:bg-neutral-900'
+      )}
+    >
       <div className="mb-3 flex items-center justify-between px-1">
         <h2 className="flex items-center gap-2 font-bold text-neutral-800 dark:text-neutral-100">
           <span className="h-4 w-1.5 rounded-full bg-blue-600" />

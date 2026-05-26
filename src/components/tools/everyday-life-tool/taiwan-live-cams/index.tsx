@@ -24,7 +24,7 @@ const LiveCamMap = dynamic(() => import('./components/live-cam-map'), {
     <div
       className={cn(
         'flex h-[400px] items-center justify-center rounded-3xl border border-neutral-200 bg-white shadow-sm',
-        'lg:col-span-8 lg:row-span-6 lg:h-auto',
+        'lg:col-span-8 lg:row-span-6 lg:h-full',
         'dark:border-neutral-800 dark:bg-neutral-900'
       )}
     >
@@ -85,7 +85,7 @@ export default function TaiwanLiveCams() {
         </p>
       </div>
 
-      <main className="grid h-[calc(100dvh_-_300px)] grid-cols-1 gap-4 overflow-y-auto lg:grid-cols-12 lg:grid-rows-6 lg:overflow-hidden">
+      <main className="grid grid-cols-1 gap-4 overflow-y-auto lg:h-[calc(100dvh_-_300px)] lg:grid-cols-12 lg:grid-rows-6 lg:overflow-hidden">
         {/* Map View (Main Container) - Bento Cell 1 */}
         <LiveCamMap
           cameras={cameras}

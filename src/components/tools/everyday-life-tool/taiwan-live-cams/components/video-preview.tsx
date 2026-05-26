@@ -70,7 +70,7 @@ export default function VideoPreview({
               'bg-white/50 dark:bg-neutral-900/10',
               isModalOpen
                 ? 'inset-0 max-w-full'
-                : 'bottom-[6rem] right-[2rem] w-full max-w-xl'
+                : 'bottom-[2rem] right-[1rem] w-full max-w-[min(36rem,_calc(100vw_-_2rem))] lg:bottom-[4rem] lg:right-[2rem]'
             )}
           >
             {/* Close Button */}
@@ -93,8 +93,8 @@ export default function VideoPreview({
               className={cn(
                 'flex max-h-full',
                 isModalOpen
-                  ? 'flex-col-reverse p-12 lg:p-20'
-                  : 'flex-col md:flex-row'
+                  ? 'flex-col-reverse p-4 pt-12 lg:p-20'
+                  : 'flex-col sm:flex-row'
               )}
             >
               {/* CCTV Block */}
@@ -102,7 +102,7 @@ export default function VideoPreview({
                 layout
                 className={cn(
                   'relative aspect-video w-full overflow-hidden bg-black',
-                  isModalOpen ? '' : 'md:w-1/2'
+                  isModalOpen ? '' : 'sm:w-1/2'
                 )}
               >
                 <CctvPlayer cam={selectedCamera} isModalOpen={isModalOpen} />
@@ -112,7 +112,13 @@ export default function VideoPreview({
                 )}
               </motion.div>
 
-              <div className="flex flex-1 flex-col justify-between gap-4 p-6 text-left md:w-1/2">
+              <motion.div
+                layout
+                className={cn(
+                  'flex flex-1 flex-col justify-between gap-4 text-left sm:w-1/2',
+                  isModalOpen ? 'p-2 lg:p-4' : 'p-6'
+                )}
+              >
                 <div className="flex items-start justify-between">
                   <motion.div layout className="w-full">
                     <h3 className="mb-1 truncate text-lg font-bold leading-tight tracking-tight text-neutral-900 dark:text-neutral-100">
@@ -147,7 +153,7 @@ export default function VideoPreview({
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             </motion.div>
           </motion.div>
         )}
