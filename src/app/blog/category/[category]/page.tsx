@@ -17,8 +17,9 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category: categorySlug } = await params;
   const articles = await fetchArticles(categorySlug);
-  const category = get(articles, ['data', 0, 'category']);
-  const { name, slug } = category;
+  const category = get(articles, ['data', 0, 'category']) || {};
+  const name = category.name || '';
+  const slug = category.slug || categorySlug || '';
 
   const url = urlJoin(domain, 'blog/category', slug);
 
@@ -57,31 +58,53 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const queryString =
-    strapiUtils.staticParams.generateCategoriesQueryStringForCategorPage();
-  const response = await fetch(
-    `${process.env.STRAPI_URL}/api/categories?${queryString}`
-  );
-  const categories = await response.json();
+  try {
+    const queryString =
+      strapiUtils.staticParams.generateCategoriesQueryStringForCategorPage();
+    const response = await fetch(
+      `${process.env.STRAPI_URL}/api/categories?${queryString}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const categories = await response.json();
 
-  return map(categories.data, ({ slug }) => ({
-    category: slug,
-  }));
+    return map(categories.data || [], ({ slug }) => ({
+      category: slug,
+    }));
+  } catch (error) {
+    console.warn('Error generating static params for category:', error);
+    return [];
+  }
 }
 
 const fetchArticles = async (categorySlug: string) => {
-  const queryString = strapiUtils.fetch.generateArticlesQueryString({
-    category: {
-      slug: {
-        '$eq': categorySlug,
+  try {
+    const queryString = strapiUtils.fetch.generateArticlesQueryString({
+      category: {
+        slug: {
+          '$eq': categorySlug,
+        },
       },
-    },
-  });
-  const response = await fetch(
-    `${process.env.STRAPI_URL}/api/articles?${queryString}`
-  );
-  const data = await response.json();
-  return data;
+    });
+    const response = await fetch(
+      `${process.env.STRAPI_URL}/api/articles?${queryString}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.warn(
+      `Error fetching articles for category ${categorySlug}:`,
+      error
+    );
+    return {
+      data: [],
+      meta: { pagination: { page: 1, pageSize: 10, pageCount: 0, total: 0 } },
+    };
+  }
 };
 
 export default async function Page({ params }: Props) {

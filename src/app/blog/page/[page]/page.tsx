@@ -56,28 +56,50 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const queryString =
-    strapiUtils.staticParams.generateArticlesQueryStringForPagePage();
-  const response = await fetch(
-    `${process.env.STRAPI_URL}/api/articles?${queryString}`
-  );
-  const articles = await response.json();
-  const pageCount = get(articles, ['meta', 'pagination', 'pageCount']);
+  try {
+    const queryString =
+      strapiUtils.staticParams.generateArticlesQueryStringForPagePage();
+    const response = await fetch(
+      `${process.env.STRAPI_URL}/api/articles?${queryString}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const articles = await response.json();
+    const pageCount = get(articles, ['meta', 'pagination', 'pageCount']) || 0;
 
-  return map(range(1, pageCount + 1), (page) => ({
-    page: page.toString(),
-  }));
+    return map(range(1, pageCount + 1), (page) => ({
+      page: page.toString(),
+    }));
+  } catch (error) {
+    console.warn('Error generating static params for page:', error);
+    return [];
+  }
 }
 
 const fetchAllArticles = async (page: number) => {
-  const queryString = strapiUtils.fetch.generateArticlesQueryString(undefined, {
-    page,
-  });
-  const response = await fetch(
-    `${process.env.STRAPI_URL}/api/articles?${queryString}`
-  );
-  const data = await response.json();
-  return data;
+  try {
+    const queryString = strapiUtils.fetch.generateArticlesQueryString(
+      undefined,
+      {
+        page,
+      }
+    );
+    const response = await fetch(
+      `${process.env.STRAPI_URL}/api/articles?${queryString}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.warn(`Error fetching all articles for page ${page}:`, error);
+    return {
+      data: [],
+      meta: { pagination: { page, pageSize: 10, pageCount: 0, total: 0 } },
+    };
+  }
 };
 
 export default async function Page({ params }: Props) {

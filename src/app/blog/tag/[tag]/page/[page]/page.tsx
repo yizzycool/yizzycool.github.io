@@ -21,9 +21,10 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { tag: tagSlug, page } = await params;
   const articles = await fetchArticles(tagSlug, page);
-  const tags = get(articles, ['data', 0, 'tags']);
+  const tags = get(articles, ['data', 0, 'tags']) || [];
   const tag = find(tags, (t) => t.slug === tagSlug) || {};
-  const { name, slug } = tag as BlogTagData;
+  const name = (tag as BlogTagData).name || '';
+  const slug = (tag as BlogTagData).slug || tagSlug || '';
 
   const url = urlJoin(
     domain,
@@ -68,35 +69,51 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export async function generateStaticParams() {
   const generateTagSlugs = async () => {
-    const queryString =
-      strapiUtils.staticParams.generateTagsQueryStringForTagPage({
-        articles: {
-          '$notNull': true,
-        },
-      });
-    const response = await fetch(
-      `${process.env.STRAPI_URL}/api/tags?${queryString}`
-    );
-    const articles = await response.json();
-    const { data } = articles;
+    try {
+      const queryString =
+        strapiUtils.staticParams.generateTagsQueryStringForTagPage({
+          articles: {
+            '$notNull': true,
+          },
+        });
+      const response = await fetch(
+        `${process.env.STRAPI_URL}/api/tags?${queryString}`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const articles = await response.json();
+      const { data } = articles;
 
-    return map(data, ({ slug }) => slug);
+      return map(data || [], ({ slug }) => slug);
+    } catch (error) {
+      console.warn('Error generating tag slugs:', error);
+      return [];
+    }
   };
 
   const generatePageSlugs = async (tagSlug: string) => {
-    const queryString =
-      strapiUtils.staticParams.generateArticlesQueryStringForPagePage({
-        tags: {
-          slug: {
-            '$in': tagSlug,
+    try {
+      const queryString =
+        strapiUtils.staticParams.generateArticlesQueryStringForPagePage({
+          tags: {
+            slug: {
+              '$in': tagSlug,
+            },
           },
-        },
-      });
-    const response = await fetch(
-      `${process.env.STRAPI_URL}/api/articles?${queryString}`
-    );
-    const articles = await response.json();
-    return get(articles, ['meta', 'pagination', 'pageCount']);
+        });
+      const response = await fetch(
+        `${process.env.STRAPI_URL}/api/articles?${queryString}`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const articles = await response.json();
+      return get(articles, ['meta', 'pagination', 'pageCount']) || 0;
+    } catch (error) {
+      console.warn(`Error generating page slugs for tag ${tagSlug}:`, error);
+      return 0;
+    }
   };
 
   const tagSlugs = await generateTagSlugs();
@@ -105,7 +122,7 @@ export async function generateStaticParams() {
   );
 
   return flatMap(tagSlugs, (slug, index) => {
-    return map(range(1, pageCounts[index] + 1), (page) => ({
+    return map(range(1, (pageCounts[index] || 0) + 1), (page) => ({
       tag: slug,
       page: page.toString(),
     }));
@@ -113,23 +130,37 @@ export async function generateStaticParams() {
 }
 
 const fetchArticles = async (tagSlug: string, page: number) => {
-  const queryString = strapiUtils.fetch.generateArticlesQueryString(
-    {
-      tags: {
-        slug: {
-          '$in': tagSlug,
+  try {
+    const queryString = strapiUtils.fetch.generateArticlesQueryString(
+      {
+        tags: {
+          slug: {
+            '$in': tagSlug,
+          },
         },
       },
-    },
-    {
-      page,
+      {
+        page,
+      }
+    );
+    const response = await fetch(
+      `${process.env.STRAPI_URL}/api/articles?${queryString}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  );
-  const response = await fetch(
-    `${process.env.STRAPI_URL}/api/articles?${queryString}`
-  );
-  const data = await response.json();
-  return data;
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.warn(
+      `Error fetching articles for tag ${tagSlug} page ${page}:`,
+      error
+    );
+    return {
+      data: [],
+      meta: { pagination: { page, pageSize: 10, pageCount: 0, total: 0 } },
+    };
+  }
 };
 
 export default async function Page({ params }: Props) {

@@ -19,9 +19,10 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { tag: tagSlug } = await params;
   const articles = await fetchArticles(tagSlug);
-  const tags = get(articles, ['data', 0, 'tags']);
-  const tagData = find(tags, (t) => t.slug === tagSlug);
-  const { name, slug } = tagData;
+  const tags = get(articles, ['data', 0, 'tags']) || [];
+  const tagData = find(tags, (t) => t.slug === tagSlug) || {};
+  const name = tagData.name || '';
+  const slug = tagData.slug || tagSlug || '';
 
   const url = urlJoin(domain, 'blog/tag', slug);
 
@@ -60,35 +61,54 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const queryString =
-    strapiUtils.staticParams.generateTagsQueryStringForTagPage({
-      articles: {
-        '$notNull': true,
-      },
-    });
-  const response = await fetch(
-    `${process.env.STRAPI_URL}/api/tags?${queryString}`
-  );
-  const tags = await response.json();
+  try {
+    const queryString =
+      strapiUtils.staticParams.generateTagsQueryStringForTagPage({
+        articles: {
+          '$notNull': true,
+        },
+      });
+    const response = await fetch(
+      `${process.env.STRAPI_URL}/api/tags?${queryString}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const tags = await response.json();
 
-  return map(tags.data, ({ slug }) => ({
-    tag: slug,
-  }));
+    return map(tags.data || [], ({ slug }) => ({
+      tag: slug,
+    }));
+  } catch (error) {
+    console.warn('Error generating static params for tag:', error);
+    return [];
+  }
 }
 
 const fetchArticles = async (tagSlug: string) => {
-  const queryString = strapiUtils.fetch.generateArticlesQueryString({
-    tags: {
-      slug: {
-        '$in': tagSlug,
+  try {
+    const queryString = strapiUtils.fetch.generateArticlesQueryString({
+      tags: {
+        slug: {
+          '$in': tagSlug,
+        },
       },
-    },
-  });
-  const response = await fetch(
-    `${process.env.STRAPI_URL}/api/articles?${queryString}`
-  );
-  const data = await response.json();
-  return data;
+    });
+    const response = await fetch(
+      `${process.env.STRAPI_URL}/api/articles?${queryString}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.warn(`Error fetching articles for tag ${tagSlug}:`, error);
+    return {
+      data: [],
+      meta: { pagination: { page: 1, pageSize: 10, pageCount: 0, total: 0 } },
+    };
+  }
 };
 
 export default async function Page({ params }: Props) {

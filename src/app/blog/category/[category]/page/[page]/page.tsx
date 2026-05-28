@@ -20,8 +20,9 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category: categorySlug, page } = await params;
   const articles = await fetchArticles(categorySlug, page);
-  const category = get(articles, ['data', 0, 'category']);
-  const { name, slug } = category;
+  const category = get(articles, ['data', 0, 'category']) || {};
+  const name = category.name || '';
+  const slug = category.slug || categorySlug || '';
 
   const url = urlJoin(
     domain,
@@ -66,29 +67,48 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export async function generateStaticParams() {
   const generateCategorySlugs = async () => {
-    const queryString =
-      strapiUtils.staticParams.generateCategoriesQueryStringForCategorPage();
-    const response = await fetch(
-      `${process.env.STRAPI_URL}/api/categories?${queryString}`
-    );
-    const categories = await response.json();
-    return map(categories.data, ({ slug }) => slug);
+    try {
+      const queryString =
+        strapiUtils.staticParams.generateCategoriesQueryStringForCategorPage();
+      const response = await fetch(
+        `${process.env.STRAPI_URL}/api/categories?${queryString}`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const categories = await response.json();
+      return map(categories.data || [], ({ slug }) => slug);
+    } catch (error) {
+      console.warn('Error generating category slugs:', error);
+      return [];
+    }
   };
 
   const generatePageSlugs = async (categorySlug: string) => {
-    const queryString =
-      strapiUtils.staticParams.generateArticlesQueryStringForPagePage({
-        category: {
-          slug: {
-            '$eq': categorySlug,
+    try {
+      const queryString =
+        strapiUtils.staticParams.generateArticlesQueryStringForPagePage({
+          category: {
+            slug: {
+              '$eq': categorySlug,
+            },
           },
-        },
-      });
-    const response = await fetch(
-      `${process.env.STRAPI_URL}/api/articles?${queryString}`
-    );
-    const articles = await response.json();
-    return get(articles, ['meta', 'pagination', 'pageCount']);
+        });
+      const response = await fetch(
+        `${process.env.STRAPI_URL}/api/articles?${queryString}`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const articles = await response.json();
+      return get(articles, ['meta', 'pagination', 'pageCount']) || 0;
+    } catch (error) {
+      console.warn(
+        `Error generating page slugs for category ${categorySlug}:`,
+        error
+      );
+      return 0;
+    }
   };
 
   const categorySlugs = await generateCategorySlugs();
@@ -97,7 +117,7 @@ export async function generateStaticParams() {
   );
 
   return flatMap(categorySlugs, (slug, index) => {
-    return map(range(1, pageCounts[index] + 1), (page) => ({
+    return map(range(1, (pageCounts[index] || 0) + 1), (page) => ({
       category: slug,
       page: page.toString(),
     }));
@@ -105,23 +125,37 @@ export async function generateStaticParams() {
 }
 
 const fetchArticles = async (categorySlug: string, page: number) => {
-  const queryString = strapiUtils.fetch.generateArticlesQueryString(
-    {
-      category: {
-        slug: {
-          '$eq': categorySlug,
+  try {
+    const queryString = strapiUtils.fetch.generateArticlesQueryString(
+      {
+        category: {
+          slug: {
+            '$eq': categorySlug,
+          },
         },
       },
-    },
-    {
-      page,
+      {
+        page,
+      }
+    );
+    const response = await fetch(
+      `${process.env.STRAPI_URL}/api/articles?${queryString}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  );
-  const response = await fetch(
-    `${process.env.STRAPI_URL}/api/articles?${queryString}`
-  );
-  const data = await response.json();
-  return data;
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.warn(
+      `Error fetching articles for category ${categorySlug} page ${page}:`,
+      error
+    );
+    return {
+      data: [],
+      meta: { pagination: { page, pageSize: 10, pageCount: 0, total: 0 } },
+    };
+  }
 };
 
 export default async function Page({ params }: Props) {

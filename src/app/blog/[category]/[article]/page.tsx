@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { article: articleSlug } = await params;
   const article = await fetchArticle(articleSlug);
   const data = get(article, ['data', 0]) || {};
-  const categorySlug = get(data, ['category', 'slug']);
+  const categorySlug = get(data, ['category', 'slug']) || '';
 
   const url = urlJoin(
     domain,
@@ -37,70 +37,88 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   );
 
   return {
-    title: `${data.title} | Yizzy Peasy`,
-    description: data.metaDescription,
+    title: `${data.title || 'Blog Article'} | Yizzy Peasy`,
+    description: data.metaDescription || '',
     alternates: {
       canonical: url,
     },
 
     openGraph: {
-      title: data.title,
-      description: data.ogDescription,
+      title: data.title || '',
+      description: data.ogDescription || '',
       type: 'article',
       url,
       publishedTime: data.publishedAt ?? data.createdAt,
       modifiedTime: data.updatedAt ?? data.publishedAt ?? data.createdAt,
 
-      images: [
-        {
-          url: strapiUtils.toMediaUrl(data.banner.url),
-          width: 1200,
-          height: 630,
-          alt: data.title,
-        },
-      ],
+      images: data.banner?.url
+        ? [
+            {
+              url: strapiUtils.toMediaUrl(data.banner.url),
+              width: 1200,
+              height: 630,
+              alt: data.title || '',
+            },
+          ]
+        : [],
     },
 
     twitter: {
       card: 'summary_large_image',
-      title: data.title,
-      description: data.twitterDescription ?? data.ogDescription,
-      images: [strapiUtils.toMediaUrl(data.banner.url)],
+      title: data.title || '',
+      description: data.twitterDescription ?? data.ogDescription ?? '',
+      images: data.banner?.url ? [strapiUtils.toMediaUrl(data.banner.url)] : [],
     },
   };
 }
 
 export async function generateStaticParams() {
-  const queryString =
-    strapiUtils.staticParams.generateCategoriesQueryStringForCategorArticlePage(
-      undefined,
-      { pageCount: 9999 }
+  try {
+    const queryString =
+      strapiUtils.staticParams.generateCategoriesQueryStringForCategorArticlePage(
+        undefined,
+        { pageCount: 9999 }
+      );
+    const response = await fetch(
+      `${process.env.STRAPI_URL}/api/categories?${queryString}`
     );
-  const response = await fetch(
-    `${process.env.STRAPI_URL}/api/categories?${queryString}`
-  );
-  const categories = await response.json();
-  const { data } = categories;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const categories = await response.json();
+    const { data } = categories;
 
-  return flatMap(data, ({ slug: categorySlug, articles }) =>
-    map(articles, ({ slug }) => ({
-      category: categorySlug,
-      article: slug,
-    }))
-  );
+    return flatMap(data || [], ({ slug: categorySlug, articles }) =>
+      map(articles, ({ slug }) => ({
+        category: categorySlug,
+        article: slug,
+      }))
+    );
+  } catch (error) {
+    console.warn('Error generating static params for articles:', error);
+    return [];
+  }
 }
 
 const fetchArticle = async (articleSlug: string) => {
-  const queryString = strapiUtils.fetch.generateArticleQueryString({
-    slug: {
-      '$eq': articleSlug,
-    },
-  });
-  const response = await fetch(
-    `${process.env.STRAPI_URL}/api/articles?${queryString}`
-  );
-  const data = await response.json();
-  return data;
+  try {
+    const queryString = strapiUtils.fetch.generateArticleQueryString({
+      slug: {
+        '$eq': articleSlug,
+      },
+    });
+    const response = await fetch(
+      `${process.env.STRAPI_URL}/api/articles?${queryString}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.warn(`Error fetching article ${articleSlug}:`, error);
+    return { data: [] };
+  }
 };
 
 const getPrevNextArticle = (
@@ -125,6 +143,7 @@ const getPrevNextArticle = (
 const parseToc = async (article: BlogArticle) => {
   const data = get(article, 'data.0') || {};
   const { content } = data;
+  if (!content) return '';
 
   const toc = await unified()
     .use(remarkParse)
