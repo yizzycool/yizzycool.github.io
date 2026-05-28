@@ -12,7 +12,7 @@ export default function ToolsIndex() {
   const { getFadeUpClass } = useGetTransitionClass();
 
   return (
-    <div className="mx-auto w-full text-left">
+    <div className="mx-auto w-full text-left lg:max-w-[calc(1024px_-_5rem)]">
       {/* Title Header */}
       <HeaderBlock />
 
