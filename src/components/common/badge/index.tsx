@@ -31,7 +31,7 @@ export default function Badge({
   iconClassName = '',
 }: Props) {
   const baseStyles =
-    'w-fit flex items-center justify-center transition-all duration-200 font-semibold whitespace-nowrap';
+    'w-fit flex items-center justify-center transition-all duration-200 font-semibold whitespace-nowrap backdrop-blur-md';
 
   const variants = {
     primary:
@@ -92,7 +92,14 @@ export default function Badge({
 
   return (
     <div
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${roundedMap[rounded]} ${bordered ? 'border' : ''} ${className} `}
+      className={cn(
+        baseStyles,
+        variants[variant],
+        sizes[size],
+        roundedMap[rounded],
+        bordered ? 'border' : '',
+        className
+      )}
     >
       {Icon && (
         <Icon

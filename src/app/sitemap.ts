@@ -122,6 +122,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     {
+      url: urlJoin(domain, '/tools'),
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 1.0,
+    },
+    {
       url: urlJoin(domain, '/resume'),
       lastModified,
       changeFrequency: 'monthly',

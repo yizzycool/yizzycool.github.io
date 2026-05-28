@@ -35,7 +35,7 @@ export default function HeaderMobile({
           alt="Logo"
         />
       </Link>
-      <div className="items-centexr flex flex-1 justify-end gap-4 px-4">
+      <div className="flex flex-1 items-center justify-end gap-4 px-4">
         {/* Search Dialog */}
         <SearchDialog deviceType="mobile" />
         {/* Theme Selector */}

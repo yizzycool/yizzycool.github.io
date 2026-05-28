@@ -21,7 +21,7 @@ export default function HeaderDesktop() {
         </div>
       </Link>
 
-      <div className="items-centexr flex flex-1 justify-end px-4">
+      <div className="flex flex-1 items-center justify-end px-4">
         <SearchDialog deviceType="desktop" />
       </div>
 

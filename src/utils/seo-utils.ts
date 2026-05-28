@@ -34,6 +34,24 @@ const seoUtils = {
     };
   },
 
+  generateToolsJsonLd: () => {
+    const url = urlJoin(domain, 'tools');
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: 'Tools Box | Yizzy Peasy',
+      description:
+        'Truly free daily utilities, image editors, developer toolkits, and Built-in Chrome AI Assistant. 真・完全免費的日常小工具、圖片編輯器、開發工具箱及 Chrome 內建 AI 助手。',
+      url,
+      isPartOf: {
+        '@type': 'WebSite',
+        name: process.env.NEXT_PUBLIC_WEBSITE_NAME || 'Yizzy Peasy',
+        url: domain,
+      },
+    };
+  },
+
   // For /blog/page.tsx
   // For /blog/page/[page]/page.tsx
   generateBlogJsonLd: (page = 1) => {

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: 'Yizzy Peasy | Blog — 前端 Web 開發筆記',
+    title: 'Blog | Yizzy Peasy — 前端 Web 開發筆記',
     description:
       '深入的前端與 Web 技術教學、Chrome API 實作筆記與工程實例整理。',
     url,
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 
   twitter: {
     card: 'summary_large_image',
-    title: 'Yizzy Peasy | Blog — 前端 Web 開發筆記',
+    title: 'Blog | Yizzy Peasy — 前端 Web 開發筆記',
     description:
       '深入的前端與 Web 技術教學、Chrome API 實作筆記與工程實例整理。',
     images: [urlJoin(domain, 'assets/images/blog/twitter-image.jpg')],
