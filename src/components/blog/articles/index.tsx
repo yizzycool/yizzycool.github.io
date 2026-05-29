@@ -7,9 +7,9 @@ import { useMemo } from 'react';
 import { get, find } from 'lodash';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import HeaderBlock from './components/header-block';
-import ArticleCard from './components/article-card';
-import Pagination from './components/pagination';
+import HeaderBlock from './header-block';
+import ArticleCard from './article-card';
+import Pagination from './pagination';
 
 type Props = {
   articles: BlogArticle;

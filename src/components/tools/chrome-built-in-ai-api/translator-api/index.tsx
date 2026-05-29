@@ -6,16 +6,16 @@ import { ArrowRightLeft } from 'lucide-react';
 import { isNull, isEmpty, size } from 'lodash';
 
 import useAiTranslator from '../hooks/use-ai-translator';
-import HeaderBlock from '../../components/header-block';
-import LanguageSelector from './components/language-selector';
-import UnsupportedCard from '../components/unsupported-card';
-import ModelDownloadCard from '../components/model-download-card';
-import LoadingSkeleton from '../components/loading-skeleton';
+import HeaderBlock from '../../header-block';
+import LanguageSelector from './language-selector';
+import UnsupportedCard from '../unsupported-card';
+import ModelDownloadCard from '../model-download-card';
+import LoadingSkeleton from '../loading-skeleton';
 import CopyAction from '@/components/common/action-button/copy';
 import SpeakAction from '@/components/common/action-button/speak';
-import UnsupportedLanguagePairCard from './components/unsupported-language-pair-card';
-import InlineDownloadCard from './components/inline-download-card';
-import SectionGap from '../../components/section-gap';
+import UnsupportedLanguagePairCard from './unsupported-language-pair-card';
+import InlineDownloadCard from './inline-download-card';
+import SectionGap from '../../section-gap';
 import Snackbar from '@/components/common/snackbar';
 import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 

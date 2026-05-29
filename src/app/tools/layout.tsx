@@ -2,7 +2,7 @@ import '@/styles/globals.css';
 import GlimmerBackground from '@/components/common/glimmer-background';
 import GlimmerBackgroundConfigs from '@/data/glimmer-background-config/tools';
 import FeaturePanel from '@/components/tools/layout/feature-panel';
-import AboutBlock from '@/components/tools/components/about-block';
+import AboutBlock from '@/components/tools/about-block';
 
 export default function RootLayout({
   children,

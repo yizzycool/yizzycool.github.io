@@ -24,7 +24,7 @@ import useKeyboardNavigation from './hooks/use-keyboard-navigation';
 import Button from '../../button';
 import BaseDialog from '../base';
 import Badge from '../../badge';
-import ResultCard from './components/result-card';
+import ResultCard from './result-card';
 
 interface Props {
   deviceType: 'desktop' | 'mobile';

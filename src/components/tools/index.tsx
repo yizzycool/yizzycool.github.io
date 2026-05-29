@@ -5,7 +5,7 @@ import Link from 'next/link';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import { cn } from '@/utils/cn';
 import { Tools } from '@/data/tools';
-import HeaderBlock from './components/index-header-block';
+import HeaderBlock from './index-header-block';
 import RevealSection from '../common/reveal-section';
 
 export default function ToolsIndex() {

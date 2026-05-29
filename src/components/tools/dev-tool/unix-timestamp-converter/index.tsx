@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from 'react';
 
-import HeaderBlock from '../../components/header-block';
-import SectionGap from '../../components/section-gap';
-import CurrentTimeCard from './components/current-time-card';
-import TimestampToDateCard from './components/timestamp-to-date-card';
-import DateToTimestampCard from './components/date-to-timestamp-card';
+import HeaderBlock from '../../header-block';
+import SectionGap from '../../section-gap';
+import CurrentTimeCard from './current-time-card';
+import TimestampToDateCard from './timestamp-to-date-card';
+import DateToTimestampCard from './date-to-timestamp-card';
 
 export default function UnixTimestampConverter() {
   const [now, setNow] = useState<Date | null>(null);

@@ -1,8 +1,8 @@
 'use client';
 
-import HeaderBlock from './components/header-block';
-import WorkExperience from './components/work-experience';
-import Education from './components/education';
+import HeaderBlock from './header-block';
+import WorkExperience from './work-experience';
+import Education from './education';
 
 export default function Resume() {
   return (

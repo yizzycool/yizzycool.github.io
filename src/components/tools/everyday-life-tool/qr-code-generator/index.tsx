@@ -5,18 +5,18 @@ import { ChangeEvent, useState } from 'react';
 import { isNull, isEmpty } from 'lodash';
 
 import Snackbar from '@/components/common/snackbar';
-import HeaderBlock from '../../components/header-block';
-import SectionGap from '../../components/section-gap';
+import HeaderBlock from '../../header-block';
+import SectionGap from '../../section-gap';
 import useGenerateQrCode from './hooks/use-generate-qrcode';
-import SystemStatus from './components/system-status';
+import SystemStatus from './system-status';
 import PasteAction from '@/components/common/action-button/paste';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
-import Appearance from './components/appearance';
+import Appearance from './appearance';
 import Label from '@/components/common/label';
-import Layout from './components/layout';
-import Preview from './components/preview';
-import ActionButtons from './components/action-buttons';
+import Layout from './layout';
+import Preview from './preview';
+import ActionButtons from './action-buttons';
 
 // Handle color preset selection
 export const qrCodeColorPresets = [

@@ -10,15 +10,15 @@ import useGeolocation from '@/hooks/window/use-geolocation';
 import { useGetCctv } from './hooks/use-get-cctv';
 import { cn } from '@/utils/cn';
 import { AlertTriangle } from 'lucide-react';
-import HeaderBlock from '../../components/header-block';
-import SectionGap from '../../components/section-gap';
-import CctvListPanel from './components/cctv-list-panel';
+import HeaderBlock from '../../header-block';
+import SectionGap from '../../section-gap';
+import CctvListPanel from './cctv-list-panel';
 import {
   TdxCctvKey,
   tdxCctvKeyEnToZhTw,
 } from '@/data/tools/everyday-life-tool/taiwan-live-cams/cctv';
 
-const LiveCamMap = dynamic(() => import('./components/live-cam-map'), {
+const LiveCamMap = dynamic(() => import('./live-cam-map'), {
   ssr: false,
   loading: () => (
     <div
@@ -33,7 +33,7 @@ const LiveCamMap = dynamic(() => import('./components/live-cam-map'), {
   ),
 });
 
-const VideoPreview = dynamic(() => import('./components/video-preview'), {
+const VideoPreview = dynamic(() => import('./video-preview'), {
   ssr: false,
 });
 

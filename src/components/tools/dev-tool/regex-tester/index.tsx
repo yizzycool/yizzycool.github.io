@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from 'react';
 
-import HeaderBlock from '../../components/header-block';
-import SectionGap from '../../components/section-gap';
-import PatternCard from './components/pattern-card';
-import TestCard from './components/test-card';
-import DetailCard from './components/detail-card';
+import HeaderBlock from '../../header-block';
+import SectionGap from '../../section-gap';
+import PatternCard from './pattern-card';
+import TestCard from './test-card';
+import DetailCard from './detail-card';
 
 export type RegexColorType = {
   bg: string;

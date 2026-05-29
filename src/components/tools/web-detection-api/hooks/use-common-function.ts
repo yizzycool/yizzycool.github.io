@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Param, WebDetectionFileType } from '../components/result-canvas';
+import { Param, WebDetectionFileType } from '../result-canvas';
 import useWebcam from './use-webcam';
 
 type Props = {

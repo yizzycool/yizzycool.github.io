@@ -7,14 +7,14 @@ import { cn } from '@/utils/cn';
 import { get } from 'lodash';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import Breadcrumb from './components/breadcrumb';
-import Tags from './components/tags';
-import Metadata from './components/metadata';
-import Banner from './components/banner';
+import Breadcrumb from './breadcrumb';
+import Tags from './tags';
+import Metadata from './metadata';
+import Banner from './banner';
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
-import { TocDesktop, TocMobile } from './components/toc';
-import SeriesGuide from './components/series-guide';
-import PrevNextCard from './components/prev-next-card';
+import { TocDesktop, TocMobile } from './toc';
+import SeriesGuide from './series-guide';
+import PrevNextCard from './prev-next-card';
 
 type Props = {
   article: BlogArticle;

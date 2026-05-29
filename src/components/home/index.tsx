@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { cn } from '@/utils/cn';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import SocialIcons from '@/components/common/social-icons';
-import Typewritter from './components/typewriter';
+import Typewritter from './typewriter';
 
 export default function Home() {
   const [avatarLoaded, setAvatarLoaded] = useState(false);

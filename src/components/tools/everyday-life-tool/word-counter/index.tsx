@@ -5,14 +5,14 @@ import { useState } from 'react';
 import { isNull, isEmpty } from 'lodash';
 
 import Snackbar from '@/components/common/snackbar';
-import HeaderBlock from '../../components/header-block';
-import SectionGap from '../../components/section-gap';
+import HeaderBlock from '../../header-block';
+import SectionGap from '../../section-gap';
 import PasteAction from '@/components/common/action-button/paste';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
 import Label from '@/components/common/label';
-import Tools from './components/tools';
-import Metrics from './components/metrics';
+import Tools from './tools';
+import Metrics from './metrics';
 
 export default function WordCounter() {
   const [text, setText] = useState('');

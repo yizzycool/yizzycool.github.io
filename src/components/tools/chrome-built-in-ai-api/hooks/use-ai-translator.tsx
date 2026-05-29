@@ -93,6 +93,7 @@ export default function useAiTranslator() {
       checkAvailability(sourceLanguage, targetLanguage);
     } catch (_e) {
       console.log('error:', _e);
+      setAvailability('unavailable');
       setError(true);
     }
   };

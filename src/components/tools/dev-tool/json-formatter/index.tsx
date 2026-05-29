@@ -13,12 +13,12 @@ import {
 } from 'lucide-react';
 import { isNull, isEmpty, size } from 'lodash';
 
-import HeaderBlock from '../../components/header-block';
+import HeaderBlock from '../../header-block';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
 import PasteAction from '@/components/common/action-button/paste';
 import CopyAction from '@/components/common/action-button/copy';
-import SectionGap from '../../components/section-gap';
+import SectionGap from '../../section-gap';
 import ButtonTabs from '@/components/common/tabs/button';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';

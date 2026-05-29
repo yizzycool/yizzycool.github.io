@@ -1,6 +1,6 @@
 'use client';
 
-import type { WebDetectionFileType } from '../components/result-canvas';
+import type { WebDetectionFileType } from '../result-canvas';
 
 import { Square, Trash2 } from 'lucide-react';
 import { useMemo } from 'react';
@@ -8,21 +8,21 @@ import { isNull, map } from 'lodash';
 
 import useCommonFunction from '../hooks/use-common-function';
 import useTextDetector from '../hooks/use-text-detector';
-import HeaderBlock from '../../components/header-block';
-import LoadingSkeleton from '../components/loading-skeleton';
-import Empty from '../components/empty';
-import BoundingBox from '../components/bounding-box';
-import FlipCamera from '../components/flip-camera';
-import UnsupportedCard from '../components/unsupported-card';
-import SectionGap from '../../components/section-gap';
+import HeaderBlock from '../../header-block';
+import LoadingSkeleton from '../loading-skeleton';
+import Empty from '../empty';
+import BoundingBox from '../bounding-box';
+import FlipCamera from '../flip-camera';
+import UnsupportedCard from '../unsupported-card';
+import SectionGap from '../../section-gap';
 import Snackbar from '@/components/common/snackbar';
-import Tip from '../components/tip';
+import Tip from '../tip';
 import Card from '@/components/common/card';
 import BaseTabs from '@/components/common/tabs/base';
 import Button from '@/components/common/button';
-import ResultCanvas from '../components/result-canvas';
-import DetectionResult from '../components/detection-result';
-import RawData from '../components/raw-data';
+import ResultCanvas from '../result-canvas';
+import DetectionResult from '../detection-result';
+import RawData from '../raw-data';
 import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 
 const TabList: Array<WebDetectionFileType> = ['image', 'video', 'webcam'];

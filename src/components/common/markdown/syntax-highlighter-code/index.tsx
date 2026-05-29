@@ -4,9 +4,9 @@ import type { ExtraProps } from 'react-markdown';
 
 import { cn } from '@/utils/cn';
 
-import CodeBlock from './components/code-block';
-import ReactLive from './components/react-live';
-import MermaidChart from './components/mermaid-chart';
+import CodeBlock from './code-block';
+import ReactLive from './react-live';
+import MermaidChart from './mermaid-chart';
 
 export default function SyntaxHighlighterCode(
   props: React.ClassAttributes<HTMLElement> &

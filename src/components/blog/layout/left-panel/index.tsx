@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { get } from 'lodash';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import CategoryAccordionItem from './components/category-accordion-item';
+import CategoryAccordionItem from './category-accordion-item';
 
 type Props = {
   categoryArticles: BlogCategory;

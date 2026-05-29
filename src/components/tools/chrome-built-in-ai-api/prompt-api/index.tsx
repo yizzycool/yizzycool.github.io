@@ -1,13 +1,13 @@
 'use client';
 
 import useAiLanguageModel from '../hooks/use-ai-language-model';
-import HeaderBlock from '../../components/header-block';
-import LoadingSkeleton from '../components/loading-skeleton';
-import Config from './components/config';
-import Chat from './components/chat';
-import UnsupportedCard from '../components/unsupported-card';
-import ModelDownloadCard from '../components/model-download-card';
-import SectionGap from '../../components/section-gap';
+import HeaderBlock from '../../header-block';
+import LoadingSkeleton from '../loading-skeleton';
+import Config from './config';
+import Chat from './chat';
+import UnsupportedCard from '../unsupported-card';
+import ModelDownloadCard from '../model-download-card';
+import SectionGap from '../../section-gap';
 import Snackbar from '@/components/common/snackbar';
 import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 

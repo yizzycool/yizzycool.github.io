@@ -127,7 +127,14 @@ export default function Button({
     <button
       onClick={onButtonClick}
       disabled={disabled}
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${roundedMap[rounded]} ${className} ${bordered ? 'border' : ''}`}
+      className={cn(
+        baseStyles,
+        variants[variant],
+        sizes[size],
+        roundedMap[rounded],
+        bordered ? 'border' : '',
+        className
+      )}
       aria-label={ariaLabel}
     >
       {Icon && (
