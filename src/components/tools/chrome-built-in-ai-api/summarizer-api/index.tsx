@@ -4,6 +4,7 @@ import { LoaderCircle, PenLine, Sparkles } from 'lucide-react';
 import { ChangeEventHandler, useState } from 'react';
 import { isEmpty, size } from 'lodash';
 
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import useAiSummarizer from '../hooks/use-ai-summarizer';
 import browserUtils from '@/utils/browser-utils';
 import HeaderBlock from '../../header-block';
@@ -20,11 +21,14 @@ import SectionGap from '../../section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
 import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
+import { cn } from '@/utils/cn';
 
 export default function SummarizerApi() {
   const [text, setText] = useState('');
   const [results, setResults] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const { getFadeUpClass } = useGetTransitionClass();
 
   const {
     hasCheckedAIStatus,
@@ -77,7 +81,7 @@ export default function SummarizerApi() {
   };
 
   return (
-    <div className="relative">
+    <div className={cn(getFadeUpClass(), 'relative')}>
       <HeaderBlock />
 
       <SectionGap />

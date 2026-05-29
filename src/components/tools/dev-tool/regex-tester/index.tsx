@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import HeaderBlock from '../../header-block';
 import SectionGap from '../../section-gap';
 import PatternCard from './pattern-card';
@@ -51,6 +52,8 @@ export default function RegexTester() {
   const [error, setError] = useState<string | null>(null);
   const [matches, setMatches] = useState<RegExpExecArray[]>([]);
 
+  const { getFadeUpClass } = useGetTransitionClass();
+
   // Regex processing
   useEffect(() => {
     if (!pattern) {
@@ -70,7 +73,7 @@ export default function RegexTester() {
   }, [pattern, flags, testString]);
 
   return (
-    <>
+    <div className={getFadeUpClass()}>
       <HeaderBlock />
 
       <SectionGap />
@@ -97,6 +100,6 @@ export default function RegexTester() {
       <SectionGap />
 
       <DetailCard matches={matches} />
-    </>
+    </div>
   );
 }

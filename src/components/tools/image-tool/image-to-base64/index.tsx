@@ -7,6 +7,7 @@ import { isNull, size } from 'lodash';
 import Image from 'next/image';
 import { Textarea } from '@headlessui/react';
 
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import imageUtils from '@/utils/image-utils';
 import HeaderBlock from '../../header-block';
 import FilePicker from '@/components/common/file-picker';
@@ -36,6 +37,8 @@ export default function ImageToBase64() {
   const [base64, setBase64] = useState<string>('');
   const [imageInfo, setImageInfo] = useState<ImageInfo>(defaultImageInfo);
 
+  const { getFadeUpClass } = useGetTransitionClass();
+
   const transferToBase64 = async (file: File) => {
     if (isNull(file)) return;
     setImageInfo(defaultImageInfo);
@@ -62,7 +65,7 @@ export default function ImageToBase64() {
   };
 
   return (
-    <>
+    <div className={getFadeUpClass()}>
       <HeaderBlock />
 
       <SectionGap />
@@ -80,9 +83,9 @@ export default function ImageToBase64() {
           <div
             className={cn(
               'relative flex h-[300px] w-full flex-col items-center rounded-lg border p-4',
-              'border-neutral-200 dark:border-neutral-700',
-              'bg-white/80 dark:bg-neutral-900/80',
-              'backgrop-blur'
+              'border-neutral-200/80 dark:border-neutral-800/60',
+              'backdrop-blur-md',
+              'bg-white/40 dark:bg-neutral-900/40'
             )}
           >
             {!imageInfo.error && !isNull(imageInfo.image) && (
@@ -119,9 +122,9 @@ export default function ImageToBase64() {
             className={cn(
               'h-[300px] w-full rounded-lg border px-4 py-3',
               'resize-none font-mono text-sm leading-relaxed outline-none',
-              'border-neutral-200 dark:border-neutral-700',
-              'bg-white/80 dark:bg-neutral-900/80',
-              'backgrop-blur',
+              'border-neutral-200/80 dark:border-neutral-800/60',
+              'backdrop-blur-md',
+              'bg-white/40 dark:bg-neutral-900/40',
               'text-neutral-700 dark:text-neutral-200',
               'placeholder-neutral-400 dark:placeholder-neutral-500',
               'focus:border-transparent focus:ring-2 focus:ring-blue-500'
@@ -142,6 +145,6 @@ export default function ImageToBase64() {
         onClose={() => setImageInfo(defaultImageInfo)}
         content="Uploaded image is not supported now. Please choose another image and try again."
       />
-    </>
+    </div>
   );
 }

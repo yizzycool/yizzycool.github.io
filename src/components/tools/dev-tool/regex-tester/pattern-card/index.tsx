@@ -1,6 +1,8 @@
 'use client';
 
 import { AlertCircle, Settings2 } from 'lucide-react';
+
+import { cn } from '@/utils/cn';
 import CopyAction from '@/components/common/action-button/copy';
 import Card from '@/components/common/card';
 import PatternVisualizer from './pattern-visualizer';
@@ -29,7 +31,13 @@ export default function PatternCard({
         <CopyAction variant="ghost" content={pattern} />
       </div>
 
-      <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4 ring-blue-500 focus-within:ring-2 dark:border-neutral-800 dark:bg-neutral-950">
+      <div
+        className={cn(
+          'rounded-xl border border-neutral-200 p-4 ring-blue-500 focus-within:ring-2 dark:border-neutral-800',
+          'bg-white/40 dark:bg-neutral-900/40',
+          'backdrop-blur-md'
+        )}
+      >
         <div className="mb-2 flex items-center gap-2 font-mono text-lg">
           <span className="text-neutral-400">/</span>
           <input

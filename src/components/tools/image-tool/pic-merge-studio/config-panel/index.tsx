@@ -13,11 +13,11 @@ type Props = {
 };
 
 export default function ConfigPanel(props: Props) {
-  const { isDesktop, isMobile } = useWindowDevice();
+  const { isDesktop, isNotDesktop } = useWindowDevice();
 
   if (isDesktop) {
     return <ConfigPanelDesktop {...props} />;
-  } else if (isMobile) {
+  } else if (isNotDesktop) {
     return <ConfigPanelMobile {...props} />;
   } else {
     return null;

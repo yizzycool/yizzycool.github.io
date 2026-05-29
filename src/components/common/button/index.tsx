@@ -47,8 +47,8 @@ export default function Button({
       !disabled && 'hover:bg-neutral-800 dark:hover:bg-neutral-200'
     ),
     secondary: cn(
-      'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100 border-neutral-300 dark:border-neutral-600',
-      !disabled && 'hover:bg-neutral-200 dark:hover:bg-neutral-700'
+      'bg-white text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100 border-neutral-300 dark:border-neutral-600',
+      !disabled && 'hover:bg-neutral-100 dark:hover:bg-neutral-700'
     ),
     ghost: cn(
       'text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-neutral-700',

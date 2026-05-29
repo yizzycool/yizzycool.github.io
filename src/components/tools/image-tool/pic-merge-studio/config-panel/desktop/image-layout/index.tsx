@@ -38,7 +38,7 @@ export default function ImageLayout({ setAlignment, setObjectFit }: Props) {
         Layout
       </Label>
 
-      <div className="space-y-4 rounded-xl bg-neutral-50 p-4 dark:bg-neutral-800/50">
+      <div className="space-y-4 rounded-xl bg-white/40 p-4 backdrop-blur-md dark:bg-neutral-900/40">
         {/* Horizontal Alignment */}
         <Label
           icon={FoldHorizontal}

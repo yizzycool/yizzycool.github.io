@@ -4,6 +4,7 @@ import { LoaderCircle, PenLine, WandSparkles } from 'lucide-react';
 import { ChangeEventHandler, useState } from 'react';
 import { isEmpty, size } from 'lodash';
 
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import useAiProofreader from '../hooks/use-ai-proofreader';
 import HeaderBlock from '../../header-block';
 import LoadingSkeleton from '../loading-skeleton';
@@ -19,11 +20,14 @@ import Label from '@/components/common/label';
 import Result from './result';
 import browserUtils from '@/utils/browser-utils';
 import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
+import { cn } from '@/utils/cn';
 
 export default function ProofreaderApi() {
   const [text, setText] = useState('');
   const [result, setResult] = useState<ProofreadResult>();
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const { getFadeUpClass } = useGetTransitionClass();
 
   const {
     hasCheckedAIStatus,
@@ -86,7 +90,7 @@ export default function ProofreaderApi() {
   };
 
   return (
-    <div className="relative">
+    <div className={cn(getFadeUpClass(), 'relative')}>
       <HeaderBlock />
 
       <SectionGap />

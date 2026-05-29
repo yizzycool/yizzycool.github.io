@@ -3,18 +3,22 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import { cn } from '@/utils/cn';
 import { ToolDataForFeaturePanel } from '@/data/tools';
 
 export default function FeaturePanel() {
   const pathname = usePathname();
 
+  const { getFadeUpClass } = useGetTransitionClass();
+
   return (
     <aside
-      className="sticky top-[68px] hidden w-72 overflow-y-auto border-r border-neutral-400/20 p-4 lg:block"
-      style={{
-        height: 'calc(100dvh - 68px)',
-      }}
+      className={cn(
+        'sticky top-[68px] hidden h-[calc(100dvh_-_68px)] w-72 overflow-y-auto p-4 lg:block',
+        'border-r border-neutral-400/20',
+        getFadeUpClass()
+      )}
     >
       <nav aria-label="Tools list">
         <ul>

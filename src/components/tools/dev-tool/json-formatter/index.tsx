@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { isNull, isEmpty, size } from 'lodash';
 
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import HeaderBlock from '../../header-block';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
@@ -32,6 +33,8 @@ export default function JsonFormatter() {
   const [error, setError] = useState(false);
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const { getFadeUpClass } = useGetTransitionClass();
 
   const processJson = (jsonString: string) => {
     if (tab === tabItems[0]) {
@@ -97,7 +100,7 @@ export default function JsonFormatter() {
   };
 
   return (
-    <>
+    <div className={getFadeUpClass()}>
       <HeaderBlock />
 
       <SectionGap />
@@ -163,6 +166,6 @@ export default function JsonFormatter() {
         onClose={() => setError(false)}
         content="Invalid JSON format"
       />
-    </>
+    </div>
   );
 }

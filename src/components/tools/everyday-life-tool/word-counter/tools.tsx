@@ -52,7 +52,8 @@ export default function Tools({ setText }: Props) {
       className={cn(
         'flex flex-wrap items-center gap-2 p-2',
         'rounded-2xl rounded-t-none',
-        'bg-white dark:bg-neutral-900',
+        'bg-white/40 dark:bg-neutral-900/40',
+        'backdrop-blur-md',
         'border border-t-0 border-neutral-200 dark:border-neutral-700'
       )}
     >

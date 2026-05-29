@@ -10,6 +10,7 @@ import type { ConfigHelper } from './types/config-helper';
 import { cn } from '@/utils/cn';
 import { useRef, useState } from 'react';
 
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import useFabric from './hooks/use-fabric';
 import HeaderBlock from '../../header-block';
 import SectionGap from '../../section-gap';
@@ -81,6 +82,8 @@ export default function PicMergeStudio() {
     setImageConfig,
   };
 
+  const { getFadeUpClass } = useGetTransitionClass();
+
   const fabricHelper = useFabric({
     refs: {
       containerRef,
@@ -93,7 +96,8 @@ export default function PicMergeStudio() {
     <div
       className={cn(
         'relative grid w-full lg:grid-cols-[1fr_300px]',
-        'transition-all duration-500 ease-in'
+        'transition-all duration-500 ease-in',
+        getFadeUpClass()
       )}
     >
       <div className="flex-1 lg:pr-12">

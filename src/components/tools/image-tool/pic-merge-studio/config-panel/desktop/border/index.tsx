@@ -77,7 +77,7 @@ export default function Border({
       </Label>
 
       {/* Pure Colors */}
-      <div className="space-y-4 rounded-xl bg-neutral-50 p-4 dark:bg-neutral-800/50">
+      <div className="space-y-4 rounded-xl bg-white/40 p-4 backdrop-blur-md dark:bg-neutral-900/40">
         {/* Show Outer Border */}
         {!isUndefined(showOuter) && (
           <div>

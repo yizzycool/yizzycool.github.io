@@ -107,7 +107,7 @@ export default function DateToTimestampCard() {
           />
         </div>
 
-        <div className="mt-8 rounded-xl bg-neutral-100 p-6 dark:bg-neutral-800/50">
+        <div className="mt-8 rounded-xl bg-neutral-100/50 p-6 dark:bg-neutral-800/50">
           <p className="mb-1 text-xs font-bold uppercase tracking-widest text-neutral-500">
             Resulting Timestamp
           </p>

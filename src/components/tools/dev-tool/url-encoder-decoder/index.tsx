@@ -5,6 +5,7 @@ import type { ChangeEvent } from 'react';
 import { useState } from 'react';
 import { isNull, isEmpty } from 'lodash';
 
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import browserUtils from '@/utils/browser-utils';
 import { Code, FileCode, FileCode2, Link2 } from 'lucide-react';
 import HeaderBlock from '../../header-block';
@@ -22,6 +23,8 @@ export default function UrlEncoderDecoder() {
   const [input, setInput] = useState<string>('');
   const [output, setOutput] = useState<string>('');
   const [error, setError] = useState<string>('');
+
+  const { getFadeUpClass } = useGetTransitionClass();
 
   const onInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
@@ -58,7 +61,7 @@ export default function UrlEncoderDecoder() {
   };
 
   return (
-    <>
+    <div className={getFadeUpClass()}>
       <HeaderBlock />
 
       <SectionGap />
@@ -140,6 +143,6 @@ export default function UrlEncoderDecoder() {
         onClose={() => setError('')}
         content={error}
       />
-    </>
+    </div>
   );
 }

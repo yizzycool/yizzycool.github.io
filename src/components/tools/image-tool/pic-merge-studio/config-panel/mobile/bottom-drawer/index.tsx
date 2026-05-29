@@ -59,7 +59,7 @@ export default function BottomDrawer({ isOpen, onClose, children }: Props) {
           className={cn(
             'absolute bottom-0 left-0 right-0 min-h-[200px] overflow-hidden',
             'rounded-t-3xl',
-            'bg-white/80 backdrop-blur dark:bg-neutral-900/80'
+            'bg-white/90 backdrop-blur-3xl dark:bg-neutral-900/90'
           )}
         >
           <div className="py-3">

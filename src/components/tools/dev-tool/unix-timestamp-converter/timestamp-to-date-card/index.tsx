@@ -1,8 +1,9 @@
 'use client';
 
-import { cn } from '@/utils/cn';
 import { useEffect, useMemo, useState } from 'react';
 import { Hash, RefreshCw } from 'lucide-react';
+
+import { cn } from '@/utils/cn';
 import Card from '@/components/common/card';
 import ResultRow from './result-row';
 import CardTitle from '@/components/common/card/title';
@@ -57,8 +58,10 @@ export default function TimestampToDateCard() {
                 onChange={(e) => setTsInput(e.target.value)}
                 className={cn(
                   'w-full rounded-lg border px-4 py-3 font-mono text-lg outline-none transition-all',
-                  'border-neutral-200 bg-neutral-50 focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500',
-                  'dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-500'
+                  'border-neutral-200 focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500',
+                  'dark:border-neutral-700 dark:focus:border-neutral-500',
+                  'bg-white/40 dark:bg-neutral-900/40',
+                  'backdrop-blur-md'
                 )}
                 placeholder="e.g. 1734771000"
               />

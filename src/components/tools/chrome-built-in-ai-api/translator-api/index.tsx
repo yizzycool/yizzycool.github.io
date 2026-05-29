@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import { ArrowRightLeft } from 'lucide-react';
 import { isNull, isEmpty, size } from 'lodash';
 
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import useAiTranslator from '../hooks/use-ai-translator';
 import HeaderBlock from '../../header-block';
 import LanguageSelector from './language-selector';
@@ -24,6 +25,8 @@ export default function TranslatorApi() {
   const [translation, setTranslation] = useState('');
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const { getFadeUpClass } = useGetTransitionClass();
 
   const {
     hasCheckedAIStatus,
@@ -72,7 +75,7 @@ export default function TranslatorApi() {
   };
 
   return (
-    <>
+    <div className={getFadeUpClass()}>
       <HeaderBlock />
 
       <SectionGap />
@@ -91,9 +94,9 @@ export default function TranslatorApi() {
         <>
           <div
             className={cn(
-              'flex flex-col justify-center rounded-xl border backdrop-blur',
+              'flex flex-col justify-center rounded-xl border backdrop-blur-md',
               'border-neutral-200 dark:border-neutral-700',
-              'bg-white/80 dark:bg-neutral-900/80',
+              'bg-white/40 dark:bg-neutral-900/40',
               'text-neutral-700 dark:text-neutral-200',
               'placeholder-neutral-400 dark:placeholder-neutral-500'
             )}
@@ -207,6 +210,6 @@ export default function TranslatorApi() {
       )}
 
       <Snackbar variant="error" open={error} onClose={resetError} />
-    </>
+    </div>
   );
 }

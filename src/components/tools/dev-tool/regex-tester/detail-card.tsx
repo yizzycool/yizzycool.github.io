@@ -1,6 +1,7 @@
+import { Hash, Info } from 'lucide-react';
+
 import { cn } from '@/utils/cn';
 import Card from '@/components/common/card';
-import { Hash, Info } from 'lucide-react';
 import { RegexColors } from '.';
 import CardTitle from '@/components/common/card/title';
 
@@ -21,9 +22,10 @@ export default function DetailCard({ matches }: Props) {
             <div
               key={i}
               className={cn(
-                'rounded-lg border p-3',
-                'border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900',
-                'hover:shadow-md'
+                'rounded-lg border p-3 transition-all',
+                'border-neutral-200 dark:border-neutral-700',
+                'bg-white/40 dark:bg-neutral-900/40',
+                'backdrop-blur-md'
               )}
               style={{ animationDelay: `${i * 30}ms` }}
             >

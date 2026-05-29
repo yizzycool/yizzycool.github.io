@@ -1,5 +1,6 @@
 'use client';
 
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import useAiLanguageModel from '../hooks/use-ai-language-model';
 import HeaderBlock from '../../header-block';
 import LoadingSkeleton from '../loading-skeleton';
@@ -10,8 +11,11 @@ import ModelDownloadCard from '../model-download-card';
 import SectionGap from '../../section-gap';
 import Snackbar from '@/components/common/snackbar';
 import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
+import { cn } from '@/utils/cn';
 
 export default function PromptApi() {
+  const { getFadeUpClass } = useGetTransitionClass();
+
   const {
     hasCheckedAIStatus,
     isApiSupported,
@@ -31,7 +35,12 @@ export default function PromptApi() {
   } = useAiLanguageModel();
 
   return (
-    <div className="relative flex h-full min-h-[calc(100dvh_-_68px)] flex-col text-left">
+    <div
+      className={cn(
+        getFadeUpClass(),
+        'relative flex h-full min-h-[calc(100dvh_-_68px)] flex-col text-left'
+      )}
+    >
       <HeaderBlock />
 
       <SectionGap />

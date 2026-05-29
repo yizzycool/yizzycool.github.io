@@ -1,5 +1,6 @@
-import { cn } from '@/utils/cn';
 import { Type } from 'lucide-react';
+
+import { cn } from '@/utils/cn';
 import Badge from '@/components/common/badge';
 import Card from '@/components/common/card';
 import HighlightMark from './highlight-mark';
@@ -46,7 +47,8 @@ export default function TestCard({
         className={cn(
           'relative h-[300px] overflow-auto',
           'rounded-lg border border-neutral-200 dark:border-neutral-700',
-          'bg-white/80 dark:bg-neutral-900/80',
+          'bg-white/40 dark:bg-neutral-900/40',
+          'backdrop-blur-md',
           'has-[:focus]:border-transparent has-[:focus]:ring-2 has-[:focus]:ring-blue-500',
           'backdrop-blur'
         )}
@@ -65,7 +67,8 @@ export default function TestCard({
             'block min-h-full w-full bg-transparent px-4 py-3',
             'resize-none text-base leading-loose outline-none',
             'text-neutral-700 dark:text-neutral-200',
-            'placeholder-neutral-400 dark:placeholder-neutral-500'
+            'placeholder-neutral-400 dark:placeholder-neutral-500',
+            'bg-transparent'
           )}
           value={testString}
           placeholder="Insert test text here..."

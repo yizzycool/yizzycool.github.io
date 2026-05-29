@@ -8,6 +8,7 @@ import { LucideIcon, X } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
+import { createPortal } from 'react-dom';
 
 const defaultContents = {
   primary: '',
@@ -59,6 +60,7 @@ export default function Snackbar({
   timeout = 3000,
   content,
 }: Props) {
+  const [body, setBody] = useState<HTMLElement | null>(null);
   const [message, setMessage] = useState(
     content || defaultContents[variant] || ''
   );
@@ -66,6 +68,12 @@ export default function Snackbar({
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { getFadeUpClass } = useGetTransitionClass({ loaded: open });
+
+  // Set document.body
+  useEffect(() => {
+    if (!document) return;
+    setBody(document.body);
+  }, []);
 
   // Close snackbar after <timeout> ms
   useEffect(() => {
@@ -162,9 +170,9 @@ export default function Snackbar({
     if (size === 'xs') return 'mr-2';
   }, [size]);
 
-  // if (!open) return null;
+  if (!body) return null;
 
-  return (
+  return createPortal(
     <div
       className={cn(
         getFadeUpClass(),
@@ -192,6 +200,7 @@ export default function Snackbar({
       {showCloseIcon && (
         <X size={16} className="ml-4 cursor-pointer" onClick={onClose} />
       )}
-    </div>
+    </div>,
+    body
   );
 }

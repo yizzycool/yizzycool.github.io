@@ -59,7 +59,7 @@ export default function Background({ background, setBackgroundColor }: Props) {
       </Label>
 
       {/* Pure Colors */}
-      <div className="space-y-4 rounded-xl bg-neutral-50 p-4 dark:bg-neutral-800/50">
+      <div className="space-y-4 rounded-xl bg-white/40 p-4 backdrop-blur-md dark:bg-neutral-900/40">
         <div>
           <div className="flex items-center justify-between text-left text-xs font-black uppercase">
             <span>Opacity</span> {parseInt(((opacity ?? 1) * 100).toString())}

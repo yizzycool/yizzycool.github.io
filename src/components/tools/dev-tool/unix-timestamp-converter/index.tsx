@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import HeaderBlock from '../../header-block';
 import SectionGap from '../../section-gap';
 import CurrentTimeCard from './current-time-card';
@@ -11,6 +12,8 @@ import DateToTimestampCard from './date-to-timestamp-card';
 export default function UnixTimestampConverter() {
   const [now, setNow] = useState<Date | null>(null);
 
+  const { getFadeUpClass } = useGetTransitionClass();
+
   // Tick the clock
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 500);
@@ -18,7 +21,7 @@ export default function UnixTimestampConverter() {
   }, []);
 
   return (
-    <>
+    <div className={getFadeUpClass()}>
       <HeaderBlock />
 
       <SectionGap />
@@ -32,6 +35,6 @@ export default function UnixTimestampConverter() {
       <SectionGap />
 
       <DateToTimestampCard />
-    </>
+    </div>
   );
 }
