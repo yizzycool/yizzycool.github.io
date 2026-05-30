@@ -5,6 +5,7 @@ import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math'; // Katex
 import rehypeRaw from 'rehype-raw'; // Render HTML tag without sanatizing
+import rehypeSanitize from 'rehype-sanitize';
 import rehypeSlug from 'rehype-slug';
 import rehypeKatex from 'rehype-katex'; // Katex
 
@@ -53,7 +54,7 @@ export default function ProseMarkdown({ children, className = '' }: Props) {
     <Markdown
       className={cn(ProseClass, className)}
       remarkPlugins={[remarkMath, [remarkGfm, { singleTilde: false }]]}
-      rehypePlugins={[rehypeKatex, rehypeRaw, rehypeSlug]}
+      rehypePlugins={[rehypeKatex, rehypeRaw, rehypeSanitize, rehypeSlug]}
       components={{
         code: SyntaxHighlighterCode,
         a: LinkParser,
