@@ -54,7 +54,7 @@ export default function ProseMarkdown({ children, className = '' }: Props) {
     <Markdown
       className={cn(ProseClass, className)}
       remarkPlugins={[remarkMath, [remarkGfm, { singleTilde: false }]]}
-      rehypePlugins={[rehypeKatex, rehypeRaw, rehypeSanitize, rehypeSlug]}
+      rehypePlugins={[rehypeRaw, rehypeSanitize, rehypeKatex, rehypeSlug]}
       components={{
         code: SyntaxHighlighterCode,
         a: LinkParser,
