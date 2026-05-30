@@ -36,11 +36,11 @@ export default function ArticleCard({ article }: Props) {
         <article
           key={article.id}
           className={cn(
-            'group relative overflow-hidden rounded-2xl border fill-mode-backwards',
-            'transition-transform duration-300',
+            'group relative overflow-hidden rounded-2xl border',
+            'transition-all duration-300',
             'bg-white dark:bg-neutral-900/40',
             'border-neutral-200 dark:border-neutral-700/50',
-            'hover:-translate-y-1 hover:shadow-2xl',
+            'hover:shadow-lg',
             getFadeUpClass()
           )}
         >
@@ -48,7 +48,7 @@ export default function ArticleCard({ article }: Props) {
             {/* Image Container */}
             <div className="relative h-48 overflow-hidden md:h-auto md:w-1/3">
               {/* Mask */}
-              <div className="absolute inset-0 z-10 bg-neutral-900/10 transition-colors group-hover:bg-transparent" />
+              <div className="absolute inset-0 z-10 bg-neutral-900/10 transition-colors group-hover:bg-transparent dark:bg-neutral-900/30" />
               <Banner article={article} />
             </div>
 
