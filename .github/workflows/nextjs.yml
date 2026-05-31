@@ -9,6 +9,10 @@ on:
   push:
     branches: ['main']
 
+  # Scheduled triggering
+  schedule:
+    - cron: '0 0 * * *' # UTC 00:00
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
