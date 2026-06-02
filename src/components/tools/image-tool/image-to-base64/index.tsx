@@ -7,7 +7,6 @@ import { isNull, size } from 'lodash';
 import Image from 'next/image';
 import { Textarea } from '@headlessui/react';
 
-import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import imageUtils from '@/utils/image-utils';
 import HeaderBlock from '../../header-block';
 import FilePicker from '@/components/common/file-picker';
@@ -37,8 +36,6 @@ export default function ImageToBase64() {
   const [base64, setBase64] = useState<string>('');
   const [imageInfo, setImageInfo] = useState<ImageInfo>(defaultImageInfo);
 
-  const { getFadeUpClass } = useGetTransitionClass();
-
   const transferToBase64 = async (file: File) => {
     if (isNull(file)) return;
     setImageInfo(defaultImageInfo);
@@ -65,7 +62,7 @@ export default function ImageToBase64() {
   };
 
   return (
-    <div className={getFadeUpClass()}>
+    <>
       <HeaderBlock />
 
       <SectionGap />
@@ -73,9 +70,10 @@ export default function ImageToBase64() {
       {/* File Picker */}
       <FilePicker onFileChange={onFileChange} />
 
-      {/* Image Preview */}
       <SectionGap />
-      <div className="grid w-full grid-cols-1 gap-8 duration-500 animate-in fade-in slide-in-from-bottom-4 lg:grid-cols-2">
+
+      {/* Image Preview */}
+      <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
         <div className="flex-1">
           <div className="mb-3 flex items-center font-semibold">
             <Label icon={ImageIcon}>Image Preview</Label>
@@ -145,6 +143,6 @@ export default function ImageToBase64() {
         onClose={() => setImageInfo(defaultImageInfo)}
         content="Uploaded image is not supported now. Please choose another image and try again."
       />
-    </div>
+    </>
   );
 }

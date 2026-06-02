@@ -1,26 +1,12 @@
 'use client';
 
-import Link from 'next/link';
-import Image from 'next/image';
 import Navigation from './navigation';
 import ThemeSelector from '../theme-selector';
 import SearchDialog from '@/components/common/dialog/search';
 
 export default function HeaderDesktop() {
   return (
-    <div className="flex items-center justify-between">
-      <Link className="flex items-center" href="/">
-        <Image
-          src="/assets/images/header/logo.png"
-          width="30"
-          height="30"
-          alt="Logo"
-        />
-        <div className="ml-3 text-lg font-bold dark:text-neutral-100">
-          Yizzy Peasy
-        </div>
-      </Link>
-
+    <>
       <div className="flex flex-1 items-center justify-end px-4">
         <SearchDialog deviceType="desktop" />
       </div>
@@ -32,6 +18,6 @@ export default function HeaderDesktop() {
       <div className="flex items-center pl-4">
         <ThemeSelector />
       </div>
-    </div>
+    </>
   );
 }

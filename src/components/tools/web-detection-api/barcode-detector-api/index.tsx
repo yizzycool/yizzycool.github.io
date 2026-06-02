@@ -6,7 +6,6 @@ import { Square, Trash2 } from 'lucide-react';
 import { useMemo } from 'react';
 import { isNull, map, get } from 'lodash';
 
-import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import useCommonFunction from '../hooks/use-common-function';
 import useBarcodeDetector from '../hooks/use-barcode-detector';
 import HeaderBlock from '../../header-block';
@@ -45,8 +44,6 @@ const ReadableMap = {
 };
 
 export default function BarcodeDetectorApi() {
-  const { getFadeUpClass } = useGetTransitionClass();
-
   const {
     hasCheckedApiStatus,
     isApiSupported,
@@ -107,7 +104,7 @@ export default function BarcodeDetectorApi() {
   }, [results]);
 
   return (
-    <div className={getFadeUpClass()}>
+    <>
       <HeaderBlock />
 
       <SectionGap />
@@ -180,6 +177,6 @@ export default function BarcodeDetectorApi() {
       )}
 
       <Snackbar variant="error" open={error} onClose={resetError} />
-    </div>
+    </>
   );
 }

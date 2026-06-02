@@ -6,7 +6,6 @@ import { useState, useMemo } from 'react';
 import { flatMap, map } from 'lodash';
 import dynamic from 'next/dynamic';
 
-import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import useGeolocation from '@/hooks/window/use-geolocation';
 import { useGetCctv } from './hooks/use-get-cctv';
 import { cn } from '@/utils/cn';
@@ -47,8 +46,6 @@ export interface TdxCamera extends TdxCctvInfo {
 export default function TaiwanLiveCams() {
   const [selectedCamera, setSelectedCamera] = useState<TdxCamera | null>(null);
 
-  const { getFadeUpClass } = useGetTransitionClass();
-
   const { userLocation, handleGetLocation, error: _e } = useGeolocation();
 
   const { data } = useGetCctv();
@@ -73,7 +70,7 @@ export default function TaiwanLiveCams() {
   };
 
   return (
-    <div lang="zh-TW" className={cn('h-full w-full', getFadeUpClass())}>
+    <div lang="zh-TW" className="h-full w-full">
       <HeaderBlock />
 
       <SectionGap />

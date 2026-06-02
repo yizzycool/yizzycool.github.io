@@ -5,8 +5,6 @@ import type { BlogCategory } from '@/types/blog';
 import { cn } from '@/utils/cn';
 import { Home, Menu, UserRound, X } from 'lucide-react';
 import { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 
 import ThemeSelector from '../theme-selector';
 import { ToolsSelectorMobile } from '../tools-selector';
@@ -26,15 +24,7 @@ export default function HeaderMobile({
   const closeSidePanel = () => setOpen(false);
 
   return (
-    <div className="flex items-center justify-between">
-      <Link href="/">
-        <Image
-          src="/assets/images/header/logo.png"
-          width="36"
-          height="36"
-          alt="Logo"
-        />
-      </Link>
+    <>
       <div className="flex flex-1 items-center justify-end gap-4 px-4">
         {/* Search Dialog */}
         <SearchDialog deviceType="mobile" />
@@ -120,6 +110,6 @@ export default function HeaderMobile({
           </footer>
         </div>
       </Drawer>
-    </div>
+    </>
   );
 }

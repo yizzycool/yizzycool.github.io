@@ -2,13 +2,15 @@
 
 import type { BlogCategory } from '@/types/blog';
 
-import { cn } from '@/utils/cn';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
+import { cn } from '@/utils/cn';
 import useWindowDevice from '@/hooks/window/use-window-device';
 import HeaderDesktop from './desktop';
 import HeaderMobile from './mobile';
+import Link from 'next/link';
 
 type Props = {
   categoryArticles: BlogCategory;
@@ -42,15 +44,30 @@ export default function Navbar({ categoryArticles }: Props) {
           : 'supports-backdrop-blur:bg-white/60 border-transparent bg-white/60 backdrop-blur lg:border-neutral-400/20 dark:bg-neutral-900/60'
       )}
     >
-      {isDesktop ? (
-        <div className="mx-auto hidden max-w-screen-2xl p-4 lg:block lg:px-8">
+      <div
+        className={cn(
+          'flex items-center justify-between',
+          'mx-auto max-w-screen-2xl p-4 lg:px-8'
+        )}
+      >
+        <Link className="flex items-center" href="/">
+          <Image
+            src="/assets/images/header/logo.png"
+            width="30"
+            height="30"
+            alt="Logo"
+          />
+          <div className="ml-3 hidden text-lg font-bold lg:block dark:text-neutral-100">
+            Yizzy Peasy
+          </div>
+        </Link>
+
+        {isDesktop ? (
           <HeaderDesktop />
-        </div>
-      ) : (
-        <div className="mx-auto max-w-screen-2xl p-4 lg:hidden lg:px-8">
+        ) : (
           <HeaderMobile categoryArticles={categoryArticles} />
-        </div>
-      )}
+        )}
+      </div>
     </header>
   );
 }

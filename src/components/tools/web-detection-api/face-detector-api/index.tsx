@@ -6,7 +6,6 @@ import { Square, Trash2 } from 'lucide-react';
 import { useMemo } from 'react';
 import { isNull, map } from 'lodash';
 
-import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import useCommonFunction from '../hooks/use-common-function';
 import useFaceDetector from '../hooks/use-face-detector';
 import LoadingSkeleton from '../loading-skeleton';
@@ -29,8 +28,6 @@ import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 const TabList: Array<WebDetectionFileType> = ['image', 'video', 'webcam'];
 
 export default function FaceDetectorApi() {
-  const { getFadeUpClass } = useGetTransitionClass();
-
   const {
     hasCheckedApiStatus,
     isApiSupported,
@@ -93,7 +90,7 @@ export default function FaceDetectorApi() {
   }, [results]);
 
   return (
-    <div className={getFadeUpClass()}>
+    <>
       <HeaderBlock />
 
       <SectionGap />
@@ -164,6 +161,6 @@ export default function FaceDetectorApi() {
       )}
 
       <Snackbar variant="error" open={error} onClose={resetError} />
-    </div>
+    </>
   );
 }

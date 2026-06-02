@@ -4,9 +4,7 @@ import { LoaderCircle, PencilLine, PenLine } from 'lucide-react';
 import { ChangeEventHandler, useState } from 'react';
 import { isEmpty, size } from 'lodash';
 
-import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import useAiWriter from '../hooks/use-ai-writer';
-import { cn } from '@/utils/cn';
 import browserUtils from '@/utils/browser-utils';
 import HeaderBlock from '../../header-block';
 import LoadingSkeleton from '../loading-skeleton';
@@ -27,8 +25,6 @@ export default function WriterApi() {
   const [text, setText] = useState('');
   const [results, setResults] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-
-  const { getFadeUpClass } = useGetTransitionClass();
 
   const {
     hasCheckedAIStatus,
@@ -81,7 +77,7 @@ export default function WriterApi() {
   };
 
   return (
-    <div className={cn(getFadeUpClass(), 'relative')}>
+    <div className="relative">
       <HeaderBlock />
 
       <SectionGap />
@@ -97,7 +93,7 @@ export default function WriterApi() {
         />
       ) : (
         <>
-          <div className="absolute right-0 top-0">
+          <div className="absolute -top-4 right-0">
             <Config
               options={options}
               isOptionUpdating={isOptionUpdating}

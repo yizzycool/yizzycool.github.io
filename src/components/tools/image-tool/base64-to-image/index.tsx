@@ -8,7 +8,6 @@ import { useRef, useState } from 'react';
 import { isNull, isEmpty, size } from 'lodash';
 import Image from 'next/image';
 
-import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import imageUtils from '@/utils/image-utils';
 import HeaderBlock from '../../header-block';
 import DeleteAction from '@/components/common/action-button/delete';
@@ -39,8 +38,6 @@ export default function Base64ToImage() {
   const [imageInfo, setImageInfo] = useState<ImageInfo>(defaultImageInfo);
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const { getFadeUpClass } = useGetTransitionClass();
 
   const transferToImage = async (base64String: string | undefined = base64) => {
     if (isNull(base64String)) return;
@@ -85,7 +82,7 @@ export default function Base64ToImage() {
   };
 
   return (
-    <div className={getFadeUpClass()}>
+    <>
       <HeaderBlock />
 
       <SectionGap />
@@ -163,6 +160,6 @@ export default function Base64ToImage() {
           </>
         )}
       </div>
-    </div>
+    </>
   );
 }

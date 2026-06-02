@@ -4,7 +4,6 @@ import { Info, TextAlignStart } from 'lucide-react';
 import { useState } from 'react';
 import { isNull, isEmpty } from 'lodash';
 
-import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import Snackbar from '@/components/common/snackbar';
 import HeaderBlock from '../../header-block';
 import SectionGap from '../../section-gap';
@@ -19,8 +18,6 @@ export default function WordCounter() {
   const [text, setText] = useState('');
   const [error, setError] = useState(false);
 
-  const { getFadeUpClass } = useGetTransitionClass();
-
   const onClear = () => setText('');
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -28,7 +25,7 @@ export default function WordCounter() {
   };
 
   return (
-    <div className={getFadeUpClass()}>
+    <>
       <HeaderBlock />
 
       <SectionGap />
@@ -68,6 +65,6 @@ export default function WordCounter() {
         onClose={() => setError(false)}
         content="Invalid JSON format"
       />
-    </div>
+    </>
   );
 }

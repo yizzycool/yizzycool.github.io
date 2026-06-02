@@ -4,7 +4,6 @@ import { LoaderCircle, PenLine, WandSparkles } from 'lucide-react';
 import { ChangeEventHandler, useState } from 'react';
 import { isEmpty, size } from 'lodash';
 
-import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import useAiRewriter from '../hooks/use-ai-rewriter';
 import browserUtils from '@/utils/browser-utils';
 import HeaderBlock from '../../header-block';
@@ -21,14 +20,11 @@ import SectionGap from '../../section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
 import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
-import { cn } from '@/utils/cn';
 
 export default function RewriterApi() {
   const [text, setText] = useState('');
   const [results, setResults] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-
-  const { getFadeUpClass } = useGetTransitionClass();
 
   const {
     hasCheckedAIStatus,
@@ -81,7 +77,7 @@ export default function RewriterApi() {
   };
 
   return (
-    <div className={cn(getFadeUpClass(), 'relative')}>
+    <div className="relative">
       <HeaderBlock />
 
       <SectionGap />
@@ -97,7 +93,7 @@ export default function RewriterApi() {
         />
       ) : (
         <>
-          <div className="absolute right-0 top-0">
+          <div className="absolute -top-4 right-0">
             <Config
               options={options}
               isOptionUpdating={isOptionUpdating}

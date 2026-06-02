@@ -4,7 +4,6 @@ import { Info, Link } from 'lucide-react';
 import { ChangeEvent, useState } from 'react';
 import { isNull, isEmpty } from 'lodash';
 
-import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import Snackbar from '@/components/common/snackbar';
 import HeaderBlock from '../../header-block';
 import SectionGap from '../../section-gap';
@@ -42,8 +41,6 @@ export default function QrCodeGenerator() {
   const [margin, setMargin] = useState(2);
   const [error, setError] = useState(false);
 
-  const { getFadeUpClass } = useGetTransitionClass();
-
   const { isSystemReady, qrCodeUrl } = useGenerateQrCode({
     text: inputText,
     size,
@@ -59,7 +56,7 @@ export default function QrCodeGenerator() {
   const onClear = () => setInputText('');
 
   return (
-    <div className={getFadeUpClass()}>
+    <>
       <HeaderBlock />
 
       <SectionGap />
@@ -123,6 +120,6 @@ export default function QrCodeGenerator() {
         onClose={() => setError(false)}
         content="Invalid JSON format"
       />
-    </div>
+    </>
   );
 }

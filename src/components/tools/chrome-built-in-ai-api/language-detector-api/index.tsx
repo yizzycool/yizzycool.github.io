@@ -5,7 +5,6 @@ import { useRef, useState } from 'react';
 import { ChartColumn, PenLine } from 'lucide-react';
 import { isNull, isEmpty, size } from 'lodash';
 
-import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import useAiLanguageDetector from '../hooks/use-ai-language-detector';
 import HeaderBlock from '../../header-block';
 import BarChart from './bar-chart';
@@ -27,8 +26,6 @@ export default function LanguageDetectorApi() {
   );
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const { getFadeUpClass } = useGetTransitionClass();
 
   const {
     hasCheckedAIStatus,
@@ -71,7 +68,7 @@ export default function LanguageDetectorApi() {
   };
 
   return (
-    <div className={getFadeUpClass()}>
+    <>
       <HeaderBlock />
 
       <SectionGap />
@@ -138,6 +135,6 @@ export default function LanguageDetectorApi() {
       )}
 
       <Snackbar variant="error" open={error} onClose={resetError} />
-    </div>
+    </>
   );
 }

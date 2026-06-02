@@ -21,7 +21,16 @@ export default function useGetTransitionClass({ loaded = true }: Props = {}) {
       mounted && loaded ? 'animate-fade-up' : 'opacity-0'
     );
 
+  const getFadeInClass = (delay = 'animate-delay-0') => {
+    cn(
+      slideBaseClass,
+      delay,
+      mounted && loaded ? 'animate-in fade-in' : 'opacity-0'
+    );
+  };
+
   return {
     getFadeUpClass,
+    getFadeInClass,
   };
 }
