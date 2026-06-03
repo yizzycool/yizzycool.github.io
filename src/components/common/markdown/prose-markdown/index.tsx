@@ -41,6 +41,9 @@ const ProseClass = cn(
   'prose-h2:mt-16',
   'prose-h3:mt-12',
 
+  // customize strong
+  'dark:prose-strong:text-neutral-300',
+
   'leading-loose'
 );
 
