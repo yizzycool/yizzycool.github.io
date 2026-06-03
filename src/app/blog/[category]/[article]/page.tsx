@@ -38,14 +38,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${data.title || 'Blog Article'} | Yizzy Peasy`,
-    description: data.metaDescription || '',
+    description: data.metaDescription,
     alternates: {
       canonical: url,
     },
 
     openGraph: {
-      title: data.title || '',
-      description: data.ogDescription || '',
+      title: data.title,
+      description: data.metaDescription,
       type: 'article',
       url,
       publishedTime: data.publishedAt ?? data.createdAt,
@@ -57,7 +57,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
               url: strapiUtils.toMediaUrl(data.banner.url),
               width: 1200,
               height: 630,
-              alt: data.title || '',
+              alt: data.title,
             },
           ]
         : [],
@@ -65,8 +65,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     twitter: {
       card: 'summary_large_image',
-      title: data.title || '',
-      description: data.twitterDescription ?? data.ogDescription ?? '',
+      title: data.title,
+      description: data.metaDescription,
       images: data.banner?.url ? [strapiUtils.toMediaUrl(data.banner.url)] : [],
     },
   };
@@ -100,7 +100,7 @@ export async function generateStaticParams() {
   }
 }
 
-const fetchArticle = async (articleSlug: string) => {
+const fetchArticle = async (articleSlug: string): Promise<BlogArticle> => {
   try {
     const queryString = strapiUtils.fetch.generateArticleQueryString({
       slug: {
@@ -117,7 +117,17 @@ const fetchArticle = async (articleSlug: string) => {
     return data;
   } catch (error) {
     console.warn(`Error fetching article ${articleSlug}:`, error);
-    return { data: [] };
+    return {
+      data: [],
+      meta: {
+        pagination: {
+          page: 0,
+          pageSize: 0,
+          pageCount: 0,
+          total: 0,
+        },
+      },
+    };
   }
 };
 
