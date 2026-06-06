@@ -37,12 +37,16 @@ const ProseClass = cn(
   '[&_blockquote_*:not(i)]:not-italic',
   '[&_blockquote_*:not(strong)]:font-normal',
 
-  // customize <h3>
+  // customize <h2>
   'prose-h2:mt-16',
+  'prose-h2:font-semibold',
+
+  // customize <h3>
   'prose-h3:mt-12',
+  'prose-h3:font-semibold',
 
   // customize <strong>
-  'dark:prose-strong:text-neutral-300',
+  'dark:prose-strong:text-neutral-200',
 
   'leading-loose'
 );

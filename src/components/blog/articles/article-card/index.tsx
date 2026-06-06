@@ -72,7 +72,7 @@ export default function ArticleCard({ article }: Props) {
                 </div>
 
                 {/* Article Title */}
-                <h3 className="mb-3 text-xl font-bold text-neutral-900 transition-colors group-hover:text-blue-600 md:text-2xl dark:text-neutral-100 dark:group-hover:text-blue-400">
+                <h3 className="mb-3 text-xl font-medium text-neutral-900 transition-colors group-hover:text-blue-600 md:text-2xl dark:text-neutral-100 dark:group-hover:text-blue-400">
                   {article.title}
                 </h3>
 

@@ -38,8 +38,8 @@ export default function Article({
     <>
       <article
         className={cn(
-          'mx-auto flex-grow overflow-hidden lg:max-w-screen-lg',
-          'px-5 pb-10 pt-5 lg:px-8 lg:py-10 xl:px-16'
+          'mx-auto flex-grow overflow-hidden lg:max-w-screen-md',
+          'px-5 pb-10 pt-5 lg:px-10 lg:py-10'
         )}
       >
         <Breadcrumb article={article} />
@@ -48,7 +48,7 @@ export default function Article({
           {/* Title */}
           <h1
             className={cn(
-              'mb-6 text-4xl font-extrabold leading-normal tracking-tight dark:text-neutral-200',
+              'mb-6 text-4xl leading-normal tracking-tight dark:text-neutral-100',
               getFadeUpClass('animate-delay-100')
             )}
           >

@@ -14,7 +14,7 @@ export default function TocDesktop({ toc }: Props) {
   return (
     <aside
       className={cn(
-        'sticky top-[68px] h-[calc(100dvh_-_68px)] w-[270px] shrink-0 overflow-y-auto',
+        'sticky top-[68px] h-[calc(100dvh_-_68px)] w-[300px] shrink-0 overflow-y-auto',
         'hidden lg:block',
         'border-l border-neutral-400/20',
         'px-4 py-5 lg:py-10',
