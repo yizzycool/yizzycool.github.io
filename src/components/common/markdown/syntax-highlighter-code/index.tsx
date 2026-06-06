@@ -31,8 +31,8 @@ export default function SyntaxHighlighterCode(
       className={cn(
         // To customize `Prose` styles of '@tailwindcss/typography'
         // customize <code> for inline code
-        'rounded-sm px-1.5 py-0.5 font-mono text-sm font-normal',
-        'bg-slate-200/50 dark:bg-slate-700/50',
+        'rounded-sm px-[0.4rem] py-[0.2rem] font-mono text-sm font-normal',
+        'bg-slate-200/50 dark:bg-slate-700/40',
         'text-slate-600 dark:text-slate-300',
         'ring-1 ring-inset ring-slate-900/5 dark:ring-white/10',
         'before:content-none after:content-none',

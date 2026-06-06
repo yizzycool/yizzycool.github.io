@@ -49,6 +49,7 @@ export default function CategoryAccordionItem({
             'group mt-1 flex w-full items-center justify-between rounded-md p-2 font-bold',
             'hover:bg-sky-600/10',
             'data-[active=true]:bg-sky-600/10 data-[active-article=true]:text-sky-500',
+            'data-[active=true]:dark:bg-sky-600/20',
             getFadeUpClass('animate-delay-150')
           )}
           data-active={pathname === categoryUrl}
@@ -88,7 +89,8 @@ export default function CategoryAccordionItem({
                 className={cn(
                   'my-1 flex cursor-pointer items-center rounded-md p-2 text-sm',
                   'hover:bg-sky-600/10',
-                  'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500'
+                  'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500',
+                  'data-[active=true]:dark:bg-sky-600/20'
                 )}
                 href={articleUrl}
                 data-active={pathname === articleUrl}

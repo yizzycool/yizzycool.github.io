@@ -51,13 +51,14 @@ export default function LeftPanel({
                   'flex items-center rounded-md p-2 font-bold',
                   'hover:bg-sky-600/10',
                   'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500',
+                  'data-[active=true]:dark:bg-sky-600/20',
                   getFadeUpClass('animate-delay-150')
                 )}
                 href="/blog"
                 data-active={pathname === '/blog'}
                 onClick={onClick}
               >
-                All Artices
+                All Articles
               </Link>
             </h2>
             {/* Articles by category  */}

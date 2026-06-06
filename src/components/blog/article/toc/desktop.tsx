@@ -23,13 +23,13 @@ export default function TocDesktop({ toc }: Props) {
     >
       <nav aria-label="table of content">
         <h2 className={cn('font-bold', getFadeUpClass('animate-delay-150'))}>
-          Table of Content
+          Table of Contents
         </h2>
         <div
           className={cn(
             'mt-6 text-sm leading-normal',
             '[&_*]:space-y-3 [&_*]:transition-all [&_*]:duration-300',
-            '[&_a:hover]:brightness-200 [&_a]:block',
+            '[&_a:hover]:text-sky-500 [&_a]:block',
             '[&_ol]:pl-2 [&_ul]:pl-2',
             '[&_ol_ol]:pl-5 [&_ul_ul]:pl-5',
             '[&_ol_ol]:border-l [&_ol_ol]:border-neutral-400/50',

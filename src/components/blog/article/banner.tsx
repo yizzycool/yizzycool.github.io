@@ -35,6 +35,7 @@ export default function Banner({ article }: Props) {
     <figure
       className={cn(
         'relative mb-20 mt-10',
+        'overflow-hidden rounded-lg shadow-sm',
         getFadeUpClass('animate-delay-300')
       )}
     >
