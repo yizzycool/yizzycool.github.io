@@ -37,6 +37,9 @@ const ProseClass = cn(
   '[&_blockquote_*:not(i)]:not-italic',
   '[&_blockquote_*:not(strong)]:font-normal',
 
+  // customize headings (h1 ~ h4, th)
+  'dark:prose-heading:text-neutral-200',
+
   // customize <h2>
   'prose-h2:mt-16',
   'prose-h2:font-semibold',
@@ -47,6 +50,11 @@ const ProseClass = cn(
 
   // customize <strong>
   'dark:prose-strong:text-neutral-200',
+
+  // customize <table>
+  'prose-table:block',
+  'prose-table:whitespace-nowrap',
+  'prose-table:overflow-x-auto',
 
   'leading-loose'
 );
