@@ -53,8 +53,18 @@ const ProseClass = cn(
 
   // customize <table>
   'prose-table:block',
-  'prose-table:whitespace-nowrap',
   'prose-table:overflow-x-auto',
+  'prose-th:px-4',
+  'prose-th:py-3',
+  'prose-th:tracking-wider',
+  'prose-th:text-neutral-500',
+  'dark:prose-th:text-neutral-400',
+  'prose-td:min-w-[200px]',
+  'prose-td:px-4',
+  'prose-td:py-3',
+  'prose-tr:transition-colors',
+  'hover:[&_tbody_tr]:bg-neutral-300/10',
+  'dark:hover:[&_tbody_tr]:bg-neutral-700/10',
 
   'leading-loose'
 );
