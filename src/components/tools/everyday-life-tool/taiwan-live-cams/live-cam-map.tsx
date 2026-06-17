@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import L from 'leaflet';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import { Navigation, Video } from 'lucide-react';
+import { LoaderCircle, Navigation, Video } from 'lucide-react';
 import { motion, animate, useMotionValue, useTransform } from 'motion/react';
 
 import { cn } from '@/utils/cn';
@@ -38,6 +38,7 @@ type Props = {
   zoom?: number;
   onGetGeolocation: () => void;
   userLocation: [number, number] | null;
+  isLocating: boolean;
 };
 
 export default function LiveCamMap({
@@ -46,6 +47,7 @@ export default function LiveCamMap({
   onSelectCamera,
   onGetGeolocation,
   userLocation,
+  isLocating,
 }: Props) {
   const [isMapReady, setIsMapReady] = useState(false);
 
@@ -139,8 +141,13 @@ export default function LiveCamMap({
         <button
           onClick={onGetGeolocation}
           className="rounded-xl border border-neutral-200 bg-white p-3 text-neutral-600 shadow-md transition-colors hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700"
+          disabled={isLocating}
         >
-          <Navigation className="h-4 w-4" />
+          {isLocating ? (
+            <LoaderCircle className="h-4 w-4 animate-spin" />
+          ) : (
+            <Navigation className="h-4 w-4" />
+          )}
         </button>
       </div>
     </div>

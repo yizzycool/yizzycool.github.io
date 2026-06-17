@@ -17,6 +17,7 @@ import {
   TdxCctvKey,
   tdxCctvKeyEnToZhTw,
 } from '@/data/tools/everyday-life-tool/taiwan-live-cams/cctv';
+import Snackbar from '@/components/common/snackbar';
 
 const LiveCamMap = dynamic(() => import('./live-cam-map'), {
   ssr: false,
@@ -46,7 +47,13 @@ export interface TdxCamera extends TdxCctvInfo {
 export default function TaiwanLiveCams() {
   const [selectedCamera, setSelectedCamera] = useState<TdxCamera | null>(null);
 
-  const { userLocation, handleGetLocation, error: _e } = useGeolocation();
+  const {
+    userLocation,
+    handleGetLocation,
+    isLocating,
+    errorMessage,
+    resetErrorState,
+  } = useGeolocation();
 
   const { data } = useGetCctv();
 
@@ -93,6 +100,7 @@ export default function TaiwanLiveCams() {
           onSelectCamera={handleSelectCamera}
           onGetGeolocation={handleGetLocation}
           userLocation={userLocation}
+          isLocating={isLocating}
         />
 
         {/* Improved List Grid with Tabs - Bento Cell 2 */}
@@ -102,6 +110,7 @@ export default function TaiwanLiveCams() {
           selectedCamera={selectedCamera}
           onSelectCamera={handleSelectCamera}
           onGetGeolocation={handleGetLocation}
+          isLocating={isLocating}
         />
 
         {/* Global Video Preview Overlay */}
@@ -114,6 +123,13 @@ export default function TaiwanLiveCams() {
       <p className="mt-4 text-center text-[9px] font-black uppercase tracking-[0.2em] lg:text-left">
         資料來源：交通部運輸資料流通服務平臺。影像內容均為即時連線。
       </p>
+
+      <Snackbar
+        variant="error"
+        open={!!errorMessage}
+        content={errorMessage}
+        onClose={resetErrorState}
+      />
     </div>
   );
 }

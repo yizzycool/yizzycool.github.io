@@ -2,7 +2,13 @@ import type { TdxCamera } from '.';
 
 import { cn } from '@/utils/cn';
 import { filter, isEmpty } from 'lodash';
-import { Search, MapPin, Navigation, TrendingUp } from 'lucide-react';
+import {
+  Search,
+  MapPin,
+  Navigation,
+  TrendingUp,
+  LoaderCircle,
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useMemo, useState } from 'react';
 import Fuse from 'fuse.js';
@@ -14,6 +20,7 @@ type Props = {
   selectedCamera: TdxCamera | null;
   onSelectCamera: (cam: TdxCamera | null) => void;
   onGetGeolocation: () => void;
+  isLocating: boolean;
 };
 
 const TRENDING_CCTV_IDS = [
@@ -31,6 +38,7 @@ export default function CctvListPanel({
   selectedCamera,
   onSelectCamera,
   onGetGeolocation,
+  isLocating,
 }: Props) {
   const [activeTab, setActiveTab] = useState<'nearby' | 'trending' | 'search'>(
     'trending'
@@ -203,9 +211,18 @@ export default function CctvListPanel({
                   </p>
                   <button
                     onClick={onGetGeolocation}
-                    className="w-full rounded-xl bg-blue-600 py-3.5 text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-blue-600/20 transition-all active:scale-95"
+                    className={cn(
+                      'w-full rounded-xl py-3.5 text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-blue-600/20',
+                      'transition-all active:scale-95',
+                      isLocating ? 'bg-gray-600' : 'bg-blue-600'
+                    )}
+                    disabled={isLocating}
                   >
-                    立即開啟定位
+                    {isLocating ? (
+                      <LoaderCircle className="mx-auto h-4 w-4 animate-spin" />
+                    ) : (
+                      '立即開啟定位'
+                    )}
                   </button>
                 </div>
               ))}

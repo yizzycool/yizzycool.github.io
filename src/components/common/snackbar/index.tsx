@@ -3,12 +3,12 @@
 import type { Rounded } from '@/types/common';
 import type { ButtonSize, ButtonVariant } from '@/types/common/button';
 
-import { cn } from '@/utils/cn';
 import { LucideIcon, X } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-
-import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
+import { motion, AnimatePresence } from 'motion/react';
 import { createPortal } from 'react-dom';
+
+import { cn } from '@/utils/cn';
 
 const defaultContents = {
   primary: '',
@@ -53,7 +53,7 @@ export default function Snackbar({
   iconStrokeWidth = 2,
   iconClassName = '',
   showCloseIcon = true,
-  position = 'bottom right',
+  position = 'top right',
   offsetX = 20,
   offsetY = 20,
   onClose = () => {},
@@ -67,7 +67,8 @@ export default function Snackbar({
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const { getFadeUpClass } = useGetTransitionClass({ loaded: open });
+  const isTop = position.startsWith('top');
+  const yOffset = isTop ? -16 : 16;
 
   // Set document.body
   useEffect(() => {
@@ -97,12 +98,12 @@ export default function Snackbar({
 
   const baseStyles = cn(
     'fixed z-[60] flex justify-center backdrop-blur-md overflow-hidden',
-    'transition-all duration-300 font-medium text-left break-all'
+    'font-medium text-left break-all'
   );
 
   const positions = {
-    'top left': { top: `${offsetY}px`, left: `${offsetX}px` },
-    'top right': { top: `${offsetY}px`, right: `${offsetX}px` },
+    'top left': { top: `${offsetY + 68}px`, left: `${offsetX}px` },
+    'top right': { top: `${offsetY + 68}px`, right: `${offsetX}px` },
     'bottom left': { bottom: `${offsetY}px`, left: `${offsetX}px` },
     'bottom right': { bottom: `${offsetY}px`, right: `${offsetX}px` },
   };
@@ -173,34 +174,44 @@ export default function Snackbar({
   if (!body) return null;
 
   return createPortal(
-    <div
-      className={cn(
-        getFadeUpClass(),
-        baseStyles,
-        variants[variant],
-        sizes[size],
-        roundedMap[rounded],
-        className,
-        bordered && 'border',
-        open ? 'opacity-100' : 'pointer-events-none opacity-0'
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0, y: yOffset }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: yOffset }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className={cn(
+            baseStyles,
+            variants[variant],
+            sizes[size],
+            roundedMap[rounded],
+            className,
+            bordered && 'border'
+          )}
+          style={{
+            ...positions[position],
+            maxWidth: `calc(100% - ${2 * offsetX}px)`,
+          }}
+        >
+          {Icon && (
+            <Icon
+              size={iconSize}
+              className={cn(iconMargin, iconClassName)}
+              strokeWidth={iconStrokeWidth}
+            />
+          )}
+          <p className="flex-1 text-sm font-medium">{message}</p>
+          {showCloseIcon && (
+            <X
+              size={16}
+              className="my-[2px] ml-4 cursor-pointer"
+              onClick={onClose}
+            />
+          )}
+        </motion.div>
       )}
-      style={{
-        ...positions[position],
-        maxWidth: `calc(100% - ${2 * offsetX}px)`,
-      }}
-    >
-      {Icon && (
-        <Icon
-          size={iconSize}
-          className={cn(iconMargin, iconClassName)}
-          strokeWidth={iconStrokeWidth}
-        />
-      )}
-      <p className="flex-1 text-sm font-medium">{message}</p>
-      {showCloseIcon && (
-        <X size={16} className="ml-4 cursor-pointer" onClick={onClose} />
-      )}
-    </div>,
+    </AnimatePresence>,
     body
   );
 }
