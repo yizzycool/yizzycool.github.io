@@ -1,10 +1,6 @@
 import { ToolKeys } from '.';
 
 export const ToolAbout = {
-  // [ToolKeys.taiwanLiveCams]:
-  //   '無論是出遊規劃、日常通勤還是在地探索，即時掌握現場狀況至關重要。臺灣即時影像整合了全臺各地的即時視訊串流，讓您一指切換畫面。從行前掌握目的地現況，到即時交通路況監測，所有最新的環境資訊都能一目了然。',
-  [ToolKeys.taiwanLiveCams]:
-    '掌握最新現場狀況，是您規劃行程、日常通勤與在地探索不可或缺的一環。臺灣即時影像旨在提供全臺各地的即時視訊畫面。目前系統已完整接入新北市的即時鏡頭，無論是出遊前確認景點人潮，還是隨時監測道路路況，都能一目了然。我們正在努力處理全臺其他縣市的影像串流，敬請期待後續更新！',
   [ToolKeys.qrCodeGenerator]:
     'QR codes are commonly used to share URLs, text, and other information across devices. This QR Code Generator allows users to quickly generate QR codes from custom input such as text or URLs. The tool provides instant previews and client-side generation, making it easy to create QR codes for sharing links, contact information, or messages.',
   [ToolKeys.wordCounter]:

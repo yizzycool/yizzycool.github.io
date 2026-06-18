@@ -7,7 +7,6 @@ import {
   ArrowLeftRight,
   Bot,
   CaseUpper,
-  Cctv,
   Clock,
   CodeXml,
   FileImage,
@@ -63,7 +62,6 @@ export const ToolGroupSlugs = {
 
 export const ToolKeys = {
   // Everyday Life Tool
-  taiwanLiveCams: 'taiwanLiveCams',
   qrCodeGenerator: 'qrCodeGenerator',
   wordCounter: 'wordCounter',
 
@@ -95,7 +93,6 @@ export const ToolKeys = {
 
 export const ToolGroupItems = {
   [ToolGroupKeys.everydayLifeTool]: [
-    ToolKeys.taiwanLiveCams,
     ToolKeys.qrCodeGenerator,
     ToolKeys.wordCounter,
   ],
@@ -127,8 +124,6 @@ export const ToolGroupItems = {
 };
 
 export const ToolTitles = {
-  // [ToolKeys.taiwanLiveCams]: '臺灣即時影像',
-  [ToolKeys.taiwanLiveCams]: '臺灣即時影像 (新北先行版)',
   [ToolKeys.qrCodeGenerator]: 'QR Code Generator',
   [ToolKeys.wordCounter]: 'Word Counter',
 
@@ -156,14 +151,9 @@ export const ToolTitles = {
 
 const ToolTitlesForFeaturePanel = {
   ...ToolTitles,
-  [ToolKeys.taiwanLiveCams]: 'Taiwan Live Cams',
 };
 
 export const ToolDescriptions = {
-  // [ToolKeys.taiwanLiveCams]:
-  //   '即時線上探索臺灣：匯集全臺熱門景點、城市地標與重要交通路段的即時畫面。',
-  [ToolKeys.taiwanLiveCams]:
-    '即時線上探索臺灣。首波匯集新北市熱門景點、城市地標與重要交通路段的即時畫面，全臺其他縣市正陸續解鎖中。',
   [ToolKeys.qrCodeGenerator]:
     'Generate QR codes instantly from text, URLs, or custom content with this free online QR code generator.',
   [ToolKeys.wordCounter]:
@@ -209,7 +199,6 @@ export const ToolDescriptions = {
 };
 
 export const ToolSlugs = {
-  [ToolKeys.taiwanLiveCams]: 'taiwan-live-cams',
   [ToolKeys.qrCodeGenerator]: 'qr-code-generator',
   [ToolKeys.wordCounter]: 'word-counter',
 
@@ -248,7 +237,6 @@ export const ToolUrls = fromPairs(
 );
 
 export const ToolIcons = {
-  [ToolKeys.taiwanLiveCams]: Cctv,
   [ToolKeys.qrCodeGenerator]: QrCode,
   [ToolKeys.wordCounter]: FileText,
 
