@@ -2,10 +2,11 @@
 
 import type { BlogArticle } from '@/types/blog';
 
-import { cn } from '@/utils/cn';
 import { Calendar, Clock, RefreshCw } from 'lucide-react';
 import { get } from 'lodash';
+import { useEffect, useState } from 'react';
 
+import { cn } from '@/utils/cn';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import Divider from '@/components/common/divider';
 
@@ -15,15 +16,22 @@ export default function Metadata({ article }: Props) {
   const data = get(article, 'data.0') || {};
   const { createdAt, updatedAt, publishedAt, readTime } = data;
 
+  const [locale, setLocale] = useState('en-US');
+
+  useEffect(() => {
+    const userLang = navigator.language || 'en-US';
+    setLocale(userLang);
+  }, []);
+
   const createDate = new Date(createdAt as string);
-  const createDateString = createDate.toLocaleDateString('en-US', {
+  const createDateString = createDate.toLocaleDateString(locale, {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
   });
 
   const updateDate = new Date((publishedAt ?? updatedAt) as string);
-  const updateDateString = updateDate.toLocaleDateString('en-US', {
+  const updateDateString = updateDate.toLocaleDateString(locale, {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
@@ -40,13 +48,6 @@ export default function Metadata({ article }: Props) {
         getFadeUpClass('animate-delay-200')
       )}
     >
-      <time className="flex items-center gap-2" title="Published on">
-        <Calendar size={14} className="shrink-0" />
-        <span>{createDateString}</span>
-      </time>
-
-      <Divider orientation="vertical" className="my-1 hidden sm:block" />
-
       <time className="flex items-center gap-2" title="Last updated">
         <RefreshCw size={14} className="shrink-0" />
         <span>{updateDateString}</span>
@@ -58,6 +59,13 @@ export default function Metadata({ article }: Props) {
         <Clock size={14} className="shrink-0" />
         <span>{readTime * 2} min read</span>
       </span>
+
+      <Divider orientation="vertical" className="my-1 hidden sm:block" />
+
+      <time className="flex items-center gap-2" title="Published on">
+        <Calendar size={14} className="shrink-0" />
+        <span>{createDateString}</span>
+      </time>
     </div>
   );
 }
