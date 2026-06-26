@@ -1,11 +1,13 @@
 'use client';
 
 import type { BlogArticleData } from '@/types/blog/article';
-import { cn } from '@/utils/cn';
+
 import { ArrowRight, Clock, Folder, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
+
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import strapiUtils from '@/utils/strapi-utils';
+import { cn } from '@/utils/cn';
 import RevealSection from '@/components/common/reveal-section';
 import Badge from '@/components/common/badge';
 import Banner from './banner';
@@ -39,7 +41,7 @@ export default function ArticleCard({ article }: Props) {
             'group relative overflow-hidden rounded-2xl border',
             'transition-all duration-300',
             'bg-white dark:bg-neutral-900/40',
-            'border-neutral-200 dark:border-neutral-700/50',
+            'border-neutral-200 dark:border-neutral-700',
             'hover:shadow-lg',
             getFadeUpClass()
           )}
@@ -48,7 +50,12 @@ export default function ArticleCard({ article }: Props) {
             {/* Image Container */}
             <div className="relative h-48 overflow-hidden md:h-auto md:w-1/3">
               {/* Mask */}
-              <div className="absolute inset-0 z-10 bg-neutral-900/10 transition-colors group-hover:bg-transparent dark:bg-neutral-900/30" />
+              <div
+                className={cn(
+                  'absolute inset-0 z-10 transition-colors',
+                  'bg-neutral-100/10 group-hover:bg-transparent dark:bg-neutral-900/30'
+                )}
+              />
               <Banner article={article} />
             </div>
 

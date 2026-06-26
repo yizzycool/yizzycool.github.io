@@ -1,8 +1,10 @@
 'use client';
 
-import { cn } from '@/utils/cn';
+import { useRef } from 'react';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
+import useTocActive from '@/hooks/dom/use-toc-active';
+import { cn } from '@/utils/cn';
 
 type Props = {
   toc: string;
@@ -10,6 +12,9 @@ type Props = {
 
 export default function TocDesktop({ toc }: Props) {
   const { getFadeUpClass } = useGetTransitionClass();
+  const tocRef = useRef<HTMLDivElement>(null);
+
+  useTocActive(tocRef, toc);
 
   return (
     <aside
@@ -22,10 +27,16 @@ export default function TocDesktop({ toc }: Props) {
       )}
     >
       <nav aria-label="table of content">
-        <h2 className={cn('font-bold', getFadeUpClass('animate-delay-150'))}>
+        <h2
+          className={cn(
+            'font-bold text-neutral-800 dark:text-neutral-300',
+            getFadeUpClass('animate-delay-150')
+          )}
+        >
           Table of Contents
         </h2>
         <div
+          ref={tocRef}
           className={cn(
             'mt-6 text-sm leading-normal',
             '[&_*]:space-y-3 [&_*]:transition-all [&_*]:duration-300',

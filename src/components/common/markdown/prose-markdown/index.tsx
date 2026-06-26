@@ -1,6 +1,5 @@
 import 'katex/dist/katex.min.css'; // Katex
 
-import { cn } from '@/utils/cn';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math'; // Katex
@@ -9,6 +8,7 @@ import rehypeSanitize from 'rehype-sanitize';
 import rehypeSlug from 'rehype-slug';
 import rehypeKatex from 'rehype-katex'; // Katex
 
+import { cn } from '@/utils/cn';
 import SyntaxHighlighterCode from '../syntax-highlighter-code';
 import LinkParser from '../link-parser';
 import ImageParser from '../image-parser';
@@ -36,6 +36,20 @@ const ProseClass = cn(
   '[&_blockquote_*::after]:content-none',
   '[&_blockquote_*:not(i)]:not-italic',
   '[&_blockquote_*:not(strong)]:font-normal',
+  'prose-blockquote:px-4',
+  'prose-blockquote:rounded-r-xl',
+  'prose-blockquote:border',
+  'prose-blockquote:border-l-4',
+  'prose-blockquote:border-neutral-200/50',
+  'dark:prose-blockquote:border-neutral-800/50',
+  'prose-blockquote:border-l-indigo-500',
+  'dark:prose-blockquote:border-l-indigo-900',
+  'prose-blockquote:bg-indigo-50/30',
+  'dark:prose-blockquote:bg-indigo-50/10',
+  'prose-blockquote:backdrop-blur-md',
+  'prose-blockquote:shadow-sm',
+  'prose-blockquote:text-neutral-500',
+  'dark:prose-blockquote:text-neutral-200',
 
   // customize headings (h1 ~ h4, th)
   'dark:prose-heading:text-neutral-200',

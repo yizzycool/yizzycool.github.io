@@ -1,11 +1,11 @@
 'use client';
 
-import { cn } from '@/utils/cn';
 import { ChevronDown, List } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
+import { cn } from '@/utils/cn';
 
 type Props = {
   toc: string;
@@ -27,7 +27,7 @@ export default function TocMobile({ toc }: Props) {
         className={cn(
           'relative overflow-hidden transition-all duration-300',
           'bg-neutral-50/50 backdrop-blur-md dark:bg-neutral-900/50',
-          'rounded-2xl border-2 border-neutral-200 dark:border-neutral-800'
+          'rounded-2xl border-2 border-neutral-200 dark:border-neutral-700'
         )}
         aria-label="table of content"
       >
@@ -37,15 +37,10 @@ export default function TocMobile({ toc }: Props) {
           className="flex w-full items-center justify-between p-4 text-left focus:outline-none"
           aria-label="table of content"
         >
-          <div className="flex items-center gap-3">
-            <div className="rounded-lg bg-neutral-200 p-2 dark:bg-neutral-800">
-              <List
-                size={18}
-                className="text-neutral-600 dark:text-neutral-400"
-              />
-            </div>
+          <div className="flex items-center gap-3 text-neutral-800 dark:text-neutral-300">
+            <List size={18} className="mx-2" />
             <div className="flex flex-col items-start">
-              <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
+              <span className="text-xs font-semibold uppercase tracking-wider">
                 Table of Contents
               </span>
               <span className="mt-1 text-sm font-medium">文章章節目錄</span>
@@ -68,7 +63,7 @@ export default function TocMobile({ toc }: Props) {
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="overflow-hidden border-t border-neutral-200 dark:border-neutral-800"
+              className="overflow-hidden border-t border-neutral-200 dark:border-neutral-700"
             >
               <div
                 className={cn(
