@@ -1,6 +1,5 @@
 'use client';
 
-import { cn } from '@/utils/cn';
 import { ForwardRefExoticComponent, RefAttributes, SVGProps } from 'react';
 import {
   CloseButton,
@@ -10,7 +9,9 @@ import {
   PopoverPanel,
 } from '@headlessui/react';
 import { Moon, Sun, SunMoon } from 'lucide-react';
-import useSwitchTheme, { Theme } from './hooks/use-switch-theme';
+
+import useSwitchTheme, { Theme } from '../../../hooks/dom/use-switch-theme';
+import { cn } from '@/utils/cn';
 
 type SwitchButtonSettings = {
   component: ForwardRefExoticComponent<

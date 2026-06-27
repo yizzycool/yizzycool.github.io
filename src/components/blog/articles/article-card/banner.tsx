@@ -1,9 +1,10 @@
 import type { BlogArticleData } from '@/types/blog/article';
 
-import { cn } from '@/utils/cn';
 import { useEffect, useRef, useState } from 'react';
 
 import strapiUtils from '@/utils/strapi-utils';
+import { cn } from '@/utils/cn';
+import Shimmer from '@/components/common/skeleton/shimmer';
 
 type Props = {
   article: BlogArticleData;
@@ -27,19 +28,34 @@ export default function Banner({ article }: Props) {
   }, []);
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      ref={imgRef}
-      className={cn(
-        'h-full w-full transform object-cover transition-transform duration-700 ease-out group-hover:scale-105',
-        bannerLoaded ? 'opacity-100' : 'opacity-0'
+    <div className="relative h-full w-full overflow-hidden">
+      {/* Loading Skeleton */}
+      {!bannerLoaded && <Shimmer className="absolute inset-0 z-0" />}
+
+      {/* Mask */}
+      {bannerLoaded && (
+        <div
+          className={cn(
+            'absolute inset-0 z-10 transition-colors',
+            'bg-neutral-100/10 group-hover:bg-transparent dark:bg-neutral-900/30'
+          )}
+        />
       )}
-      src={strapiUtils.toMediaUrl(banner.url)}
-      srcSet={strapiUtils.buildSrcSet(banner.formats)}
-      sizes="(max-width: 768px) 100vw, 350px"
-      alt={banner.alternativeText ?? ''}
-      loading="lazy"
-      onLoad={() => setBannerLoaded(true)}
-    />
+
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        ref={imgRef}
+        className={cn(
+          'h-full w-full transform object-cover transition-transform duration-700 ease-out group-hover:scale-105',
+          bannerLoaded ? 'opacity-100' : 'opacity-0'
+        )}
+        src={strapiUtils.toMediaUrl(banner.url)}
+        srcSet={strapiUtils.buildSrcSet(banner.formats)}
+        sizes="(max-width: 768px) 100vw, 350px"
+        alt={banner.alternativeText ?? ''}
+        loading="lazy"
+        onLoad={() => setBannerLoaded(true)}
+      />
+    </div>
   );
 }

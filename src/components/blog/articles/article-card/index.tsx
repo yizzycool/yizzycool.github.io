@@ -49,13 +49,6 @@ export default function ArticleCard({ article }: Props) {
           <div className="h-full md:flex">
             {/* Image Container */}
             <div className="relative h-48 overflow-hidden md:h-auto md:w-1/3">
-              {/* Mask */}
-              <div
-                className={cn(
-                  'absolute inset-0 z-10 transition-colors',
-                  'bg-neutral-100/10 group-hover:bg-transparent dark:bg-neutral-900/30'
-                )}
-              />
               <Banner article={article} />
             </div>
 

@@ -3,17 +3,36 @@
 @tailwind utilities;
 
 @layer base {
-  :root[data-mode='light'] {
+  /* theme variables - light mode default */
+  :root {
     color-scheme: light;
+
+    --gradient-flow-start: rgb(229 231 235 / 100%);
+    --gradient-flow-mid1: rgb(199 210 254 / 100%);
+    --gradient-flow-mid2: rgb(233 213 255 / 100%);
+    --shimmer-color: rgb(255 255 255 / 80%);
   }
 
-  :root[data-mode='dark'] {
+  /* theme variables - system dark mode fallback (SSR) */
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light) {
+      color-scheme: dark;
+
+      --gradient-flow-start: rgb(38 38 38 / 100%);
+      --gradient-flow-mid1: rgb(49 46 129 / 75%);
+      --gradient-flow-mid2: rgb(76 29 149 / 60%);
+      --shimmer-color: rgb(255 255 255 / 15%);
+    }
+  }
+
+  /* theme variables - explicit dark mode override */
+  .dark {
     color-scheme: dark;
-  }
 
-  :root[data-mode='system'] {
-    /* This tells the browser to respect the OS prefers-color-scheme */
-    color-scheme: light dark;
+    --gradient-flow-start: rgb(38 38 38 / 100%);
+    --gradient-flow-mid1: rgb(49 46 129 / 75%);
+    --gradient-flow-mid2: rgb(76 29 149 / 60%);
+    --shimmer-color: rgb(255 255 255 / 15%);
   }
 
   html,
@@ -58,5 +77,58 @@
 @layer utilities {
   .all-revert *:not(.ignore-all-revert *) {
     all: revert;
+  }
+
+  @keyframes shimmer-sweep {
+    0% {
+      transform: translate(-100%, -100%) rotate(45deg);
+    }
+
+    100% {
+      transform: translate(100%, 100%) rotate(45deg);
+    }
+  }
+
+  .animate-shimmer-sweep {
+    animation: shimmer-sweep 1.8s infinite ease-in-out;
+  }
+
+  .shimmer-gradient {
+    background-image: linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0%) 0%,
+      var(--shimmer-color) 50%,
+      rgb(255 255 255 / 0%) 100%
+    );
+  }
+
+  @keyframes gradient-flow {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .animate-gradient-flow {
+    background-size: 200% 200%;
+    animation: gradient-flow 6s ease infinite;
+  }
+
+  .bg-gradient-flow {
+    background-image: linear-gradient(
+      90deg,
+      var(--gradient-flow-start) 0%,
+      var(--gradient-flow-mid1) 25%,
+      var(--gradient-flow-mid2) 50%,
+      var(--gradient-flow-mid1) 75%,
+      var(--gradient-flow-start) 100%
+    );
   }
 }
