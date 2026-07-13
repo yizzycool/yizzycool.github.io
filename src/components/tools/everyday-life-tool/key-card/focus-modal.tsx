@@ -105,7 +105,7 @@ export default function FocusModal({
                     : 'text-neutral-600 hover:bg-neutral-100/50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800/50 dark:hover:text-neutral-200'
                 )}
               >
-                {version.label}
+                {version.label || '(Empty)'}
               </button>
             ))}
         </div>
