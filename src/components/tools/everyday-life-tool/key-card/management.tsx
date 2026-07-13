@@ -295,7 +295,7 @@ export default function Management({
                   onChange={(e) =>
                     onFieldChange(card.id, 'tags', e.target.value)
                   }
-                  placeholder="e.g. BQ, Self-Intro, General"
+                  placeholder="e.g. General, Task, Notes"
                   className={cn(
                     'w-full rounded-lg border bg-white/30 px-3 py-1.5 text-sm text-neutral-800 outline-none transition-all',
                     'border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900/30 dark:text-neutral-200',

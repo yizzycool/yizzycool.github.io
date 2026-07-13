@@ -112,19 +112,19 @@ export default function FocusModal({
 
         {/* Modal comparison scrollable content area */}
         <div className="relative flex min-h-0 flex-1 flex-col">
-          <div className="absolute right-4 top-4 z-10">
+          <div className="absolute right-2 top-2 z-10">
             <CopyAction
+              display="icon"
               content={
                 (cardToRender.contents &&
                   cardToRender.contents[focusTab] &&
                   cardToRender.contents[focusTab].text) ||
                 ''
               }
-              variant="outline"
-              className="bg-white/80 shadow-sm backdrop-blur dark:bg-neutral-800/80"
+              className="scale-90"
             />
           </div>
-          <div className="flex-1 overflow-y-auto bg-neutral-50/10 p-6 dark:bg-neutral-950/20">
+          <div className="flex-1 overflow-y-auto bg-neutral-50/10 px-6 py-8 dark:bg-neutral-950/20">
             <ProseMarkdown className="select-text text-left text-sm leading-relaxed text-neutral-800 selection:bg-sky-500/20 dark:text-neutral-200">
               {(cardToRender.contents &&
                 cardToRender.contents[focusTab] &&
