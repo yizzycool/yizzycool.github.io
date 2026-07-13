@@ -5,6 +5,8 @@ export const ToolAbout = {
     'QR codes are commonly used to share URLs, text, and other information across devices. This QR Code Generator allows users to quickly generate QR codes from custom input such as text or URLs. The tool provides instant previews and client-side generation, making it easy to create QR codes for sharing links, contact information, or messages.',
   [ToolKeys.wordCounter]:
     'Accurately measuring text length is important for writing, publishing, and social media. This Word Counter supports both Chinese and English text, providing word, character, number, and line counts. It also includes social media character limit guidance and basic text transformations such as uppercase, lowercase, title case, and trimming whitespace to help users prepare content efficiently.',
+  [ToolKeys.keyCard]:
+    'Having quick access to frequently used information, canned responses, or reference notes can significantly boost productivity. KeyCard is a universal customizable cheat sheet tool designed to keep your most important data organized and instantly accessible. Users can dynamically create custom cheat sheets, add data items, categorize them with keyword tags, and define personalized keyboard shortcuts for each entry. It provides a lightweight, highly flexible workspace to streamline repetitive tasks and keep key references at your fingertips.',
 
   // ==================
 

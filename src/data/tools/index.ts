@@ -12,6 +12,7 @@ import {
   FileImage,
   FileText,
   Image,
+  Keyboard,
   Languages,
   Layers,
   PenTool,
@@ -64,6 +65,7 @@ export const ToolKeys = {
   // Everyday Life Tool
   qrCodeGenerator: 'qrCodeGenerator',
   wordCounter: 'wordCounter',
+  keyCard: 'keyCard',
 
   // Developer Tools
   urlEncoderDecoder: 'urlEncoderDecoder',
@@ -95,6 +97,7 @@ export const ToolGroupItems = {
   [ToolGroupKeys.everydayLifeTool]: [
     ToolKeys.qrCodeGenerator,
     ToolKeys.wordCounter,
+    ToolKeys.keyCard,
   ],
   [ToolGroupKeys.devTool]: [
     ToolKeys.urlEncoderDecoder,
@@ -126,6 +129,7 @@ export const ToolGroupItems = {
 export const ToolTitles = {
   [ToolKeys.qrCodeGenerator]: 'QR Code Generator',
   [ToolKeys.wordCounter]: 'Word Counter',
+  [ToolKeys.keyCard]: 'KeyCard',
 
   [ToolKeys.urlEncoderDecoder]: 'URL Encoder / Decoder',
   [ToolKeys.jsonFormatter]: 'JSON Formatter',
@@ -158,6 +162,8 @@ export const ToolDescriptions = {
     'Generate QR codes instantly from text, URLs, or custom content with this free online QR code generator.',
   [ToolKeys.wordCounter]:
     'Count words, characters, numbers, and lines for Chinese and English text, with social media character limits and basic text transformations.',
+  [ToolKeys.keyCard]:
+    'Create and manage custom cheat sheets for any topic. Dynamically add data, customize keyword tags, and assign personalized keyboard shortcuts for quick reference.',
 
   [ToolKeys.urlEncoderDecoder]:
     'Quickly encode or decode URLs and text to prevent errors and ensure safe, reliable data transmission across the web.',
@@ -201,6 +207,7 @@ export const ToolDescriptions = {
 export const ToolSlugs = {
   [ToolKeys.qrCodeGenerator]: 'qr-code-generator',
   [ToolKeys.wordCounter]: 'word-counter',
+  [ToolKeys.keyCard]: 'key-card',
 
   [ToolKeys.urlEncoderDecoder]: 'url-encoder-decoder',
   [ToolKeys.jsonFormatter]: 'json-formatter',
@@ -239,6 +246,7 @@ export const ToolUrls = fromPairs(
 export const ToolIcons = {
   [ToolKeys.qrCodeGenerator]: QrCode,
   [ToolKeys.wordCounter]: FileText,
+  [ToolKeys.keyCard]: Keyboard,
 
   [ToolKeys.urlEncoderDecoder]: ArrowLeftRight,
   [ToolKeys.jsonFormatter]: CodeXml,

@@ -33,6 +33,22 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.keyCard]: {
+    title: 'KeyCard – Customizable Shortcut Cheat Sheet Tool | Yizzy Peasy',
+    description:
+      'Free online KeyCard tool. Create and customize shortcut cheat sheets for any topic, add data dynamically, organize with tags, and set custom hotkeys.',
+    openGraph: {
+      title: 'KeyCard – Customizable Shortcut Cheat Sheet',
+      description:
+        'Create personalized shortcut cards and custom cheat sheets online. Manage items, customize tags, and assign keyboard shortcuts for fast lookup.',
+    },
+    twitter: {
+      title: 'KeyCard – Customizable Shortcut Cheat Sheet',
+      description:
+        'Create custom cheat sheets, customize keyword tags, and assign keyboard shortcuts for quick lookup on any topic.',
+    },
+  },
+
   // ==================
 
   [ToolKeys.urlEncoderDecoder]: {
@@ -343,6 +359,20 @@ export const ToolJsonLdSoftwareApplication = {
       'Display social media character limits',
       'Convert text to uppercase, lowercase, or title case',
       'Trim extra whitespace',
+    ],
+  },
+
+  [ToolKeys.keyCard]: {
+    name: 'KeyCard',
+    applicationCategory: 'Utility',
+    description:
+      'An online customizable cheat sheet and shortcut card tool that lets users create personalized cheat sheets, customize tags, and set keyboard shortcuts for quick reference.',
+    featureList: [
+      'Create custom cheat sheets for any topic',
+      'Dynamically add and edit data items',
+      'Categorize items with custom tags',
+      'Assign personalized keyboard shortcuts',
+      'Instant client-side lookup and management',
     ],
   },
   // ==================

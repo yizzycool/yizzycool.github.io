@@ -9,6 +9,13 @@ export const ToolTags = {
     'QR Code',
   ],
   [ToolKeys.wordCounter]: ['Statistics', 'Word Check', 'Writing', 'Analysis'],
+  [ToolKeys.keyCard]: [
+    'Shortcut',
+    'Cheat Sheet',
+    'Hotkey',
+    'Customization',
+    'Productivity',
+  ],
 
   // ==================
 
