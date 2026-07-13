@@ -159,10 +159,11 @@ export default function Management({
               icon={Plus}
               onClick={onAddCard}
               className="p-2.5 text-xs font-semibold md:px-4 md:py-2"
-              iconClassName="mr-0 md:mr-2"
               ariaLabel="Add Card"
             >
-              <span className="hidden md:inline">Add Card</span>
+              <span>
+                Add<span className="hidden md:inline"> Card</span>
+              </span>
             </Button>
           </div>
         </div>

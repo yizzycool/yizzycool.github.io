@@ -140,7 +140,7 @@ export default function Button({
       {Icon && (
         <Icon
           size={iconSize}
-          className={`${iconMargin} ${iconClassName}`}
+          className={cn(iconMargin, iconClassName)}
           strokeWidth={iconStrokeWidth}
         />
       )}
