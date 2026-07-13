@@ -53,7 +53,7 @@ export default function Toolbar({
           )}
         </div>
       ) : (
-        <div className="flex items-center gap-2 text-sm font-semibold text-neutral-500 dark:text-neutral-300">
+        <div className="flex items-center gap-2 border border-transparent py-2 text-sm font-semibold text-neutral-500 dark:text-neutral-300">
           <Settings size={16} />
           <span>Management ({cardsCount} Cards)</span>
           <TooltipRoot>
@@ -81,11 +81,11 @@ export default function Toolbar({
       {/* Action Toggle buttons */}
       <div className="flex flex-wrap items-center gap-2.5">
         {/* Mode Switcher Tabs */}
-        <div className="inline-flex rounded-xl border border-neutral-200/50 bg-neutral-100/80 p-1 backdrop-blur-sm dark:border-neutral-700/50 dark:bg-neutral-800/80">
+        <div className="inline-flex w-full rounded-xl border border-neutral-200/50 bg-neutral-100/80 p-1 backdrop-blur-sm dark:border-neutral-700/50 dark:bg-neutral-800/80">
           <button
             onClick={() => setMode('dashboard')}
             className={cn(
-              'flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all duration-200',
+              'flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-2.5 text-xs font-semibold transition-all duration-200 sm:py-1.5',
               mode === 'dashboard'
                 ? 'bg-white text-sky-600 shadow-sm dark:bg-neutral-900 dark:text-sky-500'
                 : 'text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200'
@@ -97,7 +97,7 @@ export default function Toolbar({
           <button
             onClick={() => setMode('management')}
             className={cn(
-              'flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all duration-200',
+              'flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-2.5 text-xs font-semibold transition-all duration-200 sm:py-1.5',
               mode === 'management'
                 ? 'bg-white text-sky-600 shadow-sm dark:bg-neutral-900 dark:text-sky-500'
                 : 'text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200'

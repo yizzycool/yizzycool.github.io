@@ -81,74 +81,90 @@ export default function Management({
 
   return (
     <div className="space-y-12">
-      {/* Action header bar */}
-      <div
-        className={cn(
-          'flex flex-col gap-4 border-t pt-6 sm:flex-row sm:items-center sm:justify-between',
-          'border-neutral-200 dark:border-neutral-700'
-        )}
-      >
-        {/* Left Side: Import/Export */}
-        <div className="flex items-center gap-3">
-          {/* Import / Export JSON buttons */}
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="xs"
-              icon={Upload}
-              onClick={handleImportClick}
-              className="text-[11px] font-semibold"
-            >
-              Import JSON
-            </Button>
-            <Button
-              variant="outline"
-              size="xs"
-              icon={Download}
-              onClick={onExport}
-              className="text-[11px] font-semibold"
-            >
-              Export JSON
-            </Button>
-            <input
-              type="file"
-              ref={fileInputRef}
-              className="hidden"
-              accept=".json"
-              onChange={handleFileChange}
-            />
-          </div>
+      {/* Action header bar wrapper */}
+      <div className="border-t border-neutral-200 dark:border-neutral-700">
+        {/* Info hint text on mobile */}
+        <div className="-mb-3 flex items-center gap-1.5 pt-6 text-[11px] text-neutral-500 md:hidden dark:text-neutral-400">
+          <Info
+            size={13}
+            className="shrink-0 text-neutral-400 dark:text-neutral-500"
+          />
+          <span>Import or export from JSON file</span>
         </div>
 
-        {/* Right Side: Actions (Delete All, Reset, Add) */}
-        <div className="flex shrink-0 flex-wrap justify-end gap-2">
-          <Button
-            variant="error"
-            size="sm"
-            icon={Trash2}
-            onClick={() => setIsDeleteAllConfirmOpen(true)}
-            className="text-xs font-semibold"
-          >
-            Delete All
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            icon={RotateCcw}
-            onClick={() => setIsResetConfirmOpen(true)}
-            className="text-xs font-semibold"
-          >
-            Reset
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            icon={Plus}
-            onClick={onAddCard}
-            className="text-xs font-semibold"
-          >
-            Add Card
-          </Button>
+        <div className={cn('flex items-center justify-between gap-4 pt-6')}>
+          {/* Left Side: Import/Export */}
+          <div className="flex items-center gap-2">
+            {/* Import / Export JSON buttons */}
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                icon={Upload}
+                onClick={handleImportClick}
+                className="p-2.5 text-[11px] font-semibold md:px-4 md:py-2"
+                iconClassName="mr-0 md:mr-2"
+                ariaLabel="Import JSON"
+              >
+                <span className="hidden md:inline">Import JSON</span>
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                icon={Download}
+                onClick={onExport}
+                className="p-2.5 text-[11px] font-semibold md:px-4 md:py-2"
+                iconClassName="mr-0 md:mr-2"
+                ariaLabel="Export JSON"
+              >
+                <span className="hidden md:inline">Export JSON</span>
+              </Button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                accept=".json"
+                onChange={handleFileChange}
+              />
+            </div>
+          </div>
+
+          {/* Right Side: Actions (Delete All, Reset, Add) */}
+          <div className="flex shrink-0 items-center gap-2">
+            <Button
+              variant="error"
+              size="sm"
+              icon={Trash2}
+              onClick={() => setIsDeleteAllConfirmOpen(true)}
+              className="p-2.5 text-xs font-semibold md:px-4 md:py-2"
+              iconClassName="mr-0 md:mr-2"
+              ariaLabel="Delete All"
+            >
+              <span className="hidden md:inline">Delete All</span>
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              icon={RotateCcw}
+              onClick={() => setIsResetConfirmOpen(true)}
+              className="p-2.5 text-xs font-semibold md:px-4 md:py-2"
+              iconClassName="mr-0 md:mr-2"
+              ariaLabel="Reset"
+            >
+              <span className="hidden md:inline">Reset</span>
+            </Button>
+            <Button
+              variant="primary"
+              size="sm"
+              icon={Plus}
+              onClick={onAddCard}
+              className="p-2.5 text-xs font-semibold md:px-4 md:py-2"
+              iconClassName="mr-0 md:mr-2"
+              ariaLabel="Add Card"
+            >
+              <span className="hidden md:inline">Add Card</span>
+            </Button>
+          </div>
         </div>
       </div>
 
