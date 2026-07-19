@@ -44,7 +44,7 @@ export default function Badge({
     error:
       'text-red-600 dark:text-red-400 bg-red-100/50 dark:bg-red-800/10 border-red-500/20',
     'dark-sky':
-      'text-sky-600 dark:text-sky-400 bg-sky-600/10 border-sky-500/20',
+      'text-sky-600 dark:text-sky-600 bg-sky-200/20 dark:bg-sky-200/20 border-sky-500/20',
     neutral:
       'bg-neutral-100 border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300',
     success:

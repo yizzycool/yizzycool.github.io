@@ -79,8 +79,9 @@ export function useKeyCards(
 
   // Add Card
   const addCard = () => {
+    const newId = `card_${Date.now()}`;
     const newCard: CardData = {
-      id: `card_${Date.now()}`,
+      id: newId,
       key: '', // Unassigned initially
       title: 'Untitled Card',
       tags: '',
@@ -89,6 +90,26 @@ export function useKeyCards(
     const updated = [...cards, newCard];
     saveCards(updated);
     triggerSnackbar('Added a new cheat sheet card.', 'success');
+    return newId;
+  };
+
+  // Duplicate Card
+  const duplicateCard = (id: string) => {
+    const cardToDuplicate = cards.find((c) => c.id === id);
+    if (!cardToDuplicate) return '';
+
+    const newId = `card_${Date.now()}`;
+    const duplicatedCard: CardData = {
+      ...cardToDuplicate,
+      id: newId,
+      key: '', // Clear shortcut key binding on duplicate to avoid conflicts
+      // Deep copy contents to prevent reference sharing
+      contents: cardToDuplicate.contents.map((content) => ({ ...content })),
+    };
+    const updated = [...cards, duplicatedCard];
+    saveCards(updated);
+    triggerSnackbar(`Duplicated "${cardToDuplicate.title}" card.`, 'success');
+    return newId;
   };
 
   // Delete Card
@@ -243,6 +264,7 @@ export function useKeyCards(
     cards,
     isLoaded,
     addCard,
+    duplicateCard,
     deleteCard,
     deleteAllCards,
     resetToInitial,

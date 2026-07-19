@@ -10,6 +10,7 @@ import {
   Download,
   Info,
   Pencil,
+  Copy,
 } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
@@ -25,7 +26,8 @@ type ManagementProps = {
   cards: CardData[];
   listeningCardId: string | null;
   setListeningCardId: (id: string | null) => void;
-  onAddCard: () => void;
+  onAddCard: () => string;
+  onDuplicateCard: (id: string) => string;
   onDeleteCard: (id: string) => void;
   onFieldChange: (id: string, field: keyof CardData, value: string) => void;
   onDeleteAll: () => void;
@@ -40,6 +42,8 @@ type ManagementProps = {
   onDeleteContent: (id: string, index: number) => void;
   onExport: () => void;
   onImport: (file: File) => void;
+  sortOrder: 'asc' | 'desc';
+  setSortOrder: (order: 'asc' | 'desc') => void;
 };
 
 export default function Management({
@@ -47,6 +51,7 @@ export default function Management({
   listeningCardId,
   setListeningCardId,
   onAddCard,
+  onDuplicateCard,
   onDeleteCard,
   onFieldChange,
   onDeleteAll,
@@ -56,6 +61,8 @@ export default function Management({
   onDeleteContent,
   onExport,
   onImport,
+  sortOrder,
+  setSortOrder,
 }: ManagementProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -67,6 +74,35 @@ export default function Management({
     cardId: string;
     index: number;
   } | null>(null);
+
+  const handleAddCard = () => {
+    const newId = onAddCard();
+    if (newId && sortOrder === 'asc') {
+      setTimeout(() => {
+        const element = document.getElementById(newId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+    }
+  };
+
+  const handleDuplicateCard = (id: string) => {
+    const newId = onDuplicateCard(id);
+    if (newId && sortOrder === 'asc') {
+      setTimeout(() => {
+        const element = document.getElementById(newId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+    }
+  };
+
+  const sortedCards = [...cards];
+  if (sortOrder === 'desc') {
+    sortedCards.reverse();
+  }
 
   const handleImportClick = () => {
     fileInputRef.current?.click();
@@ -130,7 +166,7 @@ export default function Management({
           </div>
 
           {/* Right Side: Actions (Delete All, Reset, Add) */}
-          <div className="flex shrink-0 items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2.5">
             <Button
               variant="error"
               size="sm"
@@ -157,7 +193,7 @@ export default function Management({
               variant="primary"
               size="sm"
               icon={Plus}
-              onClick={onAddCard}
+              onClick={handleAddCard}
               className="p-2.5 text-xs font-semibold md:px-4 md:py-2"
               ariaLabel="Add Card"
             >
@@ -171,9 +207,41 @@ export default function Management({
 
       {/* Cards Form list */}
       <div className="space-y-4">
-        {cards.map((card, index) => (
+        {/* Sorting controls row */}
+        <div className="flex items-center justify-end gap-2.5 px-1 text-xs text-neutral-500 dark:text-neutral-400">
+          <span className="font-semibold">Sort By:</span>
+          <div className="inline-flex rounded-xl border border-neutral-200/50 bg-neutral-100/80 p-1 backdrop-blur-sm dark:border-neutral-700/50 dark:bg-neutral-800/80">
+            <button
+              type="button"
+              onClick={() => setSortOrder('asc')}
+              className={cn(
+                'rounded-lg px-3 py-1.5 text-xs font-semibold transition-all duration-200',
+                sortOrder === 'asc'
+                  ? 'bg-white text-sky-600 shadow-sm dark:bg-neutral-900 dark:text-sky-500'
+                  : 'text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200'
+              )}
+            >
+              Ascending
+            </button>
+            <button
+              type="button"
+              onClick={() => setSortOrder('desc')}
+              className={cn(
+                'rounded-lg px-3 py-1.5 text-xs font-semibold transition-all duration-200',
+                sortOrder === 'desc'
+                  ? 'bg-white text-sky-600 shadow-sm dark:bg-neutral-900 dark:text-sky-500'
+                  : 'text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200'
+              )}
+            >
+              Descending
+            </button>
+          </div>
+        </div>
+
+        {sortedCards.map((card, index) => (
           <div
             key={card.id}
+            id={card.id}
             className={cn(
               'relative space-y-4 rounded-2xl border p-5 shadow-sm duration-300 animate-in fade-in',
               'border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900/45'
@@ -193,7 +261,7 @@ export default function Management({
                     'bg-neutral-100 text-neutral-500 dark:bg-neutral-700 dark:text-neutral-400'
                   )}
                 >
-                  {index + 1}
+                  {sortOrder === 'desc' ? cards.length - index : index + 1}
                 </span>
                 <div className="group/title relative flex flex-1 items-center">
                   <input
@@ -240,6 +308,14 @@ export default function Management({
                       ? `Key: [ ${card.key.toUpperCase()} ]`
                       : 'Bind Hotkey'}
                 </button>
+
+                <Button
+                  variant="outline"
+                  size="xs"
+                  icon={Copy}
+                  onClick={() => handleDuplicateCard(card.id)}
+                  ariaLabel="Duplicate card"
+                />
 
                 <Button
                   variant="error"

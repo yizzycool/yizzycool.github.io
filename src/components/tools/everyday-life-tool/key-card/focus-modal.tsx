@@ -1,7 +1,7 @@
 import type { CardData } from './types';
 
 import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { X, Pencil } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
 import BaseDialog from '@/components/common/dialog/base';
@@ -15,6 +15,7 @@ type FocusModalProps = {
   onClose: () => void;
   focusTab: number;
   setFocusTab: (tabIndex: number) => void;
+  onEdit?: (cardId: string) => void;
 };
 
 export default function FocusModal({
@@ -23,6 +24,7 @@ export default function FocusModal({
   onClose,
   focusTab,
   setFocusTab,
+  onEdit,
 }: FocusModalProps) {
   const [activeCard, setActiveCard] = useState<CardData | null>(null);
 
@@ -34,6 +36,53 @@ export default function FocusModal({
   }, [focusCard]);
 
   const cardToRender = focusCard || activeCard;
+
+  // Listen for digit key presses (1-9) and Tab / Shift+Tab to switch tabs when modal is open
+  useEffect(() => {
+    if (!isOpen || !cardToRender?.contents) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.isContentEditable
+      ) {
+        return;
+      }
+
+      // Check digit keys
+      const match = e.key.match(/^[1-9]$/);
+      if (match) {
+        const tabIndex = parseInt(e.key, 10) - 1;
+        if (tabIndex >= 0 && tabIndex < cardToRender.contents.length) {
+          e.preventDefault();
+          setFocusTab(tabIndex);
+        }
+        return;
+      }
+
+      // Check Tab / Shift+Tab cycling
+      if (e.key === 'Tab') {
+        const totalTabs = cardToRender.contents.length;
+        if (totalTabs <= 1) return;
+
+        e.preventDefault();
+        if (e.shiftKey) {
+          // Prev tab with cycle
+          setFocusTab((focusTab - 1 + totalTabs) % totalTabs);
+        } else {
+          // Next tab with cycle
+          setFocusTab((focusTab + 1) % totalTabs);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, cardToRender, focusTab, setFocusTab]);
 
   if (!cardToRender) return null;
 
@@ -78,12 +127,24 @@ export default function FocusModal({
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            className="shrink-0 rounded-lg p-1.5 text-neutral-400 transition-all hover:bg-neutral-100 hover:text-neutral-600 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
-          >
-            <X size={18} />
-          </button>
+          <div className="flex shrink-0 items-center gap-1.5">
+            <button
+              onClick={() => onEdit?.(cardToRender.id)}
+              className="rounded-lg p-1.5 text-neutral-400 transition-all hover:bg-neutral-100 hover:text-neutral-600 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
+              title="Edit Card"
+              aria-label="Edit card"
+            >
+              <Pencil size={18} />
+            </button>
+            <button
+              onClick={onClose}
+              className="shrink-0 rounded-lg p-1.5 text-neutral-400 transition-all hover:bg-neutral-100 hover:text-neutral-600 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
+              title="Close"
+              aria-label="Close modal"
+            >
+              <X size={18} />
+            </button>
+          </div>
         </div>
 
         {/* Modal Tabs navigation */}
@@ -111,8 +172,8 @@ export default function FocusModal({
         </div>
 
         {/* Modal comparison scrollable content area */}
-        <div className="relative flex min-h-0 flex-1 flex-col">
-          <div className="absolute right-2 top-2 z-10">
+        <div className="group relative flex min-h-0 flex-1 flex-col">
+          <div className="absolute right-2 top-2 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <CopyAction
               display="icon"
               content={
@@ -135,10 +196,25 @@ export default function FocusModal({
         </div>
 
         {/* Footer */}
-        <div className="flex shrink-0 justify-end gap-4 border-t border-neutral-100 bg-neutral-50 px-6 py-3 text-xs text-neutral-400 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-500">
+        <div className="dark:border-neutral-850 flex shrink-0 flex-wrap justify-end gap-x-5 gap-y-2 border-t border-neutral-100 bg-neutral-50 px-6 py-3 text-xs text-neutral-400 dark:bg-neutral-900 dark:text-neutral-500">
+          <span className="flex items-center gap-1.5">
+            <kbd className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-neutral-300 bg-neutral-100 px-1 text-[9px] font-bold text-neutral-800 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">
+              1-9
+            </kbd>{' '}
+            to switch tabs
+          </span>
+          <span className="flex items-center gap-1.5">
+            <kbd className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-neutral-300 bg-neutral-100 px-1 text-[9px] font-bold text-neutral-800 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">
+              Tab
+            </kbd>{' '}
+            /{' '}
+            <kbd className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-neutral-300 bg-neutral-100 px-1 text-[9px] font-bold text-neutral-800 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">
+              Shift+Tab
+            </kbd>{' '}
+            to cycle
+          </span>
           {cardToRender.key && (
             <span className="flex items-center gap-1.5">
-              Press{' '}
               <kbd className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-neutral-300 bg-neutral-100 px-1 text-[9px] font-bold text-neutral-800 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">
                 {cardToRender.key}
               </kbd>{' '}

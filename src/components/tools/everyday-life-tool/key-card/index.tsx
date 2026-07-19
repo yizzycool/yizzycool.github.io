@@ -18,6 +18,8 @@ import FocusModal from './focus-modal';
 export default function KeyCard() {
   const [mode, setMode] = useState<'dashboard' | 'management'>('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isCompact, setIsCompact] = useState(false);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   // Snackbar feedback states
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -41,6 +43,7 @@ export default function KeyCard() {
     cards,
     isLoaded,
     addCard,
+    duplicateCard,
     deleteCard,
     deleteAllCards,
     resetToInitial,
@@ -83,6 +86,17 @@ export default function KeyCard() {
     );
   });
 
+  const handleEditCardFromModal = (cardId: string) => {
+    setFocusCardId(null);
+    setMode('management');
+    setTimeout(() => {
+      const element = document.getElementById(cardId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 150);
+  };
+
   const focusCard = cards.find((c: CardData) => c.id === focusCardId);
 
   return (
@@ -117,6 +131,8 @@ export default function KeyCard() {
                 setFocusTab(0);
               }}
               setMode={setMode}
+              isCompact={isCompact}
+              setIsCompact={setIsCompact}
             />
           ) : (
             <Management
@@ -124,6 +140,7 @@ export default function KeyCard() {
               listeningCardId={listeningCardId}
               setListeningCardId={setListeningCardId}
               onAddCard={addCard}
+              onDuplicateCard={duplicateCard}
               onDeleteCard={deleteCard}
               onFieldChange={updateCardField}
               onDeleteAll={deleteAllCards}
@@ -133,6 +150,8 @@ export default function KeyCard() {
               onDeleteContent={deleteCardContent}
               onExport={exportCards}
               onImport={importCards}
+              sortOrder={sortOrder}
+              setSortOrder={setSortOrder}
             />
           )}
 
@@ -143,6 +162,7 @@ export default function KeyCard() {
             onClose={() => setFocusCardId(null)}
             focusTab={focusTab}
             setFocusTab={setFocusTab}
+            onEdit={handleEditCardFromModal}
           />
 
           {/* Global Snackbar feedback alerts */}
