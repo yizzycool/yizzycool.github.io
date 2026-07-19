@@ -144,7 +144,7 @@ export default function Dashboard({
                   return (
                     <Badge
                       key={idx}
-                      variant="dark-sky"
+                      variant="blue"
                       size="xs"
                       className="inline-block max-w-full overflow-hidden text-ellipsis text-nowrap text-[10px]"
                     >
