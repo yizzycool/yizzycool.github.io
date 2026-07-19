@@ -3,6 +3,7 @@ import GlimmerBackground from '@/components/common/glimmer-background';
 import GlimmerBackgroundConfigs from '@/data/glimmer-background-config/tools';
 import FeaturePanel from '@/components/tools/layout/feature-panel';
 import AboutBlock from '@/components/tools/about-block';
+import ScrollToTop from '@/components/common/scroll-to-top';
 
 export default function RootLayout({
   children,
@@ -19,6 +20,7 @@ export default function RootLayout({
           <AboutBlock />
         </div>
       </div>
+      <ScrollToTop />
     </main>
   );
 }

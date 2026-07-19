@@ -71,7 +71,7 @@ export default function Dashboard({
             'group relative flex transform cursor-pointer flex-col justify-between rounded-2xl p-5 text-left backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5',
             'border border-neutral-200 dark:border-neutral-700',
             'bg-white/40 dark:bg-neutral-900/40',
-            'hover:border-blue-400 dark:hover:border-blue-400',
+            'hover:border-blue-500/50 dark:hover:border-blue-500/50',
             'hover:shadow-lg hover:shadow-sky-500/5'
           )}
           onClick={() => onCardClick(card.id)}

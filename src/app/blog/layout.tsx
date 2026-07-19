@@ -2,6 +2,7 @@ import strapiUtils from '@/utils/strapi-utils';
 import GlimmerBackground from '@/components/common/glimmer-background';
 import GlimmerBackgroundConfigs from '@/data/glimmer-background-config/blog';
 import LeftPanel from '@/components/blog/layout/left-panel';
+import ScrollToTop from '@/components/common/scroll-to-top';
 
 export const fetchCategoryArticles = async () => {
   try {
@@ -35,6 +36,7 @@ export default async function Layout({
     >
       <GlimmerBackground configs={GlimmerBackgroundConfigs} />
       <LeftPanel categoryArticles={categoryArticles} />
+      <ScrollToTop />
       {children}
     </main>
   );
