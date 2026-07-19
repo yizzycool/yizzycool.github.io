@@ -196,7 +196,7 @@ export default function FocusModal({
         </div>
 
         {/* Footer */}
-        <div className="dark:border-neutral-850 flex shrink-0 flex-wrap justify-end gap-x-5 gap-y-2 border-t border-neutral-100 bg-neutral-50 px-6 py-3 text-xs text-neutral-400 dark:bg-neutral-900 dark:text-neutral-500">
+        <div className="flex shrink-0 flex-wrap justify-end gap-x-5 gap-y-2 border-t border-neutral-100 bg-neutral-50 px-6 py-3 text-xs text-neutral-400 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-500">
           <span className="flex items-center gap-1.5">
             <kbd className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-neutral-300 bg-neutral-100 px-1 text-[9px] font-bold text-neutral-800 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">
               1-9
