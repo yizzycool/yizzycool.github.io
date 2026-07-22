@@ -68,7 +68,7 @@ export default function useImageUpdater({
     if (!image) return;
 
     const objectUrl = window.URL.createObjectURL(file);
-    await image.setSrc(objectUrl);
+    await image.setSrc(objectUrl, { crossOrigin: 'anonymous' });
     const scale = Math.min(300 / image.width, 300 / image.height);
     image.set({
       scaleX: scale,

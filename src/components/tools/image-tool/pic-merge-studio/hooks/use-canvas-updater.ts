@@ -111,7 +111,9 @@ export default function useCanvasUpdater({
 
     for (let idx = 0; idx < files.length; idx++) {
       const objectUrl = window.URL.createObjectURL(files[idx]);
-      const img = await fabric.FabricImage.fromURL(objectUrl);
+      const img = await fabric.FabricImage.fromURL(objectUrl, {
+        crossOrigin: 'anonymous',
+      });
 
       const scale = Math.min(
         shortEdge / 2 / img.width,
@@ -152,14 +154,16 @@ export default function useCanvasUpdater({
     let dataUrl = '';
     const filename = `picmerge-${Date.now()}`;
     if (canvasConfig.exportFormat === 'svg') {
-      dataUrl = fabricCanvasRef.current.toSVG();
+      dataUrl = fabricCanvasRef.current.toSVG({
+        suppressPreamble: true,
+      });
       const blob = new Blob([dataUrl], { type: 'image/svg+xml' });
       download(blob, `${filename}.svg`);
     } else {
       dataUrl = fabricCanvasRef.current.toDataURL({
         format: canvasConfig.exportFormat,
         quality: 0.9,
-        multiplier: 2,
+        multiplier: 1,
         enableRetinaScaling: false, // to prevent wrong output canvas size
       });
       download(dataUrl, `${filename}.${canvasConfig.exportFormat}`);

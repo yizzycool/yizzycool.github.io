@@ -17,8 +17,6 @@ import colorUtils from '@/utils/color-utils';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import { DEFAULT_CANVAS_CONFIG } from '..';
 
-// let fabric = null;
-
 export const FABRIC_CONTROL_CONFIG = {
   strokeUniform: true,
   borderColor: '#12a29282',

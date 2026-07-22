@@ -27,7 +27,7 @@ export default function OutputFormat({ configHelper }: Props) {
       </Label>
 
       <ButtonTabs
-        tabs={['png', 'jpeg', 'svg']}
+        tabs={['png', 'jpeg']}
         onChange={(tab) => updateOutputFormat(tab as CanvasExportFormat)}
         size="sm"
         className="flex-1 font-black uppercase"
