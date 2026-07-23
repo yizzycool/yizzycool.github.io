@@ -100,13 +100,13 @@ export default function FilePicker({
           'data-[dragging=true]:bg-neutral-200 data-[dragging=true]:dark:bg-neutral-800'
         )}
       >
-        <Icon className="h-8 w-8 text-neutral-500 dark:text-neutral-400" />
+        <Icon className="h-8 w-8 text-slate-500 dark:text-slate-400" />
       </div>
       {!!title && (
         <div className="mt-6 w-fit px-8 text-lg font-bold">{title}</div>
       )}
       {!!desc && (
-        <div className="mt-2 max-w-xs text-sm text-neutral-500 dark:text-neutral-400">
+        <div className="mt-2 max-w-xs text-sm text-slate-500 dark:text-slate-400">
           {desc}
         </div>
       )}

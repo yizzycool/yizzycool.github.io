@@ -98,15 +98,15 @@ export default function FocusModal({
         >
           <div>
             <div className="mb-2 flex items-center gap-2.5">
-              <h2 className="text-lg font-bold text-neutral-950 dark:text-neutral-50">
+              <h2 className="text-lg font-bold text-slate-950 dark:text-slate-50">
                 {cardToRender.title}
               </h2>
               {cardToRender.key && (
                 <kbd
                   className={cn(
                     'inline-flex h-6 min-w-6 items-center justify-center rounded-md border px-1.5 text-[10px] font-black uppercase shadow-sm',
-                    'border-neutral-300 bg-neutral-100 text-neutral-800',
-                    'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200'
+                    'border-neutral-300 bg-neutral-100 text-slate-800',
+                    'dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-200'
                   )}
                 >
                   {cardToRender.key}
@@ -130,7 +130,7 @@ export default function FocusModal({
           <div className="flex shrink-0 items-center gap-1.5">
             <button
               onClick={() => onEdit?.(cardToRender.id)}
-              className="rounded-lg p-1.5 text-neutral-400 transition-all hover:bg-neutral-100 hover:text-neutral-600 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
+              className="rounded-lg p-1.5 text-slate-400 transition-all hover:bg-neutral-100 hover:text-slate-600 dark:hover:bg-neutral-800 dark:hover:text-slate-200"
               title="Edit Card"
               aria-label="Edit card"
             >
@@ -138,7 +138,7 @@ export default function FocusModal({
             </button>
             <button
               onClick={onClose}
-              className="shrink-0 rounded-lg p-1.5 text-neutral-400 transition-all hover:bg-neutral-100 hover:text-neutral-600 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
+              className="shrink-0 rounded-lg p-1.5 text-slate-400 transition-all hover:bg-neutral-100 hover:text-slate-600 dark:hover:bg-neutral-800 dark:hover:text-slate-200"
               title="Close"
               aria-label="Close modal"
             >
@@ -162,8 +162,8 @@ export default function FocusModal({
                 className={cn(
                   'rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all duration-200',
                   focusTab === versionIdx
-                    ? 'bg-neutral-900 text-white shadow-sm dark:bg-white dark:text-neutral-950'
-                    : 'text-neutral-600 hover:bg-neutral-100/50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800/50 dark:hover:text-neutral-200'
+                    ? 'bg-neutral-900 text-white shadow-sm dark:bg-white dark:text-slate-950'
+                    : 'text-slate-600 hover:bg-neutral-100/50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-neutral-800/50 dark:hover:text-slate-200'
                 )}
               >
                 {version.label || '(Empty)'}
@@ -186,7 +186,7 @@ export default function FocusModal({
             />
           </div>
           <div className="flex-1 overflow-y-auto bg-neutral-50/10 px-6 py-8 dark:bg-neutral-950/20">
-            <ProseMarkdown className="select-text text-left text-sm leading-relaxed text-neutral-800 selection:bg-sky-500/20 dark:text-neutral-200">
+            <ProseMarkdown className="select-text text-left text-sm leading-relaxed text-slate-800 selection:bg-sky-500/20 dark:text-slate-200">
               {(cardToRender.contents &&
                 cardToRender.contents[focusTab] &&
                 cardToRender.contents[focusTab].text) ||
@@ -196,33 +196,33 @@ export default function FocusModal({
         </div>
 
         {/* Footer */}
-        <div className="flex shrink-0 flex-wrap justify-end gap-x-5 gap-y-2 border-t border-neutral-100 bg-neutral-50 px-6 py-3 text-xs text-neutral-400 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-500">
+        <div className="flex shrink-0 flex-wrap justify-end gap-x-5 gap-y-2 border-t border-neutral-100 bg-neutral-50 px-6 py-3 text-xs text-slate-400 dark:border-neutral-700 dark:bg-neutral-900 dark:text-slate-500">
           <span className="flex items-center gap-1.5">
-            <kbd className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-neutral-300 bg-neutral-100 px-1 text-[9px] font-bold text-neutral-800 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">
+            <kbd className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-neutral-300 bg-neutral-100 px-1 text-[9px] font-bold text-slate-800 dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-200">
               1-9
             </kbd>{' '}
             to switch tabs
           </span>
           <span className="flex items-center gap-1.5">
-            <kbd className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-neutral-300 bg-neutral-100 px-1 text-[9px] font-bold text-neutral-800 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">
+            <kbd className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-neutral-300 bg-neutral-100 px-1 text-[9px] font-bold text-slate-800 dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-200">
               Tab
             </kbd>{' '}
             /{' '}
-            <kbd className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-neutral-300 bg-neutral-100 px-1 text-[9px] font-bold text-neutral-800 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">
+            <kbd className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-neutral-300 bg-neutral-100 px-1 text-[9px] font-bold text-slate-800 dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-200">
               Shift+Tab
             </kbd>{' '}
             to cycle
           </span>
           {cardToRender.key && (
             <span className="flex items-center gap-1.5">
-              <kbd className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-neutral-300 bg-neutral-100 px-1 text-[9px] font-bold text-neutral-800 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">
+              <kbd className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-neutral-300 bg-neutral-100 px-1 text-[9px] font-bold text-slate-800 dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-200">
                 {cardToRender.key}
               </kbd>{' '}
               to open on dashboard
             </span>
           )}
           <span className="flex items-center gap-1.5">
-            <kbd className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-neutral-300 bg-neutral-100 px-1 text-[9px] font-bold text-neutral-800 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">
+            <kbd className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-neutral-300 bg-neutral-100 px-1 text-[9px] font-bold text-slate-800 dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-200">
               ESC
             </kbd>{' '}
             to close

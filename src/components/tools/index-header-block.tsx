@@ -11,7 +11,7 @@ export default function HeaderBlock() {
       <h1
         className={cn(
           'text-3xl font-black tracking-tight md:text-4xl',
-          'text-neutral-900 dark:text-white',
+          'text-slate-900 dark:text-white',
           getFadeUpClass('animate-delay-100')
         )}
       >
@@ -19,7 +19,7 @@ export default function HeaderBlock() {
       </h1>
       <p
         className={cn(
-          'mt-3 text-lg font-light text-neutral-500 dark:text-neutral-400',
+          'mt-3 text-lg font-light text-slate-500 dark:text-slate-400',
           getFadeUpClass('animate-delay-200')
         )}
       >

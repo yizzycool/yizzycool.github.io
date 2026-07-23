@@ -32,7 +32,7 @@ export default function PromptResult({ results, isProcessing }: Props) {
         )}
       >
         {isEmpty(results) ? (
-          <div className="m-auto flex h-full flex-col items-center justify-center text-center text-lg font-bold text-neutral-500">
+          <div className="m-auto flex h-full flex-col items-center justify-center text-center text-lg font-bold text-slate-500">
             {isProcessing ? (
               <>
                 <Cpu

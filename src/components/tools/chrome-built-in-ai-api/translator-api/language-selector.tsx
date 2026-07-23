@@ -64,7 +64,7 @@ export default function LanguageSelector({
         className={cn(
           'm-auto flex items-center justify-center rounded-md px-3 py-2 transition-all',
           'hover:bg-neutral-200 dark:hover:bg-neutral-700',
-          'text-neutral-500 dark:text-neutral-400'
+          'text-slate-500 dark:text-slate-400'
         )}
         onClick={openMenu}
       >
@@ -105,7 +105,7 @@ export default function LanguageSelector({
                 className={cn(
                   'w-full rounded-2xl border-none py-3.5 pl-12 pr-4 font-medium outline-none transition-all',
                   'bg-neutral-100 dark:bg-white/5',
-                  'text-neutral-900 placeholder:text-neutral-400 dark:text-neutral-100',
+                  'text-slate-900 placeholder:text-slate-400 dark:text-slate-100',
                   'focus:ring-2 focus:ring-neutral-900/10 dark:focus:ring-white/20'
                 )}
                 value={searchQuery}

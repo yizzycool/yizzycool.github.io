@@ -110,21 +110,21 @@ export default function Snackbar({
 
   const variants = {
     primary: cn(
-      'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 border-white dark:border-black'
+      'bg-neutral-900 text-white dark:bg-white dark:text-slate-900 border-white dark:border-black'
     ),
     secondary: cn(
-      'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100 border-neutral-600 dark:border-neutral-400'
+      'bg-neutral-100 text-slate-900 dark:bg-neutral-800 dark:text-slate-100 border-neutral-600 dark:border-neutral-400'
     ),
-    ghost: cn('text-neutral-600 dark:text-neutral-400 border-neutral-500/20'),
+    ghost: cn('text-slate-600 dark:text-slate-400 border-neutral-500/20'),
     outline: cn(
-      'border border-neutral-200 text-neutral-700 dark:border-neutral-700 dark:text-neutral-300'
+      'border border-neutral-200 text-slate-700 dark:border-neutral-700 dark:text-slate-300'
     ),
     error: cn(
       'text-red-600 dark:text-red-400 bg-red-100/50 dark:bg-red-800/10 border-red-500/20'
     ),
     'dark-sky': cn('text-white bg-sky-600 dark:bg-sky-900 border-sky-500/20'),
     neutral: cn(
-      'bg-neutral-100 border-neutral-500/20 text-neutral-600 dark:bg-neutral-700 dark:text-neutral-400'
+      'bg-neutral-100 border-neutral-500/20 text-slate-600 dark:bg-neutral-700 dark:text-slate-400'
     ),
     success: cn(
       'bg-green-500/10 border-green-500/20 text-green-600 dark:text-green-400'

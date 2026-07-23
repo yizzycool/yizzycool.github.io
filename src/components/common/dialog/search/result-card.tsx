@@ -59,10 +59,10 @@ export default function ResultCard({
       <div
         className={cn(
           'mt-1 shrink-0 rounded-lg p-2 transition-colors',
-          'text-neutral-500 dark:text-neutral-400',
+          'text-slate-500 dark:text-slate-400',
           'bg-neutral-100 dark:bg-neutral-800',
           focused &&
-            'bg-neutral-200 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200'
+            'bg-neutral-200 text-slate-700 dark:bg-neutral-700 dark:text-slate-200'
         )}
       >
         <Icon size={20} />
@@ -75,7 +75,7 @@ export default function ResultCard({
           <span
             className={cn(
               'truncate text-[15px] font-medium transition-colors',
-              'text-neutral-900 dark:text-neutral-200',
+              'text-slate-900 dark:text-slate-200',
               focused && 'text-blue-500 dark:text-blue-500'
             )}
           >
@@ -87,7 +87,7 @@ export default function ResultCard({
         </div>
 
         {/* Excerpt Row */}
-        <span className="truncate text-xs leading-relaxed text-neutral-400 dark:text-neutral-500/80">
+        <span className="truncate text-xs leading-relaxed text-slate-400 dark:text-slate-500/80">
           {data.item.description}
         </span>
       </div>
@@ -96,7 +96,7 @@ export default function ResultCard({
       <div
         className={cn(
           'absolute right-4 top-1/2',
-          'text-neutral-400 dark:text-neutral-500',
+          'text-slate-400 dark:text-slate-500',
           'transition-all duration-200',
           '-translate-x-2 -translate-y-1/2',
           'opacity-0',

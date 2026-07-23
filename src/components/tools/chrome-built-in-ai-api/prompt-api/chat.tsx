@@ -132,7 +132,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
               className={cn(
                 'absolute inset-0 flex items-center px-4 py-2',
                 'pointer-events-none text-sm leading-relaxed',
-                'text-neutral-400 dark:text-neutral-500'
+                'text-slate-400 dark:text-slate-500'
               )}
             >
               {placeholder}
@@ -144,7 +144,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
             className={cn(
               'max-h-[120px] flex-1 overflow-y-auto bg-transparent',
               'font-mono text-sm leading-relaxed focus:outline-none',
-              'text-neutral-700 dark:text-neutral-200'
+              'text-slate-700 dark:text-slate-200'
             )}
             onInput={onInput}
             onKeyDown={onKeyDown}

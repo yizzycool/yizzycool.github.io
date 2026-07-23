@@ -37,7 +37,7 @@ export default function PrevNextCard({ type, article: data }: Props) {
           <div
             className={cn(
               'flex h-10 w-10 min-w-10 items-center justify-center rounded-full transition-colors duration-300',
-              'text-neutral-600 group-hover:text-blue-600 dark:text-neutral-400 dark:group-hover:text-blue-400',
+              'text-slate-600 group-hover:text-blue-600 dark:text-slate-400 dark:group-hover:text-blue-400',
               'bg-neutral-100 group-hover:bg-blue-50 dark:bg-neutral-800 dark:group-hover:bg-blue-900/30'
             )}
           >
@@ -52,7 +52,7 @@ export default function PrevNextCard({ type, article: data }: Props) {
           <span
             className={cn(
               'mb-1 text-xs font-bold uppercase tracking-wider transition-colors duration-300',
-              'text-neutral-400 group-hover:text-blue-500 dark:text-neutral-500 dark:group-hover:text-blue-400'
+              'text-slate-400 group-hover:text-blue-500 dark:text-slate-500 dark:group-hover:text-blue-400'
             )}
           >
             {isNext ? '下一篇文章' : '上一篇文章'}
@@ -60,13 +60,13 @@ export default function PrevNextCard({ type, article: data }: Props) {
           <h3
             className={cn(
               'line-clamp-1 text-base font-semibold transition-colors duration-300',
-              'text-neutral-800 group-hover:text-blue-600 md:text-lg dark:text-neutral-100 dark:group-hover:text-blue-300'
+              'text-slate-800 group-hover:text-blue-600 md:text-lg dark:text-slate-100 dark:group-hover:text-blue-300'
             )}
           >
             {data.title}
           </h3>
           {category.name && (
-            <span className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+            <span className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               {category.name}
             </span>
           )}
@@ -77,7 +77,7 @@ export default function PrevNextCard({ type, article: data }: Props) {
           <div
             className={cn(
               'flex h-10 w-10 min-w-10 items-center justify-center rounded-full transition-colors duration-300',
-              'text-neutral-600 group-hover:text-blue-600 dark:text-neutral-400 dark:group-hover:text-blue-400',
+              'text-slate-600 group-hover:text-blue-600 dark:text-slate-400 dark:group-hover:text-blue-400',
               'bg-neutral-100 group-hover:bg-blue-50 dark:bg-neutral-800 dark:group-hover:bg-blue-900/30'
             )}
           >

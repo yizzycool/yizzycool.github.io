@@ -52,7 +52,7 @@ export default function Switch({
       )}
     >
       {label && (
-        <span className="text-neutral-600 transition-colors group-hover:text-neutral-900 dark:text-neutral-400 dark:group-hover:text-white">
+        <span className="text-slate-600 transition-colors group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-white">
           {label}
         </span>
       )}

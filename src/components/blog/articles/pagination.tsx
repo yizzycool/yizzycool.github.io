@@ -97,7 +97,7 @@ export default function Pagination({ articles }: Props) {
                 'flex h-10 w-10 items-center justify-center rounded-lg font-bold transition-all',
                 p === page
                   ? 'scale-110 bg-blue-600 text-white shadow-lg shadow-blue-500/25'
-                  : 'bg-white text-neutral-600 hover:bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700/50'
+                  : 'bg-white text-slate-600 hover:bg-neutral-100 dark:bg-neutral-800 dark:text-slate-400 dark:hover:bg-neutral-700/50'
               )}
             >
               {p}

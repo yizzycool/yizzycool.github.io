@@ -33,28 +33,26 @@ export default function PatternCard({
 
       <div
         className={cn(
-          'rounded-xl border border-neutral-200 p-4 ring-blue-500 focus-within:ring-2 dark:border-neutral-800',
+          'rounded-xl border border-neutral-200 p-4 ring-blue-500 focus-within:ring-2 dark:border-neutral-700',
           'bg-white/40 dark:bg-neutral-900/40',
           'backdrop-blur-md'
         )}
       >
         <div className="mb-2 flex items-center gap-2 font-mono text-lg">
-          <span className="text-neutral-400">/</span>
+          <span className="text-slate-400">/</span>
           <input
             type="text"
             value={pattern}
             onChange={(e) => setPattern(e.target.value)}
-            className="flex-1 border-none bg-transparent tracking-widest text-neutral-900 outline-none dark:text-neutral-100"
+            className="flex-1 border-none bg-transparent tracking-widest text-slate-900 outline-none dark:text-slate-100"
             placeholder="e.g. ([A-Z])\w+"
             aria-label="Patern of regular expression"
           />
-          <span className="text-neutral-400">/</span>
-          <span className="text-neutral-600 dark:text-neutral-400">
-            {flags}
-          </span>
+          <span className="text-slate-400">/</span>
+          <span className="text-slate-600 dark:text-slate-400">{flags}</span>
         </div>
         <div className="overflow-x-auto whitespace-nowrap border-t border-neutral-200 pt-2 font-mono text-xs tracking-widest dark:border-neutral-800">
-          <span className="mr-2 select-none font-sans text-neutral-400">
+          <span className="mr-2 select-none font-sans text-slate-400">
             Preview:
           </span>
           <PatternVisualizer pattern={pattern} />

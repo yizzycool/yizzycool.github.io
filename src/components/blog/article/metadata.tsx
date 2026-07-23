@@ -44,7 +44,7 @@ export default function Metadata({ article }: Props) {
       className={cn(
         'flex flex-wrap items-center gap-x-4 gap-y-2',
         'mb-6 text-sm',
-        'text-neutral-500 dark:text-neutral-400',
+        'text-slate-500 dark:text-slate-400',
         getFadeUpClass('animate-delay-200')
       )}
     >

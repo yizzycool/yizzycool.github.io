@@ -104,7 +104,7 @@ export default function HeaderMobile({
               types={['github', 'linkedin', 'email']}
               className="justify-center"
             />
-            <p className="mt-4 text-center text-xs text-neutral-400 dark:text-neutral-500">
+            <p className="mt-4 text-center text-xs text-slate-400 dark:text-slate-500">
               © 2026 Yizzy Peasy.
             </p>
           </footer>

@@ -1,0 +1,50 @@
+[
+  {
+    "category": "Frontend Architecture",
+    "icon": "layout-grid",
+    "skills": [
+      "React",
+      "Next.js",
+      "Redux Toolkit",
+      "TypeScript",
+      "JavaScript",
+      "Tailwind CSS",
+      "Fabric.js",
+      "Canvas API",
+      "Web Workers"
+    ]
+  },
+  {
+    "category": "Web Standards & Tools",
+    "icon": "shield-check",
+    "skills": [
+      "Web Accessibility (WCAG/ADA)",
+      "Headless CMS (Strapi)",
+      "i18n Internationalization"
+    ]
+  },
+  {
+    "category": "Data Engineering & Backend",
+    "icon": "database",
+    "skills": [
+      "Apache Kafka",
+      "KSQL",
+      "Kafka Connect",
+      "Python",
+      "SQL",
+      "ETL Pipelines"
+    ]
+  },
+  {
+    "category": "Cloud & MarTech",
+    "icon": "cloud-cog",
+    "skills": [
+      "AWS (EC2, S3)",
+      "Docker",
+      "SEO Optimization",
+      "JSON-LD",
+      "Google Analytics (GA4)",
+      "GTM"
+    ]
+  }
+]

@@ -37,7 +37,7 @@ export default function TocMobile({ toc }: Props) {
           className="flex w-full items-center justify-between p-4 text-left focus:outline-none"
           aria-label="table of content"
         >
-          <div className="flex items-center gap-3 text-neutral-800 dark:text-neutral-300">
+          <div className="flex items-center gap-3 text-slate-800 dark:text-slate-300">
             <List size={18} className="mx-2" />
             <div className="flex flex-col items-start">
               <span className="text-xs font-semibold uppercase tracking-wider">
@@ -49,7 +49,7 @@ export default function TocMobile({ toc }: Props) {
           <ChevronDown
             size={20}
             className={cn(
-              'text-neutral-400 transition-all duration-300',
+              'text-slate-400 transition-all duration-300',
               isOpen && 'rotate-180'
             )}
           />

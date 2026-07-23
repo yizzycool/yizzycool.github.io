@@ -45,9 +45,9 @@ export default function Articles({ articles, categorySlug, tagSlug }: Props) {
           getFadeUpClass('animate-delay-300')
         )}
       >
-        <h2 className="text-xl font-medium text-neutral-900 dark:text-white">
+        <h2 className="text-xl font-medium text-slate-900 dark:text-white">
           {categoryName}
-          <span className="ml-3 text-sm font-normal text-neutral-400 dark:text-neutral-500">
+          <span className="ml-3 text-sm font-normal text-slate-400 dark:text-slate-500">
             {get(meta, ['pagination', 'total'], 0)} articles
           </span>
         </h2>

@@ -31,15 +31,15 @@ export default function DetailCard({ matches }: Props) {
             >
               <div className="mb-2 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-neutral-400"># {i + 1}</span>
+                  <span className="font-bold text-slate-400"># {i + 1}</span>
                 </div>
-                <span className="font-mono text-[10px] text-neutral-400">
+                <span className="font-mono text-[10px] text-slate-400">
                   Pos: {match.index}-{match.index + match[0].length}
                 </span>
               </div>
               <div className="break-all font-mono text-sm">
                 {match[0] || (
-                  <span className="text-xs italic text-neutral-500">
+                  <span className="text-xs italic text-slate-500">
                     Zero-width match
                   </span>
                 )}
@@ -57,7 +57,7 @@ export default function DetailCard({ matches }: Props) {
                       >
                         G{gi + 1}:
                       </span>
-                      <span className="truncate text-neutral-500 dark:text-neutral-400">
+                      <span className="truncate text-slate-500 dark:text-slate-400">
                         {group || 'null'}
                       </span>
                     </div>
@@ -67,13 +67,13 @@ export default function DetailCard({ matches }: Props) {
             </div>
           ))}
           {matches.length > 50 && (
-            <p className="py-2 text-center text-xs italic text-neutral-400">
+            <p className="py-2 text-center text-xs italic text-slate-400">
               Showing first 50 matches...
             </p>
           )}
         </div>
       ) : (
-        <div className="flex flex-1 flex-col items-center justify-center space-y-4 py-12 text-neutral-400">
+        <div className="flex flex-1 flex-col items-center justify-center space-y-4 py-12 text-slate-400">
           <div className="flex h-16 w-16 items-center justify-center rounded-full border border-neutral-100 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-950">
             <Info className="h-8 w-8 opacity-20" />
           </div>

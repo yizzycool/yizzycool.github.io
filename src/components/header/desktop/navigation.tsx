@@ -39,8 +39,8 @@ export default function Navigation() {
                 className={cn(
                   'group relative mx-4 transition-all duration-300',
                   isActive
-                    ? 'font-bold text-neutral-950 dark:text-neutral-50'
-                    : 'text-neutral-500 hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-neutral-50'
+                    ? 'font-bold text-slate-950 dark:text-slate-50'
+                    : 'text-slate-500 hover:text-slate-950 dark:text-slate-400 dark:hover:text-slate-50'
                 )}
                 href={link}
               >

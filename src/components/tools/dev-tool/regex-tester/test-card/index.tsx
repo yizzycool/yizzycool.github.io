@@ -66,7 +66,7 @@ export default function TestCard({
           className={cn(
             'block min-h-full w-full bg-transparent px-4 py-3',
             'resize-none text-base leading-loose outline-none',
-            'text-neutral-700 dark:text-neutral-200',
+            'text-slate-700 dark:text-slate-200',
             'placeholder-neutral-400 dark:placeholder-neutral-500',
             'bg-transparent'
           )}

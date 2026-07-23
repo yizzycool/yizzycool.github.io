@@ -33,7 +33,7 @@ export default function Textarea({
     <Field className="w-full">
       {title && <Label className="text-sm/6 font-bold">{title}</Label>}
       {desc && (
-        <Description className="mb-3 text-sm/6 text-neutral-500 dark:text-neutral-400">
+        <Description className="mb-3 text-sm/6 text-slate-500 dark:text-slate-400">
           {desc}
         </Description>
       )}
@@ -44,7 +44,7 @@ export default function Textarea({
           'border-neutral-200 dark:border-neutral-700',
           'bg-white/40 dark:bg-neutral-900/40',
           'backdrop-blur-md',
-          'text-neutral-700 dark:text-neutral-200',
+          'text-slate-700 dark:text-slate-200',
           'placeholder-neutral-400 dark:placeholder-neutral-500',
           'focus:border-transparent focus:ring-2 focus:ring-blue-500',
           className

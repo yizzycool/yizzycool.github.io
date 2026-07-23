@@ -43,12 +43,12 @@ export default function ConfirmDialog({
       <div className="space-y-4 text-left">
         {/* Header with Title and X button */}
         <div className="flex items-center justify-between gap-4">
-          <h3 className="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
             {title}
           </h3>
           <button
             onClick={onClose}
-            className="shrink-0 rounded-full p-1.5 text-neutral-400 transition-all hover:bg-neutral-100 hover:text-neutral-600 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
+            className="shrink-0 rounded-full p-1.5 text-slate-400 transition-all hover:bg-neutral-100 hover:text-slate-600 dark:hover:bg-neutral-800 dark:hover:text-slate-200"
             aria-label="Close dialog"
           >
             <X size={16} />
@@ -56,7 +56,7 @@ export default function ConfirmDialog({
         </div>
 
         {/* Message */}
-        <div className="text-sm text-neutral-600 dark:text-neutral-400">
+        <div className="text-sm text-slate-600 dark:text-slate-400">
           {message}
         </div>
 

@@ -184,7 +184,7 @@ export default function Result({ text, result, isProcessing }: Props) {
         )}
       >
         {isEmpty(result) ? (
-          <div className="m-auto flex h-full flex-col items-center justify-center text-center text-lg font-bold text-neutral-500">
+          <div className="m-auto flex h-full flex-col items-center justify-center text-center text-lg font-bold text-slate-500">
             {isProcessing ? (
               <>
                 <Cpu
@@ -232,7 +232,7 @@ export default function Result({ text, result, isProcessing }: Props) {
                           className={cn(
                             'max-w-[min(90vw,_300px)] overflow-hidden',
                             'rounded-lg bg-blue-100 p-4 shadow-lg dark:bg-gray-800',
-                            'text-xs text-neutral-700 dark:text-neutral-200',
+                            'text-xs text-slate-700 dark:text-slate-200',
                             'space-y-4'
                           )}
                         >

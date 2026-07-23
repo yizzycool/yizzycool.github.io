@@ -22,7 +22,7 @@ export default function Selector({
     <Field>
       {title && <Label className="text-sm/6 font-bold">{title}</Label>}
       {desc && (
-        <Description className="mb-3 text-sm/6 text-neutral-500 dark:text-neutral-400">
+        <Description className="mb-3 text-sm/6 text-slate-500 dark:text-slate-400">
           {desc}
         </Description>
       )}
@@ -32,7 +32,7 @@ export default function Selector({
             'block w-full appearance-none rounded-lg border px-4 py-2 font-mono text-sm leading-relaxed outline-none',
             'focus:border-transparent focus:ring-2 focus:ring-blue-500',
             'border-gray-200 bg-white text-gray-700 placeholder-gray-400',
-            'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder-neutral-500',
+            'dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-200 dark:placeholder-neutral-500',
             // Make the text of each option black on Windows
             '*:text-black'
           )}

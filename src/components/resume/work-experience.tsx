@@ -1,106 +1,86 @@
 'use client';
 
-import { cn } from '@/utils/cn';
-import {
-  Briefcase,
-  Building2,
-  Layers,
-  SquarePen,
-  WandSparkles,
-} from 'lucide-react';
+import { Check, ExternalLink } from 'lucide-react';
 
+import { cn } from '@/utils/cn';
 import ExperienceData from './data/experiences.json';
 import RevealSection from '@/components/common/reveal-section';
 
 export default function WorkExperience() {
   return (
-    <div id="work-experience" className="mx-auto max-w-screen-xl">
-      <RevealSection className="flex items-center gap-4">
-        <div className="rounded-xl bg-blue-500/10 p-3 text-blue-600 dark:text-blue-400">
-          <Briefcase size={28} />
-        </div>
-        <div>
-          <h2 className="text-3xl font-bold dark:text-neutral-200">
-            Work Experience
-          </h2>
-          <p className="text-neutral-500 dark:text-neutral-400">
-            My professional journey
-          </p>
-        </div>
-      </RevealSection>
+    <RevealSection>
+      <section id="work-experience" className="mb-20">
+        <h3
+          className={cn(
+            'mb-6 border-b-2 border-slate-100 pb-2 text-xl font-bold text-slate-900',
+            'dark:border-slate-700/50 dark:text-white'
+          )}
+        >
+          Work Experience
+        </h3>
 
-      {ExperienceData.map((data) => (
-        <div key={data.duration} className="mt-10">
-          {/* Corp Info */}
-          <RevealSection>
-            <div className="mt-2 text-xl">{data.jobTitle}</div>
-            <div className="mt-2 text-base">{data.duration}</div>
-            <div className="mt-2 flex items-center text-sm">
-              <Building2 className="mr-2 h-5 w-5" />
-              <a
-                className="underline"
-                href={data.corpLink}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                {data.corpName}
-              </a>
+        {ExperienceData.map((exp) => (
+          <div key={exp.corpName} className="relative mb-8">
+            {/* Timeline Dot */}
+            <div
+              className={cn(
+                'absolute -left-3 top-2.5 hidden h-2 w-2 rounded-full bg-indigo-500',
+                'sm:block md:-left-4 dark:bg-indigo-400 print:hidden'
+              )}
+            />
+
+            <div className="mb-2 flex flex-col justify-between sm:flex-row sm:items-baseline">
+              <h4 className="flex items-center gap-2 text-lg font-bold">
+                <span className="text-slate-900 dark:text-white">
+                  {exp.jobTitle}
+                </span>
+                <span className="mx-1">|</span>
+                <a
+                  href={exp.corpLink}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="flex items-center gap-1 font-semibold hover:underline"
+                >
+                  {exp.corpName}
+                  <ExternalLink className="h-4 w-4" />
+                </a>
+              </h4>
+              <span className="mt-1 whitespace-nowrap text-sm text-slate-500 sm:mt-0 dark:text-slate-400">
+                {exp.duration}
+              </span>
             </div>
-          </RevealSection>
 
-          {/* Cards - Work Content */}
-          <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-3">
-            {data.descriptions.map((desc) => (
-              <RevealSection key={desc.title}>
-                <div
+            {exp.domains.map((domain, dIdx) => (
+              <div
+                key={domain.title}
+                className={cn('mt-6', dIdx === 0 && 'mt-5')}
+              >
+                <h5 className="mb-2 flex items-center gap-2 text-base font-semibold text-slate-800 dark:text-slate-200">
+                  <Check
+                    className="h-3 w-3 rounded-full bg-indigo-500 p-0.5 text-white dark:bg-indigo-400 dark:text-slate-900"
+                    strokeWidth={4}
+                  />
+                  {domain.title}
+                </h5>
+                <ul
                   className={cn(
-                    'flex gap-6 overflow-hidden rounded-lg px-8 py-8',
-                    'ring-1 ring-inset ring-black/10 dark:ring-white/10',
-                    'bg-black/5 dark:bg-white/5'
+                    'list-disc space-y-1.5 pl-5 text-sm md:text-base',
+                    'leading-relaxed marker:text-slate-300 sm:pl-8',
+                    'dark:marker:text-slate-600 [&_b]:font-medium [&_b]:text-slate-700 dark:[&_b]:text-slate-300'
                   )}
                 >
-                  <div>
-                    <div className="flex items-center gap-3 text-lg font-bold text-black dark:text-neutral-100">
-                      <JobIcon iconType={desc.iconType} />
-                      {desc.title}
-                    </div>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {desc.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-md bg-sky-50 px-2 py-1 text-xs text-sky-700 ring-1 ring-inset ring-blue-700/10 dark:bg-sky-800 dark:text-blue-50"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="mt-4">
-                      {desc.items.map((item) => (
-                        <div
-                          key={item}
-                          className="mt-4 text-base/7"
-                          dangerouslySetInnerHTML={{ __html: item }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </RevealSection>
+                  {domain.highlights.map((highlight, idx) => (
+                    <li
+                      key={idx}
+                      dangerouslySetInnerHTML={{ __html: highlight }}
+                    />
+                  ))}
+                </ul>
+              </div>
             ))}
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </section>
+    </RevealSection>
   );
-}
-
-function JobIcon({ iconType, size = 20 }: { iconType: string; size?: number }) {
-  if (iconType === 'pencil-square') {
-    return <SquarePen size={size} />;
-  } else if (iconType === 'sparkles') {
-    return <WandSparkles size={size} />;
-  } else if (iconType === 'circle-stack') {
-    return <Layers size={size} />;
-  }
-  return null;
 }

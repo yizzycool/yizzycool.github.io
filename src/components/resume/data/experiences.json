@@ -1,35 +1,65 @@
 [
   {
-    "jobTitle": "Senior Front-end Engineer",
+    "jobTitle": "Senior Frontend Engineer",
     "corpName": "Perfect Corp.",
-    "corpLink": "https://perfectcorp.com",
+    "corpLink": "https://www.perfectcorp.com",
     "duration": "Sep 2021 - Present",
-    "descriptions": [
+    "domains": [
       {
-        "title": "Online AI Photo Editor",
-        "tags": ["Next.js", "React", "B2C", "Front-end"],
-        "items": [
-          "Developed and maintained UI of AI image editors and AI image generators with <b>Next.js</b>",
-          "Implemented <b>Responsive Web Design</b> across desktop, tablet, and mobile device"
+        "title": "B2C - AI Image & Video Generator Platform",
+        "iconType": "sparkles",
+        "tags": [
+          "Next.js",
+          "Redux Toolkit",
+          "Canvas API",
+          "Web Workers",
+          "Strapi CMS",
+          "SEO / JSON-LD",
+          "GA4",
+          "2Checkout"
         ],
-        "iconType": "pencil-square"
+        "highlights": [
+          "Led the project by designing and building the frontend architecture from scratch using <b>Next.js</b>, delivering <b>20+ responsive AI tools</b> and streamlining state management with <b>Redux Toolkit</b>.",
+          "Developed a reusable <b>Canvas-based editor</b> to accelerate AI tool development across <b>10+ applications</b>.",
+          "Optimized face detection for photo editing applications using <b>Web Workers</b>, preventing UI blocking.",
+          "Designed standardized cross-page data schemas in collaboration with the team, minimizing redundant development effort and streamlining product iterations.",
+          "Engineered a polling-based async workflow for long-running AI video generation tasks, enabling non-blocking UX with progress tracking and completion notifications.",
+          "Constructed scalable product experiences by creating robust <b>Strapi-powered CMS</b> landing pages.",
+          "Improved organic search visibility by implementing SEO optimizations including metadata and JSON-LD structured data, contributing to a <b>20% increase in platform revenue</b> within one month.",
+          "Integrated GA event tracking to measure user behavior and conversion funnels, enabling the product team to make informed, data-driven decisions.",
+          "Enabled global payment support for a <b>13-language platform</b> by integrating 2Checkout payment flows."
+        ]
       },
       {
-        "title": "AI Virtual Makeup",
-        "tags": ["React", "AR", "B2B", "Front-end"],
-        "items": [
-          "Developed and customized UI of AI & AR beauty and skin tech solutions with <b>React</b>",
-          "Implemented <b>ADA</b> and <b>WCAG</b> standards to improve accessibility"
+        "title": "B2B - AI/AR Beauty Tech Solutions",
+        "iconType": "camera",
+        "tags": [
+          "React",
+          "AI/AR SDK",
+          "iOS Recording",
+          "ADA / WCAG",
+          "B2B Enterprise"
         ],
-        "iconType": "sparkles"
+        "highlights": [
+          "Delivered React-based UI solutions for <b>30+ enterprise clients</b> using an in-house AI/AR SDK, enabling customizable virtual makeup and skincare try-on features via image and real-time video inputs.",
+          "Resolved a critical iOS video recording issue by developing a fallback recording solution, later adopted into the core SDK as the baseline architecture for future B2B integrations.",
+          "Enhanced web accessibility and ensured <b>ADA/WCAG compliance</b> across client platforms by implementing semantic HTML and ARIA attributes."
+        ]
       },
       {
-        "title": "ETL - Data Transformation",
-        "tags": ["Kafka", "ETL", "Data Warehouse"],
-        "items": [
-          "Deployed data warehouse with <b>Kafka cluster on AWS EC2 instances</b>"
+        "title": "Data Infrastructure & Real-time ETL",
+        "iconType": "database",
+        "tags": [
+          "Apache Kafka",
+          "KSQL",
+          "Kafka Connect",
+          "AWS S3",
+          "ETL Pipelines"
         ],
-        "iconType": "circle-stack"
+        "highlights": [
+          "Architected a real-time streaming data processing system by replacing a legacy EMR-based ETL pipeline with a Kafka-based streaming stack, <b>reducing infrastructure costs by 25%</b>.",
+          "Built and optimized high-throughput streaming ETL pipelines using Kafka, Kafka Connect, KSQL, and S3, handling <b>30M+ records per hour</b> and boosting system throughput by <b>95%</b>."
+        ]
       }
     ]
   }

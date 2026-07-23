@@ -27,18 +27,14 @@ export default function Home() {
               className={cn(
                 'flex items-center gap-2 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-widest',
                 'rounded-full border',
-                'border-indigo-100/80 dark:border-indigo-900/40',
-                'bg-indigo-50/50 dark:bg-indigo-950/30',
+                'border-indigo-300/80 dark:border-indigo-600/50',
+                'bg-indigo-50/30 dark:bg-indigo-950/30',
                 'text-indigo-600 dark:text-indigo-300',
                 'shadow-sm shadow-indigo-100/30 dark:shadow-none',
                 'transition-all duration-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/50',
                 getFadeUpClass('animate-delay-100')
               )}
             >
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75"></span>
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-indigo-500"></span>
-              </span>
               COFFEE, CODE & CHILL
             </div>
 
@@ -46,7 +42,7 @@ export default function Home() {
             <div className="flex w-full flex-col items-center space-y-4 lg:items-start">
               <h2
                 className={cn(
-                  'text-4xl font-black tracking-tight text-neutral-900 md:text-5xl lg:text-7xl dark:text-white',
+                  'text-4xl font-black tracking-tight text-slate-900 md:text-5xl lg:text-7xl dark:text-white',
                   getFadeUpClass('animate-delay-200')
                 )}
               >
@@ -58,7 +54,7 @@ export default function Home() {
 
               <div
                 className={cn(
-                  'flex h-12 items-center justify-center font-mono text-xl font-semibold tracking-tight text-neutral-800 md:text-2xl lg:justify-start dark:text-neutral-100',
+                  'flex h-12 items-center justify-center font-mono text-xl font-semibold tracking-tight text-slate-800 md:text-2xl lg:justify-start dark:text-slate-100',
                   getFadeUpClass('animate-delay-300')
                 )}
               >
@@ -69,16 +65,16 @@ export default function Home() {
             {/* Description */}
             <p
               className={cn(
-                'max-w-xl text-[17px] font-light leading-relaxed text-neutral-600/90 dark:text-neutral-400/90',
+                'max-w-xl text-[17px] font-light leading-relaxed text-slate-600/90 dark:text-slate-400/90',
                 getFadeUpClass('animate-delay-500')
               )}
             >
               Crafting clean, efficient front-end experiences with{' '}
-              <strong className="font-semibold text-neutral-800 dark:text-neutral-200">
+              <strong className="font-semibold text-slate-800 dark:text-slate-200">
                 Next.js
               </strong>{' '}
               and{' '}
-              <strong className="font-semibold text-neutral-800 dark:text-neutral-200">
+              <strong className="font-semibold text-slate-800 dark:text-slate-200">
                 React
               </strong>
               , while keeping a relaxed lifestyle. Focus on UI/UX detail and
@@ -100,7 +96,7 @@ export default function Home() {
               </Link>
               <Link
                 href="/blog"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-neutral-200/80 bg-white/20 px-6 py-3.5 text-sm font-semibold text-neutral-700 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/60 dark:border-neutral-800/80 dark:bg-neutral-900/20 dark:text-neutral-300 dark:hover:bg-neutral-900/60"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-neutral-200/80 bg-white/20 px-6 py-3.5 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/60 dark:border-neutral-800/80 dark:bg-neutral-900/20 dark:text-slate-300 dark:hover:bg-neutral-900/60"
               >
                 Read Blog
               </Link>
@@ -192,7 +188,7 @@ export default function Home() {
             getFadeUpClass('animate-delay-[1200ms]')
           )}
         >
-          <p className="mb-4 text-sm font-medium uppercase tracking-widest text-neutral-400">
+          <p className="mb-4 text-sm font-medium uppercase tracking-widest text-slate-400">
             Tools & Tech for Modern Frontend
           </p>
           <div className="mx-auto h-px w-24 bg-gradient-to-r from-transparent via-neutral-400 to-transparent" />

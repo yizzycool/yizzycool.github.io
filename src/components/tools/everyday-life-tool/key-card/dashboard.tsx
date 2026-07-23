@@ -37,9 +37,9 @@ export default function Dashboard({
       >
         <Keyboard
           size={48}
-          className="mb-3 text-neutral-300 dark:text-neutral-700"
+          className="mb-3 text-slate-300 dark:text-slate-700"
         />
-        <p className="text-base font-semibold text-neutral-500 dark:text-neutral-400">
+        <p className="text-base font-semibold text-slate-500 dark:text-slate-400">
           {searchQuery
             ? 'No matching cheat sheets found'
             : 'Your card library is currently empty'}
@@ -109,7 +109,7 @@ export default function Dashboard({
               >
                 <h3
                   className={cn(
-                    'line-clamp-2 font-bold leading-snug text-neutral-900 transition-colors duration-200 dark:text-neutral-100',
+                    'line-clamp-2 font-bold leading-snug text-slate-900 transition-colors duration-200 dark:text-slate-100',
                     isCompact ? 'text-sm' : 'text-base'
                   )}
                 >
@@ -122,8 +122,8 @@ export default function Dashboard({
                       isCompact
                         ? 'h-6 min-w-6 px-1 text-[9px]'
                         : 'h-7 min-w-7 px-1.5 text-xs',
-                      'border-neutral-300 bg-neutral-100 text-neutral-800',
-                      'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200'
+                      'border-neutral-300 bg-neutral-100 text-slate-800',
+                      'dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-200'
                     )}
                   >
                     {card.key}
@@ -161,18 +161,18 @@ export default function Dashboard({
                 className={cn(
                   'mt-auto flex items-center justify-between border-t pt-3 text-xs',
                   'border-neutral-100 dark:border-neutral-700/80',
-                  'text-neutral-400 dark:text-neutral-500'
+                  'text-slate-400 dark:text-slate-500'
                 )}
               >
                 <span className="flex items-center gap-1.5">
                   <Eye
                     size={13}
-                    className="text-neutral-400 dark:text-neutral-500"
+                    className="text-slate-400 dark:text-slate-500"
                   />
                   Click to view details
                 </span>
                 {card.key && (
-                  <span className="rounded bg-neutral-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-neutral-500 dark:bg-neutral-800">
+                  <span className="rounded bg-neutral-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:bg-neutral-800">
                     Press [{card.key.toUpperCase()}]
                   </span>
                 )}

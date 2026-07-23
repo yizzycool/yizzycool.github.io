@@ -29,7 +29,7 @@ export default function TocDesktop({ toc }: Props) {
       <nav aria-label="table of content">
         <h2
           className={cn(
-            'font-bold text-neutral-800 dark:text-neutral-300',
+            'font-bold text-slate-800 dark:text-slate-300',
             getFadeUpClass('animate-delay-150')
           )}
         >

@@ -24,7 +24,7 @@ export default function ModelDownloadCard({
             <div className="relative">
               <Loader2
                 size={40}
-                className="animate-spin text-neutral-900 dark:text-white"
+                className="animate-spin text-slate-900 dark:text-white"
               />
               <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold">
                 {Math.round(progress * 100)}%
@@ -34,7 +34,7 @@ export default function ModelDownloadCard({
             <>
               <DownloadCloud
                 size={40}
-                className="text-neutral-900 dark:text-white"
+                className="text-slate-900 dark:text-white"
               />
               <div className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full border-4 border-white bg-amber-500 dark:border-neutral-900">
                 <span className="h-1.5 w-1.5 animate-ping rounded-full bg-white" />
@@ -47,7 +47,7 @@ export default function ModelDownloadCard({
         <h2 className="mb-3 text-2xl font-bold tracking-tight">
           Model Download Required
         </h2>
-        <p className="mb-8 leading-relaxed text-neutral-500 dark:text-neutral-400">
+        <p className="mb-8 leading-relaxed text-slate-500 dark:text-slate-400">
           Before your first use, Chrome will download the Gemini Nano model
           once. After that, you're all set.
         </p>
@@ -55,7 +55,7 @@ export default function ModelDownloadCard({
         {/* Progress Bar (Visible only when downloading) */}
         {isDownloading && (
           <div className="mb-8 w-full">
-            <div className="mb-2 flex justify-between text-xs font-medium text-neutral-500">
+            <div className="mb-2 flex justify-between text-xs font-medium text-slate-500">
               <span>Downloading model...</span>
               <span>{Math.round(progress * 100)}%</span>
             </div>
@@ -84,7 +84,7 @@ export default function ModelDownloadCard({
             )}
           </Button>
 
-          <div className="mx-auto mt-4 flex w-fit flex-col justify-center gap-2 text-[11px] text-neutral-400 sm:flex-row sm:items-center">
+          <div className="mx-auto mt-4 flex w-fit flex-col justify-center gap-2 text-[11px] text-slate-400 sm:flex-row sm:items-center">
             <div className="flex items-center gap-2">
               <CheckCircle2 size={12} />
               <span>Needs some storage space</span>

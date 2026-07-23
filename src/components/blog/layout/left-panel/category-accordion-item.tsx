@@ -60,7 +60,7 @@ export default function CategoryAccordionItem({
           <ChevronDown
             size={16}
             className={cn(
-              'text-neutral-400 transition-transform duration-300',
+              'text-slate-400 transition-transform duration-300',
               isOpen && 'rotate-180'
             )}
           />

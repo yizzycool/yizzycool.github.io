@@ -25,7 +25,7 @@ export default function EmptyState() {
               >
                 <ImageIcon
                   size={48}
-                  className="text-neutral-300 dark:text-neutral-600"
+                  className="text-slate-300 dark:text-slate-600"
                   strokeWidth={1.5}
                 />
               </div>
@@ -42,7 +42,7 @@ export default function EmptyState() {
           >
             <MousePointerClick
               size={24}
-              className="text-white dark:text-neutral-900"
+              className="text-white dark:text-slate-900"
               strokeWidth={2.5}
             />
           </div>
@@ -50,17 +50,17 @@ export default function EmptyState() {
       </div>
 
       <div className="max-w-[280px] space-y-4">
-        <h3 className="text-xl font-black uppercase tracking-tight text-neutral-900 dark:text-white">
+        <h3 className="text-xl font-black uppercase tracking-tight text-slate-900 dark:text-white">
           Ready to edit?
         </h3>
-        <p className="text-sm font-medium leading-relaxed text-neutral-500 dark:text-neutral-400">
+        <p className="text-sm font-medium leading-relaxed text-slate-500 dark:text-slate-400">
           Select any image on the canvas to unlock advanced refinement tools.
         </p>
       </div>
 
       <div className="mt-10 flex items-center gap-3 rounded-full bg-neutral-100 px-5 py-2.5 dark:bg-neutral-800">
         <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500" />
-        <span className="text-[10px] font-black uppercase tracking-widest text-neutral-500">
+        <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
           Awaiting Selection
         </span>
       </div>

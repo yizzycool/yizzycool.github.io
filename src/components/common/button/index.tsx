@@ -43,19 +43,19 @@ export default function Button({
 
   const variants = {
     primary: cn(
-      'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 border-white dark:border-black',
+      'bg-neutral-900 text-white dark:bg-white dark:text-slate-900 border-white dark:border-black',
       !disabled && 'hover:bg-neutral-800 dark:hover:bg-neutral-200'
     ),
     secondary: cn(
-      'bg-white text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100 border-neutral-300 dark:border-neutral-600',
+      'bg-white text-slate-900 dark:bg-neutral-800 dark:text-slate-100 border-neutral-300 dark:border-neutral-600',
       !disabled && 'hover:bg-neutral-100 dark:hover:bg-neutral-700'
     ),
     ghost: cn(
-      'text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-neutral-700',
+      'text-slate-600 dark:text-slate-400 border-neutral-200 dark:border-neutral-700',
       !disabled && 'hover:bg-neutral-100 dark:hover:bg-neutral-800'
     ),
     outline: cn(
-      'border border-neutral-300 text-neutral-700 dark:border-neutral-700 dark:text-neutral-300',
+      'border border-neutral-300 text-slate-700 dark:border-neutral-700 dark:text-slate-300',
       !disabled && 'hover:bg-white/30 dark:hover:bg-neutral-700/50'
     ),
     error: cn(
@@ -67,7 +67,7 @@ export default function Button({
       !disabled && 'hover:bg-sky-500 dark:hover:bg-sky-800'
     ),
     neutral: cn(
-      'bg-neutral-100 border-neutral-500/20 text-neutral-600 dark:bg-neutral-700 dark:text-neutral-400',
+      'bg-neutral-100 border-neutral-500/20 text-slate-600 dark:bg-neutral-700 dark:text-slate-400',
       !disabled && 'hover:bg-neutral-200 dark:hover:bg-neutral-600'
     ),
     success: cn(

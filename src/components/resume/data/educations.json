@@ -1,12 +1,20 @@
 [
   {
-    "name": "National Tsing Hua University",
-    "department": "Master's Degree in Computer Science",
-    "duration": "Sep 2019 - Jul 2021"
+    "school": "National Tsing Hua University",
+    "degree": "M.S. in Computer Science",
+    "duration": "Sep 2019 - Jul 2021",
+    "highlights": [
+      "<b>Thesis:</b> \"Dealing with Improper Verbs in Writing based on Language Model\" - Transformer-based GEC",
+      "<b>Research:</b> Graduate Researcher at Natural Language Processing (NLP) Lab"
+    ]
   },
   {
-    "name": "National Taiwan University",
-    "department": "Bachelor's Degree in Computer Science",
-    "duration": "Sep 2015 - Jun 2019"
+    "school": "National Taiwan University",
+    "degree": "B.S. in Computer Science",
+    "duration": "Sep 2015 - Jun 2019",
+    "highlights": [
+      "<b>Capstone Project:</b> Implemented Long Short-Term Memory (LSTM) networks for ETF price prediction",
+      "<b>Research:</b> Undergraduate Member at Natural Language Processing (NLP) Lab"
+    ]
   }
 ]

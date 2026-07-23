@@ -23,7 +23,7 @@ export default function Breadcrumb({ article }: Props) {
     <nav aria-label="breadcrumb">
       <ol
         className={cn(
-          'mb-8 flex items-center gap-1 text-sm text-neutral-500 dark:text-neutral-400',
+          'mb-8 flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400',
           getFadeUpClass()
         )}
       >

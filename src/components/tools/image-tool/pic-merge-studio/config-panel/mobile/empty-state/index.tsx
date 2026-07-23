@@ -20,7 +20,7 @@ export default function EmptyState() {
               >
                 <ImageIcon
                   size={24}
-                  className="text-neutral-300 dark:text-neutral-600"
+                  className="text-slate-300 dark:text-slate-600"
                   strokeWidth={1.5}
                 />
               </div>
@@ -36,7 +36,7 @@ export default function EmptyState() {
           >
             <MousePointerClick
               size={12}
-              className="text-white dark:text-neutral-900"
+              className="text-white dark:text-slate-900"
               strokeWidth={2.5}
             />
           </div>
@@ -45,17 +45,17 @@ export default function EmptyState() {
 
       <div className="flex-1 space-y-1">
         <div className="flex w-full items-center justify-between gap-2">
-          <h3 className="text-sm font-black uppercase tracking-tight text-neutral-900 dark:text-white">
+          <h3 className="text-sm font-black uppercase tracking-tight text-slate-900 dark:text-white">
             Ready to edit?
           </h3>
           <div className="flex items-center gap-2 rounded-full bg-neutral-100 px-2 py-1 dark:bg-neutral-800">
             <div className="aspect-square h-1.5 w-1.5 animate-pulse rounded-full bg-green-500" />
-            <span className="text-xs font-black uppercase text-neutral-500">
+            <span className="text-xs font-black uppercase text-slate-500">
               Ready
             </span>
           </div>
         </div>
-        <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
+        <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
           Select any image to unlock advanced tools.
         </p>
       </div>

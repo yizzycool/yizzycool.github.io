@@ -13,7 +13,7 @@ export default function HeaderDesktop() {
 
       <Navigation />
 
-      <div className="mx-2 h-4 w-px bg-neutral-300 dark:bg-neutral-700" />
+      <div className="mx-2 h-4 w-px bg-slate-300 dark:bg-slate-700" />
 
       <div className="flex items-center pl-4">
         <ThemeSelector />

@@ -55,10 +55,10 @@ export default function SeriesGuide({ collection, slug }: Props) {
               <Layers size={18} className="text-blue-600 dark:text-blue-400" />
             </div>
             <div className="flex flex-col items-start">
-              <h3 className="font-bold leading-tight text-neutral-900 dark:text-neutral-100">
+              <h3 className="font-bold leading-tight text-slate-900 dark:text-slate-100">
                 {collection.name}
               </h3>
-              <span className="mt-1 flex items-center gap-2 text-xs font-bold tracking-widest text-neutral-400">
+              <span className="mt-1 flex items-center gap-2 text-xs font-bold tracking-widest text-slate-400">
                 系列導覽
                 <Badge rounded="md" bordered className="font-bold">
                   {currentIndex + 1}/{articles.length}
@@ -69,7 +69,7 @@ export default function SeriesGuide({ collection, slug }: Props) {
           <ChevronDown
             size={20}
             className={cn(
-              'text-neutral-400 transition-all duration-300',
+              'text-slate-400 transition-all duration-300',
               isOpen && 'rotate-180'
             )}
           />
@@ -97,7 +97,7 @@ export default function SeriesGuide({ collection, slug }: Props) {
                     'flex items-center gap-3 rounded-xl p-3 transition-all duration-200',
                     currentIndex === idx
                       ? 'bg-white ring-1 ring-neutral-200 dark:bg-neutral-800 dark:ring-neutral-700'
-                      : 'text-neutral-500 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800/40'
+                      : 'text-slate-500 hover:bg-neutral-100 dark:text-slate-400 dark:hover:bg-neutral-800/40'
                   )}
                 >
                   <div
@@ -105,7 +105,7 @@ export default function SeriesGuide({ collection, slug }: Props) {
                       'flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-black transition-all',
                       currentIndex === idx
                         ? 'bg-blue-600 text-white'
-                        : 'bg-neutral-200 text-neutral-500 dark:bg-neutral-800'
+                        : 'bg-neutral-200 text-slate-500 dark:bg-neutral-800'
                     )}
                   >
                     {idx + 1}
@@ -114,7 +114,7 @@ export default function SeriesGuide({ collection, slug }: Props) {
                     className={cn(
                       'font-semibold leading-relaxed',
                       currentIndex === idx
-                        ? 'text-neutral-900 dark:text-white'
+                        ? 'text-slate-900 dark:text-white'
                         : ''
                     )}
                   >

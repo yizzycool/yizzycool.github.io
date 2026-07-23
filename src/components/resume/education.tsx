@@ -1,39 +1,61 @@
 'use client';
 
-import { GraduationCap } from 'lucide-react';
-
-import RevealSection from '@/components/common/reveal-section';
 import EducationData from './data/educations.json';
+import RevealSection from '@/components/common/reveal-section';
+import { cn } from '@/utils/cn';
 
 export default function Education() {
   return (
-    <div className="relative">
-      <div id="education" className="mx-auto max-w-screen-xl">
-        <RevealSection className="flex items-center gap-4">
-          <div className="rounded-xl bg-purple-500/10 p-3 text-purple-600 dark:text-purple-400">
-            <GraduationCap size={28} />
-          </div>
-          <div>
-            <h2 className="text-3xl font-bold dark:text-neutral-200">
-              Education
-            </h2>
-            <p className="text-neutral-500 dark:text-neutral-400">
-              Academic background
-            </p>
-          </div>
-        </RevealSection>
-        {EducationData.map((data) => (
-          <RevealSection key={data.name}>
-            <div className="mt-20 border-t border-neutral-300 py-12 lg:grid lg:grid-cols-3 dark:border-neutral-500">
-              <div>{data.duration}</div>
-              <div className="col-span-2">
-                <div className="text-2xl font-bold">{data.name}</div>
-                <div className="mt-5">{data.department}</div>
+    <RevealSection>
+      <section id="education" className="mb-20">
+        <h3
+          className={cn(
+            'mb-6 border-b-2 border-slate-100 pb-2 text-xl font-bold text-slate-900',
+            'dark:border-slate-700/50 dark:text-white'
+          )}
+        >
+          Education
+        </h3>
+
+        <div className="space-y-6">
+          {EducationData.map((edu) => (
+            <div key={edu.school} className="relative">
+              {/* Timeline Dot */}
+              <div
+                className={cn(
+                  'absolute -left-3 top-2 hidden h-2 w-2 rounded-full bg-slate-300',
+                  'sm:block md:-left-4 dark:bg-slate-600 print:hidden'
+                )}
+              />
+              <div className="mb-1 flex flex-col sm:flex-row sm:items-baseline sm:justify-between">
+                <h4 className="flex items-center gap-1.5 text-base font-bold text-slate-900 md:text-lg dark:text-white">
+                  {edu.degree}
+                  <span className="mx-1 hidden text-slate-400 sm:inline dark:text-slate-600">
+                    |
+                  </span>
+                  <br className="sm:hidden" />
+                  <span className="font-medium text-slate-700 dark:text-slate-300">
+                    {edu.school}
+                  </span>
+                </h4>
+                <span className="mt-1 whitespace-nowrap text-sm text-slate-500 sm:mt-0 dark:text-slate-400">
+                  {edu.duration}
+                </span>
               </div>
+              <ul
+                className={cn(
+                  'ml-1 space-y-1 border-l-2 border-slate-100 pl-3 text-sm text-slate-600',
+                  'sm:ml-0 sm:pl-4 md:text-base dark:border-slate-700/50 dark:text-slate-400'
+                )}
+              >
+                {edu.highlights.map((item, idx) => (
+                  <li key={idx} dangerouslySetInnerHTML={{ __html: item }}></li>
+                ))}
+              </ul>
             </div>
-          </RevealSection>
-        ))}
-      </div>
-    </div>
+          ))}
+        </div>
+      </section>
+    </RevealSection>
   );
 }

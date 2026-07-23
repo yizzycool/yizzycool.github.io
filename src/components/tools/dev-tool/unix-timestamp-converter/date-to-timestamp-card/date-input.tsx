@@ -11,7 +11,7 @@ type Props = {
 export default function DateInput({ label, value, onChange, min, max }: Props) {
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-xs font-medium text-neutral-500">{label}</label>
+      <label className="text-xs font-medium text-slate-500">{label}</label>
       <input
         type="number"
         value={value ?? ''}

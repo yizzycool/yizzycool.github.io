@@ -18,7 +18,7 @@ export default function GroupTitle({
   return (
     <div
       className={cn(
-        'flex items-center gap-2 text-neutral-600 dark:text-neutral-300',
+        'flex items-center gap-2 text-slate-600 dark:text-slate-300',
         className
       )}
     >

@@ -120,10 +120,10 @@ export default function Management({
       {/* Action header bar wrapper */}
       <div className="border-t border-neutral-200 dark:border-neutral-700">
         {/* Info hint text on mobile */}
-        <div className="-mb-3 flex items-center gap-1.5 pt-6 text-[11px] text-neutral-500 md:hidden dark:text-neutral-400">
+        <div className="-mb-3 flex items-center gap-1.5 pt-6 text-[11px] text-slate-500 md:hidden dark:text-slate-400">
           <Info
             size={13}
-            className="shrink-0 text-neutral-400 dark:text-neutral-500"
+            className="shrink-0 text-slate-400 dark:text-slate-500"
           />
           <span>Import or export from JSON file</span>
         </div>
@@ -208,7 +208,7 @@ export default function Management({
       {/* Cards Form list */}
       <div className="space-y-4">
         {/* Sorting controls row */}
-        <div className="flex items-center justify-end gap-2.5 px-1 text-xs text-neutral-500 dark:text-neutral-400">
+        <div className="flex items-center justify-end gap-2.5 px-1 text-xs text-slate-500 dark:text-slate-400">
           <span className="font-semibold">Sort By:</span>
           <div className="inline-flex rounded-xl border border-neutral-200/50 bg-neutral-100/80 p-1 backdrop-blur-sm dark:border-neutral-700/50 dark:bg-neutral-800/80">
             <button
@@ -218,7 +218,7 @@ export default function Management({
                 'rounded-lg px-3 py-1.5 text-xs font-semibold transition-all duration-200',
                 sortOrder === 'asc'
                   ? 'bg-white text-sky-600 shadow-sm dark:bg-neutral-900 dark:text-sky-500'
-                  : 'text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200'
+                  : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
               )}
             >
               Ascending
@@ -230,7 +230,7 @@ export default function Management({
                 'rounded-lg px-3 py-1.5 text-xs font-semibold transition-all duration-200',
                 sortOrder === 'desc'
                   ? 'bg-white text-sky-600 shadow-sm dark:bg-neutral-900 dark:text-sky-500'
-                  : 'text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200'
+                  : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
               )}
             >
               Descending
@@ -258,7 +258,7 @@ export default function Management({
                 <span
                   className={cn(
                     'flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold',
-                    'bg-neutral-100 text-neutral-500 dark:bg-neutral-700 dark:text-neutral-400'
+                    'bg-neutral-100 text-slate-500 dark:bg-neutral-700 dark:text-slate-400'
                   )}
                 >
                   {sortOrder === 'desc' ? cards.length - index : index + 1}
@@ -273,13 +273,13 @@ export default function Management({
                     placeholder="Enter card title..."
                     className={cn(
                       'w-full border-b border-transparent bg-transparent py-0.5 pl-1 pr-6 text-sm font-bold outline-none transition-all',
-                      'text-neutral-900 dark:text-neutral-100',
+                      'text-slate-900 dark:text-slate-100',
                       'focus:border-neutral-400 dark:focus:border-neutral-600'
                     )}
                   />
                   <Pencil
                     size={12}
-                    className="pointer-events-none absolute right-1 text-neutral-400 opacity-0 transition-opacity group-focus-within/title:opacity-0 group-hover/title:opacity-100"
+                    className="pointer-events-none absolute right-1 text-slate-400 opacity-0 transition-opacity group-focus-within/title:opacity-0 group-hover/title:opacity-100"
                   />
                 </div>
               </div>
@@ -298,7 +298,7 @@ export default function Management({
                       ? 'animate-pulse border-sky-500 bg-sky-500 text-white'
                       : card.key
                         ? 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-900 dark:bg-sky-900/20 dark:text-sky-500'
-                        : 'border-neutral-200 bg-neutral-50 text-neutral-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400'
+                        : 'border-neutral-200 bg-neutral-50 text-slate-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-slate-400'
                   )}
                 >
                   <Keyboard size={13} />
@@ -334,7 +334,7 @@ export default function Management({
                 <label
                   className={cn(
                     'flex items-center gap-2 text-xs font-semibold',
-                    'text-neutral-500 dark:text-neutral-400'
+                    'text-slate-500 dark:text-slate-400'
                   )}
                 >
                   Tags
@@ -356,8 +356,8 @@ export default function Management({
                       <div
                         className={cn(
                           'max-w-xs rounded-xl border px-3.5 py-2.5 text-xs leading-relaxed shadow-xl',
-                          'border-neutral-700/80 bg-neutral-900 text-neutral-100',
-                          'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200'
+                          'border-neutral-700/80 bg-neutral-900 text-slate-100',
+                          'dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-200'
                         )}
                       >
                         Separate multiple tags with commas.
@@ -373,8 +373,8 @@ export default function Management({
                   }
                   placeholder="e.g. General, Task, Notes"
                   className={cn(
-                    'w-full rounded-lg border bg-white/30 px-3 py-1.5 text-sm text-neutral-800 outline-none transition-all',
-                    'border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900/30 dark:text-neutral-200',
+                    'w-full rounded-lg border bg-white/30 px-3 py-1.5 text-sm text-slate-800 outline-none transition-all',
+                    'border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900/30 dark:text-slate-200',
                     'focus:border-sky-500/20 focus:ring-2 focus:ring-sky-500/20'
                   )}
                 />
@@ -386,7 +386,7 @@ export default function Management({
                   <span
                     className={cn(
                       'flex items-center gap-1.5 text-xs font-bold',
-                      'text-neutral-500 dark:text-neutral-400'
+                      'text-slate-500 dark:text-slate-400'
                     )}
                   >
                     Contents ({card.contents ? card.contents.length : 0})
@@ -408,8 +408,8 @@ export default function Management({
                         <div
                           className={cn(
                             'max-w-xs rounded-xl border px-3.5 py-2.5 text-xs font-normal leading-relaxed shadow-xl',
-                            'border-neutral-700/80 bg-neutral-900 text-neutral-100',
-                            'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200'
+                            'border-neutral-700/80 bg-neutral-900 text-slate-100',
+                            'dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-200'
                           )}
                         >
                           Supports Markdown formatting, which will be rendered
@@ -457,13 +457,13 @@ export default function Management({
                               placeholder="Name (e.g. Version A)..."
                               className={cn(
                                 'w-full border-b border-transparent bg-transparent pl-2 pr-6 text-xs font-bold outline-none transition-all',
-                                'text-neutral-700 focus:border-neutral-400',
-                                'dark:text-neutral-300 dark:focus:border-neutral-600'
+                                'text-slate-700 focus:border-neutral-400',
+                                'dark:text-slate-300 dark:focus:border-neutral-600'
                               )}
                             />
                             <Pencil
                               size={11}
-                              className="pointer-events-none absolute right-1 text-neutral-400 opacity-0 transition-opacity group-focus-within/label:opacity-0 group-hover/label:opacity-100"
+                              className="pointer-events-none absolute right-1 text-slate-400 opacity-0 transition-opacity group-focus-within/label:opacity-0 group-hover/label:opacity-100"
                             />
                           </div>
 
@@ -478,7 +478,7 @@ export default function Management({
                               }
                               className={cn(
                                 'p-0.5 transition-opacity hover:text-red-500 group-hover/version:opacity-100 sm:opacity-0',
-                                'text-neutral-455'
+                                'text-slate-455'
                               )}
                               title="Delete this version"
                             >
@@ -502,7 +502,7 @@ export default function Management({
                           className={cn(
                             'w-full resize-none rounded-lg border bg-white/30 px-2.5 py-1.5 text-xs outline-none transition-all focus:border-sky-500 focus:ring-1 focus:ring-sky-500/20',
                             'border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900/20',
-                            'text-neutral-855 dark:text-neutral-250'
+                            'text-slate-855 dark:text-slate-250'
                           )}
                         />
                       </div>
@@ -522,9 +522,9 @@ export default function Management({
           >
             <Plus
               size={48}
-              className="text-neutral-350 mb-3 animate-pulse dark:text-neutral-700"
+              className="text-slate-350 mb-3 animate-pulse dark:text-slate-700"
             />
-            <p className="text-base font-semibold text-neutral-500 dark:text-neutral-400">
+            <p className="text-base font-semibold text-slate-500 dark:text-slate-400">
               No cards in management. Click Add Card in the top right to get
               started!
             </p>

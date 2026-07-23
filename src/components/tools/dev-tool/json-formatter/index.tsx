@@ -127,7 +127,7 @@ export default function JsonFormatter() {
         placeholder="Paste your JSON string here..."
       />
       {/* Char count block */}
-      <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
+      <div className="mt-3 w-full text-right text-xs text-slate-400 dark:text-slate-600">
         {size(input)} chars
       </div>
 
@@ -148,7 +148,7 @@ export default function JsonFormatter() {
       <div className="relative">
         <Textarea id="output" value={output} rows={10} readOnly />
         {!output && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-lg font-bold text-neutral-500">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-lg font-bold text-slate-500">
             <CodeXml className="" size={40} />
             Waiting for Input...
           </div>

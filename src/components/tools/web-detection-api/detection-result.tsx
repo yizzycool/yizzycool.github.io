@@ -28,7 +28,7 @@ export default function DetectionResult({ results, isProcessing }: Props) {
 
       <div className="-m-6 max-h-80 flex-1 space-y-3 overflow-y-auto p-6">
         {isProcessing ? (
-          <div className="flex h-full flex-col items-center justify-center gap-3 text-neutral-400">
+          <div className="flex h-full flex-col items-center justify-center gap-3 text-slate-400">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-neutral-200 border-t-blue-500"></div>
             <p className="text-sm">Analyzing pixels...</p>
           </div>
@@ -48,7 +48,7 @@ export default function DetectionResult({ results, isProcessing }: Props) {
                   )}
                 </div>
                 {!!text && (
-                  <div className="break-all font-mono text-sm text-neutral-600 dark:text-neutral-300">
+                  <div className="break-all font-mono text-sm text-slate-600 dark:text-slate-300">
                     {text}
                   </div>
                 )}
@@ -59,7 +59,7 @@ export default function DetectionResult({ results, isProcessing }: Props) {
             </div>
           ))
         ) : (
-          <div className="flex h-full flex-col items-center justify-center text-center text-neutral-500">
+          <div className="flex h-full flex-col items-center justify-center text-center text-slate-500">
             <AlertCircle size={32} className="mb-2 opacity-50" />
             <p className="text-sm">No results to display.</p>
           </div>

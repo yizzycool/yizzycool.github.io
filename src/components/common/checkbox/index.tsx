@@ -129,11 +129,11 @@ export default function CheckBox<T extends readonly string[]>({
               )}
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-semibold group-hover:text-neutral-900 dark:group-hover:text-white">
+              <span className="text-sm font-semibold group-hover:text-slate-900 dark:group-hover:text-white">
                 {option}
               </span>
               {!!optionsDesc?.[idx] && (
-                <span className="mt-1 text-xs text-neutral-500">
+                <span className="mt-1 text-xs text-slate-500">
                   {optionsDesc[idx]}
                 </span>
               )}

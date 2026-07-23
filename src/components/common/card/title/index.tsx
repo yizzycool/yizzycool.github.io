@@ -16,10 +16,10 @@ export default function CardTitle({
 }: Props) {
   return (
     <div
-      className={cn('flex items-center gap-2 dark:text-neutral-300', className)}
+      className={cn('flex items-center gap-2 dark:text-slate-300', className)}
     >
       {!!Icon && (
-        <Icon className="h-5 w-5 text-neutral-400 dark:text-neutral-500" />
+        <Icon className="h-5 w-5 text-slate-400 dark:text-slate-500" />
       )}
       {!!children && <h3 className="text-lg font-semibold">{children}</h3>}
     </div>

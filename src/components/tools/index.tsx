@@ -23,8 +23,8 @@ export default function ToolsIndex() {
             <section className={cn('space-y-6', getFadeUpClass())}>
               <h2
                 className={cn(
-                  'border-b pb-2 text-xl font-bold tracking-tight text-neutral-800',
-                  'border-neutral-200/60 dark:border-neutral-700/80 dark:text-neutral-200'
+                  'border-b pb-2 text-xl font-bold tracking-tight text-slate-800',
+                  'border-neutral-200/60 dark:border-neutral-700/80 dark:text-slate-200'
                 )}
               >
                 {group.name}
@@ -55,13 +55,13 @@ export default function ToolsIndex() {
                       <div>
                         <h3
                           className={cn(
-                            'text-base font-bold text-neutral-900 transition-colors',
+                            'text-base font-bold text-slate-900 transition-colors',
                             'group-hover:text-sky-600 dark:text-white dark:group-hover:text-sky-600'
                           )}
                         >
                           {item.name}
                         </h3>
-                        <p className="mt-1.5 text-xs font-light leading-relaxed text-neutral-500 dark:text-neutral-400">
+                        <p className="mt-1.5 text-xs font-light leading-relaxed text-slate-500 dark:text-slate-400">
                           {item.desc}
                         </p>
                       </div>

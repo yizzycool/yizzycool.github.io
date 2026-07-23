@@ -15,7 +15,7 @@ export default function ResultRow({ label, value }: Props) {
         'backdrop-blur-md'
       )}
     >
-      <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+      <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
         {label}
       </p>
       <div className="flex items-center justify-between gap-2">

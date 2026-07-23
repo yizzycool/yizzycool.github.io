@@ -123,7 +123,7 @@ export default function ImageToBase64() {
               'border-neutral-200/80 dark:border-neutral-800/60',
               'backdrop-blur-md',
               'bg-white/40 dark:bg-neutral-900/40',
-              'text-neutral-700 dark:text-neutral-200',
+              'text-slate-700 dark:text-slate-200',
               'placeholder-neutral-400 dark:placeholder-neutral-500',
               'focus:border-transparent focus:ring-2 focus:ring-blue-500'
             )}
@@ -131,7 +131,7 @@ export default function ImageToBase64() {
             readOnly
           />
           {/* Char count block */}
-          <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
+          <div className="mt-3 w-full text-right text-xs text-slate-400 dark:text-slate-600">
             {size(base64)} chars
           </div>
         </div>

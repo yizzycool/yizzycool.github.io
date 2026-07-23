@@ -8,7 +8,7 @@ export default function Tip() {
       </div>
       <div>
         <h4 className="mb-1 text-sm font-semibold">Tips</h4>
-        <p className="text-xs leading-relaxed text-neutral-500 dark:text-neutral-400">
+        <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
           For best results in the Detector, ensure the subject is well-lit and
           centered.
         </p>

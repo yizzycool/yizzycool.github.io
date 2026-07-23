@@ -21,7 +21,7 @@ export default function MetricRow({ label, value, icon: Icon }: Props) {
         <div
           className={cn(
             'rounded-lg p-2 transition-colors',
-            'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 dark:group-hover:bg-neutral-700'
+            'bg-neutral-100 text-slate-600 dark:bg-neutral-800 dark:text-slate-300 dark:group-hover:bg-neutral-700'
           )}
         >
           <Icon size={16} />
@@ -29,7 +29,7 @@ export default function MetricRow({ label, value, icon: Icon }: Props) {
         <span
           className={cn(
             'font-medium tracking-tight transition-colors',
-            'text-sm text-neutral-800 dark:text-neutral-100'
+            'text-sm text-slate-800 dark:text-slate-100'
           )}
         >
           {label}
@@ -38,7 +38,7 @@ export default function MetricRow({ label, value, icon: Icon }: Props) {
       <span
         className={cn(
           'font-mono font-bold tabular-nums',
-          'text-lg text-neutral-900 dark:text-neutral-50'
+          'text-lg text-slate-900 dark:text-slate-50'
         )}
       >
         {value}

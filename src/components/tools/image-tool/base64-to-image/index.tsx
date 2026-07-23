@@ -105,7 +105,7 @@ export default function Base64ToImage() {
         placeholder="Paste your Base64 string here (e.g. data:image/png;base64,...)"
       />
       {/* Char count block */}
-      <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
+      <div className="mt-3 w-full text-right text-xs text-slate-400 dark:text-slate-600">
         {size(base64)} chars
       </div>
 
@@ -132,7 +132,7 @@ export default function Base64ToImage() {
         )}
       >
         {isNull(imageInfo.image) ? (
-          <div className="m-auto text-center text-lg font-bold text-neutral-500">
+          <div className="m-auto text-center text-lg font-bold text-slate-500">
             <ImageIcon className="mx-auto mb-4 block" size={40} />
             <div>Image will be displayed here</div>
           </div>

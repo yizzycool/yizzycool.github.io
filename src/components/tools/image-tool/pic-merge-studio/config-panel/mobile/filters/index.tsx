@@ -77,7 +77,7 @@ export default function Filters({ filters, setFilters }: Props) {
                     'flex h-5 w-5 items-center justify-center overflow-hidden rounded-full',
                     'border-2 border-neutral-900/70 dark:border-white/50',
                     'bg-white/20 backdrop-blur-sm',
-                    'text-xs text-neutral-900/70 dark:text-white/80',
+                    'text-xs text-slate-900/70 dark:text-white/80',
                     'font-black'
                   )}
                 >

@@ -63,7 +63,7 @@ export default function Tools({ setText }: Props) {
           'mr-2 flex items-center px-3',
           'text-xs font-black uppercase tracking-widest',
           'border-r border-neutral-200 dark:border-neutral-700',
-          'text-neutral-400 dark:text-neutral-500'
+          'text-slate-400 dark:text-slate-500'
         )}
       >
         Text Tools

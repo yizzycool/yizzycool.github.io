@@ -11,7 +11,7 @@ type Props = {
 };
 
 const defaultClass =
-  'flex items-center gap-2 font-semibold dark:text-neutral-300';
+  'flex items-center gap-2 font-semibold dark:text-slate-300';
 
 export default function Label({
   htmlFor,

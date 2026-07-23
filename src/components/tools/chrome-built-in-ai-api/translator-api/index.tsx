@@ -94,7 +94,7 @@ export default function TranslatorApi() {
               'flex flex-col justify-center rounded-xl border backdrop-blur-md',
               'border-neutral-200 dark:border-neutral-700',
               'bg-white/40 dark:bg-neutral-900/40',
-              'text-neutral-700 dark:text-neutral-200',
+              'text-slate-700 dark:text-slate-200',
               'placeholder-neutral-400 dark:placeholder-neutral-500'
             )}
           >
@@ -140,7 +140,7 @@ export default function TranslatorApi() {
                   id="input"
                   className={cn(
                     'block w-full flex-1 resize-none bg-transparent px-3 py-2 focus:outline-none',
-                    'text-neutral-700 dark:text-neutral-200',
+                    'text-slate-700 dark:text-slate-200',
                     'placeholder-neutral-400 dark:placeholder-neutral-500'
                   )}
                   onChange={onChange}
@@ -166,7 +166,7 @@ export default function TranslatorApi() {
                   id="output"
                   className={cn(
                     'block h-full w-full flex-1 resize-none bg-transparent px-3 py-2 focus:outline-none',
-                    'text-neutral-700 dark:text-neutral-200',
+                    'text-slate-700 dark:text-slate-200',
                     'placeholder-neutral-400 dark:placeholder-neutral-500'
                   )}
                   value={translation}

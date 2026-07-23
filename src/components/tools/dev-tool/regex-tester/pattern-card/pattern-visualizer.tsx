@@ -45,7 +45,7 @@ export default function PatternVisualizer({ pattern }: Props) {
   };
 
   if (!pattern)
-    return <span className="italic text-neutral-400">Type a pattern...</span>;
+    return <span className="italic text-slate-400">Type a pattern...</span>;
 
   return (
     <>

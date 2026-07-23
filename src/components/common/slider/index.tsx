@@ -32,7 +32,7 @@ export default function Slider({
     <Field>
       {title && <Label className="text-sm/6 font-bold">{title}</Label>}
       {desc && (
-        <Description className="text-sm/6 text-neutral-500 dark:text-neutral-400">
+        <Description className="text-sm/6 text-slate-500 dark:text-slate-400">
           {desc}
         </Description>
       )}

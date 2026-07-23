@@ -119,7 +119,7 @@ export default function SummarizerApi() {
             placeholder="Type or paste the artice or text here to summarize..."
           />
           {/* Char count block */}
-          <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
+          <div className="mt-3 w-full text-right text-xs text-slate-400 dark:text-slate-600">
             {size(text)} chars
           </div>
 

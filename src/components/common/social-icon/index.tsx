@@ -2,6 +2,8 @@
 
 import { LucideIcon } from 'lucide-react';
 
+import { cn } from '@/utils/cn';
+
 type Props = {
   icon: LucideIcon;
   href?: string;
@@ -17,7 +19,12 @@ export default function SocialIcon({
     <a
       href={href}
       target="_blank"
-      className="transform rounded-full p-2 text-neutral-500 transition-all duration-300 hover:scale-110 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white"
+      className={cn(
+        'transform rounded-full p-2 transition-all duration-300',
+        'hover:scale-110 hover:bg-neutral-100 dark:hover:bg-neutral-700',
+        'text-slate-500 dark:text-slate-400',
+        'hover:text-slate-900 dark:hover:text-white'
+      )}
     >
       <Icon size={size} />
     </a>

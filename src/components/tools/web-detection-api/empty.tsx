@@ -44,13 +44,13 @@ export default function Empty({
         />
       ) : (
         <div className="flex flex-col items-center border-2 border-transparent px-4 py-12 sm:px-8">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-neutral-200 text-neutral-400 dark:bg-neutral-700">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-neutral-200 text-slate-400 dark:bg-neutral-700">
             <Webcam size={32} />
           </div>
           <div className="mt-4 w-fit px-8 py-2 text-lg font-bold">
             Use webcam
           </div>
-          <div className="max-w-xs text-sm text-neutral-500 dark:text-neutral-400">
+          <div className="max-w-xs text-sm text-slate-500 dark:text-slate-400">
             Use your webcam to start detection. Just click when you're ready.
           </div>
           <Button

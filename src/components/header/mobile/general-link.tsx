@@ -24,8 +24,8 @@ export default function GeneralLink({
       className={cn(
         'block rounded-lg px-3 py-4 font-medium transition-all duration-300',
         isActive
-          ? 'bg-neutral-100 font-semibold text-neutral-950 dark:bg-neutral-800 dark:text-neutral-50'
-          : 'text-neutral-500 hover:bg-neutral-200/50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800/30 dark:hover:text-neutral-200'
+          ? 'bg-neutral-100 font-semibold text-slate-950 dark:bg-neutral-800 dark:text-slate-50'
+          : 'text-slate-500 hover:bg-neutral-200/50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-neutral-800/30 dark:hover:text-slate-200'
       )}
       href={href}
       onClick={onClick}
@@ -37,8 +37,8 @@ export default function GeneralLink({
             className={cn(
               'transition-colors duration-300',
               isActive
-                ? 'text-neutral-950 dark:text-neutral-50'
-                : 'text-neutral-400 dark:text-neutral-500'
+                ? 'text-slate-950 dark:text-slate-50'
+                : 'text-slate-400 dark:text-slate-500'
             )}
           />
         )}

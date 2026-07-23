@@ -107,25 +107,25 @@ export default function BarChart({
         )}
       >
         <div>
-          <div className="text-sm font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+          <div className="text-sm font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
             Detected Language
           </div>
           <div className="mt-1 flex items-baseline">
-            <div className="text-4xl font-bold text-neutral-900 dark:text-neutral-50">
+            <div className="text-4xl font-bold text-slate-900 dark:text-slate-50">
               {intlUtils.languageTagToHumanReadable(
                 topData?.detectedLanguage || ''
               )}
             </div>
-            <div className="ml-3 rounded-md bg-neutral-400 px-2 py-0.5 text-lg font-medium text-neutral-100">
+            <div className="ml-3 rounded-md bg-neutral-400 px-2 py-0.5 text-lg font-medium text-slate-100">
               {topData?.detectedLanguage}
             </div>
           </div>
         </div>
         <div className="text-right">
-          <div className="text-sm font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+          <div className="text-sm font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
             Confidence
           </div>
-          <div className="mt-1 text-2xl font-bold text-neutral-900 dark:text-neutral-50">
+          <div className="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-50">
             {round((topData?.confidence || 0) * 100, 1)}%
           </div>
         </div>

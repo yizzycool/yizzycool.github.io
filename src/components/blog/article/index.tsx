@@ -48,7 +48,7 @@ export default function Article({
           {/* Title */}
           <h1
             className={cn(
-              'mb-6 text-4xl leading-normal tracking-tight dark:text-neutral-100',
+              'mb-6 text-4xl leading-normal tracking-tight dark:text-slate-100',
               getFadeUpClass('animate-delay-100')
             )}
           >

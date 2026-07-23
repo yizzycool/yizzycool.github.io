@@ -48,11 +48,11 @@ const ProseClass = cn(
   'dark:prose-blockquote:bg-indigo-50/10',
   'prose-blockquote:backdrop-blur-md',
   'prose-blockquote:shadow-sm',
-  'prose-blockquote:text-neutral-500',
-  'dark:prose-blockquote:text-neutral-200',
+  'prose-blockquote:text-slate-500',
+  'dark:prose-blockquote:text-slate-200',
 
   // customize headings (h1 ~ h4, th)
-  'dark:prose-heading:text-neutral-200',
+  'dark:prose-heading:text-slate-200',
 
   // customize <h2>
   'prose-h2:mt-16',
@@ -63,7 +63,7 @@ const ProseClass = cn(
   'prose-h3:font-semibold',
 
   // customize <strong>
-  'dark:prose-strong:text-neutral-200',
+  'dark:prose-strong:text-slate-200',
 
   // customize <table>
   'prose-table:block',
@@ -71,8 +71,8 @@ const ProseClass = cn(
   'prose-th:px-4',
   'prose-th:py-3',
   'prose-th:tracking-wider',
-  'prose-th:text-neutral-500',
-  'dark:prose-th:text-neutral-400',
+  'prose-th:text-slate-500',
+  'dark:prose-th:text-slate-400',
   'prose-td:min-w-[200px]',
   'prose-td:px-4',
   'prose-td:py-3',

@@ -106,7 +106,7 @@ export default function LanguageDetectorApi() {
               placeholder="Type or paste the text you want to detect here..."
             />
             {/* Char count block */}
-            <div className="mt-3 w-full text-right text-xs text-neutral-400 dark:text-neutral-600">
+            <div className="mt-3 w-full text-right text-xs text-slate-400 dark:text-slate-600">
               {size(text)} chars
             </div>
           </div>
@@ -123,7 +123,7 @@ export default function LanguageDetectorApi() {
             )}
           >
             {isNull(results) ? (
-              <div className="m-auto text-center text-lg font-bold text-neutral-500">
+              <div className="m-auto text-center text-lg font-bold text-slate-500">
                 <ChartColumn className="mx-auto mb-4 block" size={40} />
                 <div>Waiting for input...</div>
               </div>

@@ -56,7 +56,7 @@ export default function ArticleCard({ article }: Props) {
             <div className="flex flex-col justify-between p-6 md:w-2/3">
               <div>
                 {/* Metadata */}
-                <div className="mb-3 flex flex-wrap items-center gap-3 text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                <div className="mb-3 flex flex-wrap items-center gap-3 text-xs font-medium text-slate-500 dark:text-slate-400">
                   <span className="flex items-center gap-1">
                     <Folder size={12} />
                     {article.category.name}
@@ -72,12 +72,12 @@ export default function ArticleCard({ article }: Props) {
                 </div>
 
                 {/* Article Title */}
-                <h3 className="mb-3 text-xl font-medium text-neutral-900 transition-colors group-hover:text-blue-600 md:text-2xl dark:text-neutral-100 dark:group-hover:text-blue-400">
+                <h3 className="mb-3 text-xl font-medium text-slate-900 transition-colors group-hover:text-blue-600 md:text-2xl dark:text-slate-100 dark:group-hover:text-blue-400">
                   {article.title}
                 </h3>
 
                 {/* Short Description */}
-                <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-neutral-600 md:line-clamp-3 dark:text-neutral-400">
+                <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-slate-600 md:line-clamp-3 dark:text-slate-400">
                   {article.description}
                 </p>
               </div>

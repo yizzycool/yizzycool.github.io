@@ -46,7 +46,7 @@ export default function ToolsSelectorMobile({
         <ul className="ml-4 overflow-hidden border-l border-neutral-400/50">
           {ToolDataForFeaturePanel.map((tool) => (
             <li key={tool.name} className="space-y-4 p-4">
-              <span className="text-sm font-bold tracking-wide text-neutral-500 dark:text-neutral-400">
+              <span className="text-sm font-bold tracking-wide text-slate-500 dark:text-slate-400">
                 {tool.name}
               </span>
               <ul>

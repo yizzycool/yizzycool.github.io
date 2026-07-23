@@ -97,7 +97,7 @@ export default function CanvasLayout({
           <div key={key} className="mt-2 space-y-2">
             <label
               htmlFor={`size-${key}`}
-              className="block pl-1 text-xs font-bold uppercase tracking-widest text-neutral-400"
+              className="block pl-1 text-xs font-bold uppercase tracking-widest text-slate-400"
             >
               {label}
             </label>
@@ -112,7 +112,7 @@ export default function CanvasLayout({
                 'rounded-lg outline-none focus:ring-2 focus:ring-blue-500',
                 'px-4 py-3 text-sm font-bold transition-all',
                 'bg-transparent backdrop-blur',
-                'border border-neutral-500/20 text-neutral-600 dark:text-neutral-400',
+                'border border-neutral-500/20 text-slate-600 dark:text-slate-400',
                 !isGridLayout && 'cursor-not-allowed'
               )}
               disabled={!isGridLayout}

@@ -25,7 +25,7 @@ export default function Appearance({
 
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-neutral-500 dark:text-neutral-400">
+          <span className="text-sm text-slate-500 dark:text-slate-400">
             Foreground
           </span>
           <ColorPicker
@@ -35,7 +35,7 @@ export default function Appearance({
           />
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-sm text-neutral-500 dark:text-neutral-400">
+          <span className="text-sm text-slate-500 dark:text-slate-400">
             Background
           </span>
           <ColorPicker
@@ -46,7 +46,7 @@ export default function Appearance({
         </div>
 
         <div className="pt-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
             Presets
           </span>
           <div className="mt-2 flex flex-wrap gap-2">
