@@ -1,11 +1,10 @@
 [
   {
     "category": "Frontend Architecture",
-    "icon": "layout-grid",
     "skills": [
       "React",
       "Next.js",
-      "Redux Toolkit",
+      "Redux",
       "TypeScript",
       "JavaScript",
       "Tailwind CSS",
@@ -16,16 +15,10 @@
   },
   {
     "category": "Web Standards & Tools",
-    "icon": "shield-check",
-    "skills": [
-      "Web Accessibility (WCAG/ADA)",
-      "Headless CMS (Strapi)",
-      "i18n Internationalization"
-    ]
+    "skills": ["Web Accessibility", "Headless CMS", "Internationalization"]
   },
   {
     "category": "Data Engineering & Backend",
-    "icon": "database",
     "skills": [
       "Apache Kafka",
       "KSQL",
@@ -37,9 +30,8 @@
   },
   {
     "category": "Cloud & MarTech",
-    "icon": "cloud-cog",
     "skills": [
-      "AWS (EC2, S3)",
+      "AWS EC2 & S3",
       "Docker",
       "SEO Optimization",
       "JSON-LD",
