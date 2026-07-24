@@ -48,9 +48,7 @@ export default function TestCard({
           'relative h-[300px] overflow-auto',
           'rounded-lg border border-neutral-200 dark:border-neutral-700',
           'bg-white/40 dark:bg-neutral-900/40',
-          'backdrop-blur-md',
-          'has-[:focus]:border-transparent has-[:focus]:ring-2 has-[:focus]:ring-blue-500',
-          'backdrop-blur'
+          'has-[:focus]:border-transparent has-[:focus]:ring-2 has-[:focus]:ring-blue-500'
         )}
       >
         <HighlightMark

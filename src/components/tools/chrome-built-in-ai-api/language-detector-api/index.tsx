@@ -118,8 +118,7 @@ export default function LanguageDetectorApi() {
             className={cn(
               'relative flex min-h-[300px] w-full flex-col items-center rounded-lg border p-6',
               'border-neutral-200 dark:border-neutral-700',
-              'bg-white/40 dark:bg-neutral-900/40',
-              'backdrop-blur-md'
+              'bg-white/40 dark:bg-neutral-900/40'
             )}
           >
             {isNull(results) ? (

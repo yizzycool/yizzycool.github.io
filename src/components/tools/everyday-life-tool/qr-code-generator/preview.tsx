@@ -30,8 +30,8 @@ export default function Preview({ qrCodeUrl, inputText }: Props) {
     >
       <div
         className={cn(
-          'absolute -inset-4 z-10 backdrop-blur-sm',
-          'pointer-events-none bg-neutral-100/50 dark:bg-neutral-800/50',
+          'absolute -inset-4 z-10',
+          'pointer-events-none bg-white/40 dark:bg-neutral-900/40',
           'transition-opacity duration-300',
           'flex items-center justify-center',
           isGenerating ? 'opacity-100' : 'opacity-0'

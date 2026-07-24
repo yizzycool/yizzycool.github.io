@@ -35,10 +35,10 @@ export default function ToolsIndex() {
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      'group relative flex flex-col justify-between rounded-2xl border p-5 shadow-sm backdrop-blur-sm',
+                      'group relative flex flex-col justify-between rounded-2xl border p-5 shadow-sm',
                       'border-neutral-200 bg-white/40 dark:border-neutral-700 dark:bg-neutral-900/40',
                       'transition-all duration-300',
-                      'hover:-translate-y-0.5 hover:bg-white hover:shadow-md',
+                      'hover:bg-white hover:shadow-md',
                       'hover:border-blue-500/50 dark:hover:border-blue-500/50 dark:hover:bg-neutral-900'
                     )}
                   >

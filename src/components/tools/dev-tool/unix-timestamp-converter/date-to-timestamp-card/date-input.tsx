@@ -22,8 +22,7 @@ export default function DateInput({ label, value, onChange, min, max }: Props) {
           'w-full rounded-md border border-neutral-200 px-2 py-2 text-center font-mono outline-none',
           'focus:border-neutral-400',
           'dark:border-neutral-700 dark:focus:border-neutral-500',
-          'bg-white/40 dark:bg-neutral-900/40',
-          'backdrop-blur-md'
+          'bg-white/40 dark:bg-neutral-900/40'
         )}
       />
     </div>

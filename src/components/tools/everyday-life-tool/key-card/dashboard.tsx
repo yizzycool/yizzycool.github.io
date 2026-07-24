@@ -89,7 +89,7 @@ export default function Dashboard({
           <div
             key={card.id}
             className={cn(
-              'group relative flex transform cursor-pointer flex-col justify-between rounded-2xl text-left backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5',
+              'group relative flex transform cursor-pointer flex-col justify-between rounded-2xl text-left transition-all duration-300',
               isCompact ? 'p-3.5' : 'p-5',
               'overflow-hidden',
               'border border-neutral-200 dark:border-neutral-700',

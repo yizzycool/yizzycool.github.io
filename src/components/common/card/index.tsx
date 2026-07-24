@@ -39,8 +39,7 @@ export default function Card({
       className={cn(
         'border p-6 text-left',
         'border-neutral-200 dark:border-neutral-700',
-        'bg-black/5 dark:bg-white/5',
-        'backdrop-blur-md',
+        'bg-white/40 dark:bg-neutral-900/40',
         animations[animation],
         roundedMap[rounded],
         className

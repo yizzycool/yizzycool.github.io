@@ -32,9 +32,9 @@ export default function Selector({
             'block w-full appearance-none rounded-lg border px-4 py-2 font-mono text-sm leading-relaxed outline-none',
             'focus:border-transparent focus:ring-2 focus:ring-blue-500',
             'border-gray-200 bg-white text-gray-700 placeholder-gray-400',
-            'dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-200 dark:placeholder-neutral-500',
+            'dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-200 dark:placeholder-neutral-500'
             // Make the text of each option black on Windows
-            '*:text-black'
+            // '*:text-black'
           )}
           defaultValue={defaultValue}
           onChange={(event: ChangeEvent<HTMLSelectElement>) =>

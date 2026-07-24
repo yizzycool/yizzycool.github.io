@@ -210,7 +210,7 @@ export default function Management({
         {/* Sorting controls row */}
         <div className="flex items-center justify-end gap-2.5 px-1 text-xs text-slate-500 dark:text-slate-400">
           <span className="font-semibold">Sort By:</span>
-          <div className="inline-flex rounded-xl border border-neutral-200/50 bg-neutral-100/80 p-1 backdrop-blur-sm dark:border-neutral-700/50 dark:bg-neutral-800/80">
+          <div className="inline-flex rounded-xl border border-neutral-200/50 bg-neutral-100 p-1 dark:border-neutral-700/50 dark:bg-neutral-800">
             <button
               type="button"
               onClick={() => setSortOrder('asc')}

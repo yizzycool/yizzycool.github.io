@@ -91,7 +91,7 @@ export default function TranslatorApi() {
         <>
           <div
             className={cn(
-              'flex flex-col justify-center rounded-xl border backdrop-blur-md',
+              'flex flex-col justify-center rounded-xl border',
               'border-neutral-200 dark:border-neutral-700',
               'bg-white/40 dark:bg-neutral-900/40',
               'text-slate-700 dark:text-slate-200',
@@ -188,7 +188,7 @@ export default function TranslatorApi() {
                 </div>
 
                 {shouldDownloadModel && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center backdrop-blur-sm">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/40 text-center dark:bg-neutral-900/40">
                     <InlineDownloadCard
                       options={options}
                       progress={downloadProgress || 0}
@@ -196,7 +196,7 @@ export default function TranslatorApi() {
                   </div>
                 )}
                 {availability === 'unavailable' && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center backdrop-blur-sm">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/40 text-center dark:bg-neutral-900/40">
                     <UnsupportedLanguagePairCard options={options} />
                   </div>
                 )}

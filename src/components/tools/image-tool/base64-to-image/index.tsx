@@ -127,7 +127,6 @@ export default function Base64ToImage() {
         className={cn(
           'relative flex h-[300px] w-full flex-col items-center rounded-lg p-4',
           'border border-neutral-200/80 dark:border-neutral-800/60',
-          'backdrop-blur-md',
           'bg-white/40 dark:bg-neutral-900/40'
         )}
       >

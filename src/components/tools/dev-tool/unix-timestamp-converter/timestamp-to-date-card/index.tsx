@@ -60,8 +60,7 @@ export default function TimestampToDateCard() {
                   'w-full rounded-lg border px-4 py-3 font-mono text-lg outline-none transition-all',
                   'border-neutral-200 focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500',
                   'dark:border-neutral-700 dark:focus:border-neutral-500',
-                  'bg-white/40 dark:bg-neutral-900/40',
-                  'backdrop-blur-md'
+                  'bg-white/40 dark:bg-neutral-900/40'
                 )}
                 placeholder="e.g. 1734771000"
               />

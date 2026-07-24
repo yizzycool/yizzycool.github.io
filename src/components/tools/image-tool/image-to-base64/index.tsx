@@ -82,7 +82,6 @@ export default function ImageToBase64() {
             className={cn(
               'relative flex h-[300px] w-full flex-col items-center rounded-lg border p-4',
               'border-neutral-200/80 dark:border-neutral-800/60',
-              'backdrop-blur-md',
               'bg-white/40 dark:bg-neutral-900/40'
             )}
           >
@@ -121,7 +120,6 @@ export default function ImageToBase64() {
               'h-[300px] w-full rounded-lg border px-4 py-3',
               'resize-none font-mono text-sm leading-relaxed outline-none',
               'border-neutral-200/80 dark:border-neutral-800/60',
-              'backdrop-blur-md',
               'bg-white/40 dark:bg-neutral-900/40',
               'text-slate-700 dark:text-slate-200',
               'placeholder-neutral-400 dark:placeholder-neutral-500',

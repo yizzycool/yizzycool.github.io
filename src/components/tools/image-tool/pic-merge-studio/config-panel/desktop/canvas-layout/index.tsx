@@ -111,7 +111,7 @@ export default function CanvasLayout({
                 'm-0 w-full',
                 'rounded-lg outline-none focus:ring-2 focus:ring-blue-500',
                 'px-4 py-3 text-sm font-bold transition-all',
-                'bg-transparent backdrop-blur',
+                'bg-white/40 dark:bg-neutral-900/40',
                 'border border-neutral-500/20 text-slate-600 dark:text-slate-400',
                 !isGridLayout && 'cursor-not-allowed'
               )}

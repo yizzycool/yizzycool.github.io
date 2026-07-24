@@ -26,7 +26,7 @@ export default function TocMobile({ toc }: Props) {
       <nav
         className={cn(
           'relative overflow-hidden transition-all duration-300',
-          'bg-neutral-50/50 backdrop-blur-md dark:bg-neutral-900/50',
+          'bg-neutral-50/50 dark:bg-neutral-900/50',
           'rounded-2xl border-2 border-neutral-200 dark:border-neutral-700'
         )}
         aria-label="table of content"

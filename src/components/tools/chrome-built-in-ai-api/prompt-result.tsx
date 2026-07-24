@@ -27,8 +27,7 @@ export default function PromptResult({ results, isProcessing }: Props) {
         className={cn(
           'relative h-[300px] w-full overflow-y-auto rounded-lg border p-6',
           'border-neutral-200 dark:border-neutral-700',
-          'bg-white/80 dark:bg-neutral-900/80',
-          'backdrop-blur'
+          'bg-white/40 dark:bg-neutral-900/40'
         )}
       >
         {isEmpty(results) ? (

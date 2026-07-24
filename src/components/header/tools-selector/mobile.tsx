@@ -24,7 +24,8 @@ export default function ToolsSelectorMobile({
         className={cn(
           'flex w-full items-center justify-between rounded-lg px-3 py-4',
           'transition-all duration-300',
-          'hover:bg-neutral-200 dark:hover:bg-neutral-800/50'
+          'hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50',
+          'hover:text-slate-900 dark:hover:text-slate-200'
         )}
         onClick={() => setIsOpen((prev) => !prev)}
       >

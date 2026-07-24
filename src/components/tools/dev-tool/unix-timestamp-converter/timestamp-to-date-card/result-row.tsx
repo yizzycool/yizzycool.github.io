@@ -11,8 +11,7 @@ export default function ResultRow({ label, value }: Props) {
     <div
       className={cn(
         'group relative rounded-lg border border-neutral-200 p-3 dark:border-neutral-700',
-        'bg-white/40 dark:bg-neutral-900/40',
-        'backdrop-blur-md'
+        'bg-white/40 dark:bg-neutral-900/40'
       )}
     >
       <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">

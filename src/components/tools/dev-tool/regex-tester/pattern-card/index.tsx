@@ -34,8 +34,7 @@ export default function PatternCard({
       <div
         className={cn(
           'rounded-xl border border-neutral-200 p-4 ring-blue-500 focus-within:ring-2 dark:border-neutral-700',
-          'bg-white/40 dark:bg-neutral-900/40',
-          'backdrop-blur-md'
+          'bg-white/40 dark:bg-neutral-900/40'
         )}
       >
         <div className="mb-2 flex items-center gap-2 font-mono text-lg">

@@ -38,7 +38,7 @@ export default function Toolbar({
             className={cn(
               'w-full rounded-xl border py-2 pl-10 pr-10 text-sm outline-none transition-all',
               'border-neutral-200 dark:border-neutral-700',
-              'bg-white/40 backdrop-blur-md dark:bg-neutral-900/40',
+              'bg-white/40 dark:bg-neutral-900/40',
               'text-slate-900 dark:text-slate-100',
               'focus:border-sky-500/20 focus:ring-2 focus:ring-sky-500/20'
             )}
@@ -81,7 +81,7 @@ export default function Toolbar({
       {/* Action Toggle buttons */}
       <div className="flex flex-wrap items-center gap-2.5">
         {/* Mode Switcher Tabs */}
-        <div className="inline-flex w-full rounded-xl border border-neutral-200/50 bg-neutral-100/80 p-1 backdrop-blur-sm dark:border-neutral-700/50 dark:bg-neutral-800/80">
+        <div className="inline-flex w-full rounded-xl border border-neutral-200/50 bg-neutral-100 p-1 dark:border-neutral-700/50 dark:bg-neutral-800">
           <button
             onClick={() => setMode('dashboard')}
             className={cn(
