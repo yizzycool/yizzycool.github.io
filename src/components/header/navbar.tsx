@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 
 import { cn } from '@/utils/cn';
-import useWindowDevice from '@/hooks/window/use-window-device';
+
 import HeaderDesktop from './desktop';
 import HeaderMobile from './mobile';
 import Link from 'next/link';
@@ -21,8 +21,6 @@ export default function Navbar({ categoryArticles }: Props) {
 
   const pathname = usePathname();
   const isToolPage = pathname.startsWith('/tools');
-
-  const { isDesktop } = useWindowDevice();
 
   // Handle Scroll & Mount Animations
   useEffect(() => {
@@ -62,11 +60,13 @@ export default function Navbar({ categoryArticles }: Props) {
           </div>
         </Link>
 
-        {isDesktop ? (
+        <div className="hidden flex-1 items-center justify-end lg:flex">
           <HeaderDesktop />
-        ) : (
+        </div>
+
+        <div className="flex flex-1 items-center justify-end lg:hidden">
           <HeaderMobile categoryArticles={categoryArticles} />
-        )}
+        </div>
       </div>
     </header>
   );

@@ -72,6 +72,13 @@ export default function SearchDialog({ deviceType }: Props) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        const isDesktopScreen = window.innerWidth >= 1024;
+        if (
+          (deviceType === 'desktop' && !isDesktopScreen) ||
+          (deviceType === 'mobile' && isDesktopScreen)
+        ) {
+          return;
+        }
         e.preventDefault();
         setIsOpen((prev) => !prev);
       }
@@ -79,7 +86,7 @@ export default function SearchDialog({ deviceType }: Props) {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [deviceType]);
 
   // Clear query when dialog closed
   useEffect(() => {
