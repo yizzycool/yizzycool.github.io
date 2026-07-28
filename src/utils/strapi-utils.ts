@@ -142,6 +142,7 @@ const strapiUtils = {
       const queryObject: QueryObject = {
         status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
         fields: ['slug'],
+        pagination: defaults({ pageSize: 9999 }, PAGINATION),
         filters,
       };
       return qs.stringify(queryObject);
@@ -171,6 +172,7 @@ const strapiUtils = {
       const queryObject: QueryObject = {
         status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
         fields: ['slug'],
+        pagination: defaults({ pageSize: 9999 }, PAGINATION),
         filters,
       };
       return qs.stringify(queryObject);
