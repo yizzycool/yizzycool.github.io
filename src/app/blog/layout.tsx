@@ -1,26 +1,8 @@
-import strapiUtils from '@/utils/strapi-utils';
+import { fetchCategoryArticles } from '@/utils/strapi-utils';
 import GlimmerBackground from '@/components/common/glimmer-background';
 import GlimmerBackgroundConfigs from '@/data/glimmer-background-config/blog';
 import LeftPanel from '@/components/blog/layout/left-panel';
 import ScrollToTop from '@/components/common/scroll-to-top';
-
-export const fetchCategoryArticles = async () => {
-  try {
-    const queryString =
-      strapiUtils.fetch.generateCategoriesQueryStringForLeftPanel();
-    const response = await fetch(
-      `${process.env.STRAPI_URL}/api/categories?${queryString}`
-    );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.warn('Error fetching category articles for layout:', error);
-    return { data: [] };
-  }
-};
 
 export default async function Layout({
   children,

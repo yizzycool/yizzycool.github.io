@@ -1,6 +1,4 @@
-// 'use client';
-
-import { fetchCategoryArticles } from '@/app/blog/layout';
+import { fetchCategoryArticles } from '@/utils/strapi-utils';
 import Navbar from './navbar';
 
 export default async function Header() {

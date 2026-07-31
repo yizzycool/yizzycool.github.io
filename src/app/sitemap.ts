@@ -5,10 +5,6 @@ import { map, flatMap } from 'lodash';
 
 import { generateStaticParams as generateCategoryArticles } from './blog/[category]/[article]/page';
 import { generateStaticParams as generateCategories } from './blog/category/[category]/page';
-import { generateStaticParams as generateCategoryPages } from './blog/category/[category]/page/[page]/page';
-import { generateStaticParams as generatePages } from './blog/page/[page]/page';
-import { generateStaticParams as generateTags } from './blog/tag/[tag]/page';
-import { generateStaticParams as generateTagPages } from './blog/tag/[tag]/page/[page]/page';
 import { Tools } from '@/data/tools';
 
 export const dynamic = 'force-static';
@@ -43,58 +39,7 @@ const generateBlogData = async (): Promise<MetadataRoute.Sitemap> => {
     };
   });
 
-  // /blog/category/[category]/page/[page]
-  const categoriePages = await generateCategoryPages();
-  const categoryPageUrls = map(categoriePages, ({ category, page }) => {
-    return {
-      url: urlJoin(domain, '/blog/category', category, '/page', page),
-      lastModified,
-      changeFrequency,
-      priority,
-    };
-  });
-
-  // /blog/page/[page]
-  const pages = await generatePages();
-  const pageUrls = map(pages, ({ page }) => {
-    return {
-      url: urlJoin(domain, '/blog/page', page),
-      lastModified,
-      changeFrequency,
-      priority,
-    };
-  });
-
-  // /blog/tag/[tag]
-  const tags = await generateTags();
-  const tagUrls = map(tags, ({ tag }) => {
-    return {
-      url: urlJoin(domain, '/blog/tag', tag),
-      lastModified,
-      changeFrequency,
-      priority,
-    };
-  });
-
-  // /blog/tag/[tag]/page/[page]
-  const tagPages = await generateTagPages();
-  const tagPageUrls = map(tagPages, ({ tag, page }) => {
-    return {
-      url: urlJoin(domain, '/blog/tag', tag, '/page', page),
-      lastModified,
-      changeFrequency,
-      priority,
-    };
-  });
-
-  return [
-    ...categoryArticleUrls,
-    ...categoryUrls,
-    ...categoryPageUrls,
-    ...pageUrls,
-    ...tagUrls,
-    ...tagPageUrls,
-  ];
+  return [...categoryArticleUrls, ...categoryUrls];
 };
 
 const ToolsSitemap: MetadataRoute.Sitemap = flatMap(Tools, (tool) =>

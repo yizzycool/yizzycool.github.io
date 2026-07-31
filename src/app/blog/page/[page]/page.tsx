@@ -52,6 +52,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         '深入的前端與 Web 技術教學、Chrome API 實作筆記與工程實例整理。',
       images: [urlJoin(domain, 'assets/images/blog/twitter-image.jpg')],
     },
+    robots: {
+      index: false,
+      follow: true,
+    },
   };
 }
 

@@ -12,8 +12,7 @@ import { get, size, flatMap, map, findIndex } from 'lodash';
 
 import Article from '@/components/blog/article';
 import seoUtils from '@/utils/seo-utils';
-import strapiUtils from '@/utils/strapi-utils';
-import { fetchCategoryArticles } from '../../layout';
+import strapiUtils, { fetchCategoryArticles } from '@/utils/strapi-utils';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN || '/';
 

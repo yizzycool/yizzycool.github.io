@@ -212,4 +212,22 @@ const strapiUtils = {
   },
 };
 
+export const fetchCategoryArticles = async () => {
+  try {
+    const queryString =
+      strapiUtils.fetch.generateCategoriesQueryStringForLeftPanel();
+    const response = await fetch(
+      `${process.env.STRAPI_URL}/api/categories?${queryString}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.warn('Error fetching category articles:', error);
+    return { data: [] };
+  }
+};
+
 export default strapiUtils;
