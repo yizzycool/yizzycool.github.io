@@ -8,6 +8,7 @@ import { get, find, defaultsDeep } from 'lodash';
 import strapiUtils from './strapi-utils';
 import dataProcessUtils from './tools/data/data-process-utils';
 import { ToolJsonLdSoftwareApplication } from '@/data/tools/metadata';
+import { ToolGroupSlugs, ToolSlugs, ToolTitles } from '@/data/tools';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN || '';
 const websiteName = process.env.NEXT_PUBLIC_WEBSITE_NAME || '';
@@ -15,7 +16,7 @@ const authorName = process.env.NEXT_PUBLIC_AUTHOR_NAME || '';
 const logoUrl = urlJoin(domain, '/assets/images/header/logo.png');
 
 const seoUtils = {
-  // For /layout.tsx
+  // For /page.tsx
   generateWebSiteJsonLd: () => {
     return {
       '@context': 'https://schema.org',
@@ -31,6 +32,31 @@ const seoUtils = {
           url: logoUrl,
         },
       },
+    };
+  },
+
+  // For /page.tsx
+  generateSiteNavigationElement: () => {
+    return {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebSite',
+          'name': 'YizzyPeasy',
+          'url': domain,
+        },
+        {
+          '@type': 'SiteNavigationElement',
+          'id': 'site-navigation',
+          'name': ['Home', 'Blog', 'Tools', 'Resume'],
+          'url': [
+            domain,
+            urlJoin(domain, 'blog'),
+            urlJoin(domain, 'tools'),
+            urlJoin(domain, 'resume'),
+          ],
+        },
+      ],
     };
   },
 
@@ -193,6 +219,28 @@ const seoUtils = {
     };
   },
 
+  // For /resume/page.tsx
+  generateResumeBreadcrumbJsonLd: () => {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: domain,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Resume',
+          item: urlJoin(domain, 'resume'),
+        },
+      ],
+    };
+  },
+
   // For /blog/category/[category]/page.tsx
   generateCategoryBreadcrumbJsonLd: (
     categoryName: string,
@@ -222,6 +270,39 @@ const seoUtils = {
         },
       ],
     };
+  },
+
+  // For /blog/page.tsx & /blog/page/[page]/page.tsx
+  generateBlogBreadcrumbJsonLd: (page = 1) => {
+    const breadcrumbList = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: domain,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Blog',
+          item: urlJoin(domain, 'blog'),
+        },
+      ],
+    };
+
+    if (page > 1) {
+      breadcrumbList.itemListElement.push({
+        '@type': 'ListItem',
+        position: 3,
+        name: `Blog - Page ${page}`,
+        item: urlJoin(domain, `blog/page/${page}`),
+      });
+    }
+
+    return breadcrumbList;
   },
 
   // For /blog/[category]/[article]/page.tsx
@@ -284,6 +365,63 @@ const seoUtils = {
     const specificToolData = get(ToolJsonLdSoftwareApplication, toolKey, {});
 
     return defaultsDeep({}, specificToolData, customJsonLd);
+  },
+
+  // For /tools/page.tsx
+  generateToolsBreadcrumbJsonLd: () => {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: domain,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Tools',
+          item: urlJoin(domain, 'tools'),
+        },
+      ],
+    };
+  },
+
+  // For /tools/<category>/<tool>/page.tsx
+  generateEachToolBreadcrumbJsonLd: (toolKey: string) => {
+    const toolGroupKey = dataProcessUtils.getToolGroupKeyByToolKey(toolKey);
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: domain,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Tools',
+          item: urlJoin(domain, 'tools'),
+        },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: `${ToolTitles[toolKey]} | YizzyPeasy`,
+          item: urlJoin(
+            domain,
+            'tools',
+            ToolGroupSlugs[toolGroupKey],
+            ToolSlugs[toolKey]
+          ),
+        },
+      ],
+    };
   },
 };
 

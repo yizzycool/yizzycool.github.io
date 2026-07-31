@@ -72,6 +72,12 @@ export default async function Page() {
           __html: JSON.stringify(seoUtils.generateBlogJsonLd()),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(seoUtils.generateBlogBreadcrumbJsonLd()),
+        }}
+      />
       <Articles articles={articles} />
     </>
   );

@@ -28,7 +28,7 @@ export default function Navigation() {
   const pathname = usePathname();
 
   return (
-    <nav className="px-4">
+    <nav className="px-4" aria-label="Main Navigation">
       <ul className="flex items-center justify-end px-4">
         {navigationData.map(({ link, title }) => {
           const isActive =

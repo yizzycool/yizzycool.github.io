@@ -35,6 +35,12 @@ export default function ResumePage() {
           __html: JSON.stringify(seoUtils.generateResumeJsonLd()),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(seoUtils.generateResumeBreadcrumbJsonLd()),
+        }}
+      />
       <GlimmerBackground configs={GlimmerBackgroundConfigs} />
       <Resume />
     </>

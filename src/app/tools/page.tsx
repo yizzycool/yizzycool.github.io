@@ -48,6 +48,12 @@ export default function ToolsPage() {
           __html: JSON.stringify(seoUtils.generateToolsJsonLd()),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(seoUtils.generateToolsBreadcrumbJsonLd()),
+        }}
+      />
       <ToolsIndex />
     </>
   );

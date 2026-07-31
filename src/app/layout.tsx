@@ -4,7 +4,6 @@ import '@/styles/globals.css';
 import urlJoin from 'url-join';
 import { Inter, Noto_Sans_TC } from 'next/font/google';
 
-import seoUtils from '@/utils/seo-utils';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import { GTMNoScript, GTMScript } from '@/components/layout/gtm';
@@ -93,12 +92,6 @@ export default function RootLayout({
     >
       <head>
         <GTMScript />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(seoUtils.generateWebSiteJsonLd()),
-          }}
-        />
       </head>
       <body className="overflow-x-hidden bg-gray-50 text-slate-600 antialiased dark:bg-neutral-900 dark:text-slate-400">
         <GTMNoScript />

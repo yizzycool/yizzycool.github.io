@@ -18,6 +18,14 @@ export default function ToolPage() {
           __html: JSON.stringify(seoUtils.generateToolJsonLd(toolKey)),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            seoUtils.generateEachToolBreadcrumbJsonLd(toolKey)
+          ),
+        }}
+      />
       <PromptApi />
     </>
   );

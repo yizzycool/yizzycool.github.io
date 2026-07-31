@@ -118,6 +118,12 @@ export default async function Page({ params }: Props) {
           __html: JSON.stringify(seoUtils.generateBlogJsonLd(page)),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(seoUtils.generateBlogBreadcrumbJsonLd(page)),
+        }}
+      />
       <Articles articles={articles} />
     </>
   );
