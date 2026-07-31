@@ -110,6 +110,8 @@ const fetchArticles = async (categorySlug: string) => {
 export default async function Page({ params }: Props) {
   const { category: categorySlug } = await params;
   const articles = await fetchArticles(categorySlug);
+  const categoryName =
+    get(articles, ['data', 0, 'category', 'name']) || categorySlug;
 
   return (
     <>
@@ -117,6 +119,17 @@ export default async function Page({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(seoUtils.generateBlogCategoryJsonLd(articles)),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            seoUtils.generateCategoryBreadcrumbJsonLd(
+              categoryName,
+              categorySlug
+            )
+          ),
         }}
       />
       <Articles articles={articles} categorySlug={categorySlug} />

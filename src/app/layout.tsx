@@ -12,6 +12,9 @@ import { GTMNoScript, GTMScript } from '@/components/layout/gtm';
 const domain = process.env.NEXT_PUBLIC_DOMAIN || '/';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    domain.startsWith('http') ? domain : `https://${domain}`
+  ),
   title: 'Yizzy Peasy | Coding Life',
   description:
     'Focused on programming and frontend development, sharing technical articles and useful tools to help developers improve their skills and efficiency. Explore JavaScript, React, Next.js, TypeScript, and the latest frontend technologies!',
@@ -24,6 +27,9 @@ export const metadata: Metadata = {
     'Useful Tools',
   ],
   authors: [{ name: 'Yizzy Wu', url: domain }],
+  alternates: {
+    canonical: domain,
+  },
   openGraph: {
     title: 'Yizzy Peasy | Coding Life',
     description:
@@ -33,12 +39,19 @@ export const metadata: Metadata = {
     images: [
       {
         url: urlJoin(domain, '/assets/images/home/avatar.jpg'),
-        width: 600,
-        height: 600,
+        width: 1200,
+        height: 630,
       },
     ],
     locale: 'en_US',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Yizzy Peasy | Coding Life',
+    description:
+      'Focused on programming and frontend development, sharing technical articles and useful tools to help developers improve their skills and efficiency. Explore JavaScript, React, Next.js, TypeScript, and the latest frontend technologies!',
+    images: [urlJoin(domain, '/assets/images/home/avatar.jpg')],
   },
   robots: {
     index: true,

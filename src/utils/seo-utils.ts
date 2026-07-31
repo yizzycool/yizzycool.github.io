@@ -144,12 +144,17 @@ const seoUtils = {
 
     return {
       '@context': 'https://schema.org',
-      '@type': 'Article',
+      '@type': 'BlogPosting',
+      inLanguage: 'zh-TW',
       headline: data.title,
       description: data.metaDescription,
       image: strapiUtils.toMediaUrl(data.banner.url),
       datePublished: data.publishedAt ?? data.createdAt,
       dateModified: data.updatedAt ?? data.publishedAt ?? data.createdAt,
+      articleSection: data.category?.name,
+      keywords: (data.tags || [])
+        .map((t: { name: string }) => t.name)
+        .join(', '),
       author: {
         '@type': 'Person',
         name: authorName,
@@ -167,6 +172,55 @@ const seoUtils = {
         '@type': 'WebPage',
         '@id': urlJoin(domain, 'blog', data.category.slug, data.slug),
       },
+    };
+  },
+
+  // For /resume/page.tsx
+  generateResumeJsonLd: () => {
+    const url = urlJoin(domain, 'resume');
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'ProfilePage',
+      mainEntity: {
+        '@type': 'Person',
+        name: authorName || 'Yizzy Wu',
+        jobTitle: 'Senior Frontend Developer / Web Engineer',
+        url: domain,
+        sameAs: ['https://github.com/yizzycool', domain],
+      },
+      url,
+    };
+  },
+
+  // For /blog/category/[category]/page.tsx
+  generateCategoryBreadcrumbJsonLd: (
+    categoryName: string,
+    categorySlug: string
+  ) => {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: domain,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Blog',
+          item: urlJoin(domain, 'blog'),
+        },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: categoryName,
+          item: urlJoin(domain, 'blog/category', categorySlug),
+        },
+      ],
     };
   },
 
@@ -194,7 +248,7 @@ const seoUtils = {
           '@type': 'ListItem',
           position: 3,
           name: data.category.name,
-          item: urlJoin(domain, 'blog', data.category.slug),
+          item: urlJoin(domain, 'blog/category', data.category.slug),
         },
         {
           '@type': 'ListItem',
@@ -213,7 +267,8 @@ const seoUtils = {
     const customJsonLd = {
       '@context': 'https://schema.org',
       '@type': 'SoftwareApplication',
-      operatingSystem: 'Web',
+      operatingSystem: 'All',
+      browserRequirements: 'Requires HTML5, JavaScript',
       url,
       offers: {
         '@type': 'Offer',
@@ -226,7 +281,9 @@ const seoUtils = {
       },
     };
 
-    return defaultsDeep(customJsonLd, ToolJsonLdSoftwareApplication[toolKey]);
+    const specificToolData = get(ToolJsonLdSoftwareApplication, toolKey, {});
+
+    return defaultsDeep({}, specificToolData, customJsonLd);
   },
 };
 
