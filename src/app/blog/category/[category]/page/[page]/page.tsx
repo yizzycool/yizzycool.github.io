@@ -176,7 +176,7 @@ export default async function Page({ params }: Props) {
           ),
         }}
       />
-      <Articles articles={articles} />
+      <Articles articles={articles} categorySlug={categorySlug} />
     </>
   );
 }
