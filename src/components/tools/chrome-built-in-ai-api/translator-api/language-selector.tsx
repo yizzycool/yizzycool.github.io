@@ -7,7 +7,7 @@ import { isEmpty, filter, startsWith } from 'lodash';
 
 import intlUtils from '@/utils/intl-utils';
 import BaseDialog from '@/components/common/dialog/base';
-import ISO6391 from '@/components/tools/chrome-built-in-ai-api/translator-api/data/iso-639-1';
+import BCP47 from '@/components/tools/chrome-built-in-ai-api/translator-api/data/bcp-47';
 
 export default function LanguageSelector({
   params,
@@ -27,7 +27,7 @@ export default function LanguageSelector({
   const language = intlUtils.languageTagToHumanReadable(languageCode);
 
   const languages = useMemo(() => {
-    return ISO6391.map((code) => {
+    return BCP47.map((code) => {
       const name = intlUtils.languageTagToHumanReadable(code);
       const localName = intlUtils.languageTagToHumanReadable(code, code);
       return { code, name, localName };
