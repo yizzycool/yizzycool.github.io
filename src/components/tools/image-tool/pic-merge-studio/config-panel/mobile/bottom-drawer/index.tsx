@@ -58,7 +58,7 @@ export default function BottomDrawer({ isOpen, onClose, children }: Props) {
         <div
           className={cn(
             'absolute bottom-0 left-0 right-0 min-h-[200px] overflow-hidden',
-            'rounded-t-3xl',
+            'rounded-t-3xl backdrop-blur-md',
             'bg-white/40 dark:bg-neutral-900/40'
           )}
         >
