@@ -3,6 +3,7 @@ import { Download } from 'lucide-react';
 import { round } from 'lodash';
 
 import intlUtils from '@/utils/intl-utils';
+import Card from '@/components/common/card';
 
 export default function InlineDownloadCard({
   options,
@@ -12,25 +13,15 @@ export default function InlineDownloadCard({
   progress?: number;
 }) {
   return (
-    <div className="animate-fade-in group relative max-w-[80%]">
-      {/* Ambient Glow */}
-      <div
-        className={cn(
-          'absolute -inset-1 animate-pulse-glow rounded-3xl bg-gradient-to-r blur-md',
-          'from-emerald-400/50 to-blue-400/50 opacity-60',
-          'dark:from-emerald-600/30 dark:to-blue-600/30 dark:opacity-100'
-        )}
-      />
-
-      <div
-        className={cn(
-          'relative z-10 flex w-full flex-col items-center rounded-3xl border px-12 py-8',
-          'border-gray-100 bg-white shadow-xl',
-          'shadow-none dark:border-gray-700/50 dark:bg-[#1f1f1f]'
-        )}
-      >
+    <div
+      className={cn(
+        'absolute inset-0 z-20 flex items-center justify-center',
+        'backdrop-blur-sm'
+      )}
+    >
+      <Card className="max-w-[80%] text-center">
         {/* Status Icon */}
-        <div className="relative mb-3 flex h-16 w-16 items-center justify-center">
+        <div className="relative mx-auto mb-3 flex h-12 w-12 items-center justify-center">
           {/* Spinning Rings - Faster for download activity */}
           <div
             className={cn(
@@ -39,24 +30,8 @@ export default function InlineDownloadCard({
               'dark:border-gray-700/30 dark:border-t-emerald-500/50'
             )}
           />
-          <div
-            className={cn(
-              'absolute inset-2 animate-[spin_2s_linear_infinite_reverse] rounded-full border-[3px]',
-              'border-gray-200 border-b-blue-500/50',
-              'dark:border-gray-700/30 dark:border-b-blue-500/50'
-            )}
-          />
-
           {/* Center Icon */}
-          <div
-            className={cn(
-              'relative z-10 flex h-6 w-6 items-center justify-center rounded-full shadow-inner',
-              'bg-gray-50 text-emerald-600',
-              'dark:bg-gray-800 dark:text-emerald-400'
-            )}
-          >
-            <Download size={12} />
-          </div>
+          <Download size={16} />
         </div>
 
         {/* Text Content */}
@@ -88,7 +63,7 @@ export default function InlineDownloadCard({
         <div className="text-center text-xs font-bold text-emerald-400">
           {round(progress * 100, 1)}%
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

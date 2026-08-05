@@ -7,6 +7,8 @@ import { slice, last, size, isEmpty, trim } from 'lodash';
 
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import Button from '@/components/common/button';
+import ScrollToBottom from '@/components/common/scroll-to-bottom';
+import useAutoScrollToBottom from '@/hooks/dom/use-auto-scroll-to-bottom';
 
 interface PromptResult {
   role: 'user' | 'assistant' | 'system';
@@ -30,7 +32,14 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
   const [isComposing, setIsCompsing] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const textRef = useRef<HTMLDivElement | null>(null);
+
+  const { scrollToBottom } = useAutoScrollToBottom(results, {
+    containerRef,
+    isStreaming: isProcessing,
+    threshold: 50,
+  });
 
   const onInput: ChangeEventHandler<HTMLDivElement> = (event) => {
     setText(event.target.innerHTML);
@@ -69,7 +78,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
   };
 
   return (
-    <div className="-mb-12 flex flex-1 flex-col">
+    <div ref={containerRef} className="-mb-12 flex flex-1 flex-col">
       {!!(session as AILanguageModel)?.tokensLeft && (
         <div className="absolute left-0 top-0 bg-neutral-700/20 px-4 py-2 text-xs">
           <span className="hidden sm:inline">Tokens Left:</span>{' '}
@@ -78,7 +87,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
         </div>
       )}
       <div className="w-full flex-1 overflow-y-hidden pb-20">
-        <div className="h-full w-full overflow-y-auto">
+        <div className="h-full w-full">
           <div className="flex w-full flex-col">
             {results.map((result, idx) => (
               <div
@@ -87,7 +96,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
                 className={cn('relative flex items-start', idx !== 0 && 'mt-8')}
               >
                 {result.role === 'assistant' && (
-                  <div className="relative mx-2 inline-block rounded-full bg-gradient-to-br from-indigo-500 to-blue-600 p-1">
+                  <div className="relative mx-2 my-1 inline-block rounded-full bg-gradient-to-br from-indigo-500 to-blue-600 p-1">
                     <Bot size={16} className="text-white" />
                     {/* Spinner Ring - Only visible during processing */}
                     {isProcessing && idx === size(results) - 1 && (
@@ -99,7 +108,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
                   className={cn(
                     'w-fit !max-w-[80%]',
                     result.role === 'user' &&
-                      'ml-auto !max-w-[60%] rounded-xl bg-neutral-800 px-5 py-2'
+                      'ml-auto !max-w-[60%] rounded-xl bg-slate-200/50 px-5 py-2 dark:bg-slate-700/50'
                   )}
                 >
                   {result.content}
@@ -112,16 +121,16 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
       <div
         className={cn(
           'sticky -bottom-1 left-0 right-0',
-          'bg-gradient-to-t from-neutral-900 from-50% to-transparent',
+          'backdrop-blur-md',
           '-mx-4 sm:-mx-6 lg:-mx-12',
           'px-4 sm:px-6 lg:px-12',
-          'pb-4 pt-16 sm:pb-6'
+          'pb-4 pt-8 sm:pb-6'
         )}
       >
         <div
           className={cn(
-            'relative flex w-full items-center rounded-[30px] border px-4 py-2 transition-colors',
-            'border-neutral-200 dark:border-neutral-700',
+            'relative flex w-full items-center rounded-[30px] border px-6 py-2 transition-colors',
+            'border-neutral-200 dark:border-neutral-600',
             'bg-white/20 dark:bg-neutral-900/20',
             'hover:bg-neutral-100/20 dark:hover:bg-neutral-800/20'
           )}
@@ -130,7 +139,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
           {isEmpty(text) && (
             <div
               className={cn(
-                'absolute inset-0 flex items-center px-4 py-2',
+                'absolute inset-0 flex items-center px-6 py-2',
                 'pointer-events-none text-sm leading-relaxed',
                 'text-slate-400 dark:text-slate-500'
               )}
@@ -164,6 +173,11 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
           />
         </div>
       </div>
+      <ScrollToBottom
+        threshold={1000}
+        onClick={() => scrollToBottom(true)}
+        className="sticky bottom-24 left-[calc(50%_+_126px)] hidden lg:flex"
+      />
     </div>
   );
 }

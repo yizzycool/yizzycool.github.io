@@ -2,7 +2,7 @@
 
 import useAiLanguageModel from '../hooks/use-ai-language-model';
 import HeaderBlock from '../../header-block';
-import LoadingSkeleton from '../loading-skeleton';
+import SystemChecking from '../system-checking';
 import Config from './config';
 import Chat from './chat';
 import UnsupportedCard from '../unsupported-card';
@@ -31,14 +31,14 @@ export default function PromptApi() {
   } = useAiLanguageModel();
 
   return (
-    <div className="relative flex h-full min-h-[calc(100dvh_-_68px)] flex-col text-left">
+    <div className="flex h-full min-h-[calc(100dvh_-_68px)] flex-col text-left">
       <HeaderBlock />
 
       <SectionGap />
 
       {/* Prompt */}
       {!hasCheckedAIStatus ? (
-        <LoadingSkeleton />
+        <SystemChecking />
       ) : !isApiSupported ? (
         <UnsupportedCard apiType={UNSUPPORTED_API_TYPES.chromePromptApi} />
       ) : shouldDownloadModel ? (
@@ -46,22 +46,20 @@ export default function PromptApi() {
           onClick={downloadModel}
           progress={downloadProgress}
         />
-      ) : (
-        <>
-          <div className="absolute -top-4 right-0">
-            <Config
-              options={options}
-              isOptionUpdating={isOptionUpdating}
-              updateOption={updateLanguageModel}
-            />
-          </div>
-          <Chat
-            placeholder="You can ask me anything!"
-            promptStreaming={promptStreaming}
-            session={session}
-          />
-        </>
-      )}
+      ) : null}
+
+      <div className="absolute right-4 top-4">
+        <Config
+          options={options}
+          isOptionUpdating={isOptionUpdating}
+          updateOption={updateLanguageModel}
+        />
+      </div>
+      <Chat
+        placeholder="You can ask me anything!"
+        promptStreaming={promptStreaming}
+        session={session}
+      />
 
       <Snackbar variant="error" open={error} onClose={resetError} />
     </div>

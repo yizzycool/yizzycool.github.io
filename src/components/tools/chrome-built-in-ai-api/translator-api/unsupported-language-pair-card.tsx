@@ -1,6 +1,10 @@
+import { X } from 'lucide-react';
+
 import intlUtils from '@/utils/intl-utils';
 import { cn } from '@/utils/cn';
-import { Languages } from 'lucide-react';
+
+import Card from '@/components/common/card';
+import Badge from '@/components/common/badge';
 
 export default function UnsupportedLanguagePairCard({
   options,
@@ -8,77 +12,36 @@ export default function UnsupportedLanguagePairCard({
   options: AITranslatorCreateCoreOptions;
 }) {
   return (
-    <div className="animate-fade-in group relative max-w-[80%]">
-      {/* Ambient Glow */}
-      <div className="absolute -inset-1 animate-pulse-glow rounded-3xl bg-gradient-to-r from-blue-600/30 to-purple-600/30 blur" />
-
-      <div
-        className={cn(
-          'relative flex max-w-sm flex-col items-center rounded-3xl border p-5',
-          'border-gray-100 bg-white shadow-xl',
-          'dark:border-gray-700/50 dark:bg-[#1f1f1f]'
-        )}
-      >
-        {/* Animated Icon Container */}
-        <div className="relative mb-3 flex h-16 w-16 items-center justify-center">
-          {/* Outer Ring (Slow Spin) */}
-          <div
-            className={cn(
-              'absolute inset-0 animate-[spin_4s_linear_infinite] rounded-full border-[3px]',
-              'border-gray-200 border-t-blue-500/50',
-              'dark:border-gray-700/30 dark:border-t-blue-500/50',
-              ''
-            )}
-          />
-          {/* Inner Ring (Reverse Spin) */}
-          <div
-            className={cn(
-              'absolute inset-2 animate-[spin_3s_linear_infinite_reverse] rounded-full border-[3px]',
-              'border-gray-200 border-b-purple-500/50',
-              'dark:border-gray-700/30 dark:border-b-purple-500/50'
-            )}
-          />
-
-          {/* Center Icon */}
-          <div
-            className={cn(
-              'relative z-10 flex h-6 w-6 items-center justify-center rounded-full shadow-inner',
-              'bg-gray-800 text-gray-400',
-              'dark:bg-gray-800 dark:text-gray-400'
-            )}
-          >
-            <Languages size={12} />
-          </div>
-
-          {/* Decorative dots */}
-          <div className="absolute top-0 h-1 w-1 rounded-full bg-blue-400 blur-[1px]" />
-        </div>
-
+    <div
+      className={cn(
+        'absolute inset-0 flex items-center justify-center',
+        'backdrop-blur-sm'
+      )}
+    >
+      <Card className="max-w-[80%]">
         {/* Text Content */}
         <h3
           className={cn(
-            'mb-2 text-xl font-bold tracking-tight',
-            'text-gray-900',
-            'dark:text-gray-200'
+            'mb-2 flex items-center gap-2 text-xl font-bold tracking-tight',
+            'text-slate-900 dark:text-slate-100'
           )}
         >
+          <X className="text-red-600" />
           Not Supported Yet
         </h3>
 
-        <div className="mb-5 h-1 w-12 rounded-full bg-gray-200 dark:bg-gray-700/50" />
-
-        <p className="text-sm text-gray-600 dark:text-gray-500">
+        <div className="text-sm">
           Translation between{' '}
-          <span className="rounded bg-blue-50 px-1 font-medium text-blue-600 dark:bg-blue-400/10 dark:text-blue-400">
+          <Badge variant="blue" rounded="sm" className="inline-block">
             {intlUtils.languageTagToHumanReadable(options.sourceLanguage)}
-          </span>{' '}
+          </Badge>{' '}
           and{' '}
-          <span className="rounded bg-blue-50 px-1 font-medium text-blue-600 dark:bg-blue-400/10 dark:text-blue-400">
+          <Badge variant="blue" rounded="sm" className="inline-block">
             {intlUtils.languageTagToHumanReadable(options.targetLanguage)}
-          </span>{' '}
+          </Badge>{' '}
           is not currently available.
-        </p>
-      </div>
+        </div>
+      </Card>
     </div>
   );
 }

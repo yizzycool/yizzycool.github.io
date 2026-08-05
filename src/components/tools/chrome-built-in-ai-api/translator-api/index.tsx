@@ -10,7 +10,7 @@ import HeaderBlock from '../../header-block';
 import LanguageSelector from './language-selector';
 import UnsupportedCard from '../unsupported-card';
 import ModelDownloadCard from '../model-download-card';
-import LoadingSkeleton from '../loading-skeleton';
+import SystemChecking from '../system-checking';
 import CopyAction from '@/components/common/action-button/copy';
 import SpeakAction from '@/components/common/action-button/speak';
 import UnsupportedLanguagePairCard from './unsupported-language-pair-card';
@@ -77,9 +77,9 @@ export default function TranslatorApi() {
 
       <SectionGap />
 
-      {/* Translator */}
+      {/* Status Modal */}
       {!hasCheckedAIStatus ? (
-        <LoadingSkeleton />
+        <SystemChecking />
       ) : !isApiSupported ? (
         <UnsupportedCard apiType={UNSUPPORTED_API_TYPES.chromeTranslatorApi} />
       ) : isNull(translator) && shouldDownloadModel ? (
@@ -87,124 +87,121 @@ export default function TranslatorApi() {
           onClick={downloadModel}
           progress={downloadProgress}
         />
-      ) : (
-        <>
+      ) : null}
+
+      {/* Translator */}
+      <>
+        <div
+          className={cn(
+            'flex flex-col justify-center overflow-hidden rounded-xl border',
+            'border-neutral-200 dark:border-neutral-700',
+            'bg-white/40 dark:bg-neutral-900/40',
+            'placeholder-neutral-400 dark:placeholder-neutral-500'
+          )}
+        >
+          {/* Lauguage selector block */}
           <div
             className={cn(
-              'flex flex-col justify-center rounded-xl border',
-              'border-neutral-200 dark:border-neutral-700',
-              'bg-white/40 dark:bg-neutral-900/40',
-              'text-slate-700 dark:text-slate-200',
-              'placeholder-neutral-400 dark:placeholder-neutral-500'
+              'flex w-full items-center justify-stretch gap-3 p-2',
+              'border-b border-neutral-200 dark:border-neutral-700'
             )}
           >
-            {/* Lauguage selector block */}
-            <div
-              className={cn(
-                'flex w-full items-center justify-stretch gap-3 p-2',
-                'border-b border-neutral-200 dark:border-neutral-700'
-              )}
-            >
-              <div className="flex-1">
-                <LanguageSelector
-                  params={options}
-                  type="source"
-                  changeLanguage={changeLanguage}
-                />
-              </div>
-              <button
-                className={cn('mx-auto block cursor-pointer px-4')}
-                onClick={switchSourceTargetLanguage}
-              >
-                <ArrowRightLeft className="" size={16} />
-              </button>
-              <div className="flex-1">
-                <LanguageSelector
-                  params={options}
-                  type="target"
-                  changeLanguage={changeLanguage}
-                />
-              </div>
+            <div className="flex-1">
+              <LanguageSelector
+                params={options}
+                type="source"
+                changeLanguage={changeLanguage}
+              />
             </div>
-
-            {/* Textarea block */}
-            <div className="flex flex-col sm:flex-row">
-              {/* input */}
-              <div
-                className={cn(
-                  'relative flex h-56 w-full flex-col sm:h-[350px]',
-                  'border-b border-neutral-200 sm:border-b-0 sm:border-r dark:border-neutral-700'
-                )}
-              >
-                <textarea
-                  id="input"
-                  className={cn(
-                    'block w-full flex-1 resize-none bg-transparent px-3 py-2 focus:outline-none',
-                    'text-slate-700 dark:text-slate-200',
-                    'placeholder-neutral-400 dark:placeholder-neutral-500'
-                  )}
-                  onChange={onChange}
-                  value={text}
-                  disabled={availability !== 'available'}
-                  placeholder="Enter the text to be translated..."
-                />
-                {/* Word count */}
-                <div className="flex items-center justify-between px-3 py-2">
-                  <SpeakAction
-                    display="icon"
-                    size="sm"
-                    disabled={isEmpty(text)}
-                    content={text}
-                  />
-                  <div className="text-xs opacity-50">{size(text)} chars</div>
-                </div>
-              </div>
-
-              {/* output */}
-              <div className="relative flex h-64 w-full flex-col sm:h-[350px]">
-                <textarea
-                  id="output"
-                  className={cn(
-                    'block h-full w-full flex-1 resize-none bg-transparent px-3 py-2 focus:outline-none',
-                    'text-slate-700 dark:text-slate-200',
-                    'placeholder-neutral-400 dark:placeholder-neutral-500'
-                  )}
-                  value={translation}
-                  readOnly
-                />
-                {/* Copy */}
-                <div className="flex items-center justify-between border-t border-neutral-200 px-3 py-2 dark:border-neutral-700">
-                  <SpeakAction
-                    display="icon"
-                    size="sm"
-                    disabled={isEmpty(translation)}
-                    content={translation}
-                  />
-                  <CopyAction
-                    variant="ghost"
-                    content={translation}
-                    disabled={isEmpty(translation)}
-                  />
-                </div>
-
-                {shouldDownloadModel && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/40 text-center dark:bg-neutral-900/40">
-                    <InlineDownloadCard
-                      options={options}
-                      progress={downloadProgress || 0}
-                    />
-                  </div>
-                )}
-                {availability === 'unavailable' && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/40 text-center dark:bg-neutral-900/40">
-                    <UnsupportedLanguagePairCard options={options} />
-                  </div>
-                )}
-              </div>
+            <button
+              className={cn('mx-auto block cursor-pointer px-4')}
+              onClick={switchSourceTargetLanguage}
+            >
+              <ArrowRightLeft className="" size={16} />
+            </button>
+            <div className="flex-1">
+              <LanguageSelector
+                params={options}
+                type="target"
+                changeLanguage={changeLanguage}
+              />
             </div>
           </div>
-        </>
-      )}
+
+          {/* Textarea block */}
+          <div className="relative flex flex-col sm:flex-row">
+            {/* input */}
+            <div
+              className={cn(
+                'relative flex h-56 w-full flex-col sm:h-[350px]',
+                'border-b border-neutral-200 sm:border-b-0 sm:border-r dark:border-neutral-700'
+              )}
+            >
+              <textarea
+                id="input"
+                className={cn(
+                  'block w-full flex-1 resize-none bg-transparent px-3 py-2 focus:outline-none',
+                  'text-slate-700 dark:text-slate-200',
+                  'placeholder-neutral-400 dark:placeholder-neutral-500'
+                )}
+                onChange={onChange}
+                value={text}
+                disabled={availability !== 'available'}
+                placeholder="Enter the text to be translated..."
+              />
+              {/* Word count */}
+              <div className="flex items-center justify-between px-3 py-2">
+                <SpeakAction
+                  display="icon"
+                  size="sm"
+                  disabled={isEmpty(text)}
+                  content={text}
+                />
+                <div className="text-xs opacity-50">{size(text)} chars</div>
+              </div>
+            </div>
+
+            {/* output */}
+            <div className="relative flex h-64 w-full flex-col sm:h-[350px]">
+              <textarea
+                id="output"
+                className={cn(
+                  'block h-full w-full flex-1 resize-none bg-transparent px-3 py-2 focus:outline-none',
+                  'text-slate-700 dark:text-slate-200',
+                  'placeholder-neutral-400 dark:placeholder-neutral-500'
+                )}
+                value={translation}
+                readOnly
+              />
+              {/* Copy */}
+              <div className="flex items-center justify-between border-t border-neutral-200 px-3 py-2 dark:border-neutral-700">
+                <SpeakAction
+                  display="icon"
+                  size="sm"
+                  disabled={isEmpty(translation)}
+                  content={translation}
+                />
+                <CopyAction
+                  variant="ghost"
+                  content={translation}
+                  disabled={isEmpty(translation)}
+                />
+              </div>
+            </div>
+
+            {shouldDownloadModel && (
+              <InlineDownloadCard
+                options={options}
+                progress={downloadProgress || 0}
+              />
+            )}
+
+            {availability === 'unavailable' && (
+              <UnsupportedLanguagePairCard options={options} />
+            )}
+          </div>
+        </div>
+      </>
 
       <Snackbar variant="error" open={error} onClose={resetError} />
     </>

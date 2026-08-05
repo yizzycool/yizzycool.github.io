@@ -20,7 +20,11 @@ export default function Selector({
 }) {
   return (
     <Field>
-      {title && <Label className="text-sm/6 font-bold">{title}</Label>}
+      {title && (
+        <Label className="text-sm/6 font-bold text-slate-700 dark:text-slate-200">
+          {title}
+        </Label>
+      )}
       {desc && (
         <Description className="mb-3 text-sm/6 text-slate-500 dark:text-slate-400">
           {desc}

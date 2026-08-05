@@ -49,6 +49,7 @@ export default function LeftPanel({
               <Link
                 className={cn(
                   'flex items-center rounded-md p-2 font-bold',
+                  'text-slate-800 dark:text-slate-300',
                   'hover:bg-sky-600/10',
                   'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500',
                   'data-[active=true]:dark:bg-sky-600/20',

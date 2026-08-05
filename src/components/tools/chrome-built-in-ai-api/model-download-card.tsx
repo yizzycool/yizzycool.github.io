@@ -5,25 +5,42 @@ import { CheckCircle2, DownloadCloud, Loader2, Zap } from 'lucide-react';
 import { isNull } from 'lodash';
 
 import Button from '@/components/common/button';
+import BaseDialog from '@/components/common/dialog/base';
 
-export default function ModelDownloadCard({
-  onClick = () => {},
-  progress = null,
-}: {
+type Props = {
+  isOpen?: boolean;
   onClick?: MouseEventHandler;
   progress?: number | null;
-}) {
+};
+
+export default function ModelDownloadCard({
+  isOpen = true,
+  onClick = () => {},
+  progress = null,
+}: Props) {
   const isDownloading = !isNull(progress);
 
   return (
-    <div className="flex flex-col items-center justify-center px-6 text-center duration-500 animate-in fade-in">
-      <div className="w-full max-w-md rounded-3xl border border-neutral-100 bg-white p-8 shadow-2xl shadow-neutral-200/50 dark:border-neutral-800 dark:bg-neutral-900 dark:shadow-black/50">
+    <div
+      id="model-download-card-block"
+      className="absolute inset-0 z-10 backdrop-blur-sm"
+    >
+      <BaseDialog
+        isOpen={isOpen}
+        hasBackdrop={false}
+        className="max-w-md overflow-y-auto p-6 text-center md:p-8"
+        dialogClassName="sticky top-[68px] bottom-auto w-full h-[calc(100dvh-68px)]"
+        portalConfig={{
+          selectorOrElement: '#model-download-card-block',
+          portalKey: 'model-download-card-dialog',
+        }}
+      >
         {/* Icon */}
         <div className="relative mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-neutral-50 dark:bg-neutral-800">
           {isDownloading ? (
             <div className="relative">
               <Loader2
-                size={40}
+                size={70}
                 className="animate-spin text-slate-900 dark:text-white"
               />
               <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold">
@@ -44,12 +61,12 @@ export default function ModelDownloadCard({
         </div>
 
         {/* Text */}
-        <h2 className="mb-3 text-2xl font-bold tracking-tight">
+        <h2 className="mb-3 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
           Model Download Required
         </h2>
-        <p className="mb-8 leading-relaxed text-slate-500 dark:text-slate-400">
-          Before your first use, Chrome will download the Gemini Nano model
-          once. After that, you're all set.
+        <p className="mb-8 text-sm leading-relaxed">
+          Before your first use, Chrome will download AI model once. After that,
+          you're all set.
         </p>
 
         {/* Progress Bar (Visible only when downloading) */}
@@ -80,6 +97,7 @@ export default function ModelDownloadCard({
               <Zap
                 size={18}
                 className="ml-2 transition-colors group-hover:text-yellow-400"
+                fill="currentColor"
               />
             )}
           </Button>
@@ -96,7 +114,7 @@ export default function ModelDownloadCard({
             </div>
           </div>
         </div>
-      </div>
+      </BaseDialog>
     </div>
   );
 }

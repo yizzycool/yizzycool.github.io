@@ -7,7 +7,7 @@ import { isEmpty, size } from 'lodash';
 import useAiWriter from '../hooks/use-ai-writer';
 import browserUtils from '@/utils/browser-utils';
 import HeaderBlock from '../../header-block';
-import LoadingSkeleton from '../loading-skeleton';
+import SystemChecking from '../system-checking';
 import UnsupportedCard from '../unsupported-card';
 import ModelDownloadCard from '../model-download-card';
 import PasteAction from '@/components/common/action-button/paste';
@@ -77,13 +77,13 @@ export default function WriterApi() {
   };
 
   return (
-    <div className="relative">
+    <>
       <HeaderBlock />
 
       <SectionGap />
 
       {!hasCheckedAIStatus ? (
-        <LoadingSkeleton />
+        <SystemChecking />
       ) : !isApiSupported ? (
         <UnsupportedCard apiType={UNSUPPORTED_API_TYPES.chromeTranslatorApi} />
       ) : shouldDownloadModel ? (
@@ -91,61 +91,59 @@ export default function WriterApi() {
           onClick={downloadModel}
           progress={downloadProgress}
         />
-      ) : (
-        <>
-          <div className="absolute -top-4 right-0">
-            <Config
-              options={options}
-              isOptionUpdating={isOptionUpdating}
-              updateOption={updateWriter}
-            />
-          </div>
-          {/* Input */}
-          <div className="mb-3 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
-            <Label htmlFor="text-textarea" icon={PenLine}>
-              Start by adding your text
-            </Label>
-            <div className="flex items-center gap-2 self-end sm:self-auto">
-              <PasteAction onClick={onPasteText} />
-              <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
-            </div>
-          </div>
-          <Textarea
-            id="text-textarea"
-            onChange={onChange}
-            value={text}
-            rows={10}
-            placeholder="e.g. Draft a friendly email asking a coworker for a project update"
-          />
-          {/* Char count block */}
-          <div className="mt-3 w-full text-right text-xs text-slate-400 dark:text-slate-600">
-            {size(text)} chars
-          </div>
+      ) : null}
 
-          <SectionGap size="sm" />
+      <div className="absolute right-4 top-4">
+        <Config
+          options={options}
+          isOptionUpdating={isOptionUpdating}
+          updateOption={updateWriter}
+        />
+      </div>
+      {/* Input */}
+      <div className="mb-3 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
+        <Label htmlFor="text-textarea" icon={PenLine}>
+          Start by adding your text
+        </Label>
+        <div className="flex items-center gap-2 self-end sm:self-auto">
+          <PasteAction onClick={onPasteText} />
+          <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
+        </div>
+      </div>
+      <Textarea
+        id="text-textarea"
+        onChange={onChange}
+        value={text}
+        rows={10}
+        placeholder="e.g. Draft a friendly email asking a coworker for a project update"
+      />
+      {/* Char count block */}
+      <div className="mt-3 w-full text-right text-xs text-slate-400 dark:text-slate-600">
+        {size(text)} chars
+      </div>
 
-          {/* Action Button */}
-          <div className="flex justify-end">
-            <Button
-              icon={isProcessing ? LoaderCircle : PencilLine}
-              size="sm"
-              rounded="lg"
-              onClick={onProcessClick}
-              disabled={isEmpty(text) || isProcessing}
-              iconClassName={isProcessing ? 'animate-spin' : ''}
-            >
-              {isProcessing ? 'Writing...' : 'Write'}
-            </Button>
-          </div>
+      <SectionGap size="sm" />
 
-          <SectionGap size="sm" />
+      {/* Action Button */}
+      <div className="flex justify-end">
+        <Button
+          icon={isProcessing ? LoaderCircle : PencilLine}
+          size="sm"
+          rounded="lg"
+          onClick={onProcessClick}
+          disabled={isEmpty(text) || isProcessing}
+          iconClassName={isProcessing ? 'animate-spin' : ''}
+        >
+          {isProcessing ? 'Writing...' : 'Write'}
+        </Button>
+      </div>
 
-          {/* Result */}
-          <PromptResult results={results} isProcessing={isProcessing} />
-        </>
-      )}
+      <SectionGap size="sm" />
+
+      {/* Result */}
+      <PromptResult results={results} isProcessing={isProcessing} />
 
       <Snackbar variant="error" open={error} onClose={resetError} />
-    </div>
+    </>
   );
 }

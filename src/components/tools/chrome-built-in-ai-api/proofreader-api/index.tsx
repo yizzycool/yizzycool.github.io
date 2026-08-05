@@ -6,7 +6,7 @@ import { isEmpty, size } from 'lodash';
 
 import useAiProofreader from '../hooks/use-ai-proofreader';
 import HeaderBlock from '../../header-block';
-import LoadingSkeleton from '../loading-skeleton';
+import SystemChecking from '../system-checking';
 import UnsupportedCard from '../unsupported-card';
 import ModelDownloadCard from '../model-download-card';
 import PasteAction from '@/components/common/action-button/paste';
@@ -86,13 +86,13 @@ export default function ProofreaderApi() {
   };
 
   return (
-    <div className="relative">
+    <>
       <HeaderBlock />
 
       <SectionGap />
 
       {!hasCheckedAIStatus ? (
-        <LoadingSkeleton />
+        <SystemChecking />
       ) : !isApiSupported ? (
         <UnsupportedCard apiType={UNSUPPORTED_API_TYPES.chromeProofreaderApi} />
       ) : shouldDownloadModel ? (
@@ -100,51 +100,49 @@ export default function ProofreaderApi() {
           onClick={downloadModel}
           progress={downloadProgress}
         />
-      ) : (
-        <>
-          {/* Input */}
-          <div className="mb-3 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
-            <Label htmlFor="text-textarea" icon={PenLine}>
-              Start by adding your text
-            </Label>
-            <div className="flex items-center gap-2 self-end sm:self-auto">
-              <PasteAction onClick={onPasteText} />
-              <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
-            </div>
-          </div>
-          <Textarea
-            id="proofreader-textarea"
-            onChange={onChange}
-            value={text}
-            rows={10}
-            placeholder="Enter your text for grammar and style check..."
-          />
-          {/* Char count block */}
-          <div className="mt-3 w-full text-right text-xs text-slate-400 dark:text-slate-600">
-            {size(text)} chars
-          </div>
+      ) : null}
 
-          <SectionGap size="sm" />
+      {/* Input */}
+      <div className="mb-3 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
+        <Label htmlFor="text-textarea" icon={PenLine}>
+          Start by adding your text
+        </Label>
+        <div className="flex items-center gap-2 self-end sm:self-auto">
+          <PasteAction onClick={onPasteText} />
+          <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
+        </div>
+      </div>
+      <Textarea
+        id="proofreader-textarea"
+        onChange={onChange}
+        value={text}
+        rows={10}
+        placeholder="Enter your text for grammar and style check..."
+      />
+      {/* Char count block */}
+      <div className="mt-3 w-full text-right text-xs text-slate-400 dark:text-slate-600">
+        {size(text)} chars
+      </div>
 
-          {/* Action Button */}
-          <div className="flex justify-end">
-            <Button
-              icon={isProcessing ? LoaderCircle : WandSparkles}
-              size="sm"
-              rounded="lg"
-              onClick={onProcessClick}
-              disabled={isEmpty(text) || isProcessing}
-              iconClassName={isProcessing ? 'animate-spin' : ''}
-            >
-              {isProcessing ? 'Proofreading...' : 'Proofread'}
-            </Button>
-          </div>
+      <SectionGap size="sm" />
 
-          <SectionGap size="sm" />
+      {/* Action Button */}
+      <div className="flex justify-end">
+        <Button
+          icon={isProcessing ? LoaderCircle : WandSparkles}
+          size="sm"
+          rounded="lg"
+          onClick={onProcessClick}
+          disabled={isEmpty(text) || isProcessing}
+          iconClassName={isProcessing ? 'animate-spin' : ''}
+        >
+          {isProcessing ? 'Proofreading...' : 'Proofread'}
+        </Button>
+      </div>
 
-          <Result text={text} result={result} isProcessing={isProcessing} />
-        </>
-      )}
+      <SectionGap size="sm" />
+
+      <Result text={text} result={result} isProcessing={isProcessing} />
 
       <Snackbar
         variant="error"
@@ -152,6 +150,6 @@ export default function ProofreaderApi() {
         onClose={resetError}
         content={errorMessage}
       />
-    </div>
+    </>
   );
 }

@@ -11,7 +11,7 @@ import BarChart from './bar-chart';
 import Textarea from '@/components/common/textarea';
 import PasteAction from '@/components/common/action-button/paste';
 import DeleteAction from '@/components/common/action-button/delete';
-import LoadingSkeleton from '../loading-skeleton';
+import SystemChecking from '../system-checking';
 import UnsupportedCard from '../unsupported-card';
 import ModelDownloadCard from '../model-download-card';
 import SectionGap from '../../section-gap';
@@ -75,7 +75,7 @@ export default function LanguageDetectorApi() {
 
       {/* Language Detector */}
       {!hasCheckedAIStatus ? (
-        <LoadingSkeleton />
+        <SystemChecking />
       ) : !isApiSupported ? (
         <UnsupportedCard
           apiType={UNSUPPORTED_API_TYPES.chromeLanguageDetectorApi}
@@ -85,53 +85,51 @@ export default function LanguageDetectorApi() {
           onClick={downloadModel}
           progress={downloadProgress}
         />
-      ) : (
-        <>
-          <div className="mx-auto text-center">
-            {/* Input */}
-            <div className="mb-3 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
-              <Label htmlFor="text-textarea" icon={PenLine}>
-                Paste your text below
-              </Label>
-              <div className="flex items-center gap-2 self-end sm:self-auto">
-                <PasteAction onClick={onPasteText} />
-                <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
-              </div>
-            </div>
-            <Textarea
-              id="text-textarea"
-              onChange={onChange}
-              value={text}
-              rows={10}
-              placeholder="Type or paste the text you want to detect here..."
-            />
-            {/* Char count block */}
-            <div className="mt-3 w-full text-right text-xs text-slate-400 dark:text-slate-600">
-              {size(text)} chars
-            </div>
-          </div>
+      ) : null}
 
-          <SectionGap />
-
-          {/* Output */}
-          <div
-            className={cn(
-              'relative flex min-h-[300px] w-full flex-col items-center rounded-lg border p-6',
-              'border-neutral-200 dark:border-neutral-700',
-              'bg-white/40 dark:bg-neutral-900/40'
-            )}
-          >
-            {isNull(results) ? (
-              <div className="m-auto text-center text-lg font-bold text-slate-500">
-                <ChartColumn className="mx-auto mb-4 block" size={40} />
-                <div>Waiting for input...</div>
-              </div>
-            ) : (
-              <BarChart results={results} />
-            )}
+      <div className="mx-auto text-center">
+        {/* Input */}
+        <div className="mb-3 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
+          <Label htmlFor="text-textarea" icon={PenLine}>
+            Paste your text below
+          </Label>
+          <div className="flex items-center gap-2 self-end sm:self-auto">
+            <PasteAction onClick={onPasteText} />
+            <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
           </div>
-        </>
-      )}
+        </div>
+        <Textarea
+          id="text-textarea"
+          onChange={onChange}
+          value={text}
+          rows={10}
+          placeholder="Type or paste the text you want to detect here..."
+        />
+        {/* Char count block */}
+        <div className="mt-3 w-full text-right text-xs text-slate-400 dark:text-slate-600">
+          {size(text)} chars
+        </div>
+      </div>
+
+      <SectionGap />
+
+      {/* Output */}
+      <div
+        className={cn(
+          'relative flex min-h-[300px] w-full flex-col items-center rounded-lg border p-6',
+          'border-neutral-200 dark:border-neutral-700',
+          'bg-white/40 dark:bg-neutral-900/40'
+        )}
+      >
+        {isNull(results) ? (
+          <div className="m-auto text-center text-lg font-bold text-slate-500">
+            <ChartColumn className="mx-auto mb-4 block" size={40} />
+            <div>Waiting for input...</div>
+          </div>
+        ) : (
+          <BarChart results={results} />
+        )}
+      </div>
 
       <Snackbar variant="error" open={error} onClose={resetError} />
     </>
