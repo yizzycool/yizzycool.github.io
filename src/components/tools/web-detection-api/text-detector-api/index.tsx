@@ -9,7 +9,7 @@ import { isNull, map } from 'lodash';
 import useCommonFunction from '../hooks/use-common-function';
 import useTextDetector from '../hooks/use-text-detector';
 import HeaderBlock from '../../header-block';
-import LoadingSkeleton from '../loading-skeleton';
+import SystemChecking from '../system-checking';
 import Empty from '../empty';
 import BoundingBox from '../bounding-box';
 import FlipCamera from '../flip-camera';
@@ -93,70 +93,67 @@ export default function TextDetectorApi() {
 
       <SectionGap />
 
+      {/* Status Modal */}
       {!hasCheckedApiStatus ? (
-        <LoadingSkeleton />
+        <SystemChecking />
       ) : !isApiSupported ? (
         <UnsupportedCard apiType={UNSUPPORTED_API_TYPES.webApiTextDetector} />
-      ) : (
-        <>
-          <Tip />
+      ) : null}
 
-          <SectionGap size="sm" />
+      <Tip />
 
-          <Card>
-            <div className="flex items-center justify-between">
-              <BaseTabs
-                tabs={TabList}
-                onChange={(tab) => setTab(tab as WebDetectionFileType)}
-              />
-              {!!param.type && (
-                <Button
-                  variant="error"
-                  size="xs"
-                  icon={param.type === 'webcam' ? Square : Trash2}
-                  iconStrokeWidth={param.type === 'webcam' ? 4 : 2}
-                  onClick={onClear}
-                >
-                  {param.type === 'webcam' ? 'Stop' : 'Clear'}
-                </Button>
-              )}
-            </div>
-            {isEmpty ? (
-              <Empty
-                tab={tab}
-                processImage={processImage}
-                processVideo={processVideo}
-                processWebcam={processWebcam}
-              />
-            ) : (
-              <div className="py-8">
-                <div ref={resultRef} className="relative mx-auto h-fit w-fit">
-                  <ResultCanvas
-                    canvasRef={canvasRef}
-                    param={param}
-                    onCanvasDraw={onCanvasDraw}
-                  />
-                  <BoundingBox results={transformedResults} />
-                  {param.type === 'webcam' && (
-                    <FlipCamera onClick={flipWebcam} />
-                  )}
-                </div>
-              </div>
-            )}
-          </Card>
+      <SectionGap size="sm" />
 
-          <SectionGap size="sm" />
-
-          <DetectionResult
-            results={transformedResults}
-            isProcessing={isProcessing}
+      <Card>
+        <div className="flex items-center justify-between">
+          <BaseTabs
+            tabs={TabList}
+            onChange={(tab) => setTab(tab as WebDetectionFileType)}
           />
+          {!!param.type && (
+            <Button
+              variant="error"
+              size="xs"
+              icon={param.type === 'webcam' ? Square : Trash2}
+              iconStrokeWidth={param.type === 'webcam' ? 4 : 2}
+              onClick={onClear}
+            >
+              {param.type === 'webcam' ? 'Stop' : 'Clear'}
+            </Button>
+          )}
+        </div>
+        {isEmpty ? (
+          <Empty
+            tab={tab}
+            processImage={processImage}
+            processVideo={processVideo}
+            processWebcam={processWebcam}
+          />
+        ) : (
+          <div className="py-8">
+            <div ref={resultRef} className="relative mx-auto h-fit w-fit">
+              <ResultCanvas
+                canvasRef={canvasRef}
+                param={param}
+                onCanvasDraw={onCanvasDraw}
+              />
+              <BoundingBox results={transformedResults} />
+              {param.type === 'webcam' && <FlipCamera onClick={flipWebcam} />}
+            </div>
+          </div>
+        )}
+      </Card>
 
-          <SectionGap size="sm" />
+      <SectionGap size="sm" />
 
-          <RawData results={results} />
-        </>
-      )}
+      <DetectionResult
+        results={transformedResults}
+        isProcessing={isProcessing}
+      />
+
+      <SectionGap size="sm" />
+
+      <RawData results={results} />
 
       <Snackbar variant="error" open={error} onClose={resetError} />
     </>
