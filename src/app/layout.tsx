@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 import '@/styles/globals.css';
 import urlJoin from 'url-join';
@@ -9,6 +9,10 @@ import Footer from '@/components/footer';
 import { GTMNoScript, GTMScript } from '@/components/layout/gtm';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN || '/';
+
+export const viewport: Viewport = {
+  themeColor: '#0f172a',
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -64,6 +68,11 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Yizzy Peasy',
   },
 };
 

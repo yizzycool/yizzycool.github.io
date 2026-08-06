@@ -144,3 +144,8 @@ certificates
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+
+# Serwist
+public/sw*
+public/swe-worker*

@@ -8,25 +8,32 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: 'Yizzy Peasy',
     description:
       'Focused on programming and frontend development, sharing technical articles and useful tools to help developers improve their skills and efficiency.',
-    start_url: '/',
+    start_url: '/?utm_source=pwa&utm_medium=homescreen',
     display: 'standalone',
     background_color: '#0f172a',
     theme_color: '#0f172a',
+    orientation: 'portrait',
     icons: [
       {
-        src: '/favicon.ico',
-        sizes: 'any',
-        type: 'image/x-icon',
+        'src': '/icons/icon-192x192.png',
+        'type': 'image/png',
+        'sizes': '192x192',
       },
       {
-        src: '/icon.png',
-        sizes: '192x192',
-        type: 'image/png',
+        'src': '/icons/icon-384x384.png',
+        'type': 'image/png',
+        'sizes': '384x384',
       },
       {
-        src: '/apple-icon.png',
-        sizes: '180x180',
-        type: 'image/png',
+        'src': '/icons/icon-512x512.png',
+        'type': 'image/png',
+        'sizes': '512x512',
+      },
+      {
+        'src': '/icons/icon-512x512.png',
+        'type': 'image/png',
+        'sizes': '512x512',
+        'purpose': 'maskable',
       },
     ],
   };

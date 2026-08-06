@@ -54,6 +54,7 @@ export default function Navbar({ categoryArticles }: Props) {
             width="30"
             height="30"
             alt="Logo"
+            priority
           />
           <div className="ml-3 hidden text-lg font-bold text-slate-900 lg:block dark:text-slate-100">
             Yizzy Peasy

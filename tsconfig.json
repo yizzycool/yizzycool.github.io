@@ -1,9 +1,15 @@
 {
   "compilerOptions": {
+    "types": [
+      // This allows Serwist to type `window.serwist`.
+      "@serwist/next/typings"
+    ],
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext",
+      // Doing so adds WebWorker and ServiceWorker types to the global.
+      "webworker"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -22,9 +28,7 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "target": "ES2017"
   },
@@ -35,7 +39,5 @@
     ".next/types/**/*.ts",
     "types/global.d.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

@@ -4,18 +4,20 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:pwa": "cross-env TEST_PWA=true next dev",
     "build": "next build",
     "build:dev": "env-cmd -f .env.development next build",
+    "build:analyze": "cross-env ANALYZE=true next build",
     "start": "next start",
     "lint": "next lint",
     "static-server": "node ./servers/static-server.js",
-    "prepare": "husky install",
-    "analyze": "cross-env ANALYZE=true next build"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.17",
     "@headlessui/react": "^2.2.0",
     "@jsdevtools/rehype-toc": "^3.0.2",
+    "@serwist/next": "^9.5.12",
     "chart.js": "^4.4.7",
     "clsx": "^2.1.1",
     "fabric": "^7.1.0",
@@ -80,6 +82,7 @@
     "postcss": "^8.5.1",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.10",
+    "serwist": "^9.5.12",
     "stylelint": "^17.4.0",
     "stylelint-config-standard": "^36.0.1",
     "stylelint-config-tailwindcss": "^1.0.1",
