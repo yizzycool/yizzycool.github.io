@@ -24,38 +24,41 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const name = tagData.name || '';
   const slug = tagData.slug || tagSlug || '';
 
-  const url = urlJoin(domain, 'blog/tag', slug);
+  const meta = {
+    url: urlJoin(domain, 'blog/tag', slug),
+    title: `${name} 相關技術文章與筆記 | Yizzy Peasy`,
+    description: `瀏覽與 ${name} 標籤相關的所有技術文章、實操教學與開發隨筆，協助開發者快速尋求 ${name} 的解決方案。`,
+    og: {
+      siteName: 'Yizzy Peasy',
+      title: `${name} 標籤文章總覽 — Yizzy Peasy Blog`,
+      image: {
+        url: urlJoin(domain, 'assets/images/blog/og-image.jpg'),
+        width: 1200,
+        height: 630,
+        alt: 'Banner image',
+      },
+    },
+  };
 
   return {
-    title: `Blog - ${name} Articles | Yizzy Peasy`,
-    description:
-      'Yizzy Peasy 的技術部落格，涵蓋前端開發、JavaScript、Web API、Chrome Built-in AI 等深度教學與實用筆記。',
+    title: meta.title,
+    description: meta.description,
     alternates: {
-      canonical: url,
+      canonical: meta.url,
     },
-
     openGraph: {
-      title: 'Yizzy Peasy | Blog — 前端 Web 開發筆記',
-      description:
-        '深入的前端與 Web 技術教學、Chrome API 實作筆記與工程實例整理。',
-      url,
-      siteName: 'Yizzy Peasy',
-      images: [
-        {
-          url: urlJoin(domain, 'assets/images/blog/og-image.jpg'),
-          width: 1200,
-          height: 630,
-        },
-      ],
+      title: meta.og.title,
+      description: meta.description,
+      url: meta.url,
+      siteName: meta.og.siteName,
+      images: [meta.og.image],
       type: 'website',
     },
-
     twitter: {
       card: 'summary_large_image',
-      title: 'Yizzy Peasy | Blog — 前端 Web 開發筆記',
-      description:
-        '深入的前端與 Web 技術教學、Chrome API 實作筆記與工程實例整理。',
-      images: [urlJoin(domain, 'assets/images/blog/twitter-image.jpg')],
+      title: meta.og.title,
+      description: meta.description,
+      images: [meta.og.image.url],
     },
     robots: {
       index: false,

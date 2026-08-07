@@ -30,43 +30,50 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = get(article, ['data', 0]) || {};
   const categorySlug = get(data, ['category', 'slug']) || '';
 
-  const url = urlJoin(
-    domain,
-    strapiUtils.toBlogCategoryArticleUrl(categorySlug, articleSlug)
-  );
-
-  return {
+  const meta = {
+    url: urlJoin(
+      domain,
+      strapiUtils.toBlogCategoryArticleUrl(categorySlug, articleSlug)
+    ),
     title: `${data.title || 'Blog Article'} | Yizzy Peasy`,
     description: data.metaDescription,
-    alternates: {
-      canonical: url,
-    },
-
-    openGraph: {
+    og: {
       title: data.title,
       description: data.metaDescription,
-      type: 'article',
-      url,
       publishedTime: data.publishedAt ?? data.createdAt,
       modifiedTime: data.updatedAt ?? data.publishedAt ?? data.createdAt,
-
-      images: data.banner?.url
-        ? [
-            {
-              url: strapiUtils.toMediaUrl(data.banner.url),
-              width: 1200,
-              height: 630,
-              alt: data.title,
-            },
-          ]
-        : [],
+      image: data.banner?.url
+        ? {
+            url: strapiUtils.toMediaUrl(data.banner.url),
+            width: data.banner.width,
+            height: data.banner.height,
+            alt: data.title,
+          }
+        : null,
     },
+  };
 
+  return {
+    title: meta.title,
+    description: meta.description,
+    alternates: {
+      canonical: meta.url,
+    },
+    openGraph: {
+      title: meta.og.title,
+      description: meta.og.description,
+      type: 'article',
+      url: meta.url,
+      publishedTime: meta.og.publishedTime,
+      modifiedTime: meta.og.modifiedTime,
+
+      images: meta.og.image ? [meta.og.image] : [],
+    },
     twitter: {
       card: 'summary_large_image',
-      title: data.title,
-      description: data.metaDescription,
-      images: data.banner?.url ? [strapiUtils.toMediaUrl(data.banner.url)] : [],
+      title: meta.og.title,
+      description: meta.og.description,
+      images: meta.og.image ? [meta.og.image.url] : [],
     },
   };
 }

@@ -1,8 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata: Metadata = {
+const meta = {
   title: '404 - Page Not Found | Yizzy Peasy',
+};
+
+export const metadata: Metadata = {
+  title: meta.title,
   robots: {
     index: false,
     follow: false,

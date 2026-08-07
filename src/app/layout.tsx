@@ -4,21 +4,16 @@ import '@/styles/globals.css';
 import urlJoin from 'url-join';
 import { Inter, Noto_Sans_TC } from 'next/font/google';
 
+import { DEFAULT_DOMAIN } from '@/data/global';
+
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import { GTMNoScript, GTMScript } from '@/components/layout/gtm';
 
-const domain = process.env.NEXT_PUBLIC_DOMAIN || '/';
+const domain = process.env.NEXT_PUBLIC_DOMAIN || DEFAULT_DOMAIN;
 
-export const viewport: Viewport = {
-  themeColor: '#0f172a',
-};
-
-export const metadata: Metadata = {
-  metadataBase: new URL(
-    domain.startsWith('http') ? domain : `https://${domain}`
-  ),
-  title: 'Yizzy Peasy | Coding Life',
+const meta = {
+  title: 'Yizzy Peasy - Frontend & Web Development Blog',
   description:
     'Focused on programming and frontend development, sharing technical articles and useful tools to help developers improve their skills and efficiency. Explore JavaScript, React, Next.js, TypeScript, and the latest frontend technologies!',
   keywords: [
@@ -29,32 +24,49 @@ export const metadata: Metadata = {
     'Programming',
     'Useful Tools',
   ],
+  og: {
+    siteName: 'Yizzy Peasy',
+    description:
+      'Focused on frontend development & JavaScript/React. Sharing tech articles and useful tools to boost developer productivity and skills!',
+    image: {
+      url: urlJoin(domain, '/assets/images/home/og-image.jpg'),
+      width: 1200,
+      height: 630,
+      alt: 'Banner image',
+    },
+    locale: 'en_US',
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#0f172a',
+};
+
+export const metadata: Metadata = {
+  metadataBase: new URL(
+    domain.startsWith('http') ? domain : `https://${domain}`
+  ),
+  title: meta.title,
+  description: meta.description,
+  keywords: meta.keywords,
   authors: [{ name: 'Yizzy Wu', url: domain }],
   alternates: {
     canonical: domain,
   },
   openGraph: {
-    title: 'Yizzy Peasy | Coding Life',
-    description:
-      'Focused on programming and frontend development, sharing technical articles and useful tools to help developers improve their skills and efficiency. Explore JavaScript, React, Next.js, TypeScript, and the latest frontend technologies!',
+    title: meta.title,
+    description: meta.og.description,
     url: domain,
-    siteName: 'Yizzy Peasy',
-    images: [
-      {
-        url: urlJoin(domain, '/assets/images/home/avatar.jpg'),
-        width: 1200,
-        height: 630,
-      },
-    ],
-    locale: 'en_US',
+    siteName: meta.og.siteName,
+    images: [meta.og.image],
+    locale: meta.og.locale,
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Yizzy Peasy | Coding Life',
-    description:
-      'Focused on programming and frontend development, sharing technical articles and useful tools to help developers improve their skills and efficiency. Explore JavaScript, React, Next.js, TypeScript, and the latest frontend technologies!',
-    images: [urlJoin(domain, '/assets/images/home/avatar.jpg')],
+    title: meta.title,
+    description: meta.og.description,
+    images: [meta.og.image.url],
   },
   robots: {
     index: true,
@@ -72,7 +84,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'Yizzy Peasy',
+    title: meta.og.siteName,
   },
 };
 

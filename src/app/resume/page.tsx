@@ -8,21 +8,45 @@ import GlimmerBackgroundConfigs from '@/data/glimmer-background-config/resume';
 import Resume from '@/components/resume';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN || '';
-const resumeUrl = urlJoin(domain, 'resume');
 
-export const metadata: Metadata = {
+const meta = {
+  url: urlJoin(domain, 'resume'),
   title: 'Resume | Yizzy Peasy',
   description:
     'Experience, skills, and background of Yizzy Wu. Focused on Frontend Engineering, React, Next.js, and Web Development.',
-  alternates: {
-    canonical: resumeUrl,
-  },
-  openGraph: {
+  og: {
+    siteName: 'Yizzy Peasy',
     title: 'Resume | Yizzy Peasy',
     description:
       'Experience, skills, and background of Yizzy Wu. Focused on Frontend Engineering, React, Next.js, and Web Development.',
-    url: resumeUrl,
+    image: {
+      url: urlJoin(domain, '/assets/images/home/og-image.jpg'),
+      width: 1200,
+      height: 630,
+      alt: 'Banner image',
+    },
+  },
+};
+
+export const metadata: Metadata = {
+  title: meta.title,
+  description: meta.description,
+  alternates: {
+    canonical: meta.url,
+  },
+  openGraph: {
+    title: meta.og.title,
+    description: meta.og.description,
+    url: meta.url,
+    siteName: meta.og.siteName,
+    images: [meta.og.image],
     type: 'profile',
+  },
+  twitter: {
+    card: 'summary',
+    title: meta.og.title,
+    description: meta.og.description,
+    images: [meta.og.image.url],
   },
 };
 
