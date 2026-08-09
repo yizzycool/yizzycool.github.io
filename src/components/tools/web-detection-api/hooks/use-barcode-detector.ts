@@ -1,49 +1,32 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
+
 import useApiCommon from './use-api-common';
 
 export default function useBarcodeDetector() {
-  const [detector, setDetector] = useState<BarcodeDetectorInstance | null>(
-    null
+  const [detector] = useState<BarcodeDetectorInstance | null>(() => {
+    if (typeof window === 'undefined' || !window.BarcodeDetector) return null;
+    try {
+      return new window.BarcodeDetector();
+    } catch (_e) {
+      return null;
+    }
+  });
+
+  const isApiSupported = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
   );
 
   const {
-    isApiSupported,
-    setIsApiSupported,
     error,
     setError,
     isProcessing,
     setIsProcessing,
     hasCheckedApiStatus,
-  } = useApiCommon();
-
-  useEffect(() => {
-    checkCapability();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (!isApiSupported) return;
-    initBarcodeDetector();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isApiSupported]);
-
-  // To check if barcode detector is supported
-  const checkCapability = () => {
-    setIsApiSupported(!!window.BarcodeDetector);
-  };
-
-  const initBarcodeDetector = async () => {
-    if (window.BarcodeDetector) {
-      try {
-        const detector = await new window.BarcodeDetector();
-        setDetector(detector);
-      } catch (_e) {
-        setError(true);
-      }
-    }
-  };
+  } = useApiCommon({ isApiSupported });
 
   const detect = async (
     image: HTMLImageElement | HTMLCanvasElement
@@ -71,4 +54,16 @@ export default function useBarcodeDetector() {
     detect,
     resetError,
   };
+}
+
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return typeof window !== 'undefined' && 'BarcodeDetector' in window;
+}
+
+function getServerSnapshot() {
+  return null;
 }

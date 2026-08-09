@@ -29,8 +29,8 @@ const aligns = {
 type UrlMetadataType = {
   url: string;
   align: keyof typeof aligns;
-  width: number;
-  height: number;
+  width: number | undefined;
+  height: number | undefined;
 };
 
 export default function ImageParser(
@@ -42,18 +42,27 @@ export default function ImageParser(
 
   // Parse image url to get some extra metadata like `align`, `width`, `height`, etc.
   const { url, align, width, height } = useMemo(() => {
-    const { origin, pathname, searchParams } = new URL(src || '');
+    try {
+      const { origin, pathname, searchParams } = new URL((src as string) || '');
 
-    return {
-      url: urlJoin(origin, pathname).replace(hostReg, strapiMediaUrl || ''),
-      align: searchParams.get('align') || 'left',
-      width: searchParams.get('width')
-        ? parseInt(searchParams.get('width') || '0')
-        : undefined,
-      height: searchParams.get('height')
-        ? parseInt(searchParams.get('height') || '0')
-        : undefined,
-    } as UrlMetadataType;
+      return {
+        url: urlJoin(origin, pathname).replace(hostReg, strapiMediaUrl || ''),
+        align: searchParams.get('align') || 'left',
+        width: searchParams.get('width')
+          ? parseInt(searchParams.get('width') || '0')
+          : undefined,
+        height: searchParams.get('height')
+          ? parseInt(searchParams.get('height') || '0')
+          : undefined,
+      } as UrlMetadataType;
+    } catch (_e) {
+      return {
+        url: src,
+        align: 'left',
+        width: undefined,
+        height: undefined,
+      } as UrlMetadataType;
+    }
   }, [src]);
 
   // Generate unique layoutId to prevent collision

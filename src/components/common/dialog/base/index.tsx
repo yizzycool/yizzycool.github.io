@@ -3,8 +3,8 @@
 import { Transition, TransitionChild } from '@headlessui/react';
 import { useEffect } from 'react';
 
-import useMounted from '@/hooks/lifecycle/use-mounted';
 import { cn } from '@/utils/cn';
+import useIsClient from '@/hooks/lifecycle/use-is-client';
 
 import ClientPortal from '../../client-portal';
 
@@ -38,7 +38,7 @@ export default function BaseDialog({
   children,
   portalConfig = {},
 }: Props) {
-  const isMounted = useMounted();
+  const isClient = useIsClient();
 
   useEffect(() => {
     // Handle Esc keyboard shortcut
@@ -53,11 +53,9 @@ export default function BaseDialog({
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
+  }, [onClose]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (!isMounted) return null;
+  if (!isClient) return null;
 
   return (
     <ClientPortal

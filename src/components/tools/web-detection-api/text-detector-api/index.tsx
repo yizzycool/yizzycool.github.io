@@ -3,7 +3,7 @@
 import type { WebDetectionFileType } from '../result-canvas';
 
 import { Square, Trash2 } from 'lucide-react';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { isNull, map } from 'lodash';
 
 import useCommonFunction from '../hooks/use-common-function';
@@ -55,11 +55,19 @@ export default function TextDetectorApi() {
     onClear,
   } = useCommonFunction({ detect });
 
+  const [ratio, setRatio] = useState(1);
+
+  useEffect(() => {
+    if (isNull(results) || !resultRef.current || !canvasRef.current) return;
+    const { clientWidth } = resultRef.current;
+    const { width } = canvasRef.current;
+    if (width > 0) {
+      setRatio(clientWidth / width);
+    }
+  }, [results, resultRef, canvasRef]);
+
   const transformedResults = useMemo(() => {
-    if (isNull(results) || !resultRef?.current) return [];
-    const { clientWidth } = resultRef.current as HTMLDivElement;
-    const { width } = canvasRef.current as HTMLCanvasElement;
-    const ratio = clientWidth / width;
+    if (isNull(results)) return [];
     return map(results as TextDetectionResults, (result) => {
       const { boundingBox, cornerPoints, rawValue } = result;
       return {
@@ -84,8 +92,7 @@ export default function TextDetectorApi() {
         }),
       };
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [results]);
+  }, [results, ratio]);
 
   return (
     <>

@@ -2,7 +2,7 @@
 
 import { cn } from '@/utils/cn';
 import { Bot, SendHorizonal } from 'lucide-react';
-import { ChangeEventHandler, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { slice, last, size, isEmpty, trim } from 'lodash';
 
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
@@ -41,8 +41,8 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
     threshold: 50,
   });
 
-  const onInput: ChangeEventHandler<HTMLDivElement> = (event) => {
-    setText(event.target.innerHTML);
+  const onInput: React.InputEventHandler<HTMLDivElement> = (event) => {
+    setText(event.currentTarget.innerHTML);
   };
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {

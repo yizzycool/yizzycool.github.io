@@ -2,7 +2,7 @@
 
 import { cn } from '@/utils/cn';
 import { Check } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type Props<T extends readonly string[]> = {
   options: T;
@@ -27,17 +27,17 @@ export default function CheckBox<T extends readonly string[]>({
   labelClassName = '',
   onChange,
 }: StrictProps<T>) {
-  const [checkedList, setCheckedList] = useState<boolean[]>([]);
+  const initialList =
+    (defaultChecked as boolean[]) ??
+    Array.from({ length: options.length }, () => false);
 
-  // Update checkList status
-  useEffect(() => {
-    setCheckedList(
-      (defaultChecked as boolean[]) ??
-        Array.from({ length: options.length }, () => false)
-    );
+  const [prevDefaultChecked, setPrevDefaultChecked] = useState(defaultChecked);
+  const [checkedList, setCheckedList] = useState<boolean[]>(initialList);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [defaultChecked]);
+  if (prevDefaultChecked !== defaultChecked) {
+    setPrevDefaultChecked(defaultChecked);
+    setCheckedList(initialList);
+  }
 
   const baseWrapperStyles = 'text-left';
 

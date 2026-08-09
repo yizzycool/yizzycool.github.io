@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { defaults, isNull } from 'lodash';
 
 import useAiCommon from './use-ai-common';
@@ -17,9 +17,13 @@ export default function useAiSummarizer() {
   const [summarizer, setSummarizer] = useState<AISummarizer | null>(null);
   const [options, setOptions] = useState(Options);
 
+  const isApiSupported = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
+
   const {
-    isApiSupported,
-    setIsApiSupported,
     availability,
     setAvailability,
     error,
@@ -28,41 +32,12 @@ export default function useAiSummarizer() {
     setDownloadProgress,
     hasCheckedAIStatus,
     shouldDownloadModel,
-  } = useAiCommon();
-
-  useEffect(() => {
-    // Check if API is supported on the device
-    const apiExist = !!window.Summarizer;
-    setIsApiSupported(apiExist);
-    if (!apiExist) return;
-    checkAvailability();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      summarizer?.destroy?.();
-    };
-  }, [summarizer]);
-
-  // To check if summarizer is supported
-  const checkAvailability = async () => {
-    // Check API availability (unavailable / downloadable / downloading / available)
-    const availability = await window.Summarizer?.availability?.();
-    setAvailability(availability);
-    if (availability === 'available') {
-      initSummarizer();
-    }
-  };
+  } = useAiCommon({ isApiSupported });
 
   const initSummarizer = async (
     monitor?: AICreateMonitorCallback | undefined
   ) => {
-    if (!window.Summarizer) {
-      setIsApiSupported(false);
-      return;
-    }
+    if (!window.Summarizer) return;
     try {
       const summarizer = await window.Summarizer.create({
         ...options,
@@ -75,10 +50,7 @@ export default function useAiSummarizer() {
   };
 
   const updateSummarizer = async (options: AISummarizerCreateOptions) => {
-    if (!window.Summarizer) {
-      setIsApiSupported(false);
-      return;
-    }
+    if (!window.Summarizer) return;
     try {
       if (summarizer) summarizer?.destroy?.();
       setSummarizer(null);
@@ -104,10 +76,30 @@ export default function useAiSummarizer() {
 
   const downloadModel = async () => {
     await initSummarizer(createMonitorCallback);
-    // Check API availability (unavailable / downloadable / downloading / available)
     const availability = await window.Summarizer?.availability?.();
     setAvailability(availability);
   };
+
+  useEffect(() => {
+    if (!isApiSupported || typeof window === 'undefined' || !window.Summarizer)
+      return;
+
+    window.Summarizer.availability?.().then((avail) => {
+      setAvailability(avail);
+      if (avail === 'available') {
+        window.Summarizer?.create(options)
+          .then((inst) => setSummarizer(inst))
+          .catch(() => setError(true));
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isApiSupported, setAvailability, setError]);
+
+  useEffect(() => {
+    return () => {
+      summarizer?.destroy?.();
+    };
+  }, [summarizer]);
 
   const summarize = async (text: string): Promise<string | null> => {
     if (!summarizer) return null;
@@ -156,4 +148,16 @@ export default function useAiSummarizer() {
     downloadProgress,
     resetError,
   };
+}
+
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return typeof window !== 'undefined' && 'Summarizer' in window;
+}
+
+function getServerSnapshot() {
+  return null;
 }

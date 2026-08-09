@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { defaults, isNull } from 'lodash';
 
 import useAiCommon from './use-ai-common';
@@ -17,9 +17,13 @@ export default function useAiProofreader() {
   const [proofreader, setProofreader] = useState<AIProofreader | null>(null);
   const [options, setOptions] = useState(Options);
 
+  const isApiSupported = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
+
   const {
-    isApiSupported,
-    setIsApiSupported,
     availability,
     setAvailability,
     error,
@@ -30,41 +34,12 @@ export default function useAiProofreader() {
     setDownloadProgress,
     hasCheckedAIStatus,
     shouldDownloadModel,
-  } = useAiCommon();
-
-  useEffect(() => {
-    // Check if API is supported on the device
-    const apiExist = !!window.Proofreader;
-    setIsApiSupported(apiExist);
-    if (!apiExist) return;
-    checkAvailability();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      proofreader?.destroy?.();
-    };
-  }, [proofreader]);
-
-  // To check if proofreader is supported
-  const checkAvailability = async () => {
-    // Check API availability (unavailable / downloadable / downloading / available)
-    const availability = await window.Proofreader?.availability?.();
-    setAvailability(availability);
-    if (availability === 'available') {
-      initProofreader();
-    }
-  };
+  } = useAiCommon({ isApiSupported });
 
   const initProofreader = async (
     monitor?: AICreateMonitorCallback | undefined
   ) => {
-    if (!window.Proofreader) {
-      setIsApiSupported(false);
-      return;
-    }
+    if (!window.Proofreader) return;
     try {
       const proofreader = await window.Proofreader.create({
         ...options,
@@ -104,10 +79,30 @@ export default function useAiProofreader() {
 
   const downloadModel = async () => {
     await initProofreader(createMonitorCallback);
-    // Check API availability (unavailable / downloadable / downloading / available)
     const availability = await window.Proofreader?.availability?.();
     setAvailability(availability);
   };
+
+  useEffect(() => {
+    if (!isApiSupported || typeof window === 'undefined' || !window.Proofreader)
+      return;
+
+    window.Proofreader.availability?.().then((avail) => {
+      setAvailability(avail);
+      if (avail === 'available') {
+        window.Proofreader?.create(options)
+          .then((inst) => setProofreader(inst))
+          .catch(() => setError(true));
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isApiSupported, setAvailability, setError]);
+
+  useEffect(() => {
+    return () => {
+      proofreader?.destroy?.();
+    };
+  }, [proofreader]);
 
   const proofread = async (text: string): Promise<ProofreadResult | null> => {
     if (!proofreader) return null;
@@ -140,4 +135,16 @@ export default function useAiProofreader() {
     downloadProgress,
     resetError,
   };
+}
+
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return typeof window !== 'undefined' && 'Proofreader' in window;
+}
+
+function getServerSnapshot() {
+  return null;
 }

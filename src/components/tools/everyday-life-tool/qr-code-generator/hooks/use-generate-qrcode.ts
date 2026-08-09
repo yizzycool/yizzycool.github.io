@@ -23,19 +23,10 @@ export default function useGenerateQrCode({
   }, [text, size, color, bgColor, margin]);
 
   useEffect(() => {
-    checkSystem();
+    fetch('https://api.qrserver.com/v1/create-qr-code/?size=10x10&data=1')
+      .then((response) => setIsSystemReady(response.status === 200))
+      .catch(() => setIsSystemReady(false));
   }, []);
-
-  const checkSystem = async () => {
-    try {
-      const response = await fetch(
-        'https://api.qrserver.com/v1/create-qr-code/?size=10x10&data=1'
-      );
-      setIsSystemReady(response.status === 200);
-    } catch (_e) {
-      setIsSystemReady(false);
-    }
-  };
 
   return {
     isSystemReady,

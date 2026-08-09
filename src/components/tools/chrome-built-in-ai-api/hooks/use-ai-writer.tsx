@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { defaults, isNull, startsWith, size } from 'lodash';
 
 import useAiCommon from './use-ai-common';
@@ -17,9 +17,13 @@ export default function useAiWriter() {
   const [writer, setWriter] = useState<AIWriter | null>(null);
   const [options, setOptions] = useState(Options);
 
+  const isApiSupported = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
+
   const {
-    isApiSupported,
-    setIsApiSupported,
     availability,
     setAvailability,
     error,
@@ -28,39 +32,10 @@ export default function useAiWriter() {
     setDownloadProgress,
     hasCheckedAIStatus,
     shouldDownloadModel,
-  } = useAiCommon();
-
-  useEffect(() => {
-    // Check if API is supported on the device
-    const apiExist = !!window.Writer;
-    setIsApiSupported(apiExist);
-    if (!apiExist) return;
-    checkAvailability();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      writer?.destroy?.();
-    };
-  }, [writer]);
-
-  // To check if writer is supported
-  const checkAvailability = async () => {
-    // Check API availability (unavailable / downloadable / downloading / available)
-    const availability = await window.Writer?.availability?.();
-    setAvailability(availability);
-    if (availability === 'available') {
-      initWriter();
-    }
-  };
+  } = useAiCommon({ isApiSupported });
 
   const initWriter = async (monitor?: AICreateMonitorCallback | undefined) => {
-    if (!window.Writer) {
-      setIsApiSupported(false);
-      return;
-    }
+    if (!window.Writer) return;
     try {
       const writer = await window.Writer.create({ ...options, monitor });
       setWriter(writer);
@@ -97,10 +72,30 @@ export default function useAiWriter() {
 
   const downloadModel = async () => {
     await initWriter(createMonitorCallback);
-    // Check API availability (unavailable / downloadable / downloading / available)
     const availability = await window.Writer?.availability?.();
     setAvailability(availability);
   };
+
+  useEffect(() => {
+    if (!isApiSupported || typeof window === 'undefined' || !window.Writer)
+      return;
+
+    window.Writer.availability?.().then((avail) => {
+      setAvailability(avail);
+      if (avail === 'available') {
+        window.Writer?.create(options)
+          .then((inst) => setWriter(inst))
+          .catch(() => setError(true));
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isApiSupported, setAvailability, setError]);
+
+  useEffect(() => {
+    return () => {
+      writer?.destroy?.();
+    };
+  }, [writer]);
 
   const write = async (text: string): Promise<string | null> => {
     if (!writer) return null;
@@ -154,4 +149,16 @@ export default function useAiWriter() {
     downloadProgress,
     resetError,
   };
+}
+
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return typeof window !== 'undefined' && 'Writer' in window;
+}
+
+function getServerSnapshot() {
+  return null;
 }

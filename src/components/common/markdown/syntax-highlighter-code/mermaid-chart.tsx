@@ -43,9 +43,9 @@ export default function MermaidChart({ code, metadata }: Props) {
 
   const { isDark } = useDarkModeObserver();
 
-  const randomLayoutId = useMemo(() => {
-    return `mermaid-${Math.random().toString(36).substring(2, 9)}`;
-  }, []);
+  const [randomLayoutId] = useState(
+    () => `mermaid-${Math.random().toString(36).substring(2, 9)}`
+  );
 
   // Parse query string to get extra metadata like `align`, `width`, `height`, etc.
   const { look, align } = useMemo(() => {

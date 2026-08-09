@@ -1,14 +1,16 @@
-import { useState, useEffect, useCallback } from 'react';
+'use client';
+
+import { useCallback, useSyncExternalStore } from 'react';
 
 /**
  * Custom React hook for simple IndexedDB key-value operations.
  */
 export function useIndexedDB(dbName: string, storeName: string, version = 1) {
-  const [isSupported, setIsSupported] = useState(false);
-
-  useEffect(() => {
-    setIsSupported(typeof window !== 'undefined' && 'indexedDB' in window);
-  }, []);
+  const isSupported = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
 
   const openDB = useCallback((): Promise<IDBDatabase> => {
     return new Promise((resolve, reject) => {
@@ -83,4 +85,16 @@ export function useIndexedDB(dbName: string, storeName: string, version = 1) {
     setValue,
     deleteValue,
   };
+}
+
+function subscribe(_callback: () => void) {
+  return () => {};
+}
+
+function getSnapshot(): boolean {
+  return typeof window !== 'undefined' && 'indexedDB' in window;
+}
+
+function getServerSnapshot(): boolean {
+  return false;
 }

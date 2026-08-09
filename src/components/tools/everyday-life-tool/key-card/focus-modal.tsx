@@ -26,14 +26,15 @@ export default function FocusModal({
   setFocusTab,
   onEdit,
 }: FocusModalProps) {
-  const [activeCard, setActiveCard] = useState<CardData | null>(null);
+  const [activeCard, setActiveCard] = useState<CardData | null>(
+    focusCard || null
+  );
+  const [prevFocusCard, setPrevFocusCard] = useState(focusCard);
 
-  // Cache the last defined card so the modal contents don't vanish during close animation
-  useEffect(() => {
-    if (focusCard) {
-      setActiveCard(focusCard);
-    }
-  }, [focusCard]);
+  if (focusCard && prevFocusCard !== focusCard) {
+    setPrevFocusCard(focusCard);
+    setActiveCard(focusCard);
+  }
 
   const cardToRender = focusCard || activeCard;
 

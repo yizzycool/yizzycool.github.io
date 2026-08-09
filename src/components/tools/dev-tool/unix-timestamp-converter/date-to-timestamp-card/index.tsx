@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CalendarDays } from 'lucide-react';
 import { isNumber } from 'lodash';
 
@@ -20,11 +20,9 @@ type DateInput = {
 };
 
 export default function DateToTimestampCard() {
-  const [dateInput, setDateInput] = useState<DateInput>({});
-
-  useEffect(() => {
+  const [dateInput, setDateInput] = useState<DateInput>(() => {
     const date = new Date();
-    setDateInput({
+    return {
       year: date.getFullYear(),
       month: date.getMonth() + 1,
       day: date.getDate(),
@@ -32,8 +30,8 @@ export default function DateToTimestampCard() {
       minute: date.getMinutes(),
       second: date.getSeconds(),
       timezone: 'UTC',
-    });
-  }, []);
+    };
+  });
 
   // Date to Timestamp Calculation
   const convertedTimestamp = useMemo(() => {

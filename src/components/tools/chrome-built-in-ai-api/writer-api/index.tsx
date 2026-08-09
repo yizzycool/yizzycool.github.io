@@ -85,7 +85,7 @@ export default function WriterApi() {
       {!hasCheckedAIStatus ? (
         <SystemChecking />
       ) : !isApiSupported ? (
-        <UnsupportedCard apiType={UNSUPPORTED_API_TYPES.chromeTranslatorApi} />
+        <UnsupportedCard apiType={UNSUPPORTED_API_TYPES.chromeWriter} />
       ) : shouldDownloadModel ? (
         <ModelDownloadCard
           onClick={downloadModel}

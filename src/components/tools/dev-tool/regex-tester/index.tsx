@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import HeaderBlock from '../../header-block';
 import SectionGap from '../../section-gap';
@@ -48,24 +48,18 @@ export default function RegexTester() {
   const [testString, setTestString] = useState(
     'Contact us at support@example.com or info@web.org!'
   );
-  const [error, setError] = useState<string | null>(null);
-  const [matches, setMatches] = useState<RegExpExecArray[]>([]);
 
-  // Regex processing
-  useEffect(() => {
+  // Derived Regex computation
+  const { matches, error } = useMemo(() => {
     if (!pattern) {
-      setMatches([]);
-      setError(null);
-      return;
+      return { matches: [], error: null };
     }
     try {
       const regex = new RegExp(pattern, flags);
       const allMatches = Array.from(testString.matchAll(regex));
-      setMatches(allMatches);
-      setError(null);
+      return { matches: allMatches, error: null };
     } catch (e) {
-      setError((e as Error).message);
-      setMatches([]);
+      return { matches: [], error: (e as Error).message };
     }
   }, [pattern, flags, testString]);
 

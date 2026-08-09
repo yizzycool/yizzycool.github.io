@@ -3,7 +3,7 @@
 import { cn } from '@/utils/cn';
 import { LoaderCircle, QrCode } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type Props = {
   qrCodeUrl: string;
@@ -11,14 +11,15 @@ type Props = {
 };
 
 export default function Preview({ qrCodeUrl, inputText }: Props) {
+  const [prevUrl, setPrevUrl] = useState(qrCodeUrl);
   const [isGenerating, setIsGenerating] = useState(false);
 
-  useEffect(() => {
-    if (!inputText) return;
-    setIsGenerating(true);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [qrCodeUrl]);
+  if (prevUrl !== qrCodeUrl) {
+    setPrevUrl(qrCodeUrl);
+    if (inputText) {
+      setIsGenerating(true);
+    }
+  }
 
   return (
     <div

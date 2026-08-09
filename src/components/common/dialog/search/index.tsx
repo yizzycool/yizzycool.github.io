@@ -2,14 +2,7 @@
 
 import type { FuseResult } from 'fuse.js';
 
-import {
-  Fragment,
-  MouseEventHandler,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowDownUp,
   Command,
@@ -88,25 +81,23 @@ export default function SearchDialog({ deviceType }: Props) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [deviceType]);
 
-  // Clear query when dialog closed
-  useEffect(() => {
-    if (isOpen) return;
-    setQuery('');
-  }, [isOpen]);
-
   // Auto focus
   useEffect(() => {
     if (!isOpen) return;
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       inputRef.current?.focus();
-    });
+    }, 0);
+    return () => clearTimeout(timer);
   }, [isOpen]);
 
-  const onButtonClick: MouseEventHandler<HTMLButtonElement> = (_e) => {
+  const onButtonClick = () => {
     setIsOpen(true);
   };
 
-  const closeDialog = () => setIsOpen(false);
+  const closeDialog = () => {
+    setIsOpen(false);
+    setQuery('');
+  };
 
   const getPageName = (results: Array<FuseResult<DataForSearch>>) =>
     get(results, [0, 'item', 'page'], '');

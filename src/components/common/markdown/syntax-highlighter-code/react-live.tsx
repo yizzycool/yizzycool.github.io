@@ -38,32 +38,38 @@ export default function ReactLive({ code = '', metadata }: Props) {
   const [executedCode, setExecutedCode] = useState(code.replace(/\n$/, ''));
 
   const [mode, setMode] = useState<SwitchMode>('code');
-  const [lockMode, setLockMode] = useState(false);
-
-  const [liveProviderConfig, setLiveProviderConfig] =
-    useState<LiveProviderConfig>({
-      disabled: true,
-    });
-
   const { isDark } = useDarkModeObserver();
 
   // Parse metadata like ```live?lang=tsx
-  useEffect(() => {
+  const parsedMeta = useMemo(() => {
     const params = new URLSearchParams(metadata.replace(/^live/, ''));
-    setLiveProviderConfig((prev) => ({
-      ...prev,
-      language: params.get('lang') || undefined,
-      // disabled: params.get('disabled') === 'true',
-    }));
+    const language = params.get('lang') || undefined;
+    const lockModeParam = params.get('lockMode') || '';
+    const lock = ['code', 'preview'].includes(lockModeParam);
 
-    // Parse other configurations
-    // `lockMode`
-    const lockMode = params.get('lockMode') || '';
-    if (['code', 'preview'].includes(lockMode)) {
-      setLockMode(true);
-      customEventUtils.emit(CustomEvents.common.switchTab, { tab: lockMode });
-    }
+    return {
+      language,
+      lockMode: lock,
+      lockModeTab: lockModeParam,
+    };
   }, [metadata]);
+
+  const liveProviderConfig: LiveProviderConfig = useMemo(
+    () => ({
+      disabled: true,
+      language: parsedMeta.language,
+    }),
+    [parsedMeta.language]
+  );
+
+  const lockMode = parsedMeta.lockMode;
+
+  useEffect(() => {
+    if (!parsedMeta.lockModeTab) return;
+    customEventUtils.emit(CustomEvents.common.switchTab, {
+      tab: parsedMeta.lockModeTab,
+    });
+  }, [parsedMeta.lockModeTab]);
 
   // To count number of lines
   const lineCount = useMemo(() => {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { defaults, isNull, startsWith, size } from 'lodash';
 
 import useAiCommon from './use-ai-common';
@@ -17,9 +17,13 @@ export default function useAiRewriter() {
   const [rewriter, setRewriter] = useState<AIRewriter | null>(null);
   const [options, setOptions] = useState(Options);
 
+  const isApiSupported = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
+
   const {
-    isApiSupported,
-    setIsApiSupported,
     availability,
     setAvailability,
     error,
@@ -28,41 +32,12 @@ export default function useAiRewriter() {
     setDownloadProgress,
     hasCheckedAIStatus,
     shouldDownloadModel,
-  } = useAiCommon();
-
-  useEffect(() => {
-    // Check if API is supported on the device
-    const apiExist = !!window.Rewriter;
-    setIsApiSupported(apiExist);
-    if (!apiExist) return;
-    checkAvailability();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      rewriter?.destroy?.();
-    };
-  }, [rewriter]);
-
-  // To check if rewriter is supported
-  const checkAvailability = async () => {
-    // Check API availability (unavailable / downloadable / downloading / available)
-    const availability = await window.Rewriter?.availability?.();
-    setAvailability(availability);
-    if (availability === 'available') {
-      initRewriter();
-    }
-  };
+  } = useAiCommon({ isApiSupported });
 
   const initRewriter = async (
     monitor?: AICreateMonitorCallback | undefined
   ) => {
-    if (!window.Rewriter) {
-      setIsApiSupported(false);
-      return;
-    }
+    if (!window.Rewriter) return;
     try {
       const rewriter = await window.Rewriter.create({ ...options, monitor });
       setRewriter(rewriter);
@@ -99,10 +74,30 @@ export default function useAiRewriter() {
 
   const downloadModel = async () => {
     await initRewriter(createMonitorCallback);
-    // Check API availability (unavailable / downloadable / downloading / available)
     const availability = await window.Rewriter?.availability?.();
     setAvailability(availability);
   };
+
+  useEffect(() => {
+    if (!isApiSupported || typeof window === 'undefined' || !window.Rewriter)
+      return;
+
+    window.Rewriter.availability?.().then((avail) => {
+      setAvailability(avail);
+      if (avail === 'available') {
+        window.Rewriter?.create(options)
+          .then((inst) => setRewriter(inst))
+          .catch(() => setError(true));
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isApiSupported, setAvailability, setError]);
+
+  useEffect(() => {
+    return () => {
+      rewriter?.destroy?.();
+    };
+  }, [rewriter]);
 
   const rewrite = async (text: string): Promise<string | null> => {
     if (!rewriter) return null;
@@ -156,4 +151,16 @@ export default function useAiRewriter() {
     downloadProgress,
     resetError,
   };
+}
+
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return typeof window !== 'undefined' && 'Rewriter' in window;
+}
+
+function getServerSnapshot() {
+  return null;
 }

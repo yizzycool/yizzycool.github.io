@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Hash, RefreshCw } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
@@ -15,11 +15,9 @@ type ConvertedDate = {
 };
 
 export default function TimestampToDateCard() {
-  const [tsInput, setTsInput] = useState('');
-
-  useEffect(() => {
-    setTsInput(Math.floor(Date.now() / 1000).toString());
-  }, []);
+  const [tsInput, setTsInput] = useState(() =>
+    Math.floor(Date.now() / 1000).toString()
+  );
 
   // Timestamp to Date Calculation
   const convertedDate: ConvertedDate = useMemo(() => {

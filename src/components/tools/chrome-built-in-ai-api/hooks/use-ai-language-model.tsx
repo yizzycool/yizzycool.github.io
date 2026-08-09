@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { isNull, defaults } from 'lodash';
 
 import useAiCommon from './use-ai-common';
@@ -16,9 +16,13 @@ export default function useAiLanguageModel() {
   const [session, setSession] = useState<AILanguageModel | null>(null);
   const [options, setOptions] = useState(Options);
 
+  const isApiSupported = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
+
   const {
-    isApiSupported,
-    setIsApiSupported,
     availability,
     setAvailability,
     error,
@@ -27,41 +31,12 @@ export default function useAiLanguageModel() {
     setDownloadProgress,
     hasCheckedAIStatus,
     shouldDownloadModel,
-  } = useAiCommon();
-
-  useEffect(() => {
-    // Check if API is supported on the device
-    const apiExist = !!window.LanguageModel;
-    setIsApiSupported(apiExist);
-    if (!apiExist) return;
-    checkAvailability();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      session?.destroy?.();
-    };
-  }, [session]);
-
-  // To check if language detector is supported
-  const checkAvailability = async () => {
-    // Check API availability (unavailable / downloadable / downloading / available)
-    const availability = await window.LanguageModel?.availability?.();
-    setAvailability(availability);
-    if (availability === 'available') {
-      initLanguageModel();
-    }
-  };
+  } = useAiCommon({ isApiSupported });
 
   const initLanguageModel = async (
     monitor?: AICreateMonitorCallback | undefined
   ) => {
-    if (!window.LanguageModel) {
-      setIsApiSupported(false);
-      return;
-    }
+    if (!window.LanguageModel) return;
     try {
       const session = await window.LanguageModel.create({
         ...options,
@@ -74,10 +49,7 @@ export default function useAiLanguageModel() {
   };
 
   const updateLanguageModel = async (options: AILanguageModelCreateOptions) => {
-    if (!window.LanguageModel) {
-      setIsApiSupported(false);
-      return;
-    }
+    if (!window.LanguageModel) return;
     try {
       if (session) session?.destroy?.();
       setSession(null);
@@ -105,10 +77,34 @@ export default function useAiLanguageModel() {
 
   const downloadModel = async () => {
     await initLanguageModel(createMonitorCallback);
-    // Check API availability (unavailable / downloadable / downloading / available)
     const availability = await window.LanguageModel?.availability?.();
     setAvailability(availability);
   };
+
+  useEffect(() => {
+    if (
+      !isApiSupported ||
+      typeof window === 'undefined' ||
+      !window.LanguageModel
+    )
+      return;
+
+    window.LanguageModel.availability?.().then((avail) => {
+      setAvailability(avail);
+      if (avail === 'available') {
+        window.LanguageModel?.create(options)
+          .then((newSession) => setSession(newSession))
+          .catch(() => setError(true));
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isApiSupported, setAvailability, setError]);
+
+  useEffect(() => {
+    return () => {
+      session?.destroy?.();
+    };
+  }, [session]);
 
   const prompt = async (text: string): Promise<string | null> => {
     if (!session) return null;
@@ -159,4 +155,16 @@ export default function useAiLanguageModel() {
     downloadProgress,
     resetError,
   };
+}
+
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return typeof window !== 'undefined' && 'LanguageModel' in window;
+}
+
+function getServerSnapshot() {
+  return null;
 }

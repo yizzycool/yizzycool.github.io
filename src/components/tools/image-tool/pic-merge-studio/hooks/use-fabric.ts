@@ -118,71 +118,6 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
 
   const { getSelectedImage } = useCommon({ refs: { fabricCanvasRef } });
 
-  // Init Fabric.js
-  useEffect(() => {
-    if (!canvasRef.current) return;
-
-    // Create a Canvas
-    const canvas = new fabric.Canvas(canvasRef.current, {
-      backgroundColor: DEFAULT_CANVAS_CONFIG.background.color?.color,
-      selection: false,
-      enableRetinaScaling: true,
-    });
-    fabricCanvasRef.current = canvas;
-    fabricCanvasRef.current.setDimensions({
-      width: DEFAULT_CANVAS_CONFIG.size.width,
-      height: DEFAULT_CANVAS_CONFIG.size.height,
-    });
-
-    // Create border rect
-    fabricCanvasBorderRectRef.current = new fabric.Rect({
-      selectable: false,
-      evented: false,
-      fill: 'transparent',
-      _customKey: 'border-rect',
-    });
-    fabricCanvasRef.current.add(fabricCanvasBorderRectRef.current);
-    bindBorderZIndexGuard();
-
-    // Init all monitors
-    initHasImageSelectionMonitor();
-    initSelectedImageMonitor();
-    initHammerPinch();
-
-    // Custom event to update image selection status
-    const unsubscriber = customEventUtils.on(
-      CustomEvents.tools.fabricRecalcSelection,
-      recalcSelection
-    );
-
-    // Render all
-    fabricCanvasRef.current.requestRenderAll();
-
-    // Init Fabric completely
-    setIsFabricReady(true);
-
-    return () => {
-      canvas.dispose();
-      unsubscriber();
-    };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Update canvas while window size changed
-  useEffect(() => {
-    if (!isFabricReady) return;
-
-    resizeDisplay();
-    window.addEventListener('resize', resizeDisplay);
-
-    return () => {
-      window.removeEventListener('resize', resizeDisplay);
-    };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFabricReady, canvasConfig.size]);
-
   // To resize canvas element when window resized
   const resizeDisplay = () => {
     if (!containerRef.current || !fabricCanvasRef.current) return;
@@ -423,6 +358,71 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
     fabricCanvasRef.current.on('selection:updated', ensure);
     ensure();
   };
+
+  // Init Fabric.js
+  useEffect(() => {
+    if (!canvasRef.current) return;
+
+    // Create a Canvas
+    const canvas = new fabric.Canvas(canvasRef.current, {
+      backgroundColor: DEFAULT_CANVAS_CONFIG.background.color?.color,
+      selection: false,
+      enableRetinaScaling: true,
+    });
+    fabricCanvasRef.current = canvas;
+    fabricCanvasRef.current.setDimensions({
+      width: DEFAULT_CANVAS_CONFIG.size.width,
+      height: DEFAULT_CANVAS_CONFIG.size.height,
+    });
+
+    // Create border rect
+    fabricCanvasBorderRectRef.current = new fabric.Rect({
+      selectable: false,
+      evented: false,
+      fill: 'transparent',
+      _customKey: 'border-rect',
+    });
+    fabricCanvasRef.current.add(fabricCanvasBorderRectRef.current);
+    bindBorderZIndexGuard();
+
+    // Init all monitors
+    initHasImageSelectionMonitor();
+    initSelectedImageMonitor();
+    initHammerPinch();
+
+    // Custom event to update image selection status
+    const unsubscriber = customEventUtils.on(
+      CustomEvents.tools.fabricRecalcSelection,
+      recalcSelection
+    );
+
+    // Render all
+    fabricCanvasRef.current.requestRenderAll();
+
+    // Init Fabric completely
+    setIsFabricReady(true);
+
+    return () => {
+      canvas.dispose();
+      unsubscriber();
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Update canvas while window size changed
+  useEffect(() => {
+    if (!isFabricReady) return;
+
+    resizeDisplay();
+    window.addEventListener('resize', resizeDisplay);
+
+    return () => {
+      window.removeEventListener('resize', resizeDisplay);
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFabricReady, canvasConfig.size]);
 
   return {
     states: {

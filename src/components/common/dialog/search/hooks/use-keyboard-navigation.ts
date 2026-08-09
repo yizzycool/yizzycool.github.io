@@ -30,7 +30,8 @@ export default function useKeyboardNavigation({
     const node = document.getElementById(`search-result-${focusIndex}`);
     if (!node) return;
     node.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-    setUsingKeyboard(false);
+    const timer = setTimeout(() => setUsingKeyboard(false), 0);
+    return () => clearTimeout(timer);
   }, [focusIndex, usingKeyboard]);
 
   const onDialogKeyDown: KeyboardEventHandler<HTMLDivElement> = (e) => {

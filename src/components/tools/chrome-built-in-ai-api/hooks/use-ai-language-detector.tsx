@@ -1,14 +1,19 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
+
 import useAiCommon from './use-ai-common';
 
 export default function useAiLanguageDetector() {
   const [detector, setDetector] = useState<AILanguageDetector | null>(null);
 
+  const isApiSupported = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
+
   const {
-    isApiSupported,
-    setIsApiSupported,
     availability,
     setAvailability,
     error,
@@ -17,41 +22,12 @@ export default function useAiLanguageDetector() {
     setDownloadProgress,
     hasCheckedAIStatus,
     shouldDownloadModel,
-  } = useAiCommon();
-
-  useEffect(() => {
-    // Check if API is supported on the device
-    const apiExist = !!window.LanguageDetector;
-    setIsApiSupported(apiExist);
-    if (!apiExist) return;
-    checkAvailability();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      detector?.destroy?.();
-    };
-  }, [detector]);
-
-  // To check if language detector is supported
-  const checkAvailability = async () => {
-    // Check API availability (unavailable / downloadable / downloading / available)
-    const availability = await window.LanguageDetector?.availability?.();
-    setAvailability(availability);
-    if (availability === 'available') {
-      initLanguageDetector();
-    }
-  };
+  } = useAiCommon({ isApiSupported });
 
   const initLanguageDetector = async (
     monitor?: AICreateMonitorCallback | undefined
   ) => {
-    if (!window.LanguageDetector) {
-      setIsApiSupported(false);
-      return;
-    }
+    if (!window.LanguageDetector) return;
     try {
       const detector = await window.LanguageDetector.create({ monitor });
       setDetector(detector);
@@ -72,10 +48,33 @@ export default function useAiLanguageDetector() {
 
   const downloadModel = async () => {
     await initLanguageDetector(createMonitorCallback);
-    // Check API availability (unavailable / downloadable / downloading / available)
-    const availability = await window.LanguageDetector?.availability?.();
-    setAvailability(availability);
+    const avail = await window.LanguageDetector?.availability?.();
+    setAvailability(avail);
   };
+
+  useEffect(() => {
+    if (
+      !isApiSupported ||
+      typeof window === 'undefined' ||
+      !window.LanguageDetector
+    )
+      return;
+
+    window.LanguageDetector.availability?.().then((avail) => {
+      setAvailability(avail);
+      if (avail === 'available') {
+        window.LanguageDetector?.create()
+          .then((instance) => setDetector(instance))
+          .catch(() => setError(true));
+      }
+    });
+  }, [isApiSupported, setAvailability, setError]);
+
+  useEffect(() => {
+    return () => {
+      detector?.destroy?.();
+    };
+  }, [detector]);
 
   const detect = async (
     text: string
@@ -98,4 +97,16 @@ export default function useAiLanguageDetector() {
     downloadProgress,
     resetError,
   };
+}
+
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return typeof window !== 'undefined' && 'LanguageDetector' in window;
+}
+
+function getServerSnapshot() {
+  return null;
 }

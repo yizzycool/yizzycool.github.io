@@ -1,27 +1,40 @@
 import NextBundleAnalyzer from '@next/bundle-analyzer';
 import withSerwistInit from '@serwist/next';
 
+const isDev = process.env.NODE_ENV === 'development';
+const isTestPwa = process.env.TEST_PWA === 'true';
+const isAnalyze = process.env.ANALYZE === 'true';
+
 // PWA (Service Worker) configuration using Serwist
+const shouldEnableSerwist = !isDev || isTestPwa;
 const withSerwist = withSerwistInit({
   swSrc: 'src/app/sw.ts',
   swDest: 'public/sw.js',
-  // Disable Service Worker in development mode, unless TEST_PWA is explicitly set to 'true'
-  disable:
-    process.env.NODE_ENV === 'development' && process.env.TEST_PWA !== 'true',
+  disable: !shouldEnableSerwist,
 });
 
 // To visualize bundle size
 const withBundleAnalyzer = NextBundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
+  enabled: isAnalyze,
 });
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
   images: { unoptimized: true },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // eslint: {
+  //   ignoreDuringBuilds: true,
+  // },
 };
 
-export default withBundleAnalyzer(withSerwist(nextConfig));
+let finalConfig = nextConfig;
+
+if (shouldEnableSerwist) {
+  finalConfig = withSerwist(finalConfig);
+}
+
+if (isAnalyze) {
+  finalConfig = withBundleAnalyzer(finalConfig);
+}
+
+export default finalConfig;

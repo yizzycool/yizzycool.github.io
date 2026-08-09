@@ -15,7 +15,7 @@ export default function ResultCanvas({
   param,
   onCanvasDraw,
 }: {
-  canvasRef: React.RefObject<HTMLCanvasElement>;
+  canvasRef: React.RefObject<HTMLCanvasElement | null>;
   param: Param;
   onCanvasDraw: (canvas: HTMLCanvasElement) => Promise<void>;
 }) {

@@ -3,7 +3,7 @@
 import { cn } from '@/utils/cn';
 import { X } from 'lucide-react';
 import { Transition, TransitionChild } from '@headlessui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
@@ -16,14 +16,9 @@ type Props = {
 };
 
 export default function BottomDrawer({ isOpen, onClose, children }: Props) {
-  const [node, setNode] = useState<HTMLElement | null>(null);
+  const node = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   useEffect(() => {
-    const node = document.getElementById(
-      'pic-merge-studio-mobile-config-drawer'
-    );
-    setNode(node);
-
     // Add custom event listener
     const onSwitchTab = (e: CustomEvent) => {
       if (e.detail.tab !== 'Image') return;
@@ -38,11 +33,9 @@ export default function BottomDrawer({ isOpen, onClose, children }: Props) {
     return () => {
       unsubscriber();
     };
+  }, [onClose]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (!node) return;
+  if (!node) return null;
 
   return createPortal(
     <Transition show={isOpen} unmount={false} appear={true}>
@@ -82,4 +75,18 @@ export default function BottomDrawer({ isOpen, onClose, children }: Props) {
     </Transition>,
     node
   );
+}
+
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return typeof document !== 'undefined'
+    ? document.getElementById('pic-merge-studio-mobile-config-drawer')
+    : null;
+}
+
+function getServerSnapshot() {
+  return null;
 }

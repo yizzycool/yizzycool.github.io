@@ -10,7 +10,7 @@ import Button from '@/components/common/button';
 
 type Props = {
   discardActiveObject: () => void;
-  children: JSX.Element;
+  children: React.ReactNode;
 };
 
 const tabs: string[] = ['Canvas', 'Image'];
@@ -18,6 +18,14 @@ const tabsIcon: LucideIcon[] = [Frame, Image];
 
 export default function Tabs({ discardActiveObject, children }: Props) {
   const [activeTab, setActiveTab] = useState(tabs[0]);
+
+  const onChange = (tab: string) => {
+    setActiveTab(tab);
+
+    if (tab === tabs[0]) {
+      discardActiveObject();
+    }
+  };
 
   // Bind a event listener to trigger tab switch
   useEffect(() => {
@@ -37,14 +45,6 @@ export default function Tabs({ discardActiveObject, children }: Props) {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const onChange = (tab: string) => {
-    setActiveTab(tab);
-
-    if (tab === tabs[0]) {
-      discardActiveObject();
-    }
-  };
 
   return (
     <>

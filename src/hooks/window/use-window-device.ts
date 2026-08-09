@@ -35,16 +35,17 @@ export default function useWindowDevice() {
   }, [width, isDesktop]);
 
   useEffect(() => {
+    const onResized = () => {
+      setWidth(window.innerWidth);
+    };
+
     onResized();
     window.addEventListener('resize', onResized);
+
     return () => {
       window.removeEventListener('resize', onResized);
     };
   }, []);
-
-  const onResized = () => {
-    setWidth(window.innerWidth);
-  };
 
   return {
     isDesktop,

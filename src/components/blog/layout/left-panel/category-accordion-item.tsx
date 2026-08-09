@@ -1,7 +1,7 @@
 import { type BlogCategoryData } from '@/types/blog/category';
 
 import { cn } from '@/utils/cn';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
@@ -32,12 +32,14 @@ export default function CategoryAccordionItem({
     pathname === categoryUrl || pathname.startsWith(articleUrlPrefix);
 
   const [isOpen, setIsOpen] = useState(isActive);
+  const [prevIsActive, setPrevIsActive] = useState(isActive);
 
-  // Sync open state with pathname changes to ensure active category is expanded
-  useEffect(() => {
-    if (!isActive) return;
-    setIsOpen(true);
-  }, [isActive]);
+  if (prevIsActive !== isActive) {
+    setPrevIsActive(isActive);
+    if (isActive) {
+      setIsOpen(true);
+    }
+  }
 
   const handleCategoryClick = () => setIsOpen((prev) => !prev);
 

@@ -1,16 +1,16 @@
 import { cn } from '@/utils/cn';
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
 type Props = {
   loaded?: boolean;
 };
 
 export default function useGetTransitionClass({ loaded = true }: Props = {}) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
 
   const slideBaseClass = 'animate-duration-1000';
 
@@ -33,4 +33,16 @@ export default function useGetTransitionClass({ loaded = true }: Props = {}) {
     getFadeUpClass,
     getFadeInClass,
   };
+}
+
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return true;
+}
+
+function getServerSnapshot() {
+  return false;
 }

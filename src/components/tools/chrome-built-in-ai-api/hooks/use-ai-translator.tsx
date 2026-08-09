@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import useAiCommon from './use-ai-common';
 
 const Options: AITranslatorCreateOptions = {
@@ -12,9 +12,13 @@ export default function useAiTranslator() {
   const [translator, setTranslator] = useState<AITranslator | null>(null);
   const [options, setOptions] = useState(Options);
 
+  const isApiSupported = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
+
   const {
-    isApiSupported,
-    setIsApiSupported,
     availability,
     setAvailability,
     error,
@@ -23,37 +27,12 @@ export default function useAiTranslator() {
     setDownloadProgress,
     hasCheckedAIStatus,
     shouldDownloadModel,
-  } = useAiCommon();
+  } = useAiCommon({ isApiSupported });
 
-  useEffect(() => {
-    initTranslator();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      translator?.destroy?.();
-    };
-  }, [translator]);
-
-  const initTranslator = async () => {
-    // Check if API is supported on the device
-    const apiExist = !!window.Translator;
-    setIsApiSupported(apiExist);
-    if (!apiExist) return;
-    const availability = await checkAvailability();
-    if (availability === 'available') {
-      setTranslatorLang();
-    }
-  };
-
-  // To check if translator is supported
   const checkAvailability = async (
     sourceLanguage = Options.sourceLanguage,
     targetLanguage = Options.targetLanguage
   ) => {
-    // Check API availability (unavailable / downloadable / downloading / available)
     const availability = await window.Translator?.availability?.({
       sourceLanguage,
       targetLanguage,
@@ -62,14 +41,18 @@ export default function useAiTranslator() {
     return availability;
   };
 
+  const createMonitorCallback: AICreateMonitorCallback = (monitor) => {
+    setDownloadProgress(0);
+    monitor.addEventListener('downloadprogress', (e) => {
+      setDownloadProgress(e.loaded);
+    });
+  };
+
   const setTranslatorLang = async (
     sourceLanguage = Options.sourceLanguage,
     targetLanguage = Options.targetLanguage
   ) => {
-    if (!window.Translator) {
-      setIsApiSupported(false);
-      return;
-    }
+    if (!window.Translator) return;
     try {
       if (translator) translator.destroy?.();
       const availability = await window.Translator.availability({
@@ -98,16 +81,39 @@ export default function useAiTranslator() {
     }
   };
 
-  const createMonitorCallback: AICreateMonitorCallback = (monitor) => {
-    setDownloadProgress(0);
-    monitor.addEventListener('downloadprogress', (e) => {
-      setDownloadProgress(e.loaded);
-    });
-  };
-
   const downloadModel = async () => {
     await setTranslatorLang();
   };
+
+  useEffect(() => {
+    if (!isApiSupported || typeof window === 'undefined' || !window.Translator)
+      return;
+
+    window.Translator.availability?.({
+      sourceLanguage: Options.sourceLanguage,
+      targetLanguage: Options.targetLanguage,
+    }).then((avail) => {
+      console.log(avail);
+      setAvailability(avail);
+      if (avail === 'available') {
+        window.Translator?.create({
+          sourceLanguage: Options.sourceLanguage,
+          targetLanguage: Options.targetLanguage,
+        })
+          .then((inst) => setTranslator(inst))
+          .catch(() => {
+            setError(true);
+            setAvailability('unavailable');
+          });
+      }
+    });
+  }, [isApiSupported, setAvailability, setError]);
+
+  useEffect(() => {
+    return () => {
+      translator?.destroy?.();
+    };
+  }, [translator]);
 
   const translate = async (text: string): Promise<string> => {
     if (!translator) return '';
@@ -131,4 +137,16 @@ export default function useAiTranslator() {
     downloadProgress,
     resetError,
   };
+}
+
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return typeof window !== 'undefined' && 'Translator' in window;
+}
+
+function getServerSnapshot() {
+  return null;
 }

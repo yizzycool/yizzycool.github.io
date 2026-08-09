@@ -21,21 +21,15 @@ import {
   useRole,
   useTransitionStyles,
 } from '@floating-ui/react';
-import {
-  cloneElement,
-  createContext,
-  useContext,
-  useRef,
-  useState,
-} from 'react';
+import { cloneElement, createContext, useContext, useState } from 'react';
 
 const TooltipContext = createContext<ToolTipContextType>({});
 
 type ToolTipContextType = {
   rootContext?: FloatingRootContext<ReferenceType>;
   interactions?: UseInteractionsReturn;
-  setAnchor?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
-  setTooltip?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+  setAnchor?: (node: HTMLElement | null) => void;
+  setTooltip?: (node: HTMLElement | null) => void;
   isOpen?: boolean;
 };
 
@@ -86,7 +80,7 @@ export function TooltipRoot({ children }: Props) {
 }
 
 type TooltipTriggerProps = {
-  children: React.ReactElement;
+  children: React.ReactElement<Record<string, unknown>>;
 };
 
 export function TooltipTrigger({ children }: TooltipTriggerProps) {
@@ -118,7 +112,7 @@ export function TooltipPopup({
 }: TooltipPopupProps) {
   const { rootContext, interactions, setTooltip } = useContext(TooltipContext);
 
-  const arrowRef = useRef(null);
+  const [arrowEl, setArrowEl] = useState<HTMLDivElement | null>(null);
 
   const offsetValue = showArrow ? 8 : 4;
 
@@ -131,7 +125,7 @@ export function TooltipPopup({
       shift(),
       showArrow &&
         arrow({
-          element: arrowRef,
+          element: arrowEl,
           padding: offsetValue,
         }),
     ],
@@ -169,7 +163,7 @@ export function TooltipPopup({
       >
         {showArrow && (
           <div
-            ref={arrowRef}
+            ref={setArrowEl}
             className={cn('absolute size-3 rotate-45', arrowClassName)}
             style={{
               left: floating!.middlewareData.arrow?.x ?? '',

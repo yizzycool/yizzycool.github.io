@@ -1,47 +1,32 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
+
 import useApiCommon from './use-api-common';
 
 export default function useFaceDetector() {
-  const [detector, setDetector] = useState<FaceDetectorInstance | null>(null);
+  const [detector] = useState<FaceDetectorInstance | null>(() => {
+    if (typeof window === 'undefined' || !window.FaceDetector) return null;
+    try {
+      return new window.FaceDetector();
+    } catch (_e) {
+      return null;
+    }
+  });
+
+  const isApiSupported = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
 
   const {
-    isApiSupported,
-    setIsApiSupported,
     error,
     setError,
     isProcessing,
     setIsProcessing,
     hasCheckedApiStatus,
-  } = useApiCommon();
-
-  useEffect(() => {
-    checkCapability();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (!isApiSupported) return;
-    initFaceDetector();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isApiSupported]);
-
-  // To check if face detector is supported
-  const checkCapability = () => {
-    setIsApiSupported(!!window.FaceDetector);
-  };
-
-  const initFaceDetector = async () => {
-    if (window.FaceDetector) {
-      try {
-        const detector = await new window.FaceDetector();
-        setDetector(detector);
-      } catch (_e) {
-        setError(true);
-      }
-    }
-  };
+  } = useApiCommon({ isApiSupported });
 
   const detect = async (
     image: HTMLImageElement | HTMLCanvasElement
@@ -69,4 +54,16 @@ export default function useFaceDetector() {
     detect,
     resetError,
   };
+}
+
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return typeof window !== 'undefined' && 'FaceDetector' in window;
+}
+
+function getServerSnapshot() {
+  return null;
 }

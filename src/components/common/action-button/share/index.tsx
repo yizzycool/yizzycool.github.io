@@ -3,7 +3,7 @@
 import type { ActionButtonProps } from '@/types/common/action-button';
 
 import { Share2 } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useSyncExternalStore } from 'react';
 import { isNil } from 'lodash';
 
 import useDisplay from '../hooks/use-display';
@@ -28,20 +28,13 @@ export default function ShareAction({
   shareTitle = '',
   shareText = '',
 }: Props) {
-  const [isActionSupported, setIsActionSupported] = useState(false);
-  const [isMimeTypeSupported, setIsMimeTypeSupported] = useState(false);
+  const isActionSupported = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
 
   const { showIcon, showLabel } = useDisplay({ display });
-
-  const mimeType = useMemo(() => {
-    if (typeof content === 'string') {
-      return 'text/plain';
-    } else if (isNil(content)) {
-      return '';
-    } else {
-      return content.type;
-    }
-  }, [content]);
 
   const shareData = useMemo(() => {
     if (typeof content === 'string') {
@@ -61,26 +54,17 @@ export default function ShareAction({
     }
   }, [shareTitle, shareText, content]);
 
+  const isMimeTypeSupported = useMemo(() => {
+    if (typeof window === 'undefined' || !window.navigator.canShare)
+      return false;
+    return window.navigator.canShare(shareData);
+  }, [shareData]);
+
   const isButtonDisabled = useMemo(() => {
     return (
       disabled || isNil(content) || !isMimeTypeSupported || !isActionSupported
     );
   }, [disabled, content, isMimeTypeSupported, isActionSupported]);
-
-  // Check if navigator.share and navigator.share.canShare exist
-  useEffect(() => {
-    setIsActionSupported(
-      !!window.navigator.share && !!window.navigator.canShare
-    );
-  }, [shareData]);
-
-  // Check if mimeType is supported
-  useEffect(() => {
-    setIsMimeTypeSupported(
-      !!window.navigator.canShare && window.navigator.canShare(shareData)
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mimeType]);
 
   const handleShare = async () => {
     if (isButtonDisabled) return;
@@ -107,4 +91,20 @@ export default function ShareAction({
       {!showLabel ? null : label}
     </Button>
   );
+}
+
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return (
+    typeof window !== 'undefined' &&
+    !!window.navigator.share &&
+    !!window.navigator.canShare
+  );
+}
+
+function getServerSnapshot() {
+  return false;
 }

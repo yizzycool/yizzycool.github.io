@@ -15,7 +15,7 @@ export default function ActionButtons({ qrCodeUrl }: Props) {
         <DownloadAction
           size="lg"
           imageUrl={qrCodeUrl}
-          filename={`qrcode-${Date.now()}`}
+          filename="qrcode"
           label="Download PNG"
         />
       </div>

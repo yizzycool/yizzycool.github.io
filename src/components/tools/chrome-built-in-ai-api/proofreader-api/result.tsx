@@ -1,5 +1,5 @@
 import { cn } from '@/utils/cn';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   BookCheck,
   Check,
@@ -82,34 +82,20 @@ type Props = {
 };
 
 export default function Result({ text, result, isProcessing }: Props) {
-  const [highlightList, setHighlightList] = useState<HighlightList>([]);
-
-  const copyText = useMemo(() => {
-    return join(
-      map(highlightList, ({ applySuggestion, text, correction }) => {
-        if (applySuggestion) return correction;
-        else return text;
-      })
-    );
-  }, [highlightList]);
-
-  useEffect(() => {
+  const initialHighlightList = useMemo(() => {
     try {
       const parts: HighlightList = [];
-
       let lastIndex = 0;
 
       forEach(
         result?.corrections,
         ({ correction, startIndex, endIndex, type }) => {
-          // Handle for input with no suggestion
           if (lastIndex < startIndex) {
             parts.push({
               text: text.substring(lastIndex, startIndex),
               error: false,
             });
           }
-          // Handle for input with suggestion
           parts.push({
             text: text.substring(startIndex, endIndex),
             error: true,
@@ -121,7 +107,6 @@ export default function Result({ text, result, isProcessing }: Props) {
         }
       );
 
-      // Handle for last substring
       if (lastIndex < text.length) {
         parts.push({
           text: text.substring(lastIndex, text.length),
@@ -129,13 +114,29 @@ export default function Result({ text, result, isProcessing }: Props) {
         });
       }
 
-      setHighlightList(parts);
+      return parts;
     } catch (_e) {
-      return setHighlightList([]);
+      return [];
     }
+  }, [result, text]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [result]);
+  const [prevResult, setPrevResult] = useState(result);
+  const [highlightList, setHighlightList] =
+    useState<HighlightList>(initialHighlightList);
+
+  if (prevResult !== result) {
+    setPrevResult(result);
+    setHighlightList(initialHighlightList);
+  }
+
+  const copyText = useMemo(() => {
+    return join(
+      map(highlightList, ({ applySuggestion, text, correction }) => {
+        if (applySuggestion) return correction;
+        else return text;
+      })
+    );
+  }, [highlightList]);
 
   const onApply = (idx: number) => {
     setHighlightList((prev) => [

@@ -3,7 +3,7 @@
 import type { ActionButtonProps } from '@/types/common/action-button';
 
 import { Clipboard } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useSyncExternalStore } from 'react';
 import { find } from 'lodash';
 
 import useDisplay from '../hooks/use-display';
@@ -30,22 +30,17 @@ export default function PasteAction<T extends InputType>({
   onClick = () => {},
   type = 'string' as T,
 }: Props<T>) {
-  const [isActionSupported, setIsActionSupported] = useState(false);
+  const isActionSupported = useSyncExternalStore(
+    subscribe,
+    () => getSnapshot(type),
+    getServerSnapshot
+  );
 
   const { showIcon, showLabel } = useDisplay({ display });
 
   const isButtonDisabled = useMemo(() => {
     return disabled || !isActionSupported;
   }, [disabled, isActionSupported]);
-
-  // Check if ClipboardItem and navigator?.clipboard?.write exist
-  useEffect(() => {
-    if (type === 'string') {
-      setIsActionSupported(!!window.navigator?.clipboard?.readText);
-    } else {
-      setIsActionSupported(!!window.navigator?.clipboard?.read);
-    }
-  }, [type]);
 
   const onPasteClick = async () => {
     if (isButtonDisabled) return;
@@ -80,4 +75,19 @@ export default function PasteAction<T extends InputType>({
       {showLabel ? 'Paste' : null}
     </Button>
   );
+}
+
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot(type: InputType) {
+  if (typeof window === 'undefined') return false;
+  return type === 'string'
+    ? !!window.navigator?.clipboard?.readText
+    : !!window.navigator?.clipboard?.read;
+}
+
+function getServerSnapshot() {
+  return false;
 }

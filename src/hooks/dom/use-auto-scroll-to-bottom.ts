@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useCallback, RefObject } from 'react';
+import { useEffect, useRef, useCallback, useState, RefObject } from 'react';
 
 type UseAutoScrollToBottomOptions = {
   /**
@@ -24,8 +24,17 @@ export default function useAutoScrollToBottom<T = unknown>(
 ) {
   const { containerRef, isStreaming = false, threshold = 100 } = options;
 
-  const isAutoScrollEnabledRef = useRef<boolean>(false);
+  const [isAutoScrollEnabled, setIsAutoScrollEnabled] =
+    useState<boolean>(false);
   const lastScrollYRef = useRef<number>(0);
+
+  const [prevStreaming, setPrevStreaming] = useState(isStreaming);
+  if (isStreaming && !prevStreaming) {
+    setPrevStreaming(isStreaming);
+    setIsAutoScrollEnabled(true);
+  } else if (!isStreaming && prevStreaming) {
+    setPrevStreaming(isStreaming);
+  }
 
   const getDistanceFromBottom = useCallback(() => {
     if (containerRef?.current) {
@@ -54,24 +63,22 @@ export default function useAutoScrollToBottom<T = unknown>(
           behavior: smooth ? 'smooth' : 'auto',
         });
       }
-      isAutoScrollEnabledRef.current = true;
     },
     [containerRef]
   );
 
   const startAutoScroll = useCallback(() => {
-    isAutoScrollEnabledRef.current = true;
+    setIsAutoScrollEnabled(true);
     scrollToBottom(true);
   }, [scrollToBottom]);
 
   const stopAutoScroll = useCallback(() => {
-    isAutoScrollEnabledRef.current = false;
+    setIsAutoScrollEnabled(false);
   }, []);
 
-  // Automatically start auto-scroll when streaming begins
+  // Automatically scroll when streaming begins
   useEffect(() => {
     if (isStreaming) {
-      isAutoScrollEnabledRef.current = true;
       scrollToBottom(true);
     }
   }, [isStreaming, scrollToBottom]);
@@ -80,7 +87,7 @@ export default function useAutoScrollToBottom<T = unknown>(
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       if (e.deltaY < 0) {
-        isAutoScrollEnabledRef.current = false;
+        setIsAutoScrollEnabled(false);
       }
     };
 
@@ -91,7 +98,7 @@ export default function useAutoScrollToBottom<T = unknown>(
     const handleTouchMove = (e: TouchEvent) => {
       const currentY = e.touches[0].clientY;
       if (currentY - touchStartY > 10) {
-        isAutoScrollEnabledRef.current = false;
+        setIsAutoScrollEnabled(false);
       }
     };
 
@@ -99,13 +106,13 @@ export default function useAutoScrollToBottom<T = unknown>(
       const currentScrollY = window.scrollY || window.pageYOffset;
 
       if (currentScrollY < lastScrollYRef.current - 5) {
-        isAutoScrollEnabledRef.current = false;
+        setIsAutoScrollEnabled(false);
       }
 
       // Re-enable auto scroll if user scrolls back near bottom
       const distanceFromBottom = getDistanceFromBottom();
       if (distanceFromBottom <= threshold) {
-        isAutoScrollEnabledRef.current = true;
+        setIsAutoScrollEnabled(true);
       }
 
       lastScrollYRef.current = currentScrollY;
@@ -126,15 +133,15 @@ export default function useAutoScrollToBottom<T = unknown>(
 
   // Auto scroll when dependency (results) updates DURING STREAMING
   useEffect(() => {
-    if (isStreaming && isAutoScrollEnabledRef.current) {
+    if (isStreaming && isAutoScrollEnabled) {
       scrollToBottom(false);
     }
-  }, [dep, isStreaming, scrollToBottom]);
+  }, [dep, isStreaming, isAutoScrollEnabled, scrollToBottom]);
 
   return {
     scrollToBottom,
     startAutoScroll,
     stopAutoScroll,
-    isAutoScrollEnabled: isAutoScrollEnabledRef.current,
+    isAutoScrollEnabled,
   };
 }

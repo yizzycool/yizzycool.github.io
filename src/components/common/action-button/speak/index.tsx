@@ -3,8 +3,7 @@
 import type { ActionButtonProps } from '@/types/common/action-button';
 
 import { Volume2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { isNull } from 'lodash';
+import { useSyncExternalStore } from 'react';
 
 import useDisplay from '../hooks/use-display';
 import Button from '../../button';
@@ -19,15 +18,13 @@ export default function SpeakAction({
   disabled = false,
   content = '',
 }: Props) {
-  const [isSpeechSupported, setIsSpeechSupported] = useState<boolean | null>(
-    null
+  const isSpeechSupported = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
   );
 
   const { showIcon, showLabel } = useDisplay({ display });
-
-  useEffect(() => {
-    setIsSpeechSupported('speechSynthesis' in window);
-  }, []);
 
   const onClick = () => {
     if (!content) return;
@@ -36,7 +33,7 @@ export default function SpeakAction({
     window.speechSynthesis.speak(utterance);
   };
 
-  if (isNull(isSpeechSupported) || isSpeechSupported === false) {
+  if (!isSpeechSupported) {
     return null;
   }
 
@@ -53,22 +50,16 @@ export default function SpeakAction({
       {showLabel ? 'Speak' : null}
     </Button>
   );
+}
 
-  // return (
-  //   <button
-  //     onClick={onClick}
-  //     title="Swap contents"
-  //     className={cn(
-  //       'group/speak flex items-center justify-center rounded-full border p-3 shadow-sm',
-  //       'border-gray-200 bg-white text-gray-600 hover:bg-gray-50',
-  //       'dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-300 dark:hover:bg-neutral-700',
-  //       disabled && 'pointer-events-none opacity-50'
-  //     )}
-  //   >
-  //     <Volume2
-  //       size={size}
-  //       className="transition-all duration-500 group-active/speak:scale-110"
-  //     />
-  //   </button>
-  // );
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return typeof window !== 'undefined' && 'speechSynthesis' in window;
+}
+
+function getServerSnapshot() {
+  return false;
 }

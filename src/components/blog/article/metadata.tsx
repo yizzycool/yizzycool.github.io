@@ -4,7 +4,7 @@ import type { BlogArticle } from '@/types/blog';
 
 import { Calendar, Clock, RefreshCw } from 'lucide-react';
 import { get } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
 import { cn } from '@/utils/cn';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
@@ -16,12 +16,11 @@ export default function Metadata({ article }: Props) {
   const data = get(article, 'data.0') || {};
   const { createdAt, updatedAt, publishedAt, readTime } = data;
 
-  const [locale, setLocale] = useState('en-US');
-
-  useEffect(() => {
-    const userLang = navigator.language || 'en-US';
-    setLocale(userLang);
-  }, []);
+  const locale = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
 
   const createDate = new Date(createdAt as string);
   const createDateString = createDate.toLocaleDateString(locale, {
@@ -68,4 +67,16 @@ export default function Metadata({ article }: Props) {
       </time>
     </div>
   );
+}
+
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return typeof navigator !== 'undefined' ? navigator.language : 'en-US';
+}
+
+function getServerSnapshot() {
+  return 'en-US';
 }

@@ -3,7 +3,7 @@
 import type { ActionButtonProps } from '@/types/common/action-button';
 
 import { Check, Copy } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState, useSyncExternalStore } from 'react';
 import { isNil } from 'lodash';
 
 import useDisplay from '../hooks/use-display';
@@ -25,8 +25,12 @@ export default function CopyAction({
   label = 'Copy',
 }: Props) {
   const [copied, setCopied] = useState(false);
-  const [isActionSupported, setIsActionSupported] = useState(false);
-  const [isMimeTypeSupported, setIsMimeTypeSupported] = useState(false);
+
+  const isActionSupported = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
 
   const { showIcon, showLabel } = useDisplay({ display });
 
@@ -40,25 +44,18 @@ export default function CopyAction({
     }
   }, [content]);
 
+  const isMimeTypeSupported = useMemo(() => {
+    if (typeof window === 'undefined' || !window.ClipboardItem) return false;
+    return typeof ClipboardItem.supports === 'function'
+      ? ClipboardItem.supports(mimeType)
+      : false;
+  }, [mimeType]);
+
   const isButtonDisabled = useMemo(() => {
     return (
       disabled || isNil(content) || !isMimeTypeSupported || !isActionSupported
     );
   }, [disabled, content, isMimeTypeSupported, isActionSupported]);
-
-  // Check if ClipboardItem and navigator?.clipboard?.write exist
-  useEffect(() => {
-    setIsActionSupported(
-      !!window.ClipboardItem && !!window.navigator?.clipboard?.write
-    );
-  }, []);
-
-  // Check if mimeType is supported
-  useEffect(() => {
-    setIsMimeTypeSupported(
-      !!window.ClipboardItem && ClipboardItem.supports(mimeType)
-    );
-  }, [mimeType]);
 
   const handleCopy = async () => {
     if (isButtonDisabled) return;
@@ -96,4 +93,20 @@ export default function CopyAction({
       {!showLabel ? null : copied ? 'Copied' : label}
     </Button>
   );
+}
+
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return (
+    typeof window !== 'undefined' &&
+    !!window.ClipboardItem &&
+    !!window.navigator?.clipboard?.write
+  );
+}
+
+function getServerSnapshot() {
+  return false;
 }

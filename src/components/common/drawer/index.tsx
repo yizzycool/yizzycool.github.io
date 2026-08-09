@@ -2,11 +2,11 @@
 
 import type { Rounded } from '@/types/common';
 
-import { cn } from '@/utils/cn';
 import { Transition, TransitionChild } from '@headlessui/react';
 import { createPortal } from 'react-dom';
 
-import useMounted from '@/hooks/lifecycle/use-mounted';
+import useIsClient from '@/hooks/lifecycle/use-is-client';
+import { cn } from '@/utils/cn';
 
 type Side = 'top' | 'bottom' | 'left' | 'right';
 
@@ -140,10 +140,10 @@ function Wrapper({
   className?: string;
   onClose: (value: boolean) => void;
 }) {
-  const isMounted = useMounted();
+  const isClient = useIsClient();
 
   if (usePortal) {
-    if (!isMounted) return null;
+    if (!isClient) return null;
     return createPortal(
       <div
         {...rests}

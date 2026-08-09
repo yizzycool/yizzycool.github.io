@@ -16,7 +16,7 @@ export default function useIntersectionObserver({
   threshold?: number;
   once?: boolean;
   targetSelector?: string;
-  targetRef?: React.RefObject<HTMLElement>;
+  targetRef?: React.RefObject<HTMLElement | null>;
 }) {
   const [hit, setHit] = useState(false);
 

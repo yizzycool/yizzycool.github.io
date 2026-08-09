@@ -1,5 +1,5 @@
-import Fuse, { FuseResult } from 'fuse.js';
-import { useEffect, useState } from 'react';
+import Fuse from 'fuse.js';
+import { useEffect, useMemo, useState } from 'react';
 import { isEmpty, isNull } from 'lodash';
 
 const fuseOptions = {
@@ -42,35 +42,20 @@ type Props = {
 export default function useSearchContent({ isOpen, query, dataUrl }: Props) {
   const [data, setData] = useState<Array<DataForSearch> | null>(null);
   const [error, setError] = useState(false);
-  const [fuse, setFuse] = useState<Fuse<DataForSearch> | null>(null);
-  const [searchResults, setSearchResults] = useState<
-    Array<FuseResult<DataForSearch>>
-  >([]);
+  const [fuse] = useState<Fuse<DataForSearch>>(() => new Fuse([], fuseOptions));
 
-  // Init Fuse and Fetch `articles` or `tools`
+  // Fetch `articles` or `tools` when open
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || !isNull(data)) return;
 
-    const fetchData = async () => {
-      try {
-        const data = await fetch(dataUrl).then((r) => r.json());
-        setData(data);
-      } catch (e) {
+    fetch(dataUrl)
+      .then((r) => r.json())
+      .then((fetchedData) => setData(fetchedData))
+      .catch((e) => {
         console.log('error when fetching data:', e);
         setError(true);
-      }
-    };
-
-    if (!fuse) {
-      const newFuse = new Fuse([], fuseOptions);
-      setFuse(newFuse);
-    }
-
-    if (isNull(data)) {
-      fetchData();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
+      });
+  }, [isOpen, data, dataUrl]);
 
   // Add data collection into fuse
   useEffect(() => {
@@ -78,14 +63,12 @@ export default function useSearchContent({ isOpen, query, dataUrl }: Props) {
     fuse.setCollection(data);
   }, [fuse, data]);
 
-  // Update result
-  useEffect(() => {
-    if (isEmpty(query)) {
-      setSearchResults([]);
-    } else if (fuse && !isNull(data)) {
-      const results = fuse.search(query);
-      setSearchResults(results);
+  // Derive search results using useMemo
+  const searchResults = useMemo(() => {
+    if (isEmpty(query) || !fuse || isNull(data)) {
+      return [];
     }
+    return fuse.search(query);
   }, [query, fuse, data]);
 
   return {

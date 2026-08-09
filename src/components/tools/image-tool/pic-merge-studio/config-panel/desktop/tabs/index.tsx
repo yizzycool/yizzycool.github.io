@@ -8,7 +8,7 @@ import BaseTabs from '@/components/common/tabs/base';
 type Props = {
   tabs: string[];
   discardActiveObject: () => void;
-  children: JSX.Element;
+  children: React.ReactNode;
 };
 
 export default function Tabs({ tabs, discardActiveObject, children }: Props) {

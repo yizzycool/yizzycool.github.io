@@ -29,6 +29,36 @@ export default function Typewritter() {
   useEffect(() => {
     if (!isMounted) return;
 
+    const typeText = () => {
+      // Typing characters
+      if (text.length < phrases[index].length) {
+        const randomTime = random(0, 20);
+        timeoutRef.current = setTimeout(() => {
+          setText(phrases[index].slice(0, text.length + 1));
+        }, typingSpeed + randomTime);
+      } else {
+        // Finished typing → wait → start deleting
+        timeoutRef.current = setTimeout(() => {
+          setIsDeleting(true);
+        }, stayDuration);
+      }
+    };
+
+    const deleteText = () => {
+      // Erasing characters
+      if (text.length > 0) {
+        timeoutRef.current = setTimeout(() => {
+          setText(text.slice(0, -1));
+        }, deletingSpeed);
+      } else {
+        // Move to next phrase
+        timeoutRef.current = setTimeout(() => {
+          setIsDeleting(false);
+          setIndex((prev) => (prev + 1) % phrases.length);
+        }, 0);
+      }
+    };
+
     if (isDeleting) {
       deleteText();
     } else {
@@ -39,36 +69,7 @@ export default function Typewritter() {
       if (!timeoutRef.current) return;
       clearTimeout(timeoutRef.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMounted, text, isDeleting, index]);
-
-  const typeText = () => {
-    // Typing characters
-    if (text.length < phrases[index].length) {
-      const randomTime = random(0, 20);
-      timeoutRef.current = setTimeout(() => {
-        setText(phrases[index].slice(0, text.length + 1));
-      }, typingSpeed + randomTime);
-    } else {
-      // Finished typing → wait → start deleting
-      timeoutRef.current = setTimeout(() => {
-        setIsDeleting(true);
-      }, stayDuration);
-    }
-  };
-
-  const deleteText = () => {
-    // Erasing characters
-    if (text.length > 0) {
-      timeoutRef.current = setTimeout(() => {
-        setText(text.slice(0, -1));
-      }, deletingSpeed);
-    } else {
-      // Move to next phrase
-      setIsDeleting(false);
-      setIndex((prev) => (prev + 1) % phrases.length);
-    }
-  };
 
   return (
     <span>

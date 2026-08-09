@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, ReactNode } from 'react';
+import { ReactNode, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 
 interface ClientPortalProps {
@@ -9,31 +9,40 @@ interface ClientPortalProps {
   children: ReactNode;
 }
 
+const emptySubscribe = () => () => {};
+const getServerSnapshot = () => null;
+
 export default function ClientPortal({
   selectorOrElement,
   portalKey,
   children,
 }: ClientPortalProps) {
-  const [container, setContainer] = useState<HTMLElement | null>(null);
+  const getSnapshot = () => {
+    if (typeof window === 'undefined') return null;
 
-  useEffect(() => {
     // Default -> document.body
     if (!selectorOrElement) {
-      setContainer(document.body);
-      return;
+      return document.body;
     }
 
     // String -> selector
     if (typeof selectorOrElement === 'string') {
-      setContainer(document.querySelector<HTMLElement>(selectorOrElement));
-      return;
+      return document.querySelector<HTMLElement>(selectorOrElement);
     }
 
     // HTML Element -> element
     if (selectorOrElement instanceof HTMLElement) {
-      setContainer(selectorOrElement);
+      return selectorOrElement;
     }
-  }, [selectorOrElement]);
+
+    return null;
+  };
+
+  const container = useSyncExternalStore(
+    emptySubscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
 
   if (!container) return null;
 

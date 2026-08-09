@@ -119,7 +119,7 @@ export default function Base64ToImage() {
           <DownloadAction
             blob={imageInfo.blob}
             disabled={!imageInfo.image}
-            filename={`converted_${Date.now()}`}
+            filename="converted_image"
           />
         </div>
       </div>

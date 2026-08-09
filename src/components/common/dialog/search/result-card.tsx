@@ -1,16 +1,21 @@
-'use client';
-
 import type { FuseResult } from 'fuse.js';
 
 import { cn } from '@/utils/cn';
 import urlJoin from 'url-join';
-import { CornerDownLeft, FileText, LucideIcon } from 'lucide-react';
-import { useMemo } from 'react';
+import { CornerDownLeft, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { get, findKey } from 'lodash';
 
 import Badge from '@/components/common/badge';
 import { ToolIcons, ToolSlugs } from '@/data/tools';
+
+function renderResultIcon(page: string, slug: string) {
+  const Icon =
+    page === 'blog'
+      ? FileText
+      : get(ToolIcons, findKey(ToolSlugs, (s) => s === slug) || '') || FileText;
+  return <Icon size={20} />;
+}
 
 type Props = {
   data: FuseResult<DataForSearch> & { idx: number };
@@ -26,16 +31,6 @@ export default function ResultCard({
   onPointerEnter,
 }: Props) {
   const focused = focusIndex === data.idx;
-
-  const Icon: LucideIcon = useMemo(() => {
-    if (data.item.page === 'blog') {
-      return FileText;
-    } else {
-      const slug = data.item.slug;
-      const toolKey = findKey(ToolSlugs, (s) => s === slug) || '';
-      return get(ToolIcons, toolKey);
-    }
-  }, [data]);
 
   const url = urlJoin(
     '/',
@@ -65,7 +60,7 @@ export default function ResultCard({
             'bg-neutral-200 text-slate-700 dark:bg-neutral-700 dark:text-slate-200'
         )}
       >
-        <Icon size={20} />
+        {renderResultIcon(data.item.page, data.item.slug)}
       </div>
 
       {/* Middle: Content */}

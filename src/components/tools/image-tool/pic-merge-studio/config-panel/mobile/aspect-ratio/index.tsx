@@ -5,7 +5,7 @@ import type { CanvasRatioType } from '../../data/aspect-ratio';
 
 import { cn } from '@/utils/cn';
 import { Check, Move, Proportions } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { clamp } from 'lodash';
 
 import { useControlDrawer } from '../hooks/use-control-drawer';
@@ -14,7 +14,6 @@ import Button from '@/components/common/button';
 import IconTextButton from '../icon-text-button';
 import BottomDrawer from '../bottom-drawer';
 import GroupTitle from '../group-title';
-import { DEFAULT_CANVAS_CONFIG } from '../../..';
 import { PRESET_ASPECT_RATIOS } from '../../data/aspect-ratio';
 
 const mobilePresetAspectRatios: CanvasRatioType[] = [
@@ -46,23 +45,17 @@ type Props = {
 
 export default function AspectRatio({ size, setSize }: Props) {
   const [isCustomSize, setIsCustomSize] = useState(false);
-  const [inputSize, setInputSize] = useState<CanvasSize>(
-    DEFAULT_CANVAS_CONFIG.size
-  );
+  const [prevSize, setPrevSize] = useState(size);
+  const [inputSize, setInputSize] = useState<CanvasSize>(size);
 
   const refCallback = usePreventNumberWheel();
 
   const { isOpen, openDrawer, closeDrawer } = useControlDrawer();
 
-  // Sync inputSize with canvasSize
-  useEffect(() => {
-    if (size.width === inputSize.width && size.height === inputSize.height)
-      return;
-
+  if (prevSize.width !== size.width || prevSize.height !== size.height) {
+    setPrevSize(size);
     setInputSize(size);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [size]);
+  }
 
   const handleRatioSelect = (ratio: CanvasRatioType) => {
     if (ratio.title === 'Custom') {

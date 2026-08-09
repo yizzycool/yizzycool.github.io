@@ -1,47 +1,32 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
+
 import useApiCommon from './use-api-common';
 
 export default function useTextDetector() {
-  const [detector, setDetector] = useState<TextDetectorInstance | null>(null);
+  const [detector] = useState<TextDetectorInstance | null>(() => {
+    if (typeof window === 'undefined' || !window.TextDetector) return null;
+    try {
+      return new window.TextDetector();
+    } catch (_e) {
+      return null;
+    }
+  });
+
+  const isApiSupported = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
 
   const {
-    isApiSupported,
-    setIsApiSupported,
     error,
     setError,
     isProcessing,
     setIsProcessing,
     hasCheckedApiStatus,
-  } = useApiCommon();
-
-  useEffect(() => {
-    checkCapability();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (!isApiSupported) return;
-    initTextDetector();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isApiSupported]);
-
-  // To check if text detector is supported
-  const checkCapability = () => {
-    setIsApiSupported(!!window.TextDetector);
-  };
-
-  const initTextDetector = async () => {
-    if (window.TextDetector) {
-      try {
-        const detector = await new window.TextDetector();
-        setDetector(detector);
-      } catch (_e) {
-        setError(true);
-      }
-    }
-  };
+  } = useApiCommon({ isApiSupported });
 
   const detect = async (
     image: HTMLImageElement | HTMLCanvasElement
@@ -69,4 +54,16 @@ export default function useTextDetector() {
     detect,
     resetError,
   };
+}
+
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return typeof window !== 'undefined' && 'TextDetector' in window;
+}
+
+function getServerSnapshot() {
+  return null;
 }

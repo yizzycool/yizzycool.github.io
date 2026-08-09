@@ -4,11 +4,12 @@ import type { Rounded } from '@/types/common';
 import type { ButtonSize, ButtonVariant } from '@/types/common/button';
 
 import { LucideIcon, X } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { createPortal } from 'react-dom';
 
 import { cn } from '@/utils/cn';
+import useIsClient from '@/hooks/lifecycle/use-is-client';
 
 const defaultContents = {
   primary: '',
@@ -60,21 +61,14 @@ export default function Snackbar({
   timeout = 3000,
   content,
 }: Props) {
-  const [body, setBody] = useState<HTMLElement | null>(null);
-  const [message, setMessage] = useState(
-    content || defaultContents[variant] || ''
-  );
+  const message = content || defaultContents[variant] || '';
+
+  const isClient = useIsClient();
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isTop = position.startsWith('top');
   const yOffset = isTop ? -16 : 16;
-
-  // Set document.body
-  useEffect(() => {
-    if (!document) return;
-    setBody(document.body);
-  }, []);
 
   // Close snackbar after <timeout> ms
   useEffect(() => {
@@ -89,12 +83,6 @@ export default function Snackbar({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
-
-  // Sync `message` from `content` if content is not empty
-  useEffect(() => {
-    if (!content) return;
-    setMessage(content);
-  }, [content]);
 
   const baseStyles = cn(
     'fixed z-[60] flex justify-center backdrop-blur-md overflow-hidden',
@@ -171,7 +159,7 @@ export default function Snackbar({
     if (size === 'xs') return 'mr-2';
   }, [size]);
 
-  if (!body) return null;
+  if (!isClient) return null;
 
   return createPortal(
     <AnimatePresence>
@@ -212,6 +200,6 @@ export default function Snackbar({
         </motion.div>
       )}
     </AnimatePresence>,
-    body
+    document.body
   );
 }
