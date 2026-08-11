@@ -11,7 +11,7 @@ import imageUtils from '@/utils/image-utils';
 import HeaderBlock from '../../header-block';
 import FilePicker from '@/components/common/file-picker';
 import CopyAction from '@/components/common/action-button/copy';
-import ImageInfoTag from '../ImageInfoTag';
+import ImageInfoTag from '../image-info-tag';
 import SectionGap from '../../section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';

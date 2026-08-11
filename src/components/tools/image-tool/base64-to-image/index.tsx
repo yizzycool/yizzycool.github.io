@@ -15,7 +15,7 @@ import Textarea from '@/components/common/textarea';
 import PasteAction from '@/components/common/action-button/paste';
 import DownloadAction from '@/components/common/action-button/download';
 import CopyAction from '@/components/common/action-button/copy';
-import ImageInfoTag from '../ImageInfoTag';
+import ImageInfoTag from '../image-info-tag';
 import SectionGap from '../../section-gap';
 import Label from '@/components/common/label';
 
