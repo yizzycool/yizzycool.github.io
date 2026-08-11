@@ -74,7 +74,7 @@ export default function Drawer({
   };
 
   return (
-    <Transition show={isOpen} unmount={false} appear={true}>
+    <Transition show={isOpen} unmount={false} appear={false}>
       <Wrapper
         isOpen={isOpen}
         usePortal={usePortal}

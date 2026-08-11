@@ -91,6 +91,25 @@ export default function useImageUpdater({
     fabricCanvasRef.current.requestRenderAll();
   };
 
+  const setOpacity = (opacity: number) => {
+    if (!fabricCanvasRef.current) return;
+
+    // Update states
+    setImageConfig((prev) => ({
+      ...prev,
+      opacity,
+    }));
+
+    // Get selected images
+    const image = getSelectedImage();
+    if (!image) return;
+
+    image.set({
+      opacity,
+    });
+    fabricCanvasRef.current.requestRenderAll();
+  };
+
   const setBorderWidth = (strokeWidth: number) => {
     if (!fabricCanvasRef.current) return;
 
@@ -336,6 +355,7 @@ export default function useImageUpdater({
   return {
     replaceImage,
     deleteImage,
+    setOpacity,
 
     setBorderWidth,
     setBorderColor,

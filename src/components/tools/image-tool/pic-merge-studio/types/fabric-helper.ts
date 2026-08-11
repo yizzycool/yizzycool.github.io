@@ -33,6 +33,8 @@ export type FabricHelperImageUpdater = {
   replaceImage: (file: File) => Promise<void>;
   // Delete selected image
   deleteImage: () => void;
+  // Update image opacity
+  setOpacity: (opacity: number) => void;
 
   // Update border width of Fabric Image
   setBorderWidth: (strokeWidth: number) => void;

@@ -19,6 +19,7 @@ import EmptyState from './empty-state';
 import Arrangement from './arrangement';
 import Geometry from './geometry';
 import Filters from './filters';
+import Style from './style';
 
 type Props = {
   fabricHelper: FabricHelper;
@@ -187,6 +188,10 @@ export default function ConfigPanelMobile({
                       <Geometry
                         imageConfig={configHelper.imageConfig}
                         setGeometry={fabricHelper.imageUpdater.setGeometry}
+                      />
+                      <Style
+                        opacity={configHelper.imageConfig.opacity}
+                        setImageOpacity={fabricHelper.imageUpdater.setOpacity}
                       />
                       {!isGridLayout && (
                         <Border
