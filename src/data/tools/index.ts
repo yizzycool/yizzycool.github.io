@@ -175,7 +175,7 @@ export const ToolDescriptions = {
     'Test and debug regular expressions in real time with instant match highlighting and group inspection.',
 
   [ToolKeys.picMergeStudio]:
-    'A lightweight poster editor to merge multiple images into one canvas.',
+    'Merge multiple images, arrange photo collages on custom-sized canvases, adjust dimensions, and apply filters.',
   [ToolKeys.base64ToImage]:
     'Instantly convert Base64 strings back into images, supporting multiple formats for fast preview and verification.',
   [ToolKeys.imageToBase64]:

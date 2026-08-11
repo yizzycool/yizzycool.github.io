@@ -122,26 +122,43 @@ export const ToolMetadata = {
   // ==================
 
   [ToolKeys.picMergeStudio]: {
-    title: 'PicMerge Studio – Merge Multiple Images into One Poster Online',
+    title:
+      'PicMerge Studio - Merge Images Online, Free Photo Collage, Resize & Custom Canvas Editor | Yizzy Peasy',
     description:
-      'PicMerge Studio is a free online poster editor that lets you merge multiple images into one canvas. Drag, resize, rotate, and export high-quality posters instantly.',
+      'Free online tool to merge multiple images into one custom canvas. Easily resize, rotate, apply filters, adjust opacity, and arrange photos with free or grid layouts. Export high-resolution PNG, JPG, or WebP instantly.',
     keywords: [
-      'image merge',
       'merge images online',
-      'poster editor',
       'combine photos',
-      'photo merge tool',
-      'canvas editor',
+      'photo collage maker',
+      'online photo editor',
+      'custom canvas size',
+      'image aspect ratio',
+      'resize image online',
+      'image filters',
+      'adjust opacity',
+      'image grid layout',
+      'photo layout tool',
+      '圖片合併',
+      '多圖合併',
+      '照片拼貼',
+      '線上圖片編輯',
+      '自訂畫布尺寸',
+      '圖片尺寸調整',
+      '圖片濾鏡',
+      '圖片透明度',
+      '圖片排版',
     ],
     openGraph: {
-      title: 'PicMerge Studio – Merge Multiple Images into One Poster',
+      title:
+        'PicMerge Studio – Merge Images, Combine Photos & Custom Canvas Editor',
       description:
-        'Create posters by merging multiple images into one canvas. Drag, resize, rotate, and export high-quality results instantly.',
+        'Easily merge multiple images, arrange photo collages on custom-sized canvases, apply filters, and resize images online for free.',
     },
     twitter: {
-      title: 'PicMerge Studio – Merge Multiple Images into One Poster',
+      title:
+        'PicMerge Studio – Merge Images, Combine Photos & Custom Canvas Editor',
       description:
-        'A lightweight online studio to merge multiple images into one clean, customizable poster.',
+        'Easily merge multiple images, arrange photo collages on custom-sized canvases, apply filters, and resize images online for free.',
     },
   },
 
@@ -435,13 +452,16 @@ export const ToolJsonLdSoftwareApplication = {
     name: 'PicMerge Studio',
     applicationCategory: 'MultimediaApplication',
     description:
-      'PicMerge Studio is an online poster editor that allows users to merge multiple images into a single canvas. Users can freely drag, resize, rotate, and export high-quality posters.',
+      'PicMerge Studio is a versatile online image editor and collage maker. Combine multiple photos onto a custom canvas, resize, rotate, apply color filters, adjust opacity, and export high-resolution images.',
     featureList: [
-      'Merge multiple images into one poster',
-      'Drag, resize, and rotate images',
-      'Free layout and grid layout modes',
-      'High-resolution export',
-      'No installation required',
+      'Merge multiple images into a single canvas',
+      'Custom canvas dimensions and social media aspect ratios (1:1, 4:3, 16:9)',
+      'Resize, rotate, and flip images (transform controls)',
+      'Built-in photo color filters (brightness, contrast, grayscale, etc.)',
+      'Image opacity adjustment and customizable border styles',
+      'Freeform dragging and automatic grid layout modes',
+      'High-resolution export in PNG, JPEG, and WebP formats',
+      '100% client-side processing with zero server uploads',
     ],
   },
 

@@ -9,7 +9,7 @@ const toolKey = ToolKeys.picMergeStudio;
 
 export const metadata: Metadata = toolsMetadataUtils.generateMetadata(toolKey);
 
-export default function ToolPage() {
+export default function PicMergeStudioPage() {
   return (
     <>
       <script
