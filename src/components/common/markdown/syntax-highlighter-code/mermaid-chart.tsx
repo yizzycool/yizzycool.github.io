@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/utils/cn';
+import { X } from 'lucide-react';
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -8,6 +8,8 @@ import mermaid, { type MermaidConfig } from 'mermaid';
 import { defaultsDeep } from 'lodash';
 
 import useDarkModeObserver from '@/hooks/window/use-dark-mode-observer';
+import { cn } from '@/utils/cn';
+import Button from '../../button';
 
 const defaultConfig = {
   startOnLoad: false,
@@ -48,12 +50,18 @@ export default function MermaidChart({ code, metadata }: Props) {
   );
 
   // Parse query string to get extra metadata like `align`, `width`, `height`, etc.
-  const { look, align } = useMemo(() => {
-    const params = new URLSearchParams(metadata.replace(/^mermaid/, ''));
+  const { look, align, width, height } = useMemo(() => {
+    const searchParams = new URLSearchParams(metadata.replace(/^mermaid/, ''));
 
     return {
-      look: params.get('look') || 'classic',
-      align: params.get('align') || 'center',
+      look: searchParams.get('look') || 'classic',
+      align: searchParams.get('align') || 'center',
+      width: searchParams.get('width')
+        ? parseInt(searchParams.get('width') || '0')
+        : undefined,
+      height: searchParams.get('height')
+        ? parseInt(searchParams.get('height') || '0')
+        : undefined,
     } as UrlMetadataType;
   }, [metadata]);
 
@@ -96,6 +104,10 @@ export default function MermaidChart({ code, metadata }: Props) {
           'cursor-zoom-in',
           aligns[align]
         )}
+        style={{
+          width: width !== undefined ? `${width}px` : undefined,
+          height: height !== undefined ? `${height}px` : undefined,
+        }}
       />
 
       <AnimatePresence>
@@ -109,6 +121,11 @@ export default function MermaidChart({ code, metadata }: Props) {
                 '*:h-full *:w-full'
               )}
               dangerouslySetInnerHTML={{ __html: svg }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                width: width !== undefined ? `${width}px` : undefined,
+                height: height !== undefined ? `${height}px` : undefined,
+              }}
             />
           </ImagePopup>
         )}
@@ -130,6 +147,16 @@ function ImagePopup({ onClose, children }: PopupProps) {
       className="fixed inset-0 z-50 flex items-center justify-center"
       onClick={onClose}
     >
+      {/* Close Button */}
+      <motion.div
+        className="absolute right-4 top-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <Button icon={X} rounded="full" variant="secondary" />
+      </motion.div>
+
       {/* Backdrop */}
       <motion.div
         className="absolute inset-0 z-[-1] bg-neutral-900/20 backdrop-blur-md dark:bg-black/40"

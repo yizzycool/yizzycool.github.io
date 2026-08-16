@@ -2,9 +2,8 @@
 
 import type { ExtraProps } from 'react-markdown';
 
-import { cn } from '@/utils/cn';
 import urlJoin from 'url-join';
-import { ImageOff } from 'lucide-react';
+import { ImageOff, X } from 'lucide-react';
 import {
   AnimatePresence,
   HTMLMotionProps,
@@ -14,6 +13,9 @@ import {
 import { useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { entries, join } from 'lodash';
+
+import { cn } from '@/utils/cn';
+import Button from '../../button';
 
 // Tranform `http://localhost:1337/<path>` or `http://127.0.0.1:1337/<path>` to `/strapi/<path>` under production mode
 const strapiMediaUrl = process.env.NEXT_PUBLIC_STRAPI_MEDIA_URL;
@@ -105,6 +107,7 @@ export default function ImageParser(
                 'max-h-[calc(100dvh_-_40px)] md:max-h-[85dvh]'
               )}
               layoutId={imgLayoutId}
+              onClick={(e) => e.stopPropagation()}
             />
           </ImagePopup>
         )}
@@ -126,6 +129,16 @@ function ImagePopup({ onClose, children }: PopupProps) {
       className="fixed inset-0 z-50 flex items-center justify-center"
       onClick={onClose}
     >
+      {/* Close Button */}
+      <motion.div
+        className="absolute right-4 top-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <Button icon={X} rounded="full" variant="secondary" />
+      </motion.div>
+
       {/* Backdrop */}
       <motion.div
         className="absolute inset-0 z-[-1] bg-neutral-900/20 backdrop-blur-md dark:bg-black/40"

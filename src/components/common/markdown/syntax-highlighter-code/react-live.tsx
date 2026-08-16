@@ -11,6 +11,7 @@ import CopyAction from '@/components/common/action-button/copy';
 import ButtonTabs from '@/components/common/tabs/button';
 import Divider from '@/components/common/divider';
 import Button from '@/components/common/button';
+import useIsClient from '@/hooks/lifecycle/use-is-client';
 
 const ONE_DARK_BG = '#282c34';
 const ONE_LIGHT_BG = '#fafafa';
@@ -39,6 +40,8 @@ export default function ReactLive({ code = '', metadata }: Props) {
 
   const [mode, setMode] = useState<SwitchMode>('code');
   const { isDark } = useDarkModeObserver();
+
+  const isClient = useIsClient();
 
   // Parse metadata like ```live?lang=tsx
   const parsedMeta = useMemo(() => {
@@ -89,6 +92,8 @@ export default function ReactLive({ code = '', metadata }: Props) {
     setExecutedCode(draftCode);
     customEventUtils.emit(CustomEvents.common.switchTab, { tab: 'preview' });
   };
+
+  if (!isClient) return null;
 
   return (
     <LiveProvider
@@ -148,6 +153,7 @@ export default function ReactLive({ code = '', metadata }: Props) {
             )}
           </div>
         </div>
+        {/* Preview Block */}
         <div
           className={cn(
             'h-full w-full flex-1 overflow-hidden *:h-full *:overflow-auto',
@@ -171,11 +177,11 @@ export default function ReactLive({ code = '', metadata }: Props) {
             />
           )}
         </div>
+        {/* Code Block */}
         <div
           className={cn(
-            'flex-1 overflow-y-auto',
-            mode === 'code' ? 'block' : 'hidden',
-            'flex p-[1em]'
+            'flex-1 overflow-y-auto p-[1em]',
+            mode === 'code' ? 'flex' : 'hidden'
           )}
           style={{
             background: isDark ? ONE_DARK_BG : ONE_LIGHT_BG,
