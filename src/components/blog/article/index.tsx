@@ -15,6 +15,7 @@ import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import { TocDesktop, TocMobile } from './toc';
 import SeriesGuide from './series-guide';
 import PrevNextCard from './prev-next-card';
+import Comments from './comments';
 
 type Props = {
   article: BlogArticle;
@@ -102,6 +103,17 @@ export default function Article({
             <PrevNextCard type="next" article={nextArticle} />
           </ul>
         </nav>
+
+        {/* Blog comments */}
+        <section
+          aria-label="讀者留言區"
+          className={cn(
+            'mt-28 border-t border-neutral-200 pt-20 dark:border-neutral-700',
+            getFadeUpClass('animate-delay-500')
+          )}
+        >
+          <Comments />
+        </section>
       </article>
 
       {/* Toc on right side */}
