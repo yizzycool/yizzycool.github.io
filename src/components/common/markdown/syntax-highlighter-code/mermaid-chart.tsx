@@ -118,7 +118,7 @@ export default function MermaidChart({ code, metadata }: Props) {
               className={cn(
                 'max-w-[calc(100vw_-_40px)] md:max-w-[90vw]',
                 'max-h-[calc(100dvh_-_40px)] md:max-h-[85dvh]',
-                '*:h-full *:w-full'
+                '*:max-h-[inherit] *:max-w-[inherit]'
               )}
               dangerouslySetInnerHTML={{ __html: svg }}
               onClick={(e) => e.stopPropagation()}
