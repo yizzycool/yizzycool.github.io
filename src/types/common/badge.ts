@@ -9,6 +9,7 @@ const BadgeVariants = [
   'neutral',
   'success',
   'blue',
+  'amber',
 ] as const;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

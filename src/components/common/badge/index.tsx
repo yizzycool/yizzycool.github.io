@@ -43,13 +43,14 @@ export default function Badge({
       'border border-neutral-200 text-slate-700 dark:border-neutral-700 dark:text-slate-300',
     error:
       'text-red-600 dark:text-red-400 bg-red-100/50 dark:bg-red-800/10 border-red-500/20',
-    'dark-sky':
-      'text-sky-600 dark:text-sky-600 bg-sky-200/20 dark:bg-sky-200/20 border-sky-500/20',
+    'dark-sky': 'bg-sky-700/50 text-white dark:bg-sky-600/50 border-sky-500/20',
     neutral:
       'bg-neutral-100 border-neutral-200 dark:border-neutral-700 text-slate-600 dark:bg-neutral-800 dark:text-slate-300',
     success:
       'bg-green-400/10 border-green-500/20 text-green-900/70 dark:text-green-400',
     blue: 'bg-blue-300/20 border-blue-500/20 text-blue-500 dark:bg-blue-500/20 dark:text-blue-400',
+    amber:
+      'bg-amber-100 border-amber-500/20 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300',
   };
 
   const sizes = {

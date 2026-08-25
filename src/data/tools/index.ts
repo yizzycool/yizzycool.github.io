@@ -272,8 +272,10 @@ export const ToolIcons = {
 
 // Tools Data
 export const Tools = ToolGroupKeysOrder.map((groupKey) => ({
+  id: groupKey,
   name: ToolGroupNames[groupKey],
   items: ToolGroupItems[groupKey].map((toolKey) => ({
+    key: toolKey,
     name: ToolTitles[toolKey],
     href: ToolUrls[toolKey],
     desc: ToolDescriptions[toolKey],

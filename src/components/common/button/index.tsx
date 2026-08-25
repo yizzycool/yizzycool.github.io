@@ -43,40 +43,44 @@ export default function Button({
 
   const variants = {
     primary: cn(
-      'bg-neutral-900 text-white dark:bg-white dark:text-slate-900 border-white dark:border-black',
-      !disabled && 'hover:bg-neutral-800 dark:hover:bg-neutral-200'
+      'bg-slate-900 text-white shadow-xs dark:bg-white dark:text-slate-900 border-transparent',
+      !disabled && 'hover:bg-slate-800 dark:hover:bg-slate-100'
     ),
     secondary: cn(
-      'bg-white text-slate-900 dark:bg-neutral-800 dark:text-slate-100 border-neutral-300 dark:border-neutral-600',
-      !disabled && 'hover:bg-neutral-100 dark:hover:bg-neutral-700'
+      'bg-white text-slate-800 border-slate-200/80 shadow-2xs dark:bg-neutral-900 dark:text-slate-200 dark:border-neutral-800',
+      !disabled &&
+        'hover:bg-slate-50 hover:border-slate-300 dark:hover:bg-neutral-800/80 dark:hover:border-neutral-700'
     ),
     ghost: cn(
-      'text-slate-600 dark:text-slate-400 border-neutral-200 dark:border-neutral-700',
-      !disabled && 'hover:bg-neutral-100 dark:hover:bg-neutral-800'
+      'text-slate-600 dark:text-slate-400 border-transparent',
+      !disabled &&
+        'hover:bg-slate-100/80 hover:text-slate-900 dark:hover:bg-neutral-800/80 dark:hover:text-white'
     ),
     outline: cn(
-      'border border-neutral-300 text-slate-700 dark:border-neutral-700 dark:text-slate-300',
-      !disabled && 'hover:bg-white/30 dark:hover:bg-neutral-700/50'
+      'border border-slate-200 text-slate-700 dark:border-neutral-800 dark:text-slate-300',
+      !disabled &&
+        'hover:border-slate-300 hover:bg-slate-50/50 dark:hover:border-neutral-700 dark:hover:bg-neutral-900/60'
     ),
     error: cn(
-      'text-red-600 dark:text-red-400 bg-red-100/50 dark:bg-red-800/10 border-red-500/20',
-      !disabled && 'hover:bg-red-100/90 dark:hover:bg-red-800/30'
+      'bg-rose-500/10 text-rose-700 border-rose-500/20 dark:bg-rose-500/20 dark:text-rose-400',
+      !disabled && 'hover:bg-rose-500/20 dark:hover:bg-rose-500/30'
     ),
     'dark-sky': cn(
-      'text-white bg-sky-600 dark:bg-sky-900 border-sky-500/20',
-      !disabled && 'hover:bg-sky-500 dark:hover:bg-sky-800'
+      'bg-sky-600 text-white shadow-xs border-transparent dark:bg-sky-500 dark:text-white',
+      !disabled && 'hover:bg-sky-500 dark:hover:bg-sky-400'
     ),
     neutral: cn(
-      'bg-neutral-100 border-neutral-500/20 text-slate-600 dark:bg-neutral-700 dark:text-slate-400',
-      !disabled && 'hover:bg-neutral-200 dark:hover:bg-neutral-600'
+      'bg-slate-100/80 text-slate-600 border-slate-200/70 dark:bg-neutral-900/60 dark:text-slate-400 dark:border-neutral-800',
+      !disabled &&
+        'hover:bg-slate-200/70 hover:text-slate-900 dark:hover:bg-neutral-800 dark:hover:text-slate-200'
     ),
     success: cn(
-      'bg-green-500/10 border-green-500/20 text-green-600 dark:text-green-400',
-      !disabled && 'hover:bg-green-400/20'
+      'bg-emerald-500/10 text-emerald-700 border-emerald-500/20 dark:bg-emerald-500/20 dark:text-emerald-400',
+      !disabled && 'hover:bg-emerald-500/20 dark:hover:bg-emerald-500/30'
     ),
     blue: cn(
-      'bg-blue-100 border-blue-500/20  text-blue-700 dark:bg-blue-500/10 dark:text-blue-400',
-      !disabled && 'hover:bg-blue-50 dark:hover:bg-blue-400/10'
+      'bg-sky-600 text-white shadow-xs border-transparent dark:bg-sky-500 dark:text-white',
+      !disabled && 'hover:bg-sky-500 dark:hover:bg-sky-400'
     ),
   };
 
@@ -125,6 +129,7 @@ export default function Button({
 
   return (
     <button
+      type="button"
       onClick={onButtonClick}
       disabled={disabled}
       className={cn(
