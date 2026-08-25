@@ -1,12 +1,13 @@
-import type { ButtonSize, ButtonVariant } from '@/types/common/button';
+'use client';
+
 import type { LucideIcon } from 'lucide-react';
+import type { ButtonSize, ButtonVariant } from '@/types/common/button';
 import type { Rounded } from '@/types/common';
 
 import { cn } from '@/utils/cn';
 import { useEffect, useState } from 'react';
-
-import Button from '@/components/common/button';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
+import Button from '@/components/common/button';
 
 type Props = {
   tabs: Array<string>;
@@ -26,18 +27,13 @@ export default function ButtonTabs({
   tabs,
   tabIcons = [],
   defaultActiveTab = '',
-  gap = 'gap-2',
-  variant = 'ghost',
-  rounded = 'base',
-  bordered = true,
-  size = 'base',
   className = '',
   activeClassName = '',
   onChange = () => {},
 }: Props) {
   const [tab, setTab] = useState(defaultActiveTab || tabs[0]);
 
-  // Bind a event listener to trigger tab switch
+  // Bind an event listener to trigger tab switch
   useEffect(() => {
     const handler = (e: CustomEvent) => {
       const { tab = '' } = e.detail;
@@ -63,31 +59,53 @@ export default function ButtonTabs({
   };
 
   return (
-    <div className={`flex ${gap} overflow-x-auto`}>
+    <div
+      className={cn(
+        'inline-flex items-center rounded-lg p-1 shadow-inner',
+        'bg-slate-100/80 dark:bg-neutral-800/80',
+        className
+      )}
+    >
       {tabs.map((mode, idx) => (
-        <Button
+        <TabItem
           key={mode}
-          variant={variant}
-          size={size}
-          bordered={bordered}
-          rounded={rounded}
-          onClick={() => onTabClick(mode)}
+          mode={mode}
           icon={tabIcons[idx]}
-          className={cn(
-            className,
-            tab === mode &&
-              cn(
-                'text-sky-600 dark:text-sky-600',
-                'border-sky-500 dark:border-sky-600',
-                'bg-sky-100/50 dark:bg-sky-900/50',
-                'hover:bg-sky-100/50 hover:dark:bg-sky-900/50',
-                activeClassName
-              )
-          )}
-        >
-          {mode}
-        </Button>
+          isActive={tab === mode}
+          activeClassName={activeClassName}
+          onClick={onTabClick}
+        />
       ))}
     </div>
+  );
+}
+
+type TabItemProps = {
+  mode: string;
+  icon?: LucideIcon;
+  isActive: boolean;
+  activeClassName?: string;
+  onClick: (mode: string) => void;
+};
+
+function TabItem({
+  mode,
+  icon,
+  isActive,
+  activeClassName = '',
+  onClick,
+}: TabItemProps) {
+  return (
+    <Button
+      variant={isActive ? 'secondary' : 'ghost'}
+      size="xs"
+      rounded="lg"
+      icon={icon}
+      onClick={() => onClick(mode)}
+      hoverEffect={!isActive}
+      className={cn('select-none font-semibold', isActive && activeClassName)}
+    >
+      {mode}
+    </Button>
   );
 }

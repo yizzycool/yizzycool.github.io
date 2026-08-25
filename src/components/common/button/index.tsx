@@ -20,6 +20,7 @@ type Props = {
   iconStrokeWidth?: number;
   iconClassName?: string;
   disabled?: boolean;
+  hoverEffect?: boolean;
   ariaLabel?: string;
 };
 
@@ -36,6 +37,7 @@ export default function Button({
   iconStrokeWidth = 2,
   iconClassName = '',
   disabled = false,
+  hoverEffect = true,
   ariaLabel,
 }: Props) {
   const baseStyles =
@@ -44,43 +46,51 @@ export default function Button({
   const variants = {
     primary: cn(
       'bg-slate-900 text-white shadow-xs dark:bg-white dark:text-slate-900 border-transparent',
-      !disabled && 'hover:bg-slate-800 dark:hover:bg-slate-100'
+      !disabled && hoverEffect && 'hover:bg-slate-800 dark:hover:bg-slate-100'
     ),
     secondary: cn(
       'bg-white text-slate-800 border-slate-200/80 shadow-2xs dark:bg-neutral-900 dark:text-slate-200 dark:border-neutral-800',
       !disabled &&
+        hoverEffect &&
         'hover:bg-slate-50 hover:border-slate-300 dark:hover:bg-neutral-800/80 dark:hover:border-neutral-700'
     ),
     ghost: cn(
       'text-slate-600 dark:text-slate-400 border-transparent',
       !disabled &&
+        hoverEffect &&
         'hover:bg-slate-100/80 hover:text-slate-900 dark:hover:bg-neutral-800/80 dark:hover:text-white'
     ),
     outline: cn(
       'border border-slate-200 text-slate-700 dark:border-neutral-800 dark:text-slate-300',
       !disabled &&
+        hoverEffect &&
         'hover:border-slate-300 hover:bg-slate-50/50 dark:hover:border-neutral-700 dark:hover:bg-neutral-900/60'
     ),
     error: cn(
       'bg-rose-500/10 text-rose-700 border-rose-500/20 dark:bg-rose-500/20 dark:text-rose-400',
-      !disabled && 'hover:bg-rose-500/20 dark:hover:bg-rose-500/30'
+      !disabled &&
+        hoverEffect &&
+        'hover:bg-rose-500/20 dark:hover:bg-rose-500/30'
     ),
     'dark-sky': cn(
       'bg-sky-600 text-white shadow-xs border-transparent dark:bg-sky-500 dark:text-white',
-      !disabled && 'hover:bg-sky-500 dark:hover:bg-sky-400'
+      !disabled && hoverEffect && 'hover:bg-sky-500 dark:hover:bg-sky-400'
     ),
     neutral: cn(
       'bg-slate-100/80 text-slate-600 border-slate-200/70 dark:bg-neutral-900/60 dark:text-slate-400 dark:border-neutral-800',
       !disabled &&
+        hoverEffect &&
         'hover:bg-slate-200/70 hover:text-slate-900 dark:hover:bg-neutral-800 dark:hover:text-slate-200'
     ),
     success: cn(
       'bg-emerald-500/10 text-emerald-700 border-emerald-500/20 dark:bg-emerald-500/20 dark:text-emerald-400',
-      !disabled && 'hover:bg-emerald-500/20 dark:hover:bg-emerald-500/30'
+      !disabled &&
+        hoverEffect &&
+        'hover:bg-emerald-500/20 dark:hover:bg-emerald-500/30'
     ),
     blue: cn(
       'bg-sky-600 text-white shadow-xs border-transparent dark:bg-sky-500 dark:text-white',
-      !disabled && 'hover:bg-sky-500 dark:hover:bg-sky-400'
+      !disabled && hoverEffect && 'hover:bg-sky-500 dark:hover:bg-sky-400'
     ),
   };
 
