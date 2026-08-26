@@ -13,6 +13,7 @@ import SearchDialog from '@/components/common/dialog/search';
 import GeneralLink from './general-link';
 import SocialIcons from '@/components/common/social-icons';
 import Drawer from '@/components/common/drawer';
+import BuyMeACoffee from '@/components/common/buy-me-a-coffee';
 
 export default function HeaderMobile({
   categoryArticles,
@@ -97,6 +98,11 @@ export default function HeaderMobile({
               </li>
             </ul>
           </nav>
+
+          {/* Buy Me a Coffee */}
+          <BuyMeACoffee
+            linkClassName={cn('lg:hidden ml-auto w-44 px-4 max-w-full')}
+          />
 
           {/* Drawer Footer */}
           <footer className="mt-6 border-t border-neutral-200 px-4 pt-6 dark:border-neutral-700">
