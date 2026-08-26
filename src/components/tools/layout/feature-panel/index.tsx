@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 import { cn } from '@/utils/cn';
 import { ToolDataForFeaturePanel } from '@/data/tools';
+import BuyMeACoffee from '@/components/common/buy-me-a-coffee';
 
 export default function FeaturePanel() {
   const pathname = usePathname();
@@ -45,6 +46,9 @@ export default function FeaturePanel() {
           ))}
         </ul>
       </nav>
+      <BuyMeACoffee
+        linkClassName={cn('hidden lg:block my-4 w-32 max-w-full')}
+      />
     </aside>
   );
 }

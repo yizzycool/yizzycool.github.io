@@ -9,6 +9,7 @@ import { get } from 'lodash';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import CategoryAccordionItem from './category-accordion-item';
+import BuyMeACoffee from '@/components/common/buy-me-a-coffee';
 
 type Props = {
   categoryArticles: BlogCategory;
@@ -75,6 +76,11 @@ export default function LeftPanel({
           </li>
         </ul>
       </nav>
+      <div className={cn(getFadeUpClass('animate-delay-150'))}>
+        <BuyMeACoffee
+          linkClassName={cn('hidden lg:block my-4 w-32 max-w-full')}
+        />
+      </div>
     </aside>
   );
 }
