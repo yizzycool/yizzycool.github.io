@@ -97,7 +97,7 @@ export default function ToolsIndex() {
   };
 
   return (
-    <div className="mx-auto w-full text-left lg:max-w-[calc(1024px_-_5rem)]">
+    <div className="mx-auto w-full text-left">
       {/* Title Header & Trust Badges */}
       <HeaderBlock />
 
