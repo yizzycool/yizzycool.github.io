@@ -12,7 +12,7 @@ export default function FeaturePanel() {
   return (
     <aside
       className={cn(
-        'sticky top-[68px] hidden h-[calc(100dvh_-_68px)] w-72 overflow-y-auto p-4 lg:block',
+        'sticky top-[68px] hidden h-[calc(100dvh_-_68px)] w-[300px] shrink-0 overflow-y-auto p-4 lg:block',
         'border-r border-neutral-400/20'
       )}
     >

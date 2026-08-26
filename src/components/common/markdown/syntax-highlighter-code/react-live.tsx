@@ -123,11 +123,7 @@ export default function ReactLive({ code = '', metadata }: Props) {
             {mode === 'code' && (
               <>
                 <div className="flex items-center gap-2">
-                  <CopyAction
-                    display="icon"
-                    variant="secondary"
-                    content={code}
-                  />
+                  <CopyAction display="icon" variant="ghost" content={code} />
                   {!liveProviderConfig.disabled && (
                     <Button variant="outline" size="xs" onClick={onRun}>
                       Run

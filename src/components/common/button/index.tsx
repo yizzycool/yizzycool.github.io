@@ -49,10 +49,10 @@ export default function Button({
       !disabled && hoverEffect && 'hover:bg-slate-800 dark:hover:bg-slate-100'
     ),
     secondary: cn(
-      'bg-white text-slate-800 border-slate-200/80 shadow-2xs dark:bg-neutral-900 dark:text-slate-200 dark:border-neutral-800',
+      'bg-slate-50 text-slate-800 border-slate-200/80 shadow-2xs dark:bg-neutral-900/80 dark:text-slate-200 dark:border-neutral-800',
       !disabled &&
         hoverEffect &&
-        'hover:bg-slate-50 hover:border-slate-300 dark:hover:bg-neutral-800/80 dark:hover:border-neutral-700'
+        'hover:bg-white hover:border-slate-300 dark:hover:bg-neutral-800/80 dark:hover:border-neutral-700'
     ),
     ghost: cn(
       'text-slate-600 dark:text-slate-400 border-transparent',
