@@ -3,14 +3,11 @@
 import { ReactNode, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 
-interface ClientPortalProps {
+type ClientPortalProps = {
   selectorOrElement?: string | HTMLElement;
   portalKey?: string;
   children: ReactNode;
-}
-
-const emptySubscribe = () => () => {};
-const getServerSnapshot = () => null;
+};
 
 export default function ClientPortal({
   selectorOrElement,
@@ -47,4 +44,12 @@ export default function ClientPortal({
   if (!container) return null;
 
   return createPortal(children, container, portalKey);
+}
+
+function emptySubscribe() {
+  return () => {};
+}
+
+function getServerSnapshot() {
+  return null;
 }

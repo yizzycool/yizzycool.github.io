@@ -10,7 +10,7 @@ import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import Button from '../../button';
 import BaseDialog from '../base';
 
-interface Props extends ActionButtonProps {
+interface ConfigDialogProps extends ActionButtonProps {
   title?: string;
   icon?: LucideIcon;
   onClick?: MouseEventHandler<HTMLButtonElement>;
@@ -25,7 +25,7 @@ export default function ConfigDialog({
   icon: Icon = Settings2,
   onClick = () => {},
   children,
-}: Props) {
+}: ConfigDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const { showIcon, showLabel } = useDisplay({ display });

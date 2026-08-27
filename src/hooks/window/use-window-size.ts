@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from 'react';
 
-export interface WindowSize {
+interface WindowSize {
   innerWidth: number | undefined;
   innerHeight: number | undefined;
   width: number | undefined;

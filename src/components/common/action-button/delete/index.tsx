@@ -1,12 +1,14 @@
 'use client';
 
-import { ActionButtonProps } from '@/types/common/action-button';
+import type { ActionButtonProps } from '@/types/common/action-button';
+
 import { MouseEventHandler } from 'react';
 import { Trash2 } from 'lucide-react';
+
 import useDisplay from '../hooks/use-display';
 import Button from '../../button';
 
-interface Props extends ActionButtonProps {
+interface DeleteActionProps extends ActionButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -15,7 +17,7 @@ export default function DeleteAction({
   size = 'xs',
   disabled = false,
   onClick = () => {},
-}: Props) {
+}: DeleteActionProps) {
   const { showIcon, showLabel } = useDisplay({ display });
 
   const onButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {

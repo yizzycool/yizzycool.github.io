@@ -9,7 +9,7 @@ import { isNil } from 'lodash';
 import useDisplay from '../hooks/use-display';
 import Button from '../../button';
 
-interface Props extends ActionButtonProps {
+interface CopyActionProps extends ActionButtonProps {
   content?: string | Blob | null | undefined;
 }
 
@@ -23,7 +23,7 @@ export default function CopyAction({
   disabled = false,
   content = '',
   label = 'Copy',
-}: Props) {
+}: CopyActionProps) {
   const [copied, setCopied] = useState(false);
 
   const isActionSupported = useSyncExternalStore(

@@ -10,10 +10,10 @@ import Button from '@/components/common/button';
 import ScrollToBottom from '@/components/common/scroll-to-bottom';
 import useAutoScrollToBottom from '@/hooks/dom/use-auto-scroll-to-bottom';
 
-interface PromptResult {
+type PromptResult = {
   role: 'user' | 'assistant' | 'system';
   content: string;
-}
+};
 
 type Props = {
   placeholder: string;
@@ -28,7 +28,7 @@ type Props = {
 
 export default function Chat({ placeholder, promptStreaming, session }: Props) {
   const [text, setText] = useState('');
-  const [results, setResults] = useState<Array<PromptResult>>([]);
+  const [results, setResults] = useState<PromptResult[]>([]);
   const [isComposing, setIsCompsing] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 

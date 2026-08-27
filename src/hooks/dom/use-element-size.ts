@@ -2,16 +2,16 @@
 
 import { useCallback, useEffect, useState, RefObject } from 'react';
 
-export interface ElementSize {
+interface ElementSize {
   width: number;
   height: number;
 }
 
-export interface UseElementSizeOptions<T extends HTMLElement = HTMLElement> {
+interface UseElementSizeOptions<T extends HTMLElement = HTMLElement> {
   targetRef?: RefObject<T | null>;
 }
 
-export interface UseElementSizeReturn<T extends HTMLElement = HTMLElement>
+interface UseElementSizeReturn<T extends HTMLElement = HTMLElement>
   extends ElementSize {
   ref: (node: T | null) => void;
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useSyncExternalStore } from 'react';
 
-export interface HotkeyHandlers {
+interface HotkeyHandlers {
   /** Triggered on Cmd+Enter / Ctrl+Enter (Format / Process / Execute) */
   onExecute?: (e: KeyboardEvent) => void;
   /** Triggered on Cmd+Shift+C / Ctrl+Shift+C (Copy Result) */
@@ -11,7 +11,7 @@ export interface HotkeyHandlers {
   onClear?: (e: KeyboardEvent) => void;
 }
 
-export interface HotkeyOptions {
+interface HotkeyOptions {
   /** Whether the hotkey listener is active (default: true) */
   enabled?: boolean;
   /** If true, prevents default browser behavior when hotkey matches (default: true) */

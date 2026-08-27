@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ArrowRight, Star } from 'lucide-react';
 import { cn } from '@/utils/cn';
 
-export interface ToolItem {
+export type ToolItem = {
   key: string;
   name: string;
   href: string;
@@ -13,13 +13,13 @@ export interface ToolItem {
     component: React.ComponentType<{ className?: string }>;
   };
   badge?: string;
-}
+};
 
-interface ToolCardProps {
+type ToolCardProps = {
   item: ToolItem;
   isFavorite: boolean;
   onToggleFavorite: (key: string) => void;
-}
+};
 
 export default function ToolCard({
   item,

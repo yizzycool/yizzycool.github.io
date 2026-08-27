@@ -1,20 +1,22 @@
 'use client';
 
+import type { ToolItem } from './tool-card';
+
 import RevealSection from '../common/reveal-section';
-import ToolCard, { ToolItem } from './tool-card';
+import ToolCard from './tool-card';
 import Badge from '../common/badge';
 
-export interface ToolGroup {
+type ToolGroup = {
   id: string;
   name: string;
   items: ToolItem[];
-}
+};
 
-interface ToolGroupSectionProps {
+type ToolGroupSectionProps = {
   group: ToolGroup;
   isFavorite: (key: string) => boolean;
   onToggleFavorite: (key: string) => void;
-}
+};
 
 export default function ToolGroupSection({
   group,

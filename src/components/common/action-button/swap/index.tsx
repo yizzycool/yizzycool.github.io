@@ -1,12 +1,14 @@
 'use client';
 
-import { ActionButtonProps } from '@/types/common/action-button';
+import type { ActionButtonProps } from '@/types/common/action-button';
+
 import { ArrowDownUp } from 'lucide-react';
 import { MouseEventHandler } from 'react';
+
 import useDisplay from '../hooks/use-display';
 import Button from '../../button';
 
-interface Props extends ActionButtonProps {
+interface SwapActionProps extends ActionButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -15,7 +17,7 @@ export default function SwapAction({
   size = 'xs',
   disabled = false,
   onClick = () => {},
-}: Props) {
+}: SwapActionProps) {
   const { showIcon, showLabel } = useDisplay({ display });
 
   return (

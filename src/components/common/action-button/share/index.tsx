@@ -9,7 +9,7 @@ import { isNil } from 'lodash';
 import useDisplay from '../hooks/use-display';
 import Button from '../../button';
 
-interface Props extends ActionButtonProps {
+interface ShareActionProps extends ActionButtonProps {
   content?: string | File | null | undefined;
   shareTitle?: '';
   shareText?: '';
@@ -27,7 +27,7 @@ export default function ShareAction({
   label = 'Share',
   shareTitle = '',
   shareText = '',
-}: Props) {
+}: ShareActionProps) {
   const isActionSupported = useSyncExternalStore(
     subscribe,
     getSnapshot,

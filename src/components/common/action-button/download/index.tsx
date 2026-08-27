@@ -5,7 +5,7 @@ import { Download } from 'lucide-react';
 import useDisplay from '../hooks/use-display';
 import Button from '../../button';
 
-interface Props extends ActionButtonProps {
+interface DownloadActionProps extends ActionButtonProps {
   blob?: Blob | null;
   imageUrl?: string;
   filename?: string;
@@ -22,7 +22,7 @@ export default function DownloadAction({
   imageUrl,
   filename = 'download',
   label = 'Download',
-}: Props) {
+}: DownloadActionProps) {
   const { showIcon, showLabel } = useDisplay({ display });
 
   const onDownloadClick = async () => {

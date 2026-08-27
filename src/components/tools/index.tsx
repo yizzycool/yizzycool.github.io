@@ -1,5 +1,7 @@
 'use client';
 
+import type { ToolItem } from './tool-card';
+
 import { useMemo, useState } from 'react';
 import { SearchX } from 'lucide-react';
 
@@ -11,7 +13,6 @@ import HeaderBlock from './index-header-block';
 import ToolsFilterBar from './tools-filter-bar';
 import FavoritesSection from './favorites-section';
 import ToolGroupSection from './tool-group-section';
-import { ToolItem } from './tool-card';
 
 const defaultSelectedCategory = 'All';
 

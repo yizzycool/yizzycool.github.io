@@ -5,7 +5,7 @@ import Input from '@/components/common/input';
 import { cn } from '@/utils/cn';
 import CategoryChip from './category-chip';
 
-interface ToolsFilterBarProps {
+type ToolsFilterBarProps = {
   searchQuery: string;
   onSearchChange: (query: string) => void;
   selectedCategory: string;
@@ -13,7 +13,7 @@ interface ToolsFilterBarProps {
   categories: { id: string; name: string; count: number }[];
   totalToolsCount: number;
   className?: string;
-}
+};
 
 export default function ToolsFilterBar({
   searchQuery,

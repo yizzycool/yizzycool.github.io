@@ -19,11 +19,11 @@ import BaseDialog from '../base';
 import Badge from '../../badge';
 import ResultCard from './result-card';
 
-interface Props {
+type SearchDialogProps = {
   deviceType: 'desktop' | 'mobile';
-}
+};
 
-export default function SearchDialog({ deviceType }: Props) {
+export default function SearchDialog({ deviceType }: SearchDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isComposing, setIsComposing] = useState(false);
   const [query, setQuery] = useState('');

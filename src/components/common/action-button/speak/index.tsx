@@ -8,7 +8,7 @@ import { useSyncExternalStore } from 'react';
 import useDisplay from '../hooks/use-display';
 import Button from '../../button';
 
-interface Props extends ActionButtonProps {
+interface SpeakActionProps extends ActionButtonProps {
   content: string;
 }
 
@@ -17,7 +17,7 @@ export default function SpeakAction({
   size = 'xs',
   disabled = false,
   content = '',
-}: Props) {
+}: SpeakActionProps) {
   const isSpeechSupported = useSyncExternalStore(
     subscribe,
     getSnapshot,

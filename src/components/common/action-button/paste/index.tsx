@@ -18,7 +18,7 @@ type OnClick<T extends InputType> = T extends 'string'
   ? OnTextPaste
   : OnImagePaste;
 
-interface Props<T extends InputType> extends ActionButtonProps {
+interface PasteActionProps<T extends InputType> extends ActionButtonProps {
   onClick?: OnClick<T>;
   type?: T;
 }
@@ -29,7 +29,7 @@ export default function PasteAction<T extends InputType>({
   disabled = false,
   onClick = () => {},
   type = 'string' as T,
-}: Props<T>) {
+}: PasteActionProps<T>) {
   const isActionSupported = useSyncExternalStore(
     subscribe,
     () => getSnapshot(type),

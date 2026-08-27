@@ -3,12 +3,12 @@
 import Badge from '@/components/common/badge';
 import Button from '../common/button';
 
-interface CategoryChipProps {
+type CategoryChipProps = {
   name: string;
   count: number;
   isSelected: boolean;
   onClick: () => void;
-}
+};
 
 export default function CategoryChip({
   name,

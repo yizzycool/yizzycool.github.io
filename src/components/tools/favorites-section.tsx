@@ -1,13 +1,15 @@
+import type { ToolItem } from './tool-card';
+
 import { Star } from 'lucide-react';
 
 import Badge from '@/components/common/badge';
-import ToolCard, { ToolItem } from './tool-card';
+import ToolCard from './tool-card';
 import RevealSection from '../common/reveal-section';
 
-interface FavoritesSectionProps {
+type FavoritesSectionProps = {
   favoriteTools: ToolItem[];
   onToggleFavorite: (key: string) => void;
-}
+};
 
 export default function FavoritesSection({
   favoriteTools,
