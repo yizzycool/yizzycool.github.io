@@ -9,13 +9,15 @@ import { useState } from 'react';
 
 import LeftPanel from '@/components/blog/layout/left-panel';
 
-export default function BlogSelectorMobile({
-  closeSidePanel,
-  categoryArticles,
-}: {
-  closeSidePanel: () => void;
+type BlogSelectorMobileProps = {
+  closeDrawer: () => void;
   categoryArticles: BlogCategory;
-}) {
+};
+
+export default function BlogSelectorMobile({
+  closeDrawer,
+  categoryArticles,
+}: BlogSelectorMobileProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -49,7 +51,7 @@ export default function BlogSelectorMobile({
             <LeftPanel
               categoryArticles={categoryArticles}
               side="headerBlogSelector"
-              onClick={closeSidePanel}
+              onClick={closeDrawer}
             />
           </div>
         </motion.div>

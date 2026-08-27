@@ -2,7 +2,7 @@
 
 import type { Rounded } from '@/types/common';
 
-import { Transition, TransitionChild } from '@headlessui/react';
+import { motion } from 'motion/react';
 import { createPortal } from 'react-dom';
 
 import useIsClient from '@/hooks/lifecycle/use-is-client';
@@ -34,11 +34,37 @@ const RoundedMap: Record<Rounded, string> = {
   full: 'rounded-full',
 };
 
-const roundedMapideMap: Record<Side, (r: string) => string> = {
+const sideRoundedMap: Record<Side, (r: string) => string> = {
   top: (r) => r.replace('rounded', 'rounded-b'),
   bottom: (r) => r.replace('rounded', 'rounded-t'),
   left: (r) => r.replace('rounded', 'rounded-r'),
   right: (r) => r.replace('rounded', 'rounded-l'),
+};
+
+const motionVariants = {
+  top: {
+    open: { y: 0 },
+    closed: { y: '-100%' },
+  },
+  bottom: {
+    open: { y: 0 },
+    closed: { y: '100%' },
+  },
+  left: {
+    open: { x: 0 },
+    closed: { x: '-100%' },
+  },
+  right: {
+    open: { x: 0 },
+    closed: { x: '100%' },
+  },
+};
+
+const positions = {
+  top: 'top-0 left-0 w-full max-h-[90%]',
+  bottom: 'bottom-0 left-0 w-full max-h-[90%]',
+  left: 'top-0 left-0 h-full max-w-[90%]',
+  right: 'top-0 right-0 h-full max-w-[90%]',
 };
 
 export default function Drawer({
@@ -52,79 +78,49 @@ export default function Drawer({
   usePortal = true,
   children,
 }: Props) {
-  const enterFrom = {
-    top: '-translate-y-full',
-    bottom: 'translate-y-full',
-    left: '-translate-x-full',
-    right: 'translate-x-full',
-  };
-
-  const enterTo = {
-    top: 'translate-y-0',
-    bottom: 'translate-y-0',
-    left: 'translate-x-0',
-    right: 'translate-x-0',
-  };
-
-  const positions = {
-    top: 'top-0 left-0 w-full max-h-[90%]',
-    bottom: 'bottom-0 left-0 w-full max-h-[90%]',
-    left: 'top-0 left-0 h-full max-w-[90%]',
-    right: 'top-0 right-0 h-full max-w-[90%]',
-  };
-
   return (
-    <Transition show={isOpen} unmount={false} appear={false}>
-      <Wrapper
-        isOpen={isOpen}
-        usePortal={usePortal}
+    <Wrapper
+      isOpen={isOpen}
+      usePortal={usePortal}
+      className={cn(
+        usePortal ? 'fixed z-50' : 'absolute z-10',
+        'inset-0 flex items-center justify-center p-4 focus:outline-none sm:p-8 md:p-12',
+        isOpen ? 'pointer-events-auto' : 'pointer-events-none',
+        wrapperClassName
+      )}
+      onClose={onClose}
+    >
+      {backdrop && (
+        <motion.div
+          initial={false}
+          animate={{ opacity: isOpen ? 1 : 0 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          className={cn(
+            'absolute inset-0 bg-neutral-900/20 backdrop-blur-md dark:bg-black/40',
+            isOpen ? 'pointer-events-auto' : 'pointer-events-none'
+          )}
+          onClick={onClose}
+        />
+      )}
+      {/* Rounded Border */}
+      <motion.div
+        initial={false}
+        animate={
+          isOpen ? motionVariants[side].open : motionVariants[side].closed
+        }
+        transition={{ duration: 0.5, ease: 'easeInOut' }}
         className={cn(
-          usePortal ? 'fixed z-50' : 'absolute z-10',
-          'inset-0 flex items-center justify-center p-4 focus:outline-none sm:p-8 md:p-12',
-          wrapperClassName
+          'absolute flex flex-col overflow-hidden shadow-2xl',
+          'bg-white/90 backdrop-blur-md dark:bg-neutral-900/95',
+          positions[side],
+          sideRoundedMap[side](RoundedMap[rounded]),
+          isOpen ? 'pointer-events-auto' : 'pointer-events-none',
+          className
         )}
-        onClose={onClose}
       >
-        {backdrop && (
-          <TransitionChild
-            enter="ease-in-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in-out duration-300"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-            unmount={false}
-          >
-            <div
-              className="absolute inset-0 bg-neutral-900/20 backdrop-blur-md dark:bg-black/40"
-              onClick={onClose}
-            />
-          </TransitionChild>
-        )}
-        {/* Rounded Border */}
-        <TransitionChild
-          enter="ease-in-out duration-500"
-          enterFrom={enterFrom[side]}
-          enterTo={enterTo[side]}
-          leave="ease-in-out duration-500"
-          leaveFrom={enterTo[side]}
-          leaveTo={enterFrom[side]}
-          unmount={false}
-        >
-          <div
-            className={cn(
-              'absolute flex flex-col overflow-hidden shadow-2xl',
-              'bg-white/90 backdrop-blur-md dark:bg-neutral-900/95',
-              positions[side],
-              roundedMapideMap[side](RoundedMap[rounded]),
-              className
-            )}
-          >
-            {children}
-          </div>
-        </TransitionChild>
-      </Wrapper>
-    </Transition>
+        {children}
+      </motion.div>
+    </Wrapper>
   );
 }
 
@@ -132,6 +128,7 @@ function Wrapper({
   isOpen,
   usePortal,
   children,
+  onClose,
   ...rests
 }: {
   isOpen: boolean;
@@ -150,12 +147,22 @@ function Wrapper({
         role="dialog"
         tabIndex={-1}
         aria-modal={isOpen || undefined}
-        hidden={!isOpen}
+        aria-hidden={!isOpen}
       >
         {children}
       </div>,
       document.body
     );
   }
-  return <div {...rests}>{children}</div>;
+  return (
+    <div
+      {...rests}
+      role="dialog"
+      tabIndex={-1}
+      aria-modal={isOpen || undefined}
+      aria-hidden={!isOpen}
+    >
+      {children}
+    </div>
+  );
 }

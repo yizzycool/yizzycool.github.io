@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { isUndefined } from 'lodash';
+import { useMemo, useSyncExternalStore } from 'react';
 
 const BreakPoints = {
   'width-sm': 640,
@@ -12,45 +11,57 @@ const BreakPoints = {
 };
 
 export default function useWindowDevice() {
-  const [width, setWidth] = useState<number>();
+  const width = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
+  const isReady = useMemo(() => {
+    return width !== undefined;
+  }, [width]);
 
   const isDesktop = useMemo(() => {
-    if (isUndefined(width)) return false;
+    if (width === undefined) return false;
     return width >= BreakPoints['width-lg'];
   }, [width]);
 
   const isPad = useMemo(() => {
-    if (isUndefined(width)) return false;
+    if (width === undefined) return false;
     return width < BreakPoints['width-lg'] && width >= BreakPoints['width-sm'];
   }, [width]);
 
   const isMobile = useMemo(() => {
-    if (isUndefined(width)) return false;
+    if (width === undefined) return false;
     return width < BreakPoints['width-sm'];
   }, [width]);
 
   const isNotDesktop = useMemo(() => {
-    if (isUndefined(width)) return false;
+    if (width === undefined) return false;
     return !isDesktop;
   }, [width, isDesktop]);
 
-  useEffect(() => {
-    const onResized = () => {
-      setWidth(window.innerWidth);
-    };
-
-    onResized();
-    window.addEventListener('resize', onResized);
-
-    return () => {
-      window.removeEventListener('resize', onResized);
-    };
-  }, []);
-
   return {
+    isReady,
     isDesktop,
     isNotDesktop,
     isPad,
     isMobile,
   };
+}
+
+function subscribe(callback: () => void) {
+  if (typeof window === 'undefined') return () => {};
+
+  window.addEventListener('resize', callback);
+
+  return () => {
+    window.removeEventListener('resize', callback);
+  };
+}
+
+function getSnapshot() {
+  if (typeof window === 'undefined') return undefined;
+
+  return window.innerWidth;
+}
+
+function getServerSnapshot() {
+  return undefined;
 }

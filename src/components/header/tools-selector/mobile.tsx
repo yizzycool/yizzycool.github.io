@@ -9,11 +9,13 @@ import Link from 'next/link';
 
 import { ToolDataForFeaturePanel } from '@/data/tools';
 
+type ToolsSelectorMobileProps = {
+  closeDrawer: () => void;
+};
+
 export default function ToolsSelectorMobile({
-  closeSidePanel,
-}: {
-  closeSidePanel: () => void;
-}) {
+  closeDrawer,
+}: ToolsSelectorMobileProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const pathname = usePathname();
@@ -61,7 +63,7 @@ export default function ToolsSelectorMobile({
                         'data-[active=true]:text-sky-500'
                       )}
                       href={item.href}
-                      onClick={closeSidePanel}
+                      onClick={closeDrawer}
                       data-active={pathname === item.href}
                     >
                       <div className="mr-3 h-8 w-8 p-1.5 dark:border-gray-500/50">

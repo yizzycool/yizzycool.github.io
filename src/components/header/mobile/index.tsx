@@ -6,6 +6,7 @@ import { cn } from '@/utils/cn';
 import { Home, Menu, UserRound, X } from 'lucide-react';
 import { useState } from 'react';
 
+import useWindowDevice from '@/hooks/window/use-window-device';
 import ThemeSelector from '../theme-selector';
 import { ToolsSelectorMobile } from '../tools-selector';
 import BlogSelectorMobile from './blog-selector';
@@ -15,14 +16,23 @@ import SocialIcons from '@/components/common/social-icons';
 import Drawer from '@/components/common/drawer';
 import BuyMeACoffee from '@/components/common/buy-me-a-coffee';
 
-export default function HeaderMobile({
-  categoryArticles,
-}: {
+type HeaderMobileProps = {
   categoryArticles: BlogCategory;
-}) {
-  const [open, setOpen] = useState(false);
+};
 
-  const closeSidePanel = () => setOpen(false);
+export default function HeaderMobile({ categoryArticles }: HeaderMobileProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { isReady, isNotDesktop } = useWindowDevice();
+
+  const closeDrawer = () => setIsOpen(false);
+
+  /**
+   * Controls drawer visibility: requires client window check to be ready (isReady),
+   * current device size to be non-desktop (isNotDesktop), and open state to be true (isOpen).
+   * Automatically collapses the drawer when resized to desktop mode.
+   */
+  const isDrawerOpen = isReady && isNotDesktop && isOpen;
 
   return (
     <>
@@ -35,14 +45,14 @@ export default function HeaderMobile({
 
       <button
         className="h-9 w-9 p-1"
-        onClick={() => setOpen(true)}
+        onClick={() => setIsOpen(true)}
         aria-label="menu"
       >
         <Menu className="w-full" />
       </button>
       <Drawer
-        isOpen={open}
-        onClose={() => setOpen(false)}
+        isOpen={isDrawerOpen}
+        onClose={() => setIsOpen(false)}
         className="w-screen !max-w-md"
       >
         <div
@@ -55,7 +65,7 @@ export default function HeaderMobile({
             <div />
             <button
               className="group rounded-full p-2 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
-              onClick={closeSidePanel}
+              onClick={closeDrawer}
             >
               <X
                 aria-hidden="true"
@@ -71,7 +81,7 @@ export default function HeaderMobile({
               {/* Home */}
               <li>
                 <GeneralLink
-                  onClick={closeSidePanel}
+                  onClick={closeDrawer}
                   icon={Home}
                   label="Home"
                   href="/"
@@ -79,18 +89,18 @@ export default function HeaderMobile({
               </li>
 
               {/* Tools */}
-              <ToolsSelectorMobile closeSidePanel={closeSidePanel} />
+              <ToolsSelectorMobile closeDrawer={closeDrawer} />
 
               {/* Blog */}
               <BlogSelectorMobile
-                closeSidePanel={closeSidePanel}
+                closeDrawer={closeDrawer}
                 categoryArticles={categoryArticles}
               />
 
               {/* Resume */}
               <li>
                 <GeneralLink
-                  onClick={closeSidePanel}
+                  onClick={closeDrawer}
                   icon={UserRound}
                   label="Resume"
                   href="/resume"
