@@ -34,10 +34,8 @@ export default function LeftPanel({
         getFadeUpClass(),
         side === 'leftPanel' &&
           cn(
-            'sticky top-[68px] h-[calc(100dvh_-_68px)] w-[300px] shrink-0 overflow-y-auto',
-            'hidden lg:block',
-            'border-r border-neutral-400/20',
-            'px-2 py-5 lg:py-10'
+            'sticky top-[101px] hidden h-[calc(100dvh_-_101px)] w-[300px] lg:block',
+            'shrink-0 overflow-y-auto px-4 pb-20 pt-4'
           ),
         side === 'headerBlogSelector' && 'py-4'
       )}

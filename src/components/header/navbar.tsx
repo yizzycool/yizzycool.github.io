@@ -3,11 +3,9 @@
 import type { BlogCategory } from '@/types/blog';
 
 import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 
 import { cn } from '@/utils/cn';
-
 import HeaderDesktop from './desktop';
 import HeaderMobile from './mobile';
 import Link from 'next/link';
@@ -19,9 +17,6 @@ type Props = {
 export default function Navbar({ categoryArticles }: Props) {
   const [scrolled, setScrolled] = useState(false);
 
-  const pathname = usePathname();
-  const isToolPage = pathname.startsWith('/tools');
-
   // Handle Scroll & Mount Animations
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -31,7 +26,7 @@ export default function Navbar({ categoryArticles }: Props) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const headerExpanded = !scrolled && !isToolPage;
+  const headerExpanded = !scrolled;
 
   return (
     <header

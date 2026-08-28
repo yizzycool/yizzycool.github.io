@@ -2,6 +2,7 @@ import '@/styles/globals.css';
 import GlimmerBackground from '@/components/common/glimmer-background';
 import GlimmerBackgroundConfigs from '@/data/glimmer-background-config/tools';
 import FeaturePanel from '@/components/tools/layout/feature-panel';
+import VerticalLine from '@/components/blog/layout/vertical-line';
 import AboutBlock from '@/components/tools/about-block';
 import ScrollToTop from '@/components/common/scroll-to-top';
 
@@ -11,10 +12,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="mx-auto flex min-h-dvh max-w-screen-2xl pt-[68px]">
+    <main className="mx-auto flex min-h-dvh max-w-screen-2xl pt-[101px]">
       <GlimmerBackground configs={GlimmerBackgroundConfigs} />
       <FeaturePanel />
-      <div className="mx-auto min-h-full px-4 py-8 text-center sm:px-6 lg:px-12 lg:py-12">
+      <VerticalLine />
+      <div className="mx-auto flex-grow overflow-hidden px-5 pb-20 pt-4 lg:max-w-screen-lg lg:px-10">
         {children}
         <AboutBlock />
       </div>

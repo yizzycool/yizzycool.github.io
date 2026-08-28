@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import { cn } from '@/utils/cn';
 import { ToolDataForFeaturePanel } from '@/data/tools';
 import BuyMeACoffee from '@/components/common/buy-me-a-coffee';
@@ -10,17 +11,20 @@ import BuyMeACoffee from '@/components/common/buy-me-a-coffee';
 export default function FeaturePanel() {
   const pathname = usePathname();
 
+  const { getFadeUpClass } = useGetTransitionClass();
+
   return (
     <aside
       className={cn(
-        'sticky top-[68px] hidden h-[calc(100dvh_-_68px)] w-[300px] shrink-0 overflow-y-auto p-4 lg:block',
-        'border-r border-neutral-400/20'
+        getFadeUpClass(),
+        'sticky top-[101px] hidden h-[calc(100dvh_-_68px)] w-[300px] lg:block',
+        'shrink-0 overflow-y-auto px-4 pb-20 pt-4'
       )}
     >
       <nav aria-label="Tools list">
-        <ul>
+        <ul className="space-y-6">
           {ToolDataForFeaturePanel.map((tool) => (
-            <li key={tool.name} className="mt-6">
+            <li key={tool.name}>
               <h2 className="mb-2 font-bold text-slate-800 dark:text-slate-300">
                 {tool.name}
               </h2>
