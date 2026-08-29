@@ -93,7 +93,7 @@ export default function RewriterApi() {
         />
       ) : null}
 
-      <div className="absolute right-4 top-4">
+      <div className="absolute right-4 top-24">
         <Config
           options={options}
           isOptionUpdating={isOptionUpdating}
