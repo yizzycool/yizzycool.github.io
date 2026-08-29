@@ -11,16 +11,19 @@ import { createPortal } from 'react-dom';
 import { cn } from '@/utils/cn';
 import useIsClient from '@/hooks/lifecycle/use-is-client';
 
-const defaultContents = {
+const defaultContents: Record<ButtonVariant, string> = {
   primary: '',
   secondary: '',
   ghost: '',
+  'ghost-sky': '',
   outline: '',
   error: 'Something went wrong! Please try again later.',
   'dark-sky': '',
   neutral: '',
   success: '',
   blue: '',
+  amber: '',
+  surface: '',
 };
 
 type Props = {
@@ -96,7 +99,7 @@ export default function Snackbar({
     'bottom right': { bottom: `${offsetY}px`, right: `${offsetX}px` },
   };
 
-  const variants = {
+  const variants: Record<ButtonVariant, string> = {
     primary: cn(
       'bg-neutral-900 text-white dark:bg-white dark:text-slate-900 border-white dark:border-black'
     ),
@@ -104,6 +107,9 @@ export default function Snackbar({
       'bg-neutral-100 text-slate-900 dark:bg-neutral-800 dark:text-slate-100 border-neutral-600 dark:border-neutral-400'
     ),
     ghost: cn('text-slate-600 dark:text-slate-400 border-neutral-500/20'),
+    'ghost-sky': cn(
+      'bg-sky-50 text-sky-700 border-sky-300 dark:bg-sky-950/80 dark:text-sky-300 dark:border-sky-800'
+    ),
     outline: cn(
       'border border-neutral-200 text-slate-700 dark:border-neutral-700 dark:text-slate-300'
     ),
@@ -119,6 +125,12 @@ export default function Snackbar({
     ),
     blue: cn(
       'bg-blue-100 border-blue-500/20 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400'
+    ),
+    amber: cn(
+      'bg-amber-100/90 border-amber-300 text-amber-800 dark:bg-amber-950/80 dark:border-amber-800 dark:text-amber-300'
+    ),
+    surface: cn(
+      'border border-slate-200 bg-white text-slate-800 shadow-lg dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200'
     ),
   };
 

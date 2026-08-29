@@ -34,7 +34,7 @@ export default function Badge({
   const baseStyles =
     'w-fit flex items-center justify-center transition-colors duration-200 font-semibold whitespace-nowrap';
 
-  const variants = {
+  const variants: Record<BadgeVariant, string> = {
     primary:
       'bg-neutral-900 text-white dark:bg-white dark:text-slate-900 border-neutral-500/20',
     secondary:
@@ -52,6 +52,8 @@ export default function Badge({
     blue: 'bg-blue-300/20 border-blue-500/20 text-blue-500 dark:bg-blue-500/20 dark:text-blue-400',
     amber:
       'bg-amber-100 border-amber-500/20 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300',
+    surface:
+      'bg-white text-slate-700 border-slate-200/90 shadow-2xs dark:bg-neutral-900 dark:text-slate-300 dark:border-neutral-800',
   };
 
   const sizes = {

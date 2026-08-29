@@ -44,7 +44,7 @@ export default function Button({
   const baseStyles =
     'group flex items-center justify-center transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
 
-  const variants = {
+  const variants: Record<ButtonVariant, string> = {
     primary: cn(
       'bg-slate-900 text-white shadow-xs dark:bg-white dark:text-slate-900 border-transparent',
       !disabled && hoverEffect && 'hover:bg-slate-800 dark:hover:bg-slate-100'
