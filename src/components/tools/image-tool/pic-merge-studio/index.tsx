@@ -11,14 +11,14 @@ import { cn } from '@/utils/cn';
 import { useRef, useState } from 'react';
 
 import useFabric from './hooks/use-fabric';
-import HeaderBlock from '../../header-block';
-import SectionGap from '../../section-gap';
-import Snackbar from '@/components/common/snackbar';
-import Config from './config-panel';
 import {
   PRESET_BACKGROUND_COLORS,
   PRESET_BORDER_COLORS,
 } from './config-panel/data/background';
+import HeaderBlock from '../../common/header-block';
+import SectionGap from '../../common/section-gap';
+import Snackbar from '@/components/common/snackbar';
+import Config from './config-panel';
 
 export const DEFAULT_CANVAS_CONFIG: CanvasConfig = {
   layout: 'free',

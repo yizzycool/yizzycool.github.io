@@ -6,7 +6,8 @@ import { isEmpty, size } from 'lodash';
 
 import useAiRewriter from '../hooks/use-ai-rewriter';
 import browserUtils from '@/utils/browser-utils';
-import HeaderBlock from '../../header-block';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
+import HeaderBlock from '../../common/header-block';
 import SystemChecking from '../system-checking';
 import UnsupportedCard from '../unsupported-card';
 import ModelDownloadCard from '../model-download-card';
@@ -16,10 +17,9 @@ import Textarea from '@/components/common/textarea';
 import Config from './config';
 import Button from '@/components/common/button';
 import PromptResult from '../prompt-result';
-import SectionGap from '../../section-gap';
+import SectionGap from '../../common/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
-import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 
 export default function RewriterApi() {
   const [text, setText] = useState('');

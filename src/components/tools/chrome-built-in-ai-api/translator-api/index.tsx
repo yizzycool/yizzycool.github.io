@@ -1,12 +1,13 @@
 'use client';
 
-import { cn } from '@/utils/cn';
 import { useRef, useState } from 'react';
 import { ArrowRightLeft } from 'lucide-react';
 import { isNull, isEmpty, size } from 'lodash';
 
 import useAiTranslator from '../hooks/use-ai-translator';
-import HeaderBlock from '../../header-block';
+import { cn } from '@/utils/cn';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
+import HeaderBlock from '../../common/header-block';
 import LanguageSelector from './language-selector';
 import UnsupportedCard from '../unsupported-card';
 import ModelDownloadCard from '../model-download-card';
@@ -15,9 +16,8 @@ import CopyAction from '@/components/common/action-button/copy';
 import SpeakAction from '@/components/common/action-button/speak';
 import UnsupportedLanguagePairCard from './unsupported-language-pair-card';
 import InlineDownloadCard from './inline-download-card';
-import SectionGap from '../../section-gap';
+import SectionGap from '../../common/section-gap';
 import Snackbar from '@/components/common/snackbar';
-import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 
 export default function TranslatorApi() {
   const [text, setText] = useState('');

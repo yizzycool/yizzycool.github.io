@@ -3,9 +3,10 @@
 import type { Rounded } from '@/types/common';
 import type { BadgeSize, BadgeVariant } from '@/types/common/badge';
 
-import { cn } from '@/utils/cn';
 import { LucideIcon } from 'lucide-react';
 import { useMemo } from 'react';
+
+import { cn } from '@/utils/cn';
 
 type Props = {
   children?: React.ReactNode;
@@ -47,7 +48,7 @@ export default function Badge({
     neutral:
       'bg-neutral-100 border-neutral-200 dark:border-neutral-700 text-slate-600 dark:bg-neutral-800 dark:text-slate-300',
     success:
-      'bg-green-400/10 border-green-500/20 text-green-900/70 dark:text-green-400',
+      'border border-emerald-600/20 dark:border-emerald-500/20 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400',
     blue: 'bg-blue-300/20 border-blue-500/20 text-blue-500 dark:bg-blue-500/20 dark:text-blue-400',
     amber:
       'bg-amber-100 border-amber-500/20 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300',

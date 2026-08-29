@@ -1,12 +1,13 @@
 'use client';
 
-import { cn } from '@/utils/cn';
 import { useRef, useState } from 'react';
 import { ChartColumn, PenLine } from 'lucide-react';
 import { isNull, isEmpty, size } from 'lodash';
 
 import useAiLanguageDetector from '../hooks/use-ai-language-detector';
-import HeaderBlock from '../../header-block';
+import { cn } from '@/utils/cn';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
+import HeaderBlock from '../../common/header-block';
 import BarChart from './bar-chart';
 import Textarea from '@/components/common/textarea';
 import PasteAction from '@/components/common/action-button/paste';
@@ -14,10 +15,9 @@ import DeleteAction from '@/components/common/action-button/delete';
 import SystemChecking from '../system-checking';
 import UnsupportedCard from '../unsupported-card';
 import ModelDownloadCard from '../model-download-card';
-import SectionGap from '../../section-gap';
+import SectionGap from '../../common/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
-import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 
 export default function LanguageDetectorApi() {
   const [text, setText] = useState('');

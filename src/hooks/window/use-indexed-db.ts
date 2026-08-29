@@ -2,15 +2,32 @@
 
 import { useCallback, useSyncExternalStore } from 'react';
 
+export interface UseIndexedDBOptions {
+  version?: number;
+  /** List of object store names to ensure are created upon initialization / upgrade */
+  stores?: string[];
+  /** Custom onupgradeneeded callback for custom store creations or migrations */
+  onUpgrade?: (
+    db: IDBDatabase,
+    oldVersion: number,
+    newVersion: number | null
+  ) => void;
+}
+
 /**
- * Custom React hook for simple IndexedDB key-value operations.
+ * Custom React hook for generic IndexedDB key-value operations across stores.
  */
-export function useIndexedDB(dbName: string, storeName: string, version = 1) {
+export function useIndexedDB<StoreName extends string = string>(
+  dbName: string,
+  options: UseIndexedDBOptions = {}
+) {
   const isSupported = useSyncExternalStore(
     subscribe,
     getSnapshot,
     getServerSnapshot
   );
+
+  const { version = 1, stores = [], onUpgrade } = options;
 
   const openDB = useCallback((): Promise<IDBDatabase> => {
     return new Promise((resolve, reject) => {
@@ -23,19 +40,27 @@ export function useIndexedDB(dbName: string, storeName: string, version = 1) {
         return;
       }
       const request = indexedDB.open(dbName, version);
-      request.onupgradeneeded = () => {
+      request.onupgradeneeded = (event) => {
         const db = request.result;
-        if (!db.objectStoreNames.contains(storeName)) {
-          db.createObjectStore(storeName);
+
+        // Ensure default/provided stores exist
+        stores.forEach((store) => {
+          if (!db.objectStoreNames.contains(store)) {
+            db.createObjectStore(store);
+          }
+        });
+
+        if (onUpgrade) {
+          onUpgrade(db, event.oldVersion, event.newVersion);
         }
       };
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
     });
-  }, [dbName, storeName, version]);
+  }, [dbName, version, stores, onUpgrade]);
 
   const getValue = useCallback(
-    <T>(key: string): Promise<T | null> => {
+    <T>(storeName: StoreName, key: string): Promise<T | null> => {
       return openDB().then((db) => {
         return new Promise((resolve, reject) => {
           const transaction = db.transaction(storeName, 'readonly');
@@ -46,11 +71,11 @@ export function useIndexedDB(dbName: string, storeName: string, version = 1) {
         });
       });
     },
-    [openDB, storeName]
+    [openDB]
   );
 
   const setValue = useCallback(
-    <T>(key: string, value: T): Promise<void> => {
+    <T>(storeName: StoreName, key: string, value: T): Promise<void> => {
       return openDB().then((db) => {
         return new Promise((resolve, reject) => {
           const transaction = db.transaction(storeName, 'readwrite');
@@ -61,11 +86,11 @@ export function useIndexedDB(dbName: string, storeName: string, version = 1) {
         });
       });
     },
-    [openDB, storeName]
+    [openDB]
   );
 
   const deleteValue = useCallback(
-    (key: string): Promise<void> => {
+    (storeName: StoreName, key: string): Promise<void> => {
       return openDB().then((db) => {
         return new Promise((resolve, reject) => {
           const transaction = db.transaction(storeName, 'readwrite');
@@ -76,14 +101,32 @@ export function useIndexedDB(dbName: string, storeName: string, version = 1) {
         });
       });
     },
-    [openDB, storeName]
+    [openDB]
   );
+
+  const deleteDB = useCallback((): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      if (typeof window === 'undefined' || !('indexedDB' in window)) {
+        reject(
+          new Error(
+            'IndexedDB is not supported or not in a browser environment'
+          )
+        );
+        return;
+      }
+      const request = indexedDB.deleteDatabase(dbName);
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+      request.onblocked = () => resolve();
+    });
+  }, [dbName]);
 
   return {
     isSupported,
     getValue,
     setValue,
     deleteValue,
+    deleteDB,
   };
 }
 

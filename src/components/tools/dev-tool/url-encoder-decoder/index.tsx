@@ -1,20 +1,18 @@
 'use client';
 
-import type { ChangeEvent } from 'react';
-
 import { useState } from 'react';
 import { isNull, isEmpty } from 'lodash';
 
 import browserUtils from '@/utils/browser-utils';
 import { Code, FileCode, FileCode2, Link2 } from 'lucide-react';
-import HeaderBlock from '../../header-block';
+import HeaderBlock from '../../common/header-block';
 import Textarea from '@/components/common/textarea';
 import Button from '@/components/common/button';
 import DeleteAction from '@/components/common/action-button/delete';
 import CopyAction from '@/components/common/action-button/copy';
 import SwapAction from '@/components/common/action-button/swap';
 import PasteAction from '@/components/common/action-button/paste';
-import SectionGap from '../../section-gap';
+import SectionGap from '../../common/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
 
@@ -23,7 +21,7 @@ export default function UrlEncoderDecoder() {
   const [output, setOutput] = useState<string>('');
   const [error, setError] = useState<string>('');
 
-  const onInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
   };
 

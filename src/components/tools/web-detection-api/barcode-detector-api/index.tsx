@@ -8,13 +8,14 @@ import { isNull, map, get } from 'lodash';
 
 import useCommonFunction from '../hooks/use-common-function';
 import useBarcodeDetector from '../hooks/use-barcode-detector';
-import HeaderBlock from '../../header-block';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
+import HeaderBlock from '../../common/header-block';
 import SystemChecking from '../system-checking';
 import Empty from '../empty';
 import BoundingBox from '../bounding-box';
 import FlipCamera from '../flip-camera';
 import UnsupportedCard from '../unsupported-card';
-import SectionGap from '../../section-gap';
+import SectionGap from '../../common/section-gap';
 import Tip from '../tip';
 import Card from '@/components/common/card';
 import BaseTabs from '@/components/common/tabs/base';
@@ -23,7 +24,6 @@ import ResultCanvas from '../result-canvas';
 import DetectionResult from '../detection-result';
 import RawData from '../raw-data';
 import Snackbar from '@/components/common/snackbar';
-import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 
 const TabList: Array<WebDetectionFileType> = ['image', 'video', 'webcam'];
 

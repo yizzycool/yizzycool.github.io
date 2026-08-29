@@ -1,22 +1,20 @@
 'use client';
 
-import type { ChangeEvent } from 'react';
-
-import { cn } from '@/utils/cn';
 import { FileText, ImageIcon, View } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { isNull, isEmpty, size } from 'lodash';
 import Image from 'next/image';
 
+import { cn } from '@/utils/cn';
 import imageUtils from '@/utils/image-utils';
-import HeaderBlock from '../../header-block';
+import HeaderBlock from '../../common/header-block';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
 import PasteAction from '@/components/common/action-button/paste';
 import DownloadAction from '@/components/common/action-button/download';
 import CopyAction from '@/components/common/action-button/copy';
 import ImageInfoTag from '../image-info-tag';
-import SectionGap from '../../section-gap';
+import SectionGap from '../../common/section-gap';
 import Label from '@/components/common/label';
 
 type ImageInfo = {
@@ -62,7 +60,9 @@ export default function Base64ToImage() {
     }
   };
 
-  const onBase64StringChanged = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const onBase64StringChanged = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const base64String = event.target.value;
     setBase64(base64String);
     if (timerRef.current) {

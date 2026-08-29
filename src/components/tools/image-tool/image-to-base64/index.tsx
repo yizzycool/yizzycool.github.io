@@ -1,18 +1,18 @@
 'use client';
 
-import { cn } from '@/utils/cn';
 import { FileCode, ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { isNull, size } from 'lodash';
 import Image from 'next/image';
 import { Textarea } from '@headlessui/react';
 
+import { cn } from '@/utils/cn';
 import imageUtils from '@/utils/image-utils';
-import HeaderBlock from '../../header-block';
+import HeaderBlock from '../../common/header-block';
 import FilePicker from '@/components/common/file-picker';
 import CopyAction from '@/components/common/action-button/copy';
 import ImageInfoTag from '../image-info-tag';
-import SectionGap from '../../section-gap';
+import SectionGap from '../../common/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
 

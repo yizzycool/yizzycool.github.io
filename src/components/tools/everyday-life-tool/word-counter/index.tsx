@@ -5,8 +5,8 @@ import { useState } from 'react';
 import { isNull, isEmpty } from 'lodash';
 
 import Snackbar from '@/components/common/snackbar';
-import HeaderBlock from '../../header-block';
-import SectionGap from '../../section-gap';
+import HeaderBlock from '../../common/header-block';
+import SectionGap from '../../common/section-gap';
 import PasteAction from '@/components/common/action-button/paste';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';

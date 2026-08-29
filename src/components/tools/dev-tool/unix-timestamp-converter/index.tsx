@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
-import HeaderBlock from '../../header-block';
-import SectionGap from '../../section-gap';
+import HeaderBlock from '../../common/header-block';
+import SectionGap from '../../common/section-gap';
 import CurrentTimeCard from './current-time-card';
 import TimestampToDateCard from './timestamp-to-date-card';
 import DateToTimestampCard from './date-to-timestamp-card';

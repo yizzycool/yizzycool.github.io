@@ -1,150 +1,86 @@
 'use client';
 
-import type { ChangeEvent } from 'react';
-
-import { useMemo, useState } from 'react';
 import {
   Braces,
   CodeXml,
   FileBraces,
-  FileCode,
-  FileSpreadsheet,
   FileText,
   Info,
-  Maximize2,
-  Minimize2,
-  Network,
   Wand2,
 } from 'lucide-react';
 import { isEmpty, size } from 'lodash';
+import { useRef } from 'react';
 
-import { useToolHotkeys } from '@/hooks/tools/use-tool-hotkeys';
+import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
+import useJsonFormatter from './hooks/use-json-formatter';
+import { TAB_ITEMS, TAB_ICONS } from './constants';
 import { cn } from '@/utils/cn';
-import { jsonToYaml, jsonToCsv } from '@/utils/tools/json-converter';
-import HeaderBlock from '../../header-block';
+import HeaderBlock from '../../common/header-block';
+import SectionGap from '../../common/section-gap';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
 import PasteAction from '@/components/common/action-button/paste';
-import SectionGap from '../../section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
-import HotkeyBadge from '@/components/common/hotkey-badge';
 import Button from '@/components/common/button';
 import BaseTabs from '@/components/common/tabs/base';
-import JsonTreeView from './json-tree-view';
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
-
-const tabItems = ['Format', 'Minify', 'Tree View', 'YAML', 'CSV'];
-const tabIcons = [Maximize2, Minimize2, Network, FileCode, FileSpreadsheet];
-
-const SAMPLE_JSON = JSON.stringify(
-  {
-    id: 1,
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    isActive: true,
-    age: 30,
-    address: {
-      street: '123 Main Street',
-      city: 'New York',
-      zipcode: '10001',
-    },
-    hobbies: ['reading', 'hiking', 'coding'],
-  },
-  null,
-  2
-);
+import JsonTreeView from './json-tree-view';
 
 export default function JsonFormatter() {
-  const [tab, setTab] = useState(tabItems[0]);
-  const [input, setInput] = useState<string>('');
-  const [output, setOutput] = useState<string>('');
-  const [parsedObject, setParsedObject] = useState<
-    object | Array<unknown> | null
-  >(null);
-  const [error, setError] = useState<string | null>(null);
+  const inputRef = useRef<HTMLElement>(null);
 
-  const processJson = (jsonString: string, currentTab = tab) => {
-    if (!jsonString.trim()) {
-      setOutput('');
-      setParsedObject(null);
-      return;
-    }
+  const {
+    tab,
+    input,
+    output,
+    parsedObject,
+    error,
+    setError,
+    syntaxLanguage,
+    executeButtonLabel,
+    historyList,
+    isLoadingHistory,
+    processJson,
+    onJsonStringChanged,
+    onPaste,
+    onLoadSample,
+    onClear,
+    onTabChanged,
+    onRestoreHistory,
+    renameHistory,
+    removeHistory,
+    clearHistory,
+  } = useJsonFormatter();
 
-    try {
-      const obj = JSON.parse(jsonString);
-      setParsedObject(obj);
-      setError(null);
-
-      if (currentTab === 'Format') {
-        setOutput(JSON.stringify(obj, null, 2));
-      } else if (currentTab === 'Minify') {
-        setOutput(JSON.stringify(obj));
-      } else if (currentTab === 'YAML') {
-        setOutput(jsonToYaml(obj));
-      } else if (currentTab === 'CSV') {
-        setOutput(jsonToCsv(obj));
-      } else if (currentTab === 'Tree View') {
-        setOutput(JSON.stringify(obj, null, 2));
-      }
-    } catch (err) {
-      setError((err as Error).message || 'Invalid JSON format');
-      setParsedObject(null);
-    }
-  };
-
-  const onJsonStringChanged = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setError(null);
-    setInput(event.target.value);
-  };
-
-  const onPaste = (value: string) => {
-    setError(null);
-    setInput(value as string);
-    processJson(value as string);
-  };
-
-  const onLoadSample = () => {
-    setError(null);
-    setInput(SAMPLE_JSON);
-    processJson(SAMPLE_JSON);
-  };
-
-  const onClear = () => {
-    setInput('');
-    setOutput('');
-    setParsedObject(null);
-    setError(null);
-  };
-
-  const onTabChanged = (newTab: string) => {
-    setTab(newTab);
-    if (input.trim()) {
-      processJson(input, newTab);
-    }
-  };
-
-  // Language mode for syntax highlighting
-  const syntaxLanguage = useMemo(() => {
-    if (tab === 'YAML') return 'yaml';
-    if (tab === 'CSV') return 'csv';
-    return 'json';
-  }, [tab]);
-
-  // Register hotkeys: Cmd/Ctrl + Enter (Process), Esc (Clear)
-  const { hotkeySymbols } = useToolHotkeys({
-    onExecute: () => processJson(input),
-    onClear: onClear,
-  });
+  useToolHotkeys(
+    {
+      onExecute: () => processJson(),
+      onClear,
+    },
+    { target: inputRef }
+  );
 
   return (
     <>
-      <HeaderBlock />
+      <HeaderBlock
+        historyList={historyList}
+        isLoadingHistory={isLoadingHistory}
+        onRestoreHistory={onRestoreHistory}
+        onRenameHistory={renameHistory}
+        onRemoveHistory={removeHistory}
+        onClearHistory={clearHistory}
+      />
 
       <SectionGap />
 
       {/* Tabs */}
-      <BaseTabs tabs={tabItems} tabIcons={tabIcons} onChange={onTabChanged} />
+      <BaseTabs
+        tabs={[...TAB_ITEMS]}
+        tabIcons={[...TAB_ICONS]}
+        onChange={onTabChanged}
+        className="text-nowrap"
+      />
 
       {/* Textarea block */}
       <div className="mb-3 mt-8 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
@@ -153,12 +89,11 @@ export default function JsonFormatter() {
         </Label>
         <div className="flex items-center gap-2 self-end sm:self-auto">
           <Button
-            variant="ghost"
+            variant="ghost-sky"
             size="xs"
             rounded="lg"
             icon={FileBraces}
             onClick={onLoadSample}
-            className="text-xs text-sky-600 hover:text-sky-700 dark:text-sky-400"
           >
             Sample
           </Button>
@@ -167,6 +102,7 @@ export default function JsonFormatter() {
         </div>
       </div>
       <Textarea
+        ref={inputRef}
         id="json-string-textarea"
         value={input}
         onChange={onJsonStringChanged}
@@ -174,33 +110,21 @@ export default function JsonFormatter() {
         placeholder="Paste your JSON string here..."
       />
 
-      {/* Action button & Char count / Hotkey hints block */}
-      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <Button
-            variant="blue"
-            size="sm"
-            rounded="lg"
-            icon={Wand2}
-            disabled={isEmpty(input)}
-            onClick={() => processJson(input)}
-          >
-            {tab === 'Format' && 'Format JSON'}
-            {tab === 'Minify' && 'Minify JSON'}
-            {tab === 'Tree View' && 'Build Tree View'}
-            {tab === 'YAML' && 'Convert to YAML'}
-            {tab === 'CSV' && 'Convert to CSV'}
-          </Button>
-          <HotkeyBadge
-            items={[
-              {
-                symbol: hotkeySymbols.executeSymbol,
-                label: 'Process',
-              },
-              { symbol: hotkeySymbols.clearSymbol, label: 'Clear' },
-            ]}
-          />
-        </div>
+      <div
+        className={cn(
+          'mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'
+        )}
+      >
+        <Button
+          variant="blue"
+          size="sm"
+          rounded="lg"
+          icon={Wand2}
+          disabled={isEmpty(input)}
+          onClick={() => processJson()}
+        >
+          {executeButtonLabel}
+        </Button>
         <div className="text-right text-xs text-slate-400 dark:text-slate-500">
           {size(input)} chars
         </div>
@@ -219,7 +143,7 @@ export default function JsonFormatter() {
       {tab === 'Tree View' && parsedObject ? (
         <JsonTreeView data={parsedObject} />
       ) : output ? (
-        /* Render Syntax Highlighted Output for Format / Minify / YAML / CSV  */
+        /* Render Syntax Highlighted Output for Format / Minify / YAML / CSV */
         <ProseMarkdown className="[&_pre>div>div:nth-child(2)]:max-h-[500px]">{`\`\`\`${syntaxLanguage}\n${output}\n\`\`\``}</ProseMarkdown>
       ) : null}
 
@@ -232,7 +156,7 @@ export default function JsonFormatter() {
             'text-slate-700 dark:text-slate-200'
           )}
         >
-          <CodeXml className="" size={40} />
+          <CodeXml size={40} />
           Waiting for Input...
         </div>
       )}

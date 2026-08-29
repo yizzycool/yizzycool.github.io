@@ -347,21 +347,9 @@ export default function Management({
                     <TooltipPopup
                       showArrow
                       placement="top"
-                      className="z-50"
-                      arrowClassName={cn(
-                        'border-b border-r border-neutral-700/80 bg-neutral-900',
-                        'dark:border-neutral-700 dark:bg-neutral-800'
-                      )}
+                      className="max-w-xs px-3.5 py-2.5 font-normal leading-relaxed"
                     >
-                      <div
-                        className={cn(
-                          'max-w-xs rounded-xl border px-3.5 py-2.5 text-xs leading-relaxed shadow-xl',
-                          'border-neutral-700/80 bg-neutral-900 text-slate-100',
-                          'dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-200'
-                        )}
-                      >
-                        Separate multiple tags with commas.
-                      </div>
+                      Separate multiple tags with commas.
                     </TooltipPopup>
                   </TooltipRoot>
                 </label>
@@ -399,22 +387,11 @@ export default function Management({
                       <TooltipPopup
                         showArrow
                         placement="top"
-                        className="z-50"
-                        arrowClassName={cn(
-                          'border-b border-r border-neutral-700/80 bg-neutral-900',
-                          'dark:border-neutral-700 dark:bg-neutral-800'
-                        )}
+                        variant="dark"
+                        className="max-w-xs px-3.5 py-2.5 font-normal leading-relaxed"
                       >
-                        <div
-                          className={cn(
-                            'max-w-xs rounded-xl border px-3.5 py-2.5 text-xs font-normal leading-relaxed shadow-xl',
-                            'border-neutral-700/80 bg-neutral-900 text-slate-100',
-                            'dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-200'
-                          )}
-                        >
-                          Supports Markdown formatting, which will be rendered
-                          in the details view on the Dashboard.
-                        </div>
+                        Supports Markdown formatting, which will be rendered in
+                        the details view on the Dashboard.
                       </TooltipPopup>
                     </TooltipRoot>
                   </span>

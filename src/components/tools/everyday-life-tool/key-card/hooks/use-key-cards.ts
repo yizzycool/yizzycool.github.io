@@ -1,80 +1,78 @@
 import type { CardData, ContentVersion } from '../types';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
+import { useToolsDB } from '@/hooks/tools/use-tools-db';
 import { useIndexedDB } from '@/hooks/window/use-indexed-db';
 import { DEFAULT_CARDS } from '../constants';
 
-const DB_NAME = 'yizzypeasy-key-card';
-const STORE_NAME = 'settings';
-const KEY_NAME = 'keycard';
-const DB_VERSION = 1;
+const OBJECT_STORE_NAME = 'snippets';
+const KEY_NAME = 'key-card';
+const LEGACY_KEY_NAME = 'keycard';
+const LEGACY_DB_NAME = 'yizzypeasy-key-card';
 
 export function useKeyCards(
   triggerSnackbar: (msg: string, variant?: 'success' | 'error') => void
 ) {
   const [cards, setCards] = useState<CardData[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const { getValue, setValue } = useIndexedDB(DB_NAME, STORE_NAME, DB_VERSION);
+  const { getValue, setValue, deleteValue } = useToolsDB();
+  const { getValue: getLegacyValue, deleteDB: deleteLegacyDB } = useIndexedDB(
+    LEGACY_DB_NAME,
+    { version: 1 }
+  );
 
-  // Load from IndexedDB on mount with localStorage fallback
+  // Helper to purge legacy DB and legacy localStorage keys
+  const cleanupLegacyStorage = useCallback(() => {
+    try {
+      localStorage.removeItem(LEGACY_KEY_NAME);
+    } catch (_e) {}
+
+    deleteLegacyDB().catch(() => {});
+  }, [deleteLegacyDB]);
+
+  // Load from IndexedDB on mount with multi-source migration and automatic legacy cleanup
   useEffect(() => {
-    getValue<CardData[]>(KEY_NAME)
-      .then((savedCards) => {
+    const load = async () => {
+      try {
+        const savedCards = await getValue<CardData[]>(
+          OBJECT_STORE_NAME,
+          KEY_NAME
+        );
         if (savedCards !== null) {
-          // Record exists in IndexedDB (even if it's empty []). Use it!
+          // Record exists in new Unified IndexedDB OBJECT_STORE_NAME store!
           setCards(savedCards);
         } else {
-          // No record in IndexedDB, fallback check on localStorage
-          let localSaved: string | null = null;
-          try {
-            localSaved = localStorage.getItem(KEY_NAME);
-          } catch (_e) {}
+          // Check legacy IndexedDB (LEGACY_DB_NAME)
+          const legacyDBCards = await getLegacyValue<CardData[]>(
+            'settings',
+            LEGACY_KEY_NAME
+          );
 
-          if (localSaved !== null) {
-            // Record exists in localStorage (even if it's empty []). Use it!
-            const parsed = JSON.parse(localSaved) as CardData[];
-            setCards(parsed);
-            setValue(KEY_NAME, parsed).catch(() => {});
-          } else {
-            // First time loading ever. Load defaults!
-            setCards(DEFAULT_CARDS);
-            setValue(KEY_NAME, DEFAULT_CARDS).catch(() => {});
-            try {
-              localStorage.setItem(KEY_NAME, JSON.stringify(DEFAULT_CARDS));
-            } catch (_e) {}
+          if (legacyDBCards !== null && Array.isArray(legacyDBCards)) {
+            setCards(legacyDBCards);
+            setValue(OBJECT_STORE_NAME, KEY_NAME, legacyDBCards).catch(
+              () => {}
+            );
           }
         }
+        cleanupLegacyStorage();
         setIsLoaded(true);
-      })
-      .catch((_err) => {
-        // Full localstorage fallback if IndexedDB is blocked
-        try {
-          const saved = localStorage.getItem(KEY_NAME);
-          if (saved !== null) {
-            setCards(JSON.parse(saved) as CardData[]);
-          } else {
-            setCards(DEFAULT_CARDS);
-            localStorage.setItem(KEY_NAME, JSON.stringify(DEFAULT_CARDS));
-          }
-        } catch (_e) {
-          setCards(DEFAULT_CARDS);
-        }
+      } catch (_err) {
+        setCards(DEFAULT_CARDS);
         setIsLoaded(true);
-      });
-  }, [getValue, setValue]);
+      }
+    };
 
-  // Save logic with IndexedDB & localStorage dual update
+    load();
+  }, [cleanupLegacyStorage, deleteValue, getLegacyValue, getValue, setValue]);
+
+  // Save logic with IndexedDB OBJECT_STORE_NAME store
   const saveCards = (newCards: CardData[]) => {
     setCards(newCards);
 
-    // Background async write to IndexedDB
-    setValue(KEY_NAME, newCards).catch((_err) => {
-      // Fallback write to localStorage on failure
-      try {
-        localStorage.setItem(KEY_NAME, JSON.stringify(newCards));
-      } catch (_e) {}
-    });
+    // Write to unified IndexedDB OBJECT_STORE_NAME store
+    setValue(OBJECT_STORE_NAME, KEY_NAME, newCards);
   };
 
   // Add Card

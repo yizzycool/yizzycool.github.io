@@ -3,12 +3,15 @@ const ButtonVariants = [
   'primary',
   'secondary',
   'ghost',
+  'ghost-sky',
   'outline',
   'error',
   'dark-sky',
   'neutral',
   'success',
   'blue',
+  'amber',
+  'surface',
 ] as const;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

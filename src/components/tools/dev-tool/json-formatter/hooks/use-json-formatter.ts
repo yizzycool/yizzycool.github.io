@@ -1,0 +1,173 @@
+'use client';
+
+import type { ChangeEvent } from 'react';
+import type { TabItem } from '../constants';
+
+import { useState, useMemo, useCallback } from 'react';
+
+import { useToolHistory } from '@/hooks/tools/use-tool-history';
+import { jsonToYaml, jsonToCsv } from '@/utils/tools/json-converter';
+import { TAB_ITEMS, SAMPLE_JSON } from '../constants';
+
+type JsonHistoryData = {
+  input: string;
+  tab?: string;
+};
+
+export default function useJsonFormatter() {
+  const [tab, setTab] = useState<string>(TAB_ITEMS[0]);
+  const [input, setInput] = useState<string>('');
+  const [output, setOutput] = useState<string>('');
+  const [parsedObject, setParsedObject] = useState<
+    object | Array<unknown> | null
+  >(null);
+  const [error, setError] = useState<string | null>(null);
+
+  // Hook into tool history store
+  const {
+    historyList,
+    isLoading: isLoadingHistory,
+    addHistory,
+    renameHistory,
+    removeHistory,
+    clearHistory,
+  } = useToolHistory<JsonHistoryData>('json-formatter');
+
+  const processJson = useCallback(
+    (
+      jsonString: string = input,
+      currentTab: string = tab,
+      shouldSaveHistory = true
+    ) => {
+      if (!jsonString.trim()) {
+        setOutput('');
+        setParsedObject(null);
+        return;
+      }
+
+      try {
+        const obj = JSON.parse(jsonString);
+        setParsedObject(obj);
+        setError(null);
+
+        if (currentTab === 'Format') {
+          setOutput(JSON.stringify(obj, null, 2));
+        } else if (currentTab === 'Minify') {
+          setOutput(JSON.stringify(obj));
+        } else if (currentTab === 'YAML') {
+          setOutput(jsonToYaml(obj));
+        } else if (currentTab === 'CSV') {
+          setOutput(jsonToCsv(obj));
+        } else if (currentTab === 'Tree View') {
+          setOutput(JSON.stringify(obj, null, 2));
+        }
+
+        if (shouldSaveHistory) {
+          addHistory(jsonString, { input: jsonString, tab: currentTab });
+        }
+      } catch (err) {
+        setError((err as Error).message || 'Invalid JSON format');
+        setParsedObject(null);
+      }
+    },
+    [addHistory, input, tab]
+  );
+
+  const onJsonStringChanged = useCallback(
+    (event: ChangeEvent<HTMLTextAreaElement>) => {
+      setError(null);
+      setInput(event.target.value);
+    },
+    []
+  );
+
+  const onPaste = useCallback(
+    (value: string) => {
+      setError(null);
+      setInput(value);
+      processJson(value, tab);
+    },
+    [processJson, tab]
+  );
+
+  const onLoadSample = useCallback(() => {
+    setError(null);
+    setInput(SAMPLE_JSON);
+  }, []);
+
+  const onClear = useCallback(() => {
+    setInput('');
+    setOutput('');
+    setParsedObject(null);
+    setError(null);
+  }, []);
+
+  const onTabChanged = useCallback(
+    (newTab: string) => {
+      setTab(newTab);
+      if (input.trim()) {
+        processJson(input, newTab);
+      }
+    },
+    [input, processJson]
+  );
+
+  const onRestoreHistory = useCallback(
+    (data: JsonHistoryData) => {
+      setInput(data.input);
+      if (data.tab) {
+        setTab(data.tab);
+      }
+      processJson(data.input, data.tab || tab, false);
+    },
+    [processJson, tab]
+  );
+
+  // Language mode for syntax highlighting
+  const syntaxLanguage = useMemo(() => {
+    if (tab === 'YAML') return 'yaml';
+    if (tab === 'CSV') return 'csv';
+    return 'json';
+  }, [tab]);
+
+  // Dynamic execute button label
+  const executeButtonLabel = useMemo(() => {
+    switch (tab as TabItem) {
+      case 'Format':
+        return 'Format JSON';
+      case 'Minify':
+        return 'Minify JSON';
+      case 'Tree View':
+        return 'Build Tree View';
+      case 'YAML':
+        return 'Convert to YAML';
+      case 'CSV':
+        return 'Convert to CSV';
+      default:
+        return 'Process JSON';
+    }
+  }, [tab]);
+
+  return {
+    tab,
+    input,
+    output,
+    parsedObject,
+    error,
+    setError,
+    syntaxLanguage,
+    executeButtonLabel,
+    historyList,
+    isLoadingHistory,
+    processJson,
+    onJsonStringChanged,
+    onPaste,
+    onLoadSample,
+    onClear,
+    onTabChanged,
+    onRestoreHistory,
+    renameHistory,
+    removeHistory,
+    clearHistory,
+  };
+}

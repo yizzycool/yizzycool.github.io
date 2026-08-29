@@ -3,10 +3,11 @@
 import type { Rounded } from '@/types/common';
 import type { ButtonSize, ButtonVariant } from '@/types/common/button';
 
-import { cn } from '@/utils/cn';
 import { LucideIcon } from 'lucide-react';
 import { MouseEventHandler, useMemo } from 'react';
 import { isFunction } from 'lodash';
+
+import { cn } from '@/utils/cn';
 
 type Props = {
   children?: React.ReactNode;
@@ -60,6 +61,12 @@ export default function Button({
         hoverEffect &&
         'hover:bg-slate-100/80 hover:text-slate-900 dark:hover:bg-neutral-800/80 dark:hover:text-white'
     ),
+    'ghost-sky': cn(
+      'text-sky-600 dark:text-sky-400 border-transparent',
+      !disabled &&
+        hoverEffect &&
+        'hover:bg-sky-50 hover:text-sky-700 dark:hover:bg-sky-950/40 dark:hover:text-sky-300'
+    ),
     outline: cn(
       'border border-slate-200 text-slate-700 dark:border-neutral-800 dark:text-slate-300',
       !disabled &&
@@ -91,6 +98,18 @@ export default function Button({
     blue: cn(
       'bg-sky-600 text-white shadow-xs border-transparent dark:bg-sky-500 dark:text-white',
       !disabled && hoverEffect && 'hover:bg-sky-500 dark:hover:bg-sky-400'
+    ),
+    amber: cn(
+      'bg-amber-50 text-amber-600 border-amber-300 shadow-2xs dark:border-amber-800/80 dark:bg-amber-950/40 dark:text-amber-400',
+      !disabled &&
+        hoverEffect &&
+        'hover:bg-amber-100/80 hover:border-amber-400 dark:hover:bg-amber-900/60 dark:hover:border-amber-700'
+    ),
+    surface: cn(
+      'border border-slate-200 bg-white text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400',
+      !disabled &&
+        hoverEffect &&
+        'hover:border-slate-300 hover:bg-slate-50 dark:hover:border-slate-700 dark:hover:bg-slate-800'
     ),
   };
 

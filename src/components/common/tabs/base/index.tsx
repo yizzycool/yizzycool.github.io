@@ -1,7 +1,9 @@
 'use client';
 
 import type { LucideIcon } from 'lucide-react';
+
 import { useEffect, useState } from 'react';
+
 import { cn } from '@/utils/cn';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import Button from '@/components/common/button';
@@ -51,7 +53,8 @@ export default function BaseTabs({
   return (
     <div
       className={cn(
-        'flex items-center border-b border-slate-200/80 dark:border-neutral-700',
+        'flex items-stretch border-b border-slate-200/80 dark:border-neutral-700',
+        'max-w-full overflow-x-auto overflow-y-hidden',
         className
       )}
     >

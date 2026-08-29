@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from 'react';
 
-import HeaderBlock from '../../header-block';
-import SectionGap from '../../section-gap';
+import HeaderBlock from '../../common/header-block';
+import SectionGap from '../../common/section-gap';
 import PatternCard from './pattern-card';
 import TestCard from './test-card';
 import DetailCard from './detail-card';

@@ -5,8 +5,8 @@ import { ChangeEvent, useState } from 'react';
 import { isNull, isEmpty } from 'lodash';
 
 import Snackbar from '@/components/common/snackbar';
-import HeaderBlock from '../../header-block';
-import SectionGap from '../../section-gap';
+import HeaderBlock from '../../common/header-block';
+import SectionGap from '../../common/section-gap';
 import useGenerateQrCode from './hooks/use-generate-qrcode';
 import SystemStatus from './system-status';
 import PasteAction from '@/components/common/action-button/paste';

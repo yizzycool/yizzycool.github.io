@@ -65,14 +65,12 @@ export default function Toolbar({
             <TooltipPopup
               showArrow
               placement="top"
-              className="z-50"
-              arrowClassName="bg-neutral-900 dark:bg-neutral-800 border-b border-r border-neutral-700/80 dark:border-neutral-700"
+              variant="dark"
+              className="max-w-xs px-3.5 py-2.5 leading-relaxed"
             >
-              <div className="max-w-xs rounded-xl border border-neutral-700/80 bg-neutral-900 px-3.5 py-2.5 text-xs leading-relaxed text-slate-100 shadow-xl dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-200">
-                In this mode, you can edit titles, customize comma-separated
-                tags, and dynamically manage content versions for each card.
-                Click the keyboard button to re-register hotkeys.
-              </div>
+              In this mode, you can edit titles, customize comma-separated tags,
+              and dynamically manage content versions for each card. Click the
+              keyboard button to re-register hotkeys.
             </TooltipPopup>
           </TooltipRoot>
         </div>

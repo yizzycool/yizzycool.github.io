@@ -1,4 +1,3 @@
-import { cn } from '@/utils/cn';
 import { useMemo, useState } from 'react';
 import {
   BookCheck,
@@ -11,6 +10,7 @@ import {
 } from 'lucide-react';
 import { forEach, map, isEmpty, join } from 'lodash';
 
+import { cn } from '@/utils/cn';
 import Label from '@/components/common/label';
 import CopyAction from '@/components/common/action-button/copy';
 import Button from '@/components/common/button';
@@ -89,7 +89,7 @@ export default function Result({ text, result, isProcessing }: Props) {
 
       forEach(
         result?.corrections,
-        ({ correction, startIndex, endIndex, type }) => {
+        ({ correction, startIndex, endIndex, types }) => {
           if (lastIndex < startIndex) {
             parts.push({
               text: text.substring(lastIndex, startIndex),
@@ -100,8 +100,8 @@ export default function Result({ text, result, isProcessing }: Props) {
             text: text.substring(startIndex, endIndex),
             error: true,
             correction,
-            type,
-            color: Colors[type],
+            type: types[0],
+            color: Colors[types[0]],
           });
           lastIndex = endIndex;
         }
@@ -223,56 +223,57 @@ export default function Result({ text, result, isProcessing }: Props) {
                           {text}
                         </span>
                       </TooltipTrigger>
-                      <TooltipPopup
-                        showArrow
-                        arrowClassName="bg-blue-100 dark:bg-gray-800"
-                      >
+                      <TooltipPopup showArrow variant="card" className="p-3.5">
                         <div
                           key={idx}
-                          className={cn(
-                            'max-w-[min(90vw,_300px)] overflow-hidden',
-                            'rounded-lg bg-blue-100 p-4 shadow-lg dark:bg-gray-800',
-                            'text-xs text-slate-700 dark:text-slate-200',
-                            'space-y-4'
-                          )}
+                          className="min-w-[min(90vw,_240px)] max-w-[min(90vw,_280px)] space-y-3 text-xs"
                         >
-                          <div className="flex items-center gap-2 font-black uppercase">
-                            <SpellCheck2 size={16} className={color?.text} />
-                            {type}
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                              <SpellCheck2 size={15} className={color?.text} />
+                              <span>{type}</span>
+                            </div>
                           </div>
+
                           <div
                             className={cn(
-                              'space-y-4 overflow-hidden rounded',
-                              'bg-black/10 p-2 dark:bg-white/10'
+                              'space-y-2 overflow-hidden rounded-lg',
+                              'border border-slate-100 bg-slate-50/80 p-2.5 dark:border-neutral-800/60 dark:bg-neutral-950/50'
                             )}
                           >
                             {!!text && (
-                              <div className="flex gap-2">
+                              <div className="flex items-center gap-2 text-rose-600/90 dark:text-rose-400">
                                 <X
-                                  size={16}
-                                  className="min-w-[16px] text-red-500"
+                                  size={14}
+                                  className="shrink-0 text-rose-500"
                                 />
-                                <div className="line-through">{text}</div>
+                                <span className="line-through decoration-rose-400/60">
+                                  {text}
+                                </span>
                               </div>
                             )}
                             {!!correction && (
-                              <div className="flex gap-2">
+                              <div className="flex items-center gap-2 font-medium text-emerald-700 dark:text-emerald-400">
                                 <Check
-                                  size={16}
-                                  className="min-w-[16px] text-green-500"
+                                  size={14}
+                                  className="shrink-0 text-emerald-500"
                                 />
-                                {correction}
+                                <span>{correction}</span>
                               </div>
                             )}
                           </div>
+
                           {/* Apply suggestion */}
-                          <Button
-                            size="xs"
-                            className="ml-auto"
-                            onClick={() => onApply(idx)}
-                          >
-                            Apply
-                          </Button>
+                          <div className="flex justify-end">
+                            <Button
+                              size="xs"
+                              variant="blue"
+                              className="rounded-md px-3 font-medium"
+                              onClick={() => onApply(idx)}
+                            >
+                              Apply
+                            </Button>
+                          </div>
                         </div>
                       </TooltipPopup>
                     </TooltipRoot>

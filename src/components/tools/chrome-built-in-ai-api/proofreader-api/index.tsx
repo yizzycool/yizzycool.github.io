@@ -5,7 +5,9 @@ import { ChangeEventHandler, useState } from 'react';
 import { isEmpty, size } from 'lodash';
 
 import useAiProofreader from '../hooks/use-ai-proofreader';
-import HeaderBlock from '../../header-block';
+import browserUtils from '@/utils/browser-utils';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
+import HeaderBlock from '../../common/header-block';
 import SystemChecking from '../system-checking';
 import UnsupportedCard from '../unsupported-card';
 import ModelDownloadCard from '../model-download-card';
@@ -13,12 +15,10 @@ import PasteAction from '@/components/common/action-button/paste';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
 import Button from '@/components/common/button';
-import SectionGap from '../../section-gap';
+import SectionGap from '../../common/section-gap';
 import Snackbar from '@/components/common/snackbar';
 import Label from '@/components/common/label';
 import Result from './result';
-import browserUtils from '@/utils/browser-utils';
-import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 
 export default function ProofreaderApi() {
   const [text, setText] = useState('');

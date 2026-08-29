@@ -1,8 +1,9 @@
 'use client';
 
-import { cn } from '@/utils/cn';
 import { Description, Field, Label, Textarea as TA } from '@headlessui/react';
-import { ChangeEvent } from 'react';
+import React, { ChangeEvent } from 'react';
+
+import { cn } from '@/utils/cn';
 
 type Props = {
   title?: string;
@@ -15,6 +16,7 @@ type Props = {
   autoFocus?: boolean;
   className?: string;
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  ref?: React.Ref<HTMLElement>;
 };
 
 export default function Textarea({
@@ -28,6 +30,7 @@ export default function Textarea({
   autoFocus = false,
   className = '',
   onChange = () => {},
+  ref,
 }: Props) {
   return (
     <Field className="w-full">
@@ -42,6 +45,7 @@ export default function Textarea({
         </Description>
       )}
       <TA
+        ref={ref}
         className={cn(
           'block w-full rounded-lg border px-4 py-3',
           'resize-none text-sm leading-relaxed outline-none',

@@ -1,15 +1,15 @@
 'use client';
 
 import useAiLanguageModel from '../hooks/use-ai-language-model';
-import HeaderBlock from '../../header-block';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
+import HeaderBlock from '../../common/header-block';
 import SystemChecking from '../system-checking';
 import Config from './config';
 import Chat from './chat';
 import UnsupportedCard from '../unsupported-card';
 import ModelDownloadCard from '../model-download-card';
-import SectionGap from '../../section-gap';
+import SectionGap from '../../common/section-gap';
 import Snackbar from '@/components/common/snackbar';
-import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 
 export default function PromptApi() {
   const {

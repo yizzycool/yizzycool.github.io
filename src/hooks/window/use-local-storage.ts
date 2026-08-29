@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
 
-const LOCAL_STORAGE_EVENT = 'yizzy-peasy-local-storage-update';
+const LOCAL_STORAGE_EVENT = 'yizzypeasy-local-storage-update';
 
 /**
  * Custom React hook for simple localStorage key-value operations.
