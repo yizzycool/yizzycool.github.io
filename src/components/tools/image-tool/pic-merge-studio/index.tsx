@@ -90,13 +90,8 @@ export default function PicMergeStudio() {
   });
 
   return (
-    <div
-      className={cn(
-        'relative grid w-full lg:grid-cols-[1fr_300px]',
-        'transition-all duration-500 ease-in'
-      )}
-    >
-      <div className="flex-1 lg:pr-12">
+    <div className="lg:flex lg:gap-10">
+      <div>
         <HeaderBlock />
 
         <SectionGap />

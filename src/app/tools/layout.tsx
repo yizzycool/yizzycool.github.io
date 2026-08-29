@@ -16,7 +16,7 @@ export default function RootLayout({
       <GlimmerBackground configs={GlimmerBackgroundConfigs} />
       <FeaturePanel />
       <VerticalLine />
-      <div className="mx-auto flex-grow overflow-hidden px-5 pb-20 pt-4 lg:max-w-screen-lg lg:px-10">
+      <div className="mx-auto flex-grow overflow-x-clip px-5 pb-20 pt-4 lg:max-w-screen-lg lg:px-10">
         {children}
         <AboutBlock />
       </div>

@@ -7,7 +7,6 @@ import { cn } from '@/utils/cn';
 import { Download } from 'lucide-react';
 
 import Button from '@/components/common/button';
-import Drawer from '@/components/common/drawer';
 import UploadBlock from './upload-block';
 import AspectRatio from './aspect-ratio';
 import CanvasLayout from './canvas-layout';
@@ -23,6 +22,7 @@ import Arrangement from './arrangement';
 import Basic from './basic';
 import ImageLayout from './image-layout';
 import Style from './style';
+import VerticalLine from '@/components/blog/layout/vertical-line';
 
 type Props = {
   fabricHelper: FabricHelper;
@@ -36,22 +36,13 @@ export default function ConfigPanelDesktop({
   const isGridLayout = configHelper.canvasConfig.layout === 'grid';
 
   return (
-    <div
-      className={cn(
-        'sticky top-[68px] h-[calc(100dvh_-_68px)]',
-        '-mb-20 -mr-4 -mt-8 sm:-mr-6 lg:-mr-12 lg:-mt-12',
-        'overflow-hidden'
-      )}
-    >
-      <Drawer
-        side="right"
-        rounded="none"
-        isOpen={true}
-        onClose={() => {}}
-        backdrop={false}
-        usePortal={false}
-        wrapperClassName="p-0 "
-        className="max-w-full border-l border-neutral-400/20 !bg-transparent backdrop-blur-none dark:!bg-transparent"
+    <div className="-mt-4 flex">
+      <VerticalLine />
+      <div
+        className={cn(
+          'sticky top-[101px] h-[calc(100dvh_-_101px)] w-96 shrink-0 overflow-hidden',
+          '-mt-4 lg:-mr-10'
+        )}
       >
         <Tabs
           tabs={['Canvas', 'Image']}
@@ -218,7 +209,7 @@ export default function ConfigPanelDesktop({
             </div>
           </>
         </Tabs>
-      </Drawer>
+      </div>
     </div>
   );
 }

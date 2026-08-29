@@ -114,7 +114,7 @@ export default function RootLayout({
       <head>
         <GTMScript />
       </head>
-      <body className="overflow-x-hidden bg-gray-50 text-slate-500 antialiased dark:bg-neutral-900 dark:text-slate-400">
+      <body className="overflow-x-clip bg-gray-50 text-slate-500 antialiased dark:bg-neutral-900 dark:text-slate-400">
         <GTMNoScript />
         <Header />
         {children}
