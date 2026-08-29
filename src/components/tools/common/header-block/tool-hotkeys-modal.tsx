@@ -1,22 +1,25 @@
 'use client';
 
 import type { HotkeyItem } from '@/components/common/badge/hotkey';
-import type { HotkeyName } from '@/hooks/tools/use-tool-hotkeys';
 
-import { useMemo } from 'react';
-import { X, Keyboard } from 'lucide-react';
+import { X, Keyboard, CircleAlert } from 'lucide-react';
 
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import BaseDialog from '@/components/common/dialog/base';
 import HotkeyBadge from '@/components/common/badge/hotkey';
+import {
+  TooltipPopup,
+  TooltipRoot,
+  TooltipTrigger,
+} from '@/components/common/tooltip';
 
 const DEFAULT_TOOL_HOTKEYS: HotkeyItem[] = [
   TOOL_HOTKEYS.process,
-  TOOL_HOTKEYS.copy,
   TOOL_HOTKEYS.paste,
+  TOOL_HOTKEYS.copy,
+  TOOL_HOTKEYS.clear,
   TOOL_HOTKEYS.swap,
   TOOL_HOTKEYS.save,
-  TOOL_HOTKEYS.clear,
   TOOL_HOTKEYS.history,
   TOOL_HOTKEYS.help,
 ];
@@ -24,7 +27,7 @@ const DEFAULT_TOOL_HOTKEYS: HotkeyItem[] = [
 type ToolHotkeysModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  customShortcuts?: HotkeyName[];
+  customShortcuts?: HotkeyItem[];
 };
 
 export function ToolHotkeysModal({
@@ -32,14 +35,7 @@ export function ToolHotkeysModal({
   onClose,
   customShortcuts,
 }: ToolHotkeysModalProps) {
-  const shortcuts: HotkeyItem[] = useMemo(() => {
-    if (!customShortcuts || customShortcuts.length === 0) {
-      return DEFAULT_TOOL_HOTKEYS;
-    }
-    return customShortcuts
-      .map((name) => TOOL_HOTKEYS[name])
-      .filter((item): item is HotkeyItem => Boolean(item));
-  }, [customShortcuts]);
+  const shortcuts = customShortcuts || DEFAULT_TOOL_HOTKEYS;
 
   return (
     <BaseDialog
@@ -48,7 +44,7 @@ export function ToolHotkeysModal({
       className="w-full max-w-sm p-6"
     >
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
+      <div className="flex items-center justify-between border-b border-slate-200 pb-4 dark:border-slate-700">
         <div className="flex items-center gap-2">
           <div className="rounded-lg bg-blue-50 p-1.5 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400">
             <Keyboard size={18} />
@@ -78,17 +74,34 @@ export function ToolHotkeysModal({
             key={index}
             className="flex items-center justify-between py-2.5 text-xs"
           >
-            <span className="font-medium text-slate-600 dark:text-slate-300">
-              {item.label}
-            </span>
-            <HotkeyBadge size="sm" symbol={item.symbol} />
+            <div className="flex items-center gap-1.5 font-medium text-slate-600 dark:text-slate-300">
+              <span>{item.label}</span>
+              {item.hint && (
+                <TooltipRoot>
+                  <TooltipTrigger>
+                    <span
+                      tabIndex={0}
+                      role="button"
+                      className="cursor-help text-slate-400 dark:text-slate-500"
+                      aria-label={item.hint}
+                    >
+                      <CircleAlert size={13} />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipPopup
+                    placement="top"
+                    variant="dark"
+                    showArrow
+                    className="max-w-xs px-2.5 py-1.5 text-[11px] font-normal leading-snug"
+                  >
+                    {item.hint}
+                  </TooltipPopup>
+                </TooltipRoot>
+              )}
+            </div>
+            <HotkeyBadge symbol={item.symbol} />
           </div>
         ))}
-      </div>
-
-      {/* Tip */}
-      <div className="mt-2 rounded-xl bg-slate-50 p-2.5 text-center text-[11px] text-slate-400 dark:bg-slate-800/40">
-        💡 Tip: Press shortcuts while focused on input to trigger actions
       </div>
     </BaseDialog>
   );

@@ -21,6 +21,7 @@ export type HotkeySymbol =
 export type HotkeyItem = {
   symbol: HotkeySymbol;
   label?: string;
+  hint?: string;
 };
 
 type Props = {
@@ -98,7 +99,7 @@ export default function HotkeyBadge({
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500',
+        'hidden items-center gap-1.5 text-xs text-slate-400 sm:inline-flex dark:text-slate-500',
         textSizes[size],
         className
       )}

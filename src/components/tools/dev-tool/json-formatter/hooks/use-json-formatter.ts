@@ -9,6 +9,14 @@ import { useToolHistory } from '@/hooks/tools/use-tool-history';
 import { jsonToYaml, jsonToCsv } from '@/utils/tools/json-converter';
 import { TAB_ITEMS, SAMPLE_JSON } from '../constants';
 
+const successMessages: Record<string, string> = {
+  Format: 'Formatted successfully!',
+  Minify: 'Minified successfully!',
+  YAML: 'Converted to YAML!',
+  CSV: 'Converted to CSV!',
+  'Tree View': 'Tree view generated!',
+};
+
 type JsonHistoryData = {
   input: string;
   tab?: string;
@@ -22,6 +30,7 @@ export default function useJsonFormatter() {
     object | Array<unknown> | null
   >(null);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   // Hook into tool history store
   const {
@@ -65,6 +74,8 @@ export default function useJsonFormatter() {
         if (shouldSaveHistory) {
           addHistory(jsonString, { input: jsonString, tab: currentTab });
         }
+
+        setSuccess(successMessages[currentTab] || 'JSON processed!');
       } catch (err) {
         setError((err as Error).message || 'Invalid JSON format');
         setParsedObject(null);
@@ -81,14 +92,30 @@ export default function useJsonFormatter() {
     []
   );
 
-  const onPaste = useCallback(
-    (value: string) => {
-      setError(null);
-      setInput(value);
-      processJson(value, tab);
-    },
-    [processJson, tab]
-  );
+  const onPaste = useCallback((value: string) => {
+    setError(null);
+    setInput(value);
+  }, []);
+
+  const onGlobalPaste = useCallback(async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      onPaste(text);
+    } catch (err) {
+      setError((err as Error).message || 'Something went wrong!');
+    }
+  }, [onPaste]);
+
+  const onCopyResult = useCallback(async () => {
+    try {
+      if (!output) return;
+
+      await navigator.clipboard.writeText(output);
+      setSuccess('Copied to clipboard!');
+    } catch (err) {
+      setError((err as Error).message || 'Something went wrong!');
+    }
+  }, [output]);
 
   const onLoadSample = useCallback(() => {
     setError(null);
@@ -153,6 +180,8 @@ export default function useJsonFormatter() {
     input,
     output,
     parsedObject,
+    success,
+    setSuccess,
     error,
     setError,
     syntaxLanguage,
@@ -162,6 +191,8 @@ export default function useJsonFormatter() {
     processJson,
     onJsonStringChanged,
     onPaste,
+    onGlobalPaste,
+    onCopyResult,
     onLoadSample,
     onClear,
     onTabChanged,

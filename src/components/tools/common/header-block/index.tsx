@@ -1,6 +1,6 @@
 'use client';
 
-import type { HotkeyName } from '@/hooks/tools/use-tool-hotkeys';
+import type { HotkeyItem } from '@/components/common/badge/hotkey';
 
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
@@ -31,7 +31,7 @@ type HeaderBlockProps<T = unknown> = {
   onRenameHistory?: (id: string, newTitle: string) => void;
   onRemoveHistory?: (id: string) => void;
   onClearHistory?: () => void;
-  customShortcuts?: HotkeyName[];
+  customShortcuts?: HotkeyItem[];
   showPrivacyBadge?: boolean;
 };
 
@@ -79,7 +79,7 @@ export default function HeaderBlock<T = unknown>({
         {/* Top: Icon, Title, Privacy Badge, Description */}
         <div className="flex items-start gap-3.5 text-left text-slate-900 dark:text-slate-200">
           <HeaderIcon toolKey={resolvedToolKey} />
-          <div>
+          <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
               {!!title && (
                 <h1 className="text-xl font-bold tracking-tight sm:text-2xl">
@@ -99,7 +99,7 @@ export default function HeaderBlock<T = unknown>({
               )}
             </div>
             {!!desc && (
-              <h2 className="mt-1 text-xs text-gray-500 sm:text-sm dark:text-slate-400">
+              <h2 className="text-xs text-gray-500 sm:text-sm dark:text-slate-400">
                 {desc}
               </h2>
             )}
@@ -153,6 +153,7 @@ export default function HeaderBlock<T = unknown>({
               icon={Keyboard}
               onClick={() => setIsHotkeysOpen(true)}
               ariaLabel="Keyboard shortcuts"
+              className="hidden sm:inline-flex"
             >
               Shortcuts
             </Button>

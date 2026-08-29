@@ -251,25 +251,22 @@ export const TOOL_HOTKEYS: Record<HotkeyName, HotkeyItem> = {
     symbol: 'Mod + Enter',
     label: 'Execute / Format / Convert',
   },
-  copy: {
-    symbol: 'Mod + Shift + C',
-    label: 'Copy Result',
-  },
   paste: {
     symbol: 'Mod + Shift + V',
     label: 'Paste into Input',
   },
+  copy: {
+    symbol: 'Mod + Shift + C',
+    label: 'Copy Result',
+  },
   clear: {
     symbol: 'Esc',
     label: 'Clear / Reset',
+    hint: 'Triggered only when focused on the input field',
   },
   swap: {
     symbol: 'Mod + /',
     label: 'Swap Input & Output',
-  },
-  help: {
-    symbol: '?',
-    label: 'Keyboard Shortcuts Help',
   },
   save: {
     symbol: 'Mod + S',
@@ -278,5 +275,9 @@ export const TOOL_HOTKEYS: Record<HotkeyName, HotkeyItem> = {
   history: {
     symbol: 'Mod + H',
     label: 'Open History Records',
+  },
+  help: {
+    symbol: '?',
+    label: 'Keyboard Shortcuts Help',
   },
 };

@@ -11,7 +11,7 @@ import {
 import { isEmpty, size } from 'lodash';
 import { useRef } from 'react';
 
-import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
+import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import useJsonFormatter from './hooks/use-json-formatter';
 import { TAB_ITEMS, TAB_ICONS } from './constants';
 import { cn } from '@/utils/cn';
@@ -26,6 +26,7 @@ import Button from '@/components/common/button';
 import BaseTabs from '@/components/common/tabs/base';
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import JsonTreeView from './json-tree-view';
+import HotkeyBadge from '@/components/common/badge/hotkey';
 
 export default function JsonFormatter() {
   const inputRef = useRef<HTMLElement>(null);
@@ -35,6 +36,8 @@ export default function JsonFormatter() {
     input,
     output,
     parsedObject,
+    success,
+    setSuccess,
     error,
     setError,
     syntaxLanguage,
@@ -44,6 +47,8 @@ export default function JsonFormatter() {
     processJson,
     onJsonStringChanged,
     onPaste,
+    onGlobalPaste,
+    onCopyResult,
     onLoadSample,
     onClear,
     onTabChanged,
@@ -57,6 +62,8 @@ export default function JsonFormatter() {
     {
       onExecute: () => processJson(),
       onClear,
+      onPaste: onGlobalPaste,
+      onCopy: onCopyResult,
     },
     { target: inputRef }
   );
@@ -70,6 +77,14 @@ export default function JsonFormatter() {
         onRenameHistory={renameHistory}
         onRemoveHistory={removeHistory}
         onClearHistory={clearHistory}
+        customShortcuts={[
+          { ...TOOL_HOTKEYS.process, label: 'Execute' },
+          TOOL_HOTKEYS.paste,
+          TOOL_HOTKEYS.copy,
+          { ...TOOL_HOTKEYS.clear, label: 'Clear' },
+          TOOL_HOTKEYS.help,
+          TOOL_HOTKEYS.history,
+        ]}
       />
 
       <SectionGap />
@@ -110,21 +125,22 @@ export default function JsonFormatter() {
         placeholder="Paste your JSON string here..."
       />
 
-      <div
-        className={cn(
-          'mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'
-        )}
-      >
-        <Button
-          variant="blue"
-          size="sm"
-          rounded="lg"
-          icon={Wand2}
-          disabled={isEmpty(input)}
-          onClick={() => processJson()}
-        >
-          {executeButtonLabel}
-        </Button>
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex gap-3">
+          <Button
+            variant="blue"
+            size="sm"
+            rounded="lg"
+            icon={Wand2}
+            disabled={isEmpty(input)}
+            onClick={() => processJson()}
+          >
+            {executeButtonLabel}
+          </Button>
+          <HotkeyBadge
+            items={[{ ...TOOL_HOTKEYS.process, label: 'Process' }]}
+          />
+        </div>
         <div className="text-right text-xs text-slate-400 dark:text-slate-500">
           {size(input)} chars
         </div>
@@ -168,6 +184,15 @@ export default function JsonFormatter() {
         icon={Info}
         onClose={() => setError(null)}
         content={error || 'Invalid JSON format'}
+      />
+
+      {/* Success dialog */}
+      <Snackbar
+        variant="success"
+        open={!!success}
+        icon={Info}
+        onClose={() => setSuccess(null)}
+        content={success || ''}
       />
     </>
   );
