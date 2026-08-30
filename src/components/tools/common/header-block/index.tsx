@@ -79,8 +79,8 @@ export default function HeaderBlock<T = unknown>({
         {/* Top: Icon, Title, Privacy Badge, Description */}
         <div className="flex items-start gap-3.5 text-left text-slate-900 dark:text-slate-200">
           <HeaderIcon toolKey={resolvedToolKey} />
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2">
+          <div className="space-y-1">
+            <div className="flex flex-col flex-wrap gap-2 sm:flex-row sm:items-center">
               {!!title && (
                 <h1 className="text-xl font-bold tracking-tight sm:text-2xl">
                   {title}
@@ -88,7 +88,7 @@ export default function HeaderBlock<T = unknown>({
               )}
               {showPrivacyBadge && (
                 <Badge
-                  variant="success"
+                  variant="blue"
                   size="xs"
                   rounded="full"
                   bordered
@@ -98,13 +98,20 @@ export default function HeaderBlock<T = unknown>({
                 </Badge>
               )}
             </div>
+            {/* Description for large device */}
             {!!desc && (
-              <h2 className="text-xs text-gray-500 sm:text-sm dark:text-slate-400">
+              <h2 className="hidden text-xs text-gray-500 sm:block sm:text-sm dark:text-slate-400">
                 {desc}
               </h2>
             )}
           </div>
         </div>
+        {/* Description for small device */}
+        {!!desc && (
+          <h2 className="block text-xs text-gray-500 sm:hidden sm:text-sm dark:text-slate-400">
+            {desc}
+          </h2>
+        )}
 
         {/* Bottom: Universal Action Buttons */}
         <div className="flex flex-wrap items-center gap-2">
