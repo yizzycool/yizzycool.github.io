@@ -1,5 +1,7 @@
 'use client';
 
+import type { JsonHistoryData } from './hooks/use-json-formatter';
+
 import {
   Braces,
   CodeXml,
@@ -8,29 +10,26 @@ import {
   Info,
   Wand2,
 } from 'lucide-react';
-import { isEmpty, size } from 'lodash';
-import { useRef } from 'react';
+import { isEmpty } from 'lodash';
 
-import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
+import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import useJsonFormatter from './hooks/use-json-formatter';
 import { TAB_ITEMS, TAB_ICONS } from './constants';
 import { cn } from '@/utils/cn';
 import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
+import ExecuteBar from '../../common/execute-bar';
+import LabelBar from '../../common/label-bar';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
 import PasteAction from '@/components/common/action-button/paste';
 import Snackbar from '@/components/common/snackbar';
-import Label from '@/components/common/label';
 import Button from '@/components/common/button';
 import BaseTabs from '@/components/common/tabs/base';
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import JsonTreeView from './json-tree-view';
-import HotkeyBadge from '@/components/common/badge/hotkey';
 
 export default function JsonFormatter() {
-  const inputRef = useRef<HTMLElement>(null);
-
   const {
     tab,
     input,
@@ -44,11 +43,10 @@ export default function JsonFormatter() {
     executeButtonLabel,
     historyList,
     isLoadingHistory,
+    inputRef,
     processJson,
     onJsonStringChanged,
     onPaste,
-    onGlobalPaste,
-    onCopyResult,
     onLoadSample,
     onClear,
     onTabChanged,
@@ -58,19 +56,9 @@ export default function JsonFormatter() {
     clearHistory,
   } = useJsonFormatter();
 
-  useToolHotkeys(
-    {
-      onExecute: () => processJson(),
-      onClear,
-      onPaste: onGlobalPaste,
-      onCopy: onCopyResult,
-    },
-    { target: inputRef }
-  );
-
   return (
     <>
-      <HeaderBlock
+      <HeaderBlock<JsonHistoryData>
         historyList={historyList}
         isLoadingHistory={isLoadingHistory}
         onRestoreHistory={onRestoreHistory}
@@ -98,24 +86,24 @@ export default function JsonFormatter() {
       />
 
       {/* Textarea block */}
-      <div className="mb-3 mt-8 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
-        <Label htmlFor="json-string-textarea" icon={FileText}>
-          Paste JSON below
-        </Label>
-        <div className="flex items-center gap-2 self-end sm:self-auto">
-          <Button
-            variant="ghost-sky"
-            size="xs"
-            rounded="lg"
-            icon={FileBraces}
-            onClick={onLoadSample}
-          >
-            Sample
-          </Button>
-          <PasteAction onClick={onPaste} />
-          <DeleteAction onClick={onClear} disabled={isEmpty(input)} />
-        </div>
-      </div>
+      <LabelBar
+        className="mt-8"
+        label="Paste JSON below"
+        icon={FileText}
+        htmlFor="json-string-textarea"
+      >
+        <Button
+          variant="ghost-sky"
+          size="xs"
+          rounded="lg"
+          icon={FileBraces}
+          onClick={onLoadSample}
+        >
+          Sample
+        </Button>
+        <PasteAction onClick={onPaste} />
+        <DeleteAction onClick={onClear} disabled={isEmpty(input)} />
+      </LabelBar>
       <Textarea
         ref={inputRef}
         id="json-string-textarea"
@@ -125,35 +113,23 @@ export default function JsonFormatter() {
         placeholder="Paste your JSON string here..."
       />
 
-      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex gap-3">
-          <Button
-            variant="blue"
-            size="sm"
-            rounded="lg"
-            icon={Wand2}
-            disabled={isEmpty(input)}
-            onClick={() => processJson()}
-          >
-            {executeButtonLabel}
-          </Button>
-          <HotkeyBadge
-            items={[{ ...TOOL_HOTKEYS.process, label: 'Process' }]}
-          />
-        </div>
-        <div className="text-right text-xs text-slate-400 dark:text-slate-500">
-          {size(input)} chars
-        </div>
-      </div>
+      <ExecuteBar
+        label={executeButtonLabel}
+        icon={Wand2}
+        disabled={isEmpty(input)}
+        onClick={() => processJson()}
+        text={input}
+        hotkeyLabel="Process"
+      />
 
       <SectionGap />
 
       {/* Result block */}
-      <div className="mb-3 flex w-full flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
-        <Label htmlFor="output" icon={Braces}>
-          Result {tab !== 'Format' && `(${tab})`}
-        </Label>
-      </div>
+      <LabelBar
+        label={`Result ${tab !== 'Format' ? `(${tab})` : ''}`}
+        icon={Braces}
+        htmlFor="output"
+      />
 
       {/* Render Tree View Tab */}
       {tab === 'Tree View' && parsedObject ? (

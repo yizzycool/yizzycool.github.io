@@ -61,7 +61,7 @@ export default function Background({ background, setBackgroundColor }: Props) {
       {/* Pure Colors */}
       <div className="space-y-4 rounded-xl bg-white/40 p-4 dark:bg-neutral-900/40">
         <div>
-          <div className="flex items-center justify-between text-left text-xs font-black uppercase">
+          <div className="mb-2 flex items-center justify-between text-left text-xs font-black uppercase">
             <span>Opacity</span> {parseInt(((opacity ?? 1) * 100).toString())}
           </div>
           <Slider

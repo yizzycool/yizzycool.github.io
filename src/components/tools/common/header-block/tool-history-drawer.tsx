@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Clock,
   Trash2,
@@ -12,6 +12,7 @@ import {
   Check,
 } from 'lucide-react';
 
+import { cn } from '@/utils/cn';
 import { HistoryItem } from '@/hooks/tools/use-tool-history';
 import Drawer from '@/components/common/drawer';
 
@@ -38,6 +39,19 @@ export function ToolHistoryDrawer<T>({
 }: ToolHistoryDrawerProps<T>) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState<string>('');
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   const handleStartEdit = (item: HistoryItem<T>) => {
     setEditingId(item.id);
@@ -112,7 +126,7 @@ export function ToolHistoryDrawer<T>({
           historyList.map((item) => (
             <div
               key={item.id}
-              className="group relative rounded-xl border border-slate-200/80 bg-slate-50/50 p-3.5 transition hover:border-blue-300 hover:bg-blue-50/20 dark:border-slate-800 dark:bg-slate-800/40 dark:hover:border-blue-700/60 dark:hover:bg-slate-800/80"
+              className="shadow-2xs hover:shadow-xs group relative rounded-xl border border-neutral-200/90 bg-white/80 p-3.5 backdrop-blur-md transition-all hover:border-sky-500/50 hover:bg-white dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-sky-500/50 dark:hover:bg-neutral-900"
             >
               {/* Card Title & Edit Row */}
               {editingId === item.id ? (
@@ -127,7 +141,7 @@ export function ToolHistoryDrawer<T>({
                     }}
                     placeholder="Enter snapshot name..."
                     autoFocus
-                    className="w-full rounded-lg border border-blue-400 bg-white px-2 py-1 text-xs text-slate-800 outline-none ring-2 ring-blue-500/20 dark:border-blue-600 dark:bg-slate-800 dark:text-slate-100"
+                    className="w-full rounded-lg border border-sky-500/80 bg-white px-2.5 py-1 text-xs text-slate-800 outline-none ring-2 ring-sky-500/20 dark:border-sky-500/80 dark:bg-neutral-800 dark:text-slate-100"
                   />
                   <button
                     onClick={() => handleSaveEdit(item.id)}
@@ -145,22 +159,16 @@ export function ToolHistoryDrawer<T>({
                   </button>
                 </div>
               ) : (
-                <div className="mb-1.5 flex items-center justify-between gap-2">
+                <div className="mb-3 flex items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5 overflow-hidden">
-                    {item.title ? (
-                      <span className="truncate text-xs font-semibold text-slate-800 dark:text-slate-200">
-                        {item.title}
-                      </span>
-                    ) : (
-                      <span className="font-mono text-[11px] text-slate-400">
-                        {new Date(item.timestamp).toLocaleString([], {
-                          month: 'numeric',
-                          day: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
-                      </span>
-                    )}
+                    <span
+                      className={cn(
+                        'truncate text-sm font-semibold text-slate-800 dark:text-slate-200',
+                        !item.title && 'opacity-50'
+                      )}
+                    >
+                      {item.title || 'Untitled'}
+                    </span>
                     {onRename && (
                       <button
                         onClick={() => handleStartEdit(item)}
@@ -175,14 +183,12 @@ export function ToolHistoryDrawer<T>({
                   </div>
 
                   <div className="flex items-center gap-1">
-                    {item.title && (
-                      <span className="font-mono text-[10px] text-slate-400">
-                        {new Date(item.timestamp).toLocaleTimeString([], {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
-                      </span>
-                    )}
+                    <span className="font-mono text-[10px] text-slate-400">
+                      {new Date(item.timestamp).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </span>
                     <button
                       onClick={() => onRemove(item.id)}
                       className="rounded p-1 opacity-60 transition hover:bg-red-50 hover:text-red-500 group-hover:opacity-100 dark:hover:bg-red-950/40"

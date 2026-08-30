@@ -45,10 +45,10 @@ export default function TestCard({
       {/* Textarea + Highlighting Overlay */}
       <div
         className={cn(
-          'relative h-[300px] overflow-auto',
-          'rounded-lg border border-neutral-200 dark:border-neutral-700',
-          'bg-white/40 dark:bg-neutral-900/40',
-          'has-[:focus]:border-transparent has-[:focus]:ring-2 has-[:focus]:ring-blue-500'
+          'shadow-2xs relative h-[300px] overflow-auto rounded-xl border backdrop-blur-md transition-all duration-200',
+          'border-neutral-200/90 bg-white/80 dark:border-neutral-700/80 dark:bg-neutral-900/80',
+          'has-[:focus]:border-sky-500 has-[:focus]:bg-white has-[:focus]:ring-2 has-[:focus]:ring-sky-500/20',
+          'dark:has-[:focus]:border-sky-400 dark:has-[:focus]:bg-neutral-900 dark:has-[:focus]:ring-sky-400/40'
         )}
       >
         <HighlightMark

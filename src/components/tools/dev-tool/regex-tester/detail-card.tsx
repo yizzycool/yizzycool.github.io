@@ -22,9 +22,8 @@ export default function DetailCard({ matches }: Props) {
             <div
               key={i}
               className={cn(
-                'rounded-lg border p-3 transition-all',
-                'border-neutral-200 dark:border-neutral-700',
-                'bg-white/40 dark:bg-neutral-900/40'
+                'shadow-2xs rounded-xl border p-3.5 backdrop-blur-md transition-all duration-200',
+                'border-neutral-200/90 bg-white/80 dark:border-neutral-800 dark:bg-neutral-900/60'
               )}
               style={{ animationDelay: `${i * 30}ms` }}
             >

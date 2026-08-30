@@ -147,7 +147,7 @@ export default function Border({
 
           {/* Thickness */}
           <div>
-            <div className="flex items-center justify-between text-left text-xs font-black uppercase">
+            <div className="mb-2 flex items-center justify-between text-left text-xs font-black uppercase">
               <span>Thickness</span> {width.toFixed()}
             </div>
             <Slider

@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash';
 
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import CopyAction from '@/components/common/action-button/copy';
-import Label from '@/components/common/label';
+import LabelBar from '../common/label-bar';
 
 type Props = {
   results: string;
@@ -14,35 +14,34 @@ type Props = {
 export default function PromptResult({ results, isProcessing }: Props) {
   return (
     <>
-      <div
-        id="result"
-        className="mb-3 flex w-full scroll-mt-20 flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center"
-      >
-        <Label icon={List}>Result</Label>
-        <div className="flex items-center gap-2 self-end sm:self-auto">
-          <CopyAction content={results} disabled={isEmpty(results)} />
-        </div>
-      </div>
+      <LabelBar id="result" className="scroll-mt-20" label="Result" icon={List}>
+        <CopyAction content={results} disabled={isEmpty(results)} />
+      </LabelBar>
       <div
         className={cn(
-          'relative h-[300px] w-full overflow-y-auto rounded-lg border p-6',
-          'border-neutral-200 dark:border-neutral-700',
-          'bg-white/40 dark:bg-neutral-900/40'
+          'relative h-[300px] w-full overflow-y-auto rounded-xl border p-6 transition-all duration-200',
+          'shadow-2xs border-neutral-200/90 bg-white/80 backdrop-blur-md',
+          'dark:border-neutral-700/80 dark:bg-neutral-900/80'
         )}
       >
         {isEmpty(results) ? (
-          <div className="m-auto flex h-full flex-col items-center justify-center text-center text-lg font-bold text-slate-500">
+          <div className="m-auto flex h-full flex-col items-center justify-center text-center text-sm font-medium text-slate-400 dark:text-slate-500">
             {isProcessing ? (
               <>
                 <Cpu
-                  className="mx-auto mb-4 block animate-bounce animate-duration-[2000ms] animate-infinite"
-                  size={40}
+                  className="mx-auto mb-3 block animate-bounce text-sky-500 animate-duration-[2000ms] animate-infinite"
+                  size={36}
                 />
-                <div>Processing...</div>
+                <div className="font-semibold text-slate-700 dark:text-slate-200">
+                  Processing...
+                </div>
               </>
             ) : (
               <>
-                <ScrollText className="mx-auto mb-4 block" size={40} />
+                <ScrollText
+                  className="mx-auto mb-3 block opacity-50"
+                  size={36}
+                />
                 <div>Waiting for input...</div>
               </>
             )}

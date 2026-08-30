@@ -36,10 +36,12 @@ export default function ToolCard({
     <Link
       href={item.href}
       className={cn(
-        'shadow-xs group relative flex flex-col justify-between rounded-2xl border p-5 transition-all duration-300',
-        'border-slate-200/80 bg-white/50 dark:border-neutral-800 dark:bg-neutral-900/40',
-        'hover:-translate-y-0.5 hover:bg-white hover:shadow-md',
-        'hover:border-sky-500/50 dark:hover:border-sky-500/50 dark:hover:bg-neutral-900'
+        'group relative flex flex-col justify-between rounded-2xl border p-5 transition-all duration-300',
+        'border-neutral-200/90 ring-1 ring-black/[0.03] dark:border-neutral-800 dark:ring-1 dark:ring-white/[0.04]',
+        'bg-gradient-to-b from-white/95 via-neutral-50/70 to-white/95',
+        'dark:from-neutral-900/90 dark:via-neutral-950/70 dark:to-neutral-900/90',
+        'shadow-xs hover:-translate-y-0.5 hover:shadow-md dark:shadow-black/40',
+        'hover:border-sky-500/50 hover:ring-sky-500/10 dark:hover:border-sky-500/50 dark:hover:ring-sky-500/20'
       )}
     >
       <div>
@@ -47,9 +49,9 @@ export default function ToolCard({
           {/* Icon */}
           <div
             className={cn(
-              'flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-colors duration-300',
-              'bg-slate-200/50 text-slate-600 group-hover:bg-sky-100 group-hover:text-sky-600',
-              'dark:bg-slate-800 dark:text-slate-400 dark:group-hover:bg-sky-950/40 dark:group-hover:text-sky-500'
+              'flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-300',
+              'shadow-2xs bg-slate-100 text-slate-600 group-hover:scale-105 group-hover:bg-sky-100 group-hover:text-sky-600',
+              'dark:bg-neutral-800 dark:text-slate-300 dark:group-hover:bg-sky-950/60 dark:group-hover:text-sky-400'
             )}
           >
             <item.icon.component className="h-5 w-5" />

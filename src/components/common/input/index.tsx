@@ -87,13 +87,12 @@ export default function Input({
         <HeadlessInput
           type={type}
           className={cn(
-            'block w-full rounded-lg border px-4 py-3',
-            'text-sm leading-relaxed outline-none',
-            'border-neutral-200 dark:border-neutral-700',
-            'bg-white/40 dark:bg-neutral-900/40',
-            'text-slate-700 dark:text-slate-200',
-            'placeholder-neutral-400 dark:placeholder-neutral-500',
-            'focus:border-transparent focus:ring-2 focus:ring-blue-500',
+            'block w-full rounded-xl border px-4 py-3',
+            'text-sm leading-relaxed outline-none transition-all duration-200',
+            'shadow-2xs border-neutral-200/90 bg-white/80 text-slate-800 placeholder-neutral-400/80 backdrop-blur-md',
+            'dark:border-neutral-700/80 dark:bg-neutral-900/80 dark:text-slate-100 dark:placeholder-neutral-500',
+            'focus:shadow-xs focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20',
+            'dark:focus:border-sky-400 dark:focus:bg-neutral-900 dark:focus:ring-sky-400/40',
             Icon && 'pl-10',
             showClear && 'pr-10',
             className

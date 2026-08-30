@@ -11,7 +11,7 @@ import {
 import { forEach, map, isEmpty, join } from 'lodash';
 
 import { cn } from '@/utils/cn';
-import Label from '@/components/common/label';
+import LabelBar from '../../common/label-bar';
 import CopyAction from '@/components/common/action-button/copy';
 import Button from '@/components/common/button';
 import {
@@ -157,30 +157,29 @@ export default function Result({ text, result, isProcessing }: Props) {
 
   return (
     <>
-      <div
+      <LabelBar
         id="result"
-        className="mb-3 flex w-full scroll-mt-20 flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center"
+        className="scroll-mt-20"
+        label="Proofreader Suggestions"
+        icon={SpellCheck}
       >
-        <Label icon={SpellCheck}>Proofreader Suggestions</Label>
-        <div className="flex items-center gap-2 self-end sm:self-auto">
-          {/* Apply all suggestions */}
-          <Button
-            variant="success"
-            size="xs"
-            icon={BookCheck}
-            onClick={onApplyAll}
-          >
-            Apply All
-          </Button>
-          <CopyAction content={copyText} disabled={isEmpty(copyText)} />
-        </div>
-      </div>
+        {/* Apply all suggestions */}
+        <Button
+          variant="success"
+          size="xs"
+          icon={BookCheck}
+          onClick={onApplyAll}
+        >
+          Apply All
+        </Button>
+        <CopyAction content={copyText} disabled={isEmpty(copyText)} />
+      </LabelBar>
 
       <div
         className={cn(
-          'relative h-[300px] w-full overflow-y-auto rounded-lg border px-4 py-3',
-          'border-neutral-200 dark:border-neutral-700',
-          'bg-white/40 dark:bg-neutral-900/40'
+          'relative h-[300px] w-full overflow-y-auto rounded-xl border px-4 py-3.5 transition-all duration-200',
+          'shadow-2xs border-neutral-200/90 bg-white/80 backdrop-blur-md',
+          'dark:border-neutral-700/80 dark:bg-neutral-900/80'
         )}
       >
         {isEmpty(result) ? (

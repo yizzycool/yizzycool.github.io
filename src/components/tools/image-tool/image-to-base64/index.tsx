@@ -4,7 +4,6 @@ import { FileCode, ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { isNull, size } from 'lodash';
 import Image from 'next/image';
-import { Textarea } from '@headlessui/react';
 
 import { cn } from '@/utils/cn';
 import imageUtils from '@/utils/image-utils';
@@ -14,7 +13,9 @@ import CopyAction from '@/components/common/action-button/copy';
 import ImageInfoTag from '../image-info-tag';
 import SectionGap from '../../common/section-gap';
 import Snackbar from '@/components/common/snackbar';
+import LabelBar from '../../common/label-bar';
 import Label from '@/components/common/label';
+import Textarea from '@/components/common/textarea';
 
 type ImageInfo = {
   image: HTMLImageElement | null;
@@ -72,7 +73,7 @@ export default function ImageToBase64() {
 
       <SectionGap />
 
-      {/* Image Preview */}
+      {/* Image Preview & Output */}
       <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
         <div className="flex-1">
           <div className="mb-3 flex items-center font-semibold">
@@ -80,12 +81,12 @@ export default function ImageToBase64() {
           </div>
           <div
             className={cn(
-              'relative flex h-[300px] w-full flex-col items-center rounded-lg border p-4',
-              'border-neutral-200/80 dark:border-neutral-800/60',
-              'bg-white/40 dark:bg-neutral-900/40'
+              'relative flex h-[300px] w-full flex-col items-center justify-center rounded-xl border p-4 transition-all duration-200',
+              'shadow-2xs border-neutral-200/90 bg-white/80 backdrop-blur-md',
+              'dark:border-neutral-700/80 dark:bg-neutral-900/80'
             )}
           >
-            {!imageInfo.error && !isNull(imageInfo.image) && (
+            {!imageInfo.error && !isNull(imageInfo.image) ? (
               <>
                 <Image
                   width={0}
@@ -97,39 +98,40 @@ export default function ImageToBase64() {
                 <div className="absolute bottom-4 left-4 z-20 flex gap-2 overflow-hidden">
                   <ImageInfoTag
                     title=""
-                    value={`${imageInfo.width} x ${imageInfo.height}`}
+                    content={`${imageInfo.width} × ${imageInfo.height} px`}
                   />
                   <ImageInfoTag
-                    title="Sizes"
-                    value={imageUtils.toHumanReadableSize(
+                    title=""
+                    content={imageUtils.formatFileSize(
                       imageInfo.blob?.size || 0
                     )}
                   />
                 </div>
               </>
+            ) : (
+              <div className="m-auto text-center text-sm font-medium text-slate-400 dark:text-slate-500">
+                <ImageIcon
+                  className="mx-auto mb-3 block opacity-50"
+                  size={36}
+                />
+                <div>Image will be displayed here</div>
+              </div>
             )}
           </div>
         </div>
         <div className="flex-1">
-          <div className="mb-3 flex items-center justify-between">
-            <Label icon={FileCode}>Base64 Output</Label>
+          <LabelBar label="Base64 Output" icon={FileCode}>
             <CopyAction content={base64} className="py-1" />
-          </div>
+          </LabelBar>
           <Textarea
-            className={cn(
-              'h-[300px] w-full rounded-lg border px-4 py-3',
-              'resize-none font-mono text-sm leading-relaxed outline-none',
-              'border-neutral-200/80 dark:border-neutral-800/60',
-              'bg-white/40 dark:bg-neutral-900/40',
-              'text-slate-700 dark:text-slate-200',
-              'placeholder-neutral-400 dark:placeholder-neutral-500',
-              'focus:border-transparent focus:ring-2 focus:ring-blue-500'
-            )}
             value={base64}
             readOnly
+            rows={11}
+            placeholder="Base64 output will appear here after uploading an image..."
+            className="font-mono text-xs"
           />
           {/* Char count block */}
-          <div className="mt-3 w-full text-right text-xs text-slate-400 dark:text-slate-600">
+          <div className="mt-2.5 w-full text-right text-xs text-slate-400 dark:text-slate-500">
             {size(base64)} chars
           </div>
         </div>

@@ -1,124 +1,153 @@
 'use client';
 
+import type { QrCodeHistoryData } from './hooks/use-qr-code-generator';
+
 import { Info, Link } from 'lucide-react';
-import { ChangeEvent, useState } from 'react';
 import { isNull, isEmpty } from 'lodash';
 
+import useQrCodeGenerator from './hooks/use-qr-code-generator';
+import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import Snackbar from '@/components/common/snackbar';
 import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
-import useGenerateQrCode from './hooks/use-generate-qrcode';
-import SystemStatus from './system-status';
+import ExecuteBar from '../../common/execute-bar';
+import LabelBar from '../../common/label-bar';
 import PasteAction from '@/components/common/action-button/paste';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
 import Appearance from './appearance';
-import Label from '@/components/common/label';
 import Layout from './layout';
 import Preview from './preview';
-import ActionButtons from './action-buttons';
-
-// Handle color preset selection
-export const qrCodeColorPresets = [
-  { name: 'Classic', fg: '#000000', bg: '#ffffff' },
-  { name: 'Midnight', fg: '#171717', bg: '#f5f5f5' },
-  { name: 'Indigo (Katsuiro)', fg: '#181b39', bg: '#f0f4f8' },
-  { name: 'Forest', fg: '#064e3b', bg: '#ecfdf5' },
-  { name: 'Matcha (Green Tea)', fg: '#4b5945', bg: '#f2f2e9' },
-  { name: 'Zen (Stone)', fg: '#434343', bg: '#dcdcdc' },
-  { name: 'Mochi (Toasted)', fg: '#7d6e5d', bg: '#f5f5dc' },
-  { name: 'Ocean', fg: '#1e3a8a', bg: '#eff6ff' },
-  { name: 'Ocean (Seigaiha)', fg: '#2b5f75', bg: '#e0f2f1' },
-  { name: 'Sakura (Cherry Blossom)', fg: '#d08294', bg: '#fdf2f4' },
-  { name: 'Autumn (Momiji)', fg: '#9e3d31', bg: '#fffaf0' },
-];
 
 export default function QrCodeGenerator() {
-  const [inputText, setInputText] = useState('');
-  const [size, setSize] = useState(256);
-  const [fgColor, setFgColor] = useState('#000000');
-  const [bgColor, setBgColor] = useState('#ffffff');
-  const [margin, setMargin] = useState(2);
-  const [error, setError] = useState(false);
-
-  const { isSystemReady, qrCodeUrl } = useGenerateQrCode({
-    text: inputText,
+  const {
+    inputText,
+    setInputText,
+    qrValue,
     size,
-    color: fgColor,
+    setSize,
+    fgColor,
+    setFgColor,
     bgColor,
+    setBgColor,
     margin,
-  });
-
-  const onInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setInputText(e.target.value);
-  };
-
-  const onClear = () => setInputText('');
+    setMargin,
+    level,
+    setLevel,
+    success,
+    setSuccess,
+    inputRef,
+    canvasRef,
+    historyList,
+    isLoadingHistory,
+    onRestoreHistory,
+    renameHistory,
+    removeHistory,
+    clearHistory,
+    onInputChange,
+    onClear,
+    onGenerate,
+    onDownload,
+    onCopy,
+  } = useQrCodeGenerator();
 
   return (
     <>
-      <HeaderBlock />
-
-      <SectionGap />
-
-      <SystemStatus isSystemReady={isSystemReady} />
-
-      <SectionGap />
-
-      {/* Input block */}
-      <div className="mb-3 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
-        <Label htmlFor="url-textarea" icon={Link}>
-          Enter URL or Text
-        </Label>
-        <div className="flex items-center gap-2 self-end sm:self-auto">
-          <PasteAction onClick={setInputText} />
-          <DeleteAction
-            onClick={onClear}
-            disabled={isNull(inputText) || isEmpty(inputText)}
-          />
-        </div>
-      </div>
-      <Textarea
-        id="url-textarea"
-        placeholder="Paste the URL or text you want to process here..."
-        onChange={onInputChange}
-        value={inputText}
-        rows={8}
+      <HeaderBlock<QrCodeHistoryData>
+        historyList={historyList}
+        isLoadingHistory={isLoadingHistory}
+        onRestoreHistory={onRestoreHistory}
+        onRenameHistory={renameHistory}
+        onRemoveHistory={removeHistory}
+        onClearHistory={clearHistory}
+        customShortcuts={[
+          { ...TOOL_HOTKEYS.process, label: 'Generate QR Code' },
+          { ...TOOL_HOTKEYS.save, label: 'Download PNG' },
+          TOOL_HOTKEYS.paste,
+          { ...TOOL_HOTKEYS.copy, label: 'Copy Image' },
+          { ...TOOL_HOTKEYS.clear, label: 'Clear' },
+          TOOL_HOTKEYS.history,
+          TOOL_HOTKEYS.help,
+        ]}
       />
 
       <SectionGap />
 
-      {/* SETTINGS */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <Appearance
-          fgColor={fgColor}
-          setFgColor={setFgColor}
-          bgColor={bgColor}
-          setBgColor={setBgColor}
-        />
-        <Layout
-          size={size}
-          setSize={setSize}
-          margin={margin}
-          setMargin={setMargin}
-        />
+      {/* Responsive Layout:
+          - Mobile (< lg): Natural flow (1. Input -> 2. Preview -> 3. Settings)
+          - Desktop (lg:): 2-Column Split Dashboard (Left: Input & Settings, Right: Sticky Preview)
+      */}
+      <div className="flex flex-col gap-8 lg:grid lg:grid-cols-12 lg:items-start">
+        {/* 1. Input Section (Mobile: Order 1, Desktop: Col 1-7 Row 1) */}
+        <div className="order-1 space-y-2 text-left lg:order-none lg:col-span-7">
+          <LabelBar label="Content or URL" icon={Link} htmlFor="url-textarea">
+            <PasteAction onClick={setInputText} />
+            <DeleteAction
+              onClick={onClear}
+              disabled={isNull(inputText) || isEmpty(inputText)}
+            />
+          </LabelBar>
+          <Textarea
+            ref={inputRef}
+            id="url-textarea"
+            placeholder="Enter URL or text to generate your QR Code..."
+            onChange={onInputChange}
+            value={inputText}
+            rows={5}
+          />
+          <ExecuteBar
+            label="Generate QR Code"
+            disabled={isEmpty(inputText.trim())}
+            onClick={() => onGenerate(true)}
+            text={inputText}
+            hotkeyLabel="Generate"
+          />
+        </div>
+
+        {/* 2. Live Preview Hub (Mobile: Order 2 immediately below Input, Desktop: Col 8-12 Sticky) */}
+        <div className="order-2 lg:sticky lg:top-24 lg:order-none lg:col-span-5 lg:row-span-2">
+          <Preview
+            canvasRef={canvasRef}
+            qrValue={qrValue}
+            size={size}
+            fgColor={fgColor}
+            bgColor={bgColor}
+            margin={margin}
+            level={level}
+            onDownload={onDownload}
+            onCopy={onCopy}
+          />
+        </div>
+
+        {/* 3. Customization Controls (Mobile: Order 3, Desktop: Col 1-7 Row 2) */}
+        <div className="order-3 space-y-6 text-left lg:order-none lg:col-span-7">
+          {/* Color Theme Customization */}
+          <Appearance
+            fgColor={fgColor}
+            setFgColor={setFgColor}
+            bgColor={bgColor}
+            setBgColor={setBgColor}
+          />
+
+          {/* Dimensions & Reliability */}
+          <Layout
+            size={size}
+            setSize={setSize}
+            margin={margin}
+            setMargin={setMargin}
+            level={level}
+            setLevel={setLevel}
+          />
+        </div>
       </div>
 
-      <SectionGap />
-
-      <Preview qrCodeUrl={qrCodeUrl} inputText={inputText} />
-
-      <SectionGap />
-
-      <ActionButtons qrCodeUrl={qrCodeUrl} />
-
-      {/* Error dialog */}
+      {/* Success Notification */}
       <Snackbar
-        variant="error"
-        open={!!error}
+        variant="success"
+        open={!!success}
         icon={Info}
-        onClose={() => setError(false)}
-        content="Invalid JSON format"
+        onClose={() => setSuccess(null)}
+        content={success || ''}
       />
     </>
   );

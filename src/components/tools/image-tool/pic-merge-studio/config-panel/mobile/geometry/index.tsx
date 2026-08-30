@@ -77,7 +77,7 @@ export default function Geometry({ imageConfig, setGeometry }: Props) {
 
           {/* Rotation */}
           <div>
-            <div className="flex items-center justify-between text-left text-xs font-black uppercase">
+            <div className="mb-2 flex items-center justify-between text-left text-xs font-black uppercase">
               <span>Rotation</span> {angle.toFixed()}°
             </div>
             <Slider
@@ -91,7 +91,7 @@ export default function Geometry({ imageConfig, setGeometry }: Props) {
           </div>
           {/* Scale X / Y */}
           <div>
-            <div className="flex items-center justify-between text-left text-xs font-black uppercase">
+            <div className="mb-2 flex items-center justify-between text-left text-xs font-black uppercase">
               <span>Scale</span>
               {scaleLocked && (
                 <div className="flex-1 text-right">
@@ -119,7 +119,7 @@ export default function Geometry({ imageConfig, setGeometry }: Props) {
             ) : (
               <div className="flex items-center gap-4">
                 <div className="flex-1">
-                  <div className="mt-4 flex items-center justify-between text-left text-xs font-black uppercase">
+                  <div className="mb-2 mt-4 flex items-center justify-between text-left text-xs font-black uppercase">
                     <span>Horizontal</span> {(scaleX * 100).toFixed()}%
                   </div>
                   <Slider
@@ -133,7 +133,7 @@ export default function Geometry({ imageConfig, setGeometry }: Props) {
                 </div>
 
                 <div className="flex-1">
-                  <div className="mt-4 flex items-center justify-between text-left text-xs font-black uppercase">
+                  <div className="mb-2 mt-4 flex items-center justify-between text-left text-xs font-black uppercase">
                     <span>Vertical</span> {(scaleY * 100).toFixed()}%
                   </div>
                   <Slider

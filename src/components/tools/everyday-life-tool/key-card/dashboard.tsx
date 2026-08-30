@@ -91,11 +91,11 @@ export default function Dashboard({
             className={cn(
               'group relative flex transform cursor-pointer flex-col justify-between rounded-2xl text-left transition-all duration-300',
               isCompact ? 'p-3.5' : 'p-5',
-              'overflow-hidden',
-              'border border-neutral-200 dark:border-neutral-700',
-              'bg-white/40 dark:bg-neutral-900/40',
-              'hover:border-blue-500/50 dark:hover:border-blue-500/50',
-              'hover:shadow-lg hover:shadow-sky-500/5'
+              'shadow-xs overflow-hidden',
+              'border border-neutral-200/90 ring-1 ring-black/[0.03] dark:border-neutral-800 dark:ring-1 dark:ring-white/[0.04]',
+              'bg-gradient-to-b from-white/95 via-neutral-50/70 to-white/95',
+              'dark:from-neutral-900/90 dark:via-neutral-950/70 dark:to-neutral-900/90',
+              'hover:-translate-y-0.5 hover:border-sky-500/50 hover:shadow-md dark:shadow-black/40 dark:hover:border-sky-500/50'
             )}
             onClick={() => onCardClick(card.id)}
           >

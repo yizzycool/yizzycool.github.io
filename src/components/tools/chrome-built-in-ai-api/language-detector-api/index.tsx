@@ -17,7 +17,7 @@ import UnsupportedCard from '../unsupported-card';
 import ModelDownloadCard from '../model-download-card';
 import SectionGap from '../../common/section-gap';
 import Snackbar from '@/components/common/snackbar';
-import Label from '@/components/common/label';
+import LabelBar from '../../common/label-bar';
 
 export default function LanguageDetectorApi() {
   const [text, setText] = useState('');
@@ -30,13 +30,12 @@ export default function LanguageDetectorApi() {
   const {
     hasCheckedAIStatus,
     isApiSupported,
-    // availability,
     error,
-    detect,
+    resetError,
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
-    resetError,
+    detect,
   } = useAiLanguageDetector();
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -89,15 +88,14 @@ export default function LanguageDetectorApi() {
 
       <div className="mx-auto text-center">
         {/* Input */}
-        <div className="mb-3 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
-          <Label htmlFor="text-textarea" icon={PenLine}>
-            Paste your text below
-          </Label>
-          <div className="flex items-center gap-2 self-end sm:self-auto">
-            <PasteAction onClick={onPasteText} />
-            <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
-          </div>
-        </div>
+        <LabelBar
+          label="Paste your text below"
+          icon={PenLine}
+          htmlFor="text-textarea"
+        >
+          <PasteAction onClick={onPasteText} />
+          <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
+        </LabelBar>
         <Textarea
           id="text-textarea"
           onChange={onChange}

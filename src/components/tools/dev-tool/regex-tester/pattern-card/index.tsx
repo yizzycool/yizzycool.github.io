@@ -33,8 +33,10 @@ export default function PatternCard({
 
       <div
         className={cn(
-          'rounded-xl border border-neutral-200 p-4 ring-blue-500 focus-within:ring-2 dark:border-neutral-700',
-          'bg-white/40 dark:bg-neutral-900/40'
+          'shadow-2xs rounded-xl border p-4 backdrop-blur-md transition-all duration-200',
+          'border-neutral-200/90 bg-white/80 dark:border-neutral-700/80 dark:bg-neutral-900/80',
+          'focus-within:border-sky-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-sky-500/20',
+          'dark:focus-within:border-sky-400 dark:focus-within:bg-neutral-900 dark:focus-within:ring-sky-400/40'
         )}
       >
         <div className="mb-2 flex items-center gap-2 font-mono text-lg">

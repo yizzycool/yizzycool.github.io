@@ -87,10 +87,10 @@ function BaseTabItem({ mode, icon, isActive, onClick }: BaseTabItemProps) {
       onClick={() => onClick(mode)}
       hoverEffect={false}
       className={cn(
-        'relative -mb-px flex select-none items-center justify-center border-b-2 pb-2.5 pt-1 text-sm font-semibold transition-all duration-200',
+        'relative -mb-px flex select-none items-center justify-center border-b-4 pb-2.5 pt-1 text-sm font-semibold transition-all duration-200',
         isActive
           ? 'border-sky-600 font-bold text-sky-600 dark:border-sky-400 dark:text-sky-400'
-          : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200'
+          : 'border-transparent text-slate-500 hover:text-slate-800 dark:border-transparent dark:text-slate-400 dark:hover:text-slate-200'
       )}
     >
       {mode}

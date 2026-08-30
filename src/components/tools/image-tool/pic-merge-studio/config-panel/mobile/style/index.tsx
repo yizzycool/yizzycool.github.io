@@ -32,7 +32,7 @@ export default function Style({ opacity, setImageOpacity }: Props) {
 
           {/* Thickness */}
           <div>
-            <div className="flex items-center justify-between text-left text-xs font-black uppercase">
+            <div className="mb-2 flex items-center justify-between text-left text-xs font-black uppercase">
               <span>Opacity</span> {(opacity * 100).toFixed()}
             </div>
             <Slider

@@ -243,8 +243,10 @@ export default function Management({
             key={card.id}
             id={card.id}
             className={cn(
-              'relative space-y-4 rounded-2xl border p-5 shadow-sm duration-300 animate-in fade-in',
-              'border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900/45'
+              'shadow-xs relative space-y-4 rounded-2xl border p-5 transition-all duration-300 animate-in fade-in',
+              'border-neutral-200/90 ring-1 ring-black/[0.03] dark:border-neutral-800 dark:ring-1 dark:ring-white/[0.04]',
+              'bg-gradient-to-b from-white/95 via-neutral-50/70 to-white/95',
+              'dark:from-neutral-900/90 dark:via-neutral-950/70 dark:to-neutral-900/90'
             )}
           >
             {/* Form header: Index, Title input, key-binding trigger & delete button */}
@@ -361,9 +363,10 @@ export default function Management({
                   }
                   placeholder="e.g. General, Task, Notes"
                   className={cn(
-                    'w-full rounded-lg border bg-white/30 px-3 py-1.5 text-sm text-slate-800 outline-none transition-all',
-                    'border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900/30 dark:text-slate-200',
-                    'focus:border-sky-500/20 focus:ring-2 focus:ring-sky-500/20'
+                    'w-full rounded-xl border px-3 py-1.5 text-sm text-slate-800 outline-none transition-all duration-200',
+                    'shadow-2xs border-neutral-200/90 bg-white/80 backdrop-blur-md dark:border-neutral-700/80 dark:bg-neutral-900/80 dark:text-slate-100',
+                    'focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20',
+                    'dark:focus:border-sky-400 dark:focus:bg-neutral-900 dark:focus:ring-sky-400/40'
                   )}
                 />
               </div>
@@ -412,9 +415,9 @@ export default function Management({
                       <div
                         key={versionIdx}
                         className={cn(
-                          'group/version relative space-y-2 rounded-xl border p-3',
-                          'border-neutral-200 bg-neutral-50/30',
-                          'dark:border-neutral-700 dark:bg-neutral-900/10'
+                          'group/version relative space-y-2 rounded-xl border p-3.5 transition-all',
+                          'shadow-2xs border-neutral-200/90 bg-white/60 backdrop-blur-md',
+                          'dark:border-neutral-800 dark:bg-neutral-900/40'
                         )}
                       >
                         <div className="flex items-center justify-between gap-2">
@@ -455,7 +458,7 @@ export default function Management({
                               }
                               className={cn(
                                 'p-0.5 transition-opacity hover:text-red-500 group-hover/version:opacity-100 sm:opacity-0',
-                                'text-slate-455'
+                                'text-slate-400'
                               )}
                               title="Delete this version"
                             >
@@ -477,9 +480,11 @@ export default function Management({
                           placeholder="Enter content details here..."
                           rows={10}
                           className={cn(
-                            'w-full resize-none rounded-lg border bg-white/30 px-2.5 py-1.5 text-xs outline-none transition-all focus:border-sky-500 focus:ring-1 focus:ring-sky-500/20',
-                            'border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900/20',
-                            'text-slate-855 dark:text-slate-250'
+                            'w-full resize-none rounded-xl border px-3 py-2 text-xs outline-none transition-all duration-200',
+                            'shadow-2xs border-neutral-200/90 bg-white/80 text-slate-800 backdrop-blur-md',
+                            'dark:border-neutral-700/80 dark:bg-neutral-900/80 dark:text-slate-100',
+                            'focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20',
+                            'dark:focus:border-sky-400 dark:focus:bg-neutral-900 dark:focus:ring-sky-400/40'
                           )}
                         />
                       </div>

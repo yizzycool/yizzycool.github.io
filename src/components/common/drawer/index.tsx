@@ -2,6 +2,7 @@
 
 import type { Rounded } from '@/types/common';
 
+import { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { createPortal } from 'react-dom';
 
@@ -78,6 +79,18 @@ export default function Drawer({
   usePortal = true,
   children,
 }: Props) {
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
   return (
     <Wrapper
       isOpen={isOpen}

@@ -10,7 +10,7 @@ import SectionGap from '../../common/section-gap';
 import PasteAction from '@/components/common/action-button/paste';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
-import Label from '@/components/common/label';
+import LabelBar from '../../common/label-bar';
 import Tools from './tools';
 import Metrics from './metrics';
 
@@ -31,18 +31,17 @@ export default function WordCounter() {
       <SectionGap />
 
       {/* Input block */}
-      <div className="mb-3 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
-        <Label htmlFor="input-textarea" icon={TextAlignStart}>
-          Content Input
-        </Label>
-        <div className="flex items-center gap-2 self-end sm:self-auto">
-          <PasteAction onClick={setText} />
-          <DeleteAction
-            onClick={onClear}
-            disabled={isNull(text) || isEmpty(text)}
-          />
-        </div>
-      </div>
+      <LabelBar
+        label="Content Input"
+        icon={TextAlignStart}
+        htmlFor="input-textarea"
+      >
+        <PasteAction onClick={setText} />
+        <DeleteAction
+          onClick={onClear}
+          disabled={isNull(text) || isEmpty(text)}
+        />
+      </LabelBar>
       <Textarea
         id="input-textarea"
         placeholder="Paste your text here to start analysis..."

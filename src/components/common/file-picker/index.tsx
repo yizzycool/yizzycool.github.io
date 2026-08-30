@@ -80,12 +80,12 @@ export default function FilePicker({
   return (
     <div
       className={cn(
-        'group flex w-full cursor-pointer flex-col items-center rounded-lg px-4 py-12 transition-all sm:px-8',
+        'group flex w-full cursor-pointer flex-col items-center rounded-2xl px-4 py-12 transition-all duration-300 sm:px-8',
         '[&_*]:pointer-events-none',
-        'border-2 border-dashed border-neutral-300 hover:border-neutral-400 dark:border-neutral-700 dark:hover:border-neutral-600',
-        'hover:bg-neutral-50/50 dark:hover:bg-neutral-900/50',
-        'data-[dragging=true]:border-neutral-900 data-[dragging=true]:dark:border-neutral-100',
-        'data-[dragging=true]:bg-neutral-100 data-[dragging=true]:dark:bg-neutral-900'
+        'border-2 border-dashed border-neutral-300/90 hover:border-sky-500/60 dark:border-neutral-700/80 dark:hover:border-sky-500/60',
+        'bg-gradient-to-b from-white/80 via-neutral-50/50 to-white/80 backdrop-blur-md hover:bg-white hover:shadow-md',
+        'dark:from-neutral-900/80 dark:via-neutral-950/60 dark:to-neutral-900/80 dark:hover:bg-neutral-900',
+        'data-[dragging=true]:border-sky-500 data-[dragging=true]:bg-sky-50/50 data-[dragging=true]:dark:bg-sky-950/20'
       )}
       onClick={onClick}
       onDragEnter={onDragEnter}
@@ -96,17 +96,20 @@ export default function FilePicker({
     >
       <div
         className={cn(
-          'pointer-events-none w-fit rounded-full bg-neutral-200 p-4 dark:bg-neutral-700',
-          'data-[dragging=true]:bg-neutral-200 data-[dragging=true]:dark:bg-neutral-800'
+          'shadow-2xs pointer-events-none w-fit rounded-2xl bg-neutral-100 p-4 transition-all duration-300 dark:bg-neutral-800',
+          'group-hover:scale-110 group-hover:bg-sky-100 group-hover:text-sky-600 dark:group-hover:bg-sky-950/60 dark:group-hover:text-sky-400',
+          'data-[dragging=true]:bg-sky-100 data-[dragging=true]:dark:bg-sky-900'
         )}
       >
-        <Icon className="h-8 w-8 text-slate-500 dark:text-slate-400" />
+        <Icon className="h-8 w-8 text-slate-500 transition-colors group-hover:text-sky-600 dark:text-slate-400 dark:group-hover:text-sky-400" />
       </div>
       {!!title && (
-        <div className="mt-6 w-fit px-8 text-lg font-bold">{title}</div>
+        <div className="mt-5 w-fit px-8 text-base font-bold text-slate-800 dark:text-slate-200">
+          {title}
+        </div>
       )}
       {!!desc && (
-        <div className="mt-2 max-w-xs text-sm text-slate-500 dark:text-slate-400">
+        <div className="mt-1.5 max-w-xs text-xs font-light text-slate-500 dark:text-slate-400">
           {desc}
         </div>
       )}
@@ -115,8 +118,9 @@ export default function FilePicker({
         <Button
           variant="primary"
           size="sm"
+          rounded="xl"
           icon={ButtonIcon}
-          className="mt-8 group-hover:scale-110 group-hover:bg-neutral-800 dark:group-hover:bg-neutral-200"
+          className="shadow-xs mt-6 font-medium transition-transform group-hover:scale-105"
         >
           {buttonText}
         </Button>

@@ -17,7 +17,7 @@ import Textarea from '@/components/common/textarea';
 import Button from '@/components/common/button';
 import SectionGap from '../../common/section-gap';
 import Snackbar from '@/components/common/snackbar';
-import Label from '@/components/common/label';
+import LabelBar from '../../common/label-bar';
 import Result from './result';
 
 export default function ProofreaderApi() {
@@ -103,15 +103,14 @@ export default function ProofreaderApi() {
       ) : null}
 
       {/* Input */}
-      <div className="mb-3 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
-        <Label htmlFor="text-textarea" icon={PenLine}>
-          Start by adding your text
-        </Label>
-        <div className="flex items-center gap-2 self-end sm:self-auto">
-          <PasteAction onClick={onPasteText} />
-          <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
-        </div>
-      </div>
+      <LabelBar
+        label="Start by adding your text"
+        icon={PenLine}
+        htmlFor="text-textarea"
+      >
+        <PasteAction onClick={onPasteText} />
+        <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
+      </LabelBar>
       <Textarea
         id="proofreader-textarea"
         onChange={onChange}

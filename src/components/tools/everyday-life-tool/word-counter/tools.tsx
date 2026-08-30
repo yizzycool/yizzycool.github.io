@@ -50,18 +50,18 @@ export default function Tools({ setText }: Props) {
   return (
     <div
       className={cn(
-        'flex flex-wrap items-center gap-2 p-2',
-        'rounded-2xl rounded-t-none',
-        'bg-white/40 dark:bg-neutral-900/40',
-        'border border-t-0 border-neutral-200 dark:border-neutral-700'
+        'flex flex-wrap items-center gap-2 p-2.5',
+        'rounded-b-xl rounded-t-none',
+        'shadow-2xs bg-white/80 backdrop-blur-md dark:bg-neutral-900/80',
+        'border border-t-0 border-neutral-200/90 dark:border-neutral-700/80'
       )}
     >
       <Label
         icon={Wand2}
         className={cn(
           'mr-2 flex items-center px-3',
-          'text-xs font-black uppercase tracking-widest',
-          'border-r border-neutral-200 dark:border-neutral-700',
+          'text-xs font-bold uppercase tracking-wider',
+          'border-r border-neutral-200/90 dark:border-neutral-700/80',
           'text-slate-400 dark:text-slate-500'
         )}
       >

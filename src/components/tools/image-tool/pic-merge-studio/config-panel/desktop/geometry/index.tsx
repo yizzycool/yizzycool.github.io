@@ -69,7 +69,7 @@ export default function Geometry({ imageConfig, setGeometry }: Props) {
       <div className="space-y-4 rounded-xl bg-white/40 p-4 dark:bg-neutral-900/40">
         {/* Rotation */}
         <div>
-          <div className="flex items-center justify-between text-left text-xs font-black uppercase">
+          <div className="mb-2 flex items-center justify-between text-left text-xs font-black uppercase">
             <span>Rotation</span> {angle.toFixed()}°
           </div>
           <Slider
@@ -83,7 +83,7 @@ export default function Geometry({ imageConfig, setGeometry }: Props) {
         </div>
         {/* Scale X / Y */}
         <div>
-          <div className="flex items-center justify-between text-left text-xs font-black uppercase">
+          <div className="mb-2 flex items-center justify-between text-left text-xs font-black uppercase">
             <span>Scale</span>
             {scaleLocked && (
               <div className="flex-1 text-right">

@@ -78,7 +78,7 @@ export default function JsonTreeView({ data }: Props) {
       {/* Options Bar */}
       <div
         className={cn(
-          'border-t border-neutral-200 bg-white/60 p-3 dark:border-neutral-700 dark:bg-neutral-900/30'
+          'shadow-2xs rounded-t-xl border border-b-0 border-neutral-200/90 bg-white/80 p-3.5 backdrop-blur-md dark:border-neutral-700/80 dark:bg-neutral-900/80'
         )}
       >
         <CheckBox
@@ -96,8 +96,8 @@ export default function JsonTreeView({ data }: Props) {
       <div
         className={cn(
           'relative flex w-full flex-col overflow-hidden',
-          'rounded-md bg-neutral-100 dark:bg-neutral-800',
-          'border border-neutral-200 dark:border-neutral-700'
+          'rounded-b-xl bg-neutral-100 dark:bg-neutral-800',
+          'shadow-2xs border border-neutral-200/90 dark:border-neutral-700/80'
         )}
       >
         {/* Header - language + copy button */}

@@ -1,4 +1,4 @@
-import { Search, X, LayoutGrid, Settings, Info } from 'lucide-react';
+import { Search, LayoutGrid, Settings, Info } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
 import {
@@ -6,6 +6,7 @@ import {
   TooltipTrigger,
   TooltipPopup,
 } from '@/components/common/tooltip';
+import Input from '@/components/common/input';
 
 type ToolbarProps = {
   mode: 'dashboard' | 'management';
@@ -26,31 +27,15 @@ export default function Toolbar({
     <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       {/* Search Input in Dashboard mode */}
       {mode === 'dashboard' ? (
-        <div className="relative w-full max-w-md">
-          <span className="absolute inset-y-0 left-0 z-10 flex items-center pl-3.5 text-slate-400">
-            <Search size={18} />
-          </span>
-          <input
+        <div className="w-full max-w-md">
+          <Input
             type="text"
             placeholder="Search title, tags, or content..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className={cn(
-              'w-full rounded-xl border py-2 pl-10 pr-10 text-sm outline-none transition-all',
-              'border-neutral-200 dark:border-neutral-700',
-              'bg-white/40 dark:bg-neutral-900/40',
-              'text-slate-900 dark:text-slate-100',
-              'focus:border-sky-500/20 focus:ring-2 focus:ring-sky-500/20'
-            )}
+            onClear={() => setSearchQuery('')}
+            icon={Search}
           />
-          {searchQuery && (
-            <button
-              onClick={() => setSearchQuery('')}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-            >
-              <X size={16} />
-            </button>
-          )}
         </div>
       ) : (
         <div className="flex items-center gap-2 border border-transparent py-2 text-sm font-semibold text-slate-500 dark:text-slate-300">

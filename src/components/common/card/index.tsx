@@ -25,7 +25,7 @@ const roundedMap = {
 
 export default function Card({
   className = '',
-  rounded = 'lg',
+  rounded = '2xl',
   animation = 'none',
   children,
 }: Props) {
@@ -37,9 +37,11 @@ export default function Card({
   return (
     <div
       className={cn(
-        'border p-6 text-left',
-        'border-neutral-200 dark:border-neutral-700',
-        'bg-white/60 dark:bg-neutral-900/60',
+        'border p-6 text-left transition-all duration-300',
+        'border-neutral-200/90 ring-1 ring-black/[0.03] dark:border-neutral-800 dark:ring-1 dark:ring-white/[0.04]',
+        'bg-gradient-to-b from-white/95 via-neutral-50/75 to-white/95',
+        'dark:from-neutral-900/95 dark:via-neutral-950/80 dark:to-neutral-900/95',
+        'shadow-xs hover:shadow-sm dark:shadow-black/40',
         animations[animation],
         roundedMap[rounded],
         className

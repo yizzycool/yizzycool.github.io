@@ -14,7 +14,7 @@ import SwapAction from '@/components/common/action-button/swap';
 import PasteAction from '@/components/common/action-button/paste';
 import SectionGap from '../../common/section-gap';
 import Snackbar from '@/components/common/snackbar';
-import Label from '@/components/common/label';
+import LabelBar from '../../common/label-bar';
 
 export default function UrlEncoderDecoder() {
   const [input, setInput] = useState<string>('');
@@ -62,18 +62,13 @@ export default function UrlEncoderDecoder() {
       <SectionGap />
 
       {/* Input block */}
-      <div className="mb-3 flex w-full flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
-        <Label htmlFor="url-textarea" icon={Link2}>
-          Paste URL below
-        </Label>
-        <div className="flex items-center gap-2 self-end sm:self-auto">
-          <PasteAction onClick={setInput} />
-          <DeleteAction
-            onClick={onClearClick}
-            disabled={isNull(input) || isEmpty(input)}
-          />
-        </div>
-      </div>
+      <LabelBar label="Paste URL below" icon={Link2} htmlFor="url-textarea">
+        <PasteAction onClick={setInput} />
+        <DeleteAction
+          onClick={onClearClick}
+          disabled={isNull(input) || isEmpty(input)}
+        />
+      </LabelBar>
       <Textarea
         id="url-textarea"
         placeholder="Paste the URL or text you want to process here..."
@@ -113,17 +108,12 @@ export default function UrlEncoderDecoder() {
       <SectionGap />
 
       {/* Result block */}
-      <div className="mb-3 flex w-full flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
-        <Label htmlFor="output" icon={Code}>
-          Result
-        </Label>
-        <div className="flex items-center gap-2 self-end sm:self-auto">
-          <CopyAction
-            content={output}
-            disabled={isNull(output) || isEmpty(output)}
-          />
-        </div>
-      </div>
+      <LabelBar label="Result" icon={Code} htmlFor="output">
+        <CopyAction
+          content={output}
+          disabled={isNull(output) || isEmpty(output)}
+        />
+      </LabelBar>
       <Textarea
         id="output"
         value={output}

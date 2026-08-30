@@ -56,10 +56,10 @@ export default function Button({
         'hover:bg-white hover:border-slate-300 dark:hover:bg-neutral-800/80 dark:hover:border-neutral-700'
     ),
     ghost: cn(
-      'text-slate-600 dark:text-slate-400 border-transparent',
+      'text-slate-600 dark:text-slate-400 border-slate-300/80 dark:border-neutral-700/80',
       !disabled &&
         hoverEffect &&
-        'hover:bg-slate-100/80 hover:text-slate-900 dark:hover:bg-neutral-800/80 dark:hover:text-white'
+        'hover:bg-slate-100/80 hover:text-slate-900 hover:border-slate-300 dark:hover:bg-neutral-800/80 dark:hover:text-white dark:hover:border-neutral-700'
     ),
     'ghost-sky': cn(
       'text-sky-600 dark:text-sky-400 border-transparent',
@@ -74,10 +74,10 @@ export default function Button({
         'hover:border-slate-300 hover:bg-slate-50/50 dark:hover:border-neutral-700 dark:hover:bg-neutral-900/60'
     ),
     error: cn(
-      'bg-rose-500/10 text-rose-700 border-rose-500/20 dark:bg-rose-500/20 dark:text-rose-400',
+      'bg-rose-50 text-rose-700 border-rose-200/80 shadow-2xs dark:bg-rose-950/30 dark:text-rose-300 dark:border-rose-900/50',
       !disabled &&
         hoverEffect &&
-        'hover:bg-rose-500/20 dark:hover:bg-rose-500/30'
+        'hover:bg-rose-100/80 hover:border-rose-300 hover:text-rose-800 dark:hover:bg-rose-900/40 dark:hover:border-rose-700/60 dark:hover:text-rose-200'
     ),
     'dark-sky': cn(
       'bg-sky-600 text-white shadow-xs border-transparent dark:bg-sky-500 dark:text-white',

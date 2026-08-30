@@ -15,7 +15,7 @@ import DownloadAction from '@/components/common/action-button/download';
 import CopyAction from '@/components/common/action-button/copy';
 import ImageInfoTag from '../image-info-tag';
 import SectionGap from '../../common/section-gap';
-import Label from '@/components/common/label';
+import LabelBar from '../../common/label-bar';
 
 type ImageInfo = {
   blob: Blob | null;
@@ -88,51 +88,48 @@ export default function Base64ToImage() {
       <SectionGap />
 
       {/* Textarea block */}
-      <div className="itms-start mb-3 flex flex-col-reverse justify-between gap-2 sm:flex-row sm:items-center">
-        <Label htmlFor="base64-textarea" icon={FileText}>
-          Paste Base64 string below
-        </Label>
-        <div className="flex items-center gap-2 self-end sm:self-auto">
-          <PasteAction onClick={onPasteBase64} />
-          <DeleteAction onClick={onClearBase64} disabled={isEmpty(base64)} />
-        </div>
-      </div>
+      <LabelBar
+        label="Paste Base64 string below"
+        icon={FileText}
+        htmlFor="base64-textarea"
+      >
+        <PasteAction onClick={onPasteBase64} />
+        <DeleteAction onClick={onClearBase64} disabled={isEmpty(base64)} />
+      </LabelBar>
       <Textarea
         id="base64-textarea"
         value={base64}
         onChange={onBase64StringChanged}
         rows={10}
         placeholder="Paste your Base64 string here (e.g. data:image/png;base64,...)"
+        className="font-mono text-xs"
       />
       {/* Char count block */}
-      <div className="mt-3 w-full text-right text-xs text-slate-400 dark:text-slate-600">
+      <div className="mt-2.5 w-full text-right text-xs text-slate-400 dark:text-slate-500">
         {size(base64)} chars
       </div>
 
       <SectionGap />
 
       {/* Image block */}
-      <div className="mb-4 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
-        <Label icon={View}>Image Preview</Label>
-        <div className="flex items-center gap-2 self-end sm:self-auto">
-          <CopyAction content={imageInfo.blob} />
-          <DownloadAction
-            blob={imageInfo.blob}
-            disabled={!imageInfo.image}
-            filename="converted_image"
-          />
-        </div>
-      </div>
+      <LabelBar label="Image Preview" icon={View} className="mb-4">
+        <CopyAction content={imageInfo.blob} />
+        <DownloadAction
+          blob={imageInfo.blob}
+          disabled={!imageInfo.image}
+          filename="converted_image"
+        />
+      </LabelBar>
       <div
         className={cn(
-          'relative flex h-[300px] w-full flex-col items-center rounded-lg p-4',
-          'border border-neutral-200/80 dark:border-neutral-800/60',
-          'bg-white/40 dark:bg-neutral-900/40'
+          'relative flex h-[300px] w-full flex-col items-center justify-center rounded-xl border p-4 transition-all duration-200',
+          'shadow-2xs border-neutral-200/90 bg-white/80 backdrop-blur-md',
+          'dark:border-neutral-700/80 dark:bg-neutral-900/80'
         )}
       >
         {isNull(imageInfo.image) ? (
-          <div className="m-auto text-center text-lg font-bold text-slate-500">
-            <ImageIcon className="mx-auto mb-4 block" size={40} />
+          <div className="m-auto text-center text-sm font-medium text-slate-400 dark:text-slate-500">
+            <ImageIcon className="mx-auto mb-3 block opacity-50" size={36} />
             <div>Image will be displayed here</div>
           </div>
         ) : (
@@ -147,13 +144,11 @@ export default function Base64ToImage() {
             <div className="absolute bottom-4 left-4 z-20 flex gap-2 overflow-hidden">
               <ImageInfoTag
                 title=""
-                value={`${imageInfo.width} x ${imageInfo.height}`}
+                content={`${imageInfo.width} × ${imageInfo.height} px`}
               />
               <ImageInfoTag
-                title="Sizes"
-                value={imageUtils.toHumanReadableSize(
-                  imageInfo.blob?.size || 0
-                )}
+                title=""
+                content={imageUtils.formatFileSize(imageInfo.blob?.size || 0)}
               />
             </div>
           </>

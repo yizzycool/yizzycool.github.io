@@ -3,11 +3,12 @@
 import type { ChangeEvent } from 'react';
 import type { TabItem } from '../constants';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useRef } from 'react';
 
 import { useToolHistory } from '@/hooks/tools/use-tool-history';
 import { jsonToYaml, jsonToCsv } from '@/utils/tools/json-converter';
 import { TAB_ITEMS, SAMPLE_JSON } from '../constants';
+import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
 
 const successMessages: Record<string, string> = {
   Format: 'Formatted successfully!',
@@ -17,7 +18,7 @@ const successMessages: Record<string, string> = {
   'Tree View': 'Tree view generated!',
 };
 
-type JsonHistoryData = {
+export type JsonHistoryData = {
   input: string;
   tab?: string;
 };
@@ -31,6 +32,8 @@ export default function useJsonFormatter() {
   >(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   // Hook into tool history store
   const {
@@ -175,6 +178,16 @@ export default function useJsonFormatter() {
     }
   }, [tab]);
 
+  useToolHotkeys(
+    {
+      onExecute: () => processJson(),
+      onClear,
+      onPaste: onGlobalPaste,
+      onCopy: onCopyResult,
+    },
+    { target: inputRef }
+  );
+
   return {
     tab,
     input,
@@ -188,11 +201,10 @@ export default function useJsonFormatter() {
     executeButtonLabel,
     historyList,
     isLoadingHistory,
+    inputRef,
     processJson,
     onJsonStringChanged,
     onPaste,
-    onGlobalPaste,
-    onCopyResult,
     onLoadSample,
     onClear,
     onTabChanged,

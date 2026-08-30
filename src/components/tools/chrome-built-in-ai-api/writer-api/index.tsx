@@ -19,7 +19,7 @@ import Button from '@/components/common/button';
 import PromptResult from '../prompt-result';
 import SectionGap from '../../common/section-gap';
 import Snackbar from '@/components/common/snackbar';
-import Label from '@/components/common/label';
+import LabelBar from '../../common/label-bar';
 
 export default function WriterApi() {
   const [text, setText] = useState('');
@@ -29,18 +29,20 @@ export default function WriterApi() {
   const {
     hasCheckedAIStatus,
     isApiSupported,
-    // availability,
-    error,
+    shouldDownloadModel,
+    downloadProgress,
     options,
     isOptionUpdating,
-    // write,
     writeStreaming,
     updateWriter,
-    shouldDownloadModel,
     downloadModel,
-    downloadProgress,
+    error,
     resetError,
   } = useAiWriter();
+
+  const onChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
+    setText(e.target.value);
+  };
 
   const onPasteText = (value: string) => {
     setText(value as string);
@@ -49,10 +51,6 @@ export default function WriterApi() {
   const onClearClick = () => {
     setText('');
     setResults('');
-  };
-
-  const onChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
-    setText(e.target.value);
   };
 
   const onProcessClick = async () => {
@@ -101,15 +99,14 @@ export default function WriterApi() {
         />
       </div>
       {/* Input */}
-      <div className="mb-3 flex flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
-        <Label htmlFor="text-textarea" icon={PenLine}>
-          Start by adding your text
-        </Label>
-        <div className="flex items-center gap-2 self-end sm:self-auto">
-          <PasteAction onClick={onPasteText} />
-          <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
-        </div>
-      </div>
+      <LabelBar
+        label="Start by adding your text"
+        icon={PenLine}
+        htmlFor="text-textarea"
+      >
+        <PasteAction onClick={onPasteText} />
+        <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
+      </LabelBar>
       <Textarea
         id="text-textarea"
         onChange={onChange}
