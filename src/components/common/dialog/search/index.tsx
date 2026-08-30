@@ -26,6 +26,7 @@ type SearchDialogProps = {
 export default function SearchDialog({ deviceType }: SearchDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isComposing, setIsComposing] = useState(false);
+  const [input, setInput] = useState('');
   const [query, setQuery] = useState('');
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -94,9 +95,23 @@ export default function SearchDialog({ deviceType }: SearchDialogProps) {
     setIsOpen(true);
   };
 
+  // Update search query only when IME composition ends to prevent premature searches during input
+  useEffect(() => {
+    if (isComposing) return;
+    setTimeout(() => {
+      setQuery(input);
+    }, 0);
+  }, [input, isComposing]);
+
+  // Handle dialog close or clear query:
+  // If the input is focused and contains text, clear the search query first; otherwise, close the dialog
   const closeDialog = () => {
-    setIsOpen(false);
-    setQuery('');
+    if (document.activeElement === inputRef.current && !!query) {
+      setInput('');
+    } else {
+      setIsOpen(false);
+      setInput('');
+    }
   };
 
   const getPageName = (results: Array<FuseResult<DataForSearch>>) =>
@@ -125,7 +140,7 @@ export default function SearchDialog({ deviceType }: SearchDialogProps) {
             : 'group !p-2'
         }
         icon={Search}
-        iconClassName="transition-colors group-hover:text-blue-500"
+        iconClassName="group-hover:text-blue-500"
         ariaLabel="search"
       >
         {deviceType === 'desktop' && (
@@ -155,8 +170,8 @@ export default function SearchDialog({ deviceType }: SearchDialogProps) {
             <input
               ref={inputRef}
               type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
               onCompositionStart={() => setIsComposing(true)}
               onCompositionEnd={() => setIsComposing(false)}
               placeholder="Search articles or tools..."

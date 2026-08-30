@@ -64,7 +64,7 @@ export default function BaseDialog({
       }
       portalKey={portalConfig.portalKey || defaultProtalConfig.portalKey}
     >
-      <Transition show={isOpen} unmount={false} appear={true}>
+      <Transition show={isOpen} unmount={true} appear={true}>
         <div
           role="dialog"
           className={cn(

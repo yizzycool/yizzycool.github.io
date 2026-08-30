@@ -42,7 +42,7 @@ export default function Button({
   ariaLabel,
 }: Props) {
   const baseStyles =
-    'group flex items-center justify-center transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
+    'group flex items-center justify-center transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
 
   const variants: Record<ButtonVariant, string> = {
     primary: cn(

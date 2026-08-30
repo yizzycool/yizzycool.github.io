@@ -25,7 +25,7 @@ export default function GeneralLink({
         'block rounded-lg px-3 py-4 font-medium transition-all duration-300',
         isActive
           ? 'bg-neutral-100 font-semibold text-slate-950 dark:bg-neutral-800 dark:text-slate-50'
-          : 'text-slate-600 hover:bg-neutral-200/50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-neutral-800/30 dark:hover:text-slate-200'
+          : 'text-slate-600 hover:bg-neutral-200/50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-neutral-800/50 dark:hover:text-slate-200'
       )}
       href={href}
       onClick={onClick}
