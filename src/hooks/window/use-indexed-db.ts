@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useSyncExternalStore } from 'react';
+import { useCallback, useRef, useEffect, useSyncExternalStore } from 'react';
 
 export interface UseIndexedDBOptions {
   version?: number;
@@ -27,7 +27,16 @@ export function useIndexedDB<StoreName extends string = string>(
     getServerSnapshot
   );
 
-  const { version = 1, stores = [], onUpgrade } = options;
+  const { version = 1, stores, onUpgrade } = options;
+
+  // Use refs for non-primitive options to prevent recreating openDB and CRUD callbacks on every render
+  const storesRef = useRef(stores);
+  const onUpgradeRef = useRef(onUpgrade);
+
+  useEffect(() => {
+    storesRef.current = stores;
+    onUpgradeRef.current = onUpgrade;
+  }, [stores, onUpgrade]);
 
   const openDB = useCallback((): Promise<IDBDatabase> => {
     return new Promise((resolve, reject) => {
@@ -44,20 +53,22 @@ export function useIndexedDB<StoreName extends string = string>(
         const db = request.result;
 
         // Ensure default/provided stores exist
-        stores.forEach((store) => {
-          if (!db.objectStoreNames.contains(store)) {
-            db.createObjectStore(store);
-          }
-        });
+        if (storesRef.current && Array.isArray(storesRef.current)) {
+          storesRef.current.forEach((store) => {
+            if (!db.objectStoreNames.contains(store)) {
+              db.createObjectStore(store);
+            }
+          });
+        }
 
-        if (onUpgrade) {
-          onUpgrade(db, event.oldVersion, event.newVersion);
+        if (onUpgradeRef.current) {
+          onUpgradeRef.current(db, event.oldVersion, event.newVersion);
         }
       };
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
     });
-  }, [dbName, version, stores, onUpgrade]);
+  }, [dbName, version]);
 
   const getValue = useCallback(
     <T>(storeName: StoreName, key: string): Promise<T | null> => {

@@ -11,6 +11,8 @@ const KEY_NAME = 'key-card';
 const LEGACY_KEY_NAME = 'keycard';
 const LEGACY_DB_NAME = 'yizzypeasy-key-card';
 
+const LEGACY_DB_OPTIONS = { version: 1 };
+
 export function useKeyCards(
   triggerSnackbar: (msg: string, variant?: 'success' | 'error') => void
 ) {
@@ -19,7 +21,7 @@ export function useKeyCards(
   const { getValue, setValue, deleteValue } = useToolsDB();
   const { getValue: getLegacyValue, deleteDB: deleteLegacyDB } = useIndexedDB(
     LEGACY_DB_NAME,
-    { version: 1 }
+    LEGACY_DB_OPTIONS
   );
 
   // Helper to purge legacy DB and legacy localStorage keys

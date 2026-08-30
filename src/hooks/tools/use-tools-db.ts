@@ -1,6 +1,9 @@
 'use client';
 
-import { useIndexedDB } from '@/hooks/window/use-indexed-db';
+import {
+  useIndexedDB,
+  type UseIndexedDBOptions,
+} from '@/hooks/window/use-indexed-db';
 
 export const TOOLS_DB_NAME = 'yizzypeasy-tools-db';
 export const TOOLS_DB_VERSION = 1;
@@ -22,13 +25,15 @@ export const TOOLS_PRESET_STORES = [
 
 export type ToolsStoreName = (typeof TOOLS_PRESET_STORES)[number];
 
+const TOOLS_DB_OPTIONS: UseIndexedDBOptions = {
+  version: TOOLS_DB_VERSION,
+  stores: [...TOOLS_PRESET_STORES],
+};
+
 /**
  * Hook specifically configured for the YizzyPeasy Tools unified IndexedDB database.
  * Pre-initializes all 6 preset stores automatically and provides type-safe store operations.
  */
 export function useToolsDB() {
-  return useIndexedDB<ToolsStoreName>(TOOLS_DB_NAME, {
-    version: TOOLS_DB_VERSION,
-    stores: [...TOOLS_PRESET_STORES],
-  });
+  return useIndexedDB<ToolsStoreName>(TOOLS_DB_NAME, TOOLS_DB_OPTIONS);
 }
