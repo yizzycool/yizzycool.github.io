@@ -38,7 +38,7 @@ export default function ConfigPanelMobile({
         'sticky bottom-0 border-t border-neutral-200 dark:border-neutral-700',
         'w-[100vw] min-w-[100vw] max-w-[100vw]',
         '-mx-4 -mb-20 mt-20 sm:-mx-6',
-        'bg-white/40 backdrop-blur-md dark:bg-neutral-900/40'
+        'bg-white/80 dark:bg-neutral-900/80'
       )}
     >
       <Tabs

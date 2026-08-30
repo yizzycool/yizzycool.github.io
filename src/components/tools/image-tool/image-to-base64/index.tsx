@@ -98,11 +98,11 @@ export default function ImageToBase64() {
                 <div className="absolute bottom-4 left-4 z-20 flex gap-2 overflow-hidden">
                   <ImageInfoTag
                     title=""
-                    content={`${imageInfo.width} × ${imageInfo.height} px`}
+                    value={`${imageInfo.width} × ${imageInfo.height} px`}
                   />
                   <ImageInfoTag
                     title=""
-                    content={imageUtils.formatFileSize(
+                    value={imageUtils.toHumanReadableSize(
                       imageInfo.blob?.size || 0
                     )}
                   />
