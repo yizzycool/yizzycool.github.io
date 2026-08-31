@@ -1,20 +1,25 @@
-' use client';
+'use client';
 
-import { cn } from '@/utils/cn';
 import type { LucideIcon } from 'lucide-react';
 
-type Props = {
+import { cn } from '@/utils/cn';
+
+type MetricRowProps = {
   label: string;
   value: number | string;
   icon: LucideIcon;
 };
 
-export default function MetricRow({ label, value, icon: Icon }: Props) {
+export default function MetricRow({
+  label,
+  value,
+  icon: Icon,
+}: MetricRowProps) {
   return (
     <div
       className={cn(
-        'group flex items-center justify-between rounded-xl px-4 py-2.5 transition-all',
-        'hover:bg-neutral-50 dark:hover:bg-neutral-800/50'
+        'group flex items-center justify-between rounded-xl px-4 py-2.5 transition-colors',
+        'hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50'
       )}
     >
       <div className="flex items-center gap-3">
@@ -38,7 +43,7 @@ export default function MetricRow({ label, value, icon: Icon }: Props) {
       <span
         className={cn(
           'font-mono font-bold tabular-nums',
-          'text-lg text-slate-900 dark:text-slate-50'
+          'text-base text-slate-900 dark:text-slate-50'
         )}
       >
         {value}

@@ -9,7 +9,7 @@ import { Star, Clock, Keyboard, ShieldCheck, LucideIcon } from 'lucide-react';
 
 import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
 import useToolsPreferences from '@/hooks/tools/use-tools-preferences';
-import { TOOLS_WITH_HISTORY } from './constants';
+import { TOOLS_WITH_HISTORY, TOOLS_WITH_HOTKEY } from './constants';
 import Badge from '@/components/common/badge';
 import Button from '@/components/common/button';
 import {
@@ -55,7 +55,7 @@ export default function HeaderBlock<T = unknown>({
   const favorite = resolvedToolKey ? isFavorite(resolvedToolKey) : false;
 
   const showHistory = TOOLS_WITH_HISTORY.includes(resolvedToolKey);
-  const showHotkey = TOOLS_WITH_HISTORY.includes(resolvedToolKey);
+  const showHotkey = TOOLS_WITH_HOTKEY.includes(resolvedToolKey);
 
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isHotkeysOpen, setIsHotkeysOpen] = useState(false);

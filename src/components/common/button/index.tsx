@@ -2,9 +2,10 @@
 
 import type { Rounded } from '@/types/common';
 import type { ButtonSize, ButtonVariant } from '@/types/common/button';
+import type { MouseEventHandler } from 'react';
 
 import { LucideIcon } from 'lucide-react';
-import { MouseEventHandler, useMemo } from 'react';
+import { forwardRef, useMemo } from 'react';
 import { isFunction } from 'lodash';
 
 import { cn } from '@/utils/cn';
@@ -23,24 +24,30 @@ type Props = {
   disabled?: boolean;
   hoverEffect?: boolean;
   ariaLabel?: string;
+  id?: string;
+  title?: string;
 };
 
 // UI Component: Button
-export default function Button({
-  children,
-  onClick,
-  variant = 'primary',
-  size = 'base',
-  rounded = 'base',
-  bordered = false,
-  className = '',
-  icon: Icon,
-  iconStrokeWidth = 2,
-  iconClassName = '',
-  disabled = false,
-  hoverEffect = true,
-  ariaLabel,
-}: Props) {
+const Button = forwardRef<HTMLButtonElement, Props>(function Button(
+  {
+    children,
+    onClick,
+    variant = 'primary',
+    size = 'base',
+    rounded = 'base',
+    bordered = false,
+    className = '',
+    icon: Icon,
+    iconStrokeWidth = 2,
+    iconClassName = '',
+    disabled = false,
+    hoverEffect = true,
+    ariaLabel,
+    ...restProps
+  },
+  ref
+) {
   const baseStyles =
     'group flex items-center justify-center transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
 
@@ -158,6 +165,7 @@ export default function Button({
 
   return (
     <button
+      ref={ref}
       type="button"
       onClick={onButtonClick}
       disabled={disabled}
@@ -170,6 +178,7 @@ export default function Button({
         className
       )}
       aria-label={ariaLabel}
+      {...restProps}
     >
       {Icon && (
         <Icon
@@ -181,4 +190,6 @@ export default function Button({
       {children}
     </button>
   );
-}
+});
+
+export default Button;

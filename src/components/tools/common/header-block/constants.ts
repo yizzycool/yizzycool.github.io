@@ -7,5 +7,6 @@ export const TOOLS_WITH_HISTORY = [
 
 export const TOOLS_WITH_HOTKEY = [
   ToolKeys.qrCodeGenerator,
+  ToolKeys.wordCounter,
   ToolKeys.jsonFormatter,
 ];

@@ -12,15 +12,16 @@ import {
   Type,
 } from 'lucide-react';
 import { useMemo } from 'react';
-import Card from '@/components/common/card';
-import MetricRow from './metric-row';
-import CardTitle from '@/components/common/card/title';
 
-type Props = {
+import Card from '@/components/common/card';
+import CardTitle from '@/components/common/card/title';
+import MetricRow from './metric-row';
+
+type MetricsProps = {
   text: string;
 };
 
-export default function Metrics({ text }: Props) {
+export default function Metrics({ text }: MetricsProps) {
   const stats = useMemo(() => {
     if (!text) {
       return {
@@ -69,45 +70,59 @@ export default function Metrics({ text }: Props) {
   }, [text]);
 
   return (
-    <Card>
-      <CardTitle icon={ChartColumn}>Detailed Metrics</CardTitle>
+    <Card className="flex flex-col overflow-hidden p-0 lg:max-h-[calc(100vh-7rem)]">
+      <CardTitle icon={ChartColumn} className="p-4">
+        Detailed Metrics
+      </CardTitle>
 
       {/* Separate */}
-      <div className="-mx-6 my-6 border-b border-neutral-200 dark:border-neutral-700" />
+      <div className="border-b border-neutral-200 dark:border-neutral-700" />
 
       {/* Metrics */}
-      {/* Core Items */}
-      <MetricRow
-        label="Total Characters"
-        value={stats.totalChars}
-        icon={FileText}
-      />
-      <MetricRow label="English Words" value={stats.englishWords} icon={Type} />
-      <MetricRow
-        label="Chinese Characters"
-        value={stats.chineseChars}
-        icon={Languages}
-      />
-      <MetricRow label="Total Lines" value={stats.lines} icon={Pilcrow} />
+      <div className="overflow-y-auto p-4">
+        {/* Core Items */}
+        <MetricRow
+          label="Total Characters"
+          value={stats.totalChars}
+          icon={FileText}
+        />
+        <MetricRow
+          label="English Words"
+          value={stats.englishWords}
+          icon={Type}
+        />
+        <MetricRow
+          label="Chinese Characters"
+          value={stats.chineseChars}
+          icon={Languages}
+        />
+        <MetricRow label="Total Lines" value={stats.lines} icon={Pilcrow} />
 
-      <div className="px-4 py-2">
-        <div className="h-px w-full bg-neutral-100 dark:bg-neutral-800" />
+        <div className="my-2 border-b border-neutral-200 px-4 dark:border-neutral-700" />
+
+        {/* Secondary Items */}
+        <MetricRow
+          label="English Letters"
+          value={stats.englishLetters}
+          icon={LetterText}
+        />
+        <MetricRow
+          label="English Punc."
+          value={stats.englishPunc}
+          icon={Hash}
+        />
+        <MetricRow
+          label="Chinese Punc."
+          value={stats.chinesePunc}
+          icon={Hash}
+        />
+        <MetricRow label="Numbers" value={stats.numbers} icon={Binary} />
+        <MetricRow
+          label="Bytes (UTF-8)"
+          value={`${stats.bytes} B`}
+          icon={Globe}
+        />
       </div>
-
-      {/* Secondary Items */}
-      <MetricRow
-        label="English Letters"
-        value={stats.englishLetters}
-        icon={LetterText}
-      />
-      <MetricRow label="English Punc." value={stats.englishPunc} icon={Hash} />
-      <MetricRow label="Chinese Punc." value={stats.chinesePunc} icon={Hash} />
-      <MetricRow label="Numbers" value={stats.numbers} icon={Binary} />
-      <MetricRow
-        label="Bytes (UTF-8)"
-        value={`${stats.bytes} B`}
-        icon={Globe}
-      />
     </Card>
   );
 }

@@ -15,6 +15,7 @@ import {
 import { cn } from '@/utils/cn';
 import { HistoryItem } from '@/hooks/tools/use-tool-history';
 import Drawer from '@/components/common/drawer';
+import Button from '@/components/common/button';
 
 export interface ToolHistoryDrawerProps<T = unknown> {
   isOpen: boolean;
@@ -92,13 +93,15 @@ export function ToolHistoryDrawer<T>({
             </span>
           </div>
         </div>
-        <button
+        <Button
+          variant="ghost"
+          size="base"
+          rounded="full"
+          icon={X}
+          iconClassName="transition-transform duration-300 group-hover:rotate-90"
           onClick={onClose}
-          className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200"
-          aria-label="Close history"
-        >
-          <X size={18} />
-        </button>
+          ariaLabel="Close history"
+        />
       </div>
 
       {/* Content */}
@@ -248,14 +251,17 @@ export function ToolHistoryDrawer<T>({
 
       {/* Footer */}
       {historyList.length > 0 && (
-        <div className="border-t border-slate-100 p-4 dark:border-slate-800">
-          <button
+        <div className="border-neutral-200/80 bg-neutral-50/30 p-3.5 dark:border-neutral-800/80 dark:bg-neutral-900/30">
+          <Button
+            variant="error"
+            size="sm"
+            rounded="xl"
+            icon={Trash2}
             onClick={onClear}
-            className="flex w-full items-center justify-center gap-1.5 rounded-xl py-2 text-xs font-medium text-red-500 transition hover:bg-red-50 dark:hover:bg-red-950/30"
+            className="shadow-2xs hover:shadow-xs w-full text-xs font-semibold transition-all"
           >
-            <Trash2 size={14} />
-            Clear all history
-          </button>
+            Clear All History
+          </Button>
         </div>
       )}
     </Drawer>

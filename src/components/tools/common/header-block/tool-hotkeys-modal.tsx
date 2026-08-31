@@ -7,6 +7,7 @@ import { X, Keyboard, CircleAlert } from 'lucide-react';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import BaseDialog from '@/components/common/dialog/base';
 import HotkeyBadge from '@/components/common/badge/hotkey';
+import Button from '@/components/common/button';
 import {
   TooltipPopup,
   TooltipRoot,
@@ -44,7 +45,7 @@ export function ToolHotkeysModal({
       className="w-full max-w-sm p-6"
     >
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-200 pb-4 dark:border-slate-700">
+      <div className="flex items-center justify-between border-b border-neutral-200 pb-4 dark:border-neutral-800">
         <div className="flex items-center gap-2">
           <div className="rounded-lg bg-blue-50 p-1.5 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400">
             <Keyboard size={18} />
@@ -58,17 +59,19 @@ export function ToolHotkeysModal({
             </span>
           </div>
         </div>
-        <button
+        <Button
+          variant="ghost"
+          size="base"
+          rounded="full"
+          icon={X}
+          iconClassName="transition-transform duration-300 group-hover:rotate-90"
           onClick={onClose}
-          className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200"
-          aria-label="Close keyboard shortcuts"
-        >
-          <X size={18} />
-        </button>
+          ariaLabel="Close keyboard shortcuts"
+        />
       </div>
 
       {/* List */}
-      <div className="divide-y divide-slate-100 py-3 dark:divide-slate-800">
+      <div className="divide-y divide-neutral-100 py-3 dark:divide-neutral-800/80">
         {shortcuts.map((item, index) => (
           <div
             key={index}

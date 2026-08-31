@@ -14,6 +14,7 @@ import SearchDialog from '@/components/common/dialog/search';
 import GeneralLink from './general-link';
 import SocialIcons from '@/components/common/social-icons';
 import Drawer from '@/components/common/drawer';
+import Button from '@/components/common/button';
 import BuyMeACoffee from '@/components/common/buy-me-a-coffee';
 
 type HeaderMobileProps = {
@@ -63,16 +64,15 @@ export default function HeaderMobile({ categoryArticles }: HeaderMobileProps) {
         >
           <div className="flex items-center justify-between px-4 sm:px-6">
             <div />
-            <button
-              className="group rounded-full p-2 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            <Button
+              variant="ghost"
+              size="base"
+              rounded="full"
+              icon={X}
+              iconClassName="transition-transform duration-300 group-hover:rotate-90"
               onClick={closeDrawer}
-            >
-              <X
-                aria-hidden="true"
-                size={24}
-                className="transition-transform duration-300 group-hover:rotate-90"
-              />
-            </button>
+              ariaLabel="Close menu"
+            />
           </div>
 
           {/* Drawer Contents */}
