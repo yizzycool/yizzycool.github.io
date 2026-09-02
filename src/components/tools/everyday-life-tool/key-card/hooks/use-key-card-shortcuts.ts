@@ -21,9 +21,6 @@ export function useKeyCardShortcuts({
   cards,
   filteredCards,
   mode,
-  setMode,
-  isCompact,
-  setIsCompact,
   saveCards,
   searchInputRef,
   searchQuery,
@@ -88,11 +85,8 @@ export function useKeyCardShortcuts({
           active.tagName === 'TEXTAREA' ||
           active.getAttribute('contenteditable') === 'true');
 
-      // 1. Search focus (/ or Cmd+K / Ctrl+K)
-      if (
-        (e.key === '/' && !isTyping) ||
-        ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')
-      ) {
+      // 1. Search focus (/)
+      if (e.key === '/' && !isTyping) {
         if (mode === 'dashboard') {
           e.preventDefault();
           searchInputRef?.current?.focus();
@@ -131,11 +125,8 @@ export function useKeyCardShortcuts({
       if (focusCardId !== null) {
         if (isTyping) return;
 
-        // Copy on 'c' (only if no text is actively highlighted/selected)
-        if (
-          (e.key.toLowerCase() === 'c' && !e.metaKey && !e.ctrlKey) ||
-          ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'c')
-        ) {
+        // Copy on Cmd+C / Ctrl+C (only if no text is actively highlighted/selected)
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'c') {
           const selection = window.getSelection()?.toString();
           if (!selection) {
             e.preventDefault();
@@ -144,13 +135,13 @@ export function useKeyCardShortcuts({
           }
         }
 
-        // Navigate prev/next card
-        if (e.key === '[' || e.key === 'ArrowLeft') {
+        // Navigate prev/next card (Left / Right Arrow)
+        if (e.key === 'ArrowLeft') {
           e.preventDefault();
           navigateFocusCard('prev');
           return;
         }
-        if (e.key === ']' || e.key === 'ArrowRight') {
+        if (e.key === 'ArrowRight') {
           e.preventDefault();
           navigateFocusCard('next');
           return;
@@ -164,29 +155,13 @@ export function useKeyCardShortcuts({
 
       // 5. Dashboard View specific shortcuts
       if (mode === 'dashboard') {
-        // Toggle compact mode with 'c'
-        if (e.key.toLowerCase() === 'c' && !e.ctrlKey && !e.metaKey) {
-          e.preventDefault();
-          setIsCompact(!isCompact);
-          return;
-        }
-
-        // Toggle mode with 'm'
-        if (e.key.toLowerCase() === 'm' && !e.ctrlKey && !e.metaKey) {
-          e.preventDefault();
-          setMode('management');
-          return;
-        }
-
-        // Keyboard arrow navigation on cards grid
-        if (
-          ['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(e.key)
-        ) {
+        // Keyboard arrow navigation on cards grid (Left / Right Arrow)
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
           if (filteredCards.length === 0) return;
           e.preventDefault();
           setFocusedCardIndex((prev) => {
             if (prev === -1) return 0;
-            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+            if (e.key === 'ArrowRight') {
               return (prev + 1) % filteredCards.length;
             } else {
               return (prev - 1 + filteredCards.length) % filteredCards.length;
@@ -218,13 +193,6 @@ export function useKeyCardShortcuts({
             return;
           }
         }
-      } else if (mode === 'management') {
-        // Toggle mode with 'm'
-        if (e.key.toLowerCase() === 'm' && !e.ctrlKey && !e.metaKey) {
-          e.preventDefault();
-          setMode('dashboard');
-          return;
-        }
       }
     };
 
@@ -235,9 +203,6 @@ export function useKeyCardShortcuts({
   }, [
     listeningCardId,
     mode,
-    setMode,
-    isCompact,
-    setIsCompact,
     searchQuery,
     setSearchQuery,
     focusCardId,

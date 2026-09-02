@@ -58,7 +58,7 @@ export function FocusModalHeader({
               rounded="lg"
               icon={ChevronLeft}
               onClick={() => onNavigate('prev')}
-              title="Previous Card [ (or Left Arrow)"
+              title="Previous Card (Left Arrow)"
               ariaLabel="Previous card"
               className="p-1.5 hover:bg-white dark:hover:bg-neutral-900"
             />
@@ -68,7 +68,7 @@ export function FocusModalHeader({
               rounded="lg"
               icon={ChevronRight}
               onClick={() => onNavigate('next')}
-              title="Next Card ] (or Right Arrow)"
+              title="Next Card (Right Arrow)"
               ariaLabel="Next card"
               className="p-1.5 hover:bg-white dark:hover:bg-neutral-900"
             />

@@ -6,11 +6,11 @@ export const FOCUS_MODAL_SHORTCUTS: HotkeyItem[] = [
     label: 'tabs',
   },
   {
-    symbol: '[ ]',
+    symbol: '← →',
     label: 'prev/next',
   },
   {
-    symbol: 'C',
+    symbol: 'Mod+C',
     label: 'copy',
   },
   {

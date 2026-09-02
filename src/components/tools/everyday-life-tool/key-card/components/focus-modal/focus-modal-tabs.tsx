@@ -59,7 +59,7 @@ export function FocusModalTabs({
         ariaLabel="Copy version content"
       >
         <span>{isCopied ? 'Copied!' : 'Copy'}</span>
-        <HotkeyBadge symbol="C" color="ghost" bordered={false} />
+        <HotkeyBadge symbol="Mod+C" color="ghost" bordered={false} />
       </Button>
     </div>
   );

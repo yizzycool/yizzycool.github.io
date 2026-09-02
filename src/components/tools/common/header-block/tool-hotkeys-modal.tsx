@@ -101,7 +101,7 @@ export function ToolHotkeysModal({
                 </TooltipRoot>
               )}
             </div>
-            <HotkeyBadge symbol={item.symbol} />
+            <HotkeyBadge layout="combined" symbol={item.symbol} />
           </div>
         ))}
       </div>
