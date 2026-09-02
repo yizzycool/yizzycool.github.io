@@ -6,7 +6,7 @@ import { AlertCircle, SquareSquare } from 'lucide-react';
 import { size } from 'lodash';
 
 import CopyAction from '@/components/common/action-button/copy';
-import Badge from '@/components/common/badge';
+import { Badge } from '@/components/common/badge';
 import Card from '@/components/common/card';
 import CardTitle from '@/components/common/card/title';
 

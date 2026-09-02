@@ -1,7 +1,7 @@
 'use client';
 
 import { LucideIcon, X } from 'lucide-react';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import { cn } from '@/utils/cn';
 import {
   Description,
@@ -17,6 +17,7 @@ import {
 } from 'react';
 
 type Props = {
+  ref?: React.Ref<HTMLElement>;
   title?: string;
   desc?: string;
   id?: string;
@@ -35,6 +36,7 @@ type Props = {
 };
 
 export default function Input({
+  ref,
   title,
   desc,
   id,
@@ -85,6 +87,7 @@ export default function Input({
           </div>
         )}
         <HeadlessInput
+          ref={ref}
           type={type}
           className={cn(
             'block w-full rounded-xl border px-4 py-3',

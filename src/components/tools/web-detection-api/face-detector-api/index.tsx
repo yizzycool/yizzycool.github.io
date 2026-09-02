@@ -16,11 +16,10 @@ import BoundingBox from '../bounding-box';
 import FlipCamera from '../flip-camera';
 import UnsupportedCard from '../unsupported-card';
 import SectionGap from '../../common/section-gap';
-import Snackbar from '@/components/common/snackbar';
 import Tip from '../tip';
 import Card from '@/components/common/card';
-import BaseTabs from '@/components/common/tabs/base';
-import Button from '@/components/common/button';
+import { Tabs } from '@/components/common/tabs';
+import { Button } from '@/components/common/button';
 import ResultCanvas from '../result-canvas';
 import DetectionResult from '../detection-result';
 import RawData from '../raw-data';
@@ -28,14 +27,8 @@ import RawData from '../raw-data';
 const TabList: Array<WebDetectionFileType> = ['image', 'video', 'webcam'];
 
 export default function FaceDetectorApi() {
-  const {
-    hasCheckedApiStatus,
-    isApiSupported,
-    isProcessing,
-    error,
-    detect,
-    resetError,
-  } = useFaceDetector();
+  const { hasCheckedApiStatus, isApiSupported, isProcessing, detect } =
+    useFaceDetector();
 
   const {
     param,
@@ -115,7 +108,7 @@ export default function FaceDetectorApi() {
 
       <Card>
         <div className="flex items-center justify-between">
-          <BaseTabs
+          <Tabs
             tabs={TabList}
             onChange={(tab) => setTab(tab as WebDetectionFileType)}
           />
@@ -163,8 +156,6 @@ export default function FaceDetectorApi() {
       <SectionGap size="sm" />
 
       <RawData results={results} />
-
-      <Snackbar variant="error" open={error} onClose={resetError} />
     </>
   );
 }

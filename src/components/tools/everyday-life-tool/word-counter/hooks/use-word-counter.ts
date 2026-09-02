@@ -5,6 +5,7 @@ import { capitalize } from 'lodash';
 
 import { useToolsDB } from '@/hooks/tools/use-tools-db';
 import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
+import toast from '@/utils/toast';
 
 export type TransformAction =
   | 'upper'
@@ -30,8 +31,6 @@ const DRAFT_KEY = 'word-counter';
 export default function useWordCounter() {
   const [text, setText] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { getValue, setValue, deleteValue } = useToolsDB();
@@ -95,14 +94,14 @@ export default function useWordCounter() {
     try {
       if (text) {
         await setValue('drafts', DRAFT_KEY, text);
-        setSuccess('Draft saved successfully');
+        toast.success('Draft saved successfully');
       } else {
         await deleteValue('drafts', DRAFT_KEY);
-        setSuccess('Draft cleared');
+        toast.info('Draft cleared');
       }
     } catch (err) {
       console.error('Failed to save draft:', err);
-      setError('Failed to save draft');
+      toast.error('Failed to save draft');
     }
   }, [text, setValue, deleteValue]);
 
@@ -110,10 +109,10 @@ export default function useWordCounter() {
     if (!text) return;
     try {
       await navigator.clipboard.writeText(text);
-      setSuccess('Content copied to clipboard');
+      toast.success('Content copied to clipboard');
     } catch (err) {
       console.error('Failed to copy text:', err);
-      setError('Failed to copy to clipboard');
+      toast.error('Failed to copy to clipboard');
     }
   }, [text]);
 
@@ -122,7 +121,7 @@ export default function useWordCounter() {
       const clipText = await navigator.clipboard.readText();
       if (clipText) {
         setText(clipText);
-        setSuccess('Content pasted from clipboard');
+        toast.success('Content pasted from clipboard');
       }
     } catch (err) {
       console.error('Failed to read clipboard:', err);
@@ -235,10 +234,6 @@ export default function useWordCounter() {
     text,
     setText,
     inputRef,
-    success,
-    setSuccess,
-    error,
-    setError,
     onInputChange,
     onClear,
     onSave,

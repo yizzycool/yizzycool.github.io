@@ -1,12 +1,11 @@
 'use client';
 
-import { Info, TextAlignStart } from 'lucide-react';
+import { TextAlignStart } from 'lucide-react';
 import { isNull, isEmpty } from 'lodash';
 
 import { cn } from '@/utils/cn';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import useWordCounter from './hooks/use-word-counter';
-import Snackbar from '@/components/common/snackbar';
 import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
 import PasteAction from '@/components/common/action-button/paste';
@@ -17,18 +16,8 @@ import Tools from './tools';
 import Metrics from './metrics';
 
 export default function WordCounter() {
-  const {
-    text,
-    setText,
-    inputRef,
-    success,
-    setSuccess,
-    error,
-    setError,
-    onInputChange,
-    onClear,
-    onTransform,
-  } = useWordCounter();
+  const { text, setText, inputRef, onInputChange, onClear, onTransform } =
+    useWordCounter();
 
   return (
     <>
@@ -89,24 +78,6 @@ export default function WordCounter() {
           <Metrics text={text} />
         </div>
       </div>
-
-      {/* Success Notification */}
-      <Snackbar
-        variant="success"
-        open={!!success}
-        icon={Info}
-        onClose={() => setSuccess(null)}
-        content={success || ''}
-      />
-
-      {/* Error Notification */}
-      <Snackbar
-        variant="error"
-        open={!!error}
-        icon={Info}
-        onClose={() => setError(null)}
-        content={error || ''}
-      />
     </>
   );
 }

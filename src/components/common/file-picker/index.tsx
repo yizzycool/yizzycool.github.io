@@ -4,7 +4,7 @@ import { cn } from '@/utils/cn';
 import { useRef, useState } from 'react';
 import { Image, LucideIcon, Upload } from 'lucide-react';
 
-import Button from '../button';
+import { Button } from '../button';
 
 type Props = {
   icon?: LucideIcon;

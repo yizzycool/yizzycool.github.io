@@ -14,9 +14,8 @@ import ModelDownloadCard from '../model-download-card';
 import PasteAction from '@/components/common/action-button/paste';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import SectionGap from '../../common/section-gap';
-import Snackbar from '@/components/common/snackbar';
 import LabelBar from '../../common/label-bar';
 import Result from './result';
 
@@ -29,8 +28,6 @@ export default function ProofreaderApi() {
     hasCheckedAIStatus,
     isApiSupported,
     // availability,
-    error,
-    errorMessage,
     // options,
     // isOptionUpdating,
     proofread,
@@ -39,7 +36,6 @@ export default function ProofreaderApi() {
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
-    resetError,
   } = useAiProofreader();
 
   const onPasteText = (value: string) => {
@@ -142,13 +138,6 @@ export default function ProofreaderApi() {
       <SectionGap size="sm" />
 
       <Result text={text} result={result} isProcessing={isProcessing} />
-
-      <Snackbar
-        variant="error"
-        open={error}
-        onClose={resetError}
-        content={errorMessage}
-      />
     </>
   );
 }

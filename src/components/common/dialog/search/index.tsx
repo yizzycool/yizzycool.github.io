@@ -14,9 +14,9 @@ import { sortBy, get, filter, map } from 'lodash';
 
 import useSearchContent from './hooks/use-search-content';
 import useKeyboardNavigation from './hooks/use-keyboard-navigation';
-import Button from '../../button';
+import { Button } from '../../button';
 import BaseDialog from '../base';
-import Badge from '../../badge';
+import { HotkeyBadge } from '@/components/common/badge';
 import ResultCard from './result-card';
 
 type SearchDialogProps = {
@@ -146,10 +146,11 @@ export default function SearchDialog({ deviceType }: SearchDialogProps) {
         {deviceType === 'desktop' && (
           <>
             <span className="mr-4 flex-1 text-left">Search...</span>
-            <Badge rounded="md" bordered={true} className="gap-1">
-              <span>⌘</span>
-              <span>K</span>
-            </Badge>
+            <HotkeyBadge
+              symbol="Mod + K"
+              layout="combined"
+              className="inline-flex"
+            />
           </>
         )}
       </Button>

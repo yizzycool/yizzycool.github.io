@@ -1,7 +1,7 @@
 'use client';
 
-import Badge from '@/components/common/badge';
-import Button from '../common/button';
+import { Badge } from '@/components/common/badge';
+import { Button } from '../common/button';
 
 type CategoryChipProps = {
   name: string;

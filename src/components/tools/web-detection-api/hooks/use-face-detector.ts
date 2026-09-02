@@ -20,13 +20,8 @@ export default function useFaceDetector() {
     getServerSnapshot
   );
 
-  const {
-    error,
-    setError,
-    isProcessing,
-    setIsProcessing,
-    hasCheckedApiStatus,
-  } = useApiCommon({ isApiSupported });
+  const { setError, isProcessing, setIsProcessing, hasCheckedApiStatus } =
+    useApiCommon({ isApiSupported });
 
   const detect = async (
     image: HTMLImageElement | HTMLCanvasElement
@@ -38,21 +33,17 @@ export default function useFaceDetector() {
       setIsProcessing(false);
       return results;
     } catch (_e) {
-      setError(true);
+      setError('Face detection failed! Please try again with another image.');
       setIsProcessing(false);
       return null;
     }
   };
 
-  const resetError = () => setError(false);
-
   return {
     hasCheckedApiStatus,
     isApiSupported,
     isProcessing,
-    error,
     detect,
-    resetError,
   };
 }
 

@@ -4,7 +4,7 @@ import intlUtils from '@/utils/intl-utils';
 import { cn } from '@/utils/cn';
 
 import Card from '@/components/common/card';
-import Badge from '@/components/common/badge';
+import { Badge } from '@/components/common/badge';
 
 export default function UnsupportedLanguagePairCard({
   options,

@@ -25,7 +25,6 @@ export default function useAiLanguageModel() {
   const {
     availability,
     setAvailability,
-    error,
     setError,
     downloadProgress,
     setDownloadProgress,
@@ -136,13 +135,10 @@ export default function useAiLanguageModel() {
     }
   };
 
-  const resetError = () => setError(false);
-
   return {
     hasCheckedAIStatus,
     isApiSupported,
     availability,
-    error,
     options,
     isOptionUpdating: isNull(session),
     session,
@@ -153,7 +149,6 @@ export default function useAiLanguageModel() {
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
-    resetError,
   };
 }
 

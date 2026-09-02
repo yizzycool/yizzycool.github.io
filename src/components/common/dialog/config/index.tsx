@@ -7,7 +7,7 @@ import { MouseEventHandler, useEffect, useState } from 'react';
 
 import useDisplay from '../../action-button/hooks/use-display';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
-import Button from '../../button';
+import { Button } from '../../button';
 import BaseDialog from '../base';
 
 interface ConfigDialogProps extends ActionButtonProps {

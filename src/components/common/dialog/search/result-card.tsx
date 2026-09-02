@@ -6,7 +6,7 @@ import { CornerDownLeft, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { get, findKey } from 'lodash';
 
-import Badge from '@/components/common/badge';
+import { Badge } from '@/components/common/badge';
 import { ToolIcons, ToolSlugs } from '@/data/tools';
 
 function renderResultIcon(page: string, slug: string) {

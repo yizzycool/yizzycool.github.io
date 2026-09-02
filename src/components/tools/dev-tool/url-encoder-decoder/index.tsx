@@ -7,19 +7,18 @@ import browserUtils from '@/utils/browser-utils';
 import { Code, FileCode, FileCode2, Link2 } from 'lucide-react';
 import HeaderBlock from '../../common/header-block';
 import Textarea from '@/components/common/textarea';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import DeleteAction from '@/components/common/action-button/delete';
 import CopyAction from '@/components/common/action-button/copy';
 import SwapAction from '@/components/common/action-button/swap';
 import PasteAction from '@/components/common/action-button/paste';
 import SectionGap from '../../common/section-gap';
-import Snackbar from '@/components/common/snackbar';
 import LabelBar from '../../common/label-bar';
+import toast from '@/utils/toast';
 
 export default function UrlEncoderDecoder() {
   const [input, setInput] = useState<string>('');
   const [output, setOutput] = useState<string>('');
-  const [error, setError] = useState<string>('');
 
   const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
@@ -28,7 +27,6 @@ export default function UrlEncoderDecoder() {
   const onClearClick = () => {
     setInput('');
     setOutput('');
-    setError('');
   };
 
   const onEncodeClick = () => {
@@ -36,7 +34,7 @@ export default function UrlEncoderDecoder() {
       const encoded = browserUtils.encodeURI(input);
       setOutput(encoded);
     } catch (_e) {
-      setError('Encode Error');
+      toast.error('Encode Error');
     }
   };
 
@@ -45,14 +43,13 @@ export default function UrlEncoderDecoder() {
       const decoded = browserUtils.decodeURI(input);
       setOutput(decoded);
     } catch (_e) {
-      setError('Decode Error');
+      toast.error('Decode Error');
     }
   };
 
   const onSwapClick = () => {
     setInput(output);
     setOutput(input);
-    setError('');
   };
 
   return (
@@ -120,13 +117,6 @@ export default function UrlEncoderDecoder() {
         placeholder="The results will be displayed here..."
         rows={8}
         readOnly
-      />
-
-      <Snackbar
-        variant="error"
-        open={!!error}
-        onClose={() => setError('')}
-        content={error}
       />
     </>
   );

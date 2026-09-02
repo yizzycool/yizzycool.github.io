@@ -9,8 +9,8 @@ import { useState } from 'react';
 
 import usePreventNumberWheel from '@/hooks/dom/use-prevent-number-wheel';
 import Label from '@/components/common/label';
-import ButtonTabs from '@/components/common/tabs/button';
-import Button from '@/components/common/button';
+import { PillTabs } from '@/components/common/tabs';
+import { Button } from '@/components/common/button';
 import { DEFAULT_CANVAS_CONFIG } from '../../..';
 
 const layoutPresets = ['Free Collage', 'Grid Layout'];
@@ -78,7 +78,7 @@ export default function CanvasLayout({
         Canvas Layout
       </Label>
 
-      <ButtonTabs
+      <PillTabs
         tabs={layoutPresets}
         onChange={handleModeSelect}
         size="sm"

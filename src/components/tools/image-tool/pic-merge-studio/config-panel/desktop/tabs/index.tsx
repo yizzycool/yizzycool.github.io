@@ -3,7 +3,7 @@
 import { cn } from '@/utils/cn';
 import { useState } from 'react';
 
-import BaseTabs from '@/components/common/tabs/base';
+import { Tabs as CommonTabs } from '@/components/common/tabs';
 
 type Props = {
   tabs: string[];
@@ -24,7 +24,7 @@ export default function Tabs({ tabs, discardActiveObject, children }: Props) {
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      <BaseTabs
+      <CommonTabs
         tabs={tabs}
         onChange={onChange}
         className="font-bold *:flex-1"

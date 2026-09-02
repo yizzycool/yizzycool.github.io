@@ -8,7 +8,7 @@ import { useMemo, useState } from 'react';
 
 import { useControlDrawer } from '../hooks/use-control-drawer';
 import { PRESET_BACKGROUND_COLORS } from '../../data/background';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import Slider from '@/components/common/slider';
 import ColorPicker from '../color-picker';
 import IconTextButton from '../icon-text-button';

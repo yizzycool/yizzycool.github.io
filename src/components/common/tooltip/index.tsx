@@ -37,11 +37,22 @@ type ToolTipContextType = {
   isOpen?: boolean;
 };
 
-type Props = {
+export type TooltipDelay =
+  | number
+  | {
+      open?: number;
+      close?: number;
+    };
+
+export type TooltipRootProps = {
   children: React.ReactNode;
+  delay?: TooltipDelay;
 };
 
-export function TooltipRoot({ children }: Props) {
+export function TooltipRoot({
+  children,
+  delay = { open: 0, close: 100 },
+}: TooltipRootProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
@@ -56,11 +67,16 @@ export function TooltipRoot({ children }: Props) {
     },
   });
 
+  const computedDelay =
+    typeof delay === 'number'
+      ? delay
+      : {
+          open: delay.open ?? 0,
+          close: delay.close ?? 100,
+        };
+
   const hover = useHover(rootContext, {
-    delay: {
-      open: 0,
-      close: 100,
-    },
+    delay: computedDelay,
   });
   const focus = useFocus(rootContext);
   const dismiss = useDismiss(rootContext);

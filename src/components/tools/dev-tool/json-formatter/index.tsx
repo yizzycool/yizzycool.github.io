@@ -2,14 +2,7 @@
 
 import type { JsonHistoryData } from './hooks/use-json-formatter';
 
-import {
-  Braces,
-  CodeXml,
-  FileBraces,
-  FileText,
-  Info,
-  Wand2,
-} from 'lucide-react';
+import { Braces, CodeXml, FileBraces, FileText, Wand2 } from 'lucide-react';
 import { isEmpty } from 'lodash';
 
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
@@ -23,9 +16,8 @@ import LabelBar from '../../common/label-bar';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
 import PasteAction from '@/components/common/action-button/paste';
-import Snackbar from '@/components/common/snackbar';
-import Button from '@/components/common/button';
-import BaseTabs from '@/components/common/tabs/base';
+import { Button } from '@/components/common/button';
+import { Tabs } from '@/components/common/tabs';
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
 import JsonTreeView from './json-tree-view';
 
@@ -35,10 +27,6 @@ export default function JsonFormatter() {
     input,
     output,
     parsedObject,
-    success,
-    setSuccess,
-    error,
-    setError,
     syntaxLanguage,
     executeButtonLabel,
     historyList,
@@ -78,9 +66,10 @@ export default function JsonFormatter() {
       <SectionGap />
 
       {/* Tabs */}
-      <BaseTabs
+      <Tabs
         tabs={[...TAB_ITEMS]}
         tabIcons={[...TAB_ICONS]}
+        activeTab={tab}
         onChange={onTabChanged}
         className="text-nowrap"
       />
@@ -152,24 +141,6 @@ export default function JsonFormatter() {
           Waiting for Input...
         </div>
       )}
-
-      {/* Error dialog */}
-      <Snackbar
-        variant="error"
-        open={!!error}
-        icon={Info}
-        onClose={() => setError(null)}
-        content={error || 'Invalid JSON format'}
-      />
-
-      {/* Success dialog */}
-      <Snackbar
-        variant="success"
-        open={!!success}
-        icon={Info}
-        onClose={() => setSuccess(null)}
-        content={success || ''}
-      />
     </>
   );
 }

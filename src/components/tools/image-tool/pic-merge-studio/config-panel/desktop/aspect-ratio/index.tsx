@@ -10,7 +10,7 @@ import { clamp } from 'lodash';
 
 import usePreventNumberWheel from '@/hooks/dom/use-prevent-number-wheel';
 import Label from '@/components/common/label';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import { PRESET_ASPECT_RATIOS } from '../../data/aspect-ratio';
 
 const MIN_SIZE = 1;

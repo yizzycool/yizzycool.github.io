@@ -4,7 +4,7 @@ import { MouseEventHandler } from 'react';
 import { CheckCircle2, DownloadCloud, Loader2, Zap } from 'lucide-react';
 import { isNull } from 'lodash';
 
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import BaseDialog from '@/components/common/dialog/base';
 
 type Props = {

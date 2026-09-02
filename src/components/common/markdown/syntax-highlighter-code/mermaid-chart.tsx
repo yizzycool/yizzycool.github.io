@@ -9,7 +9,7 @@ import { defaultsDeep } from 'lodash';
 
 import useDarkModeObserver from '@/hooks/window/use-dark-mode-observer';
 import { cn } from '@/utils/cn';
-import Button from '../../button';
+import { Button } from '../../button';
 
 const defaultConfig = {
   startOnLoad: false,

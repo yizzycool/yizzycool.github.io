@@ -13,7 +13,7 @@ import { forEach, map, isEmpty, join } from 'lodash';
 import { cn } from '@/utils/cn';
 import LabelBar from '../../common/label-bar';
 import CopyAction from '@/components/common/action-button/copy';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import {
   TooltipPopup,
   TooltipRoot,

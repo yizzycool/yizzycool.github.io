@@ -1,6 +1,6 @@
 'use client';
 
-import type { HotkeyItem } from '@/components/common/badge/hotkey';
+import type { HotkeyItem } from '@/components/common/badge';
 
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
@@ -10,8 +10,8 @@ import { Star, Clock, Keyboard, ShieldCheck, LucideIcon } from 'lucide-react';
 import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
 import useToolsPreferences from '@/hooks/tools/use-tools-preferences';
 import { TOOLS_WITH_HISTORY, TOOLS_WITH_HOTKEY } from './constants';
-import Badge from '@/components/common/badge';
-import Button from '@/components/common/button';
+import { Badge } from '@/components/common/badge';
+import { Button } from '@/components/common/button';
 import {
   ToolDescriptions,
   ToolIcons,
@@ -25,14 +25,24 @@ import { ToolHotkeysModal } from './tool-hotkeys-modal';
 const InvertToolUrls = invert(ToolUrls);
 
 type HeaderBlockProps<T = unknown> = {
+  /** List of history items for tools that support the history drawer */
   historyList?: HistoryItem<T>[];
+  /** Indicates whether the history items are currently loading */
   isLoadingHistory?: boolean;
+  /** Callback fired when a history item is selected for restoration */
   onRestoreHistory?: (data: T) => void;
+  /** Callback fired when a history item is renamed */
   onRenameHistory?: (id: string, newTitle: string) => void;
+  /** Callback fired when a single history item is deleted */
   onRemoveHistory?: (id: string) => void;
+  /** Callback fired when all history items are cleared */
   onClearHistory?: () => void;
+  /** Custom list of keyboard shortcuts displayed in the default ToolHotkeysModal */
   customShortcuts?: HotkeyItem[];
+  /** Whether to show the "100% Private" security badge (default: true) */
   showPrivacyBadge?: boolean;
+  /** Custom callback when clicking the Shortcuts button or pressing '?'. Overrides the default ToolHotkeysModal */
+  onOpenHotkeys?: () => void;
 };
 
 export default function HeaderBlock<T = unknown>({
@@ -44,6 +54,7 @@ export default function HeaderBlock<T = unknown>({
   onClearHistory,
   customShortcuts,
   showPrivacyBadge = true,
+  onOpenHotkeys,
 }: HeaderBlockProps<T>) {
   const pathname = usePathname();
   const resolvedToolKey = get(InvertToolUrls, pathname, '');
@@ -60,6 +71,14 @@ export default function HeaderBlock<T = unknown>({
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isHotkeysOpen, setIsHotkeysOpen] = useState(false);
 
+  const handleOpenHotkeys = () => {
+    if (onOpenHotkeys) {
+      onOpenHotkeys();
+    } else {
+      setIsHotkeysOpen(true);
+    }
+  };
+
   useToolHotkeys({
     onHistory: () => {
       if (!showHistory) return;
@@ -69,7 +88,7 @@ export default function HeaderBlock<T = unknown>({
     onHelp: () => {
       if (!showHotkey) return;
 
-      setIsHotkeysOpen(true);
+      handleOpenHotkeys();
     },
   });
 
@@ -158,7 +177,7 @@ export default function HeaderBlock<T = unknown>({
               size="xs"
               rounded="xl"
               icon={Keyboard}
-              onClick={() => setIsHotkeysOpen(true)}
+              onClick={handleOpenHotkeys}
               ariaLabel="Keyboard shortcuts"
               className="hidden sm:inline-flex"
             >

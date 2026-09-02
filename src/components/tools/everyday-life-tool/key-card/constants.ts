@@ -1,4 +1,4 @@
-import type { CardData } from './types';
+import type { CardData, KeyCardSettings } from './types';
 
 export const DEFAULT_CARDS: CardData[] = [
   {
@@ -18,3 +18,11 @@ export const DEFAULT_CARDS: CardData[] = [
     ],
   },
 ];
+
+export const DEFAULT_SETTINGS: KeyCardSettings = {
+  mode: 'dashboard',
+  isCompact: false,
+  sortOrder: 'asc',
+  selectedTag: null,
+  collapsedCards: [],
+};

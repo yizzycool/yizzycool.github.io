@@ -8,9 +8,9 @@ import { useEffect, useMemo, useState } from 'react';
 import useDarkModeObserver from '@/hooks/window/use-dark-mode-observer';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import CopyAction from '@/components/common/action-button/copy';
-import ButtonTabs from '@/components/common/tabs/button';
+import { PillTabs } from '@/components/common/tabs';
 import Divider from '@/components/common/divider';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import useIsClient from '@/hooks/lifecycle/use-is-client';
 
 const ONE_DARK_BG = '#282c34';
@@ -139,7 +139,7 @@ export default function ReactLive({ code = '', metadata }: Props) {
               </>
             )}
             {!lockMode && (
-              <ButtonTabs
+              <PillTabs
                 tabs={['code', 'preview']}
                 defaultActiveTab="code"
                 size="xs"

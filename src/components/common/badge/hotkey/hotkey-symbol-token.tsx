@@ -1,28 +1,42 @@
-import { ArrowBigUp, ChevronUp, Command, CornerDownLeft } from 'lucide-react';
+import { ArrowBigUp, Command, CornerDownLeft } from 'lucide-react';
 
-import { HotkeySymbol } from '.';
+import type { HotkeyBadgeLayout } from './types';
 
 type HotkeySymbolTokenProps = {
   isMac: boolean;
-  symbol: HotkeySymbol;
+  symbol: string;
+  layout?: HotkeyBadgeLayout;
+  kbdClassName?: string;
 };
 
 export default function HotkeySymbolToken({
   isMac,
   symbol,
+  layout = 'split',
+  kbdClassName,
 }: HotkeySymbolTokenProps) {
-  const parts = symbol.split(' ');
-  if (parts.length <= 1) {
-    return <KeyToken isMac={isMac} token={symbol} />;
-  }
-  return (
-    <>
-      {parts.map((part, index) => (
-        <span key={index} className="inline-flex items-center">
-          <KeyToken isMac={isMac} token={part} />
+  const parts = symbol.split(/\s*\+\s*|\s+/).filter(Boolean);
+
+  if (layout === 'combined' || parts.length <= 1) {
+    return (
+      <kbd className={kbdClassName}>
+        <span className="inline-flex items-center gap-0.5">
+          {parts.map((part, index) => (
+            <KeyToken key={index} isMac={isMac} token={part} />
+          ))}
         </span>
+      </kbd>
+    );
+  }
+
+  return (
+    <span className="inline-flex items-center gap-1">
+      {parts.map((part, index) => (
+        <kbd key={index} className={kbdClassName}>
+          <KeyToken isMac={isMac} token={part} />
+        </kbd>
       ))}
-    </>
+    </span>
   );
 }
 
@@ -34,7 +48,7 @@ type KeyTokenProps = {
 function KeyToken({ isMac, token }: KeyTokenProps) {
   const trimmed = token.trim();
 
-  if (!trimmed) {
+  if (!trimmed || trimmed === '+') {
     return null;
   }
 
@@ -48,7 +62,7 @@ function KeyToken({ isMac, token }: KeyTokenProps) {
     if (isMac) {
       return <Command {...commonProps} />;
     }
-    return <ChevronUp {...commonProps} />;
+    return <span className="text-[10px] font-semibold">Ctrl</span>;
   }
   if (trimmed === 'Enter') {
     return <CornerDownLeft {...commonProps} />;

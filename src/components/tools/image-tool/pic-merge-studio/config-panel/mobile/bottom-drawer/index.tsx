@@ -7,7 +7,7 @@ import { useEffect, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 
 type Props = {
   isOpen: boolean;

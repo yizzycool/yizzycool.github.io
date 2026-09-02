@@ -26,7 +26,6 @@ export default function useAiWriter() {
   const {
     availability,
     setAvailability,
-    error,
     setError,
     downloadProgress,
     setDownloadProgress,
@@ -132,13 +131,10 @@ export default function useAiWriter() {
     }
   };
 
-  const resetError = () => setError(false);
-
   return {
     hasCheckedAIStatus,
     isApiSupported,
     availability,
-    error,
     options,
     isOptionUpdating: isNull(writer),
     write,
@@ -147,7 +143,6 @@ export default function useAiWriter() {
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
-    resetError,
   };
 }
 

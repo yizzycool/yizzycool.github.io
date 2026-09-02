@@ -6,7 +6,7 @@ import { ArrowDownUp } from 'lucide-react';
 import { MouseEventHandler } from 'react';
 
 import useDisplay from '../hooks/use-display';
-import Button from '../../button';
+import { Button } from '../../button';
 
 interface SwapActionProps extends ActionButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;

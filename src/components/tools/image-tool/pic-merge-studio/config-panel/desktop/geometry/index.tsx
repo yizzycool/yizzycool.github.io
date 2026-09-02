@@ -12,7 +12,7 @@ import {
 import { useState } from 'react';
 
 import Label from '@/components/common/label';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import Slider from '@/components/common/slider';
 import CheckBox from '@/components/common/checkbox';
 

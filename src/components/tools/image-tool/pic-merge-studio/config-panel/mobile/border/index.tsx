@@ -9,7 +9,7 @@ import { isUndefined } from 'lodash';
 
 import { useControlDrawer } from '../hooks/use-control-drawer';
 import { PRESET_BORDER_COLORS } from '../../data/background';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import Slider from '@/components/common/slider';
 import ColorPicker from '../color-picker';
 import CheckBox from '@/components/common/checkbox';

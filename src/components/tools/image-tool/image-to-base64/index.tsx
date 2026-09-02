@@ -12,10 +12,10 @@ import FilePicker from '@/components/common/file-picker';
 import CopyAction from '@/components/common/action-button/copy';
 import ImageInfoTag from '../image-info-tag';
 import SectionGap from '../../common/section-gap';
-import Snackbar from '@/components/common/snackbar';
 import LabelBar from '../../common/label-bar';
 import Label from '@/components/common/label';
 import Textarea from '@/components/common/textarea';
+import toast from '@/utils/toast';
 
 type ImageInfo = {
   image: HTMLImageElement | null;
@@ -46,6 +46,7 @@ export default function ImageToBase64() {
       const { width, height } = image;
       setBase64(base64);
       setImageInfo({ image, width, height, error: false, blob: file });
+      toast.success('Image converted to Base64 successfully');
     } catch (e) {
       console.log('[ERROR] convert image:', e);
       setImageInfo({
@@ -55,6 +56,9 @@ export default function ImageToBase64() {
         error: true,
         blob: null,
       });
+      toast.error(
+        'Uploaded image is not supported. Please choose another image and try again.'
+      );
     }
   };
 
@@ -136,13 +140,6 @@ export default function ImageToBase64() {
           </div>
         </div>
       </div>
-
-      <Snackbar
-        variant="error"
-        open={imageInfo.error}
-        onClose={() => setImageInfo(defaultImageInfo)}
-        content="Uploaded image is not supported now. Please choose another image and try again."
-      />
     </>
   );
 }

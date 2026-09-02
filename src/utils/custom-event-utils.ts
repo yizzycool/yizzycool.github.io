@@ -1,12 +1,16 @@
+import { DeepValueOf } from '@/types/utils';
+
 export const CustomEvents = {
   common: {
     switchTab: 'common.switch-tab',
     toggleConfigDialog: 'common.toggle-config-dialog',
+    triggerSnackbar: 'common.trigger-snackbar',
+    clearSnackbar: 'common.clear-snackbar',
   },
   tools: {
     fabricRecalcSelection: 'tools.fabric-recalc-selection',
   },
-};
+} as const;
 
 const FlattenCustomEvents: string[] = [];
 (function deepFlatten(eventObj: object) {
@@ -19,7 +23,7 @@ const FlattenCustomEvents: string[] = [];
   });
 })(CustomEvents);
 
-type CustomEventType = (typeof FlattenCustomEvents)[number];
+type CustomEventType = DeepValueOf<typeof CustomEvents>;
 
 type CustomEventListener = (e: CustomEvent) => void;
 

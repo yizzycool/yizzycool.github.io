@@ -9,14 +9,12 @@ import Chat from './chat';
 import UnsupportedCard from '../unsupported-card';
 import ModelDownloadCard from '../model-download-card';
 import SectionGap from '../../common/section-gap';
-import Snackbar from '@/components/common/snackbar';
 
 export default function PromptApi() {
   const {
     hasCheckedAIStatus,
     isApiSupported,
     // availability,
-    error,
     options,
     isOptionUpdating,
     session,
@@ -27,7 +25,6 @@ export default function PromptApi() {
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
-    resetError,
   } = useAiLanguageModel();
 
   return (
@@ -60,8 +57,6 @@ export default function PromptApi() {
         promptStreaming={promptStreaming}
         session={session}
       />
-
-      <Snackbar variant="error" open={error} onClose={resetError} />
     </div>
   );
 }

@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 
 import Label from '@/components/common/label';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 
 type Props = {
   setLayer: (type: 'front' | 'back' | 'forward' | 'backward') => void;

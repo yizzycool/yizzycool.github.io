@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { zip } from 'lodash';
 
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 
 type Props = {
   discardActiveObject: () => void;

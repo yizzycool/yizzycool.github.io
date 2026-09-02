@@ -15,10 +15,9 @@ import PasteAction from '@/components/common/action-button/paste';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
 import Config from './config';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import PromptResult from '../prompt-result';
 import SectionGap from '../../common/section-gap';
-import Snackbar from '@/components/common/snackbar';
 import LabelBar from '../../common/label-bar';
 
 export default function WriterApi() {
@@ -36,8 +35,6 @@ export default function WriterApi() {
     writeStreaming,
     updateWriter,
     downloadModel,
-    error,
-    resetError,
   } = useAiWriter();
 
   const onChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
@@ -139,8 +136,6 @@ export default function WriterApi() {
 
       {/* Result */}
       <PromptResult results={results} isProcessing={isProcessing} />
-
-      <Snackbar variant="error" open={error} onClose={resetError} />
     </>
   );
 }

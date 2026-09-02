@@ -7,8 +7,8 @@ import { size } from 'lodash';
 
 import { cn } from '@/utils/cn';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
-import Button from '@/components/common/button';
-import HotkeyBadge from '@/components/common/badge/hotkey';
+import { Button } from '@/components/common/button';
+import { HotkeyBadge } from '@/components/common/badge';
 
 type Props = {
   label: string;

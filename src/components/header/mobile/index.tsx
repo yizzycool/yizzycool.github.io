@@ -14,7 +14,7 @@ import SearchDialog from '@/components/common/dialog/search';
 import GeneralLink from './general-link';
 import SocialIcons from '@/components/common/social-icons';
 import Drawer from '@/components/common/drawer';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import BuyMeACoffee from '@/components/common/buy-me-a-coffee';
 
 type HeaderMobileProps = {

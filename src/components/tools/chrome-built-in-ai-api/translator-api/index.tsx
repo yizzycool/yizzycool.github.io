@@ -17,7 +17,6 @@ import SpeakAction from '@/components/common/action-button/speak';
 import UnsupportedLanguagePairCard from './unsupported-language-pair-card';
 import InlineDownloadCard from './inline-download-card';
 import SectionGap from '../../common/section-gap';
-import Snackbar from '@/components/common/snackbar';
 
 export default function TranslatorApi() {
   const [text, setText] = useState('');
@@ -29,7 +28,6 @@ export default function TranslatorApi() {
     hasCheckedAIStatus,
     isApiSupported,
     availability,
-    error,
     options,
     translator,
     translate,
@@ -37,7 +35,6 @@ export default function TranslatorApi() {
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
-    resetError,
   } = useAiTranslator();
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -202,8 +199,6 @@ export default function TranslatorApi() {
           </div>
         </div>
       </>
-
-      <Snackbar variant="error" open={error} onClose={resetError} />
     </>
   );
 }

@@ -17,7 +17,6 @@ import {
 } from './config-panel/data/background';
 import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
-import Snackbar from '@/components/common/snackbar';
 import Config from './config-panel';
 
 export const DEFAULT_CANVAS_CONFIG: CanvasConfig = {
@@ -112,13 +111,6 @@ export default function PicMergeStudio() {
 
       {/* Settings */}
       <Config fabricHelper={fabricHelper} configHelper={configHelper} />
-
-      <Snackbar
-        variant="error"
-        open={false}
-        onClose={() => {}}
-        // open={error}
-      />
     </div>
   );
 }

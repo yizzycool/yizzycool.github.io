@@ -16,7 +16,6 @@ export default function useAiLanguageDetector() {
   const {
     availability,
     setAvailability,
-    error,
     setError,
     downloadProgress,
     setDownloadProgress,
@@ -84,18 +83,14 @@ export default function useAiLanguageDetector() {
     return results;
   };
 
-  const resetError = () => setError(false);
-
   return {
     hasCheckedAIStatus,
     isApiSupported,
     availability,
-    error,
     detect,
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
-    resetError,
   };
 }
 

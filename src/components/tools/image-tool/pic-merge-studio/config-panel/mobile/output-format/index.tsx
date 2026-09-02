@@ -7,10 +7,10 @@ import { Download, ImageDown, X } from 'lucide-react';
 
 import { useControlDrawer } from '../hooks/use-control-drawer';
 import Label from '@/components/common/label';
-import ButtonTabs from '@/components/common/tabs/button';
+import { PillTabs } from '@/components/common/tabs';
 import IconTextButton from '../icon-text-button';
 import BaseDialog from '@/components/common/dialog/base';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 
 type Props = {
   configHelper: ConfigHelper;
@@ -41,7 +41,7 @@ export default function OutputFormat({ configHelper, exportCanvas }: Props) {
             Output Format
           </Label>
 
-          <ButtonTabs
+          <PillTabs
             tabs={['png', 'jpeg', 'svg']}
             onChange={(tab) => updateOutputFormat(tab as CanvasExportFormat)}
             size="sm"

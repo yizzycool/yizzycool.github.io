@@ -8,10 +8,10 @@ import useWindowDevice from '@/hooks/window/use-window-device';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import Textarea from '@/components/common/textarea';
 import ConfigDialog from '@/components/common/dialog/config';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import Slider from '@/components/common/slider';
 import Divider from '@/components/common/divider';
-import Snackbar from '@/components/common/snackbar';
+import toast from '@/utils/toast';
 
 type Props = {
   options: AILanguageModelCreateOptions;
@@ -25,7 +25,6 @@ export default function Config({
   updateOption,
 }: Props) {
   const [newOptions, setNewOptions] = useState(options);
-  const [isUpdated, setIsUpdated] = useState(false);
 
   const { isMobile } = useWindowDevice();
 
@@ -40,8 +39,7 @@ export default function Config({
   const onUpdate = async () => {
     if (buttonDisabled) return;
     await updateOption(newOptions);
-    // To trigger snackbar
-    setIsUpdated(true);
+    toast.success('Updated!');
     // To close config dialog
     customEventUtils.emit(CustomEvents.common.toggleConfigDialog);
   };
@@ -100,12 +98,6 @@ export default function Config({
           </Button>
         </div>
       </ConfigDialog>
-
-      <Snackbar
-        open={isUpdated}
-        onClose={() => setIsUpdated(false)}
-        content="Updated!"
-      />
     </>
   );
 }

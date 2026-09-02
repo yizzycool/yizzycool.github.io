@@ -8,7 +8,7 @@ import { useMemo, useState } from 'react';
 import { isUndefined } from 'lodash';
 
 import Label from '@/components/common/label';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import Slider from '@/components/common/slider';
 import CheckBox from '@/components/common/checkbox';
 import ColorPicker from '../color-picker';

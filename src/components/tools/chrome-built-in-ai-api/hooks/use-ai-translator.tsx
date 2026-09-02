@@ -21,7 +21,6 @@ export default function useAiTranslator() {
   const {
     availability,
     setAvailability,
-    error,
     setError,
     downloadProgress,
     setDownloadProgress,
@@ -121,13 +120,10 @@ export default function useAiTranslator() {
     return result;
   };
 
-  const resetError = () => setError(false);
-
   return {
     hasCheckedAIStatus,
     isApiSupported,
     availability,
-    error,
     options,
     translator,
     translate,
@@ -135,7 +131,6 @@ export default function useAiTranslator() {
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
-    resetError,
   };
 }
 

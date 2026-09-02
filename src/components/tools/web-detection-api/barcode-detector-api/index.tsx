@@ -18,12 +18,11 @@ import UnsupportedCard from '../unsupported-card';
 import SectionGap from '../../common/section-gap';
 import Tip from '../tip';
 import Card from '@/components/common/card';
-import BaseTabs from '@/components/common/tabs/base';
-import Button from '@/components/common/button';
+import { Tabs } from '@/components/common/tabs';
+import { Button } from '@/components/common/button';
 import ResultCanvas from '../result-canvas';
 import DetectionResult from '../detection-result';
 import RawData from '../raw-data';
-import Snackbar from '@/components/common/snackbar';
 
 const TabList: Array<WebDetectionFileType> = ['image', 'video', 'webcam'];
 
@@ -44,14 +43,8 @@ const ReadableMap = {
 };
 
 export default function BarcodeDetectorApi() {
-  const {
-    hasCheckedApiStatus,
-    isApiSupported,
-    isProcessing,
-    error,
-    detect,
-    resetError,
-  } = useBarcodeDetector();
+  const { hasCheckedApiStatus, isApiSupported, isProcessing, detect } =
+    useBarcodeDetector();
 
   const {
     param,
@@ -131,7 +124,7 @@ export default function BarcodeDetectorApi() {
 
       <Card>
         <div className="flex items-center justify-between">
-          <BaseTabs
+          <Tabs
             tabs={TabList}
             onChange={(tab) => setTab(tab as WebDetectionFileType)}
           />
@@ -179,8 +172,6 @@ export default function BarcodeDetectorApi() {
       <SectionGap size="sm" />
 
       <RawData results={results} />
-
-      <Snackbar variant="error" open={error} onClose={resetError} />
     </>
   );
 }

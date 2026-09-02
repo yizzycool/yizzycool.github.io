@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { get, map } from 'lodash';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import Badge from '@/components/common/badge';
+import { Badge } from '@/components/common/badge';
 
 type Props = { article: BlogArticle };
 

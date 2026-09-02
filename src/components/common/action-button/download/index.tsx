@@ -3,7 +3,7 @@
 import type { ActionButtonProps } from '@/types/common/action-button';
 import { Download } from 'lucide-react';
 import useDisplay from '../hooks/use-display';
-import Button from '../../button';
+import { Button } from '../../button';
 
 interface DownloadActionProps extends ActionButtonProps {
   blob?: Blob | null;

@@ -4,6 +4,7 @@ import type { ChangeEvent } from 'react';
 import { useRef, useState, useCallback } from 'react';
 import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
 import { useToolHistory } from '@/hooks/tools/use-tool-history';
+import toast from '@/utils/toast';
 
 export type QrCodeLevel = 'L' | 'M' | 'Q' | 'H';
 
@@ -24,7 +25,6 @@ export default function useQrCodeGenerator() {
   const [bgColor, setBgColor] = useState('#ffffff');
   const [margin, setMargin] = useState(2);
   const [level, setLevel] = useState<QrCodeLevel>('M');
-  const [success, setSuccess] = useState<string | null>(null);
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -71,7 +71,7 @@ export default function useQrCodeGenerator() {
         });
       }
 
-      setSuccess('QR Code generated successfully');
+      toast.success('QR Code generated successfully');
     },
     [inputText, size, fgColor, bgColor, margin, level, addHistory]
   );
@@ -85,7 +85,7 @@ export default function useQrCodeGenerator() {
     if (data.bgColor) setBgColor(data.bgColor);
     if (typeof data.margin === 'number') setMargin(data.margin);
     if (data.level) setLevel(data.level);
-    setSuccess('QR Code restored from history');
+    toast.success('QR Code restored from history');
   }, []);
 
   const onDownload = useCallback(() => {
@@ -101,7 +101,7 @@ export default function useQrCodeGenerator() {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      setSuccess('QR Code downloaded successfully');
+      toast.success('QR Code downloaded successfully');
     } catch (err) {
       console.error('Failed to download QR code:', err);
     }
@@ -123,7 +123,7 @@ export default function useQrCodeGenerator() {
             await navigator.clipboard.write([
               new ClipboardItem({ 'image/png': blob }),
             ]);
-            setSuccess('QR Code image copied to clipboard');
+            toast.success('QR Code image copied to clipboard');
             return;
           } catch (writeErr) {
             console.warn(
@@ -133,16 +133,14 @@ export default function useQrCodeGenerator() {
           }
         }
         await navigator.clipboard.writeText(qrValue);
-        setSuccess('QR Code content copied to clipboard');
+        toast.success('QR Code content copied to clipboard');
       });
     } catch (err) {
       console.error('Failed to copy QR code:', err);
       try {
         await navigator.clipboard.writeText(qrValue);
-        setSuccess('QR Code content copied to clipboard');
-      } catch (fallbackErr) {
-        console.error('Fallback clipboard write failed:', fallbackErr);
-      }
+        toast.success('QR Code text copied to clipboard');
+      } catch (_e) {}
     }
   }, [qrValue]);
 
@@ -182,8 +180,6 @@ export default function useQrCodeGenerator() {
     setMargin,
     level,
     setLevel,
-    success,
-    setSuccess,
     inputRef,
     canvasRef,
     historyList,

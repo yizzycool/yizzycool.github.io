@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 
 import { useControlDrawer } from '../hooks/use-control-drawer';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import IconTextButton from '../icon-text-button';
 import BottomDrawer from '../bottom-drawer';
 import GroupTitle from '../group-title';

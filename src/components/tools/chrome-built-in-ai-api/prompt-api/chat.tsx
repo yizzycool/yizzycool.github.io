@@ -6,7 +6,7 @@ import { useRef, useState } from 'react';
 import { slice, last, size, isEmpty, trim } from 'lodash';
 
 import ProseMarkdown from '@/components/common/markdown/prose-markdown';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import ScrollToBottom from '@/components/common/scroll-to-bottom';
 import useAutoScrollToBottom from '@/hooks/dom/use-auto-scroll-to-bottom';
 

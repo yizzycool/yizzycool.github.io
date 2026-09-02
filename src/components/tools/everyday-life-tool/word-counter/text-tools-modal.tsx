@@ -6,7 +6,7 @@ import type { TransformAction } from './hooks/use-word-counter';
 import { Wand2, X } from 'lucide-react';
 
 import BaseDialog from '@/components/common/dialog/base';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 
 type ToolItem = {
   label: string;

@@ -8,7 +8,7 @@ import { useControlDrawer } from '../hooks/use-control-drawer';
 import IconTextButton from '../icon-text-button';
 import BottomDrawer from '../bottom-drawer';
 import GroupTitle from '../group-title';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 
 type Props = {
   hasImageSrc: boolean;

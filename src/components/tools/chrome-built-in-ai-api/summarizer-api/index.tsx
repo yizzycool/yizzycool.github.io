@@ -15,10 +15,9 @@ import PasteAction from '@/components/common/action-button/paste';
 import DeleteAction from '@/components/common/action-button/delete';
 import Textarea from '@/components/common/textarea';
 import Config from './config';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import PromptResult from '../prompt-result';
 import SectionGap from '../../common/section-gap';
-import Snackbar from '@/components/common/snackbar';
 import LabelBar from '../../common/label-bar';
 
 export default function SummarizerApi() {
@@ -30,7 +29,6 @@ export default function SummarizerApi() {
     hasCheckedAIStatus,
     isApiSupported,
     // availability,
-    error,
     options,
     isOptionUpdating,
     // summarize,
@@ -39,7 +37,6 @@ export default function SummarizerApi() {
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
-    resetError,
   } = useAiSummarizer();
 
   const onPasteText = (value: string) => {
@@ -141,8 +138,6 @@ export default function SummarizerApi() {
 
       {/* Result */}
       <PromptResult results={results} isProcessing={isProcessing} />
-
-      <Snackbar variant="error" open={error} onClose={resetError} />
     </>
   );
 }

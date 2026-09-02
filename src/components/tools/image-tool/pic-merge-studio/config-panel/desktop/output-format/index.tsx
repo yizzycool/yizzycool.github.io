@@ -6,7 +6,7 @@ import type { CanvasExportFormat } from '../../../types/config';
 import { ImageDown } from 'lucide-react';
 
 import Label from '@/components/common/label';
-import ButtonTabs from '@/components/common/tabs/button';
+import { PillTabs } from '@/components/common/tabs';
 
 type Props = {
   configHelper: ConfigHelper;
@@ -26,7 +26,7 @@ export default function OutputFormat({ configHelper }: Props) {
         Output Format
       </Label>
 
-      <ButtonTabs
+      <PillTabs
         tabs={['png', 'jpeg']}
         onChange={(tab) => updateOutputFormat(tab as CanvasExportFormat)}
         size="sm"

@@ -1,14 +1,12 @@
 'use client';
 
-import type { HotkeySymbol } from '.';
-
 import { useMemo } from 'react';
 
 import { TooltipPopup, TooltipRoot, TooltipTrigger } from '../../tooltip';
 
 type HotkeyTooltipProps = {
   isMac: boolean;
-  symbol: HotkeySymbol;
+  symbol: string;
   children: React.ReactElement<Record<string, unknown>>;
 };
 

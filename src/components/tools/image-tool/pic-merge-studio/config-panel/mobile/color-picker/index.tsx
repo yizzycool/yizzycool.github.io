@@ -5,7 +5,7 @@ import { HexColorPicker } from 'react-colorful';
 import { useState } from 'react';
 
 import BaseDialog from '@/components/common/dialog/base';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 
 type Props = {
   onColorPicked: (color: string) => void;

@@ -2,7 +2,7 @@
 
 import { X } from 'lucide-react';
 import BaseDialog from '../base';
-import Button from '../../button';
+import { Button } from '../../button';
 import { cn } from '@/utils/cn';
 import { ButtonVariant } from '@/types/common/button';
 

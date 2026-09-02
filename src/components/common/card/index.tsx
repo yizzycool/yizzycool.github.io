@@ -1,17 +1,21 @@
 'use client';
 
 import type { Animation, Rounded } from '@/types/common';
+import type { MouseEventHandler, ReactNode, Ref } from 'react';
 
 import { cn } from '@/utils/cn';
 
-type Props = {
+export type CardProps = {
+  ref?: Ref<HTMLDivElement>;
+  id?: string;
   className?: string;
   rounded?: Rounded;
   animation?: Animation;
-  children?: React.ReactNode;
+  children?: ReactNode;
+  onClick?: MouseEventHandler<HTMLDivElement>;
 };
 
-const roundedMap = {
+const roundedMap: Record<Rounded, string> = {
   none: 'rounded-none',
   sm: 'rounded-sm',
   base: 'rounded',
@@ -23,19 +27,25 @@ const roundedMap = {
   full: 'rounded-full',
 };
 
-export default function Card({
+const animations: Record<Animation, string> = {
+  none: '',
+  'fade-in': 'animate-in fade-in duration-500',
+};
+
+export function Card({
+  ref,
+  id,
   className = '',
   rounded = '2xl',
   animation = 'none',
   children,
-}: Props) {
-  const animations = {
-    none: '',
-    'fade-in': 'animate-in fade-in duration-500',
-  };
-
+  onClick,
+}: CardProps) {
   return (
     <div
+      ref={ref}
+      id={id}
+      onClick={onClick}
       className={cn(
         'border p-6 text-left transition-all duration-300',
         'border-neutral-200/90 ring-1 ring-black/[0.03] dark:border-neutral-800 dark:ring-1 dark:ring-white/[0.04]',
@@ -51,3 +61,5 @@ export default function Card({
     </div>
   );
 }
+
+export default Card;

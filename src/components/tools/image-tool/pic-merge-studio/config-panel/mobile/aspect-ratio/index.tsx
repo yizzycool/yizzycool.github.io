@@ -10,7 +10,7 @@ import { clamp } from 'lodash';
 
 import { useControlDrawer } from '../hooks/use-control-drawer';
 import usePreventNumberWheel from '@/hooks/dom/use-prevent-number-wheel';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 import IconTextButton from '../icon-text-button';
 import BottomDrawer from '../bottom-drawer';
 import GroupTitle from '../group-title';

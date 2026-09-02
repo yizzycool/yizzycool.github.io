@@ -15,7 +15,7 @@ import { createPortal } from 'react-dom';
 import { entries, join } from 'lodash';
 
 import { cn } from '@/utils/cn';
-import Button from '../../button';
+import { Button } from '../../button';
 
 // Tranform `http://localhost:1337/<path>` or `http://127.0.0.1:1337/<path>` to `/strapi/<path>` under production mode
 const strapiMediaUrl = process.env.NEXT_PUBLIC_STRAPI_MEDIA_URL;

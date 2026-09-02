@@ -9,4 +9,5 @@ export const TOOLS_WITH_HOTKEY = [
   ToolKeys.qrCodeGenerator,
   ToolKeys.wordCounter,
   ToolKeys.jsonFormatter,
+  ToolKeys.keyCard,
 ];

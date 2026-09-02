@@ -26,7 +26,6 @@ export default function useAiRewriter() {
   const {
     availability,
     setAvailability,
-    error,
     setError,
     downloadProgress,
     setDownloadProgress,
@@ -134,13 +133,10 @@ export default function useAiRewriter() {
     }
   };
 
-  const resetError = () => setError(false);
-
   return {
     hasCheckedAIStatus,
     isApiSupported,
     availability,
-    error,
     options,
     isOptionUpdating: isNull(rewriter),
     rewrite,
@@ -149,7 +145,6 @@ export default function useAiRewriter() {
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
-    resetError,
   };
 }
 

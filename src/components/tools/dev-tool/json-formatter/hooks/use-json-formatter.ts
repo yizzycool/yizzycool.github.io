@@ -9,9 +9,10 @@ import { useToolHistory } from '@/hooks/tools/use-tool-history';
 import { jsonToYaml, jsonToCsv } from '@/utils/tools/json-converter';
 import { TAB_ITEMS, SAMPLE_JSON } from '../constants';
 import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
+import toast from '@/utils/toast';
 
-const successMessages: Record<string, string> = {
-  Format: 'Formatted successfully!',
+export const successMessages: Record<string, string> = {
+  Format: 'JSON formatted successfully!',
   Minify: 'Minified successfully!',
   YAML: 'Converted to YAML!',
   CSV: 'Converted to CSV!',
@@ -30,8 +31,6 @@ export default function useJsonFormatter() {
   const [parsedObject, setParsedObject] = useState<
     object | Array<unknown> | null
   >(null);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -60,7 +59,6 @@ export default function useJsonFormatter() {
       try {
         const obj = JSON.parse(jsonString);
         setParsedObject(obj);
-        setError(null);
 
         if (currentTab === 'Format') {
           setOutput(JSON.stringify(obj, null, 2));
@@ -78,9 +76,9 @@ export default function useJsonFormatter() {
           addHistory(jsonString, { input: jsonString, tab: currentTab });
         }
 
-        setSuccess(successMessages[currentTab] || 'JSON processed!');
+        toast.success(successMessages[currentTab] || 'JSON processed!');
       } catch (err) {
-        setError((err as Error).message || 'Invalid JSON format');
+        toast.error((err as Error).message || 'Invalid JSON format');
         setParsedObject(null);
       }
     },
@@ -89,14 +87,12 @@ export default function useJsonFormatter() {
 
   const onJsonStringChanged = useCallback(
     (event: ChangeEvent<HTMLTextAreaElement>) => {
-      setError(null);
       setInput(event.target.value);
     },
     []
   );
 
   const onPaste = useCallback((value: string) => {
-    setError(null);
     setInput(value);
   }, []);
 
@@ -105,7 +101,7 @@ export default function useJsonFormatter() {
       const text = await navigator.clipboard.readText();
       onPaste(text);
     } catch (err) {
-      setError((err as Error).message || 'Something went wrong!');
+      toast.error((err as Error).message || 'Something went wrong!');
     }
   }, [onPaste]);
 
@@ -114,14 +110,13 @@ export default function useJsonFormatter() {
       if (!output) return;
 
       await navigator.clipboard.writeText(output);
-      setSuccess('Copied to clipboard!');
+      toast.success('Copied to clipboard!');
     } catch (err) {
-      setError((err as Error).message || 'Something went wrong!');
+      toast.error((err as Error).message || 'Something went wrong!');
     }
   }, [output]);
 
   const onLoadSample = useCallback(() => {
-    setError(null);
     setInput(SAMPLE_JSON);
   }, []);
 
@@ -129,7 +124,6 @@ export default function useJsonFormatter() {
     setInput('');
     setOutput('');
     setParsedObject(null);
-    setError(null);
   }, []);
 
   const onTabChanged = useCallback(
@@ -193,10 +187,6 @@ export default function useJsonFormatter() {
     input,
     output,
     parsedObject,
-    success,
-    setSuccess,
-    error,
-    setError,
     syntaxLanguage,
     executeButtonLabel,
     historyList,

@@ -6,7 +6,7 @@ import { Volume2 } from 'lucide-react';
 import { useSyncExternalStore } from 'react';
 
 import useDisplay from '../hooks/use-display';
-import Button from '../../button';
+import { Button } from '../../button';
 
 interface SpeakActionProps extends ActionButtonProps {
   content: string;

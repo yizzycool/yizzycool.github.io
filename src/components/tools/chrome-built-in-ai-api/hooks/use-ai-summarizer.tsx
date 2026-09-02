@@ -26,7 +26,6 @@ export default function useAiSummarizer() {
   const {
     availability,
     setAvailability,
-    error,
     setError,
     downloadProgress,
     setDownloadProgress,
@@ -131,13 +130,10 @@ export default function useAiSummarizer() {
     }
   };
 
-  const resetError = () => setError(false);
-
   return {
     hasCheckedAIStatus,
     isApiSupported,
     availability,
-    error,
     options,
     isOptionUpdating: isNull(summarizer),
     summarize,
@@ -146,7 +142,6 @@ export default function useAiSummarizer() {
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
-    resetError,
   };
 }
 

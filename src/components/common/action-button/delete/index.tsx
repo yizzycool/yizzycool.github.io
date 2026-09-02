@@ -6,7 +6,7 @@ import { MouseEventHandler } from 'react';
 import { Trash2 } from 'lucide-react';
 
 import useDisplay from '../hooks/use-display';
-import Button from '../../button';
+import { Button } from '../../button';
 
 interface DeleteActionProps extends ActionButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;

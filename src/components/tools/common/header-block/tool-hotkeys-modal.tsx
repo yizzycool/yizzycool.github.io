@@ -1,13 +1,13 @@
 'use client';
 
-import type { HotkeyItem } from '@/components/common/badge/hotkey';
+import type { HotkeyItem } from '@/components/common/badge';
 
 import { X, Keyboard, CircleAlert } from 'lucide-react';
 
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import BaseDialog from '@/components/common/dialog/base';
-import HotkeyBadge from '@/components/common/badge/hotkey';
-import Button from '@/components/common/button';
+import { HotkeyBadge } from '@/components/common/badge';
+import { Button } from '@/components/common/button';
 import {
   TooltipPopup,
   TooltipRoot,
@@ -64,7 +64,6 @@ export function ToolHotkeysModal({
           size="base"
           rounded="full"
           icon={X}
-          iconClassName="transition-transform duration-300 group-hover:rotate-90"
           onClick={onClose}
           ariaLabel="Close keyboard shortcuts"
         />

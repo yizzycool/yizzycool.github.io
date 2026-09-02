@@ -26,10 +26,7 @@ export default function useAiProofreader() {
   const {
     availability,
     setAvailability,
-    error,
     setError,
-    errorMessage,
-    setErrorMessage,
     downloadProgress,
     setDownloadProgress,
     hasCheckedAIStatus,
@@ -112,20 +109,15 @@ export default function useAiProofreader() {
     } catch (e) {
       console.log('proofread error:', e);
       const msg = (e as Error).message;
-      setError(true);
-      setErrorMessage(msg);
+      setError(msg);
       return null;
     }
   };
-
-  const resetError = () => setError(false);
 
   return {
     hasCheckedAIStatus,
     isApiSupported,
     availability,
-    error,
-    errorMessage,
     options,
     isOptionUpdating: isNull(proofreader),
     proofread,
@@ -133,7 +125,6 @@ export default function useAiProofreader() {
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
-    resetError,
   };
 }
 

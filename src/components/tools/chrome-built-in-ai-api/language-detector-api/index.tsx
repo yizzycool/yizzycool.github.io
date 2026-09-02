@@ -16,7 +16,6 @@ import SystemChecking from '../system-checking';
 import UnsupportedCard from '../unsupported-card';
 import ModelDownloadCard from '../model-download-card';
 import SectionGap from '../../common/section-gap';
-import Snackbar from '@/components/common/snackbar';
 import LabelBar from '../../common/label-bar';
 
 export default function LanguageDetectorApi() {
@@ -30,8 +29,6 @@ export default function LanguageDetectorApi() {
   const {
     hasCheckedAIStatus,
     isApiSupported,
-    error,
-    resetError,
     shouldDownloadModel,
     downloadModel,
     downloadProgress,
@@ -128,8 +125,6 @@ export default function LanguageDetectorApi() {
           <BarChart results={results} />
         )}
       </div>
-
-      <Snackbar variant="error" open={error} onClose={resetError} />
     </>
   );
 }

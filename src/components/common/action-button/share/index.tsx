@@ -7,7 +7,7 @@ import { useMemo, useSyncExternalStore } from 'react';
 import { isNil } from 'lodash';
 
 import useDisplay from '../hooks/use-display';
-import Button from '../../button';
+import { Button } from '../../button';
 
 interface ShareActionProps extends ActionButtonProps {
   content?: string | File | null | undefined;

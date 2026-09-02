@@ -9,7 +9,7 @@ import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import strapiUtils from '@/utils/strapi-utils';
 import { cn } from '@/utils/cn';
 import RevealSection from '@/components/common/reveal-section';
-import Badge from '@/components/common/badge';
+import { Badge } from '@/components/common/badge';
 import Banner from './banner';
 
 type Props = {

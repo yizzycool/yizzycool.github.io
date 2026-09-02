@@ -2,12 +2,11 @@
 
 import type { QrCodeHistoryData } from './hooks/use-qr-code-generator';
 
-import { Info, Link } from 'lucide-react';
+import { Link } from 'lucide-react';
 import { isNull, isEmpty } from 'lodash';
 
 import useQrCodeGenerator from './hooks/use-qr-code-generator';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
-import Snackbar from '@/components/common/snackbar';
 import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
 import ExecuteBar from '../../common/execute-bar';
@@ -34,8 +33,6 @@ export default function QrCodeGenerator() {
     setMargin,
     level,
     setLevel,
-    success,
-    setSuccess,
     inputRef,
     canvasRef,
     historyList,
@@ -140,15 +137,6 @@ export default function QrCodeGenerator() {
           />
         </div>
       </div>
-
-      {/* Success Notification */}
-      <Snackbar
-        variant="success"
-        open={!!success}
-        icon={Info}
-        onClose={() => setSuccess(null)}
-        content={success || ''}
-      />
     </>
   );
 }

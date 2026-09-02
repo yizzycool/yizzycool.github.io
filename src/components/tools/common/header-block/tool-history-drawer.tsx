@@ -15,7 +15,7 @@ import {
 import { cn } from '@/utils/cn';
 import { HistoryItem } from '@/hooks/tools/use-tool-history';
 import Drawer from '@/components/common/drawer';
-import Button from '@/components/common/button';
+import { Button } from '@/components/common/button';
 
 export interface ToolHistoryDrawerProps<T = unknown> {
   isOpen: boolean;

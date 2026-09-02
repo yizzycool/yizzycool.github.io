@@ -20,13 +20,8 @@ export default function useBarcodeDetector() {
     getServerSnapshot
   );
 
-  const {
-    error,
-    setError,
-    isProcessing,
-    setIsProcessing,
-    hasCheckedApiStatus,
-  } = useApiCommon({ isApiSupported });
+  const { setError, isProcessing, setIsProcessing, hasCheckedApiStatus } =
+    useApiCommon({ isApiSupported });
 
   const detect = async (
     image: HTMLImageElement | HTMLCanvasElement
@@ -38,21 +33,19 @@ export default function useBarcodeDetector() {
       setIsProcessing(false);
       return results;
     } catch (_e) {
-      setError(true);
+      setError(
+        'Barcode detection failed! Please check the image format and try again.'
+      );
       setIsProcessing(false);
       return null;
     }
   };
 
-  const resetError = () => setError(false);
-
   return {
     hasCheckedApiStatus,
     isApiSupported,
     isProcessing,
-    error,
     detect,
-    resetError,
   };
 }
 
