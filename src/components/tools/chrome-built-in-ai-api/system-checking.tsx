@@ -2,7 +2,7 @@
 
 import { Loader2 } from 'lucide-react';
 
-import BaseDialog from '@/components/common/dialog/base';
+import { BaseDialog } from '@/components/ui/dialog';
 
 type Props = {
   isOpen?: boolean;

@@ -1,10 +1,10 @@
 'use client';
 
 import { Palette } from 'lucide-react';
-import Label from '@/components/common/label';
-import ColorPicker from '@/components/common/color-picker';
-import Card from '@/components/common/card';
-import Chip from '@/components/common/chip';
+import { Label } from '@/components/ui/label';
+import { ColorPicker } from '@/components/ui/color-picker';
+import { Card } from '@/components/ui/card';
+import { Chip } from '@/components/ui/chip';
 import SettingHeader from '../../common/setting-header';
 
 export type ColorPresetItem = {

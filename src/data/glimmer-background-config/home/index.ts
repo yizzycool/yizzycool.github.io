@@ -1,4 +1,4 @@
-import { GlimmerBackgroundConfig } from '@/components/common/glimmer-background';
+import { GlimmerBackgroundConfig } from '@/components/ui/glimmer-background';
 
 const commonConfig: GlimmerBackgroundConfig = {
   size: 'w-96 h-96',

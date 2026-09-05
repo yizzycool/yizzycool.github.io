@@ -11,7 +11,7 @@ import Breadcrumb from './breadcrumb';
 import Tags from './tags';
 import Metadata from './metadata';
 import Banner from './banner';
-import ProseMarkdown from '@/components/common/markdown/prose-markdown';
+import { ProseMarkdown } from '@/components/shared/markdown';
 import { TocDesktop, TocMobile } from './toc';
 import SeriesGuide from './series-guide';
 import PrevNextCard from './prev-next-card';

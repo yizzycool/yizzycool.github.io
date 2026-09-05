@@ -6,7 +6,7 @@ import Link from 'next/link';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import { cn } from '@/utils/cn';
 import { ToolDataForFeaturePanel } from '@/data/tools';
-import BuyMeACoffee from '@/components/common/buy-me-a-coffee';
+import { BuyMeACoffee } from '@/components/shared/buy-me-a-coffee';
 
 type Props = {
   side?: 'featurePanel' | 'headerToolsSelector';

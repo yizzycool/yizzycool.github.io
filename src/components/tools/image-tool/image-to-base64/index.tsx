@@ -8,13 +8,13 @@ import Image from 'next/image';
 import { cn } from '@/utils/cn';
 import imageUtils from '@/utils/image-utils';
 import HeaderBlock from '../../common/header-block';
-import FilePicker from '@/components/common/file-picker';
-import CopyAction from '@/components/common/action-button/copy';
+import { FilePicker } from '@/components/ui/file-picker';
+import { CopyAction } from '@/components/shared/action-button';
 import ImageInfoTag from '../image-info-tag';
 import SectionGap from '../../common/section-gap';
 import LabelBar from '../../common/label-bar';
-import Label from '@/components/common/label';
-import Textarea from '@/components/common/textarea';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import toast from '@/utils/toast';
 
 type ImageInfo = {

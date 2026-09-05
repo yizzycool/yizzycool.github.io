@@ -11,13 +11,13 @@ import {
 } from 'lucide-react';
 import type { CardData } from '../../types';
 import { cn } from '@/utils/cn';
-import { Badge } from '@/components/common/badge';
-import { Button } from '@/components/common/button';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   TooltipPopup,
   TooltipRoot,
   TooltipTrigger,
-} from '@/components/common/tooltip';
+} from '@/components/ui/tooltip';
 import { Ref, useState } from 'react';
 
 type ManagementCardHeaderProps = {

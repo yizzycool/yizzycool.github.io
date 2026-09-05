@@ -6,9 +6,9 @@ import { cn } from '@/utils/cn';
 import { Palette } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
-import Label from '@/components/common/label';
-import { Button } from '@/components/common/button';
-import Slider from '@/components/common/slider';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
 import ColorPicker from '../color-picker';
 import { PRESET_BACKGROUND_COLORS } from '../../data/background';
 

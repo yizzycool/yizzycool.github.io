@@ -8,9 +8,9 @@ import { Grid2x2 } from 'lucide-react';
 import { useState } from 'react';
 
 import usePreventNumberWheel from '@/hooks/dom/use-prevent-number-wheel';
-import Label from '@/components/common/label';
-import { PillTabs } from '@/components/common/tabs';
-import { Button } from '@/components/common/button';
+import { Label } from '@/components/ui/label';
+import { PillTabs } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 import { DEFAULT_CANVAS_CONFIG } from '../../..';
 
 const layoutPresets = ['Free Collage', 'Grid Layout'];

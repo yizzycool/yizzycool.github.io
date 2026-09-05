@@ -2,9 +2,9 @@
 
 import type { ToolItem } from './tool-card';
 
-import RevealSection from '../common/reveal-section';
+import { RevealSection } from '@/components/ui/reveal-section';
 import ToolCard from './tool-card';
-import { Badge } from '../common/badge';
+import { Badge } from '@/components/ui/badge';
 
 type ToolGroup = {
   id: string;

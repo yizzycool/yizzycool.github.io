@@ -1,6 +1,6 @@
 'use client';
 
-import type { HotkeyItem } from '@/components/common/badge';
+import type { HotkeyItem } from '@/components/ui/badge';
 
 import { useEffect, useRef } from 'react';
 

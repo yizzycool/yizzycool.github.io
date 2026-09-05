@@ -3,7 +3,7 @@
 import { cn } from '@/utils/cn';
 import { useState } from 'react';
 
-import { Tabs as CommonTabs } from '@/components/common/tabs';
+import { Tabs as CommonTabs } from '@/components/ui/tabs';
 
 type Props = {
   tabs: string[];

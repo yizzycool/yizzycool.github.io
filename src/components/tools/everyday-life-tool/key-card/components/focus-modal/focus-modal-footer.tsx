@@ -1,4 +1,4 @@
-import { HotkeyBadge } from '@/components/common/badge';
+import { HotkeyBadge } from '@/components/ui/badge';
 import { FOCUS_MODAL_SHORTCUTS, FOCUS_MODAL_CLOSE_SHORTCUT } from './constants';
 
 export function FocusModalFooter() {

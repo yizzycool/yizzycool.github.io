@@ -5,9 +5,9 @@ import { Bot, SendHorizonal } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { slice, last, size, isEmpty, trim } from 'lodash';
 
-import ProseMarkdown from '@/components/common/markdown/prose-markdown';
-import { Button } from '@/components/common/button';
-import ScrollToBottom from '@/components/common/scroll-to-bottom';
+import { ProseMarkdown } from '@/components/shared/markdown';
+import { Button } from '@/components/ui/button';
+import { ScrollToBottom } from '@/components/shared/scroll-to-bottom';
 import useAutoScrollToBottom from '@/hooks/dom/use-auto-scroll-to-bottom';
 
 type PromptResult = {

@@ -6,7 +6,7 @@ import { useRef, useState } from 'react';
 import { DragDropProvider, DragEndEvent } from '@dnd-kit/react';
 import { move } from '@dnd-kit/helpers';
 
-import ConfirmDialog from '@/components/common/dialog/confirm';
+import { ConfirmDialog } from '@/components/ui/dialog';
 
 import { ManagementToolbar } from './management-toolbar';
 import { ManagementCardItem } from './management-card-item';

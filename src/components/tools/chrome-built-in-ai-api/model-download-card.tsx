@@ -4,8 +4,8 @@ import { MouseEventHandler } from 'react';
 import { CheckCircle2, DownloadCloud, Loader2, Zap } from 'lucide-react';
 import { isNull } from 'lodash';
 
-import { Button } from '@/components/common/button';
-import BaseDialog from '@/components/common/dialog/base';
+import { Button } from '@/components/ui/button';
+import { BaseDialog } from '@/components/ui/dialog';
 
 type Props = {
   isOpen?: boolean;

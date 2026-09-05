@@ -13,8 +13,8 @@ import {
 } from 'lucide-react';
 import { useMemo } from 'react';
 
-import Card from '@/components/common/card';
-import CardTitle from '@/components/common/card/title';
+import { Card } from '@/components/ui/card';
+import { CardTitle } from '@/components/ui/card';
 import MetricRow from './metric-row';
 
 type MetricsProps = {

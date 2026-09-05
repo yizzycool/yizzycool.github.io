@@ -7,7 +7,7 @@ import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import { xor } from 'lodash';
 
-import Label from '@/components/common/label';
+import { Label } from '@/components/ui/label';
 import { FABRIC_FILTER_TYPE_LIST } from '../../../data/fabric-filters';
 
 type Props = {

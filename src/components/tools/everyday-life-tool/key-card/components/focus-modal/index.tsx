@@ -2,8 +2,8 @@ import type { CardData } from '../../types';
 
 import { useState, useEffect } from 'react';
 
-import BaseDialog from '@/components/common/dialog/base';
-import ProseMarkdown from '@/components/common/markdown/prose-markdown';
+import { BaseDialog } from '@/components/ui/dialog';
+import { ProseMarkdown } from '@/components/shared/markdown';
 
 import { FocusModalHeader } from './focus-modal-header';
 import { FocusModalTabs } from './focus-modal-tabs';

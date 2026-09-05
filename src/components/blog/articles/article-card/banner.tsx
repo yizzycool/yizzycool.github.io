@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import strapiUtils from '@/utils/strapi-utils';
 import { cn } from '@/utils/cn';
-import Shimmer from '@/components/common/skeleton/shimmer';
+import { Shimmer } from '@/components/ui/skeleton';
 
 type Props = {
   article: BlogArticleData;

@@ -9,10 +9,10 @@ import { isUndefined } from 'lodash';
 
 import { useControlDrawer } from '../hooks/use-control-drawer';
 import { PRESET_BORDER_COLORS } from '../../data/background';
-import { Button } from '@/components/common/button';
-import Slider from '@/components/common/slider';
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
 import ColorPicker from '../color-picker';
-import CheckBox from '@/components/common/checkbox';
+import { CheckBox } from '@/components/ui/checkbox';
 import IconTextButton from '../icon-text-button';
 import BottomDrawer from '../bottom-drawer';
 import GroupTitle from '../group-title';

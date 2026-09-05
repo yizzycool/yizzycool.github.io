@@ -1,4 +1,4 @@
-import type { HotkeyItem } from '@/components/common/badge';
+import type { HotkeyItem } from '@/components/ui/badge';
 
 export const FOCUS_MODAL_SHORTCUTS: HotkeyItem[] = [
   {

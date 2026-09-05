@@ -5,10 +5,10 @@ import type { TransformedResults } from './types';
 import { AlertCircle, SquareSquare } from 'lucide-react';
 import { size } from 'lodash';
 
-import CopyAction from '@/components/common/action-button/copy';
-import { Badge } from '@/components/common/badge';
-import Card from '@/components/common/card';
-import CardTitle from '@/components/common/card/title';
+import { CopyAction } from '@/components/shared/action-button';
+import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
+import { CardTitle } from '@/components/ui/card';
 
 type Props = {
   results: TransformedResults;

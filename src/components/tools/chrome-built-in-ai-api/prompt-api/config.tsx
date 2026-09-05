@@ -6,11 +6,11 @@ import { isEqual } from 'lodash';
 
 import useWindowDevice from '@/hooks/window/use-window-device';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
-import Textarea from '@/components/common/textarea';
-import ConfigDialog from '@/components/common/dialog/config';
-import { Button } from '@/components/common/button';
-import Slider from '@/components/common/slider';
-import Divider from '@/components/common/divider';
+import { Textarea } from '@/components/ui/textarea';
+import { ConfigDialog } from '@/components/shared/config-dialog';
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
+import { Divider } from '@/components/ui/divider';
 import toast from '@/utils/toast';
 
 type Props = {

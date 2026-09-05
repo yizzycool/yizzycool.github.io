@@ -5,7 +5,7 @@ import { MapPin } from 'lucide-react';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import { cn } from '@/utils/cn';
 import ProfileData from './data/profile.json';
-import SocialIcons from '@/components/common/social-icons';
+import { SocialIcons } from '@/components/shared/social-icons';
 
 export default function HeaderBlock() {
   const { getFadeUpClass } = useGetTransitionClass();

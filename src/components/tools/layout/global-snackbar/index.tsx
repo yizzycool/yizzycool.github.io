@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import type { ToastEventDetail } from '@/utils/toast';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
-import { Snackbar, useSnackbar } from '@/components/common/snackbar';
+import { Snackbar, useSnackbar } from '@/components/ui/snackbar';
 
 export default function GlobalSnackbar() {
   const { snackbars, triggerSnackbar, removeSnackbar, clearAll } =

@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 import { cn } from '@/utils/cn';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import SocialIcons from '@/components/common/social-icons';
+import { SocialIcons } from '@/components/shared/social-icons';
 import Typewritter from './typewriter';
 
 export default function Home() {

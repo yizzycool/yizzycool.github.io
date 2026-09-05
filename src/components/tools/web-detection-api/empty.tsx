@@ -2,8 +2,8 @@ import type { WebDetectionFileType } from './result-canvas';
 
 import { CameraIcon, Image, Video, Webcam } from 'lucide-react';
 
-import { Button } from '@/components/common/button';
-import FilePicker from '@/components/common/file-picker';
+import { Button } from '@/components/ui/button';
+import { FilePicker } from '@/components/ui/file-picker';
 
 type Props = {
   tab: WebDetectionFileType;

@@ -7,10 +7,10 @@ import { Ban, SquareDashedTopSolid } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { isUndefined } from 'lodash';
 
-import Label from '@/components/common/label';
-import { Button } from '@/components/common/button';
-import Slider from '@/components/common/slider';
-import CheckBox from '@/components/common/checkbox';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
+import { CheckBox } from '@/components/ui/checkbox';
 import ColorPicker from '../color-picker';
 import { PRESET_BORDER_COLORS } from '../../data/background';
 

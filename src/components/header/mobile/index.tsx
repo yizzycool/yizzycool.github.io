@@ -10,12 +10,12 @@ import useWindowDevice from '@/hooks/window/use-window-device';
 import ThemeSelector from '../theme-selector';
 import { ToolsSelectorMobile } from '../tools-selector';
 import BlogSelectorMobile from './blog-selector';
-import SearchDialog from '@/components/common/dialog/search';
+import { SearchDialog } from '@/components/shared/search-dialog';
 import GeneralLink from './general-link';
-import SocialIcons from '@/components/common/social-icons';
-import Drawer from '@/components/common/drawer';
-import { Button } from '@/components/common/button';
-import BuyMeACoffee from '@/components/common/buy-me-a-coffee';
+import { SocialIcons } from '@/components/shared/social-icons';
+import { Drawer } from '@/components/ui/drawer';
+import { Button } from '@/components/ui/button';
+import { BuyMeACoffee } from '@/components/shared/buy-me-a-coffee';
 
 type HeaderMobileProps = {
   categoryArticles: BlogCategory;

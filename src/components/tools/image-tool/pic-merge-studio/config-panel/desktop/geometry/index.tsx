@@ -11,10 +11,10 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
-import Label from '@/components/common/label';
-import { Button } from '@/components/common/button';
-import Slider from '@/components/common/slider';
-import CheckBox from '@/components/common/checkbox';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
+import { CheckBox } from '@/components/ui/checkbox';
 
 type Props = {
   imageConfig: ImageConfig;

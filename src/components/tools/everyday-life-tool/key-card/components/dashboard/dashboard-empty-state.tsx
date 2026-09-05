@@ -1,5 +1,5 @@
 import { Keyboard, Settings, RotateCcw } from 'lucide-react';
-import { Button } from '@/components/common/button';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/utils/cn';
 
 type DashboardEmptyStateProps = {

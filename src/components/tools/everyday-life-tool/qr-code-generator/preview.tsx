@@ -8,9 +8,9 @@ import { QRCodeCanvas } from 'qrcode.react';
 
 import { cn } from '@/utils/cn';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
-import { Button } from '@/components/common/button';
-import { HotkeyBadge } from '@/components/common/badge';
-import Card from '@/components/common/card';
+import { Button } from '@/components/ui/button';
+import { HotkeyBadge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
 
 type Props = {
   canvasRef: RefObject<HTMLCanvasElement | null>;

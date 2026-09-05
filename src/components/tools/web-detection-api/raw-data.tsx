@@ -1,9 +1,9 @@
 'use client';
 
 import { Braces } from 'lucide-react';
-import CopyAction from '@/components/common/action-button/copy';
-import Card from '@/components/common/card';
-import CardTitle from '@/components/common/card/title';
+import { CopyAction } from '@/components/shared/action-button';
+import { Card } from '@/components/ui/card';
+import { CardTitle } from '@/components/ui/card';
 
 type Props = {
   results:

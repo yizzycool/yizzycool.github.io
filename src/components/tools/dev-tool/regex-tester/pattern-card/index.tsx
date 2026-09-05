@@ -3,11 +3,11 @@
 import { AlertCircle, Settings2 } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
-import CopyAction from '@/components/common/action-button/copy';
-import Card from '@/components/common/card';
+import { CopyAction } from '@/components/shared/action-button';
+import { Card } from '@/components/ui/card';
 import PatternVisualizer from './pattern-visualizer';
 import FlagSelector from './flag-selector';
-import CardTitle from '@/components/common/card/title';
+import { CardTitle } from '@/components/ui/card';
 
 type Props = {
   pattern: string;

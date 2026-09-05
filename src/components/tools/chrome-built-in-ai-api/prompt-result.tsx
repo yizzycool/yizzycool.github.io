@@ -2,8 +2,8 @@ import { cn } from '@/utils/cn';
 import { Cpu, List, ScrollText } from 'lucide-react';
 import { isEmpty } from 'lodash';
 
-import ProseMarkdown from '@/components/common/markdown/prose-markdown';
-import CopyAction from '@/components/common/action-button/copy';
+import { ProseMarkdown } from '@/components/shared/markdown';
+import { CopyAction } from '@/components/shared/action-button';
 import LabelBar from '../common/label-bar';
 
 type Props = {

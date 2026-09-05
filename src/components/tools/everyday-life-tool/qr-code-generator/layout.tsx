@@ -4,10 +4,10 @@ import type { QrCodeLevel } from './hooks/use-qr-code-generator';
 
 import { Frame, LayoutTemplate, ShieldCheck } from 'lucide-react';
 
-import Label from '@/components/common/label';
-import Card from '@/components/common/card';
-import Slider from '@/components/common/slider';
-import Chip from '@/components/common/chip';
+import { Label } from '@/components/ui/label';
+import { Card } from '@/components/ui/card';
+import { Slider } from '@/components/ui/slider';
+import { Chip } from '@/components/ui/chip';
 import SettingHeader from '../../common/setting-header';
 
 type Props = {

@@ -3,7 +3,7 @@ import type { CardData } from '../../types';
 import { X, Pencil, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
-import { Button } from '@/components/common/button';
+import { Button } from '@/components/ui/button';
 
 import { FocusModalTags } from './focus-modal-tags';
 

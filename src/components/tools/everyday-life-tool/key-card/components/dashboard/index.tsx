@@ -3,7 +3,7 @@ import type { CardData } from '../../types';
 import { Grid2X2 } from 'lucide-react';
 import { motion } from 'motion/react';
 
-import { Switch } from '@/components/common/switch';
+import { Switch } from '@/components/ui/switch';
 
 import TagFilterBar from '../tag-filter-bar';
 import { DashboardCardItem } from './dashboard-card-item';

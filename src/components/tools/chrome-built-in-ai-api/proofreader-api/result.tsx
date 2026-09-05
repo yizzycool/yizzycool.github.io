@@ -12,13 +12,13 @@ import { forEach, map, isEmpty, join } from 'lodash';
 
 import { cn } from '@/utils/cn';
 import LabelBar from '../../common/label-bar';
-import CopyAction from '@/components/common/action-button/copy';
-import { Button } from '@/components/common/button';
+import { CopyAction } from '@/components/shared/action-button';
+import { Button } from '@/components/ui/button';
 import {
   TooltipPopup,
   TooltipRoot,
   TooltipTrigger,
-} from '@/components/common/tooltip';
+} from '@/components/ui/tooltip';
 
 const Colors: Record<CorrectionType, ColorType> = {
   spelling: {

@@ -9,8 +9,8 @@ import { useState } from 'react';
 
 import usePreventNumberWheel from '@/hooks/dom/use-prevent-number-wheel';
 import { useControlDrawer } from '../hooks/use-control-drawer';
-import { PillTabs } from '@/components/common/tabs';
-import { Button } from '@/components/common/button';
+import { PillTabs } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 import BottomDrawer from '../bottom-drawer';
 import IconTextButton from '../icon-text-button';
 import GroupTitle from '../group-title';

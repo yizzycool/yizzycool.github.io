@@ -8,8 +8,8 @@ import Link from 'next/link';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import strapiUtils from '@/utils/strapi-utils';
 import { cn } from '@/utils/cn';
-import RevealSection from '@/components/common/reveal-section';
-import { Badge } from '@/components/common/badge';
+import { RevealSection } from '@/components/ui/reveal-section';
+import { Badge } from '@/components/ui/badge';
 import Banner from './banner';
 
 type Props = {

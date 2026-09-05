@@ -6,11 +6,11 @@ import {
   TooltipRoot,
   TooltipTrigger,
   TooltipPopup,
-} from '@/components/common/tooltip';
-import Input from '@/components/common/input';
-import { Button } from '@/components/common/button';
-import { PillTabs } from '@/components/common/tabs';
-import { HotkeyBadge } from '@/components/common/badge';
+} from '@/components/ui/tooltip';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { PillTabs } from '@/components/ui/tabs';
+import { HotkeyBadge } from '@/components/ui/badge';
 
 type ToolbarProps = {
   mode: 'dashboard' | 'management';

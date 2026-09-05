@@ -4,7 +4,7 @@ import type { LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 import { cn } from '@/utils/cn';
-import Label from '@/components/common/label';
+import { Label } from '@/components/ui/label';
 
 type Props = {
   label?: ReactNode;

@@ -2,8 +2,8 @@
 
 import { Upload } from 'lucide-react';
 
-import FilePicker from '@/components/common/file-picker';
-import Label from '@/components/common/label';
+import { FilePicker } from '@/components/ui/file-picker';
+import { Label } from '@/components/ui/label';
 
 type Props = {
   handleImagesUpload: (files: FileList) => void;

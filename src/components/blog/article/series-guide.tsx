@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import strapiUtils from '@/utils/strapi-utils';
-import { Badge } from '@/components/common/badge';
+import { Badge } from '@/components/ui/badge';
 
 type Props = {
   collection: BlogCollectionData;

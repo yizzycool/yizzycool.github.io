@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import urlJoin from 'url-join';
 
 import seoUtils from '@/utils/seo-utils';
-import GlimmerBackground from '@/components/common/glimmer-background';
+import { GlimmerBackground } from '@/components/ui/glimmer-background';
 import GlimmerBackgroundConfigs from '@/data/glimmer-background-config/resume';
 import Resume from '@/components/resume';
 

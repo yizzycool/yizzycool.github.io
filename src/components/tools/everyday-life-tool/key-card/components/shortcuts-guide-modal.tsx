@@ -8,9 +8,9 @@ import {
   BookOpen,
 } from 'lucide-react';
 
-import BaseDialog from '@/components/common/dialog/base';
-import { Button } from '@/components/common/button';
-import { HotkeyBadge, HotkeyBadgeLayout } from '@/components/common/badge';
+import { BaseDialog } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { HotkeyBadge, HotkeyBadgeLayout } from '@/components/ui/badge';
 
 type ShortcutsGuideModalProps = {
   isOpen: boolean;

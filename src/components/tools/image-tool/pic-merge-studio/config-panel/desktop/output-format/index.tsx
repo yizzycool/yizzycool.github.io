@@ -5,8 +5,8 @@ import type { CanvasExportFormat } from '../../../types/config';
 
 import { ImageDown } from 'lucide-react';
 
-import Label from '@/components/common/label';
-import { PillTabs } from '@/components/common/tabs';
+import { Label } from '@/components/ui/label';
+import { PillTabs } from '@/components/ui/tabs';
 
 type Props = {
   configHelper: ConfigHelper;

@@ -3,8 +3,8 @@ import type { CardData } from '../../types';
 import { Eye } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
-import Card from '@/components/common/card';
-import { SearchHighlight } from '@/components/common/search-highlight';
+import { Card } from '@/components/ui/card';
+import { SearchHighlight } from '@/components/ui/search-highlight';
 
 import { DashboardTagList } from './dashboard-tag-list';
 

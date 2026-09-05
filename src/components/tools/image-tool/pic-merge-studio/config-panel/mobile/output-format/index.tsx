@@ -6,11 +6,11 @@ import type { CanvasExportFormat } from '../../../types/config';
 import { Download, ImageDown, X } from 'lucide-react';
 
 import { useControlDrawer } from '../hooks/use-control-drawer';
-import Label from '@/components/common/label';
-import { PillTabs } from '@/components/common/tabs';
+import { Label } from '@/components/ui/label';
+import { PillTabs } from '@/components/ui/tabs';
 import IconTextButton from '../icon-text-button';
-import BaseDialog from '@/components/common/dialog/base';
-import { Button } from '@/components/common/button';
+import { BaseDialog } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 
 type Props = {
   configHelper: ConfigHelper;

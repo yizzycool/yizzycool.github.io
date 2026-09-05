@@ -1,5 +1,5 @@
 import { cn } from '@/utils/cn';
-import CopyAction from '@/components/common/action-button/copy';
+import { CopyAction } from '@/components/shared/action-button';
 
 type Props = {
   label: string;

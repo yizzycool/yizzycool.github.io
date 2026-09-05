@@ -4,8 +4,8 @@ import { cn } from '@/utils/cn';
 import { Image, Replace, Trash2, Upload } from 'lucide-react';
 import { useRef } from 'react';
 
-import Label from '@/components/common/label';
-import { Button } from '@/components/common/button';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 
 type Props = {
   hasImageSrc: boolean;

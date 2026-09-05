@@ -1,7 +1,7 @@
 'use client';
 
 import { Search } from 'lucide-react';
-import Input from '@/components/common/input';
+import { Input } from '@/components/ui/input';
 import { cn } from '@/utils/cn';
 import CategoryChip from './category-chip';
 

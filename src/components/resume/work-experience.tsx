@@ -4,7 +4,7 @@ import { Check, ExternalLink } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
 import ExperienceData from './data/experiences.json';
-import RevealSection from '@/components/common/reveal-section';
+import { RevealSection } from '@/components/ui/reveal-section';
 
 export default function WorkExperience() {
   return (

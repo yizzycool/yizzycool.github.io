@@ -6,7 +6,7 @@ import { Check, ChevronDown, Globe, Search, X } from 'lucide-react';
 import { isEmpty, filter, startsWith } from 'lodash';
 
 import intlUtils from '@/utils/intl-utils';
-import BaseDialog from '@/components/common/dialog/base';
+import { BaseDialog } from '@/components/ui/dialog';
 import BCP47 from '@/components/tools/chrome-built-in-ai-api/translator-api/data/bcp-47';
 
 export default function LanguageSelector({

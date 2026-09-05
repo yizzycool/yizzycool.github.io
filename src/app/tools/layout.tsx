@@ -1,10 +1,10 @@
 import '@/styles/globals.css';
-import GlimmerBackground from '@/components/common/glimmer-background';
+import { GlimmerBackground } from '@/components/ui/glimmer-background';
 import GlimmerBackgroundConfigs from '@/data/glimmer-background-config/tools';
 import FeaturePanel from '@/components/tools/layout/feature-panel';
 import VerticalLine from '@/components/blog/layout/vertical-line';
 import AboutBlock from '@/components/tools/common/about-block';
-import ScrollToTop from '@/components/common/scroll-to-top';
+import { ScrollToTop } from '@/components/shared/scroll-to-top';
 import GlobalSnackbar from '@/components/tools/layout/global-snackbar';
 
 export default function RootLayout({

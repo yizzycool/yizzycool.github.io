@@ -1,7 +1,7 @@
 'use client';
 
 import EducationData from './data/educations.json';
-import RevealSection from '@/components/common/reveal-section';
+import { RevealSection } from '@/components/ui/reveal-section';
 import { cn } from '@/utils/cn';
 
 export default function Education() {

@@ -9,7 +9,7 @@ import { get } from 'lodash';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import CategoryAccordionItem from './category-accordion-item';
-import BuyMeACoffee from '@/components/common/buy-me-a-coffee';
+import { BuyMeACoffee } from '@/components/shared/buy-me-a-coffee';
 
 type Props = {
   categoryArticles: BlogCategory;

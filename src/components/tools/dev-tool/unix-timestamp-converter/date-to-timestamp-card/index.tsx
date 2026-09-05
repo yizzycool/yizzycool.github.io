@@ -4,10 +4,10 @@ import { useMemo, useState } from 'react';
 import { CalendarDays } from 'lucide-react';
 import { isNumber } from 'lodash';
 
-import Card from '@/components/common/card';
+import { Card } from '@/components/ui/card';
 import DateInput from './date-input';
-import CopyAction from '@/components/common/action-button/copy';
-import CardTitle from '@/components/common/card/title';
+import { CopyAction } from '@/components/shared/action-button';
+import { CardTitle } from '@/components/ui/card';
 
 type DateInput = {
   year?: number;

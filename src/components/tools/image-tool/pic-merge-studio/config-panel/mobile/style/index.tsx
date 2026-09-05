@@ -4,7 +4,7 @@ import { Image, Palette } from 'lucide-react';
 import { round } from 'lodash';
 
 import { useControlDrawer } from '../hooks/use-control-drawer';
-import Slider from '@/components/common/slider';
+import { Slider } from '@/components/ui/slider';
 import IconTextButton from '../icon-text-button';
 import BottomDrawer from '../bottom-drawer';
 import GroupTitle from '../group-title';

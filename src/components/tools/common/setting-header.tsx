@@ -9,7 +9,7 @@ import {
   TooltipPopup,
   TooltipRoot,
   TooltipTrigger,
-} from '@/components/common/tooltip';
+} from '@/components/ui/tooltip';
 
 type Props = {
   label: string;

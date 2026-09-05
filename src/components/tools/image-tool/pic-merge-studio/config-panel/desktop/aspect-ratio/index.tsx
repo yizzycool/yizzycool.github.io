@@ -9,8 +9,8 @@ import { useState } from 'react';
 import { clamp } from 'lodash';
 
 import usePreventNumberWheel from '@/hooks/dom/use-prevent-number-wheel';
-import Label from '@/components/common/label';
-import { Button } from '@/components/common/button';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { PRESET_ASPECT_RATIOS } from '../../data/aspect-ratio';
 
 const MIN_SIZE = 1;

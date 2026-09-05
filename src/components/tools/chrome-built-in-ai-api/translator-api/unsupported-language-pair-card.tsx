@@ -3,8 +3,8 @@ import { X } from 'lucide-react';
 import intlUtils from '@/utils/intl-utils';
 import { cn } from '@/utils/cn';
 
-import Card from '@/components/common/card';
-import { Badge } from '@/components/common/badge';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 export default function UnsupportedLanguagePairCard({
   options,

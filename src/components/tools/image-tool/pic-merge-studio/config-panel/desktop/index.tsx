@@ -6,7 +6,7 @@ import type { ConfigHelper } from '../../types/config-helper';
 import { cn } from '@/utils/cn';
 import { Download } from 'lucide-react';
 
-import { Button } from '@/components/common/button';
+import { Button } from '@/components/ui/button';
 import UploadBlock from './upload-block';
 import AspectRatio from './aspect-ratio';
 import CanvasLayout from './canvas-layout';

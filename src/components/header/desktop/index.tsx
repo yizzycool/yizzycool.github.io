@@ -2,7 +2,7 @@
 
 import Navigation from './navigation';
 import ThemeSelector from '../theme-selector';
-import SearchDialog from '@/components/common/dialog/search';
+import { SearchDialog } from '@/components/shared/search-dialog';
 
 export default function HeaderDesktop() {
   return (

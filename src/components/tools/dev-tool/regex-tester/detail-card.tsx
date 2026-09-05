@@ -1,9 +1,9 @@
 import { Hash, Info } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
-import Card from '@/components/common/card';
+import { Card } from '@/components/ui/card';
 import { RegexColors } from '.';
-import CardTitle from '@/components/common/card/title';
+import { CardTitle } from '@/components/ui/card';
 
 type Props = {
   matches: Array<RegExpExecArray>;

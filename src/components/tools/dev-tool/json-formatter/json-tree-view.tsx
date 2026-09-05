@@ -7,8 +7,8 @@ import { useMemo, useState } from 'react';
 
 import useDarkModeObserver from '@/hooks/window/use-dark-mode-observer';
 import { cn } from '@/utils/cn';
-import CopyAction from '@/components/common/action-button/copy';
-import CheckBox from '@/components/common/checkbox';
+import { CopyAction } from '@/components/shared/action-button';
+import { CheckBox } from '@/components/ui/checkbox';
 
 const oneLightStyles = {
   background: 'rgb(250, 250, 250)',

@@ -4,8 +4,8 @@ import type { UnsupportedApiType } from './data/unsupported-types';
 
 import { AlertTriangle, Cpu, ExternalLink, Settings } from 'lucide-react';
 
-import { Button } from '@/components/common/button';
-import BaseDialog from '@/components/common/dialog/base';
+import { Button } from '@/components/ui/button';
+import { BaseDialog } from '@/components/ui/dialog';
 import { WEB_DETECT_API_NAMES } from './data/unsupported-types';
 
 type Props = {

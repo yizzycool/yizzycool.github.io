@@ -1,0 +1,153 @@
+'use client';
+
+import type { ExtraProps } from 'react-markdown';
+
+import urlJoin from 'url-join';
+import { ImageOff, X } from 'lucide-react';
+import {
+  AnimatePresence,
+  HTMLMotionProps,
+  LayoutGroup,
+  motion,
+} from 'motion/react';
+import { useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { entries, join } from 'lodash';
+
+import { cn } from '@/utils/cn';
+import { Button } from '@/components/ui/button';
+
+// Tranform `http://localhost:1337/<path>` or `http://127.0.0.1:1337/<path>` to `/strapi/<path>` under production mode
+const strapiMediaUrl = process.env.NEXT_PUBLIC_STRAPI_MEDIA_URL;
+
+const hostReg = new RegExp(/^https?:\/\/(localhost|\d+.\d+.\d+.\d+):1337/);
+
+const aligns = {
+  left: 'mr-auto',
+  center: 'mx-auto',
+  right: 'ml-auto',
+};
+
+type UrlMetadataType = {
+  url: string;
+  align: keyof typeof aligns;
+  width: number | undefined;
+  height: number | undefined;
+};
+
+export function ImageParser(
+  props: React.ComponentPropsWithoutRef<'img'> & ExtraProps
+) {
+  const { src, node, ...rest } = props;
+
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // Parse image url to get some extra metadata like `align`, `width`, `height`, etc.
+  const { url, align, width, height } = useMemo(() => {
+    try {
+      const { origin, pathname, searchParams } = new URL((src as string) || '');
+
+      return {
+        url: urlJoin(origin, pathname).replace(hostReg, strapiMediaUrl || ''),
+        align: searchParams.get('align') || 'left',
+        width: searchParams.get('width')
+          ? parseInt(searchParams.get('width') || '0')
+          : undefined,
+        height: searchParams.get('height')
+          ? parseInt(searchParams.get('height') || '0')
+          : undefined,
+      } as UrlMetadataType;
+    } catch (_e) {
+      return {
+        url: src,
+        align: 'left',
+        width: undefined,
+        height: undefined,
+      } as UrlMetadataType;
+    }
+  }, [src]);
+
+  // Generate unique layoutId to prevent collision
+  const imgLayoutId = useMemo(() => {
+    const { start, end } = node?.position || {};
+    return `${url}-${join(entries(start))}-${join(entries(end))}`;
+  }, [node, url]);
+
+  if (!url)
+    return (
+      <ImageOff
+        size={30}
+        strokeWidth={1}
+        className={cn('opacity-50', aligns[align])}
+      />
+    );
+
+  return (
+    <LayoutGroup>
+      <motion.img
+        src={url}
+        {...(rest as Partial<Omit<HTMLMotionProps<'img'>, 'ref'>>)}
+        loading="lazy"
+        className={cn('my-0 cursor-zoom-in', aligns[align])}
+        style={{ width, height }}
+        layoutId={imgLayoutId}
+        onClick={() => setIsFullscreen(true)}
+      />
+
+      <AnimatePresence>
+        {isFullscreen && (
+          <ImagePopup onClose={() => setIsFullscreen(false)}>
+            <motion.img
+              src={url}
+              {...(rest as Partial<Omit<HTMLMotionProps<'img'>, 'ref'>>)}
+              loading="lazy"
+              className={cn(
+                'object-contain',
+                'max-w-[calc(100vw_-_40px)] md:max-w-[90vw]',
+                'max-h-[calc(100dvh_-_40px)] md:max-h-[85dvh]'
+              )}
+              layoutId={imgLayoutId}
+              onClick={(e) => e.stopPropagation()}
+            />
+          </ImagePopup>
+        )}
+      </AnimatePresence>
+    </LayoutGroup>
+  );
+}
+
+type PopupProps = {
+  onClose: () => void;
+  children: React.ReactNode;
+};
+
+function ImagePopup({ onClose, children }: PopupProps) {
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      onClick={onClose}
+    >
+      {/* Close Button */}
+      <motion.div
+        className="absolute right-4 top-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <Button icon={X} rounded="full" variant="secondary" />
+      </motion.div>
+
+      {/* Backdrop */}
+      <motion.div
+        className="absolute inset-0 z-[-1] bg-neutral-900/20 backdrop-blur-md dark:bg-black/40"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      />
+      {children}
+    </motion.div>,
+    document.body
+  );
+}

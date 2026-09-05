@@ -3,8 +3,8 @@
 import { AlertTriangle, ExternalLink, Settings } from 'lucide-react';
 import Image from 'next/image';
 
-import { Button } from '@/components/common/button';
-import BaseDialog from '@/components/common/dialog/base';
+import { Button } from '@/components/ui/button';
+import { BaseDialog } from '@/components/ui/dialog';
 
 import {
   CHROME_BUILT_IN_AI_API_FLAGS,

@@ -4,9 +4,9 @@ import { useMemo, useState } from 'react';
 import { Hash, RefreshCw } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
-import Card from '@/components/common/card';
+import { Card } from '@/components/ui/card';
 import ResultRow from './result-row';
-import CardTitle from '@/components/common/card/title';
+import { CardTitle } from '@/components/ui/card';
 
 type ConvertedDate = {
   utc?: string;

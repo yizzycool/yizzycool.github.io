@@ -8,8 +8,8 @@ import {
   LayersIcon,
 } from 'lucide-react';
 
-import Label from '@/components/common/label';
-import { Button } from '@/components/common/button';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 
 type Props = {
   setLayer: (type: 'front' | 'back' | 'forward' | 'backward') => void;

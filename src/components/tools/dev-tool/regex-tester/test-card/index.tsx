@@ -1,10 +1,10 @@
 import { Type } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
-import { Badge } from '@/components/common/badge';
-import Card from '@/components/common/card';
+import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
 import HighlightMark from './highlight-mark';
-import CardTitle from '@/components/common/card/title';
+import { CardTitle } from '@/components/ui/card';
 
 type Props = {
   pattern: string;

@@ -3,8 +3,8 @@ import type { CardData } from '../types';
 import { useMemo } from 'react';
 import { Tag as TagIcon } from 'lucide-react';
 
-import { Button } from '@/components/common/button';
-import { CountBadge } from '@/components/common/badge';
+import { Button } from '@/components/ui/button';
+import { CountBadge } from '@/components/ui/badge';
 
 type TagFilterBarProps = {
   cards: CardData[];

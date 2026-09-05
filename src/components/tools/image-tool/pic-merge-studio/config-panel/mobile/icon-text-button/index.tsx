@@ -3,7 +3,7 @@
 import { cn } from '@/utils/cn';
 import { LucideIcon } from 'lucide-react';
 
-import { Button } from '@/components/common/button';
+import { Button } from '@/components/ui/button';
 
 type Props = {
   icon: LucideIcon;

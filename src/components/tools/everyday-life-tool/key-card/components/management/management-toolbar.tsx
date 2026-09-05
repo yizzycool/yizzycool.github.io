@@ -15,8 +15,8 @@ import {
 } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
-import { Button } from '@/components/common/button';
-import Input from '@/components/common/input';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 type ManagementToolbarProps = {
   search: string;

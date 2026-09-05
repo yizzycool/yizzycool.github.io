@@ -1,8 +1,8 @@
 'use client';
 
 import { ClockCheck } from 'lucide-react';
-import Card from '@/components/common/card';
-import CardTitle from '@/components/common/card/title';
+import { Card } from '@/components/ui/card';
+import { CardTitle } from '@/components/ui/card';
 
 type Props = {
   now: Date | null;

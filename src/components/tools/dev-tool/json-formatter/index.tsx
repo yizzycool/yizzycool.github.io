@@ -13,12 +13,12 @@ import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
 import ExecuteBar from '../../common/execute-bar';
 import LabelBar from '../../common/label-bar';
-import DeleteAction from '@/components/common/action-button/delete';
-import Textarea from '@/components/common/textarea';
-import PasteAction from '@/components/common/action-button/paste';
-import { Button } from '@/components/common/button';
-import { Tabs } from '@/components/common/tabs';
-import ProseMarkdown from '@/components/common/markdown/prose-markdown';
+import { DeleteAction } from '@/components/shared/action-button';
+import { Textarea } from '@/components/ui/textarea';
+import { PasteAction } from '@/components/shared/action-button';
+import { Button } from '@/components/ui/button';
+import { Tabs } from '@/components/ui/tabs';
+import { ProseMarkdown } from '@/components/shared/markdown';
 import JsonTreeView from './json-tree-view';
 
 export default function JsonFormatter() {

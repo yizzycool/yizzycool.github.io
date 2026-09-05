@@ -1,6 +1,6 @@
 'use client';
 
-import type { HotkeyItem } from '@/components/common/badge';
+import type { HotkeyItem } from '@/components/ui/badge';
 
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
@@ -10,8 +10,8 @@ import { Star, Clock, Keyboard, ShieldCheck, LucideIcon } from 'lucide-react';
 import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
 import useToolsPreferences from '@/hooks/tools/use-tools-preferences';
 import { TOOLS_WITH_HISTORY, TOOLS_WITH_HOTKEY } from './constants';
-import { Badge } from '@/components/common/badge';
-import { Button } from '@/components/common/button';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   ToolDescriptions,
   ToolIcons,

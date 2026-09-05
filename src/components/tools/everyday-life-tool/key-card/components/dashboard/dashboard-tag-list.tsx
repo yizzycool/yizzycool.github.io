@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 
 import { cn } from '@/utils/cn';
-import { Button } from '@/components/common/button';
-import { SearchHighlight } from '@/components/common/search-highlight';
+import { Button } from '@/components/ui/button';
+import { SearchHighlight } from '@/components/ui/search-highlight';
 
 type DashboardTagListProps = {
   tagsString: string;

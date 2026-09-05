@@ -16,7 +16,7 @@ import {
 import { range } from 'lodash';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import RevealSection from '@/components/common/reveal-section';
+import { RevealSection } from '@/components/ui/reveal-section';
 
 type Props = {
   articles: BlogArticle;

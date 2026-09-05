@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Upload, X } from 'lucide-react';
 
-import BaseDialog from '@/components/common/dialog/base';
-import { Badge } from '@/components/common/badge';
-import { Button } from '@/components/common/button';
-import Chip from '@/components/common/chip';
+import { BaseDialog } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Chip } from '@/components/ui/chip';
 
 type ManagementImportModalProps = {
   isOpen: boolean;

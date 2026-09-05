@@ -92,7 +92,6 @@ export default function useAiTranslator() {
       sourceLanguage: Options.sourceLanguage,
       targetLanguage: Options.targetLanguage,
     }).then((avail) => {
-      console.log(avail);
       setAvailability(avail);
       if (avail === 'available') {
         window.Translator?.create({

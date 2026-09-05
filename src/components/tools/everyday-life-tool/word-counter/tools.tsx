@@ -26,7 +26,7 @@ import {
 import { Fragment, useState } from 'react';
 
 import { cn } from '@/utils/cn';
-import { Button } from '@/components/common/button';
+import { Button } from '@/components/ui/button';
 import TextToolsModal from './text-tools-modal';
 
 export type ToolItem = {

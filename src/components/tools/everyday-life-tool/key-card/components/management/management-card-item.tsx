@@ -7,13 +7,13 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useSortable } from '@dnd-kit/react/sortable';
 
 import { cn } from '@/utils/cn';
-import Card from '@/components/common/card';
-import { Button } from '@/components/common/button';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import {
   TooltipPopup,
   TooltipRoot,
   TooltipTrigger,
-} from '@/components/common/tooltip';
+} from '@/components/ui/tooltip';
 
 import { ManagementCardHeader } from './management-card-header';
 import { ManagementVersionItem } from './management-version-item';

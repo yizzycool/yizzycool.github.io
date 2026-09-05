@@ -1,18 +1,18 @@
 'use client';
 
-import type { HotkeyItem } from '@/components/common/badge';
+import type { HotkeyItem } from '@/components/ui/badge';
 
 import { X, Keyboard, CircleAlert } from 'lucide-react';
 
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
-import BaseDialog from '@/components/common/dialog/base';
-import { HotkeyBadge } from '@/components/common/badge';
-import { Button } from '@/components/common/button';
+import { BaseDialog } from '@/components/ui/dialog';
+import { HotkeyBadge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   TooltipPopup,
   TooltipRoot,
   TooltipTrigger,
-} from '@/components/common/tooltip';
+} from '@/components/ui/tooltip';
 
 const DEFAULT_TOOL_HOTKEYS: HotkeyItem[] = [
   TOOL_HOTKEYS.process,

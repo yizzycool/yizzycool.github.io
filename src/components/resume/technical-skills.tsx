@@ -1,7 +1,7 @@
 'use client';
 
 import SkillsData from './data/skills.json';
-import RevealSection from '@/components/common/reveal-section';
+import { RevealSection } from '@/components/ui/reveal-section';
 import { cn } from '@/utils/cn';
 
 export default function TechnicalSkills() {

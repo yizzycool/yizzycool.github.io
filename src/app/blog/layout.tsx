@@ -1,9 +1,9 @@
 import { fetchCategoryArticles } from '@/utils/strapi-utils';
-import GlimmerBackground from '@/components/common/glimmer-background';
+import { GlimmerBackground } from '@/components/ui/glimmer-background';
 import GlimmerBackgroundConfigs from '@/data/glimmer-background-config/blog';
 import LeftPanel from '@/components/blog/layout/left-panel';
 import VerticalLine from '@/components/blog/layout/vertical-line';
-import ScrollToTop from '@/components/common/scroll-to-top';
+import { ScrollToTop } from '@/components/shared/scroll-to-top';
 
 export default async function Layout({
   children,

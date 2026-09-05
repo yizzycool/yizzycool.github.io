@@ -3,8 +3,8 @@ import type { ContentVersion } from '../../types';
 import { Copy, Check } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
-import { Button } from '@/components/common/button';
-import { CountBadge, HotkeyBadge } from '@/components/common/badge';
+import { Button } from '@/components/ui/button';
+import { CountBadge, HotkeyBadge } from '@/components/ui/badge';
 
 type FocusModalTabsProps = {
   contents: ContentVersion[];

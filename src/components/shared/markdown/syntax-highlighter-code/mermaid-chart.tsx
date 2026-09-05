@@ -1,0 +1,171 @@
+'use client';
+
+import { X } from 'lucide-react';
+import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
+import { useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
+import mermaid, { type MermaidConfig } from 'mermaid';
+import { defaultsDeep } from 'lodash';
+
+import useDarkModeObserver from '@/hooks/window/use-dark-mode-observer';
+import { cn } from '@/utils/cn';
+import { Button } from '@/components/ui/button';
+
+const defaultConfig = {
+  startOnLoad: false,
+  theme: 'neutral',
+  flowchart: {
+    useMaxWidth: false, // default: true, SVG will fit container's size automatically
+  },
+};
+
+mermaid.initialize(defaultConfig as MermaidConfig);
+
+const aligns = {
+  left: 'mr-auto',
+  center: 'mx-auto',
+  right: 'ml-auto',
+};
+
+type UrlMetadataType = {
+  look: string;
+  align: keyof typeof aligns;
+  width: number;
+  height: number;
+};
+
+type Props = {
+  code: string;
+  metadata: string; // mermaid?look=<look>&width=<width>&height=<height>
+};
+
+export default function MermaidChart({ code, metadata }: Props) {
+  const [svg, setSvg] = useState<string>();
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const { isDark } = useDarkModeObserver();
+
+  const [randomLayoutId] = useState(
+    () => `mermaid-${Math.random().toString(36).substring(2, 9)}`
+  );
+
+  // Parse query string to get extra metadata like `align`, `width`, `height`, etc.
+  const { look, align, width, height } = useMemo(() => {
+    const searchParams = new URLSearchParams(metadata.replace(/^mermaid/, ''));
+
+    return {
+      look: searchParams.get('look') || 'classic',
+      align: searchParams.get('align') || 'center',
+      width: searchParams.get('width')
+        ? parseInt(searchParams.get('width') || '0')
+        : undefined,
+      height: searchParams.get('height')
+        ? parseInt(searchParams.get('height') || '0')
+        : undefined,
+    } as UrlMetadataType;
+  }, [metadata]);
+
+  // 1. Update mermaid config
+  // 2. Render mermaid when `code` changed
+  useEffect(() => {
+    const render = async () => {
+      mermaid.initialize(
+        defaultsDeep(
+          {
+            theme: isDark ? 'dark' : defaultConfig.theme,
+            look,
+          },
+          defaultConfig
+        ) as MermaidConfig
+      );
+
+      if (!code) return;
+      const { svg } = await mermaid.render(
+        `mermaid-${Math.random().toString(36).substr(2, 9)}`,
+        code
+      );
+      setSvg(svg);
+    };
+
+    render();
+  }, [isDark, look, code]);
+
+  if (!svg) return;
+
+  return (
+    <LayoutGroup>
+      <motion.div
+        layoutId={randomLayoutId}
+        dangerouslySetInnerHTML={{ __html: svg }}
+        onClick={() => setIsFullscreen(true)}
+        className={cn(
+          'block max-h-[400px] w-fit max-w-full',
+          '*:h-full *:max-h-[400px] *:max-w-full',
+          'cursor-zoom-in',
+          aligns[align]
+        )}
+        style={{
+          width: width !== undefined ? `${width}px` : undefined,
+          height: height !== undefined ? `${height}px` : undefined,
+        }}
+      />
+
+      <AnimatePresence>
+        {isFullscreen && (
+          <ImagePopup onClose={() => setIsFullscreen(false)}>
+            <motion.div
+              layoutId={randomLayoutId}
+              className={cn(
+                'max-w-[calc(100vw_-_40px)] md:max-w-[90vw]',
+                'max-h-[calc(100dvh_-_40px)] md:max-h-[85dvh]',
+                '*:max-h-[inherit] *:max-w-[inherit]'
+              )}
+              dangerouslySetInnerHTML={{ __html: svg }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                width: width !== undefined ? `${width}px` : undefined,
+                height: height !== undefined ? `${height}px` : undefined,
+              }}
+            />
+          </ImagePopup>
+        )}
+      </AnimatePresence>
+    </LayoutGroup>
+  );
+}
+
+type PopupProps = {
+  onClose: () => void;
+  children: React.ReactNode;
+};
+
+function ImagePopup({ onClose, children }: PopupProps) {
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      onClick={onClose}
+    >
+      {/* Close Button */}
+      <motion.div
+        className="absolute right-4 top-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <Button icon={X} rounded="full" variant="secondary" />
+      </motion.div>
+
+      {/* Backdrop */}
+      <motion.div
+        className="absolute inset-0 z-[-1] bg-neutral-900/20 backdrop-blur-md dark:bg-black/40"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      />
+      {children}
+    </motion.div>,
+    document.body
+  );
+}

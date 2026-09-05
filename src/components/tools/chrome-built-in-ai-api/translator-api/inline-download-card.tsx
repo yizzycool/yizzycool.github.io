@@ -3,7 +3,7 @@ import { Download } from 'lucide-react';
 import { round } from 'lodash';
 
 import intlUtils from '@/utils/intl-utils';
-import Card from '@/components/common/card';
+import { Card } from '@/components/ui/card';
 
 export default function InlineDownloadCard({
   options,

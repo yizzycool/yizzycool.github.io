@@ -8,7 +8,7 @@ import { useSyncExternalStore } from 'react';
 
 import { cn } from '@/utils/cn';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import Divider from '@/components/common/divider';
+import { Divider } from '@/components/ui/divider';
 
 type Props = { article: BlogArticle };
 

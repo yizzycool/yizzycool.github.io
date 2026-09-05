@@ -4,8 +4,8 @@ import { HexColorPicker } from 'react-colorful';
 import { Palette, Pipette, X } from 'lucide-react';
 import { useState } from 'react';
 
-import BaseDialog from '@/components/common/dialog/base';
-import { Button } from '@/components/common/button';
+import { BaseDialog } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 
 type Props = {
   onColorPicked: (color: string) => void;

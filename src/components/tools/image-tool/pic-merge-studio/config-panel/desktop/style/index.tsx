@@ -3,8 +3,8 @@
 import { Image } from 'lucide-react';
 import { round } from 'lodash';
 
-import Label from '@/components/common/label';
-import Slider from '@/components/common/slider';
+import { Label } from '@/components/ui/label';
+import { Slider } from '@/components/ui/slider';
 
 type Props = {
   opacity: number;

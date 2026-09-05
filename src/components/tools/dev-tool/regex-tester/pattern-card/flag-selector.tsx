@@ -1,4 +1,4 @@
-import { Button } from '@/components/common/button';
+import { Button } from '@/components/ui/button';
 
 type Props = {
   flags: string;

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Pencil, Check, X, FileCode, Eye, Copy, Trash2 } from 'lucide-react';
 import type { ContentVersion } from '../../types';
 import { cn } from '@/utils/cn';
-import ProseMarkdown from '@/components/common/markdown/prose-markdown';
+import { ProseMarkdown } from '@/components/shared/markdown';
 
 type ManagementVersionItemProps = {
   version: ContentVersion;
