@@ -16,6 +16,7 @@ import { cn } from '@/utils/cn';
 import { HistoryItem } from '@/hooks/tools/use-tool-history';
 import { Drawer } from '@/components/ui/drawer';
 import { Button } from '@/components/ui/button';
+import { ConfirmDialog } from '@/components/ui/dialog';
 
 export interface ToolHistoryDrawerProps<T = unknown> {
   isOpen: boolean;
@@ -40,6 +41,7 @@ export function ToolHistoryDrawer<T>({
 }: ToolHistoryDrawerProps<T>) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState<string>('');
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -251,19 +253,35 @@ export function ToolHistoryDrawer<T>({
 
       {/* Footer */}
       {historyList.length > 0 && (
-        <div className="border-neutral-200/80 bg-neutral-50/30 p-3.5 dark:border-neutral-800/80 dark:bg-neutral-900/30">
+        <div className="border-t border-slate-100 bg-slate-50/80 p-3 dark:border-slate-800/80 dark:bg-slate-900/60">
           <Button
-            variant="error"
-            size="sm"
+            variant="ghost"
+            size="base"
             rounded="xl"
             icon={Trash2}
-            onClick={onClear}
-            className="shadow-2xs hover:shadow-xs w-full text-xs font-semibold transition-all"
+            onClick={() => setIsConfirmOpen(true)}
+            className={cn(
+              'w-full border-transparent text-xs font-medium transition-colors',
+              'hover:bg-rose-50 dark:hover:bg-rose-950/40',
+              'text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400',
+              'hover:border-rose-200/60 dark:hover:border-rose-900/40'
+            )}
           >
             Clear All History
           </Button>
         </div>
       )}
+
+      {/* Confirm Clear All Dialog */}
+      <ConfirmDialog
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={onClear}
+        title="Clear All History"
+        message="Are you sure you want to delete all history snapshots? This action cannot be undone."
+        confirmText="Clear All"
+        confirmVariant="error"
+      />
     </Drawer>
   );
 }

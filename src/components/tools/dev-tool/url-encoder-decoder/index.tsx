@@ -1,123 +1,201 @@
 'use client';
 
-import { useState } from 'react';
-import { isNull, isEmpty } from 'lodash';
+import type { UrlEncoderDecoderHistoryData } from './hooks/use-url-encoder-decoder';
 
-import browserUtils from '@/utils/browser-utils';
-import { Code, FileCode, FileCode2, Link2 } from 'lucide-react';
-import HeaderBlock from '../../common/header-block';
+import {
+  Code,
+  FileCode,
+  Link2,
+  Wand2,
+  ArrowRightLeft,
+  FileClock,
+} from 'lucide-react';
+import { isEmpty } from 'lodash';
+
+import {
+  DeleteAction,
+  CopyAction,
+  SwapAction,
+  PasteAction,
+} from '@/components/shared/action-button';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { DeleteAction } from '@/components/shared/action-button';
-import { CopyAction } from '@/components/shared/action-button';
-import { SwapAction } from '@/components/shared/action-button';
-import { PasteAction } from '@/components/shared/action-button';
+import { Card } from '@/components/ui/card';
+import { Tabs } from '@/components/ui/tabs';
+import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
+import useUrlEncoderDecoder from './hooks/use-url-encoder-decoder';
+import { TAB_ITEMS, TAB_ICONS } from './constants';
+
+import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
+import ExecuteBar from '../../common/execute-bar';
 import LabelBar from '../../common/label-bar';
-import toast from '@/utils/toast';
+import QueryParamsTable from './query-params-table';
 
 export default function UrlEncoderDecoder() {
-  const [input, setInput] = useState<string>('');
-  const [output, setOutput] = useState<string>('');
-
-  const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInput(e.target.value);
-  };
-
-  const onClearClick = () => {
-    setInput('');
-    setOutput('');
-  };
-
-  const onEncodeClick = () => {
-    try {
-      const encoded = browserUtils.encodeURI(input);
-      setOutput(encoded);
-    } catch (_e) {
-      toast.error('Encode Error');
-    }
-  };
-
-  const onDecodeClick = () => {
-    try {
-      const decoded = browserUtils.decodeURI(input);
-      setOutput(decoded);
-    } catch (_e) {
-      toast.error('Decode Error');
-    }
-  };
-
-  const onSwapClick = () => {
-    setInput(output);
-    setOutput(input);
-  };
+  const {
+    tab,
+    input,
+    output,
+    baseUrl,
+    queryParams,
+    executeButtonLabel,
+    historyList,
+    isLoadingHistory,
+    inputRef,
+    processUrl,
+    onInputChange,
+    onPaste,
+    onLoadSample,
+    onClear,
+    onSwap,
+    onTabChanged,
+    handleBaseUrlChange,
+    handleParamsChange,
+    onRestoreHistory,
+    renameHistory,
+    removeHistory,
+    clearHistory,
+  } = useUrlEncoderDecoder();
 
   return (
     <>
-      <HeaderBlock />
-
-      <SectionGap />
-
-      {/* Input block */}
-      <LabelBar label="Paste URL below" icon={Link2} htmlFor="url-textarea">
-        <PasteAction onClick={setInput} />
-        <DeleteAction
-          onClick={onClearClick}
-          disabled={isNull(input) || isEmpty(input)}
-        />
-      </LabelBar>
-      <Textarea
-        id="url-textarea"
-        placeholder="Paste the URL or text you want to process here..."
-        onChange={onInputChange}
-        value={input}
-        rows={8}
+      <HeaderBlock<UrlEncoderDecoderHistoryData>
+        historyList={historyList}
+        isLoadingHistory={isLoadingHistory}
+        onRestoreHistory={onRestoreHistory}
+        onRenameHistory={renameHistory}
+        onRemoveHistory={removeHistory}
+        onClearHistory={clearHistory}
+        customShortcuts={[
+          { ...TOOL_HOTKEYS.process, label: 'Execute' },
+          { ...TOOL_HOTKEYS.swap, label: 'Swap Input & Output' },
+          TOOL_HOTKEYS.paste,
+          { ...TOOL_HOTKEYS.copy, label: 'Copy Result' },
+          { ...TOOL_HOTKEYS.clear, label: 'Clear' },
+          TOOL_HOTKEYS.help,
+          TOOL_HOTKEYS.history,
+        ]}
       />
 
       <SectionGap />
 
-      {/* Action buttons */}
-      <div className="flex w-full flex-col items-stretch justify-stretch gap-3 sm:flex-row sm:items-center">
+      {/* Mode Tabs */}
+      <Tabs
+        tabs={[...TAB_ITEMS]}
+        tabIcons={[...TAB_ICONS]}
+        activeTab={tab}
+        onChange={onTabChanged}
+        className="text-nowrap"
+      />
+
+      {/* Input Section */}
+      <LabelBar
+        className="mt-6"
+        label={
+          tab === 'Query Params'
+            ? 'Deconstruct URL or Query String'
+            : `URL to ${tab}`
+        }
+        icon={Link2}
+        htmlFor="url-input-textarea"
+      >
         <Button
-          variant="dark-sky"
-          className="flex-1 font-bold uppercase"
+          variant="ghost-sky"
+          size="xs"
+          rounded="lg"
           icon={FileCode}
-          onClick={onEncodeClick}
+          onClick={onLoadSample}
         >
-          Encode
+          Sample
         </Button>
-        <Button
-          variant="dark-sky"
-          className="flex-1 font-bold uppercase"
-          icon={FileCode2}
-          onClick={onDecodeClick}
-        >
-          Decode
-        </Button>
-        <SwapAction
-          display="icon"
-          onClick={onSwapClick}
-          size="lg"
-          disabled={isEmpty(input) || isEmpty(output)}
+        <PasteAction onClick={onPaste} />
+        <DeleteAction onClick={onClear} disabled={isEmpty(input)} />
+      </LabelBar>
+
+      <Textarea
+        ref={inputRef}
+        id="url-input-textarea"
+        value={input}
+        onChange={onInputChange}
+        rows={6}
+        placeholder={
+          tab === 'Encode'
+            ? 'Paste the URL or text you want to encode...'
+            : tab === 'Decode'
+              ? 'Paste the encoded URL or text you want to decode...'
+              : 'Paste a full URL to break down into query parameters...'
+        }
+      />
+
+      {/* Query Params Visual Editor Table (Only shown in 'Query Params' tab) */}
+      {tab === 'Query Params' && (
+        <div className="mt-6">
+          <QueryParamsTable
+            baseUrl={baseUrl}
+            onBaseUrlChange={handleBaseUrlChange}
+            params={queryParams}
+            onParamsChange={handleParamsChange}
+          />
+        </div>
+      )}
+
+      {tab !== 'Query Params' && (
+        <ExecuteBar
+          label={executeButtonLabel}
+          icon={Wand2}
+          disabled={isEmpty(input)}
+          onClick={() => processUrl()}
+          text={input}
+          hotkeyLabel="Process"
         />
-      </div>
+      )}
 
       <SectionGap />
 
-      {/* Result block */}
-      <LabelBar label="Result" icon={Code} htmlFor="output">
-        <CopyAction
-          content={output}
-          disabled={isNull(output) || isEmpty(output)}
-        />
+      {/* Result Section */}
+      <LabelBar
+        label={`Result (${tab})`}
+        icon={Code}
+        htmlFor="url-output-textarea"
+      >
+        {tab !== 'Query Params' && (
+          <SwapAction
+            display="icon-label"
+            onClick={onSwap}
+            disabled={isEmpty(input) || isEmpty(output)}
+          />
+        )}
+        <CopyAction content={output} disabled={isEmpty(output)} />
       </LabelBar>
-      <Textarea
-        id="output"
-        value={output}
-        placeholder="The results will be displayed here..."
-        rows={8}
-        readOnly
-      />
+
+      {!!output ? (
+        <Textarea
+          id="url-output-textarea"
+          value={output}
+          placeholder="The processed results will be displayed here..."
+          rows={6}
+          readOnly
+        />
+      ) : (
+        <Card className="flex h-48 flex-col items-center justify-center gap-4 text-xs text-slate-500 dark:text-slate-400">
+          <ArrowRightLeft size={20} className="text-slate-400" />
+          <span>
+            Waiting for Input or click &quot;{executeButtonLabel}&quot;...
+          </span>
+        </Card>
+      )}
+
+      {tab === 'Query Params' && (
+        <ExecuteBar
+          label={executeButtonLabel}
+          icon={FileClock}
+          disabled={isEmpty(input)}
+          onClick={() => processUrl()}
+          text={input}
+          hotkeyLabel="Save to History"
+        />
+      )}
     </>
   );
 }
