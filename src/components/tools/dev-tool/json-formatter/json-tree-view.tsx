@@ -78,7 +78,7 @@ export default function JsonTreeView({ data }: Props) {
       {/* Options Bar */}
       <div
         className={cn(
-          'shadow-2xs rounded-t-xl border border-b-0 border-neutral-200/90 bg-white/80 p-3.5 backdrop-blur-md dark:border-neutral-700/80 dark:bg-neutral-900/80'
+          'shadow-2xs rounded-2xl border border-neutral-200/90 bg-white/80 p-3.5 backdrop-blur-md dark:border-neutral-700/80 dark:bg-neutral-900/80'
         )}
       >
         <CheckBox
@@ -89,14 +89,14 @@ export default function JsonTreeView({ data }: Props) {
             options.displayObjectSize,
             options.objectSortKeys,
           ]}
-          wrapperClassName="!space-y-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
+          wrapperClassName="space-y-0 flex flex-wrap items-center gap-y-2 gap-x-4 text-xs"
           onChange={handleOptionChange}
         />
       </div>
       <div
         className={cn(
           'relative flex w-full flex-col overflow-hidden',
-          'rounded-b-xl bg-neutral-100 dark:bg-neutral-800',
+          'rounded-2xl bg-neutral-100 dark:bg-neutral-800',
           'shadow-2xs border border-neutral-200/90 dark:border-neutral-700/80'
         )}
       >

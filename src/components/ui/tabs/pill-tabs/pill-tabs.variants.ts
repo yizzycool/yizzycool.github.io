@@ -28,14 +28,14 @@ export const pillTabsVariantStyles: Record<
     container:
       'border border-neutral-200/80 bg-neutral-100/80 p-1 dark:border-neutral-700/80 dark:bg-neutral-800/80',
     active:
-      'shadow-xs bg-white text-sky-600 dark:bg-neutral-900 dark:text-sky-400 font-semibold',
+      'shadow-xs bg-white text-sky-600 dark:bg-neutral-900 dark:text-sky-400',
     inactive:
       'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200',
   },
   default: {
     container: 'bg-slate-100/80 p-1 shadow-inner dark:bg-neutral-800/80',
     active:
-      'shadow-xs bg-white text-slate-900 dark:bg-neutral-900 dark:text-slate-100 font-semibold',
+      'shadow-xs bg-white text-slate-900 dark:bg-neutral-900 dark:text-slate-100',
     inactive:
       'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200',
   },
@@ -43,22 +43,21 @@ export const pillTabsVariantStyles: Record<
     container:
       'border border-neutral-200/80 bg-neutral-100/70 p-1 dark:border-neutral-800 dark:bg-neutral-900/60',
     active:
-      'shadow-xs bg-white text-slate-900 dark:bg-neutral-800 dark:text-slate-100 font-semibold',
+      'shadow-xs bg-white text-slate-900 dark:bg-neutral-800 dark:text-slate-100',
     inactive:
       'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200',
   },
   primary: {
     container:
       'border border-neutral-200/80 bg-neutral-100/90 p-1 dark:border-neutral-700/80 dark:bg-neutral-800/90',
-    active:
-      'shadow-xs bg-sky-600 text-white dark:bg-sky-500 dark:text-white font-semibold',
+    active: 'shadow-xs bg-sky-600 text-white dark:bg-sky-500 dark:text-white',
     inactive:
       'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200',
   },
   ghost: {
     container: 'bg-neutral-100/50 p-1 dark:bg-neutral-800/40',
     active:
-      'bg-neutral-200/80 text-slate-900 dark:bg-neutral-700/80 dark:text-slate-100 font-semibold',
+      'bg-neutral-200/80 text-slate-900 dark:bg-neutral-700/80 dark:text-slate-100',
     inactive:
       'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200',
   },
@@ -66,7 +65,7 @@ export const pillTabsVariantStyles: Record<
     container:
       'border border-neutral-200/80 bg-transparent p-1 dark:border-neutral-700/80',
     active:
-      'border border-sky-300 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950/80 dark:text-sky-300 font-semibold',
+      'border border-sky-300 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950/80 dark:text-sky-300',
     inactive:
       'border border-transparent text-slate-600 hover:bg-neutral-100/60 dark:text-slate-400 dark:hover:bg-neutral-800/60',
   },
@@ -74,7 +73,7 @@ export const pillTabsVariantStyles: Record<
     container:
       'border border-sky-100 bg-sky-50/60 p-1 dark:border-sky-900/40 dark:bg-sky-950/30',
     active:
-      'shadow-xs bg-sky-600 text-white dark:bg-sky-500 dark:text-slate-950 font-semibold',
+      'shadow-xs bg-sky-600 text-white dark:bg-sky-500 dark:text-slate-950',
     inactive:
       'text-sky-700 hover:text-sky-900 dark:text-sky-300 dark:hover:text-sky-100',
   },

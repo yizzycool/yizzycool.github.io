@@ -13,12 +13,12 @@ export function Label({
 }: LabelProps) {
   return htmlFor ? (
     <label htmlFor={htmlFor} className={cn(labelBaseStyles, className)}>
-      {!!Icon && <Icon className="inline-block" size={16} />}
+      {!!Icon && <Icon className="inline-block shrink-0" size={16} />}
       <span>{children}</span>
     </label>
   ) : (
     <div className={cn(labelBaseStyles, className)}>
-      {!!Icon && <Icon className="inline-block" size={16} />}
+      {!!Icon && <Icon className="inline-block shrink-0" size={16} />}
       <span>{children}</span>
     </div>
   );

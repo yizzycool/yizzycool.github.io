@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import type { TabsProps, TabItemProps } from './types';
 
 import { useEffect, useState } from 'react';
+import { motion } from 'motion/react';
 
 import { cn } from '@/utils/cn';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
@@ -154,7 +155,6 @@ function TabItem<const T extends ReactNode = string>({
       hoverEffect={false}
       className={cn(
         'relative -mb-px flex select-none items-center justify-center transition-all duration-200',
-        currentVariant.borderWidth,
         currentSize.padding,
         currentSize.text,
         currentSize.gap,
@@ -168,6 +168,12 @@ function TabItem<const T extends ReactNode = string>({
     >
       <span>{label}</span>
       {badge}
+      {isActive && (
+        <motion.div
+          layoutId="tab-underline"
+          className="absolute bottom-0 h-1 w-full bg-sky-600 dark:bg-sky-400"
+        />
+      )}
     </Button>
   );
 }

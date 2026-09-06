@@ -8,17 +8,21 @@ import { isEmpty } from 'lodash';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import useJsonFormatter from './hooks/use-json-formatter';
 import { TAB_ITEMS, TAB_ICONS } from './constants';
-import { cn } from '@/utils/cn';
 import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
 import ExecuteBar from '../../common/execute-bar';
 import LabelBar from '../../common/label-bar';
-import { DeleteAction } from '@/components/shared/action-button';
+import {
+  DeleteAction,
+  PasteAction,
+  CopyAction,
+} from '@/components/shared/action-button';
 import { Textarea } from '@/components/ui/textarea';
-import { PasteAction } from '@/components/shared/action-button';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Tabs } from '@/components/ui/tabs';
 import { ProseMarkdown } from '@/components/shared/markdown';
+
 import JsonTreeView from './json-tree-view';
 
 export default function JsonFormatter() {
@@ -65,7 +69,7 @@ export default function JsonFormatter() {
 
       <SectionGap />
 
-      {/* Tabs */}
+      {/* Mode Tabs */}
       <Tabs
         tabs={[...TAB_ITEMS]}
         tabIcons={[...TAB_ICONS]}
@@ -74,73 +78,79 @@ export default function JsonFormatter() {
         className="text-nowrap"
       />
 
-      {/* Textarea block */}
-      <LabelBar
-        className="mt-8"
-        label="Paste JSON below"
-        icon={FileText}
-        htmlFor="json-string-textarea"
-      >
-        <Button
-          variant="ghost-sky"
-          size="xs"
-          rounded="lg"
-          icon={FileBraces}
-          onClick={onLoadSample}
-        >
-          Sample
-        </Button>
-        <PasteAction onClick={onPaste} />
-        <DeleteAction onClick={onClear} disabled={isEmpty(input)} />
-      </LabelBar>
-      <Textarea
-        ref={inputRef}
-        id="json-string-textarea"
-        value={input}
-        onChange={onJsonStringChanged}
-        rows={10}
-        placeholder="Paste your JSON string here..."
-      />
+      {/* Responsive Layout:
+          - Screens (< xl): Natural flow (1. Input + Execute -> 2. Result)
+          - Large Desktop (xl:): 2-Column Split Dashboard (Left: Col 1-6 Input & Action, Right: Col 7-12 Sticky Output / Tree)
+      */}
+      <div className="mt-8 flex flex-col gap-8 xl:grid xl:grid-cols-12 xl:items-start xl:gap-8">
+        {/* 1. Input Section & Action (Desktop: Col 1-6) */}
+        <div className="space-y-4 text-left xl:col-span-6">
+          <LabelBar
+            label="Paste JSON below"
+            icon={FileText}
+            htmlFor="json-string-textarea"
+          >
+            <Button
+              variant="ghost-sky"
+              size="xs"
+              rounded="lg"
+              icon={FileBraces}
+              onClick={onLoadSample}
+            >
+              Sample
+            </Button>
+            <PasteAction onClick={onPaste} />
+            <DeleteAction onClick={onClear} disabled={isEmpty(input)} />
+          </LabelBar>
 
-      <ExecuteBar
-        label={executeButtonLabel}
-        icon={Wand2}
-        disabled={isEmpty(input)}
-        onClick={() => processJson()}
-        text={input}
-        hotkeyLabel="Process"
-      />
+          <Textarea
+            ref={inputRef}
+            id="json-string-textarea"
+            value={input}
+            onChange={onJsonStringChanged}
+            rows={10}
+            className="min-h-[280px] xl:h-[480px]"
+            placeholder="Paste your JSON string here..."
+          />
 
-      <SectionGap />
-
-      {/* Result block */}
-      <LabelBar
-        label={`Result ${tab !== 'Format' ? `(${tab})` : ''}`}
-        icon={Braces}
-        htmlFor="output"
-      />
-
-      {/* Render Tree View Tab */}
-      {tab === 'Tree View' && parsedObject ? (
-        <JsonTreeView data={parsedObject} />
-      ) : output ? (
-        /* Render Syntax Highlighted Output for Format / Minify / YAML / CSV */
-        <ProseMarkdown className="[&_pre>div>div:nth-child(2)]:max-h-[500px]">{`\`\`\`${syntaxLanguage}\n${output}\n\`\`\``}</ProseMarkdown>
-      ) : null}
-
-      {!output && !parsedObject && (
-        <div
-          className={cn(
-            'flex h-80 flex-col items-center justify-center gap-2 rounded-lg border',
-            'border-neutral-200 dark:border-neutral-700',
-            'bg-white/40 dark:bg-neutral-900/40',
-            'text-slate-700 dark:text-slate-200'
-          )}
-        >
-          <CodeXml size={40} />
-          Waiting for Input...
+          <ExecuteBar
+            label={executeButtonLabel}
+            icon={Wand2}
+            disabled={isEmpty(input)}
+            onClick={() => processJson()}
+            text={input}
+            hotkeyLabel="Process"
+          />
         </div>
-      )}
+
+        {/* 2. Output Section (Desktop: Col 7-12, Sticky) */}
+        <div className="space-y-4 text-left xl:col-span-6">
+          <LabelBar
+            label={`Result ${tab !== 'Format' ? `(${tab})` : ''}`}
+            icon={Braces}
+            htmlFor="output"
+          >
+            {!!output && (
+              <CopyAction content={output} disabled={isEmpty(output)} />
+            )}
+          </LabelBar>
+
+          {/* Render Tree View Tab */}
+          {tab === 'Tree View' && parsedObject ? (
+            <JsonTreeView data={parsedObject} />
+          ) : output ? (
+            /* Render Syntax Highlighted Output for Format / Minify / YAML / CSV */
+            <ProseMarkdown className="[&_pre>div>div:nth-child(2)]:max-h-[540px]">{`\`\`\`${syntaxLanguage}\n${output}\n\`\`\``}</ProseMarkdown>
+          ) : (
+            <Card className="flex h-80 flex-col items-center justify-center gap-4 text-xs text-slate-500 xl:h-[540px] dark:text-slate-400">
+              <CodeXml size={28} className="text-slate-400" />
+              <span>
+                Waiting for Input or click &quot;{executeButtonLabel}&quot;...
+              </span>
+            </Card>
+          )}
+        </div>
+      </div>
     </>
   );
 }
