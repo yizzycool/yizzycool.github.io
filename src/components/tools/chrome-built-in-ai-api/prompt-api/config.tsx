@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { ConfigDialog } from '@/components/shared/config-dialog';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { Divider } from '@/components/ui/divider';
+import { Separator } from '@/components/ui/separator';
 import toast from '@/utils/toast';
 
 type Props = {
@@ -78,7 +78,7 @@ export default function Config({
               onChange={(e) => onChange('temperature', Number(e.target.value))}
             />
           </div>
-          <Divider className="my-8" />
+          <Separator className="my-8" />
           <Button
             onClick={onUpdate}
             variant="primary"

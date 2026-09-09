@@ -22,6 +22,7 @@ export function Input({
   desc,
   id,
   type = 'text',
+  inputMode,
   value,
   readOnly,
   disabled,
@@ -70,6 +71,7 @@ export function Input({
         <HeadlessInput
           ref={ref}
           type={type}
+          inputMode={inputMode}
           className={cn(
             inputBaseStyles,
             Icon && 'pl-10',

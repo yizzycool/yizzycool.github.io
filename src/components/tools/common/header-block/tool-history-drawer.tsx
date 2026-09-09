@@ -78,7 +78,7 @@ export function ToolHistoryDrawer<T>({
       isOpen={isOpen}
       onClose={onClose}
       side="right"
-      className="flex h-full w-[380px] max-w-[90vw] flex-col border-l border-slate-200 bg-white p-0 shadow-2xl dark:border-slate-800 dark:bg-slate-900"
+      drawerClassName="flex h-full w-[380px] max-w-[90vw] flex-col border-l border-slate-200 bg-white p-0 shadow-2xl dark:border-slate-800 dark:bg-slate-900"
     >
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-100 p-4 dark:border-slate-800">

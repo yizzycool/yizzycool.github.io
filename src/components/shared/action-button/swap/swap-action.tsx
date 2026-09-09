@@ -9,8 +9,15 @@ import { Button } from '@/components/ui/button';
 
 export function SwapAction({
   display = 'icon-label',
+  variant = 'outline',
   size = 'xs',
+  rounded,
+  bordered,
+  className,
   disabled = false,
+  label = 'Swap',
+  ariaLabel,
+  title,
   onClick = () => {},
 }: SwapActionProps) {
   const { showIcon, showLabel } = useDisplay({ display });
@@ -18,14 +25,17 @@ export function SwapAction({
   return (
     <Button
       onClick={onClick}
-      variant="outline"
+      variant={variant}
       size={size}
-      rounded="full"
-      className="rounded-lg sm:rounded-full"
+      rounded={rounded}
+      bordered={bordered}
+      className={className}
       icon={showIcon ? ArrowDownUp : undefined}
       disabled={disabled}
+      ariaLabel={ariaLabel}
+      title={title}
     >
-      {showLabel ? 'Swap' : null}
+      {showLabel ? label : null}
     </Button>
   );
 }

@@ -1,6 +1,7 @@
 import type { LucideIcon } from 'lucide-react';
 import type {
   ChangeEvent,
+  HTMLAttributes,
   HTMLInputTypeAttribute,
   KeyboardEvent,
   Ref,
@@ -12,6 +13,7 @@ export type InputProps = {
   desc?: string;
   id?: string;
   type?: HTMLInputTypeAttribute;
+  inputMode?: HTMLAttributes<HTMLInputElement>['inputMode'];
   value?: string | number;
   readOnly?: boolean;
   disabled?: boolean;

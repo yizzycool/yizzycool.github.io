@@ -32,7 +32,7 @@ export function ConfirmDialog({
     <BaseDialog
       isOpen={isOpen}
       onClose={onClose}
-      className={cn(confirmDialogBaseStyles, className)}
+      dialogClassName={cn(confirmDialogBaseStyles, className)}
     >
       <div className="space-y-4 text-left">
         {/* Header with Title and X button */}

@@ -153,7 +153,7 @@ export function SearchDialog({ deviceType }: SearchDialogProps) {
       <BaseDialog
         isOpen={isOpen}
         onClose={closeDialog}
-        className="w-full max-w-2xl"
+        dialogClassName="w-full max-w-2xl"
       >
         <div
           className="flex flex-col overflow-hidden"

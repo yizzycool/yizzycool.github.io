@@ -9,6 +9,7 @@ const BadgeVariants = [
   'neutral',
   'success',
   'blue',
+  'purple',
   'amber',
   'surface',
 ] as const;

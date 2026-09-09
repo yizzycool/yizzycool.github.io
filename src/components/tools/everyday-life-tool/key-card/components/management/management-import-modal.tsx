@@ -29,7 +29,7 @@ export function ManagementImportModal({
     <BaseDialog
       isOpen={isOpen}
       onClose={onClose}
-      className="w-full max-w-md p-6"
+      dialogClassName="w-full max-w-md p-6"
     >
       <div className="space-y-4">
         {/* Modal Header */}

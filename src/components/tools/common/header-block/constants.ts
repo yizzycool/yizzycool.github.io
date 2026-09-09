@@ -4,6 +4,7 @@ export const TOOLS_WITH_HISTORY = [
   ToolKeys.qrCodeGenerator,
   ToolKeys.jsonFormatter,
   ToolKeys.urlEncoderDecoder,
+  ToolKeys.unixTimestampConverter,
 ];
 
 export const TOOLS_WITH_HOTKEY = [
@@ -12,4 +13,5 @@ export const TOOLS_WITH_HOTKEY = [
   ToolKeys.jsonFormatter,
   ToolKeys.keyCard,
   ToolKeys.urlEncoderDecoder,
+  ToolKeys.unixTimestampConverter,
 ];

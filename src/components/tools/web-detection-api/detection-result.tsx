@@ -7,8 +7,8 @@ import { size } from 'lodash';
 
 import { CopyAction } from '@/components/shared/action-button';
 import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
-import { CardTitle } from '@/components/ui/card';
+import { Card, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
 type Props = {
   results: TransformedResults;
@@ -24,7 +24,7 @@ export default function DetectionResult({ results, isProcessing }: Props) {
       </div>
 
       {/* Separate */}
-      <div className="-mx-6 my-6 border-b border-neutral-200 dark:border-neutral-700" />
+      <Separator className="-mx-6 my-6" />
 
       <div className="-m-6 max-h-80 flex-1 space-y-3 overflow-y-auto p-6">
         {isProcessing ? (

@@ -25,13 +25,10 @@ export default function UnsupportedCard({ apiType, isOpen = true }: Props) {
     >
       <BaseDialog
         isOpen={isOpen}
-        hasBackdrop={false}
-        className="max-w-md overflow-y-auto p-6 text-center"
-        dialogClassName="sticky top-[68px] bottom-auto w-full h-[calc(100dvh-68px)]"
-        portalConfig={{
-          selectorOrElement: '#unsupported-card-block',
-          portalKey: 'unsupported-card-dialog',
-        }}
+        backdrop={false}
+        className="sticky bottom-auto top-[68px] h-[calc(100dvh-68px)] w-full"
+        dialogClassName="max-w-md overflow-y-auto p-6 text-center"
+        portalContainer="#unsupported-card-block"
       >
         <div className="flex flex-col items-center justify-center">
           {/* Error Icon */}

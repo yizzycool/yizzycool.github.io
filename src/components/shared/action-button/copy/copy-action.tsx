@@ -8,10 +8,11 @@ import { isNil } from 'lodash';
 
 import { useDisplay } from '../hooks/use-display';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/utils/cn';
 
 export function CopyAction({
   display = 'icon-label',
-  variant = 'secondary',
+  variant = 'outline',
   size = 'xs',
   rounded,
   bordered,
@@ -19,6 +20,8 @@ export function CopyAction({
   disabled = false,
   content = '',
   label = 'Copy',
+  ariaLabel,
+  title,
 }: CopyActionProps) {
   const [copied, setCopied] = useState(false);
 
@@ -82,9 +85,17 @@ export function CopyAction({
       size={size}
       rounded={rounded}
       bordered={bordered}
-      className={className}
+      className={cn(
+        copied && [
+          'border-emerald-300 bg-emerald-50 text-emerald-600',
+          'dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-400',
+        ],
+        className
+      )}
       icon={!showIcon ? undefined : copied ? Check : Copy}
-      disabled={isButtonDisabled}
+      disabled={isButtonDisabled || copied}
+      ariaLabel={ariaLabel}
+      title={title}
     >
       {!showLabel ? null : copied ? 'Copied' : label}
     </Button>

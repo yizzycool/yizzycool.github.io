@@ -3,6 +3,7 @@
 import type { LucideIcon } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
+import { Separator } from '@/components/ui/separator';
 
 type Props = {
   text: string;
@@ -26,7 +27,7 @@ export default function GroupTitle({
       <h3 className="whitespace-nowrap text-xs font-black uppercase tracking-[0.2em]">
         {text}
       </h3>
-      <div className="h-px w-full bg-neutral-200 dark:bg-neutral-700" />
+      <Separator />
     </div>
   );
 }

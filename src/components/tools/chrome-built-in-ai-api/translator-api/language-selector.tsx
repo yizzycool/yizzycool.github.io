@@ -72,7 +72,7 @@ export default function LanguageSelector({
         <ChevronDown className="ml-2" size={16} />
       </button>
 
-      <BaseDialog isOpen={isOpen} onClose={closeMenu} className="w-full">
+      <BaseDialog isOpen={isOpen} onClose={closeMenu} dialogClassName="w-full">
         <div className="flex items-center justify-end px-8 pb-4 pt-6">
           <h2 className="mr-4 flex-1 text-xl font-bold tracking-tight text-slate-900 dark:text-white">
             Select Language

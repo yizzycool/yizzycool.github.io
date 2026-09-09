@@ -9,7 +9,7 @@ import useDarkModeObserver from '@/hooks/window/use-dark-mode-observer';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import { CopyAction } from '@/components/shared/action-button';
 import { PillTabs } from '@/components/ui/tabs';
-import { Divider } from '@/components/ui/divider';
+import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import useIsClient from '@/hooks/lifecycle/use-is-client';
 
@@ -131,7 +131,7 @@ export default function ReactLive({ code = '', metadata }: Props) {
                   )}
                 </div>
                 {!lockMode && (
-                  <Divider
+                  <Separator
                     orientation="vertical"
                     className="mx-2 my-2 sm:mx-4"
                   />

@@ -10,9 +10,16 @@ import { Button } from '@/components/ui/button';
 
 export function SpeakAction({
   display = 'icon-label',
+  variant = 'outline',
   size = 'xs',
+  rounded,
+  bordered,
+  className,
   disabled = false,
   content = '',
+  label = 'Speak',
+  ariaLabel,
+  title,
 }: SpeakActionProps) {
   const isSpeechSupported = useSyncExternalStore(
     subscribe,
@@ -36,14 +43,17 @@ export function SpeakAction({
   return (
     <Button
       onClick={onClick}
-      variant="outline"
+      variant={variant}
       size={size}
-      rounded="full"
-      className="rounded-lg sm:rounded-full"
+      rounded={rounded}
+      bordered={bordered}
+      className={className}
       icon={showIcon ? Volume2 : undefined}
       disabled={disabled}
+      ariaLabel={ariaLabel}
+      title={title}
     >
-      {showLabel ? 'Speak' : null}
+      {showLabel ? label : null}
     </Button>
   );
 }

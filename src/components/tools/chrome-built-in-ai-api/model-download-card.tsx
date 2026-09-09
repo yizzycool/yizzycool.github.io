@@ -27,13 +27,10 @@ export default function ModelDownloadCard({
     >
       <BaseDialog
         isOpen={isOpen}
-        hasBackdrop={false}
-        className="max-w-md overflow-y-auto p-6 text-center md:p-8"
-        dialogClassName="sticky top-[68px] bottom-auto w-full h-[calc(100dvh-68px)]"
-        portalConfig={{
-          selectorOrElement: '#model-download-card-block',
-          portalKey: 'model-download-card-dialog',
-        }}
+        backdrop={false}
+        className="sticky bottom-auto top-[68px] h-[calc(100dvh-68px)] w-full"
+        dialogClassName="max-w-md overflow-y-auto p-6 text-center md:p-8"
+        portalContainer="#model-download-card-block"
       >
         {/* Icon */}
         <div className="relative mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-neutral-50 dark:bg-neutral-800">

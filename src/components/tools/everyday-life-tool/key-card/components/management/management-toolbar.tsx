@@ -17,6 +17,7 @@ import {
 import { cn } from '@/utils/cn';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
 
 type ManagementToolbarProps = {
   search: string;
@@ -164,7 +165,10 @@ export function ManagementToolbar({
           />
 
           <div className="flex-1 md:flex-none" />
-          <div className="mx-0.5 hidden h-4 w-px bg-neutral-200 sm:block dark:bg-neutral-800" />
+          <Separator
+            orientation="vertical"
+            className="mx-0.5 hidden h-4 sm:block"
+          />
 
           {/* Group B: Delete All & Reset */}
           <div className="flex items-center gap-1.5">
@@ -200,7 +204,10 @@ export function ManagementToolbar({
             </Button>
           </div>
 
-          <div className="mx-0.5 hidden h-4 w-px bg-neutral-200 sm:block dark:bg-neutral-800" />
+          <Separator
+            orientation="vertical"
+            className="mx-0.5 hidden h-4 sm:block"
+          />
 
           {/* Group C: Add Card Primary CTA */}
           <Button

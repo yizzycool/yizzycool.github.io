@@ -35,7 +35,7 @@ export default function ColorPicker({ onColorPicked }: Props) {
       <BaseDialog
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        className="flex flex-col items-center"
+        dialogClassName="flex flex-col items-center"
       >
         <div className="flex items-center justify-end px-8 pb-4 pt-6">
           <Palette size={24} className="mr-2" style={{ fill: color }} />

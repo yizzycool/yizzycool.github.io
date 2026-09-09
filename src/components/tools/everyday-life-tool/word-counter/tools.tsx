@@ -27,6 +27,7 @@ import { Fragment, useState } from 'react';
 
 import { cn } from '@/utils/cn';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import TextToolsModal from './text-tools-modal';
 
 export type ToolItem = {
@@ -253,7 +254,10 @@ export default function Tools({ onTransform, disabled = false }: ToolsProps) {
                       {item.label}
                     </Button>
                     {idx < group.items.length - 1 && (
-                      <div className="mx-0.5 h-3 w-px bg-neutral-200/80 dark:bg-neutral-800" />
+                      <Separator
+                        orientation="vertical"
+                        className="mx-0.5 h-3"
+                      />
                     )}
                   </Fragment>
                 ))}

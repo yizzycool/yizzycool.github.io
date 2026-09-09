@@ -2,8 +2,8 @@
 
 import { Braces } from 'lucide-react';
 import { CopyAction } from '@/components/shared/action-button';
-import { Card } from '@/components/ui/card';
-import { CardTitle } from '@/components/ui/card';
+import { Card, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
 type Props = {
   results:
@@ -22,7 +22,7 @@ export default function RawData({ results }: Props) {
       </div>
 
       {/* Separate */}
-      <div className="-mx-6 my-6 border-b border-neutral-200 dark:border-neutral-700" />
+      <Separator className="-mx-6 my-6" />
 
       <div className="max-h-80 flex-1 overflow-auto whitespace-pre rounded-lg bg-neutral-100 p-3 text-left font-mono text-xs text-slate-600 dark:bg-neutral-950 dark:text-slate-400">
         {!!results && results.length > 0

@@ -16,13 +16,10 @@ export default function SystemChecking({ isOpen = true }: Props) {
     >
       <BaseDialog
         isOpen={isOpen}
-        hasBackdrop={false}
-        className="p-6 text-center"
-        dialogClassName="sticky top-[68px] bottom-auto w-full h-[calc(100dvh-68px)]"
-        portalConfig={{
-          selectorOrElement: '#system-checking-block',
-          portalKey: 'system-checking-dialog',
-        }}
+        backdrop={false}
+        className="sticky bottom-auto top-[68px] h-[calc(100dvh-68px)] w-full"
+        dialogClassName="p-6 text-center"
+        portalContainer="#system-checking-block"
       >
         <div className="flex flex-col items-center justify-center space-y-4">
           <div className="relative flex items-center justify-center">

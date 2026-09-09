@@ -57,7 +57,11 @@ export default function ShortcutsGuideModal({
   const boundCards = cards.filter((c) => !!c.key);
 
   return (
-    <BaseDialog isOpen={isOpen} onClose={onClose} className="w-full max-w-2xl">
+    <BaseDialog
+      isOpen={isOpen}
+      onClose={onClose}
+      dialogClassName="w-full max-w-2xl"
+    >
       {/* Header */}
       <div className="mx-6 flex items-center justify-between border-b border-neutral-200 pb-4 pt-6 dark:border-neutral-800">
         <div className="flex items-center gap-2.5">

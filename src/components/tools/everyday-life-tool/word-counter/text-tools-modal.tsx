@@ -37,7 +37,7 @@ export default function TextToolsModal({
     <BaseDialog
       isOpen={isOpen}
       onClose={onClose}
-      className="flex max-h-[85vh] w-full max-w-lg flex-col"
+      dialogClassName="flex max-h-[85vh] w-full max-w-lg flex-col"
     >
       {/* Header */}
       <div className="mx-6 flex shrink-0 items-center justify-between border-b border-neutral-200 pb-4 pt-6 dark:border-neutral-800">

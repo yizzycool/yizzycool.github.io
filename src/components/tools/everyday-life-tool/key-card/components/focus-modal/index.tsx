@@ -115,7 +115,11 @@ export default function FocusModal({
   };
 
   return (
-    <BaseDialog isOpen={isOpen} onClose={onClose} className="w-full max-w-3xl">
+    <BaseDialog
+      isOpen={isOpen}
+      onClose={onClose}
+      dialogClassName="w-full max-w-3xl"
+    >
       <div className="flex h-[78vh] flex-col">
         {/* Modal Top Title Bar */}
         <FocusModalHeader

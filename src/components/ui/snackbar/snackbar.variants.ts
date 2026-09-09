@@ -4,36 +4,40 @@ import { cn } from '@/utils/cn';
 
 export const snackbarVariants: Record<ButtonVariant, string> = {
   primary: cn(
-    'bg-sky-600 text-white dark:bg-sky-500 dark:text-white border-sky-500/30'
+    'bg-sky-50/90 text-sky-800 border-sky-500/30 dark:bg-sky-950/85 dark:text-sky-300 dark:border-sky-500/30'
   ),
   secondary: cn(
-    'bg-neutral-100 text-slate-900 dark:bg-neutral-800 dark:text-slate-100 border-neutral-600 dark:border-neutral-400'
+    'bg-neutral-100/90 text-slate-900 border-neutral-200/80 dark:bg-neutral-800/85 dark:text-slate-100 dark:border-neutral-700/80'
   ),
-  ghost: cn('text-slate-600 dark:text-slate-400 border-neutral-500/20'),
+  ghost: cn(
+    'bg-neutral-100/60 text-slate-600 border-neutral-500/20 dark:bg-neutral-800/50 dark:text-slate-400'
+  ),
   'ghost-sky': cn(
-    'bg-sky-50 text-sky-700 border-sky-300 dark:bg-sky-950/80 dark:text-sky-300 dark:border-sky-800'
+    'bg-sky-50/90 text-sky-700 border-sky-300/40 dark:bg-sky-950/85 dark:text-sky-300 dark:border-sky-800/60'
   ),
   outline: cn(
-    'border border-neutral-200 text-slate-700 dark:border-neutral-700 dark:text-slate-300'
+    'bg-white/70 border-neutral-200 text-slate-700 dark:bg-neutral-900/70 dark:border-neutral-700 dark:text-slate-300'
   ),
   error: cn(
-    'text-red-600 dark:text-red-400 bg-red-100/70 dark:bg-red-950/70 border-red-500/30'
+    'bg-rose-50/90 text-rose-800 border-rose-500/30 dark:bg-rose-950/85 dark:text-rose-300 dark:border-rose-500/30'
   ),
-  'dark-sky': cn('text-white bg-sky-600 dark:bg-sky-900 border-sky-500/20'),
+  'dark-sky': cn(
+    'bg-sky-900/90 text-white border-sky-500/30 dark:bg-sky-950/90 dark:border-sky-500/40'
+  ),
   neutral: cn(
-    'bg-neutral-100 border-neutral-500/20 text-slate-600 dark:bg-neutral-700 dark:text-slate-400'
+    'bg-neutral-100/90 text-slate-600 border-neutral-300/40 dark:bg-neutral-800/85 dark:text-slate-300 dark:border-neutral-700/40'
   ),
   success: cn(
-    'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400'
+    'bg-emerald-50/90 text-emerald-800 border-emerald-500/30 dark:bg-emerald-950/85 dark:text-emerald-300 dark:border-emerald-500/30'
   ),
   blue: cn(
-    'bg-blue-100 border-blue-500/20 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400'
+    'bg-blue-50/90 text-blue-800 border-blue-500/30 dark:bg-blue-950/85 dark:text-blue-300 dark:border-blue-500/30'
   ),
   amber: cn(
-    'bg-amber-100/90 border-amber-300 text-amber-800 dark:bg-amber-950/80 dark:border-amber-800 dark:text-amber-300'
+    'bg-amber-50/90 text-amber-800 border-amber-500/30 dark:bg-amber-950/85 dark:text-amber-300 dark:border-amber-500/30'
   ),
   surface: cn(
-    'border border-slate-200 bg-white text-slate-800 shadow-lg dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200'
+    'bg-white/90 text-slate-800 border-slate-200/80 shadow-lg dark:bg-neutral-900/90 dark:text-slate-200 dark:border-neutral-800/80'
   ),
 };
 

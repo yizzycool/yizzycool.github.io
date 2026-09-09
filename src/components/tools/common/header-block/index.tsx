@@ -137,6 +137,7 @@ export default function HeaderBlock<T = unknown>({
           {/* 1. Favorite Button */}
           <Button
             variant={favorite ? 'amber' : 'surface'}
+            bordered
             size="xs"
             rounded="xl"
             icon={Star}
@@ -155,6 +156,7 @@ export default function HeaderBlock<T = unknown>({
           {showHistory && (
             <Button
               variant="surface"
+              bordered
               size="xs"
               rounded="xl"
               icon={Clock}
@@ -174,6 +176,7 @@ export default function HeaderBlock<T = unknown>({
           {showHotkey && (
             <Button
               variant="surface"
+              bordered
               size="xs"
               rounded="xl"
               icon={Keyboard}

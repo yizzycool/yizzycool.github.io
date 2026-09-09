@@ -16,9 +16,9 @@ import {
   DeleteAction,
   PasteAction,
   CopyAction,
+  SampleAction,
 } from '@/components/shared/action-button';
 import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tabs } from '@/components/ui/tabs';
 import { ProseMarkdown } from '@/components/shared/markdown';
@@ -90,15 +90,7 @@ export default function JsonFormatter() {
             icon={FileText}
             htmlFor="json-string-textarea"
           >
-            <Button
-              variant="ghost-sky"
-              size="xs"
-              rounded="lg"
-              icon={FileBraces}
-              onClick={onLoadSample}
-            >
-              Sample
-            </Button>
+            <SampleAction icon={FileBraces} onClick={onLoadSample} />
             <PasteAction onClick={onPaste} />
             <DeleteAction onClick={onClear} disabled={isEmpty(input)} />
           </LabelBar>

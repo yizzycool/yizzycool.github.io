@@ -16,8 +16,15 @@ import { Button } from '@/components/ui/button';
 
 export function PasteAction<T extends PasteInputType = 'string'>({
   display = 'icon-label',
+  variant = 'outline',
   size = 'xs',
+  rounded,
+  bordered,
+  className,
   disabled = false,
+  label = 'Paste',
+  ariaLabel,
+  title,
   onClick = () => {},
   type = 'string' as T,
 }: PasteActionProps<T>) {
@@ -58,12 +65,17 @@ export function PasteAction<T extends PasteInputType = 'string'>({
   return (
     <Button
       onClick={onPasteClick}
-      variant="secondary"
+      variant={variant}
       size={size}
+      rounded={rounded}
+      bordered={bordered}
+      className={className}
       icon={showIcon ? Clipboard : undefined}
       disabled={isButtonDisabled}
+      ariaLabel={ariaLabel}
+      title={title}
     >
-      {showLabel ? 'Paste' : null}
+      {showLabel ? label : null}
     </Button>
   );
 }

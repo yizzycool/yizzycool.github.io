@@ -19,6 +19,8 @@ export const badgeVariants: Record<BadgeVariant, string> = {
   success:
     'border border-emerald-600/20 dark:border-emerald-500/20 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400',
   blue: 'bg-blue-300/20 border-blue-500/20 text-blue-500 dark:bg-blue-500/20 dark:text-blue-400',
+  purple:
+    'bg-purple-300/20 border-purple-500/20 text-purple-600 dark:bg-purple-500/20 dark:text-purple-400',
   amber:
     'bg-amber-100 border-amber-500/20 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300',
   surface:

@@ -15,4 +15,6 @@ export interface ActionButtonProps {
   className?: string;
   disabled?: boolean;
   label?: string;
+  ariaLabel?: string;
+  title?: string;
 }

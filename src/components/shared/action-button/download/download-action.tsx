@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 
 export function DownloadAction({
   display = 'icon-label',
+  variant = 'outline',
   size = 'xs',
   rounded,
   bordered,
@@ -18,6 +19,8 @@ export function DownloadAction({
   imageUrl,
   filename = 'download',
   label = 'Download',
+  ariaLabel,
+  title,
 }: DownloadActionProps) {
   const { showIcon, showLabel } = useDisplay({ display });
 
@@ -47,13 +50,15 @@ export function DownloadAction({
   return (
     <Button
       onClick={onDownloadClick}
-      variant="primary"
+      variant={variant}
       size={size}
       rounded={rounded}
       bordered={bordered}
       className={className}
       icon={showIcon ? Download : undefined}
       disabled={disabled}
+      ariaLabel={ariaLabel}
+      title={title}
     >
       {showLabel ? label : null}
     </Button>

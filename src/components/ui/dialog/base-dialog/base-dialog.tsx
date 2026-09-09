@@ -1,106 +1,94 @@
 'use client';
 
-import type { BaseDialogProps, PortalConfig } from './types';
+import type { BaseDialogProps } from './types';
 
-import { Transition, TransitionChild } from '@headlessui/react';
 import { useEffect } from 'react';
+import { motion } from 'motion/react';
 
-import useIsClient from '@/hooks/lifecycle/use-is-client';
 import { cn } from '@/utils/cn';
-import { ClientPortal } from '@/components/ui/client-portal';
+import { Presence } from '@/components/ui/presence';
+import { Portal } from '@/components/ui/portal';
+
 import {
   baseDialogBackdropStyles,
   baseDialogPanelStyles,
   baseDialogWrapperStyles,
+  dialogMotionVariants,
 } from './base-dialog.variants';
-
-const defaultPortalConfig: PortalConfig = {
-  portalKey: 'base-dialog',
-};
 
 export function BaseDialog({
   isOpen,
-  onClose = () => {},
-  hasBackdrop = true,
+  onClose,
   className = '',
   dialogClassName = '',
   backdropClassName = '',
+  backdrop = true,
+  portal = true,
+  portalContainer,
+  unmount = true,
   children,
-  portalConfig = {},
 }: BaseDialogProps) {
-  const isClient = useIsClient();
-
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        onClose();
+        onClose?.();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onClose]);
-
-  if (!isClient) return null;
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   return (
-    <ClientPortal
-      selectorOrElement={
-        portalConfig.selectorOrElement || defaultPortalConfig.selectorOrElement
-      }
-      portalKey={portalConfig.portalKey || defaultPortalConfig.portalKey}
-    >
-      <Transition show={isOpen} unmount={true} appear={true}>
+    <Presence isOpen={isOpen} unmount={unmount}>
+      <Portal disabled={!portal} container={portalContainer}>
         <div
           role="dialog"
+          tabIndex={-1}
+          aria-modal={isOpen || undefined}
+          aria-hidden={!isOpen}
           className={cn(
+            portal ? 'fixed z-50' : 'absolute z-10',
             baseDialogWrapperStyles,
-            !hasBackdrop && 'pointer-events-none',
-            dialogClassName
+            isOpen && backdrop ? 'pointer-events-auto' : 'pointer-events-none',
+            className
           )}
         >
-          {/* Backdrop */}
-          {hasBackdrop && (
-            <TransitionChild
-              enter="ease-out duration-200"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-              unmount={false}
-            >
-              <div
-                className={cn(baseDialogBackdropStyles, backdropClassName)}
-                onClick={onClose}
-              />
-            </TransitionChild>
-          )}
-          {/* Rounded Border */}
-          <TransitionChild
-            enter="ease-out duration-200"
-            enterFrom="opacity-0 scale-95"
-            enterTo="opacity-100 scale-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100 scale-100"
-            leaveTo="opacity-0 scale-95"
-            unmount={false}
-          >
-            <div
+          {backdrop && (
+            <motion.div
+              key="dialog-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isOpen ? 1 : 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, ease: 'easeInOut' }}
               className={cn(
-                baseDialogPanelStyles,
-                !hasBackdrop && 'pointer-events-auto',
-                className
+                baseDialogBackdropStyles,
+                isOpen ? 'pointer-events-auto' : 'pointer-events-none',
+                backdropClassName
               )}
-            >
-              {children}
-            </div>
-          </TransitionChild>
+              onClick={onClose}
+            />
+          )}
+          <motion.div
+            key="dialog-panel"
+            initial={dialogMotionVariants.closed}
+            animate={
+              isOpen ? dialogMotionVariants.open : dialogMotionVariants.closed
+            }
+            exit={dialogMotionVariants.closed}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className={cn(
+              baseDialogPanelStyles,
+              isOpen ? 'pointer-events-auto' : 'pointer-events-none',
+              dialogClassName
+            )}
+          >
+            {children}
+          </motion.div>
         </div>
-      </Transition>
-    </ClientPortal>
+      </Portal>
+    </Presence>
   );
 }

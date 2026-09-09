@@ -8,7 +8,7 @@ import { useSyncExternalStore } from 'react';
 
 import { cn } from '@/utils/cn';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import { Divider } from '@/components/ui/divider';
+import { Separator } from '@/components/ui/separator';
 
 type Props = { article: BlogArticle };
 
@@ -52,14 +52,14 @@ export default function Metadata({ article }: Props) {
         <span>{updateDateString}</span>
       </time>
 
-      <Divider orientation="vertical" className="my-1 hidden sm:block" />
+      <Separator orientation="vertical" className="my-1 hidden sm:block" />
 
       <span className="flex items-center gap-2" title="Estimated reading time">
         <Clock size={14} className="shrink-0" />
         <span>{readTime * 2} min read</span>
       </span>
 
-      <Divider orientation="vertical" className="my-1 hidden sm:block" />
+      <Separator orientation="vertical" className="my-1 hidden sm:block" />
 
       <time className="flex items-center gap-2" title="Published on">
         <Calendar size={14} className="shrink-0" />

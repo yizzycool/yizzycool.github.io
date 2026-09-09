@@ -52,9 +52,10 @@ export default function HeaderMobile({ categoryArticles }: HeaderMobileProps) {
         <Menu className="w-full" />
       </button>
       <Drawer
+        unmount={false}
         isOpen={isDrawerOpen}
         onClose={() => setIsOpen(false)}
-        className="w-screen !max-w-md"
+        drawerClassName="w-screen !max-w-md"
       >
         <div
           className={cn(

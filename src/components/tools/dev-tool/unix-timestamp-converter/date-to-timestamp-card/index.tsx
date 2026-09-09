@@ -1,124 +1,163 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import { CalendarDays } from 'lucide-react';
-import { isNumber } from 'lodash';
+import type { DateFields } from '../hooks/use-unix-timestamp-converter';
+import type { TimezoneMode } from '../constants';
 
-import { Card } from '@/components/ui/card';
+import { CalendarDays, FileClock, RefreshCw } from 'lucide-react';
+import { Card, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { PillTabs } from '@/components/ui/tabs';
+import { Separator } from '@/components/ui/separator';
+import { DeleteAction } from '@/components/shared/action-button';
+import LabelBar from '@/components/tools/common/label-bar';
+import ExecuteBar from '@/components/tools/common/execute-bar';
+import { PropertyRow } from '@/components/tools/common/property-row';
+import { TIMEZONE_MODES, TIMEZONE_MODE_LABELS } from '../constants';
 import DateInput from './date-input';
-import { CopyAction } from '@/components/shared/action-button';
-import { CardTitle } from '@/components/ui/card';
 
-type DateInput = {
-  year?: number;
-  month?: number;
-  day?: number;
-  hour?: number;
-  minute?: number;
-  second?: number;
-  timezone?: string;
+type Props = {
+  dateFields: DateFields;
+  timezoneMode: TimezoneMode;
+  setTimezoneMode: (mode: TimezoneMode) => void;
+  convertedResult: {
+    isValid: boolean;
+    seconds: number;
+    milliseconds: number;
+  };
+  onUpdateField: (field: keyof DateFields, value: string) => void;
+  onSetToNow: () => void;
+  onClear: () => void;
+  onSaveHistory: () => void;
 };
 
-export default function DateToTimestampCard() {
-  const [dateInput, setDateInput] = useState<DateInput>(() => {
-    const date = new Date();
-    return {
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
-      hour: date.getHours(),
-      minute: date.getMinutes(),
-      second: date.getSeconds(),
-      timezone: 'UTC',
-    };
-  });
-
-  // Date to Timestamp Calculation
-  const convertedTimestamp = useMemo(() => {
-    try {
-      const { year, month, day, hour, minute, second } = dateInput;
-      if (!isNumber(year) || !isNumber(month)) return;
-      const date = new Date(
-        Date.UTC(year, month - 1, day, hour, minute, second)
-      );
-      return Math.floor(date.getTime() / 1000);
-    } catch (_e) {
-      return;
-    }
-  }, [dateInput]);
-
-  const updateDateInput = (field: string, value: string) => {
-    setDateInput((prev) => ({
-      ...prev,
-      [field]: !!value ? parseInt(value) : '',
-    }));
-  };
-
+export default function DateToTimestampCard({
+  dateFields,
+  timezoneMode,
+  setTimezoneMode,
+  convertedResult,
+  onUpdateField,
+  onSetToNow,
+  onClear,
+  onSaveHistory,
+}: Props) {
   return (
     <Card animation="fade-in" className="text-left">
-      <CardTitle icon={CalendarDays}>UTC Date to Timestamp</CardTitle>
+      <CardTitle icon={CalendarDays}>Date to Unix Timestamp</CardTitle>
 
-      {/* Separate */}
-      <div className="-mx-6 my-6 border-b border-neutral-200 dark:border-neutral-700" />
+      {/* Separator */}
+      <Separator className="-mx-6 my-6" />
 
-      <div className="flex-1">
-        <div className="grid grid-cols-3 gap-3">
+      <div className="space-y-6">
+        {/* LabelBar with Actions */}
+        <LabelBar
+          label="Enter Date & Time Components"
+          icon={CalendarDays}
+          htmlFor="date-inputs-container"
+        >
+          <Button
+            variant="surface"
+            bordered
+            size="xs"
+            rounded="lg"
+            icon={RefreshCw}
+            onClick={onSetToNow}
+          >
+            Now
+          </Button>
+          <DeleteAction onClick={onClear} />
+        </LabelBar>
+
+        {/* Timezone Mode Selector */}
+        <div className="flex items-center gap-2 text-xs">
+          <span className="font-medium text-slate-500 dark:text-slate-400">
+            Interpreted As:
+          </span>
+          <PillTabs
+            tabs={TIMEZONE_MODES}
+            activeTab={timezoneMode}
+            onChange={setTimezoneMode}
+            tabLabels={TIMEZONE_MODE_LABELS}
+            variant="segment"
+            size="xs"
+            rounded="md"
+            className="p-0.5"
+            tabClassName="px-2.5 py-1 text-xs"
+          />
+        </div>
+
+        {/* 6-Field Date/Time Input Grid */}
+        <div
+          id="date-inputs-container"
+          className="grid grid-cols-3 gap-3 sm:grid-cols-6"
+        >
           <DateInput
             label="Year"
-            value={dateInput?.year}
-            onChange={(v) => updateDateInput('year', v)}
+            value={dateFields.year}
+            onChange={(v) => onUpdateField('year', v)}
           />
           <DateInput
             label="Month"
-            value={dateInput?.month}
+            value={dateFields.month}
             min={1}
             max={12}
-            onChange={(v) => updateDateInput('month', v)}
+            onChange={(v) => onUpdateField('month', v)}
           />
           <DateInput
             label="Day"
-            value={dateInput?.day}
+            value={dateFields.day}
             min={1}
             max={31}
-            onChange={(v) => updateDateInput('day', v)}
+            onChange={(v) => onUpdateField('day', v)}
           />
           <DateInput
             label="Hour"
-            value={dateInput?.hour}
+            value={dateFields.hour}
             min={0}
             max={23}
-            onChange={(v) => updateDateInput('hour', v)}
+            onChange={(v) => onUpdateField('hour', v)}
           />
           <DateInput
             label="Min"
-            value={dateInput?.minute}
+            value={dateFields.minute}
             min={0}
             max={59}
-            onChange={(v) => updateDateInput('minute', v)}
+            onChange={(v) => onUpdateField('minute', v)}
           />
           <DateInput
             label="Sec"
-            value={dateInput?.second}
+            value={dateFields.second}
             min={0}
             max={59}
-            onChange={(v) => updateDateInput('second', v)}
+            onChange={(v) => onUpdateField('second', v)}
           />
         </div>
 
-        <div className="mt-8 rounded-xl bg-neutral-100/50 p-6 dark:bg-neutral-800/50">
-          <p className="mb-1 text-xs font-bold uppercase tracking-widest text-slate-500">
-            Resulting Timestamp
-          </p>
-          <div className="flex items-center justify-between">
-            <span className="font-mono text-2xl font-bold">
-              {convertedTimestamp ?? '---'}
-            </span>
-            <CopyAction
-              display="icon"
-              content={convertedTimestamp?.toString() || ''}
-            />
-          </div>
+        {/* Dual Results Output: Seconds & Milliseconds */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <PropertyRow
+            label="Timestamp in Seconds"
+            badge="10 digits"
+            value={
+              convertedResult.isValid ? convertedResult.seconds : undefined
+            }
+          />
+          <PropertyRow
+            label="Timestamp in Milliseconds"
+            badge="13 digits"
+            value={
+              convertedResult.isValid ? convertedResult.milliseconds : undefined
+            }
+          />
         </div>
+
+        {/* ExecuteBar: Save to History */}
+        <ExecuteBar
+          label="Save Date Conversion to History"
+          icon={FileClock}
+          disabled={!convertedResult.isValid}
+          onClick={onSaveHistory}
+          hotkeyLabel="Save"
+        />
       </div>
     </Card>
   );

@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 
 export function ShareAction({
   display = 'icon-label',
-  variant = 'secondary',
+  variant = 'outline',
   size = 'xs',
   rounded,
   bordered,
@@ -21,6 +21,8 @@ export function ShareAction({
   label = 'Share',
   shareTitle = '',
   shareText = '',
+  ariaLabel,
+  title,
 }: ShareActionProps) {
   const isActionSupported = useSyncExternalStore(
     subscribe,
@@ -81,6 +83,8 @@ export function ShareAction({
       className={className}
       icon={!showIcon ? undefined : Share2}
       disabled={isButtonDisabled}
+      ariaLabel={ariaLabel}
+      title={title}
     >
       {!showLabel ? null : label}
     </Button>

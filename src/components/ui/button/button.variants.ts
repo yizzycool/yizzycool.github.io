@@ -71,7 +71,7 @@ export const getButtonVariants = (
       'hover:bg-amber-100/80 hover:border-amber-400 dark:hover:bg-amber-900/60 dark:hover:border-amber-700'
   ),
   surface: cn(
-    'border border-slate-200 bg-white text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400',
+    'border-slate-200 bg-white text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400',
     !disabled &&
       hoverEffect &&
       'hover:border-slate-300 hover:bg-slate-50 dark:hover:border-slate-700 dark:hover:bg-slate-800'
@@ -117,8 +117,8 @@ export const buttonGaps: Record<ButtonSize, string> = {
 
 export const buttonIconSizes: Record<ButtonSize, number> = {
   xs: 12,
-  sm: 16,
-  base: 18,
+  sm: 14,
+  base: 16,
   lg: 20,
   xl: 24,
 };

@@ -11,6 +11,7 @@ import Breadcrumb from './breadcrumb';
 import Tags from './tags';
 import Metadata from './metadata';
 import Banner from './banner';
+import { Separator } from '@/components/ui/separator';
 import { ProseMarkdown } from '@/components/shared/markdown';
 import { TocDesktop, TocMobile } from './toc';
 import SeriesGuide from './series-guide';
@@ -62,11 +63,8 @@ export default function Article({
         </header>
 
         {/* Separator */}
-        <div
-          className={cn(
-            'my-6 border-b border-neutral-200 dark:border-neutral-700',
-            getFadeUpClass('animate-delay-200')
-          )}
+        <Separator
+          className={cn('my-6', getFadeUpClass('animate-delay-200'))}
         />
 
         <Banner article={article} />

@@ -13,8 +13,8 @@ import {
 } from 'lucide-react';
 import { useMemo } from 'react';
 
-import { Card } from '@/components/ui/card';
-import { CardTitle } from '@/components/ui/card';
+import { Card, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import MetricRow from './metric-row';
 
 type MetricsProps = {
@@ -76,7 +76,7 @@ export default function Metrics({ text }: MetricsProps) {
       </CardTitle>
 
       {/* Separate */}
-      <div className="border-b border-neutral-200 dark:border-neutral-700" />
+      <Separator />
 
       {/* Metrics */}
       <div className="overflow-y-auto p-4">
@@ -98,7 +98,7 @@ export default function Metrics({ text }: MetricsProps) {
         />
         <MetricRow label="Total Lines" value={stats.lines} icon={Pilcrow} />
 
-        <div className="my-2 border-b border-neutral-200 px-4 dark:border-neutral-700" />
+        <Separator className="my-2" />
 
         {/* Secondary Items */}
         <MetricRow

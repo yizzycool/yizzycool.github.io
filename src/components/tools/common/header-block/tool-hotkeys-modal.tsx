@@ -42,7 +42,7 @@ export function ToolHotkeysModal({
     <BaseDialog
       isOpen={isOpen}
       onClose={onClose}
-      className="w-full max-w-sm p-6"
+      dialogClassName="w-full max-w-sm p-6"
     >
       {/* Header */}
       <div className="flex items-center justify-between border-b border-neutral-200 pb-4 dark:border-neutral-800">

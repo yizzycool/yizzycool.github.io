@@ -2,14 +2,7 @@
 
 import type { UrlEncoderDecoderHistoryData } from './hooks/use-url-encoder-decoder';
 
-import {
-  Code,
-  FileCode,
-  Link2,
-  Wand2,
-  ArrowRightLeft,
-  FileClock,
-} from 'lucide-react';
+import { Code, Link2, Wand2, ArrowRightLeft, FileClock } from 'lucide-react';
 import { isEmpty } from 'lodash';
 
 import {
@@ -17,9 +10,9 @@ import {
   CopyAction,
   SwapAction,
   PasteAction,
+  SampleAction,
 } from '@/components/shared/action-button';
 import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tabs } from '@/components/ui/tabs';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
@@ -100,15 +93,7 @@ export default function UrlEncoderDecoder() {
         icon={Link2}
         htmlFor="url-input-textarea"
       >
-        <Button
-          variant="ghost-sky"
-          size="xs"
-          rounded="lg"
-          icon={FileCode}
-          onClick={onLoadSample}
-        >
-          Sample
-        </Button>
+        <SampleAction onClick={onLoadSample} />
         <PasteAction onClick={onPaste} />
         <DeleteAction onClick={onClear} disabled={isEmpty(input)} />
       </LabelBar>

@@ -51,6 +51,7 @@ export function FocusModalTabs({
       {/* Copy Button with state */}
       <Button
         variant={isCopied ? 'primary' : 'surface'}
+        bordered
         size="xs"
         rounded="lg"
         icon={isCopied ? Check : Copy}

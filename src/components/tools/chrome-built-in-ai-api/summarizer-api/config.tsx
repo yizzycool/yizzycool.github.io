@@ -10,7 +10,7 @@ import { Selector } from '@/components/ui/selector';
 import { Textarea } from '@/components/ui/textarea';
 import { ConfigDialog } from '@/components/shared/config-dialog';
 import { Button } from '@/components/ui/button';
-import { Divider } from '@/components/ui/divider';
+import { Separator } from '@/components/ui/separator';
 import toast from '@/utils/toast';
 
 const settings = [
@@ -93,7 +93,7 @@ export default function Config({
               />
             </div>
           ))}
-          <Divider className="my-8" />
+          <Separator className="my-8" />
           <Button
             onClick={onUpdate}
             variant="primary"
