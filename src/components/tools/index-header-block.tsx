@@ -1,12 +1,16 @@
 'use client';
 
-import { Lock, ShieldCheck, Zap } from 'lucide-react';
+import { useState } from 'react';
+import { Lock, ShieldCheck, Zap, SlidersHorizontal } from 'lucide-react';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import { cn } from '@/utils/cn';
+import { Button } from '@/components/ui/button';
+import { ToolsSettingsModal } from './tools-settings-modal';
 
 export default function HeaderBlock() {
   const { getFadeUpClass } = useGetTransitionClass();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const trustBadges = [
     { icon: Lock, label: '100% Client-side Privacy' },
@@ -15,19 +19,37 @@ export default function HeaderBlock() {
   ];
 
   return (
-    <div className="text-center md:text-left">
-      <h1
+    <div className="text-left">
+      {/* Title & Action Row */}
+      <div
         className={cn(
-          'text-3xl font-black tracking-tight md:text-4xl',
-          'text-slate-900 dark:text-white',
+          'flex items-center justify-between gap-4',
           getFadeUpClass('animate-delay-100')
         )}
       >
-        Tools Directory
-      </h1>
+        <h1 className="text-3xl font-black tracking-tight text-slate-900 md:text-4xl dark:text-white">
+          Tools Directory
+        </h1>
+
+        <Button
+          variant="surface"
+          bordered
+          size="xs"
+          rounded="xl"
+          icon={SlidersHorizontal}
+          onClick={() => setIsSettingsOpen(true)}
+          ariaLabel="Tools history and privacy settings"
+          title="History & Privacy Settings"
+          className="shrink-0 p-2 sm:px-3 sm:py-1.5"
+        >
+          <span className="hidden sm:inline">History & Privacy</span>
+        </Button>
+      </div>
+
+      {/* Description */}
       <p
         className={cn(
-          'mt-3 text-lg font-light text-slate-500 dark:text-slate-400',
+          'mt-3 max-w-2xl text-base font-light text-slate-500 sm:text-lg dark:text-slate-400',
           getFadeUpClass('animate-delay-200')
         )}
       >
@@ -56,6 +78,12 @@ export default function HeaderBlock() {
           </div>
         ))}
       </div>
+
+      {/* Preferences & Privacy Modal */}
+      <ToolsSettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+      />
     </div>
   );
 }

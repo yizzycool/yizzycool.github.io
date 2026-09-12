@@ -1,12 +1,13 @@
 'use client';
 
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import xor from 'lodash/xor';
 
 import { useLocalStorage } from '@/hooks/window/use-local-storage';
+import { TOOLS_WITH_HISTORY } from '@/components/tools/common/header-block/constants';
 
 const STORAGE_KEY_FAVORITES = 'yizzypeasy-fav-tools';
-const LEGACY_STORAGE_KEY_FAVORITES = 'yizzy-peasy-fav-tools';
+const STORAGE_KEY_DISABLED_HISTORY = 'yizzypeasy-disabled-history-tools';
 
 export default function useToolsPreferences() {
   const {
@@ -15,20 +16,10 @@ export default function useToolsPreferences() {
     isSupported,
   } = useLocalStorage<string[]>(STORAGE_KEY_FAVORITES, []);
 
-  // Migrate legacy favorite key if exists and new key is empty
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    try {
-      const legacy = localStorage.getItem(LEGACY_STORAGE_KEY_FAVORITES);
-      if (legacy && (!favoriteToolKeys || favoriteToolKeys.length === 0)) {
-        const parsed = JSON.parse(legacy);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setFavoriteToolKeys(parsed);
-        }
-        localStorage.removeItem(LEGACY_STORAGE_KEY_FAVORITES);
-      }
-    } catch (_e) {}
-  }, [favoriteToolKeys, setFavoriteToolKeys]);
+  const {
+    value: disabledHistoryToolKeys,
+    setValue: setDisabledHistoryToolKeys,
+  } = useLocalStorage<string[]>(STORAGE_KEY_DISABLED_HISTORY, []);
 
   const toggleFavorite = useCallback(
     (toolKey: string) => {
@@ -42,10 +33,59 @@ export default function useToolsPreferences() {
     [favoriteToolKeys]
   );
 
+  const clearAllFavorites = useCallback(() => {
+    setFavoriteToolKeys([]);
+  }, [setFavoriteToolKeys]);
+
+  // Derived state: True if all history-supporting tools are disabled
+  const isGlobalHistoryPaused =
+    TOOLS_WITH_HISTORY.length > 0 &&
+    TOOLS_WITH_HISTORY.every((key) => disabledHistoryToolKeys.includes(key));
+
+  const isHistoryEnabled = useCallback(
+    (toolKey: string) => !disabledHistoryToolKeys.includes(toolKey),
+    [disabledHistoryToolKeys]
+  );
+
+  const toggleHistoryEnabled = useCallback(
+    (toolKey: string, forceEnabled?: boolean) => {
+      if (forceEnabled === true) {
+        setDisabledHistoryToolKeys(
+          disabledHistoryToolKeys.filter((k) => k !== toolKey)
+        );
+      } else if (forceEnabled === false) {
+        if (!disabledHistoryToolKeys.includes(toolKey)) {
+          setDisabledHistoryToolKeys([...disabledHistoryToolKeys, toolKey]);
+        }
+      } else {
+        setDisabledHistoryToolKeys(xor(disabledHistoryToolKeys, [toolKey]));
+      }
+    },
+    [disabledHistoryToolKeys, setDisabledHistoryToolKeys]
+  );
+
+  // Global batch toggle: pauses all tools or resumes all tools
+  const setIsGlobalHistoryPaused = useCallback(
+    (paused: boolean) => {
+      if (paused) {
+        setDisabledHistoryToolKeys([...TOOLS_WITH_HISTORY]);
+      } else {
+        setDisabledHistoryToolKeys([]);
+      }
+    },
+    [setDisabledHistoryToolKeys]
+  );
+
   return {
     favoriteToolKeys,
     toggleFavorite,
     isFavorite,
+    clearAllFavorites,
+    disabledHistoryToolKeys,
+    isGlobalHistoryPaused,
+    setIsGlobalHistoryPaused,
+    isHistoryEnabled,
+    toggleHistoryEnabled,
     isSupported,
   };
 }

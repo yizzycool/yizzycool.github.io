@@ -3,30 +3,37 @@
 import { useState, useEffect } from 'react';
 import {
   Clock,
-  Trash2,
   RotateCcw,
   X,
   FileText,
   Image as ImageIcon,
   Pencil,
   Check,
+  ShieldCheck,
+  PauseCircle,
 } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
+import { toast } from '@/utils/toast';
 import { HistoryItem } from '@/hooks/tools/use-tool-history';
 import { Drawer } from '@/components/ui/drawer';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/dialog';
+import { Switch } from '@/components/ui/switch';
+import { DeleteAction } from '@/components/shared/action-button';
 
 export interface ToolHistoryDrawerProps<T = unknown> {
   isOpen: boolean;
   onClose: () => void;
   historyList: HistoryItem<T>[];
   isLoading?: boolean;
+  isHistoryEnabled?: boolean;
+  onToggleHistoryEnabled?: (enabled: boolean) => void;
   onRestore: (data: T) => void;
   onRename?: (id: string, newTitle: string) => void;
   onRemove: (id: string) => void;
   onClear: () => void;
+  onClearAll?: () => void;
 }
 
 export function ToolHistoryDrawer<T>({
@@ -34,14 +41,18 @@ export function ToolHistoryDrawer<T>({
   onClose,
   historyList,
   isLoading = false,
+  isHistoryEnabled = true,
+  onToggleHistoryEnabled,
   onRestore,
   onRename,
   onRemove,
   onClear,
+  onClearAll,
 }: ToolHistoryDrawerProps<T>) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState<string>('');
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isWipeAllConfirmOpen, setIsWipeAllConfirmOpen] = useState(false);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -71,6 +82,13 @@ export function ToolHistoryDrawer<T>({
   const handleCancelEdit = () => {
     setEditingId(null);
     setEditTitle('');
+  };
+
+  const handleWipeAll = () => {
+    if (onClearAll) {
+      onClearAll();
+      toast.success('All tool history snapshots have been wiped');
+    }
   };
 
   return (
@@ -106,6 +124,34 @@ export function ToolHistoryDrawer<T>({
         />
       </div>
 
+      {/* Sub-bar: Record switch */}
+      {onToggleHistoryEnabled && (
+        <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/70 px-4 py-2.5 dark:border-slate-800 dark:bg-slate-900/50">
+          <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
+            Record History
+          </span>
+          <Switch
+            size="xs"
+            checked={isHistoryEnabled}
+            onChange={(checked) => onToggleHistoryEnabled(checked)}
+            aria-label="Toggle history recording"
+          />
+        </div>
+      )}
+
+      {/* Paused alert banner if disabled */}
+      {!isHistoryEnabled && (
+        <div className="flex items-center gap-2 border-b border-amber-200/60 bg-amber-50/80 px-4 py-2 text-xs text-amber-800 dark:border-amber-900/40 dark:bg-amber-950/30 dark:text-amber-300">
+          <PauseCircle
+            size={14}
+            className="shrink-0 text-amber-600 dark:text-amber-400"
+          />
+          <span>
+            History recording is paused. New actions will not be saved.
+          </span>
+        </div>
+      )}
+
       {/* Content */}
       <div className="flex-1 space-y-3 overflow-y-auto p-4">
         {isLoading ? (
@@ -120,11 +166,21 @@ export function ToolHistoryDrawer<T>({
         ) : historyList.length === 0 ? (
           <div className="flex h-64 flex-col items-center justify-center text-center text-slate-400">
             <div className="mb-3 rounded-full bg-slate-100 p-3 dark:bg-slate-800">
-              <Clock size={28} className="opacity-40" />
+              {!isHistoryEnabled ? (
+                <PauseCircle size={28} className="text-amber-500/70" />
+              ) : (
+                <Clock size={28} className="opacity-40" />
+              )}
             </div>
-            <p className="text-sm font-medium">No history records yet</p>
-            <p className="mt-1 text-xs text-slate-400">
-              Snapshots will be saved automatically when you process or convert
+            <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
+              {!isHistoryEnabled
+                ? 'Recording is paused'
+                : 'No history records yet'}
+            </p>
+            <p className="mt-1 max-w-[240px] text-xs text-slate-400">
+              {!isHistoryEnabled
+                ? 'New snapshots are not being saved. Switch "Record History" back on anytime.'
+                : 'Snapshots will be saved automatically when you process or convert'}
             </p>
           </div>
         ) : (
@@ -194,13 +250,13 @@ export function ToolHistoryDrawer<T>({
                         minute: '2-digit',
                       })}
                     </span>
-                    <button
+                    <DeleteAction
+                      size="xs"
+                      display="icon"
+                      variant="ghost"
+                      rounded="full"
                       onClick={() => onRemove(item.id)}
-                      className="rounded p-1 opacity-60 transition hover:bg-red-50 hover:text-red-500 group-hover:opacity-100 dark:hover:bg-red-950/40"
-                      title="Delete this snapshot"
-                    >
-                      <Trash2 size={13} />
-                    </button>
+                    />
                   </div>
                 </div>
               )}
@@ -252,34 +308,64 @@ export function ToolHistoryDrawer<T>({
       </div>
 
       {/* Footer */}
-      {historyList.length > 0 && (
-        <div className="border-t border-slate-100 bg-slate-50/80 p-3 dark:border-slate-800/80 dark:bg-slate-900/60">
+      <div className="flex flex-col gap-1.5 border-t border-slate-100 bg-slate-50/80 p-3 dark:border-slate-800/80 dark:bg-slate-900/60">
+        {historyList.length > 0 && (
+          <DeleteAction
+            variant="error"
+            size="base"
+            rounded="xl"
+            bordered
+            onClick={() => setIsConfirmOpen(true)}
+            className="text-xs"
+            label="Clear This Tool's History"
+          />
+        )}
+
+        {onClearAll && (
           <Button
             variant="ghost"
             size="base"
             rounded="xl"
-            icon={Trash2}
-            onClick={() => setIsConfirmOpen(true)}
+            onClick={() => setIsWipeAllConfirmOpen(true)}
             className={cn(
-              'w-full border-transparent text-xs font-medium transition-colors',
-              'hover:bg-rose-50 dark:hover:bg-rose-950/40',
-              'text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400',
-              'hover:border-rose-200/60 dark:hover:border-rose-900/40'
+              'underline underline-offset-4',
+              'w-full border-transparent py-1 text-[11px] font-normal transition-colors',
+              'text-slate-400 hover:bg-rose-50/50 hover:text-rose-600 dark:text-slate-500 dark:hover:bg-rose-950/20 dark:hover:text-rose-400'
             )}
           >
-            Clear All History
+            Wipe All Tools History
           </Button>
-        </div>
-      )}
+        )}
 
-      {/* Confirm Clear All Dialog */}
+        {/* Privacy Note */}
+        <div className="flex items-center justify-center gap-1.5 pt-1 text-[11px] text-slate-400 dark:text-slate-500">
+          <ShieldCheck
+            size={13}
+            className="shrink-0 text-slate-400 dark:text-slate-500"
+          />
+          <span>All data is stored locally and never sent to any server</span>
+        </div>
+      </div>
+
+      {/* Confirm Clear All for current tool */}
       <ConfirmDialog
         isOpen={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
         onConfirm={onClear}
-        title="Clear All History"
-        message="Are you sure you want to delete all history snapshots? This action cannot be undone."
-        confirmText="Clear All"
+        title="Clear This Tool's History"
+        message="Are you sure you want to delete all history snapshots for this tool? This action cannot be undone."
+        confirmText="Clear History"
+        confirmVariant="error"
+      />
+
+      {/* Confirm Wipe All Tools History */}
+      <ConfirmDialog
+        isOpen={isWipeAllConfirmOpen}
+        onClose={() => setIsWipeAllConfirmOpen(false)}
+        onConfirm={handleWipeAll}
+        title="Wipe All Tools History"
+        message="Are you sure you want to permanently delete history snapshots across ALL tools in the database? This action cannot be undone."
+        confirmText="Wipe All History"
         confirmVariant="error"
       />
     </Drawer>

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import isEqual from 'lodash/isEqual';
 
 import { useToolsDB } from '@/hooks/tools/use-tools-db';
+import useToolsPreferences from '@/hooks/tools/use-tools-preferences';
 
 export interface HistoryItem<T = unknown> {
   id: string;
@@ -23,7 +24,22 @@ export function useToolHistory<T = unknown>(
   const [historyList, setHistoryList] = useState<HistoryItem<T>[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const { getValue, setValue, isSupported } = useToolsDB();
+  const { getValue, setValue, clearStore, isSupported } = useToolsDB();
+  const {
+    isHistoryEnabled: checkHistoryEnabled,
+    toggleHistoryEnabled: togglePrefHistoryEnabled,
+  } = useToolsPreferences();
+
+  const isHistoryEnabled = toolKey ? checkHistoryEnabled(toolKey) : true;
+
+  const toggleHistoryEnabled = useCallback(
+    (forceEnabled?: boolean) => {
+      if (toolKey) {
+        togglePrefHistoryEnabled(toolKey, forceEnabled);
+      }
+    },
+    [toolKey, togglePrefHistoryEnabled]
+  );
 
   // Load from IndexedDB on mount
   useEffect(() => {
@@ -59,7 +75,7 @@ export function useToolHistory<T = unknown>(
   // Add history entry
   const addHistory = useCallback(
     async (preview: string, data: T, previewImage?: string, title?: string) => {
-      if (!toolKey) return;
+      if (!toolKey || !isHistoryEnabled) return;
 
       const trimmedPreview =
         preview.trim().slice(0, 100) || 'No preview available';
@@ -90,7 +106,7 @@ export function useToolHistory<T = unknown>(
         return updated;
       });
     },
-    [maxItems, setValue, toolKey]
+    [isHistoryEnabled, maxItems, setValue, toolKey]
   );
 
   // Rename history entry
@@ -125,21 +141,30 @@ export function useToolHistory<T = unknown>(
     [setValue, toolKey]
   );
 
-  // Clear all entries
+  // Clear all entries for current tool
   const clearHistory = useCallback(async () => {
     if (!toolKey) return;
     setHistoryList([]);
     await setValue('history', toolKey, []).catch(() => {});
   }, [setValue, toolKey]);
 
+  // Clear all entries across all tools in the history store
+  const clearAllToolsHistory = useCallback(async () => {
+    setHistoryList([]);
+    await clearStore('history').catch(() => {});
+  }, [clearStore]);
+
   return {
     historyList,
     historyCount: historyList.length,
     isLoading: toolKey ? isLoading : false,
+    isHistoryEnabled,
+    toggleHistoryEnabled,
     addHistory,
     renameHistory,
     removeHistory,
     clearHistory,
+    clearAllToolsHistory,
     isSupported,
   };
 }

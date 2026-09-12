@@ -23,7 +23,7 @@ export default function CategoryChip({
       size="xs"
       rounded="lg"
       bordered
-      className="gap-2"
+      className="shrink-0 gap-2"
     >
       <span>{name}</span>
       <Badge variant={isSelected ? 'dark-sky' : 'neutral'}>{count}</Badge>

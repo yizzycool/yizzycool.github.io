@@ -2,13 +2,21 @@
 
 import type { HotkeyItem } from '@/components/ui/badge';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { get, invert } from 'lodash';
-import { Star, Clock, Keyboard, ShieldCheck, LucideIcon } from 'lucide-react';
+import {
+  Star,
+  Clock,
+  Keyboard,
+  ShieldCheck,
+  LucideIcon,
+  PauseCircle,
+} from 'lucide-react';
 
 import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
 import useToolsPreferences from '@/hooks/tools/use-tools-preferences';
+import { useToolsDB } from '@/hooks/tools/use-tools-db';
 import { TOOLS_WITH_HISTORY, TOOLS_WITH_HOTKEY } from './constants';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -21,6 +29,7 @@ import {
 import { HistoryItem } from '@/hooks/tools/use-tool-history';
 import { ToolHistoryDrawer } from './tool-history-drawer';
 import { ToolHotkeysModal } from './tool-hotkeys-modal';
+import { cn } from '@/utils/cn';
 
 const InvertToolUrls = invert(ToolUrls);
 
@@ -62,8 +71,33 @@ export default function HeaderBlock<T = unknown>({
   const title = get(ToolTitles, resolvedToolKey);
   const desc = get(ToolDescriptions, resolvedToolKey);
 
-  const { isFavorite, toggleFavorite } = useToolsPreferences();
+  const {
+    isFavorite,
+    toggleFavorite,
+    isHistoryEnabled: checkHistoryEnabled,
+    toggleHistoryEnabled,
+  } = useToolsPreferences();
   const favorite = resolvedToolKey ? isFavorite(resolvedToolKey) : false;
+  const isHistoryEnabled = resolvedToolKey
+    ? checkHistoryEnabled(resolvedToolKey)
+    : true;
+
+  const handleToggleHistoryEnabled = useCallback(
+    (enabled: boolean) => {
+      if (resolvedToolKey) {
+        toggleHistoryEnabled(resolvedToolKey, enabled);
+      }
+    },
+    [resolvedToolKey, toggleHistoryEnabled]
+  );
+
+  const { clearStore } = useToolsDB();
+  const handleClearAllHistory = useCallback(async () => {
+    await clearStore('history').catch(() => {});
+    if (onClearHistory) {
+      onClearHistory();
+    }
+  }, [clearStore, onClearHistory]);
 
   const showHistory = TOOLS_WITH_HISTORY.includes(resolvedToolKey);
   const showHotkey = TOOLS_WITH_HOTKEY.includes(resolvedToolKey);
@@ -152,23 +186,36 @@ export default function HeaderBlock<T = unknown>({
             {favorite ? 'Favorited' : 'Favorite'}
           </Button>
 
-          {/* 2. History Button with count badge */}
+          {/* 2. History Button with count badge & paused state indicator */}
           {showHistory && (
             <Button
               variant="surface"
               bordered
               size="xs"
               rounded="xl"
-              icon={Clock}
+              icon={isHistoryEnabled ? Clock : PauseCircle}
+              iconClassName={
+                isHistoryEnabled
+                  ? ''
+                  : 'text-amber-500/80 dark:text-amber-400/80'
+              }
               onClick={() => setIsHistoryOpen(true)}
               ariaLabel="View history"
             >
               <span>History</span>
-              {historyList.length > 0 && (
-                <span className="ml-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold text-white">
+              {historyList.length > 0 ? (
+                <span
+                  className={cn(
+                    'flex h-4 min-w-[16px] items-center justify-center rounded-full px-1',
+                    'text-[10px] font-bold',
+                    isHistoryEnabled
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-600 text-gray-100 opacity-20'
+                  )}
+                >
                   {historyList.length}
                 </span>
-              )}
+              ) : null}
             </Button>
           )}
 
@@ -196,6 +243,8 @@ export default function HeaderBlock<T = unknown>({
         onClose={() => setIsHistoryOpen(false)}
         historyList={historyList}
         isLoading={isLoadingHistory}
+        isHistoryEnabled={isHistoryEnabled}
+        onToggleHistoryEnabled={handleToggleHistoryEnabled}
         onRestore={(data) => {
           if (onRestoreHistory) onRestoreHistory(data);
         }}
@@ -208,6 +257,7 @@ export default function HeaderBlock<T = unknown>({
         onClear={() => {
           if (onClearHistory) onClearHistory();
         }}
+        onClearAll={handleClearAllHistory}
       />
 
       {/* Hotkeys Modal */}

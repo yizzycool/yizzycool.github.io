@@ -115,6 +115,21 @@ export function useIndexedDB<StoreName extends string = string>(
     [openDB]
   );
 
+  const clearStore = useCallback(
+    (storeName: StoreName): Promise<void> => {
+      return openDB().then((db) => {
+        return new Promise((resolve, reject) => {
+          const transaction = db.transaction(storeName, 'readwrite');
+          const store = transaction.objectStore(storeName);
+          const request = store.clear();
+          request.onsuccess = () => resolve();
+          request.onerror = () => reject(request.error);
+        });
+      });
+    },
+    [openDB]
+  );
+
   const deleteDB = useCallback((): Promise<void> => {
     return new Promise((resolve, reject) => {
       if (typeof window === 'undefined' || !('indexedDB' in window)) {
@@ -137,6 +152,7 @@ export function useIndexedDB<StoreName extends string = string>(
     getValue,
     setValue,
     deleteValue,
+    clearStore,
     deleteDB,
   };
 }
