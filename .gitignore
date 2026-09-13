@@ -153,3 +153,6 @@ public/swe-worker*
 # Prevent Git dirty state caused by Next.js switching paths 
 # between dev (dev/types) and build (types)
 next-env.d.ts
+
+# Documentation
+docs/
