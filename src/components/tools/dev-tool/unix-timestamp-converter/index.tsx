@@ -1,7 +1,5 @@
 'use client';
 
-import type { UnixTimestampHistoryData } from './hooks/use-unix-timestamp-converter';
-
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
@@ -40,32 +38,15 @@ export default function UnixTimestampConverter() {
     updateDateField,
     setDateToNow,
     onClearDateInput,
-
-    // History
-    historyList,
-    isLoadingHistory,
-    saveToHistory,
-    onRestoreHistory,
-    renameHistory,
-    removeHistory,
-    clearHistory,
   } = useUnixTimestampConverter();
 
   return (
     <>
-      <HeaderBlock<UnixTimestampHistoryData>
-        historyList={historyList}
-        isLoadingHistory={isLoadingHistory}
-        onRestoreHistory={onRestoreHistory}
-        onRenameHistory={renameHistory}
-        onRemoveHistory={removeHistory}
-        onClearHistory={clearHistory}
+      <HeaderBlock
         customShortcuts={[
-          { ...TOOL_HOTKEYS.process, label: 'Save Record to History' },
           TOOL_HOTKEYS.paste,
           { ...TOOL_HOTKEYS.copy, label: 'Copy Primary Result' },
           { ...TOOL_HOTKEYS.clear, label: 'Clear Input' },
-          TOOL_HOTKEYS.history,
           TOOL_HOTKEYS.help,
         ]}
       />
@@ -95,7 +76,6 @@ export default function UnixTimestampConverter() {
         onApplyOffset={applyOffset}
         onPaste={onPasteTsInput}
         onClear={onClearTsInput}
-        onSaveHistory={() => saveToHistory('timestamp-to-date')}
       />
 
       <SectionGap />
@@ -109,7 +89,6 @@ export default function UnixTimestampConverter() {
         onUpdateField={updateDateField}
         onSetToNow={setDateToNow}
         onClear={onClearDateInput}
-        onSaveHistory={() => saveToHistory('date-to-timestamp')}
       />
 
       <SectionGap />

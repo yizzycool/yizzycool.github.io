@@ -3,15 +3,16 @@
 import type { DateFields } from '../hooks/use-unix-timestamp-converter';
 import type { TimezoneMode } from '../constants';
 
-import { CalendarDays, FileClock, RefreshCw } from 'lucide-react';
+import { CalendarDays, RefreshCw } from 'lucide-react';
 import { Card, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PillTabs } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { DeleteAction } from '@/components/shared/action-button';
+
 import LabelBar from '@/components/tools/common/label-bar';
-import ExecuteBar from '@/components/tools/common/execute-bar';
 import { PropertyRow } from '@/components/tools/common/property-row';
+
 import { TIMEZONE_MODES, TIMEZONE_MODE_LABELS } from '../constants';
 import DateInput from './date-input';
 
@@ -27,7 +28,6 @@ type Props = {
   onUpdateField: (field: keyof DateFields, value: string) => void;
   onSetToNow: () => void;
   onClear: () => void;
-  onSaveHistory: () => void;
 };
 
 export default function DateToTimestampCard({
@@ -38,7 +38,6 @@ export default function DateToTimestampCard({
   onUpdateField,
   onSetToNow,
   onClear,
-  onSaveHistory,
 }: Props) {
   return (
     <Card animation="fade-in" className="text-left">
@@ -149,15 +148,6 @@ export default function DateToTimestampCard({
             }
           />
         </div>
-
-        {/* ExecuteBar: Save to History */}
-        <ExecuteBar
-          label="Save Date Conversion to History"
-          icon={FileClock}
-          disabled={!convertedResult.isValid}
-          onClick={onSaveHistory}
-          hotkeyLabel="Save"
-        />
       </div>
     </Card>
   );

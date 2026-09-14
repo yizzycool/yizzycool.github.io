@@ -3,14 +3,7 @@
 import type { ConvertedTimezoneItem } from '../hooks/use-unix-timestamp-converter';
 
 import { useState } from 'react';
-import {
-  Hash,
-  RefreshCw,
-  Globe,
-  ChevronDown,
-  ChevronUp,
-  FileClock,
-} from 'lucide-react';
+import { Hash, RefreshCw, Globe, ChevronDown, ChevronUp } from 'lucide-react';
 
 import { Card, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -19,10 +12,10 @@ import { PillTabs } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { PasteAction, DeleteAction } from '@/components/shared/action-button';
-import LabelBar from '@/components/tools/common/label-bar';
-import ExecuteBar from '@/components/tools/common/execute-bar';
 
+import LabelBar from '@/components/tools/common/label-bar';
 import { PropertyRow } from '@/components/tools/common/property-row';
+
 import { QUICK_OFFSETS, UNIT_MODES, UNIT_MODE_LABELS } from '../constants';
 
 type Props = {
@@ -48,7 +41,6 @@ type Props = {
   onApplyOffset: (seconds: number) => void;
   onPaste: (text: string) => void;
   onClear: () => void;
-  onSaveHistory: () => void;
 };
 
 export default function TimestampToDateCard({
@@ -63,7 +55,6 @@ export default function TimestampToDateCard({
   onApplyOffset,
   onPaste,
   onClear,
-  onSaveHistory,
 }: Props) {
   const [showAllTimezones, setShowAllTimezones] = useState(false);
 
@@ -215,17 +206,6 @@ export default function TimestampToDateCard({
             </div>
           </div>
         )}
-
-        {/* ExecuteBar: Save to History */}
-        <ExecuteBar
-          label="Save Timestamp to History"
-          icon={FileClock}
-          disabled={!parsedInfo.isValid}
-          onClick={onSaveHistory}
-          text={tsInput}
-          hotkeyLabel="Save"
-          showCharCount={false}
-        />
       </div>
     </Card>
   );

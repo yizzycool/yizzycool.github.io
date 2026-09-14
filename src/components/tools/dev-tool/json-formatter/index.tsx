@@ -2,7 +2,7 @@
 
 import type { JsonHistoryData } from './hooks/use-json-formatter';
 
-import { Braces, CodeXml, FileBraces, FileText, Wand2 } from 'lucide-react';
+import { Braces, CodeXml, FileText, Wand2 } from 'lucide-react';
 import { isEmpty } from 'lodash';
 
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
@@ -90,7 +90,7 @@ export default function JsonFormatter() {
             icon={FileText}
             htmlFor="json-string-textarea"
           >
-            <SampleAction icon={FileBraces} onClick={onLoadSample} />
+            <SampleAction onClick={onLoadSample} />
             <PasteAction onClick={onPaste} />
             <DeleteAction onClick={onClear} disabled={isEmpty(input)} />
           </LabelBar>

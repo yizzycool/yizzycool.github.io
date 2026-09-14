@@ -3,22 +3,21 @@
 import type { MouseEventHandler } from 'react';
 import type { SampleActionProps } from './types';
 
-import { FileCode } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 import { useDisplay } from '../hooks/use-display';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/utils/cn';
 
 export function SampleAction({
   display = 'icon-label',
-  variant = 'ghost-sky',
+  variant = 'outline',
   size = 'xs',
-  rounded = 'lg',
-  bordered = true,
+  rounded,
+  bordered,
   className,
   disabled = false,
   label = 'Sample',
-  icon: Icon = FileCode,
+  icon: Icon = Sparkles,
   ariaLabel,
   title,
   onClick = () => {},
@@ -37,7 +36,7 @@ export function SampleAction({
       size={size}
       rounded={rounded}
       bordered={bordered}
-      className={cn('transition-colors', className)}
+      className={className}
       icon={showIcon ? Icon : undefined}
       disabled={disabled}
       ariaLabel={ariaLabel}

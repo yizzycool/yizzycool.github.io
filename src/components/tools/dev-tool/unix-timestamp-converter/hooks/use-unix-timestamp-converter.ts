@@ -1,21 +1,11 @@
 'use client';
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { useToolHistory } from '@/hooks/tools/use-tool-history';
+import { useToolsDB } from '@/hooks/tools/use-tools-db';
 import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
 import toast from '@/utils/toast';
 
 import { WORLD_TIMEZONES } from '../constants';
-
-export type UnixTimestampHistoryData = {
-  type: 'timestamp-to-date' | 'date-to-timestamp';
-  timestampSec: number;
-  timestampMs: number;
-  iso: string;
-  local: string;
-  utc: string;
-  note?: string;
-};
 
 export type DateFields = {
   year: number;
@@ -311,83 +301,13 @@ export default function useUnixTimestampConverter() {
   }, []);
 
   // ----------------------------------------------------
-  // 4. History Storage Integration
+  // 4. Cleanup Residual History on Mount
   // ----------------------------------------------------
-  const {
-    historyList,
-    isLoading: isLoadingHistory,
-    addHistory,
-    renameHistory,
-    removeHistory,
-    clearHistory,
-  } = useToolHistory<UnixTimestampHistoryData>('unix-timestamp-converter');
+  const { deleteValue } = useToolsDB();
 
-  const saveToHistory = useCallback(
-    (customType?: 'timestamp-to-date' | 'date-to-timestamp') => {
-      const isDateSource = customType === 'date-to-timestamp';
-
-      if (isDateSource) {
-        if (!convertedFromDate.isValid || !convertedFromDate.dateObj) {
-          toast.error('Invalid date to save');
-          return;
-        }
-
-        const d = convertedFromDate.dateObj;
-        const title = `${convertedFromDate.seconds} (${d.toLocaleDateString()})`;
-        addHistory(title, {
-          type: 'date-to-timestamp',
-          timestampSec: convertedFromDate.seconds,
-          timestampMs: convertedFromDate.milliseconds,
-          iso: d.toISOString(),
-          local: d.toLocaleString(),
-          utc: d.toUTCString(),
-        });
-        toast.success('Saved date conversion to history!');
-        return;
-      }
-
-      // Default: save timestamp conversion
-      const { isValid, date, seconds, milliseconds } = parsedTimestampInfo;
-      if (!isValid || !date) {
-        toast.error('Invalid timestamp to save');
-        return;
-      }
-
-      const title = `${seconds} ➔ ${date.toLocaleDateString()}`;
-      addHistory(title, {
-        type: 'timestamp-to-date',
-        timestampSec: seconds,
-        timestampMs: milliseconds,
-        iso: tsConvertedValues.iso,
-        local: tsConvertedValues.local,
-        utc: tsConvertedValues.utc,
-      });
-      toast.success('Saved timestamp conversion to history!');
-    },
-    [addHistory, convertedFromDate, parsedTimestampInfo, tsConvertedValues]
-  );
-
-  const onRestoreHistory = useCallback((item: UnixTimestampHistoryData) => {
-    if (item.timestampSec) {
-      setTsInput(item.timestampSec.toString());
-      setUnitMode('seconds');
-
-      // Also sync Date inputs
-      const d = new Date(item.timestampSec * 1000);
-      if (!isNaN(d.getTime())) {
-        setDateFields({
-          year: d.getFullYear(),
-          month: d.getMonth() + 1,
-          day: d.getDate(),
-          hour: d.getHours(),
-          minute: d.getMinutes(),
-          second: d.getSeconds(),
-        });
-      }
-
-      toast.success(`Restored timestamp: ${item.timestampSec}`);
-    }
-  }, []);
+  useEffect(() => {
+    deleteValue('history', 'unix-timestamp-converter').catch(() => {});
+  }, [deleteValue]);
 
   // Copy primary result
   const onCopyPrimary = useCallback(async () => {
@@ -427,7 +347,6 @@ export default function useUnixTimestampConverter() {
   // ----------------------------------------------------
   useToolHotkeys(
     {
-      onExecute: () => saveToHistory(),
       onClear: onClearTsInput,
       onPaste: onGlobalPaste,
       onCopy: onCopyPrimary,
@@ -463,14 +382,5 @@ export default function useUnixTimestampConverter() {
     updateDateField,
     setDateToNow,
     onClearDateInput,
-
-    // History
-    historyList,
-    isLoadingHistory,
-    saveToHistory,
-    onRestoreHistory,
-    renameHistory,
-    removeHistory,
-    clearHistory,
   };
 }

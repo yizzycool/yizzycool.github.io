@@ -21,10 +21,10 @@ export const getButtonVariants = (
       'hover:bg-white hover:border-slate-300 dark:hover:bg-neutral-800/80 dark:hover:border-neutral-700'
   ),
   ghost: cn(
-    'text-slate-600 dark:text-slate-400 border-slate-300/80 dark:border-neutral-700/80',
+    'border-slate-200 text-slate-700 dark:border-neutral-800 dark:text-slate-300',
     !disabled &&
       hoverEffect &&
-      'hover:bg-slate-100/80 hover:text-slate-900 hover:border-slate-300 dark:hover:bg-neutral-800/80 dark:hover:text-white dark:hover:border-neutral-700'
+      'hover:border-slate-300 hover:bg-slate-50/50 dark:hover:border-neutral-700 dark:hover:bg-neutral-900/60'
   ),
   'ghost-sky': cn(
     'text-sky-600 dark:text-sky-400 border-transparent',
