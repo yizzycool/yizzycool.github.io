@@ -1,10 +1,12 @@
+'use client';
+
 import { Type } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
 import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
+import { Card, CardTitle } from '@/components/ui/card';
+import { PasteAction, DeleteAction } from '@/components/shared/action-button';
 import HighlightMark from './highlight-mark';
-import { CardTitle } from '@/components/ui/card';
 
 type Props = {
   pattern: string;
@@ -13,6 +15,9 @@ type Props = {
   setTestString: React.Dispatch<React.SetStateAction<string>>;
   matches: Array<RegExpExecArray>;
   error: string | null;
+  testTextareaRef?: React.RefObject<HTMLTextAreaElement | null>;
+  onPaste?: () => void;
+  onClear?: () => void;
 };
 
 export default function TestCard({
@@ -22,6 +27,9 @@ export default function TestCard({
   setTestString,
   matches,
   error,
+  testTextareaRef,
+  onPaste,
+  onClear,
 }: Props) {
   const onChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     setTestString(e.target.value);
@@ -37,9 +45,19 @@ export default function TestCard({
 
   return (
     <Card>
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <CardTitle icon={Type}>Test String</CardTitle>
-        <Badge>{matches.length} Matches</Badge>
+
+        <div className="flex items-center gap-2">
+          {onPaste && <PasteAction onClick={onPaste} />}
+          {onClear && <DeleteAction onClick={onClear} disabled={!testString} />}
+          <Badge
+            variant={matches.length > 0 ? 'secondary' : 'surface'}
+            className="font-mono text-xs font-semibold"
+          >
+            {matches.length} {matches.length === 1 ? 'Match' : 'Matches'}
+          </Badge>
+        </div>
       </div>
 
       {/* Textarea + Highlighting Overlay */}
@@ -60,13 +78,13 @@ export default function TestCard({
         />
 
         <textarea
+          ref={testTextareaRef}
           id="regex-tester-textarea"
           className={cn(
             'block min-h-full w-full bg-transparent px-4 py-3',
-            'resize-none text-base leading-loose outline-none',
+            'resize-none font-mono text-base leading-loose outline-none',
             'text-slate-700 dark:text-slate-200',
-            'placeholder-neutral-400 dark:placeholder-neutral-500',
-            'bg-transparent'
+            'placeholder-neutral-400 dark:placeholder-neutral-500'
           )}
           value={testString}
           placeholder="Insert test text here..."

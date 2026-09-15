@@ -1,5 +1,7 @@
 import { RefObject } from 'react';
 
+export type SelectorSize = 'xs' | 'sm' | 'base' | 'lg';
+
 export type SelectorOptionItem = {
   label: string;
   value: string;
@@ -17,6 +19,7 @@ export type SelectorProps = {
   placeholder?: string;
   disabled?: boolean;
   className?: string;
+  size?: SelectorSize;
   onChange: (value: string) => void;
 };
 
@@ -26,6 +29,7 @@ export type OptionTypes = {
   currentValue: string;
   index: number;
   activeIndex: number | null;
+  size?: SelectorSize;
   getItemProps: (
     userProps?: Omit<React.HTMLProps<HTMLElement>, 'selected' | 'active'> & {
       active?: boolean | undefined;

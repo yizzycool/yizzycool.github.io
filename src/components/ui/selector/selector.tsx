@@ -9,7 +9,7 @@ import {
   FloatingPortal,
   offset,
   shift,
-  size,
+  size as floatingSize,
   useClick,
   useDismiss,
   useFloating,
@@ -24,10 +24,14 @@ import { useId, useMemo, useRef, useState } from 'react';
 
 import { cn } from '@/utils/cn';
 import {
+  selectorChevronSizes,
   selectorChevronStyles,
+  selectorMenuSizes,
   selectorMenuStyles,
   selectorOptionDisabledStyles,
+  selectorOptionSizes,
   selectorOptionStyles,
+  selectorTriggerSizes,
   selectorTriggerStyles,
 } from './selector.variants';
 
@@ -40,6 +44,7 @@ export function Selector({
   placeholder = 'Select an option',
   disabled = false,
   className,
+  size = 'base',
   onChange = () => {},
 }: SelectorProps) {
   const selectorId = useId();
@@ -89,7 +94,7 @@ export function Selector({
       offset(6),
       flip({ padding: 8 }),
       shift({ padding: 8 }),
-      size({
+      floatingSize({
         apply({ rects, elements, availableHeight }) {
           Object.assign(elements.floating.style, {
             width: `${rects.reference.width}px`,
@@ -162,7 +167,11 @@ export function Selector({
         id={selectorId}
         ref={setReference}
         disabled={disabled}
-        className={cn(selectorTriggerStyles, className)}
+        className={cn(
+          selectorTriggerStyles,
+          selectorTriggerSizes[size],
+          className
+        )}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-labelledby={title ? labelId : undefined}
@@ -171,7 +180,8 @@ export function Selector({
       >
         <span
           className={cn(
-            'truncate font-mono text-sm',
+            'truncate font-mono',
+            size === 'xs' || size === 'sm' ? 'text-xs' : 'text-sm',
             !selectedOption && 'text-slate-400 dark:text-slate-500'
           )}
         >
@@ -179,7 +189,11 @@ export function Selector({
         </span>
         <span className="ml-2 flex shrink-0 items-center">
           <ChevronDown
-            className={cn(selectorChevronStyles, isOpen && 'rotate-180')}
+            className={cn(
+              selectorChevronStyles,
+              selectorChevronSizes[size],
+              isOpen && 'rotate-180'
+            )}
             aria-hidden="true"
           />
         </span>
@@ -191,7 +205,7 @@ export function Selector({
             <div
               ref={setFloating}
               style={{ ...floatingStyles, ...transitionStyles }}
-              className={cn(selectorMenuStyles)}
+              className={cn(selectorMenuStyles, selectorMenuSizes[size])}
               {...getFloatingProps()}
             >
               {normalizedOptions.map((option, index) => (
@@ -202,6 +216,7 @@ export function Selector({
                   currentValue={currentValue}
                   index={index}
                   activeIndex={activeIndex}
+                  size={size}
                   getItemProps={getItemProps}
                   handleSelect={handleSelect}
                 />
@@ -220,6 +235,7 @@ function Option({
   currentValue,
   index,
   activeIndex,
+  size = 'base',
   getItemProps,
   handleSelect,
 }: OptionTypes) {
@@ -238,6 +254,7 @@ function Option({
       data-focus={isFocused}
       className={cn(
         selectorOptionStyles,
+        selectorOptionSizes[size],
         option.disabled && selectorOptionDisabledStyles
       )}
       {...getItemProps({
@@ -259,7 +276,12 @@ function Option({
       <span className="truncate">{option.label}</span>
       {isSelected && (
         <span className="ml-2 flex shrink-0 items-center text-sky-600 dark:text-sky-400">
-          <Check className="size-4" strokeWidth={2.5} />
+          <Check
+            className={cn(
+              size === 'xs' || size === 'sm' ? 'size-3.5' : 'size-4'
+            )}
+            strokeWidth={2.5}
+          />
         </span>
       )}
     </div>

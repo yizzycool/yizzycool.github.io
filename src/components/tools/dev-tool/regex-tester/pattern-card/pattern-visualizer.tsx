@@ -13,8 +13,18 @@ export default function PatternVisualizer({ pattern }: Props) {
     const stack: Array<Array<number>> = [];
     const info: Record<number, number> = {};
 
+    let isInSquareBrackets = false;
     let groupIdx = 0;
     forEach(pattern, (p, idx) => {
+      // Detect square brackets
+      if (p === '[' && (idx === 0 || p[idx - 1] !== '\\')) {
+        isInSquareBrackets = true;
+      } else if (p === ']' && (idx === 0 || p[idx - 1] !== '\\')) {
+        isInSquareBrackets = false;
+      }
+      // Continue if the character is inside the square brackets `[]`
+      if (isInSquareBrackets) return;
+      // Detect parentheses
       if (p === '(' && (idx === 0 || p[idx - 1] !== '\\')) {
         stack.push([groupIdx, idx]);
         groupIdx += 1;
@@ -44,8 +54,7 @@ export default function PatternVisualizer({ pattern }: Props) {
     }
   };
 
-  if (!pattern)
-    return <span className="italic text-slate-400">Type a pattern...</span>;
+  if (!pattern) return '-';
 
   return (
     <>

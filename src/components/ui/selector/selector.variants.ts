@@ -1,5 +1,14 @@
+import type { SelectorSize } from './types';
+
+export const selectorTriggerSizes: Record<SelectorSize, string> = {
+  xs: 'px-2.5 py-1 text-xs rounded-lg gap-1.5',
+  sm: 'px-3 py-1.5 text-xs rounded-lg gap-1.5',
+  base: 'px-4 py-2.5 text-sm rounded-xl gap-2',
+  lg: 'px-5 py-3 text-base rounded-2xl gap-2.5',
+};
+
 export const selectorTriggerStyles =
-  'relative flex w-full items-center justify-between rounded-xl border px-4 py-2.5 font-mono text-sm leading-relaxed outline-none ' +
+  'relative flex w-full items-center justify-between border font-mono leading-relaxed outline-none ' +
   'shadow-2xs border-neutral-200/90 bg-white/80 text-slate-800 backdrop-blur-md transition-all duration-200 ' +
   'hover:border-neutral-300 hover:bg-white dark:border-neutral-700/80 dark:bg-neutral-900/80 dark:text-slate-100 ' +
   'dark:hover:border-neutral-600 dark:hover:bg-neutral-900/95 ' +
@@ -9,16 +18,37 @@ export const selectorTriggerStyles =
 
 export const selectorBaseStyles = selectorTriggerStyles;
 
+export const selectorChevronSizes: Record<SelectorSize, string> = {
+  xs: 'size-3.5',
+  sm: 'size-3.5',
+  base: 'size-4',
+  lg: 'size-5',
+};
+
 export const selectorChevronStyles =
-  'size-4 shrink-0 text-slate-400 transition-transform duration-200 dark:text-slate-500';
+  'shrink-0 text-slate-400 transition-transform duration-200 dark:text-slate-500';
 
 export const selectorMenuStyles =
-  'z-50 overflow-y-auto rounded-2xl border border-neutral-200/90 bg-white/95 p-1.5 space-y-0.5 ' +
+  'z-50 overflow-y-auto border border-neutral-200/90 bg-white/95 ' +
   'shadow-xl shadow-neutral-900/10 backdrop-blur-xl outline-none ' +
   'dark:border-neutral-700/80 dark:bg-neutral-900/95 dark:shadow-black/40';
 
+export const selectorMenuSizes: Record<SelectorSize, string> = {
+  xs: 'rounded-lg p-1 space-y-0.5',
+  sm: 'rounded-lg p-1.5 space-y-0.5',
+  base: 'rounded-xl p-1.5 space-y-0.5',
+  lg: 'rounded-2xl p-2 space-y-1',
+};
+
+export const selectorOptionSizes: Record<SelectorSize, string> = {
+  xs: 'px-2 py-1 text-xs rounded-md',
+  sm: 'px-2.5 py-1.5 text-xs rounded-lg',
+  base: 'px-3 py-2 text-sm rounded-xl',
+  lg: 'px-3.5 py-2.5 text-base rounded-xl',
+};
+
 export const selectorOptionStyles =
-  'relative flex cursor-pointer select-none items-center justify-between rounded-xl px-3 py-2 font-mono text-sm ' +
+  'relative flex cursor-pointer select-none items-center justify-between font-mono ' +
   'text-slate-700 transition-colors duration-150 outline-none ' +
   'hover:bg-sky-50 hover:text-sky-700 ' +
   'dark:text-slate-200 dark:hover:bg-sky-950/50 dark:hover:text-sky-300 ' +
