@@ -25,7 +25,7 @@ export interface ToolsSettingsModalProps {
   onClose: () => void;
 }
 
-export default function ToolsSettingsModal({
+export function ToolsSettingsModal({
   isOpen,
   onClose,
 }: ToolsSettingsModalProps) {
@@ -234,3 +234,5 @@ export default function ToolsSettingsModal({
     </>
   );
 }
+
+export default ToolsSettingsModal;
