@@ -7,27 +7,34 @@ import {
   PauseCircle,
   Clock,
   X,
+  Trash2,
 } from 'lucide-react';
 
+import { cn } from '@/utils/cn';
 import { toast } from '@/utils/toast';
 import useToolsPreferences from '@/hooks/tools/use-tools-preferences';
 import { useToolsDB } from '@/hooks/tools/use-tools-db';
 import { BaseDialog, ConfirmDialog } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
-import { DeleteAction } from '@/components/shared/action-button';
+import { TOOLS_WITH_HISTORY } from '@/components/tools/common/header-block/constants';
+import ToolsSettingsHistoryItem from './tools-settings-history-item';
 
 export interface ToolsSettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export function ToolsSettingsModal({
+export default function ToolsSettingsModal({
   isOpen,
   onClose,
 }: ToolsSettingsModalProps) {
-  const { isGlobalHistoryPaused, setIsGlobalHistoryPaused } =
-    useToolsPreferences();
+  const {
+    isGlobalHistoryPaused,
+    setIsGlobalHistoryPaused,
+    isHistoryEnabled,
+    toggleHistoryEnabled,
+  } = useToolsPreferences();
 
   const { clearStore } = useToolsDB();
 
@@ -47,9 +54,20 @@ export function ToolsSettingsModal({
         dialogClassName="w-full max-w-md overflow-hidden rounded-2xl p-5 sm:p-6"
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
+        <div
+          className={cn(
+            'flex items-center justify-between border-b pb-4',
+            'border-slate-100 dark:border-slate-800'
+          )}
+        >
           <div className="flex items-center gap-2.5">
-            <div className="rounded-xl bg-slate-100 p-2 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+            <div
+              className={cn(
+                'rounded-xl p-2',
+                'bg-slate-100 text-slate-700',
+                'dark:bg-slate-800 dark:text-slate-300'
+              )}
+            >
               <SlidersHorizontal size={18} />
             </div>
             <div>
@@ -73,8 +91,15 @@ export function ToolsSettingsModal({
 
         {/* Settings Body */}
         <div className="space-y-3.5 py-4">
-          {/* Section 1: Global History Recording */}
-          <div className="rounded-xl border border-slate-200/80 bg-slate-50/50 p-3.5 dark:border-slate-800 dark:bg-slate-900/40">
+          {/* Section 1: Global History Recording & Per-Tool Permissions */}
+          <div
+            className={cn(
+              'rounded-xl border p-3.5',
+              'border-slate-200/80 bg-slate-50/50',
+              'dark:border-slate-800 dark:bg-slate-900/40'
+            )}
+          >
+            {/* Master Toggle */}
             <div className="flex items-center justify-between gap-3">
               <div className="space-y-0.5">
                 <div className="flex items-center gap-1.5">
@@ -87,7 +112,7 @@ export function ToolsSettingsModal({
                   </span>
                 </div>
                 <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-                  Save execution snapshots locally across all tools.
+                  Save execution snapshots locally across tools.
                 </p>
               </div>
               <Switch
@@ -100,7 +125,13 @@ export function ToolsSettingsModal({
 
             {/* Incognito mode banner */}
             {isGlobalHistoryPaused && (
-              <div className="mt-3 flex items-start gap-2 rounded-lg border border-amber-200/60 bg-amber-50/80 p-2.5 text-xs text-amber-800 dark:border-amber-900/40 dark:bg-amber-950/30 dark:text-amber-300">
+              <div
+                className={cn(
+                  'mt-3 flex items-start gap-2 rounded-lg border p-2.5 text-xs',
+                  'border-amber-200/60 bg-amber-50/80 text-amber-800',
+                  'dark:border-amber-900/40 dark:bg-amber-950/30 dark:text-amber-300'
+                )}
+              >
                 <PauseCircle
                   size={15}
                   className="mt-0.5 shrink-0 text-amber-600 dark:text-amber-400"
@@ -111,34 +142,77 @@ export function ToolsSettingsModal({
                 </span>
               </div>
             )}
+
+            {/* Per-Tool Permissions */}
+            <div
+              className={cn(
+                'mt-3.5 border-t pt-3',
+                'border-slate-200/70 dark:border-slate-800/80'
+              )}
+            >
+              <div className="mb-2 flex items-center justify-between">
+                <span
+                  className={cn(
+                    'text-[11px] font-semibold uppercase tracking-wider',
+                    'text-slate-400 dark:text-slate-500'
+                  )}
+                >
+                  Supported Tools
+                </span>
+                {isGlobalHistoryPaused && (
+                  <span className="text-[11px] text-amber-600 dark:text-amber-400">
+                    Disabled while paused
+                  </span>
+                )}
+              </div>
+              <div
+                className={cn(
+                  'divide-y rounded-lg border bg-white',
+                  'divide-slate-100 border-slate-200/60',
+                  'dark:divide-slate-800/60 dark:border-slate-800 dark:bg-slate-900/60'
+                )}
+              >
+                {TOOLS_WITH_HISTORY.map((toolKey) => (
+                  <ToolsSettingsHistoryItem
+                    key={toolKey}
+                    toolKey={toolKey}
+                    isGlobalHistoryPaused={isGlobalHistoryPaused}
+                    isEnabled={isHistoryEnabled(toolKey)}
+                    onToggle={(checked) =>
+                      toggleHistoryEnabled(toolKey, checked)
+                    }
+                  />
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Section 2: Storage & Wipeout */}
-          <div className="rounded-xl border border-slate-200/80 bg-slate-50/50 p-3.5 dark:border-slate-800 dark:bg-slate-900/40">
-            <div className="flex items-center justify-between gap-3">
-              <div className="space-y-0.5">
-                <span className="text-sm font-medium text-slate-800 dark:text-slate-200">
-                  Wipe Tool History
-                </span>
-                <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-                  Permanently delete all snapshots saved in your browser.
-                </p>
-              </div>
-              <DeleteAction
-                variant="error"
-                size="xs"
-                rounded="lg"
-                bordered
-                onClick={() => setIsWipeHistoryConfirmOpen(true)}
-                label="Wipe All"
-                className="shrink-0"
-              />
-            </div>
+          {/* Section 2: Danger Action - Streamlined Wipeout Link */}
+          <div className="flex items-center justify-center pt-4">
+            <button
+              type="button"
+              onClick={() => setIsWipeHistoryConfirmOpen(true)}
+              className={cn(
+                'group inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5',
+                'text-xs font-medium text-rose-500 transition-colors',
+                'hover:text-rose-600 hover:underline',
+                'dark:text-rose-400 dark:hover:text-rose-300'
+              )}
+            >
+              <Trash2 size={13} className="shrink-0" />
+              <span>Clear all tools history data</span>
+            </button>
           </div>
         </div>
 
         {/* Footer Disclaimer */}
-        <div className="flex items-center justify-center gap-1.5 border-t border-slate-100 pt-3 text-[11px] text-slate-400 dark:border-slate-800 dark:text-slate-500">
+        <div
+          className={cn(
+            'flex items-center justify-center gap-1.5 border-t pt-3 text-[11px]',
+            'border-slate-100 text-slate-400',
+            'dark:border-slate-800 dark:text-slate-500'
+          )}
+        >
           <ShieldCheck
             size={13}
             className="shrink-0 text-slate-400 dark:text-slate-500"
@@ -160,5 +234,3 @@ export function ToolsSettingsModal({
     </>
   );
 }
-
-export default ToolsSettingsModal;
