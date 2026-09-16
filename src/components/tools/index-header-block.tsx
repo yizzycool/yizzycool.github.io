@@ -32,7 +32,7 @@ export default function HeaderBlock() {
         </h1>
 
         <Button
-          variant="surface"
+          variant="ghost"
           bordered
           size="xs"
           rounded="xl"
@@ -40,7 +40,11 @@ export default function HeaderBlock() {
           onClick={() => setIsSettingsOpen(true)}
           ariaLabel="Tools history and privacy settings"
           title="History & Privacy Settings"
-          className="shrink-0 p-2 sm:px-3 sm:py-1.5"
+          className={cn(
+            'shrink-0 p-2 sm:px-3 sm:py-1.5',
+            'backdrop-blur-xs bg-white/50 dark:bg-neutral-900/40',
+            'hover:bg-white/80 dark:hover:bg-neutral-800/60'
+          )}
         >
           <span className="hidden sm:inline">History & Privacy</span>
         </Button>

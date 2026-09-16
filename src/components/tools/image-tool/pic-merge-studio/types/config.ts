@@ -1,7 +1,7 @@
 import type { ColorStop } from 'fabric';
 import { SupportedFabricFilterType } from './fabric-filter';
 
-export type CanvasExportFormat = 'png' | 'jpeg' | 'svg';
+export type CanvasExportFormat = 'png' | 'jpeg';
 
 export type CanvasSize = { width: number; height: number };
 

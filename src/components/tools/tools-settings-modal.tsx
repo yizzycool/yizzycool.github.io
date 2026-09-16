@@ -19,6 +19,7 @@ import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { TOOLS_WITH_HISTORY } from '@/components/tools/common/header-block/constants';
 import ToolsSettingsHistoryItem from './tools-settings-history-item';
+import { Separator } from '../ui/separator';
 
 export interface ToolsSettingsModalProps {
   isOpen: boolean;
@@ -54,12 +55,7 @@ export function ToolsSettingsModal({
         dialogClassName="w-full max-w-md overflow-hidden rounded-2xl p-5 sm:p-6"
       >
         {/* Header */}
-        <div
-          className={cn(
-            'flex items-center justify-between border-b pb-4',
-            'border-slate-100 dark:border-slate-800'
-          )}
-        >
+        <div className="flex items-center justify-between pb-4">
           <div className="flex items-center gap-2.5">
             <div
               className={cn(
@@ -88,6 +84,8 @@ export function ToolsSettingsModal({
             ariaLabel="Close settings"
           />
         </div>
+
+        <Separator />
 
         {/* Settings Body */}
         <div className="space-y-3.5 py-4">
@@ -165,13 +163,7 @@ export function ToolsSettingsModal({
                   </span>
                 )}
               </div>
-              <div
-                className={cn(
-                  'divide-y rounded-lg border bg-white',
-                  'divide-slate-100 border-slate-200/60',
-                  'dark:divide-slate-800/60 dark:border-slate-800 dark:bg-slate-900/60'
-                )}
-              >
+              <div className="divide-y divide-slate-200/60 dark:divide-slate-800/60">
                 {TOOLS_WITH_HISTORY.map((toolKey) => (
                   <ToolsSettingsHistoryItem
                     key={toolKey}
@@ -205,12 +197,13 @@ export function ToolsSettingsModal({
           </div>
         </div>
 
+        <Separator />
+
         {/* Footer Disclaimer */}
         <div
           className={cn(
-            'flex items-center justify-center gap-1.5 border-t pt-3 text-[11px]',
-            'border-slate-100 text-slate-400',
-            'dark:border-slate-800 dark:text-slate-500'
+            'flex items-center justify-center gap-1.5 pt-3 text-[11px]',
+            'text-slate-400 dark:text-slate-500'
           )}
         >
           <ShieldCheck

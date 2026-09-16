@@ -27,7 +27,7 @@ export function ToolsSettingsHistoryItem({
   return (
     <div
       className={cn(
-        'flex items-center justify-between px-3 py-2 transition-colors',
+        'flex items-center justify-between py-2 transition-colors',
         isGlobalHistoryPaused && 'opacity-50'
       )}
     >
@@ -36,7 +36,7 @@ export function ToolsSettingsHistoryItem({
           <div
             className={cn(
               'flex h-6 w-6 items-center justify-center rounded-md',
-              'bg-slate-100 text-slate-600',
+              'bg-slate-200/70 text-slate-700',
               'dark:bg-slate-800 dark:text-slate-300'
             )}
           >

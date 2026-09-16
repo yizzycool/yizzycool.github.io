@@ -151,23 +151,14 @@ export default function useCanvasUpdater({
     };
 
     setIsExporting(true);
-    let dataUrl = '';
     const filename = `picmerge-${Date.now()}`;
-    if (canvasConfig.exportFormat === 'svg') {
-      dataUrl = fabricCanvasRef.current.toSVG({
-        suppressPreamble: true,
-      });
-      const blob = new Blob([dataUrl], { type: 'image/svg+xml' });
-      download(blob, `${filename}.svg`);
-    } else {
-      dataUrl = fabricCanvasRef.current.toDataURL({
-        format: canvasConfig.exportFormat,
-        quality: 0.9,
-        multiplier: 1,
-        enableRetinaScaling: false, // to prevent wrong output canvas size
-      });
-      download(dataUrl, `${filename}.${canvasConfig.exportFormat}`);
-    }
+    const dataUrl = fabricCanvasRef.current.toDataURL({
+      format: canvasConfig.exportFormat,
+      quality: 0.9,
+      multiplier: 1,
+      enableRetinaScaling: false, // to prevent wrong output canvas size
+    });
+    download(dataUrl, `${filename}.${canvasConfig.exportFormat}`);
     setIsExporting(false);
   };
 

@@ -26,7 +26,8 @@ export default function FeaturePanel({
       className={cn(
         side === 'featurePanel' &&
           'sticky top-[101px] hidden h-[calc(100dvh_-_101px)] w-[300px] shrink-0 overflow-y-auto px-2 pb-20 pt-4 lg:block',
-        side === 'headerToolsSelector' && 'py-4'
+        side === 'headerToolsSelector' && 'py-4',
+        getFadeUpClass('animate-delay-150')
       )}
     >
       <nav aria-label="Tools list">
@@ -36,7 +37,6 @@ export default function FeaturePanel({
             <h2>
               <Link
                 className={cn(
-                  getFadeUpClass('animate-delay-150'),
                   'flex items-center rounded-md p-2 font-bold',
                   'text-slate-800 dark:text-slate-300',
                   'hover:bg-sky-600/10',

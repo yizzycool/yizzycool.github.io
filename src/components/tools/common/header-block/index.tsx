@@ -5,20 +5,12 @@ import type { HotkeyItem } from '@/components/ui/badge';
 import { useState, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { get, invert } from 'lodash';
-import {
-  Star,
-  Clock,
-  Keyboard,
-  ShieldCheck,
-  LucideIcon,
-  PauseCircle,
-} from 'lucide-react';
+import { Star, Clock, Keyboard, LucideIcon, PauseCircle } from 'lucide-react';
 
 import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
 import useToolsPreferences from '@/hooks/tools/use-tools-preferences';
 import { useToolsDB } from '@/hooks/tools/use-tools-db';
 import { TOOLS_WITH_HISTORY, TOOLS_WITH_HOTKEY } from './constants';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   ToolDescriptions,
@@ -48,8 +40,6 @@ type HeaderBlockProps<T = unknown> = {
   onClearHistory?: () => void;
   /** Custom list of keyboard shortcuts displayed in the default ToolHotkeysModal */
   customShortcuts?: HotkeyItem[];
-  /** Whether to show the "100% Private" security badge (default: true) */
-  showPrivacyBadge?: boolean;
   /** Custom callback when clicking the Shortcuts button or pressing '?'. Overrides the default ToolHotkeysModal */
   onOpenHotkeys?: () => void;
 };
@@ -62,7 +52,6 @@ export default function HeaderBlock<T = unknown>({
   onRemoveHistory,
   onClearHistory,
   customShortcuts,
-  showPrivacyBadge = true,
   onOpenHotkeys,
 }: HeaderBlockProps<T>) {
   const pathname = usePathname();
@@ -138,17 +127,6 @@ export default function HeaderBlock<T = unknown>({
                 <h1 className="text-xl font-bold tracking-tight sm:text-2xl">
                   {title}
                 </h1>
-              )}
-              {showPrivacyBadge && (
-                <Badge
-                  variant="blue"
-                  size="xs"
-                  rounded="full"
-                  bordered
-                  icon={ShieldCheck}
-                >
-                  100% Private
-                </Badge>
               )}
             </div>
             {/* Description for large device */}

@@ -93,6 +93,14 @@ export const ToolKeys = {
   chromeTextDetector: 'chromeTextDetector',
 };
 
+/**
+ * Tools that require server-side processing or external cloud APIs.
+ * Tools listed here will NOT display the "100% Private" badge in AboutBlock.
+ */
+export const NON_CLIENT_SIDE_TOOLS: string[] = [
+  // Add tools that upload data or require external cloud APIs here
+];
+
 export const ToolGroupItems = {
   [ToolGroupKeys.everydayLifeTool]: [
     ToolKeys.qrCodeGenerator,
@@ -159,23 +167,23 @@ const ToolTitlesForFeaturePanel = {
 
 export const ToolDescriptions = {
   [ToolKeys.qrCodeGenerator]:
-    'Generate QR codes instantly from text, URLs, or custom content with this free online QR code generator.',
+    'Generate custom QR codes instantly with personalized colors, contrast presets, adjustable error correction, and 1-click PNG export.',
   [ToolKeys.wordCounter]:
-    'Count words, characters, numbers, and lines for Chinese and English text, with social media character limits and basic text transformations.',
+    'Accurately count words, characters, and UTF-8 bytes for Chinese and English text, with real-time social media limits and text formatting tools.',
   [ToolKeys.keyCard]:
     'Create and manage custom cheat sheets for any topic. Dynamically add data, customize keyword tags, and assign personalized keyboard shortcuts for quick reference.',
 
   [ToolKeys.urlEncoderDecoder]:
-    'Quickly encode or decode URLs and text to prevent errors and ensure safe, reliable data transmission across the web.',
+    'Encode or decode URLs and inspect query parameters in an interactive table for seamless debugging and safe web data transmission.',
   [ToolKeys.jsonFormatter]:
-    'Format JSON for readability or minify it for compact output. Instantly prettify or compress JSON with this free online tool.',
+    'Format, minify, and explore JSON data with an interactive tree view and instant syntax validation.',
   [ToolKeys.unixTimestampConverter]:
-    'Convert Unix timestamps to human-readable dates and convert date/time back to Unix timestamps instantly.',
+    'Convert Unix epoch timestamps to human-readable dates and back, featuring real-time clock tracking and multi-timezone support.',
   [ToolKeys.regexTester]:
-    'Test and debug regular expressions in real time with instant match highlighting and group inspection.',
+    'Test and debug regular expressions in real time with instant match highlighting, capture group inspection, and a built-in regex cheat sheet.',
 
   [ToolKeys.picMergeStudio]:
-    'Merge multiple images, arrange photo collages on custom-sized canvases, adjust dimensions, and apply filters.',
+    'Combine photos into custom collages with social media canvas presets, layer controls, filters, and high-resolution export in PNG or JPEG.',
   [ToolKeys.base64ToImage]:
     'Instantly convert Base64 strings back into images, supporting multiple formats for fast preview and verification.',
   [ToolKeys.imageToBase64]:
@@ -197,7 +205,7 @@ export const ToolDescriptions = {
     'Instantly proofread and correct text using Chrome’s built-in AI, including grammar, spelling, punctuation, and style improvements—all on-device and fast.',
 
   [ToolKeys.chromeFaceDetector]:
-    'Detect faces in images instantly using Chrome’s built-in face detection API—ideal for camera apps, interactive features, and security ToolKeys.',
+    'Detect faces in images instantly using Chrome’s built-in face detection API—ideal for camera apps, interactive features, and security applications.',
   [ToolKeys.chromeBarcodeDetector]:
     'Quickly scan and decode QR codes and various barcode formats with Chrome’s built-in barcode detection API.',
   [ToolKeys.chromeTextDetector]:
