@@ -16,10 +16,16 @@ export default function Home() {
   const { getFadeUpClass } = useGetTransitionClass();
 
   return (
-    <main className="relative flex min-h-full w-full">
-      <div className="relative mx-auto my-auto h-full w-full max-w-screen-2xl px-4 pb-20 pt-32 lg:px-20">
+    <main className="relative flex min-h-[100dvh] w-full pt-[101px]">
+      <div
+        className={cn(
+          'relative mx-auto min-h-full w-full max-w-screen-2xl',
+          'px-4 pb-8 lg:px-20',
+          'flex flex-col'
+        )}
+      >
         {/* Hero Welcome Section */}
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
+        <div className="grid flex-1 grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
           {/* Left Column */}
           <div className="order-2 flex flex-col items-center space-y-8 text-center lg:order-1 lg:items-start lg:text-left">
             {/* Status Badge */}
@@ -184,7 +190,7 @@ export default function Home() {
         {/* Footer Hint */}
         <div
           className={cn(
-            'mt-32 w-full text-center',
+            'mt-20 w-full text-center lg:mt-12',
             getFadeUpClass('animate-delay-[1200ms]')
           )}
         >

@@ -31,16 +31,16 @@ export default function Navbar({ categoryArticles }: Props) {
   return (
     <header
       className={cn(
-        'fixed top-0 z-50 w-full border-b transition-all duration-300',
+        'fixed top-0 z-50 w-full border-b duration-300',
         headerExpanded
           ? 'border-transparent bg-transparent py-4'
-          : 'supports-backdrop-blur:bg-white/60 border-transparent bg-white/60 backdrop-blur lg:border-neutral-400/20 dark:bg-neutral-900/60'
+          : 'border-transparent bg-white/60 backdrop-blur lg:border-neutral-400/20 dark:bg-neutral-900/60'
       )}
     >
       <div
         className={cn(
           'flex items-center justify-between',
-          'mx-auto max-w-screen-2xl p-4 lg:px-8'
+          'mx-auto p-4 lg:px-8'
         )}
       >
         <Link className="flex items-center" href="/">

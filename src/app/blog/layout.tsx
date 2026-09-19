@@ -15,7 +15,7 @@ export default async function Layout({
   return (
     <main
       lang="zh-TW"
-      className="mx-auto flex min-h-dvh w-full max-w-full pt-[101px] 2xl:max-w-screen-2xl"
+      className="mx-auto flex min-h-dvh w-full max-w-full overflow-x-clip pt-[101px]"
     >
       <GlimmerBackground configs={GlimmerBackgroundConfigs} />
       <LeftPanel categoryArticles={categoryArticles} />

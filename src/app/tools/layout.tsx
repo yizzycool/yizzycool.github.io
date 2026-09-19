@@ -13,11 +13,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="mx-auto flex min-h-dvh max-w-screen-2xl pt-[101px]">
+    <main className="mx-auto flex min-h-dvh pt-[101px]">
       <GlimmerBackground configs={GlimmerBackgroundConfigs} />
       <FeaturePanel />
       <VerticalLine />
-      <div className="mx-auto w-full min-w-0 flex-grow overflow-x-clip px-5 pb-20 pt-4 lg:max-w-screen-lg lg:px-10">
+      <div className="mx-auto w-full min-w-0 max-w-full flex-grow overflow-x-clip px-5 pb-20 pt-4 lg:px-10 xl:max-w-screen-xl">
         {children}
         <AboutBlock />
       </div>
