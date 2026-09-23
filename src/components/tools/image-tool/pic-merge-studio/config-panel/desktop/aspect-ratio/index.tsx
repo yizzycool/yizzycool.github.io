@@ -1,30 +1,39 @@
 'use client';
 
 import type { CanvasSize } from '../../../types/config';
-import type { CanvasRatioType } from '../../data/aspect-ratio';
+import type { SelectorOptionItem } from '@/components/ui/selector';
 
-import { cn } from '@/utils/cn';
-import { Move, Proportions } from 'lucide-react';
+import { Lock, Unlock } from 'lucide-react';
 import { useState } from 'react';
 import { clamp } from 'lodash';
 
-import usePreventNumberWheel from '@/hooks/dom/use-prevent-number-wheel';
-import { Label } from '@/components/ui/label';
+import { cn } from '@/utils/cn';
 import { Button } from '@/components/ui/button';
-import { PRESET_ASPECT_RATIOS } from '../../data/aspect-ratio';
+import { Input } from '@/components/ui/input';
+import { Selector } from '@/components/ui/selector';
+
+import PanelLabel from '../../panel-label';
 
 const MIN_SIZE = 1;
 const MAX_SIZE = 4096;
-const CustomSizes: Array<{ key: 'width' | 'height'; label: string }> = [
-  {
-    key: 'width',
-    label: 'Width (px)',
-  },
-  {
-    key: 'height',
-    label: 'Height (px)',
-  },
+
+const PRESET_OPTIONS: SelectorOptionItem[] = [
+  { label: 'Custom Dimensions', value: 'custom' },
+  { label: '1:1 Square (1080 × 1080)', value: '1080x1080' },
+  { label: '4:5 IG Portrait (1080 × 1350)', value: '1080x1350' },
+  { label: '9:16 Story / Reel (1080 × 1920)', value: '1080x1920' },
+  { label: '16:9 Landscape (1920 × 1080)', value: '1920x1080' },
+  { label: '4:3 Standard (1440 × 1080)', value: '1440x1080' },
+  { label: '3:4 Portrait (1080 × 1440)', value: '1080x1440' },
+  { label: '3:2 Photo Landscape (1620 × 1080)', value: '1620x1080' },
+  { label: '2:3 Photo Portrait (1080 × 1620)', value: '1080x1620' },
+  { label: 'A4 Document (2480 × 3508)', value: '2480x3508' },
 ];
+
+const DIMENSION_FIELDS = [
+  { key: 'width', label: 'Width', placeholder: 'Width' },
+  { key: 'height', label: 'Height', placeholder: 'Height' },
+] as const;
 
 type Props = {
   size: CanvasSize;
@@ -32,177 +41,163 @@ type Props = {
 };
 
 export default function AspectRatio({ size, setSize }: Props) {
-  const [isCustomSize, setIsCustomSize] = useState(false);
   const [prevSize, setPrevSize] = useState(size);
   const [inputSize, setInputSize] = useState<CanvasSize>(size);
-
-  const refCallback = usePreventNumberWheel();
-
-  const isApplyDisabled =
-    size.width === inputSize.width && size.height === inputSize.height;
+  const [isLocked, setIsLocked] = useState(false);
+  const [aspectRatio, setAspectRatio] = useState<number>(
+    size.width / (size.height || 1)
+  );
 
   if (prevSize.width !== size.width || prevSize.height !== size.height) {
     setPrevSize(size);
     setInputSize(size);
+    if (size.width > 0 && size.height > 0) {
+      setAspectRatio(size.width / size.height);
+    }
   }
 
-  const handleRatioSelect = (ratio: CanvasRatioType) => {
-    if (ratio.title === 'Custom Size') {
-      setIsCustomSize(true);
-    } else if (ratio.width && ratio.height) {
-      setIsCustomSize(false);
-      setSize(ratio.width, ratio.height);
+  const isApplyDisabled =
+    size.width === inputSize.width && size.height === inputSize.height;
+
+  const currentPresetValue = `${inputSize.width}x${inputSize.height}`;
+  const isMatchedPreset = PRESET_OPTIONS.some(
+    (opt) => opt.value === currentPresetValue
+  );
+  const selectedPreset = isMatchedPreset ? currentPresetValue : 'custom';
+
+  const handlePresetChange = (val: string) => {
+    if (val === 'custom') {
+      document.getElementById('canvas-width')?.focus();
+      return;
+    }
+
+    const parts = val.split('x');
+    const w = parseInt(parts[0], 10);
+    const h = parseInt(parts[1], 10);
+    if (!isNaN(w) && !isNaN(h)) {
+      setAspectRatio(w / (h || 1));
+      setInputSize({ width: w, height: h });
     }
   };
 
   const handleCustomSize = (key: 'width' | 'height', value: string) => {
-    setInputSize((prev) => ({ ...prev, [key]: parseInt(value) }));
-  };
+    const num = parseInt(value, 10);
+    const safeNum = isNaN(num) ? 0 : num;
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key !== 'Enter') return;
-    clampValue();
-  };
-
-  const handleBlur = () => {
-    clampValue();
-  };
-
-  const clampValue = () => {
-    const width = clamp(inputSize.width, MIN_SIZE, MAX_SIZE);
-    const height = clamp(inputSize.height, MIN_SIZE, MAX_SIZE);
-    setInputSize({ width, height });
-  };
-
-  const handleApply = () => {
-    if (isApplyDisabled) return;
-
-    setSize(inputSize.width, inputSize.height);
-  };
-
-  const isRatioActive = (ratio: CanvasRatioType) => {
-    if (isCustomSize) {
-      return ratio.title === 'Custom Size';
+    if (isLocked && safeNum > 0 && aspectRatio > 0) {
+      if (key === 'width') {
+        const calculatedHeight = Math.round(safeNum / aspectRatio);
+        setInputSize({ width: safeNum, height: calculatedHeight });
+      } else {
+        const calculatedWidth = Math.round(safeNum * aspectRatio);
+        setInputSize({ width: calculatedWidth, height: safeNum });
+      }
     } else {
-      return size.width === ratio.width && size.height === ratio.height;
+      setInputSize((prev) => {
+        const updated = { ...prev, [key]: safeNum };
+        if (updated.width > 0 && updated.height > 0) {
+          setAspectRatio(updated.width / updated.height);
+        }
+        return updated;
+      });
     }
   };
 
+  const toggleLock = () => {
+    setIsLocked((prev) => {
+      const next = !prev;
+      if (next && inputSize.width > 0 && inputSize.height > 0) {
+        setAspectRatio(inputSize.width / inputSize.height);
+      }
+      return next;
+    });
+  };
+
+  const handleApply = () => {
+    const width = clamp(inputSize.width || MIN_SIZE, MIN_SIZE, MAX_SIZE);
+    const height = clamp(inputSize.height || MIN_SIZE, MIN_SIZE, MAX_SIZE);
+    setInputSize({ width, height });
+    if (size.width === width && size.height === height) {
+      return;
+    }
+    setSize(width, height);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleApply();
+    }
+  };
+
+  const handleBlur = () => {
+    const width = clamp(inputSize.width || MIN_SIZE, MIN_SIZE, MAX_SIZE);
+    const height = clamp(inputSize.height || MIN_SIZE, MIN_SIZE, MAX_SIZE);
+    setInputSize({ width, height });
+  };
+
   return (
-    <div className="space-y-4">
-      <Label
-        icon={Proportions}
-        className="text-xs !font-black uppercase tracking-widest"
-      >
-        Size
-      </Label>
-      <div className="grid grid-cols-2 gap-3">
-        {PRESET_ASPECT_RATIOS.map((ratio) => (
-          <Button
-            key={ratio.title}
-            variant="ghost"
-            rounded="base"
-            size="sm"
-            bordered
-            onClick={() => handleRatioSelect(ratio)}
-            className={cn(
-              'justify-between gap-4 text-left',
-              ratio.isCustom && 'col-span-full',
-              isRatioActive(ratio) &&
-                cn(
-                  'text-sky-600 dark:text-sky-600',
-                  'border-sky-500 dark:border-sky-600',
-                  'bg-sky-100/50 dark:bg-sky-900/50',
-                  'hover:bg-sky-100/50 hover:dark:bg-sky-900/50'
-                )
-            )}
-          >
-            <div>
-              <p className="mb-1 text-xs font-black">{ratio.title}</p>
-              <p className="font-mono text-xs tracking-tighter">
-                {ratio.desc ? ratio.desc : `${ratio.width} x ${ratio.height}`}
-              </p>
-            </div>
-            {ratio.isCustom ? (
-              <Move
-                size={20}
-                className={isRatioActive(ratio) ? 'opacity-100' : 'opacity-30'}
+    <div className="space-y-4 px-0.5">
+      {/* Dimension Inputs */}
+      <div className="flex items-end gap-1.5">
+        <div className="grid flex-1 grid-cols-2 gap-2">
+          {DIMENSION_FIELDS.map(({ key, label, placeholder }) => (
+            <div key={key} className="space-y-1">
+              <PanelLabel htmlFor={`canvas-${key}`}>{label}</PanelLabel>
+              <Input
+                id={`canvas-${key}`}
+                type="number"
+                value={inputSize[key] === 0 ? '' : inputSize[key]}
+                placeholder={placeholder}
+                onChange={(e) => handleCustomSize(key, e.target.value)}
+                onKeyDown={handleKeyDown}
+                onBlur={handleBlur}
+                className="!px-2.5 !py-1.5 font-mono text-xs font-semibold text-neutral-800 dark:text-neutral-200"
               />
-            ) : ratio.width && ratio.height ? (
-              <div
-                className={cn(
-                  'border transition-all duration-200',
-                  isRatioActive(ratio)
-                    ? cn(
-                        'border-sky-500 dark:border-sky-600',
-                        'bg-sky-100/50 dark:bg-sky-900/50'
-                      )
-                    : cn(
-                        'border-neutral-400 dark:border-neutral-500',
-                        'bg-neutral-100/50 dark:bg-neutral-800/50'
-                      ),
-                  ratio.width < ratio.height ? 'h-[30px]' : 'w-[30px]'
-                )}
-                style={{
-                  aspectRatio: `${ratio.width / (ratio.height || 1)}`,
-                }}
-              ></div>
-            ) : null}
-          </Button>
-        ))}
+            </div>
+          ))}
+        </div>
+        <Button
+          variant={isLocked ? 'inverse' : 'ghost'}
+          size="sm"
+          icon={isLocked ? Lock : Unlock}
+          onClick={toggleLock}
+          title={isLocked ? 'Unlock aspect ratio' : 'Lock aspect ratio'}
+          tooltipPlacement="top"
+          className={cn(
+            'h-[30px] w-[30px] shrink-0 !p-0 transition-all',
+            !isLocked &&
+              'text-neutral-400 hover:text-neutral-600 dark:text-neutral-500 dark:hover:text-neutral-300'
+          )}
+        />
       </div>
 
-      {/* Custom Inputs */}
-      <div
-        className={cn(
-          'grid grid-cols-2 gap-4 text-left transition-all duration-500',
-          !isCustomSize && 'h-0 overflow-hidden opacity-30'
-        )}
-        hidden={!isCustomSize}
-      >
-        {CustomSizes.map(({ key, label }) => (
-          <div key={key} className="mt-2 space-y-2">
-            <label
-              htmlFor={`size-${key}`}
-              className="block pl-1 text-xs font-bold uppercase tracking-wider text-slate-400"
-            >
-              {label}
-            </label>
-            <input
-              ref={refCallback}
-              id={`size-${key}`}
-              type="number"
-              min={MIN_SIZE}
-              max={MAX_SIZE}
-              value={inputSize[key] || ''}
-              onChange={(e) => handleCustomSize(key, e.target.value)}
-              onKeyDown={handleKeyDown}
-              onBlur={handleBlur}
-              className={cn(
-                'm-0 w-full',
-                'rounded-lg outline-none focus:ring-2 focus:ring-blue-500',
-                'px-4 py-3 text-sm font-bold transition-all',
-                'bg-white/40 dark:bg-neutral-900/40',
-                'border border-neutral-500/20 text-slate-600 dark:text-slate-400',
-                !isCustomSize && 'cursor-not-allowed'
-              )}
-              disabled={!isCustomSize}
-            />
-          </div>
-        ))}
-        <p className="col-span-2 -my-1 text-center text-xs text-slate-400 dark:text-slate-500">
-          Max supported size: {MAX_SIZE}px
-        </p>
+      {/* Preset Templates */}
+      <div className="space-y-1.5">
+        <PanelLabel>Preset Templates</PanelLabel>
+        <Selector
+          size="sm"
+          options={PRESET_OPTIONS}
+          value={selectedPreset}
+          onChange={handlePresetChange}
+          placeholder="Choose a template..."
+          className="w-full text-xs font-medium"
+        />
+      </div>
+
+      {/* Apply Button & Info */}
+      <div className="space-y-2 pt-1">
         <Button
           variant="primary"
-          rounded="full"
-          size="sm"
-          className="col-span-2 font-black"
+          size="xs"
+          className="w-full font-medium"
           onClick={handleApply}
           disabled={isApplyDisabled}
         >
-          Apply
+          {isApplyDisabled ? 'Size Applied' : 'Apply Dimensions'}
         </Button>
+        <p className="text-center text-[10px] text-neutral-400 dark:text-neutral-500">
+          Range: {MIN_SIZE} ~ {MAX_SIZE} px
+        </p>
       </div>
     </div>
   );

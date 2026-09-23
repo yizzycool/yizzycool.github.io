@@ -1,47 +1,33 @@
 'use client';
 
-import {
-  ChevronDown,
-  ChevronsDown,
-  ChevronsUp,
-  ChevronUp,
-  LayersIcon,
-} from 'lucide-react';
+import { ChevronDown, ChevronsDown, ChevronsUp, ChevronUp } from 'lucide-react';
 
-import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 
 type Props = {
   setLayer: (type: 'front' | 'back' | 'forward' | 'backward') => void;
 };
 
-const layers = ['front', 'back', 'forward', 'backward'] as const;
+const layers = ['front', 'forward', 'backward', 'back'] as const;
 
 const layersName = {
-  front: 'To Front',
-  back: 'To Back',
-  forward: 'Forward',
-  backward: 'Backward',
+  front: 'Bring to front',
+  forward: 'Bring forward',
+  backward: 'Send backward',
+  back: 'Send to back',
 };
 
 const layersIconMap = {
   front: ChevronsUp,
-  back: ChevronsDown,
   forward: ChevronUp,
   backward: ChevronDown,
+  back: ChevronsDown,
 };
 
 export default function Arrangement({ setLayer }: Props) {
   return (
     <div className="space-y-4">
-      <Label
-        icon={LayersIcon}
-        className="text-xs !font-black uppercase tracking-widest"
-      >
-        Arrangement
-      </Label>
-
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 gap-2">
         {layers.map((layer) => (
           <Button
             variant="ghost"
@@ -50,7 +36,7 @@ export default function Arrangement({ setLayer }: Props) {
             icon={layersIconMap[layer]}
             key={layer}
             onClick={() => setLayer(layer)}
-            className="font-black"
+            className="justify-start text-xs font-medium"
           >
             {layersName[layer]}
           </Button>

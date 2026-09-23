@@ -1,8 +1,9 @@
 import type { Rounded } from '@/types/common';
-import type { ButtonSize, ButtonVariant } from '@/types/common/button';
+import type { SnackbarSize, SnackbarVariant } from './types';
+
 import { cn } from '@/utils/cn';
 
-export const snackbarVariants: Record<ButtonVariant, string> = {
+export const snackbarVariants: Record<SnackbarVariant, string> = {
   primary: cn(
     'bg-sky-50/90 text-sky-800 border-sky-500/30 dark:bg-sky-950/85 dark:text-sky-300 dark:border-sky-500/30'
   ),
@@ -41,7 +42,7 @@ export const snackbarVariants: Record<ButtonVariant, string> = {
   ),
 };
 
-export const snackbarSizes: Record<ButtonSize, string> = {
+export const snackbarSizes: Record<SnackbarSize, string> = {
   xs: 'text-xs px-3 py-1.5',
   sm: 'text-sm px-4 py-2',
   base: 'text-sm px-4 py-2.5',

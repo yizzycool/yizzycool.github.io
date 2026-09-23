@@ -10,6 +10,7 @@ import ConfigPanelMobile from './mobile';
 type Props = {
   fabricHelper: FabricHelper;
   configHelper: ConfigHelper;
+  onOpenExport: () => void;
 };
 
 export default function ConfigPanel(props: Props) {

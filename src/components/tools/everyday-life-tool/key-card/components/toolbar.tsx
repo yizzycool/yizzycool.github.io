@@ -66,7 +66,7 @@ export default function Toolbar({
                 hoverEffect={false}
                 icon={Info}
                 rounded="full"
-                className="cursor-help p-0"
+                className="cursor-pointer p-0"
               />
             </TooltipTrigger>
             <TooltipPopup

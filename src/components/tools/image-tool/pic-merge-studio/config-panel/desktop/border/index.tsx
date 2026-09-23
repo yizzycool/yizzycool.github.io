@@ -2,17 +2,15 @@
 
 import type { CanvasBorder } from '../../../types/config';
 
-import { cn } from '@/utils/cn';
-import { Ban, SquareDashedTopSolid } from 'lucide-react';
-import { useMemo, useState } from 'react';
 import { isUndefined } from 'lodash';
 
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { CheckBox } from '@/components/ui/checkbox';
-import ColorPicker from '../color-picker';
+import { ColorPicker } from '@/components/ui/color-picker';
+
 import { PRESET_BORDER_COLORS } from '../../data/background';
+import PanelLabel from '../../panel-label';
+import ColorSwatch from '../../color-swatch';
 
 type Props = {
   border: CanvasBorder & { showOuter?: boolean };
@@ -31,12 +29,6 @@ export default function Border({
 }: Props) {
   const { color, opacity, width, showOuter } = border;
 
-  const [customColors, setCustomColors] = useState<string[]>([]);
-
-  const colors = useMemo(() => {
-    return [...customColors, ...PRESET_BORDER_COLORS];
-  }, [customColors]);
-
   const handleColorSelect = (hex: string) => {
     setBorderColor(hex, opacity ?? 1);
   };
@@ -51,116 +43,69 @@ export default function Border({
     setBorderWidth(thickness);
   };
 
-  // const onOpacityChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const opacity = parseFloat(e.target.value);
-  //   if (opacity > 100 || opacity < 0) return;
-  //   setBorderColor(color, opacity / 100);
-  // };
-
-  const onColorPicked = (color: string) => {
-    setBorderColor(color, opacity ?? 1);
-    if (colors.includes(color)) return;
-    setCustomColors((prev) => [color, ...prev]);
-  };
-
   const onGridOuterBorderSwitched = (_option: string, value: boolean) => {
     setShowOuterBorder(value);
   };
 
   return (
-    <div className="space-y-4">
-      <Label
-        icon={SquareDashedTopSolid}
-        className="text-xs !font-black uppercase tracking-widest"
-      >
-        Border
-      </Label>
-
-      {/* Pure Colors */}
-      <div className="space-y-4 rounded-xl bg-white/40 p-4 dark:bg-neutral-900/40">
-        {/* Show Outer Border */}
-        {!isUndefined(showOuter) && (
-          <div>
-            <CheckBox
-              options={['Outer Border']}
-              optionsDesc={['include outer border']}
-              onChange={onGridOuterBorderSwitched}
-              defaultChecked={[!!border?.showOuter]}
-            />
-          </div>
-        )}
-        {/* Thickness */}
+    <div className="space-y-4 px-0.5">
+      {/* Show Outer Border */}
+      {!isUndefined(showOuter) && (
         <div>
-          <div className="mb-2 flex items-center justify-between text-left text-xs font-black uppercase">
-            <span>Thickness</span> {width.toFixed()}
-          </div>
-          <Slider
-            min={0}
-            max={100}
-            step={1}
-            value={width}
-            onChange={onThicknessChanged}
-            showBubble={false}
+          <CheckBox
+            options={['Outer Border']}
+            optionsDesc={['include outer border']}
+            onChange={onGridOuterBorderSwitched}
+            defaultChecked={[!!border?.showOuter]}
           />
         </div>
-        {/* Color */}
-        {/* <div>
-          <div className="flex items-center justify-between text-left text-xs font-black uppercase">
-            <span>Opacity</span> {parseInt(((opacity ?? 1) * 100).toString())}
-          </div>
-          <Slider
-            min={0}
-            max={100}
-            step={1}
-            value={parseInt(((opacity ?? 1) * 100).toString())}
-            onChange={onOpacityChanged}
-            showBubble={false}
-          />
-        </div> */}
-        <div className="grid grid-cols-8 gap-1">
+      )}
+      {/* Thickness */}
+      <div>
+        <PanelLabel
+          badge={
+            <span className="rounded-md bg-neutral-100 px-1.5 py-0.5 font-mono text-[11px] font-semibold text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+              {width.toFixed()}px
+            </span>
+          }
+        >
+          Thickness
+        </PanelLabel>
+        <Slider
+          min={0}
+          max={100}
+          step={1}
+          value={width}
+          onChange={onThicknessChanged}
+          showBubble={false}
+        />
+      </div>
+
+      <div>
+        <PanelLabel className="mb-2">Border Color</PanelLabel>
+        <div className="grid grid-cols-7 gap-1.5">
           {/* Color Picker */}
-          <ColorPicker onColorPicked={onColorPicked} />
+          <ColorPicker
+            variant="swatch"
+            value={color || '#000000'}
+            onColorChange={handleColorSelect}
+          />
           {/* Ban */}
-          <div className="aspect-square [&_*]:h-full [&_*]:w-full">
-            <Button
-              variant="ghost"
-              rounded="full"
-              size="sm"
-              bordered
-              onClick={resetBorder}
-              className={cn(
-                'border-2 !p-[2px] transition-all',
-                isColorActive('') && 'border-sky-500 dark:border-sky-600'
-              )}
-            >
-              <Ban className="rounded-full" />
-            </Button>
-          </div>
+          <ColorSwatch
+            color=""
+            isBan
+            title="No Border"
+            isActive={isColorActive('')}
+            onClick={resetBorder}
+          />
           {/* Preset Colors */}
-          {[...customColors, ...PRESET_BORDER_COLORS].map((hex) => (
-            <div key={hex} className="aspect-square w-full">
-              <Button
-                variant="ghost"
-                rounded="full"
-                size="sm"
-                bordered
-                onClick={() => handleColorSelect(hex)}
-                className={cn(
-                  'aspect-square w-full',
-                  'border-2 !p-0 transition-all',
-                  isColorActive(hex) &&
-                    cn(
-                      'text-sky-600 dark:text-sky-600',
-                      'border-sky-500 dark:border-sky-600'
-                    )
-                )}
-              >
-                <div
-                  className="aspect-square w-[calc(100%_-_4px)] rounded-full border-2 border-transparent"
-                  style={{ backgroundColor: hex }}
-                />
-              </Button>
-            </div>
+          {PRESET_BORDER_COLORS.map((hex) => (
+            <ColorSwatch
+              key={hex}
+              color={hex}
+              isActive={isColorActive(hex)}
+              onClick={handleColorSelect}
+            />
           ))}
         </div>
       </div>

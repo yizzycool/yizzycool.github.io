@@ -24,6 +24,7 @@ import {
   useFocus,
   useHover,
   useInteractions,
+  useMergeRefs,
   useRole,
   useTransitionStyles,
 } from '@floating-ui/react';
@@ -94,12 +95,15 @@ export function TooltipRoot({
 
 export function TooltipTrigger({ children }: TooltipTriggerProps) {
   const { interactions, setAnchor } = useContext(TooltipContext);
+  const childRef = (children as unknown as { ref?: React.Ref<HTMLElement> })
+    ?.ref;
+  const ref = useMergeRefs([setAnchor, childRef]);
 
   return cloneElement(
     children,
     interactions?.getReferenceProps({
-      ref: setAnchor,
       ...children.props,
+      ref,
     })
   );
 }

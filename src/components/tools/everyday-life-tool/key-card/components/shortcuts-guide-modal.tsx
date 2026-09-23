@@ -1,15 +1,8 @@
 import type { CardData } from '../types';
 
-import {
-  Keyboard,
-  X,
-  SquareSlash,
-  LayoutDashboard,
-  BookOpen,
-} from 'lucide-react';
+import { Keyboard, SquareSlash, LayoutDashboard, BookOpen } from 'lucide-react';
 
-import { BaseDialog } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { BaseDialog, DialogHeader } from '@/components/ui/dialog';
 import { HotkeyBadge, HotkeyBadgeLayout } from '@/components/ui/badge';
 
 type ShortcutsGuideModalProps = {
@@ -63,29 +56,14 @@ export default function ShortcutsGuideModal({
       dialogClassName="w-full max-w-2xl"
     >
       {/* Header */}
-      <div className="mx-6 flex items-center justify-between border-b border-neutral-200 pb-4 pt-6 dark:border-neutral-800">
-        <div className="flex items-center gap-2.5">
-          <div className="rounded-xl bg-sky-500/10 p-2 text-sky-600 dark:bg-sky-500/20 dark:text-sky-400">
-            <Keyboard size={20} />
-          </div>
-          <div>
-            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
-              Keyboard Shortcuts Guide
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              Master the keys to navigate and copy snippets at lightning speed
-            </p>
-          </div>
-        </div>
-        <Button
-          variant="ghost"
-          size="base"
-          rounded="full"
-          icon={X}
-          onClick={onClose}
-          ariaLabel="Close shortcuts guide"
-        />
-      </div>
+      <DialogHeader
+        icon={Keyboard}
+        title="Keyboard Shortcuts Guide"
+        description="Master the keys to navigate and copy snippets at lightning speed"
+        onClose={onClose}
+        closeAriaLabel="Close shortcuts guide"
+        className="mx-6 pt-6"
+      />
 
       {/* Content */}
       <div className="max-h-[70vh] space-y-6 overflow-y-auto p-6 pt-4 text-xs">

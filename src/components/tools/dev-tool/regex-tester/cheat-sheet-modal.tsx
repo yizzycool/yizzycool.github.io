@@ -1,8 +1,7 @@
 'use client';
 
-import { BookOpen, X } from 'lucide-react';
-import { BaseDialog } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { BookOpen } from 'lucide-react';
+import { BaseDialog, DialogHeader } from '@/components/ui/dialog';
 import { CHEAT_SHEET_CATEGORIES } from './constants';
 
 type Props = {
@@ -17,31 +16,14 @@ export default function CheatSheetModal({ isOpen, onClose }: Props) {
       onClose={onClose}
       dialogClassName="flex max-h-[85vh] w-full max-w-2xl flex-col"
     >
-      {/* Header */}
-      <div className="mx-6 flex shrink-0 items-center justify-between border-b border-neutral-200 pb-4 pt-6 dark:border-neutral-800">
-        <div className="flex items-center gap-2.5">
-          <div className="rounded-xl bg-slate-100 p-2 text-slate-700 dark:bg-neutral-800 dark:text-slate-300">
-            <BookOpen size={18} />
-          </div>
-          <div>
-            <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
-              Regex Cheat Sheet
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              Quick syntax reference for regular expressions
-            </p>
-          </div>
-        </div>
-        <Button
-          variant="ghost"
-          size="base"
-          rounded="full"
-          icon={X}
-          onClick={onClose}
-          ariaLabel="Close cheat sheet modal"
-          className="text-slate-400 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-200"
-        />
-      </div>
+      <DialogHeader
+        icon={BookOpen}
+        title="Regex Cheat Sheet"
+        description="Quick syntax reference for regular expressions"
+        onClose={onClose}
+        closeAriaLabel="Close cheat sheet modal"
+        className="mx-6 pt-6"
+      />
 
       {/* Content Grid */}
       <div className="flex-1 overflow-y-auto p-6 pt-4">

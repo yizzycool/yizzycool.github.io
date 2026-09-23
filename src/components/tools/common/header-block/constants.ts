@@ -14,4 +14,5 @@ export const TOOLS_WITH_HOTKEY = [
   ToolKeys.urlEncoderDecoder,
   ToolKeys.unixTimestampConverter,
   ToolKeys.regexTester,
+  ToolKeys.picMergeStudio,
 ];

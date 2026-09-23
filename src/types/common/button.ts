@@ -12,6 +12,7 @@ const ButtonVariants = [
   'blue',
   'amber',
   'surface',
+  'inverse',
 ] as const;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

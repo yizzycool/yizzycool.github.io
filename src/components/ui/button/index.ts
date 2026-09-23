@@ -1,3 +1,9 @@
+export { BaseButton } from './base-button';
 export { Button } from './button';
 
-export type { ButtonVariant, ButtonSize } from './types';
+export type {
+  BaseButtonProps,
+  ButtonProps,
+  ButtonVariant,
+  ButtonSize,
+} from './types';

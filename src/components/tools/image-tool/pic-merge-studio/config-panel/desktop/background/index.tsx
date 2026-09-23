@@ -2,15 +2,12 @@
 
 import type { CanvasBackground } from '../../../types/config';
 
-import { cn } from '@/utils/cn';
-import { Palette } from 'lucide-react';
-import { useMemo, useState } from 'react';
-
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import ColorPicker from '../color-picker';
+import { ColorPicker } from '@/components/ui/color-picker';
+
 import { PRESET_BACKGROUND_COLORS } from '../../data/background';
+import PanelLabel from '../../panel-label';
+import ColorSwatch from '../../color-swatch';
 
 type Props = {
   background: CanvasBackground;
@@ -20,12 +17,6 @@ type Props = {
 export default function Background({ background, setBackgroundColor }: Props) {
   const { type, color: colorObj } = background;
   const { color, opacity } = colorObj || {};
-
-  const [customColors, setCustomColors] = useState<string[]>([]);
-
-  const colors = useMemo(() => {
-    return [...customColors, ...PRESET_BACKGROUND_COLORS];
-  }, [customColors]);
 
   const handleColorSelect = (hex: string) => {
     setBackgroundColor(hex, opacity ?? 1);
@@ -43,66 +34,45 @@ export default function Background({ background, setBackgroundColor }: Props) {
     setBackgroundColor(color, opacity / 100);
   };
 
-  const onColorPicked = (color: string) => {
-    setBackgroundColor(color, opacity ?? 1);
-    if (colors.includes(color)) return;
-    setCustomColors((prev) => [color, ...prev]);
-  };
-
   return (
-    <div className="space-y-4">
-      <Label
-        icon={Palette}
-        className="text-xs !font-black uppercase tracking-widest"
-      >
-        Background
-      </Label>
+    <div className="space-y-4 px-0.5">
+      <div>
+        <PanelLabel
+          badge={
+            <span className="rounded-md bg-neutral-100 px-1.5 py-0.5 font-mono text-[11px] font-semibold text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+              {parseInt(((opacity ?? 1) * 100).toString())}%
+            </span>
+          }
+        >
+          Opacity
+        </PanelLabel>
+        <Slider
+          min={0}
+          max={100}
+          step={1}
+          value={parseInt(((opacity ?? 1) * 100).toString())}
+          onChange={onOpacityChanged}
+          showBubble={false}
+        />
+      </div>
 
-      {/* Pure Colors */}
-      <div className="space-y-4 rounded-xl bg-white/40 p-4 dark:bg-neutral-900/40">
-        <div>
-          <div className="mb-2 flex items-center justify-between text-left text-xs font-black uppercase">
-            <span>Opacity</span> {parseInt(((opacity ?? 1) * 100).toString())}
-          </div>
-          <Slider
-            min={0}
-            max={100}
-            step={1}
-            value={parseInt(((opacity ?? 1) * 100).toString())}
-            onChange={onOpacityChanged}
-            showBubble={false}
-          />
-        </div>
-        <div className="grid grid-cols-8 gap-1">
+      <div>
+        <PanelLabel className="mb-2">Colors</PanelLabel>
+        <div className="grid grid-cols-7 gap-1.5">
           {/* Color Picker */}
-          <ColorPicker onColorPicked={onColorPicked} />
+          <ColorPicker
+            variant="swatch"
+            value={color || '#ffffff'}
+            onColorChange={handleColorSelect}
+          />
           {/* Preset Colors */}
-          {colors.map((hex) => (
-            <div key={hex} className="aspect-square w-full">
-              <Button
-                variant="ghost"
-                rounded="full"
-                size="sm"
-                bordered
-                onClick={() => handleColorSelect(hex)}
-                className={cn(
-                  'aspect-square w-full',
-                  'border-2 !p-0 transition-all',
-                  isColorActive(hex) &&
-                    cn(
-                      'text-sky-600 dark:text-sky-600',
-                      'border-sky-500 dark:border-sky-600',
-                      'bg-sky-100/50 dark:bg-sky-900/50',
-                      'hover:bg-sky-100/50 hover:dark:bg-sky-900/50'
-                    )
-                )}
-              >
-                <div
-                  className="aspect-square w-[calc(100%_-_4px)] rounded-full border-2 border-transparent"
-                  style={{ backgroundColor: hex }}
-                />
-              </Button>
-            </div>
+          {PRESET_BACKGROUND_COLORS.map((hex) => (
+            <ColorSwatch
+              key={hex}
+              color={hex}
+              isActive={isColorActive(hex)}
+              onClick={handleColorSelect}
+            />
           ))}
         </div>
       </div>

@@ -2,18 +2,19 @@
 
 import type { CanvasBackground } from '../../../types/config';
 
-import { cn } from '@/utils/cn';
 import { Palette } from 'lucide-react';
-import { useMemo, useState } from 'react';
 
-import { useControlDrawer } from '../hooks/use-control-drawer';
-import { PRESET_BACKGROUND_COLORS } from '../../data/background';
-import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import ColorPicker from '../color-picker';
+import { ColorPicker } from '@/components/ui/color-picker';
+
+import { PRESET_BACKGROUND_COLORS } from '../../data/background';
+import { useControlDrawer } from '../hooks/use-control-drawer';
 import IconTextButton from '../icon-text-button';
 import BottomDrawer from '../bottom-drawer';
 import GroupTitle from '../group-title';
+import PanelLabel from '../../panel-label';
+import ColorSwatch from '../../color-swatch';
+import { cn } from '@/utils/cn';
 
 type Props = {
   background: CanvasBackground;
@@ -24,13 +25,7 @@ export default function Background({ background, setBackgroundColor }: Props) {
   const { type, color: colorObj } = background;
   const { color, opacity } = colorObj || {};
 
-  const [customColors, setCustomColors] = useState<string[]>([]);
-
   const { isOpen, openDrawer, closeDrawer } = useControlDrawer();
-
-  const colors = useMemo(() => {
-    return [...customColors, ...PRESET_BACKGROUND_COLORS];
-  }, [customColors]);
 
   const handleColorSelect = (hex: string) => {
     setBackgroundColor(hex, opacity ?? 1);
@@ -48,59 +43,51 @@ export default function Background({ background, setBackgroundColor }: Props) {
     setBackgroundColor(color, opacity / 100);
   };
 
-  const onColorPicked = (color: string) => {
-    setBackgroundColor(color, opacity ?? 1);
-    if (colors.includes(color)) return;
-    setCustomColors((prev) => [color, ...prev]);
-  };
-
   return (
     <>
       <IconTextButton icon={Palette} text="Background" onClick={openDrawer} />
 
       <BottomDrawer isOpen={isOpen} onClose={closeDrawer}>
-        <div className="space-y-4 p-4">
+        <div className="space-y-4 p-4 pb-6">
           <GroupTitle text="Color" icon={Palette} />
 
           {/* Pure Colors */}
-          <div className="flex max-w-full gap-1 overflow-x-auto pb-4 *:h-[38px] *:w-[38px]">
+          <div
+            className={cn(
+              'no-scrollbar flex w-full gap-2 overflow-x-auto pb-4 pt-2',
+              '*:h-[36px] *:w-[36px] *:shrink-0'
+            )}
+          >
             {/* Color Picker */}
-            <ColorPicker onColorPicked={onColorPicked} />
+            <ColorPicker
+              variant="swatch"
+              value={color || '#ffffff'}
+              onColorChange={handleColorSelect}
+              showTitle={false}
+            />
             {/* Preset Colors */}
-            {colors.map((hex) => (
-              <div key={hex} className="aspect-square">
-                <Button
-                  variant="ghost"
-                  rounded="full"
-                  size="sm"
-                  bordered
-                  onClick={() => handleColorSelect(hex)}
-                  className={cn(
-                    'aspect-square w-full',
-                    'border-2 !p-0 transition-all',
-                    isColorActive(hex) &&
-                      cn(
-                        'text-sky-600 dark:text-sky-600',
-                        'border-sky-500 dark:border-sky-600',
-                        'bg-sky-100/50 dark:bg-sky-900/50',
-                        'hover:bg-sky-100/50 hover:dark:bg-sky-900/50'
-                      )
-                  )}
-                >
-                  <div
-                    className="aspect-square w-[calc(100%_-_4px)] rounded-full border-2 border-transparent"
-                    style={{ backgroundColor: hex }}
-                  />
-                </Button>
-              </div>
+            {PRESET_BACKGROUND_COLORS.map((hex) => (
+              <ColorSwatch
+                key={hex}
+                color={hex}
+                isActive={isColorActive(hex)}
+                onClick={handleColorSelect}
+                showTitle={false}
+              />
             ))}
           </div>
 
           {/* Opacity */}
           <div>
-            <div className="mb-2 flex items-center justify-between text-left text-xs font-black uppercase">
-              <span>Opacity</span> {parseInt(((opacity ?? 1) * 100).toString())}
-            </div>
+            <PanelLabel
+              badge={
+                <span className="rounded-md bg-neutral-100 px-1.5 py-0.5 font-mono text-[11px] font-semibold text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+                  {Math.round((opacity ?? 1) * 100)}%
+                </span>
+              }
+            >
+              Opacity
+            </PanelLabel>
             <Slider
               min={0}
               max={100}

@@ -4,6 +4,7 @@ import type { LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import type { PillTabsProps, PillTabItemProps } from './types';
 
+import { Tab, TabGroup, TabList } from '@headlessui/react';
 import { useEffect, useState } from 'react';
 
 import { cn } from '@/utils/cn';
@@ -43,6 +44,11 @@ function PillTabs<const T extends ReactNode = string>({
   // Support controlled vs uncontrolled mode
   const currentTab = activeTab !== undefined ? activeTab : internalTab;
 
+  const currentIdx = Math.max(
+    0,
+    tabs.findIndex((t) => t === currentTab)
+  );
+
   // Bind custom event listener to trigger tab switch remotely
   useEffect(() => {
     const handler = (e: CustomEvent) => {
@@ -68,6 +74,13 @@ function PillTabs<const T extends ReactNode = string>({
       setInternalTab(mode);
     }
     onChange(mode);
+  };
+
+  const handleIndexChange = (index: number) => {
+    const target = tabs[index];
+    if (target !== undefined) {
+      onTabClick(target);
+    }
   };
 
   const currentVariant =
@@ -103,36 +116,38 @@ function PillTabs<const T extends ReactNode = string>({
   };
 
   return (
-    <div
-      className={cn(
-        'inline-flex items-center',
-        currentRounded.container,
-        currentVariant.container,
-        fullWidth && 'w-full',
-        className
-      )}
-    >
-      {tabs.map((mode, idx) => (
-        <PillTabItem
-          key={idx}
-          mode={mode}
-          index={idx}
-          isActive={currentTab === mode}
-          isDisabled={getIsDisabled(mode, idx)}
-          icon={getTabIcon(mode, idx)}
-          label={getTabLabel(mode, idx)}
-          badge={getTabBadge(mode, idx)}
-          size={size}
-          rounded={rounded}
-          variant={variant}
-          fullWidth={fullWidth}
-          tabClassName={tabClassName}
-          activeClassName={activeClassName}
-          inactiveClassName={inactiveClassName}
-          onClick={onTabClick}
-        />
-      ))}
-    </div>
+    <TabGroup selectedIndex={currentIdx} onChange={handleIndexChange}>
+      <TabList
+        className={cn(
+          'inline-flex items-center overflow-x-auto',
+          currentRounded.container,
+          currentVariant.container,
+          fullWidth && 'w-full',
+          className
+        )}
+      >
+        {tabs.map((mode, idx) => (
+          <PillTabItem
+            key={idx}
+            mode={mode}
+            index={idx}
+            isActive={currentTab === mode}
+            isDisabled={getIsDisabled(mode, idx)}
+            icon={getTabIcon(mode, idx)}
+            label={getTabLabel(mode, idx)}
+            badge={getTabBadge(mode, idx)}
+            size={size}
+            rounded={rounded}
+            variant={variant}
+            fullWidth={fullWidth}
+            tabClassName={tabClassName}
+            activeClassName={activeClassName}
+            inactiveClassName={inactiveClassName}
+            onClick={onTabClick}
+          />
+        ))}
+      </TabList>
+    </TabGroup>
   );
 }
 
@@ -158,12 +173,11 @@ function PillTabItem<const T extends ReactNode = string>({
   const currentSize = pillTabsSizeStyles[size] || pillTabsSizeStyles.xs;
 
   return (
-    <button
-      type="button"
+    <Tab
       disabled={isDisabled}
       onClick={() => onClick(mode)}
       className={cn(
-        'flex select-none items-center justify-center font-medium transition-all duration-200',
+        'flex select-none items-center justify-center font-medium outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-sky-500/50',
         currentRounded.item,
         currentSize.padding,
         currentSize.text,
@@ -179,7 +193,7 @@ function PillTabItem<const T extends ReactNode = string>({
       {Icon && <Icon size={currentSize.iconSize} className="shrink-0" />}
       <span>{label}</span>
       {badge}
-    </button>
+    </Tab>
   );
 }
 

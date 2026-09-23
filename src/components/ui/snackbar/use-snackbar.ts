@@ -1,14 +1,14 @@
 'use client';
 
 import type { LucideIcon } from 'lucide-react';
-import type { ButtonVariant } from '@/types/common/button';
+import type { SnackbarVariant } from './types';
 
 import { useState, useCallback } from 'react';
 
 export interface SnackbarItem {
   id: string;
   content: string;
-  variant?: ButtonVariant;
+  variant?: SnackbarVariant;
   icon?: LucideIcon;
   timeout?: number;
   showCloseIcon?: boolean;
@@ -20,7 +20,7 @@ export interface UseSnackbarOptions {
   /** Default timeout in milliseconds before auto-dismiss (default: 3000) */
   defaultTimeout?: number;
   /** Default variant (default: 'success') */
-  defaultVariant?: ButtonVariant;
+  defaultVariant?: SnackbarVariant;
 }
 
 export function useSnackbar(options: UseSnackbarOptions = {}) {
@@ -43,7 +43,7 @@ export function useSnackbar(options: UseSnackbarOptions = {}) {
   const triggerSnackbar = useCallback(
     (
       contentOrOptions: string | Omit<SnackbarItem, 'id'>,
-      variant?: ButtonVariant
+      variant?: SnackbarVariant
     ) => {
       const id = `snackbar_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
 

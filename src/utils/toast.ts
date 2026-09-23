@@ -1,10 +1,10 @@
 import type { LucideIcon } from 'lucide-react';
-import type { ButtonVariant } from '@/types/common/button';
+import type { SnackbarVariant } from '@/components/ui/snackbar';
 
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 
 export type ToastOptions = {
-  variant?: ButtonVariant;
+  variant?: SnackbarVariant;
   timeout?: number;
   icon?: LucideIcon;
   showCloseIcon?: boolean;

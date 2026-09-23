@@ -1,7 +1,26 @@
 import type { Rounded } from '@/types/common';
-import type { ButtonSize, ButtonVariant } from '@/types/common/button';
 import type { LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
+
+export type SnackbarVariant =
+  | 'primary'
+  | 'secondary'
+  | 'ghost'
+  | 'ghost-sky'
+  | 'outline'
+  | 'error'
+  | 'dark-sky'
+  | 'neutral'
+  | 'success'
+  | 'blue'
+  | 'amber'
+  | 'surface';
+
+export type SnackbarVariants = SnackbarVariant;
+
+export type SnackbarSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl';
+
+export type SnackbarSizes = SnackbarSize;
 
 export type SnackbarPosition =
   | 'top left'
@@ -12,7 +31,7 @@ export type SnackbarPosition =
 export type SnackbarItem = {
   id: string;
   content: ReactNode;
-  variant?: ButtonVariant;
+  variant?: SnackbarVariant;
   timeout?: number;
   icon?: LucideIcon;
   showCloseIcon?: boolean;
@@ -26,7 +45,7 @@ export type SnackbarProps = {
   /** Toast container screen position (default: 'top right') */
   position?: SnackbarPosition;
   /** Toast padding and text size (default: 'base') */
-  size?: ButtonSize;
+  size?: SnackbarSize;
   /** Rounded corner style (default: 'base') */
   rounded?: Rounded;
   /** Whether to render border (default: true) */

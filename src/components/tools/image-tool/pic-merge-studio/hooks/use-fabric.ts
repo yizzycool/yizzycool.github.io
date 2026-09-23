@@ -6,13 +6,15 @@ import type { GridTemplate } from '../types/grid-layout';
 import type { SupportedFabricFilterType } from '../types/fabric-filter';
 
 import * as fabric from 'fabric';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import useCanvasUpdater from './use-canvas-updater';
 import useImageUpdater from './use-image-updater';
 import useImagesUpdater from './use-images-updater';
 import useCommon from './use-common';
 import useGridUpdater from './use-grid-updater';
+import useLayersUpdater from './use-layers-updater';
+import { head } from 'lodash';
 import colorUtils from '@/utils/color-utils';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import { DEFAULT_CANVAS_CONFIG } from '..';
@@ -37,6 +39,8 @@ export const FABRIC_IMAGE_CONFIG = {
   strokeWidth: 0,
   _strokeWidthRatio: 0,
   stroke: '',
+  snapAngle: 90,
+  snapThreshold: 5,
   ...FABRIC_CONTROL_CONFIG,
 };
 
@@ -76,6 +80,7 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
   const [isExporting, setIsExporting] = useState(false);
   const [hasImageSelection, setHasImageSelection] = useState(false);
   const [hasImageSrc, setHasImageSrc] = useState(false);
+  const [selectedCount, setSelectedCount] = useState(0);
 
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
   const fabricCanvasBorderRectRef = useRef<fabric.Rect | null>(null);
@@ -116,10 +121,18 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
     fabricHelper,
   });
 
-  const { getSelectedImage } = useCommon({ refs: { fabricCanvasRef } });
+  const layersUpdater = useLayersUpdater({
+    refs: { fabricCanvasRef, fabricCanvasBorderRectRef },
+    configHelper,
+    isFabricReady,
+  });
+
+  const { getSelectedImage, getSelectedImages } = useCommon({
+    refs: { fabricCanvasRef },
+  });
 
   // To resize canvas element when window resized
-  const resizeDisplay = () => {
+  const resizeDisplay = useCallback(() => {
     if (!containerRef.current || !fabricCanvasRef.current) return;
 
     const containerWidth = containerRef.current.clientWidth;
@@ -127,9 +140,19 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
 
     const canvasSize = canvasConfig.size;
 
+    // Provide comfortable breathing room around the canvas
+    const horizontalPadding = containerWidth < 640 ? 16 : 36;
+    const paddingTop = containerWidth < 640 ? 44 : 36;
+    const paddingBottom = containerWidth < 640 ? 16 : 36;
+    const availableWidth = Math.max(containerWidth - horizontalPadding * 2, 80);
+    const availableHeight = Math.max(
+      containerHeight - paddingTop - paddingBottom,
+      80
+    );
+
     const scale = Math.min(
-      containerWidth / canvasSize.width,
-      containerHeight / canvasSize.height
+      availableWidth / canvasSize.width,
+      availableHeight / canvasSize.height
     );
 
     // Update canvas wrapper
@@ -155,35 +178,39 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
 
     // Update fabricCanvas key
     fabricCanvasRef.current.set('_scale', scale);
-  };
+  }, [containerRef, fabricCanvasRef, canvasConfig.size]);
 
   // Handler to update if any selection exists in Fabric Canvas
-  const recalcSelection = () => {
+  const recalcSelection = useCallback(() => {
     if (!fabricCanvasRef.current) return;
 
-    const selectedImage = getSelectedImage();
+    const selectedImages = getSelectedImages();
+    const selectedImage = head(selectedImages);
 
-    setHasImageSelection(!!selectedImage);
+    setHasImageSelection(selectedImages.length > 0);
     setHasImageSrc(!!selectedImage?.getSrc?.());
+    setSelectedCount(selectedImages.length);
 
     // Trigger to switch to 'Image' tab
-    if (!!selectedImage) {
+    if (selectedImages.length > 0) {
       customEventUtils.emit(CustomEvents.common.switchTab, { tab: 'Image' });
     }
 
-    // Recalculate control storke
-    if (!!selectedImage) {
-      const _scale = fabricCanvasRef.current.get('_scale');
-      selectedImage.set({
+    // Recalculate control stroke
+    const _scale = fabricCanvasRef.current.get('_scale') || 1;
+    selectedImages.forEach((img) => {
+      img.set({
         cornerSize: 10 / _scale,
         touchCornerSize: 40 / _scale,
-        borderScaleFactor: (selectedImage.getSrc() ? 2 : 5) / _scale,
+        borderScaleFactor: (img.getSrc() ? 2 : 5) / _scale,
       });
-      selectedImage.controls.mtr.offsetY = -20 / _scale;
-      selectedImage.setCoords();
-      fabricCanvasRef.current.requestRenderAll();
-    }
-  };
+      if (img.controls?.mtr) {
+        img.controls.mtr.offsetY = -20 / _scale;
+      }
+      img.setCoords();
+    });
+    fabricCanvasRef.current.requestRenderAll();
+  }, [fabricCanvasRef, getSelectedImages]);
 
   // Monitor to update if any selection exists in Fabric Canvas
   const initHasImageSelectionMonitor = () => {
@@ -218,10 +245,15 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
         angle: selectedImage.angle,
         scaleX: selectedImage.scaleX,
         scaleY: selectedImage.scaleY,
+        width: Math.round(selectedImage.getScaledWidth()),
+        height: Math.round(selectedImage.getScaledHeight()),
+        originalWidth: selectedImage.width,
+        originalHeight: selectedImage.height,
         lockMovementX: selectedImage.lockMovementX,
         lockMovementY: selectedImage.lockMovementY,
         flipX: selectedImage.flipX,
         flipY: selectedImage.flipY,
+        snapAngle: selectedImage.snapAngle,
         filters:
           selectedImage.filters as InstanceType<SupportedFabricFilterType>[],
       }));
@@ -242,6 +274,8 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
           ...prev,
           scaleX: selectedImage.scaleX,
           scaleY: selectedImage.scaleY,
+          width: Math.round(selectedImage.getScaledWidth()),
+          height: Math.round(selectedImage.getScaledHeight()),
         }));
       }
     };
@@ -366,7 +400,10 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
     // Create a Canvas
     const canvas = new fabric.Canvas(canvasRef.current, {
       backgroundColor: DEFAULT_CANVAS_CONFIG.background.color?.color,
-      selection: false,
+      selection: true,
+      selectionColor: 'rgba(14, 165, 233, 0.15)',
+      selectionBorderColor: '#0ea5e9',
+      selectionLineWidth: 1.5,
       enableRetinaScaling: true,
     });
     fabricCanvasRef.current = canvas;
@@ -430,11 +467,13 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
       isExporting,
       hasImageSelection,
       hasImageSrc,
+      selectedCount,
     },
 
     canvasUpdater,
     imageUpdater,
     imagesUpdater,
     gridUpdater,
+    layersUpdater,
   };
 }

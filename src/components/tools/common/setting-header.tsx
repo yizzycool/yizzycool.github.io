@@ -48,7 +48,7 @@ export default function SettingHeader({
             <TooltipTrigger>
               <button
                 type="button"
-                className="inline-flex cursor-help text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
+                className="inline-flex cursor-pointer text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
                 aria-label={`Hint for ${label}`}
               >
                 <CircleAlert size={13} className="shrink-0" />

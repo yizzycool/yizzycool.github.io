@@ -1,5 +1,16 @@
 import type { FabricFilterConfig } from '../types/fabric-filter';
+import type { LucideIcon } from 'lucide-react';
+
 import * as fabric from 'fabric';
+import {
+  Contrast,
+  Droplets,
+  Eye,
+  Grid2x2,
+  Radio,
+  Sparkles,
+  Sun,
+} from 'lucide-react';
 
 export const FABRIC_FILTER_LIST = [
   fabric.filters.BlackWhite,
@@ -300,3 +311,116 @@ export const FABRIC_FILTER_MAP: FabricFilterConfig = {
     filter: fabric.filters.Vintage,
   },
 };
+
+export const PRESET_FILTER_TYPES = [
+  'BlackWhite',
+  'Brownie',
+  'Invert',
+  'Kodachrome',
+  'Polaroid',
+  'Sepia',
+  'Technicolor',
+  'Vintage',
+] as const;
+
+export type PresetFilterType = (typeof PRESET_FILTER_TYPES)[number];
+
+export type AdjustmentFilterConfig = {
+  type: string;
+  paramKey: string;
+  label: string;
+  icon: LucideIcon;
+  min: number;
+  max: number;
+  step: number;
+  default: number;
+  neutral: number;
+  format: (value: number) => string;
+};
+
+export const ADJUSTMENT_FILTER_CONFIGS: AdjustmentFilterConfig[] = [
+  {
+    type: 'Brightness',
+    paramKey: 'brightness',
+    label: 'Brightness',
+    icon: Sun,
+    min: -1,
+    max: 1,
+    step: 0.02,
+    default: 0,
+    neutral: 0,
+    format: (v) => `${v > 0 ? '+' : ''}${Math.round(v * 100)}%`,
+  },
+  {
+    type: 'Contrast',
+    paramKey: 'contrast',
+    label: 'Contrast',
+    icon: Contrast,
+    min: -1,
+    max: 1,
+    step: 0.02,
+    default: 0,
+    neutral: 0,
+    format: (v) => `${v > 0 ? '+' : ''}${Math.round(v * 100)}%`,
+  },
+  {
+    type: 'Saturation',
+    paramKey: 'saturation',
+    label: 'Saturation',
+    icon: Droplets,
+    min: -1,
+    max: 1,
+    step: 0.02,
+    default: 0,
+    neutral: 0,
+    format: (v) => `${v > 0 ? '+' : ''}${Math.round(v * 100)}%`,
+  },
+  {
+    type: 'Vibrance',
+    paramKey: 'vibrance',
+    label: 'Vibrance',
+    icon: Sparkles,
+    min: -1,
+    max: 1,
+    step: 0.02,
+    default: 0,
+    neutral: 0,
+    format: (v) => `${v > 0 ? '+' : ''}${Math.round(v * 100)}%`,
+  },
+  {
+    type: 'Blur',
+    paramKey: 'blur',
+    label: 'Blur',
+    icon: Eye,
+    min: 0,
+    max: 1,
+    step: 0.01,
+    default: 0,
+    neutral: 0,
+    format: (v) => `${Math.round(v * 100)}%`,
+  },
+  {
+    type: 'Noise',
+    paramKey: 'noise',
+    label: 'Noise',
+    icon: Radio,
+    min: 0,
+    max: 500,
+    step: 10,
+    default: 0,
+    neutral: 0,
+    format: (v) => `${Math.round(v)}`,
+  },
+  {
+    type: 'Pixelate',
+    paramKey: 'blocksize',
+    label: 'Pixelate',
+    icon: Grid2x2,
+    min: 0,
+    max: 40,
+    step: 1,
+    default: 0,
+    neutral: 0,
+    format: (v) => (v === 0 ? 'Off' : `${v}px`),
+  },
+];

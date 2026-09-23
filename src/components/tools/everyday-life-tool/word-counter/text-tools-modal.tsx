@@ -3,10 +3,9 @@
 import type { LucideIcon } from 'lucide-react';
 import type { TransformAction } from './hooks/use-word-counter';
 
-import { Wand2, X } from 'lucide-react';
+import { Wand2 } from 'lucide-react';
 
-import { BaseDialog } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { BaseDialog, DialogHeader } from '@/components/ui/dialog';
 
 type ToolItem = {
   label: string;
@@ -40,30 +39,14 @@ export default function TextToolsModal({
       dialogClassName="flex max-h-[85vh] w-full max-w-lg flex-col"
     >
       {/* Header */}
-      <div className="mx-6 flex shrink-0 items-center justify-between border-b border-neutral-200 pb-4 pt-6 dark:border-neutral-800">
-        <div className="flex items-center gap-2.5">
-          <div className="rounded-xl bg-sky-50 p-2 text-sky-600 dark:bg-sky-950/40 dark:text-sky-400">
-            <Wand2 size={20} />
-          </div>
-          <div>
-            <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
-              Text Tools Guide
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              Transform and format your text with ease
-            </p>
-          </div>
-        </div>
-        <Button
-          variant="ghost"
-          size="base"
-          rounded="full"
-          icon={X}
-          onClick={onClose}
-          ariaLabel="Close tools guide"
-          className="text-slate-400 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-200"
-        />
-      </div>
+      <DialogHeader
+        icon={Wand2}
+        title="Text Tools Guide"
+        description="Transform and format your text with ease"
+        onClose={onClose}
+        closeAriaLabel="Close tools guide"
+        className="mx-6 pt-6"
+      />
 
       {/* Content List */}
       <div className="flex-1 space-y-4 divide-y divide-neutral-100 overflow-y-auto p-6 pt-4 dark:divide-neutral-800/80">

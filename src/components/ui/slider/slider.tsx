@@ -22,6 +22,8 @@ export function Slider({
   id,
   ariaLabel,
   className,
+  titleClassName,
+  descClassName,
 }: SliderProps) {
   const percentage = useMemo(() => {
     if (max === min) return 0;
@@ -36,12 +38,22 @@ export function Slider({
         <div className="mb-2 flex items-center justify-between gap-2">
           <div className="flex flex-col">
             {title && (
-              <Label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200">
+              <Label
+                className={cn(
+                  'text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200',
+                  titleClassName
+                )}
+              >
                 {title}
               </Label>
             )}
             {desc && (
-              <Description className="text-xs text-slate-500 dark:text-slate-400">
+              <Description
+                className={cn(
+                  'text-xs text-slate-500 dark:text-slate-400',
+                  descClassName
+                )}
+              >
                 {desc}
               </Description>
             )}

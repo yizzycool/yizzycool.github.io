@@ -1,7 +1,7 @@
 import type { ColorStop } from 'fabric';
 import { SupportedFabricFilterType } from './fabric-filter';
 
-export type CanvasExportFormat = 'png' | 'jpeg';
+export type CanvasExportFormat = 'png' | 'jpeg' | 'webp';
 
 export type CanvasSize = { width: number; height: number };
 
@@ -62,8 +62,13 @@ export type ImageConfig = {
   opacity: number;
   border: CanvasBorder;
   angle: number;
+  snapAngle?: number;
   scaleX: number;
   scaleY: number;
+  width: number;
+  height: number;
+  originalWidth: number;
+  originalHeight: number;
   lockMovementX: boolean;
   lockMovementY: boolean;
   flipX: boolean;

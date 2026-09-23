@@ -1,21 +1,25 @@
 'use client';
 
-import { cn } from '@/utils/cn';
 import { X } from 'lucide-react';
 import { Transition, TransitionChild } from '@headlessui/react';
 import { useEffect, useSyncExternalStore } from 'react';
-import { createPortal } from 'react-dom';
 
+import { cn } from '@/utils/cn';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import { Button } from '@/components/ui/button';
+import { Portal } from '@/components/ui/portal';
 
-type Props = {
+type BottomDrawerProps = {
   isOpen: boolean;
   onClose: () => void;
   children?: React.ReactNode;
 };
 
-export default function BottomDrawer({ isOpen, onClose, children }: Props) {
+export default function BottomDrawer({
+  isOpen,
+  onClose,
+  children,
+}: BottomDrawerProps) {
   const node = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   useEffect(() => {
@@ -37,43 +41,42 @@ export default function BottomDrawer({ isOpen, onClose, children }: Props) {
 
   if (!node) return null;
 
-  return createPortal(
-    <Transition show={isOpen} unmount={false} appear={true}>
-      <TransitionChild
-        enter="ease-out duration-300"
-        enterFrom="translate-y-full"
-        enterTo="translate-y-0"
-        leave="ease-in duration-300"
-        leaveFrom="translate-y-0"
-        leaveTo="translate-y-full"
-        unmount={false}
-      >
-        <div
-          className={cn(
-            'absolute bottom-0 left-0 right-0 min-h-[200px] overflow-hidden',
-            'rounded-t-3xl backdrop-blur-md',
-            'bg-white/40 dark:bg-neutral-900/40'
-          )}
+  return (
+    <Portal container="#pic-merge-studio-mobile-config-drawer">
+      <Transition show={isOpen} unmount={false} appear={true}>
+        <TransitionChild
+          enter="ease-out duration-300"
+          enterFrom="translate-y-full"
+          enterTo="translate-y-0"
+          leave="ease-in duration-300"
+          leaveFrom="translate-y-0"
+          leaveTo="translate-y-full"
+          unmount={false}
         >
-          <div className="py-3">
-            <div className="mx-auto h-1 w-8 rounded-full bg-neutral-400 dark:bg-neutral-500" />
-          </div>
-
-          {children}
-
-          <Button
-            variant="ghost"
-            onClick={onClose}
-            icon={X}
-            rounded="full"
-            className="absolute right-1 top-1"
+          <div
+            className={cn(
+              'absolute bottom-0 left-0 right-0 max-h-[300px] min-h-[160px] overflow-y-auto overflow-x-hidden',
+              'rounded-t-3xl border-t border-neutral-200 dark:border-neutral-700',
+              'bg-white shadow-2xl dark:bg-neutral-900'
+            )}
           >
-            {/* <X size={20} /> */}
-          </Button>
-        </div>
-      </TransitionChild>
-    </Transition>,
-    node
+            <div className="py-3">
+              <div className="mx-auto h-1 w-8 rounded-full bg-neutral-400 dark:bg-neutral-500" />
+            </div>
+
+            {children}
+
+            <Button
+              variant="ghost"
+              onClick={onClose}
+              icon={X}
+              rounded="full"
+              className="absolute right-1 top-1"
+            />
+          </div>
+        </TransitionChild>
+      </Transition>
+    </Portal>
   );
 }
 

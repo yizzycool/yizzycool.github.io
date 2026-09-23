@@ -1,8 +1,7 @@
 'use client';
 
-import type { ButtonSize } from '@/types/common/button';
 import type { Rounded } from '@/types/common';
-import type { SnackbarItem, SnackbarProps } from './types';
+import type { SnackbarItem, SnackbarProps, SnackbarSize } from './types';
 
 import { useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -89,7 +88,7 @@ function SnackbarItemView({
 }: {
   item: SnackbarItem;
   onClose: (id: string) => void;
-  size: ButtonSize;
+  size: SnackbarSize;
   rounded: Rounded;
   bordered: boolean;
   className?: string;

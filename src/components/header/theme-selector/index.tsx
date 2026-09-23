@@ -1,44 +1,33 @@
 'use client';
 
-import { ForwardRefExoticComponent, RefAttributes, SVGProps } from 'react';
-import {
-  CloseButton,
-  Popover,
-  PopoverBackdrop,
-  PopoverButton,
-  PopoverPanel,
-} from '@headlessui/react';
+import type { LucideIcon } from 'lucide-react';
+import type { Theme } from '@/hooks/dom/use-switch-theme';
+
 import { Moon, Sun, SunMoon } from 'lucide-react';
 
-import useSwitchTheme, { Theme } from '../../../hooks/dom/use-switch-theme';
+import useSwitchTheme from '@/hooks/dom/use-switch-theme';
+import { Dropdown } from '@/components/ui/dropdown';
 import { cn } from '@/utils/cn';
 
-type SwitchButtonSettings = {
-  component: ForwardRefExoticComponent<
-    Omit<SVGProps<SVGSVGElement>, 'ref'> & {
-      title?: string | undefined;
-      titleId?: string | undefined;
-    } & RefAttributes<SVGSVGElement>
-  >;
+type ThemeOption = {
+  icon: LucideIcon;
   text: string;
   theme: Theme;
 };
 
-type SwitchButtons = Array<SwitchButtonSettings>;
-
-const Buttons: SwitchButtons = [
+const THEME_OPTIONS: ThemeOption[] = [
   {
-    component: Sun,
+    icon: Sun,
     text: 'Light',
     theme: 'light',
   },
   {
-    component: Moon,
+    icon: Moon,
     text: 'Dark',
     theme: 'dark',
   },
   {
-    component: SunMoon,
+    icon: SunMoon,
     text: 'System',
     theme: 'system',
   },
@@ -47,58 +36,37 @@ const Buttons: SwitchButtons = [
 export default function ThemeSelector() {
   const { theme, updateTheme } = useSwitchTheme();
 
+  const CurrentThemeIcon =
+    theme === 'dark' ? Moon : theme === 'light' ? Sun : SunMoon;
+
+  const trigger = (
+    <div
+      className={cn(
+        'flex items-center',
+        'transition-all duration-200',
+        'rounded-full p-2 outline-none',
+        'hover:bg-neutral-800/10 dark:hover:bg-neutral-700'
+      )}
+      aria-label="theme"
+    >
+      <CurrentThemeIcon size={20} />
+    </div>
+  );
+
+  const items = THEME_OPTIONS.map((option) => ({
+    id: option.theme,
+    label: option.text,
+    icon: option.icon,
+    isActive: theme === option.theme,
+    onClick: () => updateTheme(option.theme),
+  }));
+
   return (
-    <Popover className="group relative flex justify-start">
-      <PopoverButton
-        className={cn(
-          'flex items-center',
-          'transition-all duration-200',
-          'rounded-full p-2 focus:outline-none',
-          'data-[active]:bg-neutral-800/10 dark:data-[active]:bg-neutral-700',
-          'data-[hover]:hover:bg-neutral-800/10 dark:data-[hover]:bg-neutral-700'
-        )}
-        aria-label="theme"
-      >
-        {theme === 'dark' ? (
-          <Moon size={20} />
-        ) : theme === 'light' ? (
-          <Sun size={20} />
-        ) : (
-          <SunMoon size={20} />
-        )}
-      </PopoverButton>
-      <PopoverBackdrop className="visible fixed inset-0 z-0 bg-transparent" />
-      <PopoverPanel
-        transition
-        anchor="bottom end"
-        className={cn(
-          'z-50 mt-5 origin-top-right rounded-md py-2 text-sm/6 font-semibold',
-          'border border-neutral-800/20 dark:border-white/20',
-          'bg-white/95 backdrop-blur-lg dark:bg-neutral-800',
-          'focus:outline-none',
-          'transition duration-100 ease-out',
-          'data-[closed]:scale-95 data-[closed]:opacity-0'
-        )}
-      >
-        {Buttons.map((button, idx) => (
-          <CloseButton
-            key={idx}
-            className={cn(
-              'flex w-full cursor-pointer px-4 py-1 pr-6 hover:bg-sky-100/50 dark:hover:bg-neutral-700/50',
-              'transition-all duration-300'
-            )}
-            onClick={() => updateTheme(button.theme)}
-          >
-            <div
-              data-selected={theme === button.theme || undefined}
-              className="flex w-full items-center px-3 py-2 data-[focus]:bg-neutral-800/10 data-[selected]:text-sky-500 data-[focus]:dark:bg-white/10"
-            >
-              <button.component className="h-5 w-5" />
-              <div className="ml-4">{button.text}</div>
-            </div>
-          </CloseButton>
-        ))}
-      </PopoverPanel>
-    </Popover>
+    <Dropdown
+      trigger={trigger}
+      items={items}
+      placement="bottom end"
+      menuClassName="min-w-[120px]"
+    />
   );
 }

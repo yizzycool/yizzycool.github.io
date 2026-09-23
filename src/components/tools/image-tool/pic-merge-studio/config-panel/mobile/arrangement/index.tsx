@@ -57,7 +57,7 @@ export default function Arrangement({ setLayer }: Props) {
                 icon={layersIconMap[layer]}
                 key={layer}
                 onClick={() => setLayer(layer)}
-                className="whitespace-nowrap font-black"
+                className="whitespace-nowrap font-semibold"
               >
                 {layersName[layer]}
               </Button>

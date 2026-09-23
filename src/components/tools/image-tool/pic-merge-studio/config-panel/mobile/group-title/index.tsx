@@ -19,12 +19,12 @@ export default function GroupTitle({
   return (
     <div
       className={cn(
-        'flex items-center gap-2 text-slate-600 dark:text-slate-300',
+        'flex items-center gap-2 text-neutral-500 dark:text-neutral-400',
         className
       )}
     >
-      {!!Icon && <Icon size={12} className="min-w-[12px] max-w-[12px]" />}
-      <h3 className="whitespace-nowrap text-xs font-black uppercase tracking-[0.2em]">
+      {!!Icon && <Icon size={13} className="min-w-[13px] max-w-[13px]" />}
+      <h3 className="whitespace-nowrap text-xs font-semibold uppercase tracking-wider">
         {text}
       </h3>
       <Separator />

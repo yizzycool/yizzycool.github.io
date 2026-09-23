@@ -118,7 +118,7 @@ export function ManagementCardItem({
                     <TooltipTrigger>
                       <button
                         type="button"
-                        className="cursor-help opacity-60 hover:opacity-100"
+                        className="cursor-pointer opacity-60 hover:opacity-100"
                       >
                         <Info size={12} strokeWidth={2.5} />
                       </button>
@@ -158,7 +158,7 @@ export function ManagementCardItem({
                       <TooltipTrigger>
                         <button
                           type="button"
-                          className="cursor-help opacity-60 hover:opacity-100"
+                          className="cursor-pointer opacity-60 hover:opacity-100"
                         >
                           <Info size={12} strokeWidth={2.5} />
                         </button>

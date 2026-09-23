@@ -1,6 +1,5 @@
 'use client';
 
-import { cn } from '@/utils/cn';
 import {
   AlignCenterHorizontal,
   AlignCenterVertical,
@@ -11,7 +10,6 @@ import {
   FoldHorizontal,
   FoldVertical,
   ImageUpscale,
-  LayoutGrid,
   Scan,
   SquareArrowDownLeft,
   SquareArrowDownRight,
@@ -20,133 +18,141 @@ import {
   SquareSquare,
 } from 'lucide-react';
 
-import { Label } from '@/components/ui/label';
+import { cn } from '@/utils/cn';
 import { Button } from '@/components/ui/button';
+
+import PanelLabel from '../../panel-label';
 
 type Props = {
   setAlignment: (horizontal: string, vertical: string) => void;
   setObjectFit: (type: string) => void;
+  selectedCount: number;
 };
 
-export default function ImageLayout({ setAlignment, setObjectFit }: Props) {
+export default function Alignment({
+  setAlignment,
+  setObjectFit,
+  selectedCount,
+}: Props) {
   return (
-    <div className="space-y-4">
-      <Label
-        icon={LayoutGrid}
-        className="text-xs !font-black uppercase tracking-widest"
+    <div className="space-y-4 px-0.5">
+      <PanelLabel
+        badge={
+          <span className="rounded-md bg-neutral-100 px-2 py-0.5 font-mono text-[11px] font-semibold text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+            {selectedCount}
+          </span>
+        }
       >
-        Layout
-      </Label>
+        Selected Objects
+      </PanelLabel>
 
-      <div className="space-y-4 rounded-xl bg-white/40 p-4 dark:bg-neutral-900/40">
-        {/* Horizontal Alignment */}
-        <Label
-          icon={FoldHorizontal}
-          className="text-xs !font-black uppercase tracking-widest"
-        >
-          Horizontal Alignment
-        </Label>
-        <div className="grid grid-cols-4 gap-2">
+      {/* Horizontal Alignment */}
+      <div className="space-y-1.5">
+        <PanelLabel icon={FoldHorizontal}>Horizontal Alignment</PanelLabel>
+        <div className="grid grid-cols-3 gap-2">
           <Button
             variant="secondary"
             bordered
+            title="Align Left"
             icon={AlignStartVertical}
             onClick={() => setAlignment('left', '')}
           />
           <Button
             variant="secondary"
             bordered
+            title="Align Center"
             icon={AlignCenterVertical}
             onClick={() => setAlignment('center', '')}
           />
           <Button
             variant="secondary"
             bordered
+            title="Align Right"
             icon={AlignEndVertical}
             onClick={() => setAlignment('right', '')}
           />
         </div>
+      </div>
 
-        {/* Vertical Alignment */}
-        <Label
-          icon={FoldVertical}
-          className="text-xs !font-black uppercase tracking-widest"
-        >
-          Vertical Alignment
-        </Label>
-        <div className="grid grid-cols-4 gap-2">
+      {/* Vertical Alignment */}
+      <div className="space-y-1.5">
+        <PanelLabel icon={FoldVertical}>Vertical Alignment</PanelLabel>
+        <div className="grid grid-cols-3 gap-2">
           <Button
             variant="secondary"
             bordered
+            title="Align Top"
             icon={AlignStartHorizontal}
             onClick={() => setAlignment('', 'top')}
           />
           <Button
             variant="secondary"
             bordered
+            title="Align Middle"
             icon={AlignCenterHorizontal}
             onClick={() => setAlignment('', 'center')}
           />
           <Button
             variant="secondary"
             bordered
+            title="Align Bottom"
             icon={AlignEndHorizontal}
             onClick={() => setAlignment('', 'bottom')}
           />
         </div>
+      </div>
 
-        {/* Corner Alignment */}
-        <Label
-          icon={Scan}
-          className="text-xs !font-black uppercase tracking-widest"
-        >
-          Corner Alignment
-        </Label>
-        <div className="grid grid-cols-4 gap-2">
+      {/* Corner & Center Alignment */}
+      <div className="space-y-1.5">
+        <PanelLabel icon={Scan}>Corner & Center</PanelLabel>
+        <div className="grid grid-cols-5 gap-2">
           <Button
             variant="secondary"
             bordered
+            title="Top Left"
             icon={SquareArrowUpLeft}
             onClick={() => setAlignment('left', 'top')}
           />
           <Button
             variant="secondary"
             bordered
+            title="Top Right"
             icon={SquareArrowUpRight}
             onClick={() => setAlignment('right', 'top')}
           />
           <Button
             variant="secondary"
             bordered
+            title="Bottom Right"
             icon={SquareArrowDownRight}
             onClick={() => setAlignment('right', 'bottom')}
           />
           <Button
             variant="secondary"
             bordered
+            title="Bottom Left"
             icon={SquareArrowDownLeft}
             onClick={() => setAlignment('left', 'bottom')}
           />
           <Button
             variant="secondary"
             bordered
+            title="Center"
             icon={SquareSquare}
             onClick={() => setAlignment('center', 'center')}
           />
         </div>
+      </div>
 
-        {/* Fit */}
-        <Label
-          icon={ImageUpscale}
-          className="text-xs !font-black uppercase tracking-widest"
-        >
-          Fit
-        </Label>
-        <div className="grid grid-cols-4 gap-2">
+      {/* Object Fit */}
+      <div className="space-y-1.5">
+        <PanelLabel icon={ImageUpscale}>Object Fit</PanelLabel>
+        <div className="grid grid-cols-2 gap-2">
           {/* Contain */}
           <Button
             variant="secondary"
             bordered
+            title="Contain"
             onClick={() => setObjectFit('contain')}
           >
             <div
@@ -162,6 +168,7 @@ export default function ImageLayout({ setAlignment, setObjectFit }: Props) {
           <Button
             variant="secondary"
             bordered
+            title="Cover"
             onClick={() => setObjectFit('cover')}
           >
             <div className="relative flex h-[18px] w-[24px] items-center">

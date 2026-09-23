@@ -3,7 +3,8 @@
 import { Upload } from 'lucide-react';
 
 import { FilePicker } from '@/components/ui/file-picker';
-import { Label } from '@/components/ui/label';
+
+import PanelLabel from '../../panel-label';
 
 type Props = {
   handleImagesUpload: (files: FileList) => void;
@@ -12,12 +13,7 @@ type Props = {
 export default function UploadBlock({ handleImagesUpload }: Props) {
   return (
     <div className="space-y-4">
-      <Label
-        icon={Upload}
-        className="text-xs !font-black uppercase tracking-widest"
-      >
-        Upload Images
-      </Label>
+      <PanelLabel icon={Upload}>Upload Images</PanelLabel>
       <FilePicker
         title=""
         desc="Add photos to canvas"

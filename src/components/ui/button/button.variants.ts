@@ -6,6 +6,8 @@ import { cn } from '@/utils/cn';
 export const buttonBaseStyles =
   'group flex items-center justify-center transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
 
+export const iconBaseStyles = 'shrink-0';
+
 export const getButtonVariants = (
   disabled: boolean = false,
   hoverEffect: boolean = true
@@ -75,6 +77,12 @@ export const getButtonVariants = (
     !disabled &&
       hoverEffect &&
       'hover:border-slate-300 hover:bg-slate-50 dark:hover:border-slate-700 dark:hover:bg-slate-800'
+  ),
+  inverse: cn(
+    'bg-neutral-900 text-neutral-100 border-transparent shadow-2xs dark:bg-neutral-100 dark:text-neutral-900',
+    !disabled &&
+      hoverEffect &&
+      'hover:bg-neutral-800 hover:text-white dark:hover:bg-white dark:hover:text-neutral-950'
   ),
 });
 

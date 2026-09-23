@@ -34,6 +34,7 @@ export function Input({
   onClear,
   onChange = () => {},
   onKeyDown,
+  onBlur,
 }: InputProps) {
   const isComposingRef = useRef(false);
 
@@ -87,6 +88,7 @@ export function Input({
           spellCheck={false}
           onChange={(e) => onChange(e)}
           onKeyDown={handleKeyDown}
+          onBlur={onBlur}
           onCompositionStart={() => {
             isComposingRef.current = true;
           }}

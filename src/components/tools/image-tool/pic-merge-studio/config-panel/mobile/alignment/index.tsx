@@ -27,12 +27,14 @@ import IconTextButton from '../icon-text-button';
 import BottomDrawer from '../bottom-drawer';
 import GroupTitle from '../group-title';
 
+import PanelLabel from '../../panel-label';
+
 type Props = {
   setAlignment: (horizontal: string, vertical: string) => void;
   setObjectFit: (type: string) => void;
 };
 
-export default function ImageLayout({ setAlignment, setObjectFit }: Props) {
+export default function Alignment({ setAlignment, setObjectFit }: Props) {
   const { isOpen, openDrawer, closeDrawer } = useControlDrawer();
 
   return (
@@ -46,7 +48,9 @@ export default function ImageLayout({ setAlignment, setObjectFit }: Props) {
           <div className="flex max-w-full items-start gap-4 overflow-x-auto pb-4 *:space-y-4">
             {/* Horizontal Alignment */}
             <div>
-              <GroupTitle icon={FoldHorizontal} text="Horizontal" />
+              <PanelLabel icon={FoldHorizontal} className="mb-2">
+                Horizontal
+              </PanelLabel>
               <div className="flex gap-2">
                 <Button
                   variant="secondary"
@@ -74,7 +78,9 @@ export default function ImageLayout({ setAlignment, setObjectFit }: Props) {
 
             {/* Vertical Alignment */}
             <div>
-              <GroupTitle icon={FoldVertical} text="Vertical" />
+              <PanelLabel icon={FoldVertical} className="mb-2">
+                Vertical
+              </PanelLabel>
               <div className="flex gap-2">
                 <Button
                   variant="secondary"
@@ -102,7 +108,9 @@ export default function ImageLayout({ setAlignment, setObjectFit }: Props) {
 
             {/* Corner Alignment */}
             <div>
-              <GroupTitle icon={Scan} text="Corner" />
+              <PanelLabel icon={Scan} className="mb-2">
+                Corner
+              </PanelLabel>
               <div className="flex gap-2">
                 <Button
                   variant="secondary"
@@ -142,7 +150,9 @@ export default function ImageLayout({ setAlignment, setObjectFit }: Props) {
 
             {/* Fit */}
             <div>
-              <GroupTitle icon={ImageUpscale} text="Fit" />
+              <PanelLabel icon={ImageUpscale} className="mb-2">
+                Fit
+              </PanelLabel>
               <div className="flex gap-2">
                 {/* Contain */}
                 <Button

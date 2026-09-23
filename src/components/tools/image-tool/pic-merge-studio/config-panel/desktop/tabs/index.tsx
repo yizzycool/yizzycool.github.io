@@ -1,8 +1,9 @@
 'use client';
 
 import { cn } from '@/utils/cn';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import { Tabs as CommonTabs } from '@/components/ui/tabs';
 
 type Props = {
@@ -13,6 +14,19 @@ type Props = {
 
 export default function Tabs({ tabs, discardActiveObject, children }: Props) {
   const [activeTab, setActiveTab] = useState(tabs[0]);
+
+  useEffect(() => {
+    const unsub = customEventUtils.on(
+      CustomEvents.common.switchTab,
+      (e: CustomEvent) => {
+        const targetTab = e.detail?.tab;
+        if (targetTab && tabs.includes(targetTab)) {
+          setActiveTab(targetTab);
+        }
+      }
+    );
+    return () => unsub();
+  }, [tabs]);
 
   const onChange = (tab: string) => {
     setActiveTab(tab);

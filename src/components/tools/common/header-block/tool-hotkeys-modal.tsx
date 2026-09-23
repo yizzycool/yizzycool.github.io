@@ -2,12 +2,11 @@
 
 import type { HotkeyItem } from '@/components/ui/badge';
 
-import { X, Keyboard, CircleAlert } from 'lucide-react';
+import { Keyboard, CircleAlert } from 'lucide-react';
 
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
-import { BaseDialog } from '@/components/ui/dialog';
+import { BaseDialog, DialogHeader } from '@/components/ui/dialog';
 import { HotkeyBadge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import {
   TooltipPopup,
   TooltipRoot,
@@ -45,29 +44,13 @@ export function ToolHotkeysModal({
       dialogClassName="w-full max-w-sm p-6"
     >
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-neutral-200 pb-4 dark:border-neutral-800">
-        <div className="flex items-center gap-2">
-          <div className="rounded-lg bg-blue-50 p-1.5 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400">
-            <Keyboard size={18} />
-          </div>
-          <div>
-            <h3 className="font-semibold text-slate-900 dark:text-slate-100">
-              Keyboard Shortcuts
-            </h3>
-            <span className="text-xs text-slate-400">
-              Boost your productivity with shortcuts
-            </span>
-          </div>
-        </div>
-        <Button
-          variant="ghost"
-          size="base"
-          rounded="full"
-          icon={X}
-          onClick={onClose}
-          ariaLabel="Close keyboard shortcuts"
-        />
-      </div>
+      <DialogHeader
+        icon={Keyboard}
+        title="Keyboard Shortcuts"
+        description="Boost your productivity with shortcuts"
+        onClose={onClose}
+        closeAriaLabel="Close keyboard shortcuts"
+      />
 
       {/* List */}
       <div className="divide-y divide-neutral-100 py-3 dark:divide-neutral-800/80">
@@ -84,7 +67,7 @@ export function ToolHotkeysModal({
                     <span
                       tabIndex={0}
                       role="button"
-                      className="cursor-help text-slate-400 dark:text-slate-500"
+                      className="cursor-pointer text-slate-400 dark:text-slate-500"
                       aria-label={item.hint}
                     >
                       <CircleAlert size={13} />

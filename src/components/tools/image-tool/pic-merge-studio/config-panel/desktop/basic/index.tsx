@@ -4,8 +4,9 @@ import { cn } from '@/utils/cn';
 import { Image, Replace, Trash2, Upload } from 'lucide-react';
 import { useRef } from 'react';
 
-import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+
+import PanelLabel from '../../panel-label';
 
 type Props = {
   hasImageSrc: boolean;
@@ -33,12 +34,7 @@ export default function Basic({
 
   return (
     <div className="space-y-4">
-      <Label
-        icon={Image}
-        className="text-xs !font-black uppercase tracking-widest"
-      >
-        Basic
-      </Label>
+      <PanelLabel icon={Image}>Basic</PanelLabel>
 
       <div className="grid grid-cols-2 gap-2">
         <Button
@@ -47,7 +43,7 @@ export default function Basic({
           bordered
           icon={hasImageSrc ? Replace : Upload}
           onClick={handleReplace}
-          className={cn('font-black', !hasImageSrc && 'col-span-2')}
+          className={cn('font-semibold', !hasImageSrc && 'col-span-2')}
         >
           {hasImageSrc ? 'Replace' : 'Choose an Image'}
         </Button>
@@ -58,7 +54,7 @@ export default function Basic({
             bordered
             icon={Trash2}
             onClick={deleteImage}
-            className="font-black"
+            className="font-semibold"
           >
             Delete
           </Button>

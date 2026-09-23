@@ -1,2 +1,2 @@
 export { ColorPicker } from './color-picker';
-export type { ColorPickerVariant } from './types';
+export type { ColorPickerProps, ColorPickerVariant } from './types';

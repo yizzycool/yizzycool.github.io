@@ -1,15 +1,5 @@
 export const PRESET_BACKGROUND_COLORS = [
-  '#1F2933',
-  '#2A2F3A',
-  '#2F3441',
-  '#243447',
-  '#1E3A3A',
-  '#1F3D2B',
-  '#3A1F2B',
-  '#3A2A1F',
-  '#3A3325',
-  '#2E2B27',
-
+  '#ffffff',
   '#F8FAFC',
   '#EAF2FB',
   '#E8F0FE',
@@ -20,9 +10,21 @@ export const PRESET_BACKGROUND_COLORS = [
   '#FFF4E6',
   '#FFF6D6',
   '#EFEDE7',
+
+  '#1F2933',
+  '#111827',
+  '#2A2F3A',
+  '#2F3441',
+  '#243447',
+  '#1E3A3A',
+  '#1F3D2B',
+  '#3A1F2B',
+  '#3A2A1F',
+  '#3A3325',
 ];
 
 export const PRESET_BORDER_COLORS = [
+  '#ffffff',
   '#EADFD6',
   '#F2D7E4',
   '#E6DBFA',
@@ -40,7 +42,6 @@ export const PRESET_BORDER_COLORS = [
   '#312E81',
   '#064E3B',
   '#0F766E',
-  '#4C1D95',
   '#7C2D12',
   '#5B1A1A',
   '#3F3F46',

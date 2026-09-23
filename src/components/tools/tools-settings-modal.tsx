@@ -6,7 +6,6 @@ import {
   ShieldCheck,
   PauseCircle,
   Clock,
-  X,
   Trash2,
 } from 'lucide-react';
 
@@ -14,9 +13,12 @@ import { cn } from '@/utils/cn';
 import { toast } from '@/utils/toast';
 import useToolsPreferences from '@/hooks/tools/use-tools-preferences';
 import { useToolsDB } from '@/hooks/tools/use-tools-db';
-import { BaseDialog, ConfirmDialog } from '@/components/ui/dialog';
+import {
+  BaseDialog,
+  ConfirmDialog,
+  DialogHeader,
+} from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
-import { Button } from '@/components/ui/button';
 import { TOOLS_WITH_HISTORY } from '@/components/tools/common/header-block/constants';
 import ToolsSettingsHistoryItem from './tools-settings-history-item';
 import { Separator } from '../ui/separator';
@@ -55,35 +57,14 @@ export function ToolsSettingsModal({
         dialogClassName="w-full max-w-md overflow-hidden rounded-2xl p-5 sm:p-6"
       >
         {/* Header */}
-        <div className="flex items-center justify-between pb-4">
-          <div className="flex items-center gap-2.5">
-            <div
-              className={cn(
-                'rounded-xl p-2',
-                'bg-slate-100 text-slate-700',
-                'dark:bg-slate-800 dark:text-slate-300'
-              )}
-            >
-              <SlidersHorizontal size={18} />
-            </div>
-            <div>
-              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
-                Preferences & Privacy
-              </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Manage global history recording and local data
-              </p>
-            </div>
-          </div>
-          <Button
-            variant="ghost"
-            size="base"
-            rounded="full"
-            icon={X}
-            onClick={onClose}
-            ariaLabel="Close settings"
-          />
-        </div>
+        <DialogHeader
+          icon={SlidersHorizontal}
+          title="Preferences & Privacy"
+          description="Manage global history recording and local data"
+          onClose={onClose}
+          closeAriaLabel="Close settings"
+          bordered={false}
+        />
 
         <Separator />
 
