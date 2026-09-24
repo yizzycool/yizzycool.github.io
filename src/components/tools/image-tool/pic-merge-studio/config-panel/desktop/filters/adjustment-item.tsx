@@ -14,6 +14,7 @@ type Props = {
   value: number;
   onChange: (config: AdjustmentFilterConfig, value: number) => void;
   onReset: (config: AdjustmentFilterConfig) => void;
+  onChangeEnd?: () => void;
 };
 
 export default function AdjustmentItem({
@@ -21,6 +22,7 @@ export default function AdjustmentItem({
   value,
   onChange,
   onReset,
+  onChangeEnd,
 }: Props) {
   const isModified = Math.abs(value - config.neutral) > 0.0001;
 
@@ -62,6 +64,7 @@ export default function AdjustmentItem({
         step={config.step}
         value={value}
         onChange={handleSliderChange}
+        onChangeEnd={onChangeEnd}
         showBubble={false}
       />
     </div>

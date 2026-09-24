@@ -83,10 +83,14 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
   const [selectedCount, setSelectedCount] = useState(0);
 
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
-  const fabricCanvasBorderRectRef = useRef<fabric.Rect | null>(null);
   const gridRef = useRef<GridTemplate | null>(null);
 
-  const fabricHelper = {
+  const canvasConfigRef = useRef(canvasConfig);
+  useEffect(() => {
+    canvasConfigRef.current = canvasConfig;
+  }, [canvasConfig]);
+
+  const fabricHelper: FabricInternalStates = {
     isFabricReady,
     setIsFabricReady,
 
@@ -98,31 +102,29 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
   };
 
   const canvasUpdater = useCanvasUpdater({
-    refs: { ...refs, fabricCanvasRef, fabricCanvasBorderRectRef },
+    refs: { ...refs, fabricCanvasRef, canvasConfigRef },
     configHelper,
     fabricHelper,
   });
 
   const imageUpdater = useImageUpdater({
-    refs: { ...refs, fabricCanvasRef, fabricCanvasBorderRectRef },
+    refs: { ...refs, fabricCanvasRef },
     configHelper,
-    fabricHelper,
   });
 
   const imagesUpdater = useImagesUpdater({
-    refs: { ...refs, fabricCanvasRef, fabricCanvasBorderRectRef, gridRef },
+    refs: { ...refs, fabricCanvasRef, gridRef },
     configHelper,
-    fabricHelper,
   });
 
   const gridUpdater = useGridUpdater({
-    refs: { ...refs, fabricCanvasRef, fabricCanvasBorderRectRef, gridRef },
+    refs: { ...refs, fabricCanvasRef, gridRef, canvasConfigRef },
     configHelper,
     fabricHelper,
   });
 
   const layersUpdater = useLayersUpdater({
-    refs: { fabricCanvasRef, fabricCanvasBorderRectRef },
+    refs: { fabricCanvasRef },
     configHelper,
     isFabricReady,
   });
@@ -371,28 +373,6 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
     });
   };
 
-  // Monitor to ensure border is always on the top
-  const bindBorderZIndexGuard = () => {
-    if (!fabricCanvasRef.current || !fabricCanvasBorderRectRef.current) return;
-
-    const ensure = () => {
-      if (!fabricCanvasRef.current || !fabricCanvasBorderRectRef.current)
-        return;
-      fabricCanvasRef.current.bringObjectToFront(
-        fabricCanvasBorderRectRef.current
-      );
-    };
-
-    fabricCanvasRef.current.on('object:added', ensure);
-    fabricCanvasRef.current.on('object:modified', ensure);
-    fabricCanvasRef.current.on('object:moving', ensure);
-    fabricCanvasRef.current.on('object:scaling', ensure);
-    fabricCanvasRef.current.on('object:rotating', ensure);
-    fabricCanvasRef.current.on('selection:created', ensure);
-    fabricCanvasRef.current.on('selection:updated', ensure);
-    ensure();
-  };
-
   // Init Fabric.js
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -412,15 +392,45 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
       height: DEFAULT_CANVAS_CONFIG.size.height,
     });
 
-    // Create border rect
-    fabricCanvasBorderRectRef.current = new fabric.Rect({
-      selectable: false,
-      evented: false,
-      fill: 'transparent',
-      _customKey: 'border-rect',
+    // Draw canvas border on top of all objects via after:render
+    canvas.on('after:render', (opt) => {
+      const ctx = opt.ctx;
+      if (!ctx) return;
+
+      const currentConfig = canvasConfigRef.current;
+      const isGrid = currentConfig.layout === 'grid';
+      const borderConfig = isGrid
+        ? currentConfig.gridConfig.border
+        : currentConfig.border;
+
+      if (isGrid && !currentConfig.gridConfig.border.showOuter) {
+        return;
+      }
+
+      const { width: strokeWidth, color, opacity } = borderConfig;
+      if (!strokeWidth || opacity === 0) return;
+
+      const shortEdge = Math.min(canvas.width, canvas.height);
+      const normStrokeWidth =
+        ((strokeWidth / 100) * ((50 * shortEdge) / 1000)) / 2;
+      if (normStrokeWidth <= 0) return;
+
+      const rgba = colorUtils.hexToRgba(color);
+      const strokeStyle = colorUtils.rgbaToHex({ ...rgba, a: opacity });
+
+      const v = canvas.viewportTransform || [1, 0, 0, 1, 0, 0];
+      ctx.save();
+      ctx.transform(v[0], v[1], v[2], v[3], v[4], v[5]);
+      ctx.strokeStyle = strokeStyle;
+      ctx.lineWidth = normStrokeWidth;
+      ctx.strokeRect(
+        normStrokeWidth / 2,
+        normStrokeWidth / 2,
+        canvas.width - normStrokeWidth,
+        canvas.height - normStrokeWidth
+      );
+      ctx.restore();
     });
-    fabricCanvasRef.current.add(fabricCanvasBorderRectRef.current);
-    bindBorderZIndexGuard();
 
     // Init all monitors
     initHasImageSelectionMonitor();

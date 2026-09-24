@@ -10,6 +10,7 @@ import type { ConfigHelper } from './types/config-helper';
 import { useRef, useState } from 'react';
 
 import { cn } from '@/utils/cn';
+import { Badge } from '@/components/ui/badge';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 
 import useFabric from './hooks/use-fabric';
@@ -22,7 +23,6 @@ import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
 import Config from './config-panel';
 import ExportModal from './export-modal';
-import { Badge } from '@/components/ui/badge';
 
 export const DEFAULT_CANVAS_CONFIG: CanvasConfig = {
   layout: 'free',

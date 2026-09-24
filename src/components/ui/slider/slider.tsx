@@ -19,6 +19,7 @@ export function Slider({
   showValueBadge = false,
   unit = '',
   onChange = () => {},
+  onChangeEnd,
   id,
   ariaLabel,
   className,
@@ -85,6 +86,8 @@ export function Slider({
           value={value}
           step={step}
           onChange={onChange}
+          onPointerUp={onChangeEnd}
+          onKeyUp={onChangeEnd}
           aria-label={ariaLabel ?? title ?? desc ?? 'slider'}
           style={{
             background: `linear-gradient(to right, var(--slider-fill, #0284c7) ${percentage}%, var(--slider-track, #e2e8f0) ${percentage}%)`,

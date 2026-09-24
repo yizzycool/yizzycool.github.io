@@ -24,11 +24,12 @@ import AdjustmentItem from './adjustment-item';
 type Props = {
   filters: filters.BaseFilter<string>[];
   setFilters: (filters: string[], params?: FabricFilterValuesMap) => void;
+  onChangeEnd?: () => void;
 };
 
 type TabType = 'presets' | 'adjustments';
 
-export default function Filters({ filters, setFilters }: Props) {
+export default function Filters({ filters, setFilters, onChangeEnd }: Props) {
   const [activeTab, setActiveTab] = useState<TabType>('presets');
 
   const activePresetTypes = filters
@@ -206,6 +207,7 @@ export default function Filters({ filters, setFilters }: Props) {
                 value={getAdjustmentValue(config)}
                 onChange={handleAdjustmentChange}
                 onReset={handleResetSingleAdjustment}
+                onChangeEnd={onChangeEnd}
               />
             ))}
           </div>

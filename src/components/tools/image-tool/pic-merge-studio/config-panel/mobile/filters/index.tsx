@@ -27,11 +27,12 @@ import AdjustmentStrip from './adjustment-strip';
 type Props = {
   filters: filters.BaseFilter<string>[];
   setFilters: (filters: string[], params?: FabricFilterValuesMap) => void;
+  onChangeEnd?: () => void;
 };
 
 type TabType = 'presets' | 'adjustments';
 
-export default function Filters({ filters, setFilters }: Props) {
+export default function Filters({ filters, setFilters, onChangeEnd }: Props) {
   const [activeTab, setActiveTab] = useState<TabType>('presets');
   const { isOpen, openDrawer, closeDrawer } = useControlDrawer();
 
@@ -193,6 +194,7 @@ export default function Filters({ filters, setFilters }: Props) {
               onResetAdjustment={handleResetSingleAdjustment}
               onResetAllAdjustments={handleResetAllAdjustments}
               hasActiveAdjustments={hasActiveAdjustments}
+              onChangeEnd={onChangeEnd}
             />
           )}
         </div>

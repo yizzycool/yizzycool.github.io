@@ -9,9 +9,14 @@ import PanelLabel from '../../panel-label';
 type Props = {
   opacity: number;
   setImageOpacity: (opacity: number) => void;
+  onChangeEnd?: () => void;
 };
 
-export default function Opacity({ opacity, setImageOpacity }: Props) {
+export default function Opacity({
+  opacity,
+  setImageOpacity,
+  onChangeEnd,
+}: Props) {
   const onOpacityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(event.target.value);
     if (value < 0 || value > 100) return;
@@ -37,6 +42,7 @@ export default function Opacity({ opacity, setImageOpacity }: Props) {
           step={1}
           value={opacity * 100}
           onChange={onOpacityChange}
+          onChangeEnd={onChangeEnd}
           showBubble={false}
         />
       </div>

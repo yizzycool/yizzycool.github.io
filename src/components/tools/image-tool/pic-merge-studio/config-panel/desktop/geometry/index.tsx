@@ -29,6 +29,7 @@ type Props = {
   setSize: (width: number, height: number) => void;
   resetOriginalSize: () => void;
   resetAspectRatio: () => void;
+  onChangeEnd?: () => void;
 };
 
 export default function Geometry({
@@ -37,6 +38,7 @@ export default function Geometry({
   setSize,
   resetOriginalSize,
   resetAspectRatio,
+  onChangeEnd,
 }: Props) {
   const {
     angle,
@@ -191,6 +193,7 @@ export default function Geometry({
           step={1}
           value={angle}
           onChange={onAngleChange}
+          onChangeEnd={onChangeEnd}
           showBubble={false}
         />
       </div>

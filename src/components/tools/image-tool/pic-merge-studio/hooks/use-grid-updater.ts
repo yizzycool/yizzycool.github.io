@@ -7,6 +7,8 @@ import { useCallback } from 'react';
 import * as fabric from 'fabric';
 import { flatMap } from 'lodash';
 
+import type { CanvasConfig } from '../types/config';
+
 import useCommon from './use-common';
 import useGridLogic from './use-grid-logic';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
@@ -17,8 +19,8 @@ type Props = {
     containerRef: React.MutableRefObject<HTMLDivElement | null>;
     canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
     fabricCanvasRef: React.MutableRefObject<fabric.Canvas | null>;
-    fabricCanvasBorderRectRef: React.MutableRefObject<fabric.Rect | null>;
     gridRef: React.MutableRefObject<GridTemplate | null>;
+    canvasConfigRef?: React.MutableRefObject<CanvasConfig>;
   };
   configHelper: ConfigHelper;
   fabricHelper: FabricInternalStates;
@@ -30,7 +32,7 @@ export default function useGridUpdater({
   configHelper,
   fabricHelper,
 }: Props): FabricHelperGridUpdater {
-  const { fabricCanvasRef, fabricCanvasBorderRectRef, gridRef } = refs;
+  const { fabricCanvasRef, gridRef, canvasConfigRef } = refs;
 
   const { setCanvasConfig, setImageConfig } = configHelper;
 
@@ -220,8 +222,20 @@ export default function useGridUpdater({
 
   const setShowOuterBorder = useCallback(
     (showOuter: boolean) => {
-      if (!fabricCanvasRef.current || !fabricCanvasBorderRectRef.current)
-        return;
+      if (!fabricCanvasRef.current) return;
+
+      if (canvasConfigRef) {
+        canvasConfigRef.current = {
+          ...canvasConfigRef.current,
+          gridConfig: {
+            ...canvasConfigRef.current.gridConfig,
+            border: {
+              ...canvasConfigRef.current.gridConfig.border,
+              showOuter,
+            },
+          },
+        };
+      }
 
       // Update states
       setCanvasConfig((prev) => ({
@@ -237,13 +251,25 @@ export default function useGridUpdater({
 
       updateEdges({ showOuter });
     },
-    [fabricCanvasRef, fabricCanvasBorderRectRef, setCanvasConfig, updateEdges]
+    [fabricCanvasRef, canvasConfigRef, setCanvasConfig, updateEdges]
   );
 
   const setBorderWidth = useCallback(
     (strokeWidth: number) => {
-      if (!fabricCanvasRef.current || !fabricCanvasBorderRectRef.current)
-        return;
+      if (!fabricCanvasRef.current) return;
+
+      if (canvasConfigRef) {
+        canvasConfigRef.current = {
+          ...canvasConfigRef.current,
+          gridConfig: {
+            ...canvasConfigRef.current.gridConfig,
+            border: {
+              ...canvasConfigRef.current.gridConfig.border,
+              width: strokeWidth,
+            },
+          },
+        };
+      }
 
       // Update states
       setCanvasConfig((prev) => ({
@@ -259,13 +285,26 @@ export default function useGridUpdater({
 
       updateEdges({ width: strokeWidth });
     },
-    [fabricCanvasRef, fabricCanvasBorderRectRef, setCanvasConfig, updateEdges]
+    [fabricCanvasRef, canvasConfigRef, setCanvasConfig, updateEdges]
   );
 
   const setBorderColor = useCallback(
     (color: string, opacity: number) => {
-      if (!fabricCanvasRef.current || !fabricCanvasBorderRectRef.current)
-        return;
+      if (!fabricCanvasRef.current) return;
+
+      if (canvasConfigRef) {
+        canvasConfigRef.current = {
+          ...canvasConfigRef.current,
+          gridConfig: {
+            ...canvasConfigRef.current.gridConfig,
+            border: {
+              ...canvasConfigRef.current.gridConfig.border,
+              color,
+              opacity,
+            },
+          },
+        };
+      }
 
       // Update states
       setCanvasConfig((prev) => ({
@@ -282,11 +321,21 @@ export default function useGridUpdater({
 
       updateEdges({ color, opacity });
     },
-    [fabricCanvasRef, fabricCanvasBorderRectRef, setCanvasConfig, updateEdges]
+    [fabricCanvasRef, canvasConfigRef, setCanvasConfig, updateEdges]
   );
 
   const resetBorder = useCallback(() => {
-    if (!fabricCanvasRef.current || !fabricCanvasBorderRectRef.current) return;
+    if (!fabricCanvasRef.current) return;
+
+    if (canvasConfigRef) {
+      canvasConfigRef.current = {
+        ...canvasConfigRef.current,
+        gridConfig: {
+          ...canvasConfigRef.current.gridConfig,
+          border: DEFAULT_CANVAS_CONFIG.gridConfig.border,
+        },
+      };
+    }
 
     // Update states
     setCanvasConfig((prev) => ({
@@ -298,12 +347,7 @@ export default function useGridUpdater({
     }));
 
     updateEdges(DEFAULT_CANVAS_CONFIG.gridConfig.border);
-  }, [
-    fabricCanvasRef,
-    fabricCanvasBorderRectRef,
-    setCanvasConfig,
-    updateEdges,
-  ]);
+  }, [fabricCanvasRef, canvasConfigRef, setCanvasConfig, updateEdges]);
 
   const setAlignment = useCallback(
     (horizontal: string, vertical: string) => {

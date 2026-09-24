@@ -1,6 +1,5 @@
 import type { FabricHelperImagesUpdater } from '../types/fabric-helper';
 import type { ConfigHelper } from '../types/config-helper';
-import type { FabricInternalStates } from './use-fabric';
 import type { GridTemplate } from '../types/grid-layout';
 
 import { useCallback } from 'react';
@@ -15,11 +14,9 @@ type Props = {
     containerRef: React.MutableRefObject<HTMLDivElement | null>;
     canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
     fabricCanvasRef: React.MutableRefObject<fabric.Canvas | null>;
-    fabricCanvasBorderRectRef: React.MutableRefObject<fabric.Rect | null>;
     gridRef: React.MutableRefObject<GridTemplate | null>;
   };
   configHelper: ConfigHelper;
-  fabricHelper: FabricInternalStates;
 };
 
 // Functions to update selected-image(s)-related config and update Fabric canvas

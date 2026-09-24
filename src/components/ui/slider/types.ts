@@ -24,6 +24,8 @@ export type SliderProps = {
   unit?: string;
   /** Change callback fired when the slider value changes */
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  /** Callback fired when dragging ends (pointer up or key up) */
+  onChangeEnd?: () => void;
   /** Accessible label for the range input */
   ariaLabel?: string;
   /** HTML id attribute */

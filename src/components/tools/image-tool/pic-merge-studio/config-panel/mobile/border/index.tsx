@@ -6,7 +6,7 @@ import { Palette, SquareDashedTopSolid } from 'lucide-react';
 import { isUndefined } from 'lodash';
 
 import { Slider } from '@/components/ui/slider';
-import { CheckBox } from '@/components/ui/checkbox';
+import { Switch } from '@/components/ui/switch';
 import { ColorPicker } from '@/components/ui/color-picker';
 
 import { PRESET_BORDER_COLORS } from '../../data/background';
@@ -23,6 +23,7 @@ type Props = {
   setBorderColor: (color: string, opacity: number) => void;
   resetBorder: () => void;
   setShowOuterBorder?: (show: boolean) => void; // For Grid layout
+  onChangeEnd?: () => void;
 };
 
 export default function Border({
@@ -31,6 +32,7 @@ export default function Border({
   setBorderColor,
   resetBorder,
   setShowOuterBorder = () => {},
+  onChangeEnd,
 }: Props) {
   const { color, opacity, width, showOuter } = border;
 
@@ -50,8 +52,9 @@ export default function Border({
     setBorderWidth(thickness);
   };
 
-  const onGridOuterBorderSwitched = (_option: string, value: boolean) => {
+  const onGridOuterBorderSwitched = (value: boolean) => {
     setShowOuterBorder(value);
+    onChangeEnd?.();
   };
 
   return (
@@ -111,18 +114,21 @@ export default function Border({
               step={1}
               value={width}
               onChange={onThicknessChanged}
+              onChangeEnd={onChangeEnd}
               showBubble={false}
             />
           </div>
 
           {/* Show Outer Border */}
           {!isUndefined(showOuter) && (
-            <div>
-              <CheckBox
-                options={['Outer Border']}
-                optionsDesc={['include outer border']}
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                Outer Border
+              </span>
+              <Switch
+                size="sm"
+                checked={!!border?.showOuter}
                 onChange={onGridOuterBorderSwitched}
-                defaultChecked={[!!border?.showOuter]}
               />
             </div>
           )}

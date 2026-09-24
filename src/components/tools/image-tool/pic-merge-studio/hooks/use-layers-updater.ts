@@ -18,7 +18,6 @@ import { FABRIC_FILTER_MAP } from '../data/fabric-filters';
 type Props = {
   refs: {
     fabricCanvasRef: React.MutableRefObject<fabric.Canvas | null>;
-    fabricCanvasBorderRectRef: React.MutableRefObject<fabric.Rect | null>;
   };
   configHelper: ConfigHelper;
   isFabricReady: boolean;
@@ -32,7 +31,7 @@ export default function useLayersUpdater({
   layers: LayerItem[];
   selectedCount: number;
 } {
-  const { fabricCanvasRef, fabricCanvasBorderRectRef } = refs;
+  const { fabricCanvasRef } = refs;
   const { getAllImages, getSelectedImages, getNormStrokeWidth } = useCommon({
     refs: { fabricCanvasRef },
   });
@@ -201,15 +200,10 @@ export default function useLayersUpdater({
         canvas.bringObjectToFront(img);
       });
 
-      // Ensure border rect stays on top
-      if (fabricCanvasBorderRectRef.current) {
-        canvas.bringObjectToFront(fabricCanvasBorderRectRef.current);
-      }
-
       canvas.requestRenderAll();
       syncLayers();
     },
-    [fabricCanvasRef, fabricCanvasBorderRectRef, syncLayers]
+    [fabricCanvasRef, syncLayers]
   );
 
   const reorderLayer = useCallback(
@@ -350,14 +344,10 @@ export default function useLayersUpdater({
           .forEach((img) => canvas.sendObjectBackwards(img));
       }
 
-      if (fabricCanvasBorderRectRef.current) {
-        canvas.bringObjectToFront(fabricCanvasBorderRectRef.current);
-      }
-
       canvas.requestRenderAll();
       syncLayers();
     },
-    [fabricCanvasRef, fabricCanvasBorderRectRef, getSelectedImages, syncLayers]
+    [fabricCanvasRef, getSelectedImages, syncLayers]
   );
 
   return {

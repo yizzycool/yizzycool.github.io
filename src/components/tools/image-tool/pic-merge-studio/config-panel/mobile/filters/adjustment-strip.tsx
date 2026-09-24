@@ -18,6 +18,7 @@ type Props = {
   onResetAdjustment: (config: AdjustmentFilterConfig) => void;
   onResetAllAdjustments: () => void;
   hasActiveAdjustments: boolean;
+  onChangeEnd?: () => void;
 };
 
 export default function AdjustmentStrip({
@@ -26,6 +27,7 @@ export default function AdjustmentStrip({
   onResetAdjustment,
   onResetAllAdjustments,
   hasActiveAdjustments,
+  onChangeEnd,
 }: Props) {
   const [selectedConfig, setSelectedConfig] = useState<AdjustmentFilterConfig>(
     ADJUSTMENT_FILTER_CONFIGS[0]
@@ -89,6 +91,7 @@ export default function AdjustmentStrip({
           step={selectedConfig.step}
           value={currentValue}
           onChange={handleSliderChange}
+          onChangeEnd={onChangeEnd}
           showBubble={false}
         />
       </div>

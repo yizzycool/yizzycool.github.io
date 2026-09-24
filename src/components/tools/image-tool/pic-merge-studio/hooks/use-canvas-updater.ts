@@ -7,6 +7,8 @@ import * as fabric from 'fabric'; // v6
 
 import useCommon from './use-common';
 import colorUtils from '@/utils/color-utils';
+import type { CanvasConfig } from '../types/config';
+
 import { FABRIC_IMAGE_CONFIG } from './use-fabric';
 import { DEFAULT_CANVAS_CONFIG } from '..';
 
@@ -15,7 +17,7 @@ type Props = {
     containerRef: React.MutableRefObject<HTMLDivElement | null>;
     canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
     fabricCanvasRef: React.MutableRefObject<fabric.Canvas | null>;
-    fabricCanvasBorderRectRef: React.MutableRefObject<fabric.Rect | null>;
+    canvasConfigRef?: React.MutableRefObject<CanvasConfig>;
   };
   configHelper: ConfigHelper;
   fabricHelper: FabricInternalStates;
@@ -27,7 +29,7 @@ export default function useCanvasUpdater({
   configHelper,
   fabricHelper,
 }: Props): FabricHelperCanvasUpdater {
-  const { fabricCanvasRef, fabricCanvasBorderRectRef } = refs;
+  const { fabricCanvasRef, canvasConfigRef } = refs;
 
   const { canvasConfig, setCanvasConfig } = configHelper;
 
@@ -39,28 +41,9 @@ export default function useCanvasUpdater({
 
   // Internal helpers
   const updateBorderRect = useCallback(() => {
-    if (!fabricCanvasRef.current || !fabricCanvasBorderRectRef.current) return;
-    const { width: strokeWidth, color, opacity } = canvasConfig.border;
-    const normStrokeWidth = getNormStrokeWidth(strokeWidth);
-    const rgba = colorUtils.hexToRgba(color);
-    const stroke = colorUtils.rgbaToHex({ ...rgba, a: opacity });
-
-    fabricCanvasBorderRectRef.current.set({
-      left: fabricCanvasRef.current.width / 2,
-      top: fabricCanvasRef.current.height / 2,
-      width: fabricCanvasRef.current.width,
-      height: fabricCanvasRef.current.height,
-      stroke,
-      strokeWidth: normStrokeWidth,
-    });
-
+    if (!fabricCanvasRef.current) return;
     fabricCanvasRef.current.requestRenderAll();
-  }, [
-    fabricCanvasRef,
-    fabricCanvasBorderRectRef,
-    canvasConfig.border,
-    getNormStrokeWidth,
-  ]);
+  }, [fabricCanvasRef]);
 
   const updateAllImagesBorderWidth = useCallback(() => {
     if (!fabricCanvasRef.current) return;
@@ -84,14 +67,14 @@ export default function useCanvasUpdater({
   const switchToFreeLayout = useCallback(async () => {
     if (!fabricCanvasRef.current) return;
 
-    // Remove existed objects except all images and border-rect
+    // Remove existed objects except all images
     fabricCanvasRef.current.remove(
       ...fabricCanvasRef.current
         .getObjects()
-        .filter((object: fabric.FabricObject & { _customKey?: string }) => {
-          if (object === fabricCanvasBorderRectRef.current) return false;
-          return !(object instanceof fabric.FabricImage) || !object?.getSrc?.();
-        })
+        .filter(
+          (object) =>
+            !(object instanceof fabric.FabricImage) || !object?.getSrc?.()
+        )
     );
 
     // Get all images
@@ -120,13 +103,7 @@ export default function useCanvasUpdater({
       ...prev,
       layout: 'free',
     }));
-  }, [
-    fabricCanvasRef,
-    fabricCanvasBorderRectRef,
-    getAllImages,
-    updateBorderRect,
-    setCanvasConfig,
-  ]);
+  }, [fabricCanvasRef, getAllImages, updateBorderRect, setCanvasConfig]);
 
   const handleImagesUpload = useCallback(
     async (files: FileList) => {
@@ -260,9 +237,14 @@ export default function useCanvasUpdater({
 
   const setBorderWidth = useCallback(
     (strokeWidth: number) => {
-      updateBorderRect();
-      if (!fabricCanvasRef.current || !fabricCanvasBorderRectRef.current)
-        return;
+      if (!fabricCanvasRef.current) return;
+
+      if (canvasConfigRef) {
+        canvasConfigRef.current = {
+          ...canvasConfigRef.current,
+          border: { ...canvasConfigRef.current.border, width: strokeWidth },
+        };
+      }
 
       // Update states
       setCanvasConfig((prev) => ({
@@ -270,33 +252,21 @@ export default function useCanvasUpdater({
         border: { ...prev.border, width: strokeWidth },
       }));
 
-      // Get normalized stokeWidth
-      const normStrokeWidth = getNormStrokeWidth(strokeWidth);
-
-      // Update Fabric Canvas
-      fabricCanvasBorderRectRef.current.set({
-        width: fabricCanvasRef.current.width - normStrokeWidth / 2,
-        height: fabricCanvasRef.current.height - normStrokeWidth / 2,
-        strokeWidth: normStrokeWidth,
-        _strokeWidthRatio: strokeWidth,
-      });
-
       fabricCanvasRef.current.requestRenderAll();
     },
-    [
-      fabricCanvasRef,
-      fabricCanvasBorderRectRef,
-      updateBorderRect,
-      setCanvasConfig,
-      getNormStrokeWidth,
-    ]
+    [fabricCanvasRef, canvasConfigRef, setCanvasConfig]
   );
 
   const setBorderColor = useCallback(
     (color: string, opacity: number) => {
-      updateBorderRect();
-      if (!fabricCanvasRef.current || !fabricCanvasBorderRectRef.current)
-        return;
+      if (!fabricCanvasRef.current) return;
+
+      if (canvasConfigRef) {
+        canvasConfigRef.current = {
+          ...canvasConfigRef.current,
+          border: { ...canvasConfigRef.current.border, color, opacity },
+        };
+      }
 
       // Update states
       setCanvasConfig((prev) => ({
@@ -304,23 +274,20 @@ export default function useCanvasUpdater({
         border: { ...prev.border, color, opacity },
       }));
 
-      // Update Fabric Canvas
-      const rgba = colorUtils.hexToRgba(color);
-      const stroke = colorUtils.rgbaToHex({ ...rgba, a: opacity });
-      fabricCanvasBorderRectRef.current.set({ stroke });
       fabricCanvasRef.current.requestRenderAll();
     },
-    [
-      fabricCanvasRef,
-      fabricCanvasBorderRectRef,
-      updateBorderRect,
-      setCanvasConfig,
-    ]
+    [fabricCanvasRef, canvasConfigRef, setCanvasConfig]
   );
 
   const resetBorder = useCallback(() => {
-    updateBorderRect();
-    if (!fabricCanvasRef.current || !fabricCanvasBorderRectRef.current) return;
+    if (!fabricCanvasRef.current) return;
+
+    if (canvasConfigRef) {
+      canvasConfigRef.current = {
+        ...canvasConfigRef.current,
+        border: DEFAULT_CANVAS_CONFIG.border,
+      };
+    }
 
     // Update states
     setCanvasConfig((prev) => ({
@@ -328,15 +295,8 @@ export default function useCanvasUpdater({
       border: DEFAULT_CANVAS_CONFIG.border,
     }));
 
-    // Update Fabric Canvas
-    fabricCanvasBorderRectRef.current.set({ stroke: '', strokeWidth: 0 });
     fabricCanvasRef.current.requestRenderAll();
-  }, [
-    fabricCanvasRef,
-    fabricCanvasBorderRectRef,
-    updateBorderRect,
-    setCanvasConfig,
-  ]);
+  }, [fabricCanvasRef, canvasConfigRef, setCanvasConfig]);
 
   const discardActiveObject = useCallback(() => {
     if (!fabricCanvasRef.current) return;

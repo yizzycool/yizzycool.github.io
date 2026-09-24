@@ -14,7 +14,6 @@ type Props = {
     containerRef: React.MutableRefObject<HTMLDivElement | null>;
     canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
     fabricCanvasRef: React.MutableRefObject<fabric.Canvas | null>;
-    fabricCanvasBorderRectRef: React.MutableRefObject<fabric.Rect | null>;
     gridRef: React.MutableRefObject<GridTemplate | null>;
   };
   configHelper: ConfigHelper;
@@ -30,7 +29,6 @@ export default function useGridLogic({
     // containerRef,
     // canvasRef,
     fabricCanvasRef,
-    fabricCanvasBorderRectRef,
     gridRef,
   } = refs;
 
@@ -245,7 +243,13 @@ export default function useGridLogic({
         hoverCursor: 'row-resize',
         moveCursor: 'row-resize',
         ...commonConfig,
-      });
+      } as fabric.RectProps & { _customKey: string; _edgeIndex: number });
+      (
+        obj as unknown as { _customKey: string; _edgeIndex: number }
+      )._customKey = 'grid-edge-h';
+      (
+        obj as unknown as { _customKey: string; _edgeIndex: number }
+      )._edgeIndex = i;
 
       // Create new edge object
       const edge: GridEdge = {
@@ -280,7 +284,13 @@ export default function useGridLogic({
         hoverCursor: 'col-resize',
         moveCursor: 'col-resize',
         ...commonConfig,
-      });
+      } as fabric.RectProps & { _customKey: string; _edgeIndex: number });
+      (
+        obj as unknown as { _customKey: string; _edgeIndex: number }
+      )._customKey = 'grid-edge-v';
+      (
+        obj as unknown as { _customKey: string; _edgeIndex: number }
+      )._edgeIndex = j;
 
       // Create new edge object
       const edge: GridEdge = {
@@ -306,20 +316,8 @@ export default function useGridLogic({
 
   // To update border rect of Fabric Canvas
   const updateGridOuterBorder = () => {
-    if (!fabricCanvasRef.current || !fabricCanvasBorderRectRef.current) return;
-
-    const { width: borderWidth, showOuter } = canvasConfig.gridConfig.border;
-    const outerBorderWidth = showOuter ? getNormStrokeWidth(borderWidth) : 0;
-
-    // Get border color
-    const { color, opacity } = canvasConfig.gridConfig.border;
-    const rgba = colorUtils.hexToRgba(color);
-    const hex = colorUtils.rgbaToHex({ ...rgba, a: opacity });
-
-    fabricCanvasBorderRectRef.current.set({
-      strokeWidth: outerBorderWidth,
-      stroke: hex,
-    });
+    if (!fabricCanvasRef.current) return;
+    fabricCanvasRef.current.requestRenderAll();
   };
 
   // To add all objects into Fabric Canvas
@@ -366,11 +364,7 @@ export default function useGridLogic({
     updateGridOuterBorder();
 
     // Remove existed objects
-    fabricCanvasRef.current.remove(
-      ...fabricCanvasRef.current.getObjects().filter((object) => {
-        return object !== fabricCanvasBorderRectRef.current;
-      })
-    );
+    fabricCanvasRef.current.remove(...fabricCanvasRef.current.getObjects());
     // Add all objects into Fabric Canvas
     addAllObjectsToCanvas(root);
     fabricCanvasRef.current.requestRenderAll();
@@ -379,12 +373,7 @@ export default function useGridLogic({
   };
 
   const updateAfterResize = () => {
-    if (
-      !fabricCanvasRef.current ||
-      !fabricCanvasBorderRectRef.current ||
-      !gridRef.current
-    )
-      return;
+    if (!fabricCanvasRef.current || !gridRef.current) return;
 
     // Calculate ratio between new / old canvas size
     const { width, height } = canvasConfig.size;
@@ -459,15 +448,6 @@ export default function useGridLogic({
       });
     });
 
-    // Update outer border
-    fabricCanvasBorderRectRef.current.set({
-      left: fabricCanvasRef.current.width / 2,
-      top: fabricCanvasRef.current.height / 2,
-      width: fabricCanvasRef.current.width,
-      height: fabricCanvasRef.current.height,
-      strokeWidth: normStrokeWidth * 2,
-    });
-
     fabricCanvasRef.current.requestRenderAll();
   };
 
@@ -475,19 +455,12 @@ export default function useGridLogic({
   const updateEdges = (
     gridBorder: Partial<CanvasBorder & { showOuter: boolean }>
   ) => {
-    if (
-      !fabricCanvasRef.current ||
-      !fabricCanvasBorderRectRef.current ||
-      !gridRef.current
-    )
-      return;
+    if (!fabricCanvasRef.current || !gridRef.current) return;
 
     const color = gridBorder.color ?? canvasConfig.gridConfig.border.color;
     const opacity =
       gridBorder.opacity ?? canvasConfig.gridConfig.border.opacity;
     const width = gridBorder.width ?? canvasConfig.gridConfig.border.width;
-    const showOuter =
-      gridBorder.showOuter ?? canvasConfig.gridConfig.border.showOuter;
 
     // Calculate new border size
     const normStrokeWidth = getNormStrokeWidth(width) / 2;
@@ -520,19 +493,6 @@ export default function useGridLogic({
         });
       });
     });
-
-    // Update outer border
-    if (showOuter) {
-      fabricCanvasBorderRectRef.current.set({
-        stroke,
-        strokeWidth: normStrokeWidth * 2,
-      });
-    } else {
-      fabricCanvasBorderRectRef.current.set({
-        stroke,
-        strokeWidth: 0,
-      });
-    }
 
     fabricCanvasRef.current.requestRenderAll();
   };

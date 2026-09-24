@@ -96,20 +96,22 @@ export default function ConfigPanelDesktop({
 
   if (!isOpen) {
     return (
-      <button
-        type="button"
-        onClick={() => setIsOpen(true)}
-        className={cn(
-          'absolute right-4 top-4 z-40 flex items-center gap-2 rounded-full border px-3.5 py-2 shadow-xl backdrop-blur-xl transition-colors duration-200',
-          'bg-white/90 dark:bg-neutral-900/90',
-          'hover:bg-neutral-50 dark:hover:bg-neutral-800',
-          'border-neutral-200/90 dark:border-neutral-800/90',
-          'text-neutral-800 dark:text-neutral-200'
-        )}
-      >
-        <Layers className="h-4 w-4" />
-        <span className="text-xs font-bold">Layers</span>
-      </button>
+      <div className="absolute right-4 top-4 z-40">
+        <button
+          type="button"
+          onClick={() => setIsOpen(true)}
+          className={cn(
+            'flex items-center gap-2 rounded-full border px-3.5 py-2 shadow-xl backdrop-blur-xl transition-colors duration-200',
+            'bg-white/90 dark:bg-neutral-900/90',
+            'hover:bg-neutral-50 dark:hover:bg-neutral-800',
+            'border-neutral-200/90 dark:border-neutral-800/90',
+            'text-neutral-800 dark:text-neutral-200'
+          )}
+        >
+          <Layers className="h-4 w-4" />
+          <span className="text-xs font-bold">Layers</span>
+        </button>
+      </div>
     );
   }
 

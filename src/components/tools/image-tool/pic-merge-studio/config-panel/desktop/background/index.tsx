@@ -12,14 +12,20 @@ import ColorSwatch from '../../color-swatch';
 type Props = {
   background: CanvasBackground;
   setBackgroundColor: (color: string, opacity: number) => void;
+  onChangeEnd?: () => void;
 };
 
-export default function Background({ background, setBackgroundColor }: Props) {
+export default function Background({
+  background,
+  setBackgroundColor,
+  onChangeEnd,
+}: Props) {
   const { type, color: colorObj } = background;
   const { color, opacity } = colorObj || {};
 
   const handleColorSelect = (hex: string) => {
     setBackgroundColor(hex, opacity ?? 1);
+    onChangeEnd?.();
   };
 
   const isColorActive = (hex: string) => {
@@ -52,6 +58,7 @@ export default function Background({ background, setBackgroundColor }: Props) {
           step={1}
           value={parseInt(((opacity ?? 1) * 100).toString())}
           onChange={onOpacityChanged}
+          onChangeEnd={onChangeEnd}
           showBubble={false}
         />
       </div>
