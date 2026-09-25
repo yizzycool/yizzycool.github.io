@@ -16,12 +16,6 @@ export type BaseDialogProps = {
   backdropClassName?: string;
   /** Whether to render the semi-transparent backdrop overlay (default: true) */
   backdrop?: boolean;
-  /** Whether to portal the dialog to the document body or container (default: true) */
-  portal?: boolean;
-  /** Custom DOM element or selector to portal into */
-  portalContainer?: string | HTMLElement | null;
-  /** Whether to completely unmount dialog contents when closed (default: true) */
-  unmount?: boolean;
   /** Dialog panel children content */
   children?: ReactNode;
 };
