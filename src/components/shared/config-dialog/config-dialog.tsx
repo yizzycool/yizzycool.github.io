@@ -18,7 +18,7 @@ import {
 
 export function ConfigDialog({
   display = 'icon-label',
-  size = 'sm',
+  size = 'xs',
   disabled = false,
   title = 'Configuration',
   icon: Icon = Settings2,
@@ -62,9 +62,7 @@ export function ConfigDialog({
         variant="outline"
         size={size}
         rounded="full"
-        className=""
         icon={showIcon ? SlidersVertical : undefined}
-        iconClassName="group-hover:rotate-90 transition-all duration-500"
         disabled={disabled}
       >
         {showLabel ? 'Configure Parameters' : null}

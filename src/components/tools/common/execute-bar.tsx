@@ -14,6 +14,7 @@ type Props = {
   label: string;
   onClick: () => void;
   icon?: LucideIcon;
+  iconClassName?: string;
   disabled?: boolean;
   text?: string;
   charCount?: number;
@@ -28,6 +29,7 @@ export default function ExecuteBar({
   label,
   onClick,
   icon,
+  iconClassName,
   disabled = false,
   text,
   charCount,
@@ -57,6 +59,7 @@ export default function ExecuteBar({
           size="sm"
           rounded="lg"
           icon={icon}
+          iconClassName={iconClassName}
           disabled={disabled}
           onClick={onClick}
         >

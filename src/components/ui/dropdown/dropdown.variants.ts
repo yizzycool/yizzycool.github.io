@@ -1,7 +1,7 @@
 import { cn } from '@/utils/cn';
 
 export const dropdownMenuBaseStyles = cn(
-  'z-50 min-w-[170px] rounded-xl p-1 text-xs font-semibold shadow-xl outline-none',
+  'z-50 min-w-[170px] rounded-xl p-1 space-y-0.5 text-xs font-semibold shadow-xl outline-none',
   'border border-neutral-200/90 bg-white/95 backdrop-blur-xl',
   'dark:border-neutral-800/90 dark:bg-neutral-900/95 dark:shadow-black/50',
   'transition duration-200 ease-out',

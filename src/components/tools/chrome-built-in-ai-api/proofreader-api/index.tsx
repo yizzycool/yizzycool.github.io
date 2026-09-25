@@ -1,22 +1,25 @@
 'use client';
 
-import { LoaderCircle, PenLine, WandSparkles } from 'lucide-react';
-import { ChangeEventHandler, useState } from 'react';
-import { isEmpty, size } from 'lodash';
+import type { ChangeEventHandler } from 'react';
 
-import useAiProofreader from '../hooks/use-ai-proofreader';
+import { useState } from 'react';
+import { LoaderCircle, PenLine, WandSparkles } from 'lucide-react';
+import { isEmpty } from 'lodash';
+
 import browserUtils from '@/utils/browser-utils';
-import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
-import HeaderBlock from '../../common/header-block';
-import SystemChecking from '../system-checking';
-import UnsupportedCard from '../unsupported-card';
-import ModelDownloadCard from '../model-download-card';
+import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import { PasteAction } from '@/components/shared/action-button';
 import { DeleteAction } from '@/components/shared/action-button';
 import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
+
+import useAiProofreader from '../hooks/use-ai-proofreader';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
+import HeaderBlock from '../../common/header-block';
+import ExecuteBar from '../../common/execute-bar';
 import SectionGap from '../../common/section-gap';
 import LabelBar from '../../common/label-bar';
+import AiStatusGate from '../ai-status-gate';
+import TextTabs from '../text-tabs';
 import Result from './result';
 
 export default function ProofreaderApi() {
@@ -60,6 +63,7 @@ export default function ProofreaderApi() {
   };
 
   const onProcessClick = async () => {
+    if (isEmpty(text) || isProcessing) return;
     setIsProcessing(true);
     await browserUtils.sleep(100);
     scrollToResultBlock();
@@ -81,22 +85,44 @@ export default function ProofreaderApi() {
     });
   };
 
+  useToolHotkeys({
+    onExecute: onProcessClick,
+    onPaste: async () => {
+      try {
+        const clipText = await navigator.clipboard.readText();
+        setText(clipText);
+      } catch (_e) {
+        // ignore
+      }
+    },
+    onClear: onClearClick,
+  });
+
   return (
     <>
-      <HeaderBlock />
+      <HeaderBlock
+        customShortcuts={[
+          { ...TOOL_HOTKEYS.process, label: 'Proofread' },
+          TOOL_HOTKEYS.paste,
+          TOOL_HOTKEYS.clear,
+          TOOL_HOTKEYS.help,
+        ]}
+      />
 
       <SectionGap />
 
-      {!hasCheckedAIStatus ? (
-        <SystemChecking />
-      ) : !isApiSupported ? (
-        <UnsupportedCard apiType={UNSUPPORTED_API_TYPES.chromeProofreaderApi} />
-      ) : shouldDownloadModel ? (
-        <ModelDownloadCard
-          onClick={downloadModel}
-          progress={downloadProgress}
-        />
-      ) : null}
+      <AiStatusGate
+        hasCheckedAIStatus={hasCheckedAIStatus}
+        isApiSupported={isApiSupported}
+        apiType={UNSUPPORTED_API_TYPES.chromeProofreaderApi}
+        shouldDownloadModel={shouldDownloadModel}
+        downloadProgress={downloadProgress}
+        downloadModel={downloadModel}
+      />
+
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
+        <TextTabs />
+      </div>
 
       {/* Input */}
       <LabelBar
@@ -114,26 +140,17 @@ export default function ProofreaderApi() {
         rows={10}
         placeholder="Enter your text for grammar and style check..."
       />
-      {/* Char count block */}
-      <div className="mt-3 w-full text-right text-xs text-slate-400 dark:text-slate-600">
-        {size(text)} chars
-      </div>
 
-      <SectionGap size="sm" />
-
-      {/* Action Button */}
-      <div className="flex justify-end">
-        <Button
-          icon={isProcessing ? LoaderCircle : WandSparkles}
-          size="sm"
-          rounded="lg"
-          onClick={onProcessClick}
-          disabled={isEmpty(text) || isProcessing}
-          iconClassName={isProcessing ? 'animate-spin' : ''}
-        >
-          {isProcessing ? 'Proofreading...' : 'Proofread'}
-        </Button>
-      </div>
+      {/* Execute Bar */}
+      <ExecuteBar
+        label={isProcessing ? 'Proofreading...' : 'Proofread'}
+        icon={isProcessing ? LoaderCircle : WandSparkles}
+        iconClassName={isProcessing ? 'animate-spin' : ''}
+        disabled={isEmpty(text) || isProcessing}
+        onClick={onProcessClick}
+        text={text}
+        hotkeyLabel="Proofread"
+      />
 
       <SectionGap size="sm" />
 

@@ -25,40 +25,48 @@ export function Drawer({
   return (
     <AnimatePresence>
       {isOpen && (
-        <Dialog
-          static
-          open={isOpen}
-          onClose={onClose}
-          className={cn('relative z-50', className)}
+        <motion.div
+          key="drawer-presence"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
         >
-          {backdrop && (
-            <MotionBackdrop
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+          <Dialog
+            static
+            open={isOpen}
+            onClose={onClose}
+            className={cn('relative z-50', className)}
+          >
+            {backdrop && (
+              <MotionBackdrop
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className={cn(
+                  'fixed inset-0 bg-neutral-900/20 backdrop-blur-md dark:bg-black/40',
+                  backdropClassName
+                )}
+              />
+            )}
+
+            <MotionPanel
+              initial={drawerMotionVariants[side].closed}
+              animate={drawerMotionVariants[side].open}
+              exit={drawerMotionVariants[side].closed}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
               className={cn(
-                'fixed inset-0 bg-neutral-900/20 backdrop-blur-md dark:bg-black/40',
-                backdropClassName
+                'fixed z-50 flex flex-col overflow-hidden shadow-2xl',
+                'bg-white/90 backdrop-blur-md dark:bg-neutral-900/95',
+                drawerPositions[side],
+                drawerClassName
               )}
-            />
-          )}
-
-          <MotionPanel
-            initial={drawerMotionVariants[side].closed}
-            animate={drawerMotionVariants[side].open}
-            exit={drawerMotionVariants[side].closed}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className={cn(
-              'fixed z-50 flex flex-col overflow-hidden shadow-2xl',
-              'bg-white/90 backdrop-blur-md dark:bg-neutral-900/95',
-              drawerPositions[side],
-              drawerClassName
-            )}
-          >
-            {children}
-          </MotionPanel>
-        </Dialog>
+            >
+              {children}
+            </MotionPanel>
+          </Dialog>
+        </motion.div>
       )}
     </AnimatePresence>
   );

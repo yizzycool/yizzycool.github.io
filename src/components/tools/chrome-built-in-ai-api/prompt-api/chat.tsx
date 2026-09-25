@@ -1,41 +1,78 @@
 'use client';
 
-import { cn } from '@/utils/cn';
-import { Bot, SendHorizonal } from 'lucide-react';
-import { useRef, useState } from 'react';
-import { slice, last, size, isEmpty, trim } from 'lodash';
+import type { PromptMessage } from './types';
+
+import { Bot, LoaderCircle, RotateCcw, SendHorizonal } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { size, isEmpty, trim } from 'lodash';
 
 import { ProseMarkdown } from '@/components/shared/markdown';
 import { Button } from '@/components/ui/button';
 import { ScrollToBottom } from '@/components/shared/scroll-to-bottom';
 import useAutoScrollToBottom from '@/hooks/dom/use-auto-scroll-to-bottom';
-
-type PromptResult = {
-  role: 'user' | 'assistant' | 'system';
-  content: string;
-};
+import { cn } from '@/utils/cn';
 
 type Props = {
   placeholder: string;
-
+  messages: PromptMessage[];
+  onMessagesChange: (messages: PromptMessage[]) => void;
+  onTurnCompleted?: (messages: PromptMessage[]) => void;
+  onNewChat?: () => void;
+  isRestoring?: boolean;
   promptStreaming: (
     text: string,
     callback: (chunk: string) => void
   ) => Promise<string | null>;
-
   session?: AILanguageModel | null | undefined;
 };
 
-export default function Chat({ placeholder, promptStreaming, session }: Props) {
+export default function Chat({
+  placeholder,
+  messages,
+  onMessagesChange,
+  onTurnCompleted,
+  onNewChat,
+  isRestoring = false,
+  promptStreaming,
+  session,
+}: Props) {
   const [text, setText] = useState('');
-  const [results, setResults] = useState<PromptResult[]>([]);
   const [isComposing, setIsCompsing] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const textRef = useRef<HTMLDivElement | null>(null);
 
-  const { scrollToBottom } = useAutoScrollToBottom(results, {
+  const handleNewChat = useCallback(() => {
+    if (isProcessing) return;
+    setText('');
+    if (textRef.current) {
+      textRef.current.innerHTML = '';
+    }
+    onNewChat?.();
+  }, [isProcessing, onNewChat]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const isCmdOrCtrl = e.metaKey || e.ctrlKey;
+      if (
+        isCmdOrCtrl &&
+        e.shiftKey &&
+        (e.key === 'o' ||
+          e.key === 'O' ||
+          e.code === 'KeyO' ||
+          e.key === 'Backspace')
+      ) {
+        e.preventDefault();
+        handleNewChat();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleNewChat]);
+
+  const { scrollToBottom } = useAutoScrollToBottom(messages, {
     containerRef,
     isStreaming: isProcessing,
     threshold: 50,
@@ -57,39 +94,54 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
     if (!textRef.current) return;
     if (isEmpty(trim(textRef.current.innerText))) return;
 
+    const promptText = text;
     if (textRef.current) {
       textRef.current.innerHTML = '';
     }
     setText('');
-    setResults((prev) => [...prev, { role: 'user', content: text }]);
-    setResults((prev) => [...prev, { role: 'assistant', content: '' }]);
 
+    const userMsg: PromptMessage = { role: 'user', content: promptText };
+    const withUser = [...messages, userMsg];
+    let assistantText = '';
+
+    onMessagesChange([...withUser, { role: 'assistant', content: '' }]);
     setIsProcessing(true);
-    await promptStreaming(text, (chunk) => {
-      setResults((prev) => [
-        ...slice(prev, 0, -1),
-        {
-          role: (last(prev) as PromptResult).role,
-          content: (last(prev) as PromptResult).content + chunk,
-        },
+
+    await promptStreaming(promptText, (chunk) => {
+      assistantText += chunk;
+      onMessagesChange([
+        ...withUser,
+        { role: 'assistant', content: assistantText },
       ]);
     });
+
     setIsProcessing(false);
+    onTurnCompleted?.([
+      ...withUser,
+      { role: 'assistant', content: assistantText },
+    ]);
   };
 
   return (
     <div ref={containerRef} className="-mb-12 flex flex-1 flex-col">
-      {!!(session as AILanguageModel)?.tokensLeft && (
-        <div className="absolute left-0 top-0 bg-neutral-700/20 px-4 py-2 text-xs">
-          <span className="hidden sm:inline">Tokens Left:</span>{' '}
-          {(session as AILanguageModel)?.tokensLeft}/
-          {(session as AILanguageModel)?.maxTokens}
+      {isRestoring ? (
+        <div className="absolute left-0 top-0 flex items-center gap-1.5 rounded-br-lg bg-blue-600/10 px-4 py-2 text-xs font-medium text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+          <LoaderCircle size={14} className="animate-spin" />
+          <span>Restoring model context...</span>
         </div>
+      ) : (
+        !!(session as AILanguageModel)?.tokensLeft && (
+          <div className="absolute left-0 top-0 bg-neutral-700/20 px-4 py-2 text-xs">
+            <span className="hidden sm:inline">Tokens Left:</span>{' '}
+            {(session as AILanguageModel)?.tokensLeft}/
+            {(session as AILanguageModel)?.maxTokens}
+          </div>
+        )
       )}
       <div className="w-full flex-1 overflow-y-hidden pb-20">
         <div className="h-full w-full">
           <div className="flex w-full flex-col">
-            {results.map((result, idx) => (
+            {messages.map((result, idx) => (
               <div
                 key={`${result.role}-${idx}`}
                 id={`${result.role}-${idx}`}
@@ -99,7 +151,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
                   <div className="relative mx-2 my-1 inline-block rounded-full bg-gradient-to-br from-indigo-500 to-blue-600 p-1">
                     <Bot size={16} className="text-white" />
                     {/* Spinner Ring - Only visible during processing */}
-                    {isProcessing && idx === size(results) - 1 && (
+                    {isProcessing && idx === size(messages) - 1 && (
                       <div className="absolute -inset-1 animate-spin rounded-full border-2 border-transparent border-r-indigo-500 border-t-blue-500" />
                     )}
                   </div>
@@ -121,7 +173,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
       <div
         className={cn(
           'sticky -bottom-1 left-0 right-0',
-          'backdrop-blur-md',
+          'bg-gradient-to-t from-gray-50 via-gray-50/80 to-transparent dark:from-neutral-900 dark:via-neutral-900/80 dark:to-transparent',
           '-mx-4 sm:-mx-6 lg:-mx-12',
           'px-4 sm:px-6 lg:px-12',
           'pb-4 pt-8 sm:pb-6'
@@ -131,8 +183,7 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
           className={cn(
             'relative flex w-full items-center rounded-[30px] border px-6 py-2 transition-colors',
             'border-neutral-200 dark:border-neutral-600',
-            'bg-white/20 dark:bg-neutral-900/20',
-            'hover:bg-neutral-100/20 dark:hover:bg-neutral-800/20'
+            'bg-white/80 dark:bg-neutral-900/80'
           )}
         >
           {/* Placeholder  */}
@@ -160,16 +211,30 @@ export default function Chat({ placeholder, promptStreaming, session }: Props) {
             onCompositionStart={() => setIsCompsing(true)}
             onCompositionEnd={() => setIsCompsing(false)}
           />
+          {messages.length > 0 && (
+            <Button
+              onClick={handleNewChat}
+              variant="ghost"
+              size="base"
+              rounded="full"
+              className="ml-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+              icon={RotateCcw}
+              iconStrokeWidth={2}
+              disabled={isProcessing}
+              title="New Chat (Mod + Shift + O)"
+              ariaLabel="Start new chat"
+            />
+          )}
           <Button
             onClick={process}
             variant="secondary"
             size="base"
             rounded="full"
-            className="ml-4"
+            className="ml-2"
             icon={SendHorizonal}
             iconStrokeWidth={2}
             iconClassName=""
-            disabled={isEmpty(text)}
+            disabled={isEmpty(text) || isProcessing}
           />
         </div>
       </div>

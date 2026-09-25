@@ -11,6 +11,7 @@ import {
   Check,
   ShieldCheck,
   PauseCircle,
+  Info,
 } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
@@ -21,6 +22,11 @@ import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
 import { DeleteAction } from '@/components/shared/action-button';
+import {
+  TooltipPopup,
+  TooltipRoot,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 export interface ToolHistoryDrawerProps<T = unknown> {
   isOpen: boolean;
@@ -105,9 +111,31 @@ export function ToolHistoryDrawer<T>({
             <Clock size={18} />
           </div>
           <div>
-            <h3 className="font-semibold text-slate-900 dark:text-slate-100">
-              History
-            </h3>
+            <div className="flex items-center gap-1.5">
+              <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+                History
+              </h3>
+              <TooltipRoot>
+                <TooltipTrigger>
+                  <span
+                    tabIndex={0}
+                    role="button"
+                    className="cursor-pointer text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
+                    aria-label="Stores up to 10 latest snapshots"
+                  >
+                    <Info size={14} />
+                  </span>
+                </TooltipTrigger>
+                <TooltipPopup
+                  placement="top"
+                  variant="dark"
+                  showArrow
+                  className="max-w-xs px-2.5 py-1.5 text-[11px] font-normal leading-snug"
+                >
+                  Stores up to 10 latest records
+                </TooltipPopup>
+              </TooltipRoot>
+            </div>
             <span className="text-xs text-slate-400">
               {historyList.length} snapshot{historyList.length === 1 ? '' : 's'}
             </span>

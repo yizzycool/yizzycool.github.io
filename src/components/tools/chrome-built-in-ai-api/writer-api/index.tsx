@@ -1,24 +1,27 @@
 'use client';
 
-import { LoaderCircle, PencilLine, PenLine } from 'lucide-react';
-import { ChangeEventHandler, useState } from 'react';
-import { isEmpty, size } from 'lodash';
+import type { ChangeEventHandler } from 'react';
 
-import useAiWriter from '../hooks/use-ai-writer';
+import { useState } from 'react';
+import { LoaderCircle, PencilLine, PenLine } from 'lucide-react';
+import { isEmpty } from 'lodash';
+
 import browserUtils from '@/utils/browser-utils';
-import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
-import HeaderBlock from '../../common/header-block';
-import SystemChecking from '../system-checking';
-import UnsupportedCard from '../unsupported-card';
-import ModelDownloadCard from '../model-download-card';
+import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import { PasteAction } from '@/components/shared/action-button';
 import { DeleteAction } from '@/components/shared/action-button';
 import { Textarea } from '@/components/ui/textarea';
-import Config from './config';
-import { Button } from '@/components/ui/button';
-import PromptResult from '../prompt-result';
+
+import useAiWriter from '../hooks/use-ai-writer';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
+import HeaderBlock from '../../common/header-block';
+import ExecuteBar from '../../common/execute-bar';
 import SectionGap from '../../common/section-gap';
 import LabelBar from '../../common/label-bar';
+import AiStatusGate from '../ai-status-gate';
+import TextTabs from '../text-tabs';
+import PromptResult from '../prompt-result';
+import Config from './config';
 
 export default function WriterApi() {
   const [text, setText] = useState('');
@@ -51,6 +54,7 @@ export default function WriterApi() {
   };
 
   const onProcessClick = async () => {
+    if (isEmpty(text) || isProcessing) return;
     setIsProcessing(true);
     await browserUtils.sleep(100);
     scrollToResultBlock();
@@ -71,30 +75,50 @@ export default function WriterApi() {
     });
   };
 
+  useToolHotkeys({
+    onExecute: onProcessClick,
+    onPaste: async () => {
+      try {
+        const clipText = await navigator.clipboard.readText();
+        setText(clipText);
+      } catch (_e) {
+        // ignore
+      }
+    },
+    onClear: onClearClick,
+  });
+
   return (
     <>
-      <HeaderBlock />
+      <HeaderBlock
+        customShortcuts={[
+          { ...TOOL_HOTKEYS.process, label: 'Write' },
+          TOOL_HOTKEYS.paste,
+          TOOL_HOTKEYS.clear,
+          TOOL_HOTKEYS.help,
+        ]}
+      />
 
       <SectionGap />
 
-      {!hasCheckedAIStatus ? (
-        <SystemChecking />
-      ) : !isApiSupported ? (
-        <UnsupportedCard apiType={UNSUPPORTED_API_TYPES.chromeWriter} />
-      ) : shouldDownloadModel ? (
-        <ModelDownloadCard
-          onClick={downloadModel}
-          progress={downloadProgress}
-        />
-      ) : null}
+      <AiStatusGate
+        hasCheckedAIStatus={hasCheckedAIStatus}
+        isApiSupported={isApiSupported}
+        apiType={UNSUPPORTED_API_TYPES.chromeWriter}
+        shouldDownloadModel={shouldDownloadModel}
+        downloadProgress={downloadProgress}
+        downloadModel={downloadModel}
+      />
 
-      <div className="absolute right-4 top-24">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
+        <TextTabs />
         <Config
           options={options}
           isOptionUpdating={isOptionUpdating}
           updateOption={updateWriter}
         />
       </div>
+
       {/* Input */}
       <LabelBar
         label="Start by adding your text"
@@ -111,26 +135,17 @@ export default function WriterApi() {
         rows={10}
         placeholder="e.g. Draft a friendly email asking a coworker for a project update"
       />
-      {/* Char count block */}
-      <div className="mt-3 w-full text-right text-xs text-slate-400 dark:text-slate-600">
-        {size(text)} chars
-      </div>
 
-      <SectionGap size="sm" />
-
-      {/* Action Button */}
-      <div className="flex justify-end">
-        <Button
-          icon={isProcessing ? LoaderCircle : PencilLine}
-          size="sm"
-          rounded="lg"
-          onClick={onProcessClick}
-          disabled={isEmpty(text) || isProcessing}
-          iconClassName={isProcessing ? 'animate-spin' : ''}
-        >
-          {isProcessing ? 'Writing...' : 'Write'}
-        </Button>
-      </div>
+      {/* Execute Bar */}
+      <ExecuteBar
+        label={isProcessing ? 'Writing...' : 'Write'}
+        icon={isProcessing ? LoaderCircle : PencilLine}
+        iconClassName={isProcessing ? 'animate-spin' : ''}
+        disabled={isEmpty(text) || isProcessing}
+        onClick={onProcessClick}
+        text={text}
+        hotkeyLabel="Write"
+      />
 
       <SectionGap size="sm" />
 

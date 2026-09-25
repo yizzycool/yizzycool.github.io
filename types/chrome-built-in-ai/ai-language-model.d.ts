@@ -45,6 +45,7 @@ interface AILanguageModelParams {
 interface AILanguageModelCreateCoreOptions {
   topK?: number;
   temperature?: number;
+  outputLanguage?: string;
 
   expectedInputs?: Array<AILanguageModelExpectedInput>;
 }

@@ -1,134 +1,57 @@
 'use client';
 
-import { useEffect, useState, useSyncExternalStore } from 'react';
-import { defaults, isNull, startsWith, size } from 'lodash';
+import { useState } from 'react';
+import { defaults, isNull } from 'lodash';
 
-import useAiCommon from './use-ai-common';
-import browserUtils from '@/utils/browser-utils';
+import useAiLanguageModel from './use-ai-language-model';
+import { buildWriterPrompt } from '../utils/writer-prompt-builder';
 
 const Options: AIWriterCreateOptions = {
   sharedContext: '',
   tone: 'neutral',
   format: 'markdown',
   length: 'short',
+  outputLanguage: 'auto',
 };
 
-export default function useAiWriter() {
-  const [writer, setWriter] = useState<AIWriter | null>(null);
-  const [options, setOptions] = useState(Options);
+const initialSystemPrompt = buildWriterPrompt('', Options).systemPrompt;
 
-  const isApiSupported = useSyncExternalStore(
-    subscribe,
-    getSnapshot,
-    getServerSnapshot
-  );
+export default function useAiWriter() {
+  const [options, setOptions] = useState<AIWriterCreateOptions>(Options);
 
   const {
-    availability,
-    setAvailability,
-    setError,
-    downloadProgress,
-    setDownloadProgress,
     hasCheckedAIStatus,
+    isApiSupported,
+    availability,
+    session,
+    prompt,
+    promptStreaming,
+    updateLanguageModel,
     shouldDownloadModel,
-  } = useAiCommon({ isApiSupported });
+    downloadModel,
+    downloadProgress,
+  } = useAiLanguageModel({
+    systemPrompt: initialSystemPrompt,
+  });
 
-  const initWriter = async (monitor?: AICreateMonitorCallback | undefined) => {
-    if (!window.Writer) return;
-    try {
-      const writer = await window.Writer.create({ ...options, monitor });
-      setWriter(writer);
-    } catch (_e) {
-      setError(true);
-    }
+  const updateWriter = async (newWriterOptions: AIWriterCreateOptions) => {
+    const merged = defaults({}, newWriterOptions, Options);
+    setOptions(merged);
+    const { systemPrompt } = buildWriterPrompt('', merged);
+    await updateLanguageModel({ systemPrompt });
   };
-
-  const updateWriter = async (options: AIWriterCreateOptions) => {
-    if (window.Writer) {
-      try {
-        if (writer) writer?.destroy?.();
-        setWriter(null);
-        await browserUtils.sleep(500);
-        const newOptions = defaults(options, Options);
-        const newWriter = await window.Writer.create(newOptions);
-        setOptions(newOptions);
-        setWriter(newWriter);
-      } catch (_e) {
-        setError(true);
-      }
-    }
-  };
-
-  const createMonitorCallback: AICreateMonitorCallback = (monitor) => {
-    setDownloadProgress(0);
-    monitor.addEventListener('downloadprogress', (e) => {
-      setDownloadProgress(e.loaded);
-      if (e.loaded === 1) {
-        setTimeout(() => setDownloadProgress(null), 1000);
-      }
-    });
-  };
-
-  const downloadModel = async () => {
-    await initWriter(createMonitorCallback);
-    const availability = await window.Writer?.availability?.();
-    setAvailability(availability);
-  };
-
-  useEffect(() => {
-    if (!isApiSupported || typeof window === 'undefined' || !window.Writer)
-      return;
-
-    window.Writer.availability?.().then((avail) => {
-      setAvailability(avail);
-      if (avail === 'available') {
-        window.Writer?.create(options)
-          .then((inst) => setWriter(inst))
-          .catch(() => setError(true));
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isApiSupported, setAvailability, setError]);
-
-  useEffect(() => {
-    return () => {
-      writer?.destroy?.();
-    };
-  }, [writer]);
 
   const write = async (text: string): Promise<string | null> => {
-    if (!writer) return null;
-    try {
-      const result = await writer.write(text);
-      return result;
-    } catch (e) {
-      console.log('write error:', e);
-      return null;
-    }
+    const { userPrompt } = buildWriterPrompt(text, options);
+    return prompt(userPrompt);
   };
 
   const writeStreaming = async (
     text: string,
     callback: (chunk: string) => void
   ): Promise<string | null> => {
-    if (!writer) return null;
-    try {
-      let results = '';
-      let prevChunk = '';
-      const stream = await writer.writeStreaming(text);
-      for await (const chunk of stream) {
-        const filteredChunk = startsWith(chunk, prevChunk)
-          ? chunk.substring(size(prevChunk))
-          : chunk;
-        callback(filteredChunk);
-        results += filteredChunk;
-        prevChunk = chunk;
-      }
-      return results;
-    } catch (e) {
-      console.log('write streaming error:', e);
-      return null;
-    }
+    const { userPrompt } = buildWriterPrompt(text, options);
+    return promptStreaming(userPrompt, callback);
   };
 
   return {
@@ -136,7 +59,7 @@ export default function useAiWriter() {
     isApiSupported,
     availability,
     options,
-    isOptionUpdating: isNull(writer),
+    isOptionUpdating: isNull(session),
     write,
     writeStreaming,
     updateWriter,
@@ -144,16 +67,4 @@ export default function useAiWriter() {
     downloadModel,
     downloadProgress,
   };
-}
-
-function subscribe() {
-  return () => {};
-}
-
-function getSnapshot() {
-  return typeof window !== 'undefined' && 'Writer' in window;
-}
-
-function getServerSnapshot() {
-  return null;
 }

@@ -12,11 +12,11 @@ export const UNSUPPORTED_API_TYPES = {
 export const CHROME_BUILT_IN_AI_API_FLAGS = {
   [UNSUPPORTED_API_TYPES.chromeLanguageDetectorApi]: 'language-detection-api',
   [UNSUPPORTED_API_TYPES.chromePromptApi]: 'prompt-api-for-gemini-nano',
-  [UNSUPPORTED_API_TYPES.chromeRewriter]: 'rewriter-api-for-gemini-nano',
+  [UNSUPPORTED_API_TYPES.chromeRewriter]: 'prompt-api-for-gemini-nano',
   [UNSUPPORTED_API_TYPES.chromeSummarizerApi]:
     'summarization-api-for-gemini-nano',
   [UNSUPPORTED_API_TYPES.chromeTranslatorApi]: 'translation-api',
-  [UNSUPPORTED_API_TYPES.chromeWriter]: 'writer-api-for-gemini-nano',
+  [UNSUPPORTED_API_TYPES.chromeWriter]: 'prompt-api-for-gemini-nano',
   [UNSUPPORTED_API_TYPES.chromeProofreaderApi]:
     'proofreader-api-for-gemini-nano',
 };

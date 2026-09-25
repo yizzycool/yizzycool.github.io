@@ -6,12 +6,15 @@ import { isEqual } from 'lodash';
 
 import useWindowDevice from '@/hooks/window/use-window-device';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
+import { Selector } from '@/components/ui/selector';
 import { Textarea } from '@/components/ui/textarea';
 import { ConfigDialog } from '@/components/shared/config-dialog';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Separator } from '@/components/ui/separator';
 import toast from '@/utils/toast';
+
+import { PROMPT_OUTPUT_LANGUAGES } from '../data/language-options';
 
 type Props = {
   options: AILanguageModelCreateOptions;
@@ -56,6 +59,15 @@ export default function Config({
             value={newOptions.systemPrompt}
             onChange={(e) => onChange('systemPrompt', e.target.value)}
           />
+          <div className="mt-8">
+            <Selector
+              title="Preferred Language"
+              desc="Preferred language for the model to reply in"
+              options={PROMPT_OUTPUT_LANGUAGES}
+              value={newOptions.outputLanguage || 'auto'}
+              onChange={(value) => onChange('outputLanguage', value)}
+            />
+          </div>
           <div className="mt-8">
             <Slider
               title="Top K"

@@ -5,6 +5,7 @@ import { ChartColumn, PenLine } from 'lucide-react';
 import { isNull, isEmpty, size } from 'lodash';
 
 import useAiLanguageDetector from '../hooks/use-ai-language-detector';
+import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import { cn } from '@/utils/cn';
 import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 import HeaderBlock from '../../common/header-block';
@@ -12,9 +13,7 @@ import BarChart from './bar-chart';
 import { Textarea } from '@/components/ui/textarea';
 import { PasteAction } from '@/components/shared/action-button';
 import { DeleteAction } from '@/components/shared/action-button';
-import SystemChecking from '../system-checking';
-import UnsupportedCard from '../unsupported-card';
-import ModelDownloadCard from '../model-download-card';
+import AiStatusGate from '../ai-status-gate';
 import SectionGap from '../../common/section-gap';
 import LabelBar from '../../common/label-bar';
 
@@ -63,25 +62,39 @@ export default function LanguageDetectorApi() {
     }
   };
 
+  useToolHotkeys({
+    onPaste: async () => {
+      try {
+        const clipText = await navigator.clipboard.readText();
+        onPasteText(clipText);
+      } catch (_e) {
+        // ignore
+      }
+    },
+    onClear: onClearClick,
+  });
+
   return (
     <>
-      <HeaderBlock />
+      <HeaderBlock
+        customShortcuts={[
+          TOOL_HOTKEYS.paste,
+          TOOL_HOTKEYS.clear,
+          TOOL_HOTKEYS.help,
+        ]}
+      />
 
       <SectionGap />
 
       {/* Language Detector */}
-      {!hasCheckedAIStatus ? (
-        <SystemChecking />
-      ) : !isApiSupported ? (
-        <UnsupportedCard
-          apiType={UNSUPPORTED_API_TYPES.chromeLanguageDetectorApi}
-        />
-      ) : shouldDownloadModel ? (
-        <ModelDownloadCard
-          onClick={downloadModel}
-          progress={downloadProgress}
-        />
-      ) : null}
+      <AiStatusGate
+        hasCheckedAIStatus={hasCheckedAIStatus}
+        isApiSupported={isApiSupported}
+        apiType={UNSUPPORTED_API_TYPES.chromeLanguageDetectorApi}
+        shouldDownloadModel={shouldDownloadModel}
+        downloadProgress={downloadProgress}
+        downloadModel={downloadModel}
+      />
 
       <div className="mx-auto text-center">
         {/* Input */}

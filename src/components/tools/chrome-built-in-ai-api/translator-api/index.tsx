@@ -5,13 +5,12 @@ import { ArrowRightLeft } from 'lucide-react';
 import { isNull, isEmpty, size } from 'lodash';
 
 import useAiTranslator from '../hooks/use-ai-translator';
+import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import { cn } from '@/utils/cn';
 import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
 import HeaderBlock from '../../common/header-block';
 import LanguageSelector from './language-selector';
-import UnsupportedCard from '../unsupported-card';
-import ModelDownloadCard from '../model-download-card';
-import SystemChecking from '../system-checking';
+import AiStatusGate from '../ai-status-gate';
 import { CopyAction } from '@/components/shared/action-button';
 import { SpeakAction } from '@/components/shared/action-button';
 import UnsupportedLanguagePairCard from './unsupported-language-pair-card';
@@ -22,6 +21,7 @@ export default function TranslatorApi() {
   const [text, setText] = useState('');
   const [translation, setTranslation] = useState('');
 
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const {
@@ -68,23 +68,61 @@ export default function TranslatorApi() {
     }
   };
 
+  useToolHotkeys(
+    {
+      onSwap: switchSourceTargetLanguage,
+      onCopy: async () => {
+        if (!isEmpty(translation)) {
+          try {
+            await navigator.clipboard.writeText(translation);
+          } catch (_e) {
+            // ignore
+          }
+        }
+      },
+      onPaste: async () => {
+        try {
+          const clipText = await navigator.clipboard.readText();
+          setText(clipText);
+          if (timerRef.current) {
+            clearTimeout(timerRef.current);
+          }
+          timerRef.current = setTimeout(() => translateString(clipText), 500);
+        } catch (_e) {
+          // ignore
+        }
+      },
+      onClear: () => {
+        setText('');
+        setTranslation('');
+      },
+    },
+    { target: inputRef }
+  );
+
   return (
     <>
-      <HeaderBlock />
+      <HeaderBlock
+        customShortcuts={[
+          { ...TOOL_HOTKEYS.swap, label: 'Swap Languages' },
+          TOOL_HOTKEYS.paste,
+          { ...TOOL_HOTKEYS.copy, label: 'Copy Translation' },
+          TOOL_HOTKEYS.clear,
+          TOOL_HOTKEYS.help,
+        ]}
+      />
 
       <SectionGap />
 
       {/* Status Modal */}
-      {!hasCheckedAIStatus ? (
-        <SystemChecking />
-      ) : !isApiSupported ? (
-        <UnsupportedCard apiType={UNSUPPORTED_API_TYPES.chromeTranslatorApi} />
-      ) : isNull(translator) && shouldDownloadModel ? (
-        <ModelDownloadCard
-          onClick={downloadModel}
-          progress={downloadProgress}
-        />
-      ) : null}
+      <AiStatusGate
+        hasCheckedAIStatus={hasCheckedAIStatus}
+        isApiSupported={isApiSupported}
+        apiType={UNSUPPORTED_API_TYPES.chromeTranslatorApi}
+        shouldDownloadModel={isNull(translator) && shouldDownloadModel}
+        downloadProgress={downloadProgress}
+        downloadModel={downloadModel}
+      />
 
       {/* Translator */}
       <>
@@ -135,6 +173,7 @@ export default function TranslatorApi() {
               )}
             >
               <textarea
+                ref={inputRef}
                 id="input"
                 className={cn(
                   'block w-full flex-1 resize-none bg-transparent px-3 py-2 focus:outline-none',

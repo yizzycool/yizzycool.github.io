@@ -3,6 +3,7 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { defaults, isNull } from 'lodash';
 
+import { getLanguageDisplayName } from '../data/language-options';
 import useAiCommon from './use-ai-common';
 import browserUtils from '@/utils/browser-utils';
 
@@ -11,7 +12,39 @@ const Options: AISummarizerCreateOptions = {
   type: 'key-points',
   format: 'markdown',
   length: 'medium',
+  outputLanguage: 'auto',
 };
+
+function buildSummarizerCreateOptions(
+  opts: AISummarizerCreateOptions,
+  monitor?: AICreateMonitorCallback
+): AISummarizerCreateOptions {
+  let combinedContext = opts.sharedContext?.trim() || '';
+  if (opts.outputLanguage && opts.outputLanguage !== 'auto') {
+    const langName = getLanguageDisplayName(opts.outputLanguage);
+    const directive = `Please provide the summary exclusively in ${langName}.`;
+    combinedContext = combinedContext
+      ? `${combinedContext} ${directive}`
+      : directive;
+  }
+
+  const createOptions: AISummarizerCreateOptions = {
+    type: opts.type,
+    format: opts.format,
+    length: opts.length,
+    monitor,
+  };
+
+  if (combinedContext) {
+    createOptions.sharedContext = combinedContext;
+  }
+
+  if (opts.outputLanguage && opts.outputLanguage !== 'auto') {
+    createOptions.outputLanguage = opts.outputLanguage;
+  }
+
+  return createOptions;
+}
 
 export default function useAiSummarizer() {
   const [summarizer, setSummarizer] = useState<AISummarizer | null>(null);
@@ -38,10 +71,9 @@ export default function useAiSummarizer() {
   ) => {
     if (!window.Summarizer) return;
     try {
-      const summarizer = await window.Summarizer.create({
-        ...options,
-        monitor,
-      });
+      const summarizer = await window.Summarizer.create(
+        buildSummarizerCreateOptions(options, monitor)
+      );
       setSummarizer(summarizer);
     } catch (_e) {
       setError(true);
@@ -55,7 +87,9 @@ export default function useAiSummarizer() {
       setSummarizer(null);
       await browserUtils.sleep(500);
       const newOptions = defaults(options, Options);
-      const newSummarizer = await window.Summarizer.create(newOptions);
+      const newSummarizer = await window.Summarizer.create(
+        buildSummarizerCreateOptions(newOptions)
+      );
       setOptions(newOptions);
       setSummarizer(newSummarizer);
     } catch (_e) {
@@ -86,7 +120,7 @@ export default function useAiSummarizer() {
     window.Summarizer.availability?.().then((avail) => {
       setAvailability(avail);
       if (avail === 'available') {
-        window.Summarizer?.create(options)
+        window.Summarizer?.create(buildSummarizerCreateOptions(options))
           .then((inst) => setSummarizer(inst))
           .catch(() => setError(true));
       }

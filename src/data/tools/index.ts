@@ -119,13 +119,13 @@ export const ToolGroupItems = {
     ToolKeys.imageToBase64,
   ],
   [ToolGroupKeys.chromeAiApi]: [
-    ToolKeys.chromeAiTranslator,
-    ToolKeys.chromeAiLanguageDetector,
-    ToolKeys.chromeAiSummarizer,
+    ToolKeys.chromeAiPrompt,
     ToolKeys.chromeAiWriter,
     ToolKeys.chromeAiRewriter,
-    ToolKeys.chromeAiPrompt,
+    ToolKeys.chromeAiSummarizer,
     ToolKeys.chromeAiProofreader,
+    ToolKeys.chromeAiTranslator,
+    ToolKeys.chromeAiLanguageDetector,
   ],
   [ToolGroupKeys.webDetectorApi]: [
     ToolKeys.chromeFaceDetector,

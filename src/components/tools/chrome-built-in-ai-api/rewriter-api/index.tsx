@@ -1,24 +1,27 @@
 'use client';
 
-import { LoaderCircle, PenLine, WandSparkles } from 'lucide-react';
-import { ChangeEventHandler, useState } from 'react';
-import { isEmpty, size } from 'lodash';
+import type { ChangeEventHandler } from 'react';
 
-import useAiRewriter from '../hooks/use-ai-rewriter';
+import { useState } from 'react';
+import { LoaderCircle, PenLine, WandSparkles } from 'lucide-react';
+import { isEmpty } from 'lodash';
+
 import browserUtils from '@/utils/browser-utils';
-import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
-import HeaderBlock from '../../common/header-block';
-import SystemChecking from '../system-checking';
-import UnsupportedCard from '../unsupported-card';
-import ModelDownloadCard from '../model-download-card';
+import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import { PasteAction } from '@/components/shared/action-button';
 import { DeleteAction } from '@/components/shared/action-button';
 import { Textarea } from '@/components/ui/textarea';
-import Config from './config';
-import { Button } from '@/components/ui/button';
-import PromptResult from '../prompt-result';
+
+import useAiRewriter from '../hooks/use-ai-rewriter';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
+import HeaderBlock from '../../common/header-block';
+import ExecuteBar from '../../common/execute-bar';
 import SectionGap from '../../common/section-gap';
 import LabelBar from '../../common/label-bar';
+import AiStatusGate from '../ai-status-gate';
+import TextTabs from '../text-tabs';
+import PromptResult from '../prompt-result';
+import Config from './config';
 
 export default function RewriterApi() {
   const [text, setText] = useState('');
@@ -53,6 +56,7 @@ export default function RewriterApi() {
   };
 
   const onProcessClick = async () => {
+    if (isEmpty(text) || isProcessing) return;
     setIsProcessing(true);
     await browserUtils.sleep(100);
     scrollToResultBlock();
@@ -73,30 +77,50 @@ export default function RewriterApi() {
     });
   };
 
+  useToolHotkeys({
+    onExecute: onProcessClick,
+    onPaste: async () => {
+      try {
+        const clipText = await navigator.clipboard.readText();
+        setText(clipText);
+      } catch (_e) {
+        // ignore
+      }
+    },
+    onClear: onClearClick,
+  });
+
   return (
     <>
-      <HeaderBlock />
+      <HeaderBlock
+        customShortcuts={[
+          { ...TOOL_HOTKEYS.process, label: 'Rewrite' },
+          TOOL_HOTKEYS.paste,
+          TOOL_HOTKEYS.clear,
+          TOOL_HOTKEYS.help,
+        ]}
+      />
 
       <SectionGap />
 
-      {!hasCheckedAIStatus ? (
-        <SystemChecking />
-      ) : !isApiSupported ? (
-        <UnsupportedCard apiType={UNSUPPORTED_API_TYPES.chromeRewriter} />
-      ) : shouldDownloadModel ? (
-        <ModelDownloadCard
-          onClick={downloadModel}
-          progress={downloadProgress}
-        />
-      ) : null}
+      <AiStatusGate
+        hasCheckedAIStatus={hasCheckedAIStatus}
+        isApiSupported={isApiSupported}
+        apiType={UNSUPPORTED_API_TYPES.chromeRewriter}
+        shouldDownloadModel={shouldDownloadModel}
+        downloadProgress={downloadProgress}
+        downloadModel={downloadModel}
+      />
 
-      <div className="absolute right-4 top-24">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
+        <TextTabs />
         <Config
           options={options}
           isOptionUpdating={isOptionUpdating}
           updateOption={updateRewriter}
         />
       </div>
+
       {/* Input */}
       <LabelBar
         label="Start by adding your text"
@@ -113,26 +137,17 @@ export default function RewriterApi() {
         rows={10}
         placeholder="e.g. Rewrite this sentence to sound more professional: “I might be late to the meeting.”"
       />
-      {/* Char count block */}
-      <div className="mt-3 w-full text-right text-xs text-slate-400 dark:text-slate-600">
-        {size(text)} chars
-      </div>
 
-      <SectionGap size="sm" />
-
-      {/* Action Button */}
-      <div className="flex justify-end">
-        <Button
-          icon={isProcessing ? LoaderCircle : WandSparkles}
-          size="sm"
-          rounded="lg"
-          onClick={onProcessClick}
-          disabled={isEmpty(text) || isProcessing}
-          iconClassName={isProcessing ? 'animate-spin' : ''}
-        >
-          {isProcessing ? 'Rewriting...' : 'Rewrite'}
-        </Button>
-      </div>
+      {/* Execute Bar */}
+      <ExecuteBar
+        label={isProcessing ? 'Rewriting...' : 'Rewrite'}
+        icon={isProcessing ? LoaderCircle : WandSparkles}
+        iconClassName={isProcessing ? 'animate-spin' : ''}
+        disabled={isEmpty(text) || isProcessing}
+        onClick={onProcessClick}
+        text={text}
+        hotkeyLabel="Rewrite"
+      />
 
       <SectionGap size="sm" />
 

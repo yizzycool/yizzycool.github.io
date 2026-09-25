@@ -13,7 +13,16 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import toast from '@/utils/toast';
 
+import { WRITER_OUTPUT_LANGUAGES } from '../data/language-options';
+
 const settings = [
+  {
+    key: 'outputLanguage',
+    title: 'Output Language',
+    desc: 'The target language of the generated text',
+    options: WRITER_OUTPUT_LANGUAGES,
+    defaultValue: 'auto',
+  },
   {
     key: 'tone',
     title: 'Tone',
@@ -88,7 +97,11 @@ export default function Config({
                 title={setting.title}
                 desc={setting.desc}
                 options={setting.options}
-                defaultValue={setting.defaultValue}
+                value={
+                  (newOptions[
+                    setting.key as keyof AIWriterCreateOptions
+                  ] as string) || setting.defaultValue
+                }
                 onChange={(value) => onChange(setting.key, value)}
               />
             </div>

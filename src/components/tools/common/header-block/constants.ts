@@ -4,6 +4,7 @@ export const TOOLS_WITH_HISTORY = [
   ToolKeys.qrCodeGenerator,
   ToolKeys.jsonFormatter,
   ToolKeys.urlEncoderDecoder,
+  ToolKeys.chromeAiPrompt,
 ];
 
 export const TOOLS_WITH_HOTKEY = [
@@ -15,4 +16,12 @@ export const TOOLS_WITH_HOTKEY = [
   ToolKeys.unixTimestampConverter,
   ToolKeys.regexTester,
   ToolKeys.picMergeStudio,
+  // Chrome AI APIs
+  ToolKeys.chromeAiPrompt,
+  ToolKeys.chromeAiWriter,
+  ToolKeys.chromeAiRewriter,
+  ToolKeys.chromeAiSummarizer,
+  ToolKeys.chromeAiProofreader,
+  ToolKeys.chromeAiTranslator,
+  ToolKeys.chromeAiLanguageDetector,
 ];

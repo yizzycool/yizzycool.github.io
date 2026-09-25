@@ -72,15 +72,25 @@ export function useToolHistory<T = unknown>(
     };
   }, [getValue, toolKey]);
 
-  // Add history entry
-  const addHistory = useCallback(
-    async (preview: string, data: T, previewImage?: string, title?: string) => {
-      if (!toolKey || !isHistoryEnabled) return;
+  // Save or update history entry
+  const saveHistory = useCallback(
+    async (
+      preview: string,
+      data: T,
+      previewImage?: string,
+      title?: string,
+      existingId?: string
+    ): Promise<string | undefined> => {
+      if (!toolKey || !isHistoryEnabled) return undefined;
 
       const trimmedPreview =
         preview.trim().slice(0, 100) || 'No preview available';
+      const id =
+        existingId ||
+        `${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+
       const newItem: HistoryItem<T> = {
-        id: `${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+        id,
         timestamp: Date.now(),
         title: title?.trim() || undefined,
         preview: trimmedPreview,
@@ -89,13 +99,16 @@ export function useToolHistory<T = unknown>(
       };
 
       setHistoryList((prev = []) => {
-        // Prevent duplicate items with fast short-circuit check followed by deep data comparison
-        const filtered = prev.filter(
-          (item) =>
+        const filtered = prev.filter((item) => {
+          if (existingId) {
+            return item.id !== existingId;
+          }
+          return (
             item.preview !== trimmedPreview ||
             item.previewImage !== previewImage ||
             !isEqual(item.data, data)
-        );
+          );
+        });
         const updated = [newItem, ...filtered].slice(0, maxItems);
 
         // Async write to IndexedDB
@@ -105,8 +118,18 @@ export function useToolHistory<T = unknown>(
 
         return updated;
       });
+
+      return id;
     },
     [isHistoryEnabled, maxItems, setValue, toolKey]
+  );
+
+  // Add history entry
+  const addHistory = useCallback(
+    async (preview: string, data: T, previewImage?: string, title?: string) => {
+      await saveHistory(preview, data, previewImage, title);
+    },
+    [saveHistory]
   );
 
   // Rename history entry
@@ -161,6 +184,7 @@ export function useToolHistory<T = unknown>(
     isHistoryEnabled,
     toggleHistoryEnabled,
     addHistory,
+    saveHistory,
     renameHistory,
     removeHistory,
     clearHistory,
