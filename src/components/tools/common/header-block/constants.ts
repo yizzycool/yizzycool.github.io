@@ -24,4 +24,8 @@ export const TOOLS_WITH_HOTKEY = [
   ToolKeys.chromeAiProofreader,
   ToolKeys.chromeAiTranslator,
   ToolKeys.chromeAiLanguageDetector,
+  // Web Detection APIs
+  ToolKeys.chromeBarcodeDetector,
+  ToolKeys.chromeFaceDetector,
+  ToolKeys.chromeTextDetector,
 ];

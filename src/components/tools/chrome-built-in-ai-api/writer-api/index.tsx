@@ -119,6 +119,8 @@ export default function WriterApi() {
         />
       </div>
 
+      <SectionGap size="sm" />
+
       {/* Input */}
       <LabelBar
         label="Start by adding your text"

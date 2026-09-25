@@ -128,8 +128,8 @@ export const ToolGroupItems = {
     ToolKeys.chromeAiLanguageDetector,
   ],
   [ToolGroupKeys.webDetectorApi]: [
-    ToolKeys.chromeFaceDetector,
     ToolKeys.chromeBarcodeDetector,
+    ToolKeys.chromeFaceDetector,
     ToolKeys.chromeTextDetector,
   ],
 };
@@ -156,8 +156,8 @@ export const ToolTitles = {
   [ToolKeys.chromeAiPrompt]: 'AI Chat',
   [ToolKeys.chromeAiProofreader]: 'AI Proofreader',
 
-  [ToolKeys.chromeFaceDetector]: 'Face Detector',
   [ToolKeys.chromeBarcodeDetector]: 'Barcode Detector',
+  [ToolKeys.chromeFaceDetector]: 'Face Detector',
   [ToolKeys.chromeTextDetector]: 'Text Detector',
 };
 
@@ -234,8 +234,8 @@ export const ToolSlugs = {
   [ToolKeys.chromeAiPrompt]: 'prompt',
   [ToolKeys.chromeAiProofreader]: 'proofreader',
 
-  [ToolKeys.chromeFaceDetector]: 'face-detector',
   [ToolKeys.chromeBarcodeDetector]: 'barcode-detector',
+  [ToolKeys.chromeFaceDetector]: 'face-detector',
   [ToolKeys.chromeTextDetector]: 'text-detector',
 };
 
@@ -273,8 +273,8 @@ export const ToolIcons = {
   [ToolKeys.chromeAiPrompt]: Bot,
   [ToolKeys.chromeAiProofreader]: SpellCheck,
 
-  [ToolKeys.chromeFaceDetector]: ScanFace,
   [ToolKeys.chromeBarcodeDetector]: QrCode,
+  [ToolKeys.chromeFaceDetector]: ScanFace,
   [ToolKeys.chromeTextDetector]: CaseUpper,
 };
 

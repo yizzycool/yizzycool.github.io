@@ -121,6 +121,8 @@ export default function RewriterApi() {
         />
       </div>
 
+      <SectionGap size="sm" />
+
       {/* Input */}
       <LabelBar
         label="Start by adding your text"

@@ -124,6 +124,8 @@ export default function ProofreaderApi() {
         <TextTabs />
       </div>
 
+      <SectionGap size="sm" />
+
       {/* Input */}
       <LabelBar
         label="Start by adding your text"

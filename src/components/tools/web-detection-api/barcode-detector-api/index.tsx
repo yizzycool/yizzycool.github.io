@@ -9,6 +9,7 @@ import { isNull, map, get } from 'lodash';
 import useCommonFunction from '../hooks/use-common-function';
 import useBarcodeDetector from '../hooks/use-barcode-detector';
 import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
+import { DETECTION_SHORTCUTS } from '../data/detection-shortcuts';
 import HeaderBlock from '../../common/header-block';
 import SystemChecking from '../system-checking';
 import Empty from '../empty';
@@ -16,7 +17,7 @@ import BoundingBox from '../bounding-box';
 import FlipCamera from '../flip-camera';
 import UnsupportedCard from '../unsupported-card';
 import SectionGap from '../../common/section-gap';
-import Tip from '../tip';
+import DetectionTabs from '../detection-tabs';
 import { Card } from '@/components/ui/card';
 import { Tabs } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -105,7 +106,7 @@ export default function BarcodeDetectorApi() {
 
   return (
     <>
-      <HeaderBlock />
+      <HeaderBlock customShortcuts={DETECTION_SHORTCUTS} />
 
       <SectionGap />
 
@@ -118,7 +119,9 @@ export default function BarcodeDetectorApi() {
         />
       ) : null}
 
-      <Tip />
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
+        <DetectionTabs />
+      </div>
 
       <SectionGap size="sm" />
 
@@ -126,6 +129,7 @@ export default function BarcodeDetectorApi() {
         <div className="flex items-center justify-between">
           <Tabs
             tabs={TabList}
+            activeTab={tab}
             onChange={(tab) => setTab(tab as WebDetectionFileType)}
           />
           {!!param.type && (
