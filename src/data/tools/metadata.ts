@@ -119,6 +119,23 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.hashGenerator]: {
+    title:
+      'Hash Calculator & Generator – Calculate MD5, SHA-256, SHA-512 Online | Yizzy Peasy',
+    description:
+      'Free online Hash Calculator & Checksum Generator. Compute MD5, SHA-1, SHA-256, SHA-384, SHA-512, and HMAC checksums for text or files locally in your browser with instant hash comparison.',
+    openGraph: {
+      title: 'Hash Calculator & Checksum Generator',
+      description:
+        'Compute MD5, SHA-1, SHA-256, SHA-384, SHA-512, and HMAC checksums online with instant verification and 100% client-side privacy.',
+    },
+    twitter: {
+      title: 'Hash Calculator & Checksum Generator',
+      description:
+        'Generate MD5, SHA-256, SHA-512 hashes and HMAC checksums for text and files securely in your browser.',
+    },
+  },
+
   // ==================
 
   [ToolKeys.picMergeStudio]: {
@@ -443,6 +460,20 @@ export const ToolJsonLdSoftwareApplication = {
       'Highlight matched text',
       'Inspect capture groups',
       'Validate regex syntax',
+    ],
+  },
+
+  [ToolKeys.hashGenerator]: {
+    name: 'Hash Calculator & Generator',
+    applicationCategory: 'DeveloperTool',
+    description:
+      'An online hash and checksum calculator that generates MD5, SHA-1, SHA-256, SHA-384, SHA-512, and HMAC signatures for text strings and files directly in your browser.',
+    featureList: [
+      'Calculate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes',
+      'Support text input and local file drag-and-drop',
+      'HMAC secret key hashing mode',
+      'Instant target checksum comparison and match highlighting',
+      '100% client-side private computing without uploading data',
     ],
   },
 

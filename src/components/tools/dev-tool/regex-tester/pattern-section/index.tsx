@@ -1,32 +1,34 @@
 'use client';
 
+import type { Dispatch, RefObject, SetStateAction } from 'react';
+
 import { useMemo, useState } from 'react';
-import { AlertCircle, Settings2, BookOpen } from 'lucide-react';
+import { AlertCircle, BookOpen, Settings2 } from 'lucide-react';
 
-import { cn } from '@/utils/cn';
-import { Button } from '@/components/ui/button';
-import { Card, CardTitle } from '@/components/ui/card';
-import { Selector } from '@/components/ui/selector';
 import { CopyAction } from '@/components/shared/action-button';
-
-import PatternVisualizer from './pattern-visualizer';
-import FlagSelector from './flag-selector';
-import CheatSheetModal from '../cheat-sheet-modal';
-import { REGEX_PRESETS, CUSTOM_PRESET_ID } from '../constants';
+import LabelBar from '@/components/tools/common/label-bar';
+import { Button } from '@/components/ui/button';
+import { Selector } from '@/components/ui/selector';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/utils/cn';
+
+import CheatSheetModal from '../cheat-sheet-modal';
+import { CUSTOM_PRESET_ID, REGEX_PRESETS } from '../constants';
+import FlagSelector from './flag-selector';
+import PatternVisualizer from './pattern-visualizer';
 
 type Props = {
   pattern: string;
   flags: string;
-  setPattern: (value: React.SetStateAction<string>) => void;
-  setFlags: (value: React.SetStateAction<string>) => void;
+  setPattern: Dispatch<SetStateAction<string>>;
+  setFlags: Dispatch<SetStateAction<string>>;
   error: string | null;
-  patternInputRef?: React.RefObject<HTMLInputElement | null>;
+  patternInputRef?: RefObject<HTMLInputElement | null>;
   selectedPresetId?: string;
   onSelectPreset?: (presetId: string) => void;
 };
 
-export default function PatternCard({
+export default function PatternSection({
   pattern,
   flags,
   setPattern,
@@ -65,25 +67,13 @@ export default function PatternCard({
   }, [activePreset, pattern]);
 
   return (
-    <>
-      <Card>
-        <div className="mb-4 flex items-center justify-between">
-          <CardTitle icon={Settings2}>Regular Expression</CardTitle>
-
-          <Button
-            variant="ghost"
-            rounded="full"
-            size="base"
-            icon={BookOpen}
-            onClick={() => setIsCheatSheetOpen(true)}
-            title="Regex Cheat Sheet"
-            ariaLabel="Open Regex Cheat Sheet"
-          />
-        </div>
-
-        <div className="mb-3 flex items-center justify-between gap-2">
-          <span className="hidden text-xs md:inline">{description}</span>
-
+    <div className="w-full text-left">
+      <LabelBar
+        icon={Settings2}
+        label="Regular Expression"
+        description={description}
+      >
+        <div className="flex items-center gap-2">
           {onSelectPreset && (
             <div className="w-40 sm:w-44">
               <Selector
@@ -95,8 +85,20 @@ export default function PatternCard({
               />
             </div>
           )}
-        </div>
 
+          <Button
+            variant="ghost"
+            rounded="full"
+            size="xs"
+            icon={BookOpen}
+            onClick={() => setIsCheatSheetOpen(true)}
+            title="Regex Cheat Sheet"
+            ariaLabel="Open Regex Cheat Sheet"
+          />
+        </div>
+      </LabelBar>
+
+      <div className="space-y-3">
         <div
           className={cn(
             'shadow-2xs rounded-xl border p-4 pb-2 backdrop-blur-md transition-all duration-200',
@@ -143,19 +145,19 @@ export default function PatternCard({
         </div>
 
         {error && (
-          <div className="mt-3 flex items-center gap-2 text-red-500 animate-in slide-in-from-top-1">
+          <div className="flex items-center gap-2 text-red-500 animate-in slide-in-from-top-1">
             <AlertCircle className="h-4 w-4" />
             <p className="text-xs font-medium">{error}</p>
           </div>
         )}
 
         <FlagSelector flags={flags} setFlags={setFlags} />
-      </Card>
+      </div>
 
       <CheatSheetModal
         isOpen={isCheatSheetOpen}
         onClose={() => setIsCheatSheetOpen(false)}
       />
-    </>
+    </div>
   );
 }

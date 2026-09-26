@@ -8,14 +8,21 @@ export const TOOLS_WITH_HISTORY = [
 ];
 
 export const TOOLS_WITH_HOTKEY = [
+  // Everyday Life Tools
   ToolKeys.qrCodeGenerator,
   ToolKeys.wordCounter,
-  ToolKeys.jsonFormatter,
   ToolKeys.keyCard,
+
+  // Developer Tools
   ToolKeys.urlEncoderDecoder,
+  ToolKeys.jsonFormatter,
   ToolKeys.unixTimestampConverter,
   ToolKeys.regexTester,
+  ToolKeys.hashGenerator,
+
+  // Image Tools
   ToolKeys.picMergeStudio,
+
   // Chrome AI APIs
   ToolKeys.chromeAiPrompt,
   ToolKeys.chromeAiWriter,
@@ -24,6 +31,7 @@ export const TOOLS_WITH_HOTKEY = [
   ToolKeys.chromeAiProofreader,
   ToolKeys.chromeAiTranslator,
   ToolKeys.chromeAiLanguageDetector,
+
   // Web Detection APIs
   ToolKeys.chromeBarcodeDetector,
   ToolKeys.chromeFaceDetector,

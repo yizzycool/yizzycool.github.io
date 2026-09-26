@@ -11,6 +11,7 @@ import {
   CodeXml,
   FileImage,
   FileText,
+  Fingerprint,
   Image,
   Keyboard,
   Languages,
@@ -72,6 +73,7 @@ export const ToolKeys = {
   jsonFormatter: 'jsonFormatter',
   unixTimestampConverter: 'unixTimestampConverter',
   regexTester: 'regexTester',
+  hashGenerator: 'hashGenerator',
 
   // Image Tools
   picMergeStudio: 'picMergeStudio',
@@ -112,6 +114,7 @@ export const ToolGroupItems = {
     ToolKeys.jsonFormatter,
     ToolKeys.unixTimestampConverter,
     ToolKeys.regexTester,
+    ToolKeys.hashGenerator,
   ],
   [ToolGroupKeys.imgTool]: [
     ToolKeys.picMergeStudio,
@@ -143,6 +146,7 @@ export const ToolTitles = {
   [ToolKeys.jsonFormatter]: 'JSON Formatter',
   [ToolKeys.unixTimestampConverter]: 'Unix Timestamp Converter',
   [ToolKeys.regexTester]: 'Regular Expression Tester',
+  [ToolKeys.hashGenerator]: 'Hash Calculator / Generator',
 
   [ToolKeys.picMergeStudio]: 'PicMerge Studio',
   [ToolKeys.base64ToImage]: 'Base64 to Image',
@@ -181,6 +185,8 @@ export const ToolDescriptions = {
     'Convert Unix epoch timestamps to human-readable dates and back, featuring real-time clock tracking and multi-timezone support.',
   [ToolKeys.regexTester]:
     'Test and debug regular expressions in real time with instant match highlighting, capture group inspection, and a built-in regex cheat sheet.',
+  [ToolKeys.hashGenerator]:
+    'Generate cryptographic hashes and HMAC checksums (MD5, SHA-1, SHA-256, SHA-384, SHA-512) for text and files with instant target hash matching.',
 
   [ToolKeys.picMergeStudio]:
     'Combine photos into custom collages with social media canvas presets, layer controls, filters, and high-resolution export in PNG or JPEG.',
@@ -221,6 +227,7 @@ export const ToolSlugs = {
   [ToolKeys.jsonFormatter]: 'json-formatter',
   [ToolKeys.unixTimestampConverter]: 'unix-timestamp-converter',
   [ToolKeys.regexTester]: 'regex-tester',
+  [ToolKeys.hashGenerator]: 'hash-generator',
 
   [ToolKeys.picMergeStudio]: 'pic-merge-studio',
   [ToolKeys.base64ToImage]: 'base64-to-image',
@@ -260,6 +267,7 @@ export const ToolIcons = {
   [ToolKeys.jsonFormatter]: CodeXml,
   [ToolKeys.unixTimestampConverter]: Clock,
   [ToolKeys.regexTester]: Regex,
+  [ToolKeys.hashGenerator]: Fingerprint,
 
   [ToolKeys.picMergeStudio]: Layers,
   [ToolKeys.base64ToImage]: FileImage,

@@ -1,9 +1,9 @@
 'use client';
 
 import { Braces } from 'lucide-react';
+
 import { CopyAction } from '@/components/shared/action-button';
-import { Card, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+import LabelBar from '@/components/tools/common/label-bar';
 
 type Props = {
   results:
@@ -14,21 +14,18 @@ type Props = {
 };
 
 export default function RawData({ results }: Props) {
+  const hasData = !!results && results.length > 0;
+  const contentString = hasData ? JSON.stringify(results, null, 2) : '';
+
   return (
-    <Card>
-      <div className="flex items-center justify-between">
-        <CardTitle icon={Braces}>Raw Data</CardTitle>
-        {!!results && <CopyAction content={JSON.stringify(results)} />}
-      </div>
+    <div className="w-full text-left">
+      <LabelBar icon={Braces} label="Raw Data">
+        {hasData && <CopyAction content={contentString} />}
+      </LabelBar>
 
-      {/* Separate */}
-      <Separator className="-mx-6 my-6" />
-
-      <div className="max-h-80 flex-1 overflow-auto whitespace-pre rounded-lg bg-neutral-100 p-3 text-left font-mono text-xs text-slate-600 dark:bg-neutral-950 dark:text-slate-400">
-        {!!results && results.length > 0
-          ? JSON.stringify(results, null, 2)
-          : '// No data detected'}
+      <div className="max-h-80 flex-1 overflow-auto whitespace-pre rounded-xl border border-neutral-200/80 bg-neutral-100/80 p-3.5 text-left font-mono text-xs text-slate-600 dark:border-neutral-800 dark:bg-neutral-950 dark:text-slate-400">
+        {hasData ? contentString : '// No data detected'}
       </div>
-    </Card>
+    </div>
   );
 }

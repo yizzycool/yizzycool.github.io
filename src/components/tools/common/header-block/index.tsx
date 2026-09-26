@@ -7,11 +7,13 @@ import { usePathname } from 'next/navigation';
 import { get, invert } from 'lodash';
 import { Star, Clock, Keyboard, LucideIcon, PauseCircle } from 'lucide-react';
 
+import { Button } from '@/components/ui/button';
+import { cn } from '@/utils/cn';
+
 import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
 import useToolsPreferences from '@/hooks/tools/use-tools-preferences';
 import { useToolsDB } from '@/hooks/tools/use-tools-db';
 import { TOOLS_WITH_HISTORY, TOOLS_WITH_HOTKEY } from './constants';
-import { Button } from '@/components/ui/button';
 import {
   ToolDescriptions,
   ToolIcons,
@@ -21,7 +23,6 @@ import {
 import { HistoryItem } from '@/hooks/tools/use-tool-history';
 import { ToolHistoryDrawer } from './tool-history-drawer';
 import { ToolHotkeysModal } from './tool-hotkeys-modal';
-import { cn } from '@/utils/cn';
 
 const InvertToolUrls = invert(ToolUrls);
 

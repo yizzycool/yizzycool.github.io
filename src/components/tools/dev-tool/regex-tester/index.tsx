@@ -5,10 +5,10 @@ import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
 
-import PatternCard from './pattern-card';
-import TestCard from './test-card';
-import DetailCard from './detail-card';
-import CheatSheetCard from './cheat-sheet-card';
+import CheatSheetSection from './cheat-sheet-section';
+import DetailSection from './detail-section';
+import PatternSection from './pattern-section';
+import TestSection from './test-section';
 import useRegexTester from './hooks/use-regex-tester';
 
 export type RegexColorType = {
@@ -102,7 +102,7 @@ export default function RegexTester() {
       <SectionGap />
 
       {/* Pattern input + Presets + Visualizer */}
-      <PatternCard
+      <PatternSection
         pattern={pattern}
         setPattern={setPattern}
         flags={flags}
@@ -116,7 +116,7 @@ export default function RegexTester() {
       <SectionGap />
 
       {/* Test string textarea + Highlighting + Actions */}
-      <TestCard
+      <TestSection
         pattern={pattern}
         flags={flags}
         matches={matches}
@@ -131,12 +131,12 @@ export default function RegexTester() {
       <SectionGap />
 
       {/* Match Details with Named Groups */}
-      <DetailCard matches={matches} />
+      <DetailSection matches={matches} />
 
       <SectionGap />
 
-      {/* Regex Cheat Sheet Reference Card */}
-      <CheatSheetCard />
+      {/* Regex Cheat Sheet Reference Section */}
+      <CheatSheetSection />
     </>
   );
 }

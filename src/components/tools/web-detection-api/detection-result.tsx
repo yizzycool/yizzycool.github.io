@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 import { size } from 'lodash';
 
 import toast from '@/utils/toast';
-import { PropertyResultCard } from '@/components/tools/common/property-row';
+import { PropertyResultSection } from '@/components/tools/common/property-row';
 
 type Props = {
   results: TransformedResults;
@@ -48,7 +48,7 @@ export default function DetectionResult({ results, isProcessing }: Props) {
   };
 
   return (
-    <PropertyResultCard
+    <PropertyResultSection
       title="Detection Results"
       count={size(results)}
       items={items}

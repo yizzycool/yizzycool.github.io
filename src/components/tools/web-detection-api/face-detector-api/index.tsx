@@ -18,7 +18,6 @@ import FlipCamera from '../flip-camera';
 import UnsupportedCard from '../unsupported-card';
 import SectionGap from '../../common/section-gap';
 import DetectionTabs from '../detection-tabs';
-import { Card } from '@/components/ui/card';
 import { Tabs } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import ResultCanvas from '../result-canvas';
@@ -109,8 +108,8 @@ export default function FaceDetectorApi() {
 
       <SectionGap size="sm" />
 
-      <Card>
-        <div className="flex items-center justify-between">
+      <div className="w-full text-left">
+        <div className="mb-4 flex items-center justify-between">
           <Tabs
             tabs={TabList}
             activeTab={tab}
@@ -136,7 +135,7 @@ export default function FaceDetectorApi() {
             processWebcam={processWebcam}
           />
         ) : (
-          <div className="py-8">
+          <div className="rounded-xl border border-neutral-200/80 bg-neutral-50/50 py-8 dark:border-neutral-800 dark:bg-neutral-900/30">
             <div ref={resultRef} className="relative mx-auto h-fit w-fit">
               <ResultCanvas
                 canvasRef={canvasRef}
@@ -148,7 +147,7 @@ export default function FaceDetectorApi() {
             </div>
           </div>
         )}
-      </Card>
+      </div>
 
       <SectionGap size="sm" />
 

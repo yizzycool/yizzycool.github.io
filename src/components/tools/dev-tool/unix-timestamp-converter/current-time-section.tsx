@@ -2,13 +2,11 @@
 
 import { ClockCheck, Pause, Play } from 'lucide-react';
 
-import { Card } from '@/components/ui/card';
-import { CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Surface } from '@/components/ui/surface';
 import { CopyAction } from '@/components/shared/action-button';
+import LabelBar from '@/components/tools/common/label-bar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Surface } from '@/components/ui/surface';
 import useIsClient from '@/hooks/lifecycle/use-is-client';
 
 type Props = {
@@ -18,7 +16,7 @@ type Props = {
   deviceTimezone: string;
 };
 
-export default function CurrentTimeCard({
+export default function CurrentTimeSection({
   now,
   isPaused,
   onTogglePause,
@@ -30,11 +28,8 @@ export default function CurrentTimeCard({
   const isClient = useIsClient();
 
   return (
-    <Card animation="fade-in" className="relative overflow-hidden text-left">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <CardTitle icon={ClockCheck}>Current Device Time</CardTitle>
-
-        {/* Live Clock Control */}
+    <div className="w-full text-left">
+      <LabelBar icon={ClockCheck} label="Current Device Time">
         <div className="flex items-center gap-2">
           <Button
             variant={isPaused ? 'primary' : 'surface'}
@@ -46,13 +41,15 @@ export default function CurrentTimeCard({
           >
             {isPaused ? 'Resume Clock' : 'Pause Clock'}
           </Button>
+          <CopyAction
+            content={currentSec.toString()}
+            label="Copy Epoch"
+            title="Copy current Unix timestamp in seconds"
+          />
         </div>
-      </div>
+      </LabelBar>
 
-      {/* Separator */}
-      <Separator className="-mx-6 my-5" />
-
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {/* Local Time */}
         <Surface className="p-4">
           <div className="mb-2 flex items-center justify-between">
@@ -146,6 +143,6 @@ export default function CurrentTimeCard({
           </div>
         </Surface>
       </div>
-    </Card>
+    </div>
   );
 }

@@ -6,16 +6,19 @@ import CaptureGroupRow from './capture-group-row';
 type Props = {
   match: RegExpExecArray;
   index: number;
+  grouped?: boolean;
 };
 
-export default function MatchItem({ match, index }: Props) {
+export default function MatchItem({ match, index, grouped = false }: Props) {
   const hasIndexedGroups = match.length > 1;
 
   return (
     <div
       className={cn(
-        'shadow-2xs rounded-xl border p-3.5 backdrop-blur-md transition-all duration-200',
-        'border-neutral-200/90 bg-white/80 dark:border-neutral-800 dark:bg-neutral-900/60'
+        'p-3.5 transition-colors',
+        grouped
+          ? 'hover:bg-neutral-100/40 dark:hover:bg-neutral-800/30'
+          : 'shadow-2xs rounded-xl border border-neutral-200/90 bg-white/80 dark:border-neutral-800 dark:bg-neutral-900/60'
       )}
       style={{ animationDelay: `${index * 30}ms` }}
     >
@@ -46,25 +49,22 @@ export default function MatchItem({ match, index }: Props) {
 
       {/* Indexed Groups */}
       {hasIndexedGroups && (
-        <div className="mt-3 space-y-2 border-t border-neutral-200/80 pt-3 dark:border-neutral-800">
-          {/* Indexed Groups */}
-          {hasIndexedGroups && (
-            <div className="space-y-1">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                Capture Groups
-              </span>
-              <div className="grid grid-cols-[auto_1fr] gap-2 font-mono text-xs">
-                {match.slice(1).map((group, gi) => (
-                  <CaptureGroupRow
-                    key={gi}
-                    group={group}
-                    index={gi + 1}
-                    indices={match.indices}
-                  />
-                ))}
-              </div>
+        <div className="mt-3 rounded-lg bg-neutral-100/70 p-2.5 dark:bg-neutral-800/50">
+          <div className="space-y-1.5">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              Capture Groups
+            </span>
+            <div className="grid grid-cols-[auto_1fr] gap-2 font-mono text-xs">
+              {match.slice(1).map((group, gi) => (
+                <CaptureGroupRow
+                  key={gi}
+                  group={group}
+                  index={gi + 1}
+                  indices={match.indices}
+                />
+              ))}
             </div>
-          )}
+          </div>
         </div>
       )}
     </div>

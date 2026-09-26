@@ -1,29 +1,33 @@
 'use client';
 
-import type { ConvertedTimezoneItem } from '../hooks/use-unix-timestamp-converter';
+import type { RefObject } from 'react';
+import type { ConvertedTimezoneItem } from './hooks/use-unix-timestamp-converter';
 
 import { useState } from 'react';
-import { Hash, RefreshCw, Globe, ChevronDown, ChevronUp } from 'lucide-react';
+import {
+  CalendarClock,
+  ChevronDown,
+  ChevronUp,
+  Globe,
+  RefreshCw,
+} from 'lucide-react';
 
-import { Card, CardTitle } from '@/components/ui/card';
+import { DeleteAction, PasteAction } from '@/components/shared/action-button';
+import LabelBar from '@/components/tools/common/label-bar';
+import { PropertyRow } from '@/components/tools/common/property-row';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PillTabs } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { PasteAction, DeleteAction } from '@/components/shared/action-button';
 
-import LabelBar from '@/components/tools/common/label-bar';
-import { PropertyRow } from '@/components/tools/common/property-row';
-
-import { QUICK_OFFSETS, UNIT_MODES, UNIT_MODE_LABELS } from '../constants';
+import { QUICK_OFFSETS, UNIT_MODES, UNIT_MODE_LABELS } from './constants';
 
 type Props = {
   tsInput: string;
   setTsInput: (val: string) => void;
   unitMode: 'auto' | 'seconds' | 'milliseconds';
   setUnitMode: (mode: 'auto' | 'seconds' | 'milliseconds') => void;
-  inputRef: React.RefObject<HTMLInputElement | null>;
+  inputRef: RefObject<HTMLInputElement | null>;
   parsedInfo: {
     isValid: boolean;
     date: Date | null;
@@ -43,7 +47,7 @@ type Props = {
   onClear: () => void;
 };
 
-export default function TimestampToDateCard({
+export default function TimestampToDateSection({
   tsInput,
   setTsInput,
   unitMode,
@@ -59,23 +63,17 @@ export default function TimestampToDateCard({
   const [showAllTimezones, setShowAllTimezones] = useState(false);
 
   return (
-    <Card animation="fade-in" className="text-left">
-      <CardTitle icon={Hash}>Timestamp to Date</CardTitle>
+    <div className="w-full text-left">
+      <LabelBar
+        label="Timestamp to Human Date"
+        icon={CalendarClock}
+        htmlFor="timestamp-input"
+      >
+        <PasteAction onClick={onPaste} />
+        <DeleteAction onClick={onClear} disabled={!tsInput} />
+      </LabelBar>
 
-      {/* Separator */}
-      <Separator className="-mx-6 my-6" />
-
-      <div className="space-y-6">
-        {/* LabelBar with Paste, Clear */}
-        <LabelBar
-          label="Enter Unix Timestamp"
-          icon={Hash}
-          htmlFor="timestamp-input"
-        >
-          <PasteAction onClick={onPaste} />
-          <DeleteAction onClick={onClear} disabled={!tsInput} />
-        </LabelBar>
-
+      <div className="space-y-4">
         {/* Input Box with Unit Badge & Now button */}
         <div className="space-y-4">
           <div className="relative flex items-center">
@@ -152,27 +150,30 @@ export default function TimestampToDateCard({
         </div>
 
         {/* Primary Results Display */}
-        <div className="space-y-3 pt-2">
+        <div className="divide-y divide-neutral-200/70 overflow-hidden rounded-xl border border-neutral-200/80 bg-white/70 backdrop-blur-md dark:divide-neutral-800 dark:border-neutral-800 dark:bg-neutral-900/40">
           <PropertyRow
             label="GMT / UTC"
             value={convertedValues.utc}
             badge="UTC+0"
+            grouped
           />
           <PropertyRow
             label="Local Time"
             value={convertedValues.local}
             badge="Device Local"
+            grouped
           />
           <PropertyRow
             label="ISO 8601"
             value={convertedValues.iso}
             badge="Standard"
+            grouped
           />
         </div>
 
         {/* Major World Timezones Section */}
         {convertedValues.timezones.length > 0 && (
-          <div className="rounded-xl border border-neutral-200/80 bg-neutral-50/50 p-4 dark:border-neutral-700/80 dark:bg-neutral-900/30">
+          <div className="rounded-xl border border-neutral-200/80 bg-white/70 p-4 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-900/40">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Globe size={16} className="text-blue-600 dark:text-blue-400" />
@@ -207,6 +208,6 @@ export default function TimestampToDateCard({
           </div>
         )}
       </div>
-    </Card>
+    </div>
   );
 }

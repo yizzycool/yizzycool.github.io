@@ -25,6 +25,10 @@ export type ConvertedTimezoneItem = {
   formatted: string;
 };
 
+function padZero(n: number, len = 2): string {
+  return String(n).padStart(len, '0');
+}
+
 export default function useUnixTimestampConverter() {
   // ----------------------------------------------------
   // Live Clock State
@@ -207,25 +211,72 @@ export default function useUnixTimestampConverter() {
   // ----------------------------------------------------
   // 3. Date -> Timestamp State
   // ----------------------------------------------------
-  const [dateFields, setDateFields] = useState<DateFields>(() => {
+  const [dateTimeString, setDateTimeString] = useState<string>(() => {
     const d = new Date();
-    return {
-      year: d.getFullYear(),
-      month: d.getMonth() + 1,
-      day: d.getDate(),
-      hour: d.getHours(),
-      minute: d.getMinutes(),
-      second: d.getSeconds(),
-    };
+    return `${d.getFullYear()}-${padZero(d.getMonth() + 1)}-${padZero(d.getDate())}T${padZero(d.getHours())}:${padZero(d.getMinutes())}:${padZero(d.getSeconds())}`;
   });
   const [dateTzMode, setDateTzMode] = useState<'local' | 'utc'>('local');
 
+  const parseFlexibleDateTime = useCallback(
+    (str: string): DateFields | null => {
+      const trimmed = str.trim();
+      if (!trimmed) return null;
+
+      // 1. Match YYYY-MM-DDTHH:mm or YYYY-MM-DDTHH:mm:ss
+      const isoLocal = trimmed.match(
+        /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/
+      );
+      if (isoLocal) {
+        return {
+          year: parseInt(isoLocal[1], 10),
+          month: parseInt(isoLocal[2], 10),
+          day: parseInt(isoLocal[3], 10),
+          hour: parseInt(isoLocal[4], 10),
+          minute: parseInt(isoLocal[5], 10),
+          second: isoLocal[6] ? parseInt(isoLocal[6], 10) : 0,
+        };
+      }
+
+      // 2. Match YYYY-MM-DD HH:mm:ss or YYYY/MM/DD HH:mm:ss
+      const common = trimmed.match(
+        /^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})(?:[T\s](\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?/
+      );
+      if (common) {
+        return {
+          year: parseInt(common[1], 10),
+          month: parseInt(common[2], 10),
+          day: parseInt(common[3], 10),
+          hour: common[4] ? parseInt(common[4], 10) : 0,
+          minute: common[5] ? parseInt(common[5], 10) : 0,
+          second: common[6] ? parseInt(common[6], 10) : 0,
+        };
+      }
+
+      // 3. Fallback to native Date parsing
+      const parsed = new Date(trimmed);
+      if (!isNaN(parsed.getTime())) {
+        return {
+          year: parsed.getFullYear(),
+          month: parsed.getMonth() + 1,
+          day: parsed.getDate(),
+          hour: parsed.getHours(),
+          minute: parsed.getMinutes(),
+          second: parsed.getSeconds(),
+        };
+      }
+
+      return null;
+    },
+    []
+  );
+
   const convertedFromDate = useMemo(() => {
-    const { year, month, day, hour, minute, second } = dateFields;
-    if (isNaN(year) || isNaN(month) || isNaN(day)) {
+    const parsed = parseFlexibleDateTime(dateTimeString);
+    if (!parsed || !parsed.year || isNaN(parsed.year) || parsed.year <= 0) {
       return { isValid: false, seconds: 0, milliseconds: 0, dateObj: null };
     }
 
+    const { year, month, day, hour, minute, second } = parsed;
     try {
       let d: Date;
       if (dateTzMode === 'utc') {
@@ -263,42 +314,76 @@ export default function useUnixTimestampConverter() {
     } catch {
       return { isValid: false, seconds: 0, milliseconds: 0, dateObj: null };
     }
-  }, [dateFields, dateTzMode]);
+  }, [dateTimeString, dateTzMode, parseFlexibleDateTime]);
 
-  const updateDateField = useCallback(
-    (field: keyof DateFields, value: string) => {
-      const numVal = parseInt(value, 10);
-      setDateFields((prev) => ({
-        ...prev,
-        [field]: isNaN(numVal) ? ('' as unknown as number) : numVal,
-      }));
-    },
-    []
-  );
+  const onDateTimeChange = useCallback((val: string) => {
+    setDateTimeString(val);
+  }, []);
 
   const setDateToNow = useCallback(() => {
     const d = new Date();
-    setDateFields({
-      year: d.getFullYear(),
-      month: d.getMonth() + 1,
-      day: d.getDate(),
-      hour: d.getHours(),
-      minute: d.getMinutes(),
-      second: d.getSeconds(),
-    });
-    toast.success('Date inputs reset to current time');
-  }, []);
+    if (dateTzMode === 'utc') {
+      setDateTimeString(
+        `${d.getUTCFullYear()}-${padZero(d.getUTCMonth() + 1)}-${padZero(d.getUTCDate())}T${padZero(d.getUTCHours())}:${padZero(d.getUTCMinutes())}:${padZero(d.getUTCSeconds())}`
+      );
+    } else {
+      setDateTimeString(
+        `${d.getFullYear()}-${padZero(d.getMonth() + 1)}-${padZero(d.getDate())}T${padZero(d.getHours())}:${padZero(d.getMinutes())}:${padZero(d.getSeconds())}`
+      );
+    }
+    toast.success('Date & time set to current time');
+  }, [dateTzMode]);
 
   const onClearDateInput = useCallback(() => {
-    setDateFields({
-      year: 0,
-      month: 1,
-      day: 1,
-      hour: 0,
-      minute: 0,
-      second: 0,
-    });
+    setDateTimeString('');
   }, []);
+
+  const onApplyDateOffset = useCallback(
+    (offsetSeconds: number) => {
+      const baseMs = convertedFromDate.isValid
+        ? convertedFromDate.milliseconds
+        : Date.now();
+      const targetDate = new Date(baseMs + offsetSeconds * 1000);
+
+      if (dateTzMode === 'utc') {
+        setDateTimeString(
+          `${targetDate.getUTCFullYear()}-${padZero(targetDate.getUTCMonth() + 1)}-${padZero(targetDate.getUTCDate())}T${padZero(targetDate.getUTCHours())}:${padZero(targetDate.getUTCMinutes())}:${padZero(targetDate.getUTCSeconds())}`
+        );
+      } else {
+        setDateTimeString(
+          `${targetDate.getFullYear()}-${padZero(targetDate.getMonth() + 1)}-${padZero(targetDate.getDate())}T${padZero(targetDate.getHours())}:${padZero(targetDate.getMinutes())}:${padZero(targetDate.getSeconds())}`
+        );
+      }
+      const abs = Math.abs(offsetSeconds);
+      const label =
+        abs >= 86400 ? `${offsetSeconds / 86400}d` : `${offsetSeconds / 3600}h`;
+      toast.success(`${offsetSeconds > 0 ? '+' : ''}${label} applied`);
+    },
+    [convertedFromDate, dateTzMode]
+  );
+
+  const onPasteDateString = useCallback(
+    (text: string) => {
+      const parsed = parseFlexibleDateTime(text);
+      if (parsed) {
+        setDateTimeString(
+          `${padZero(parsed.year, 4)}-${padZero(parsed.month)}-${padZero(parsed.day)}T${padZero(parsed.hour)}:${padZero(parsed.minute)}:${padZero(parsed.second)}`
+        );
+        toast.success('Pasted and parsed datetime string');
+      } else {
+        toast.error('Unable to parse date string format');
+      }
+    },
+    [parseFlexibleDateTime]
+  );
+
+  const dateFields = useMemo<DateFields>(() => {
+    const parsed = parseFlexibleDateTime(dateTimeString);
+    if (!parsed) {
+      return { year: 0, month: 1, day: 1, hour: 0, minute: 0, second: 0 };
+    }
+    return parsed;
+  }, [dateTimeString, parseFlexibleDateTime]);
 
   // ----------------------------------------------------
   // 4. Cleanup Residual History on Mount
@@ -354,6 +439,28 @@ export default function useUnixTimestampConverter() {
     { target: tsInputRef }
   );
 
+  const updateDateField = useCallback(
+    (field: keyof DateFields, value: string) => {
+      const numVal = parseInt(value, 10);
+      const parsed = parseFlexibleDateTime(dateTimeString) || {
+        year: new Date().getFullYear(),
+        month: new Date().getMonth() + 1,
+        day: new Date().getDate(),
+        hour: new Date().getHours(),
+        minute: new Date().getMinutes(),
+        second: new Date().getSeconds(),
+      };
+      const updated = {
+        ...parsed,
+        [field]: isNaN(numVal) ? 0 : numVal,
+      };
+      setDateTimeString(
+        `${padZero(updated.year, 4)}-${padZero(updated.month)}-${padZero(updated.day)}T${padZero(updated.hour)}:${padZero(updated.minute)}:${padZero(updated.second)}`
+      );
+    },
+    [dateTimeString, parseFlexibleDateTime]
+  );
+
   return {
     // Live clock
     now,
@@ -375,10 +482,14 @@ export default function useUnixTimestampConverter() {
     onClearTsInput,
 
     // Date -> Timestamp
+    dateTimeString,
     dateFields,
     dateTzMode,
     setDateTzMode,
     convertedFromDate,
+    onDateTimeChange,
+    onApplyDateOffset,
+    onPasteDateString,
     updateDateField,
     setDateToNow,
     onClearDateInput,

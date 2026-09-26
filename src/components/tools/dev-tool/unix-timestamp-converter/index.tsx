@@ -3,10 +3,10 @@
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
-import CurrentTimeCard from './current-time-card';
-import TimestampToDateCard from './timestamp-to-date-card';
-import DateToTimestampCard from './date-to-timestamp-card';
-import ReferenceCard from './reference-card';
+import CurrentTimeSection from './current-time-section';
+import DateToTimestampSection from './date-to-timestamp-section';
+import ReferenceSection from './reference-section';
+import TimestampToDateSection from './timestamp-to-date-section';
 import useUnixTimestampConverter from './hooks/use-unix-timestamp-converter';
 
 export default function UnixTimestampConverter() {
@@ -31,11 +31,13 @@ export default function UnixTimestampConverter() {
     onClearTsInput,
 
     // Date -> Timestamp
-    dateFields,
+    dateTimeString,
     dateTzMode,
     setDateTzMode,
     convertedFromDate,
-    updateDateField,
+    onDateTimeChange,
+    onApplyDateOffset,
+    onPasteDateString,
     setDateToNow,
     onClearDateInput,
   } = useUnixTimestampConverter();
@@ -54,7 +56,7 @@ export default function UnixTimestampConverter() {
       <SectionGap />
 
       {/* Live Device Time with Pause / Play Controls */}
-      <CurrentTimeCard
+      <CurrentTimeSection
         now={now}
         isPaused={isClockPaused}
         onTogglePause={toggleClockPause}
@@ -64,7 +66,7 @@ export default function UnixTimestampConverter() {
       <SectionGap />
 
       {/* Timestamp to Date with Presets, Offsets, Relative Time & World Timezones */}
-      <TimestampToDateCard
+      <TimestampToDateSection
         tsInput={tsInput}
         setTsInput={setTsInput}
         unitMode={unitMode}
@@ -81,12 +83,14 @@ export default function UnixTimestampConverter() {
       <SectionGap />
 
       {/* Date to Timestamp with Timezone Toggle & Quick Jump Presets */}
-      <DateToTimestampCard
-        dateFields={dateFields}
+      <DateToTimestampSection
+        dateTimeString={dateTimeString}
         timezoneMode={dateTzMode}
         setTimezoneMode={setDateTzMode}
         convertedResult={convertedFromDate}
-        onUpdateField={updateDateField}
+        onDateTimeChange={onDateTimeChange}
+        onApplyOffset={onApplyDateOffset}
+        onPasteDateString={onPasteDateString}
         onSetToNow={setDateToNow}
         onClear={onClearDateInput}
       />
@@ -94,7 +98,7 @@ export default function UnixTimestampConverter() {
       <SectionGap />
 
       {/* Common Timestamp Intervals Cheat Sheet */}
-      <ReferenceCard />
+      <ReferenceSection />
     </>
   );
 }

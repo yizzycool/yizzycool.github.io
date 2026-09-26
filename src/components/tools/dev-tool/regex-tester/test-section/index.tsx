@@ -1,26 +1,34 @@
 'use client';
 
+import type {
+  ChangeEventHandler,
+  Dispatch,
+  RefObject,
+  SetStateAction,
+} from 'react';
+
 import { Type } from 'lucide-react';
 
-import { cn } from '@/utils/cn';
+import { DeleteAction, PasteAction } from '@/components/shared/action-button';
+import LabelBar from '@/components/tools/common/label-bar';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardTitle } from '@/components/ui/card';
-import { PasteAction, DeleteAction } from '@/components/shared/action-button';
+import { cn } from '@/utils/cn';
+
 import HighlightMark from './highlight-mark';
 
 type Props = {
   pattern: string;
   flags: string;
   testString: string;
-  setTestString: React.Dispatch<React.SetStateAction<string>>;
+  setTestString: Dispatch<SetStateAction<string>>;
   matches: Array<RegExpExecArray>;
   error: string | null;
-  testTextareaRef?: React.RefObject<HTMLTextAreaElement | null>;
+  testTextareaRef?: RefObject<HTMLTextAreaElement | null>;
   onPaste?: () => void;
   onClear?: () => void;
 };
 
-export default function TestCard({
+export default function TestSection({
   pattern,
   flags,
   testString,
@@ -31,7 +39,7 @@ export default function TestCard({
   onPaste,
   onClear,
 }: Props) {
-  const onChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
+  const onChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     setTestString(e.target.value);
     updateTextareaHeight();
   };
@@ -44,21 +52,27 @@ export default function TestCard({
   };
 
   return (
-    <Card>
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <CardTitle icon={Type}>Test String</CardTitle>
-
+    <div className="w-full text-left">
+      <LabelBar
+        icon={Type}
+        label={
+          <div className="flex items-center gap-2.5">
+            <span>Test String</span>
+            <Badge
+              variant={matches.length > 0 ? 'secondary' : 'surface'}
+              className="font-mono text-xs font-semibold"
+            >
+              {matches.length} {matches.length === 1 ? 'Match' : 'Matches'}
+            </Badge>
+          </div>
+        }
+        htmlFor="regex-tester-textarea"
+      >
         <div className="flex items-center gap-2">
           {onPaste && <PasteAction onClick={onPaste} />}
           {onClear && <DeleteAction onClick={onClear} disabled={!testString} />}
-          <Badge
-            variant={matches.length > 0 ? 'secondary' : 'surface'}
-            className="font-mono text-xs font-semibold"
-          >
-            {matches.length} {matches.length === 1 ? 'Match' : 'Matches'}
-          </Badge>
         </div>
-      </div>
+      </LabelBar>
 
       {/* Textarea + Highlighting Overlay */}
       <div
@@ -92,6 +106,6 @@ export default function TestCard({
           aria-label="Test string"
         />
       </div>
-    </Card>
+    </div>
   );
 }

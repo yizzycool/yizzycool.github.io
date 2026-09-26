@@ -1,25 +1,28 @@
 'use client';
 
-import type { PropertyResultCardProps } from './types';
+import type { PropertyResultSectionProps } from './types';
 
 import { Copy, SquareSquare } from 'lucide-react';
 
+import LabelBar from '@/components/tools/common/label-bar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { cn } from '@/utils/cn';
 
 import PropertyList from './property-list';
 
-export function PropertyResultCard({
+/**
+ * Frameless result section component that wraps a `PropertyList` or custom children
+ * with a standardized `LabelBar` header, result count badge, and optional Copy All action.
+ */
+export function PropertyResultSection({
   title = 'Results',
   titleIcon = SquareSquare,
   count,
   countBadgeText,
   headerActions,
   onCopyAll,
-  scrollable = true,
+  scrollable = false,
   maxHeightClass = 'max-h-80',
   isLoading = false,
   loadingText,
@@ -27,29 +30,33 @@ export function PropertyResultCard({
   emptyIcon,
   items,
   columns = 1,
+  grouped,
   children,
   className,
-}: PropertyResultCardProps) {
+}: PropertyResultSectionProps) {
   const hasCount = typeof count === 'number';
   const badgeLabel = countBadgeText || `${count} Found`;
 
   return (
-    <Card className={cn('text-left', className)}>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <CardTitle icon={titleIcon}>{title}</CardTitle>
-          {hasCount && (
-            <Badge
-              variant="neutral"
-              size="sm"
-              rounded="base"
-              className="font-mono text-xs"
-            >
-              {badgeLabel}
-            </Badge>
-          )}
-        </div>
-
+    <div className={cn('w-full text-left', className)}>
+      <LabelBar
+        icon={titleIcon}
+        label={
+          <div className="flex items-center gap-2.5">
+            <span>{title}</span>
+            {hasCount && (
+              <Badge
+                variant="neutral"
+                size="sm"
+                rounded="base"
+                className="font-mono text-xs"
+              >
+                {badgeLabel}
+              </Badge>
+            )}
+          </div>
+        }
+      >
         <div className="flex items-center gap-2">
           {headerActions}
           {onCopyAll && (
@@ -66,19 +73,14 @@ export function PropertyResultCard({
             </Button>
           )}
         </div>
-      </div>
+      </LabelBar>
 
-      <Separator className="-mx-6 my-6" />
-
-      <div
-        className={cn(
-          scrollable && ['-m-6 overflow-y-auto p-6', maxHeightClass]
-        )}
-      >
+      <div className={cn(scrollable && ['overflow-y-auto', maxHeightClass])}>
         {children || (
           <PropertyList
             items={items}
             columns={columns}
+            grouped={grouped}
             isLoading={isLoading}
             loadingText={loadingText}
             emptyText={emptyText}
@@ -86,8 +88,8 @@ export function PropertyResultCard({
           />
         )}
       </div>
-    </Card>
+    </div>
   );
 }
 
-export default PropertyResultCard;
+export default PropertyResultSection;

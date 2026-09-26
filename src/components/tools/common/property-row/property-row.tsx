@@ -19,6 +19,7 @@ export function PropertyRow({
   variant = 'default',
   copyable = true,
   hoverAction = false,
+  grouped = false,
   action,
   mono = true,
   onClick,
@@ -56,11 +57,15 @@ export function PropertyRow({
 
   return (
     <Surface
-      variant={variant}
+      variant={grouped ? 'default' : variant}
+      bordered={!grouped}
+      rounded={grouped ? 'none' : 'xl'}
       onClick={onClick}
       className={cn(
-        'group p-3.5 text-left',
-        onClick && 'cursor-pointer transition-colors hover:border-sky-500',
+        'group p-3.5 text-left transition-colors',
+        grouped &&
+          'bg-transparent shadow-none hover:bg-neutral-100/50 dark:hover:bg-neutral-800/40',
+        onClick && 'cursor-pointer hover:border-sky-500',
         className
       )}
     >

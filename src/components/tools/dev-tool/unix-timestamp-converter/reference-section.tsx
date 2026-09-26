@@ -1,25 +1,22 @@
 'use client';
 
 import { BookOpen } from 'lucide-react';
-import { Card, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+
 import { CopyAction } from '@/components/shared/action-button';
+import LabelBar from '@/components/tools/common/label-bar';
+
 import { TIME_INTERVALS } from './constants';
 
-export default function ReferenceCard() {
+export default function ReferenceSection() {
   return (
-    <Card animation="fade-in" className="text-left">
-      <CardTitle icon={BookOpen}>Time Intervals Quick Reference</CardTitle>
+    <div className="w-full text-left">
+      <LabelBar
+        icon={BookOpen}
+        label="Time Intervals Quick Reference"
+        description="Common time intervals in seconds and milliseconds for caching, TTL, JWT expiration, and cookie age calculations."
+      />
 
-      {/* Separator */}
-      <Separator className="-mx-6 my-5" />
-
-      <p className="mb-4 text-xs text-slate-500 dark:text-slate-400">
-        Common time intervals in seconds and milliseconds for caching, TTL, JWT
-        expiration, and cookie age calculations.
-      </p>
-
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto rounded-xl border border-neutral-200/80 bg-white/70 p-4 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-900/40">
         <table className="w-full text-left text-xs">
           <thead>
             <tr className="border-b border-neutral-200 text-slate-400 dark:border-neutral-700 dark:text-slate-500">
@@ -38,7 +35,7 @@ export default function ReferenceCard() {
             {TIME_INTERVALS.map((item) => (
               <tr
                 key={item.unit}
-                className="transition-colors hover:bg-neutral-50/60 dark:hover:bg-neutral-800/30"
+                className="transition-colors hover:bg-neutral-100/60 dark:hover:bg-neutral-800/50"
               >
                 <td className="py-2.5 font-sans font-medium text-slate-800 dark:text-slate-200">
                   {item.unit}
@@ -75,6 +72,6 @@ export default function ReferenceCard() {
           </tbody>
         </table>
       </div>
-    </Card>
+    </div>
   );
 }

@@ -97,6 +97,20 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
       'Patterns and test strings are evaluated locally in your browser JavaScript engine. No input text is recorded or transmitted.',
   },
 
+  [ToolKeys.hashGenerator]: {
+    overview:
+      'Cryptographic hash functions generate fixed-size digital fingerprints from arbitrary input data or files. They are fundamental building blocks for file integrity validation, digital signatures, password verification, and data security. This tool computes MD5, SHA-1, SHA-256, SHA-384, SHA-512, and HMAC checksums directly in your browser with zero latency.',
+    features: [
+      'Multi-Algorithm Output: Compute MD5 (128-bit), SHA-1 (160-bit), SHA-256 (256-bit), SHA-384 (384-bit), and SHA-512 (512-bit) simultaneously.',
+      'Dual Input Modes: Real-time debounced text input with byte-level counting, plus high-efficiency local file drag-and-drop chunking.',
+      'HMAC Authentication: Calculate Hash-based Message Authentication Codes with customizable secret keys in plain text or hex format.',
+      'Target Hash Matching: Automatically compare any candidate checksum against generated hashes with instant green match highlighting.',
+      'Format & Case Controls: One-click toggle between Uppercase/Lowercase and Hex/Base64 encodings with instant batch clipboard export.',
+    ],
+    bottomNote:
+      'All hash computations utilize native browser Web Crypto hardware acceleration and local JavaScript engines. Your private text strings and sensitive files are never uploaded, stored, or transmitted over any network.',
+  },
+
   // ==================
 
   [ToolKeys.picMergeStudio]: {

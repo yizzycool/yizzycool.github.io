@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 
 type Props = {
   label?: ReactNode;
+  description?: ReactNode;
   icon?: LucideIcon;
   htmlFor?: string;
   id?: string;
@@ -19,6 +20,7 @@ type Props = {
 
 export default function LabelBar({
   label,
+  description,
   icon,
   htmlFor,
   id,
@@ -30,25 +32,27 @@ export default function LabelBar({
   const actionItems = actions ?? children;
 
   return (
-    <div
-      id={id}
-      className={cn(
-        'mb-3 flex w-full flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center',
-        className
-      )}
-    >
-      <Label htmlFor={htmlFor} icon={icon}>
-        {label}
-      </Label>
-      {actionItems && (
-        <div
-          className={cn(
-            'flex items-center gap-2 self-end sm:self-auto',
-            actionsClassName
-          )}
-        >
-          {actionItems}
-        </div>
+    <div id={id} className={cn('mb-3 w-full text-left', className)}>
+      <div className="flex w-full flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
+        <Label htmlFor={htmlFor} icon={icon}>
+          {label}
+        </Label>
+        {actionItems && (
+          <div
+            className={cn(
+              'flex items-center gap-2 self-end sm:self-auto',
+              actionsClassName
+            )}
+          >
+            {actionItems}
+          </div>
+        )}
+      </div>
+
+      {description && (
+        <p className="mt-1.5 text-xs text-slate-500 dark:text-neutral-400">
+          {description}
+        </p>
       )}
     </div>
   );

@@ -58,6 +58,7 @@ export function PropertyList({
   items,
   children,
   columns = 1,
+  grouped,
   variant,
   copyable,
   hoverAction,
@@ -99,6 +100,36 @@ export function PropertyList({
     );
   }
 
+  const isSingleCol = !columns || columns === 1;
+  const isGrouped = grouped ?? isSingleCol;
+
+  if (isGrouped) {
+    return (
+      <div
+        className={cn(
+          'divide-y divide-neutral-200/70 overflow-hidden rounded-xl border border-neutral-200/80 bg-white/70 backdrop-blur-md dark:divide-neutral-800 dark:border-neutral-800 dark:bg-neutral-900/40',
+          className
+        )}
+        role="region"
+        aria-live="polite"
+      >
+        {items
+          ? items.map((item, idx) => (
+              <PropertyRow
+                key={item.id || item.label || idx}
+                variant={item.variant || variant}
+                copyable={item.copyable ?? copyable}
+                hoverAction={item.hoverAction ?? hoverAction}
+                mono={item.mono ?? mono}
+                grouped={item.grouped ?? true}
+                {...item}
+              />
+            ))
+          : children}
+      </div>
+    );
+  }
+
   const columnClasses = getColumnClasses(columns, gap);
 
   return (
@@ -115,6 +146,7 @@ export function PropertyList({
               copyable={item.copyable ?? copyable}
               hoverAction={item.hoverAction ?? hoverAction}
               mono={item.mono ?? mono}
+              grouped={item.grouped ?? false}
               {...item}
             />
           ))

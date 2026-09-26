@@ -71,6 +71,11 @@ export type PropertyItem = {
   mono?: boolean;
 
   /**
+   * Whether this item is part of a grouped container (removes independent border and rounded corners).
+   */
+  grouped?: boolean;
+
+  /**
    * Optional click handler for the entire row container (e.g. selecting, focusing canvas object).
    */
   onClick?: () => void;
@@ -135,6 +140,11 @@ export type PropertyListProps = {
   columns?: PropertyColumns;
 
   /**
+   * Whether to wrap items in a single unified inset container with hairline dividers (`divide-y`). Defaults to true when columns === 1.
+   */
+  grouped?: boolean;
+
+  /**
    * Default surface variant applied to all rendered items unless overridden per item.
    */
   variant?: SurfaceVariant;
@@ -186,16 +196,16 @@ export type PropertyListProps = {
 };
 
 /**
- * Props for the `PropertyResultCard` component.
+ * Props for the `PropertyResultSection` component.
  */
-export type PropertyResultCardProps = {
+export type PropertyResultSectionProps = {
   /**
-   * Card title displayed in the header (defaults to "Results").
+   * Section title displayed in the header (defaults to "Results").
    */
   title?: string;
 
   /**
-   * Lucide icon displayed alongside the card title.
+   * Lucide icon displayed alongside the section title.
    */
   titleIcon?: LucideIcon;
 
@@ -210,7 +220,7 @@ export type PropertyResultCardProps = {
   countBadgeText?: string;
 
   /**
-   * Additional action elements rendered in the card header.
+   * Additional action elements rendered in the section header.
    */
   headerActions?: ReactNode;
 
@@ -220,7 +230,7 @@ export type PropertyResultCardProps = {
   onCopyAll?: () => void;
 
   /**
-   * Whether to constrain the list within a scrollable container. Defaults to true.
+   * Whether to constrain the list within a scrollable container. Defaults to false.
    */
   scrollable?: boolean;
 
@@ -260,12 +270,22 @@ export type PropertyResultCardProps = {
   columns?: PropertyColumns;
 
   /**
-   * Optional custom child elements rendered inside the card body.
+   * Whether to display items in a unified inset grouped container. Defaults to true when columns === 1.
+   */
+  grouped?: boolean;
+
+  /**
+   * Optional custom child elements rendered inside the section body.
    */
   children?: ReactNode;
 
   /**
-   * Custom CSS class names applied to the outer Card.
+   * Custom CSS class names applied to the outer section container.
    */
   className?: string;
 };
+
+/**
+ * @deprecated Use `PropertyResultSectionProps` instead.
+ */
+export type PropertyResultCardProps = PropertyResultSectionProps;
