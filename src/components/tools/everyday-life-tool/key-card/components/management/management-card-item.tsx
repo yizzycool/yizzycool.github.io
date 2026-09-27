@@ -2,18 +2,14 @@
 
 import type { CardData, ContentVersion } from '../../types';
 
-import { Plus, Info } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useSortable } from '@dnd-kit/react/sortable';
 
 import { cn } from '@/utils/cn';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import {
-  TooltipPopup,
-  TooltipRoot,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { InfoTooltip } from '@/components/ui/info-tooltip';
 
 import { ManagementCardHeader } from './management-card-header';
 import { ManagementVersionItem } from './management-version-item';
@@ -114,24 +110,12 @@ export function ManagementCardItem({
               <div className="space-y-1.5">
                 <label className="flex items-center gap-1.5 text-xs font-bold text-slate-600 dark:text-slate-300">
                   <span>Tags</span>
-                  <TooltipRoot>
-                    <TooltipTrigger>
-                      <button
-                        type="button"
-                        className="cursor-pointer opacity-60 hover:opacity-100"
-                      >
-                        <Info size={12} strokeWidth={2.5} />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipPopup
-                      showArrow
-                      placement="top"
-                      className="max-w-xs px-3 py-2 text-xs font-normal leading-relaxed"
-                    >
-                      Separate multiple tags with commas (e.g. Prompt, Code,
-                      Work).
-                    </TooltipPopup>
-                  </TooltipRoot>
+                  <InfoTooltip
+                    size="xs"
+                    iconStrokeWidth={2.5}
+                    content="Separate multiple tags with commas (e.g. Prompt, Code, Work)."
+                    ariaLabel="Tags format hint"
+                  />
                 </label>
                 <input
                   type="text"
@@ -154,25 +138,12 @@ export function ManagementCardItem({
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-1.5 text-xs font-bold text-slate-600 dark:text-slate-300">
                     <span>Content Versions ({contents.length})</span>
-                    <TooltipRoot>
-                      <TooltipTrigger>
-                        <button
-                          type="button"
-                          className="cursor-pointer opacity-60 hover:opacity-100"
-                        >
-                          <Info size={12} strokeWidth={2.5} />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipPopup
-                        showArrow
-                        placement="top"
-                        variant="dark"
-                        className="max-w-xs px-3 py-2 text-xs font-normal leading-relaxed"
-                      >
-                        Add multiple versions (e.g. Summary, Full, English).
-                        Supports Markdown rendering.
-                      </TooltipPopup>
-                    </TooltipRoot>
+                    <InfoTooltip
+                      size="xs"
+                      iconStrokeWidth={2.5}
+                      content="Add multiple versions (e.g. Summary, Full, English). Supports Markdown rendering."
+                      ariaLabel="Content versions hint"
+                    />
                   </span>
 
                   <Button

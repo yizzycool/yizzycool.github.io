@@ -153,6 +153,23 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.colorConverter]: {
+    title:
+      'Color Space Converter & WCAG Contrast Checker – HEX, RGB, HSL, OKLCH, CMYK | Yizzy Peasy',
+    description:
+      'Free online Color Space Converter & WCAG 2.1 Contrast Checker. Convert color codes across HEX, RGB, HSL, HSV, CMYK, CSS OKLCH, and CIE LAB with real-time accessibility contrast ratio analysis.',
+    openGraph: {
+      title: 'Color Space Converter & WCAG Contrast Checker',
+      description:
+        'Convert colors instantly between HEX, RGB, HSL, OKLCH, CMYK and check WCAG 2.1 accessibility compliance with pure client-side processing.',
+    },
+    twitter: {
+      title: 'Color Space Converter & WCAG Contrast Checker',
+      description:
+        'Convert colors across HEX, RGB, HSL, OKLCH, CMYK and evaluate WCAG 2.1 contrast ratios online.',
+    },
+  },
+
   // ==================
 
   [ToolKeys.picMergeStudio]: {
@@ -505,6 +522,20 @@ export const ToolJsonLdSoftwareApplication = {
       'ULID, CUID2, Hex Tokens (16/32-byte), and Base64URL tokens',
       'Batch generation from 1 to 1,000 items with case and quote controls',
       '100% client-side CSPRNG randomness with instant text and JSON export',
+    ],
+  },
+
+  [ToolKeys.colorConverter]: {
+    name: 'Color Space Converter',
+    applicationCategory: 'DeveloperTool',
+    description:
+      'A versatile color space conversion and WCAG 2.1 contrast ratio analysis tool supporting HEX, RGB, HSL, HSV, CMYK, CSS OKLCH, and CIE LAB with pure client-side computing.',
+    featureList: [
+      'Convert between HEX, RGB, HSL, HSV, CMYK, CSS OKLCH, and CIE LAB',
+      'Instant WCAG 2.1 contrast ratio testing against black and white text',
+      'Compliance badges for AA and AAA levels with thresholds info tooltip',
+      '10-step tints and shades ramp and color harmonies (complementary, analogous, triadic)',
+      '100% client-side calculation with EyeDropper and native color picker support',
     ],
   },
 

@@ -173,7 +173,7 @@ export function TooltipPopup({
           <div
             ref={setArrowEl}
             className={cn(
-              'absolute size-3 rotate-45',
+              'absolute z-[-1] size-3 rotate-45',
               currentVariant.arrow,
               computedArrowBorder,
               arrowClassName

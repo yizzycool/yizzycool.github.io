@@ -20,6 +20,7 @@ export const TOOLS_WITH_HOTKEY = [
   ToolKeys.regexTester,
   ToolKeys.hashGenerator,
   ToolKeys.uuidGenerator,
+  ToolKeys.colorConverter,
 
   // Image Tools
   ToolKeys.picMergeStudio,

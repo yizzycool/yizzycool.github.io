@@ -125,6 +125,20 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
       'All random values are generated entirely client-side using the window.crypto CSPRNG entropy pool. No identifiers are transmitted, logged, or stored on external servers.',
   },
 
+  [ToolKeys.colorConverter]: {
+    overview:
+      'Color management across web design, user experience design, and print production requires precision and adherence to modern standards. This Color Space Converter bridges traditional formats (HEX, RGB, HSL, CMYK) with cutting-edge CSS Color Module Level 4 specifications (OKLCH, CIE LAB) alongside real-time WCAG 2.1 accessibility contrast validation.',
+    features: [
+      'Comprehensive Color Space Support: Instant bidirectional conversion between HEX, HEX8, RGB, RGBA, HSL, HSLA, HSV/HSB, CMYK, CSS OKLCH, and CIE LAB.',
+      'CSS Color Level 4 Ready: Full support for modern OKLCH, providing perceptually uniform lightness and chroma ideal for creating balanced UI palettes.',
+      'WCAG 2.1 Accessibility Evaluation: Instant contrast ratio testing against pure black and white text with dynamic AA/AAA compliance badges and guidelines tooltip.',
+      'Tints, Shades & Harmony Palettes: Automatically computes 10-step light and dark ramps, plus complementary, analogous, and triadic color schemes with 1-click selection.',
+      'Native Picker & EyeDropper API: Seamless integration with system color dialogs and browser EyeDropper API to sample colors directly from any on-screen pixel.',
+    ],
+    bottomNote:
+      'All color space mathematics and matrix conversions run 100% client-side in pure TypeScript with zero external libraries or network requests.',
+  },
+
   // ==================
 
   [ToolKeys.picMergeStudio]: {

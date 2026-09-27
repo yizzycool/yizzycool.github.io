@@ -4,12 +4,8 @@ import type { LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 import { CircleAlert } from 'lucide-react';
+import { InfoTooltip } from '@/components/ui/info-tooltip';
 import { cn } from '@/utils/cn';
-import {
-  TooltipPopup,
-  TooltipRoot,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 
 type Props = {
   label: string;
@@ -44,25 +40,12 @@ export default function SettingHeader({
         </span>
 
         {hint && (
-          <TooltipRoot>
-            <TooltipTrigger>
-              <button
-                type="button"
-                className="inline-flex cursor-pointer text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
-                aria-label={`Hint for ${label}`}
-              >
-                <CircleAlert size={13} className="shrink-0" />
-              </button>
-            </TooltipTrigger>
-            <TooltipPopup
-              variant="dark"
-              placement="top"
-              showArrow
-              className="max-w-xs px-2.5 py-1.5 text-xs leading-relaxed"
-            >
-              {hint}
-            </TooltipPopup>
-          </TooltipRoot>
+          <InfoTooltip
+            size="xs"
+            icon={CircleAlert}
+            content={hint}
+            ariaLabel={`Hint for ${label}`}
+          />
         )}
       </div>
 

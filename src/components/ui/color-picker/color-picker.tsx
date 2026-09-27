@@ -12,6 +12,8 @@ import { cn } from '@/utils/cn';
 import {
   colorPickerCardBaseStyles,
   colorPickerInputBaseStyles,
+  colorPickerSolidButtonStyles,
+  colorPickerSolidWrapperStyles,
   colorPickerSwatchButtonStyles,
   colorPickerSwatchWrapperStyles,
 } from './color-picker.variants';
@@ -36,6 +38,7 @@ export function ColorPicker({
   className,
   inputClassName,
   buttonClassName,
+  iconClassName,
   ariaLabel,
   disabled = DEFAULT_COLOR_PICKER_DISABLED,
   icon: Icon = Pipette,
@@ -60,6 +63,34 @@ export function ColorPicker({
     }
   };
 
+  if (variant === 'solid') {
+    return (
+      <div className={cn(colorPickerSolidWrapperStyles, className)}>
+        <Button
+          title={showTitle ? title : undefined}
+          onClick={handleButtonClick}
+          variant="ghost"
+          bordered={false}
+          hoverEffect={false}
+          disabled={disabled}
+          style={{ backgroundColor: value }}
+          className={cn(colorPickerSolidButtonStyles, buttonClassName)}
+          aria-label={ariaLabel ?? title ?? 'Color picker'}
+        />
+        <input
+          ref={inputRef}
+          id={id}
+          type="color"
+          value={value}
+          disabled={disabled}
+          onChange={handleChange}
+          className="sr-only"
+          aria-label={ariaLabel ?? title ?? 'Color picker'}
+        />
+      </div>
+    );
+  }
+
   if (variant === 'swatch' || variant === 'circle') {
     return (
       <div className={cn(colorPickerSwatchWrapperStyles, className)}>
@@ -81,8 +112,13 @@ export function ColorPicker({
             buttonClassName
           )}
         >
-          <span className="flex h-full w-full items-center justify-center rounded-full bg-white p-1 dark:bg-neutral-800">
-            <Icon className="h-full w-full text-neutral-600 dark:text-neutral-300" />
+          <span className="flex h-full w-full items-center justify-center rounded-full bg-white dark:bg-neutral-800">
+            <Icon
+              className={cn(
+                'h-[54%] w-[54%] text-neutral-600 dark:text-neutral-300',
+                iconClassName
+              )}
+            />
           </span>
         </Button>
         <input

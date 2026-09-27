@@ -1,7 +1,12 @@
 import type { ChangeEvent } from 'react';
 import type { LucideIcon } from 'lucide-react';
 
-export type ColorPickerVariant = 'card' | 'input' | 'swatch' | 'circle';
+export type ColorPickerVariant =
+  | 'card'
+  | 'input'
+  | 'swatch'
+  | 'circle'
+  | 'solid';
 
 /**
  * Props for the ColorPicker component.
@@ -13,7 +18,7 @@ export type ColorPickerProps = {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   /** Direct color string callback for convenience */
   onColorChange?: (color: string) => void;
-  /** Visual variant: 'card' (full card), 'input' (color block), or 'swatch' / 'circle' (round palette button) */
+  /** Visual variant: 'card' (full card), 'input' (color block), 'swatch' / 'circle' (round rainbow button), or 'solid' (swatch displaying current color) */
   variant?: ColorPickerVariant;
   /** Optional display label (used in 'card' variant) */
   label?: string;
@@ -35,6 +40,8 @@ export type ColorPickerProps = {
   disabled?: boolean;
   /** Optional Lucide icon for swatch / circle variant (default: Pipette) */
   icon?: LucideIcon;
+  /** Custom CSS classes for the swatch icon */
+  iconClassName?: string;
   /** Custom CSS classes for the swatch button */
   buttonClassName?: string;
 };

@@ -4,7 +4,7 @@ import type { CanvasGridConfig } from '../../../types/config';
 import type { ConfigHelper } from '../../../types/config-helper';
 import type { LucideIcon } from 'lucide-react';
 
-import { Grid2x2, Info, Sparkles } from 'lucide-react';
+import { Grid2x2, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { clamp } from 'lodash';
 
@@ -13,11 +13,7 @@ import { PillTabs } from '@/components/ui/tabs';
 import { Selector } from '@/components/ui/selector';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  TooltipPopup,
-  TooltipRoot,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { InfoTooltip } from '@/components/ui/info-tooltip';
 import usePreventNumberWheel from '@/hooks/dom/use-prevent-number-wheel';
 
 import { DEFAULT_CANVAS_CONFIG } from '../../..';
@@ -173,20 +169,12 @@ export default function CanvasLayout({
       {/* Header with info tooltip */}
       <div className="flex items-center gap-2">
         <PanelLabel>Canvas Layout</PanelLabel>
-        <TooltipRoot delay={{ open: 150, close: 100 }}>
-          <TooltipTrigger>
-            <button
-              type="button"
-              className="text-neutral-400 transition-colors hover:text-neutral-600 dark:hover:text-neutral-200"
-              aria-label="Layout modes description"
-            >
-              <Info size={13} />
-            </button>
-          </TooltipTrigger>
-          <TooltipPopup
-            placement="top"
-            className="max-w-[210px] p-2.5 text-left text-xs leading-relaxed"
-          >
+        <InfoTooltip
+          size="xs"
+          ariaLabel="Layout modes description"
+          popupClassName="max-w-[210px] p-2.5 text-left leading-relaxed"
+        >
+          <div>
             <div className="mb-1 font-semibold text-sky-400">Layout Modes</div>
             <div className="mb-1">
               <span className="font-medium text-white">Free:</span> Freely drag,
@@ -196,8 +184,8 @@ export default function CanvasLayout({
               <span className="font-medium text-white">Grid:</span> Organized N
               × M grid with automatic photo snapping.
             </div>
-          </TooltipPopup>
-        </TooltipRoot>
+          </div>
+        </InfoTooltip>
       </div>
 
       <PillTabs

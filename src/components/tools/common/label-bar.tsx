@@ -13,6 +13,7 @@ type Props = {
   htmlFor?: string;
   id?: string;
   className?: string;
+  headerClassName?: string;
   actionsClassName?: string;
   children?: ReactNode;
   actions?: ReactNode;
@@ -25,6 +26,7 @@ export default function LabelBar({
   htmlFor,
   id,
   className,
+  headerClassName,
   actionsClassName,
   children,
   actions,
@@ -33,7 +35,12 @@ export default function LabelBar({
 
   return (
     <div id={id} className={cn('mb-3 w-full text-left', className)}>
-      <div className="flex w-full flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center">
+      <div
+        className={cn(
+          'flex w-full flex-col-reverse items-start justify-between gap-2 sm:flex-row sm:items-center',
+          headerClassName
+        )}
+      >
         <Label htmlFor={htmlFor} icon={icon}>
           {label}
         </Label>

@@ -3,14 +3,10 @@
 import type { OverviewItem } from './types';
 
 import { useState } from 'react';
-import { Check, Copy, Info, RefreshCw } from 'lucide-react';
+import { Check, Copy, RefreshCw } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import {
-  TooltipPopup,
-  TooltipRoot,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { InfoTooltip } from '@/components/ui/info-tooltip';
 import { cn } from '@/utils/cn';
 import toast from '@/utils/toast';
 
@@ -46,24 +42,11 @@ export default function OverviewResultItem({
         <span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">
           {item.name}
         </span>
-        <TooltipRoot delay={{ open: 150, close: 100 }}>
-          <TooltipTrigger>
-            <span
-              className="cursor-pointer text-neutral-400 transition-colors hover:text-neutral-600 dark:text-neutral-500 dark:hover:text-neutral-300"
-              aria-label={`${item.name} details`}
-            >
-              <Info className="h-3.5 w-3.5" />
-            </span>
-          </TooltipTrigger>
-          <TooltipPopup
-            placement="top"
-            showArrow
-            className="max-w-xs px-2.5 py-1.5 text-xs"
-          >
-            <div className="font-semibold text-white">{item.badge}</div>
-            <div className="mt-0.5 text-neutral-300">{item.description}</div>
-          </TooltipPopup>
-        </TooltipRoot>
+        <InfoTooltip
+          title={item.badge}
+          content={item.description}
+          ariaLabel={`${item.name} details`}
+        />
       </div>
 
       {/* Value Display */}

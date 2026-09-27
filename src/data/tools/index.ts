@@ -17,6 +17,7 @@ import {
   KeyRound,
   Languages,
   Layers,
+  Palette,
   PenTool,
   QrCode,
   Radar,
@@ -76,6 +77,7 @@ export const ToolKeys = {
   regexTester: 'regexTester',
   hashGenerator: 'hashGenerator',
   uuidGenerator: 'uuidGenerator',
+  colorConverter: 'colorConverter',
 
   // Image Tools
   picMergeStudio: 'picMergeStudio',
@@ -118,6 +120,7 @@ export const ToolGroupItems = {
     ToolKeys.regexTester,
     ToolKeys.hashGenerator,
     ToolKeys.uuidGenerator,
+    ToolKeys.colorConverter,
   ],
   [ToolGroupKeys.imgTool]: [
     ToolKeys.picMergeStudio,
@@ -151,6 +154,7 @@ export const ToolTitles = {
   [ToolKeys.regexTester]: 'Regular Expression Tester',
   [ToolKeys.hashGenerator]: 'Hash Calculator / Generator',
   [ToolKeys.uuidGenerator]: 'UUID / Token Generator',
+  [ToolKeys.colorConverter]: 'Color Space Converter',
 
   [ToolKeys.picMergeStudio]: 'PicMerge Studio',
   [ToolKeys.base64ToImage]: 'Base64 to Image',
@@ -193,6 +197,8 @@ export const ToolDescriptions = {
     'Generate cryptographic hashes and HMAC checksums (MD5, SHA-1, SHA-256, SHA-384, SHA-512) for text and files with instant target hash matching.',
   [ToolKeys.uuidGenerator]:
     'Generate cryptographically secure UUIDs (v4, v7), NanoIDs, ULIDs, and random tokens with custom lengths, alphabets, and batch export.',
+  [ToolKeys.colorConverter]:
+    'Convert colors seamlessly across HEX, RGB, HSL, HSV, CMYK, CSS OKLCH, and CIE LAB with instant WCAG 2.1 contrast ratio analysis.',
 
   [ToolKeys.picMergeStudio]:
     'Combine photos into custom collages with social media canvas presets, layer controls, filters, and high-resolution export in PNG or JPEG.',
@@ -235,6 +241,7 @@ export const ToolSlugs = {
   [ToolKeys.regexTester]: 'regex-tester',
   [ToolKeys.hashGenerator]: 'hash-generator',
   [ToolKeys.uuidGenerator]: 'uuid-generator',
+  [ToolKeys.colorConverter]: 'color-converter',
 
   [ToolKeys.picMergeStudio]: 'pic-merge-studio',
   [ToolKeys.base64ToImage]: 'base64-to-image',
@@ -276,6 +283,7 @@ export const ToolIcons = {
   [ToolKeys.regexTester]: Regex,
   [ToolKeys.hashGenerator]: Fingerprint,
   [ToolKeys.uuidGenerator]: KeyRound,
+  [ToolKeys.colorConverter]: Palette,
 
   [ToolKeys.picMergeStudio]: Layers,
   [ToolKeys.base64ToImage]: FileImage,
