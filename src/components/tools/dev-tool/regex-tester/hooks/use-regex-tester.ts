@@ -7,9 +7,9 @@ import toast from '@/utils/toast';
 
 import { REGEX_PRESETS, CUSTOM_PRESET_ID } from '../constants';
 
-const DEFAULT_PATTERN = '([A-Z])\\w+';
+const DEFAULT_PATTERN = '(?<number>\\d+)\\s+(?<item>[a-zA-Z]+)';
 const DEFAULT_FLAGS = 'g';
-const DEFAULT_TEST_STRING = 'Regular Expression';
+const DEFAULT_TEST_STRING = 'Order 100 apples, 24 oranges, and 5 bananas.';
 
 export default function useRegexTester() {
   const [pattern, setPatternState] = useState(DEFAULT_PATTERN);

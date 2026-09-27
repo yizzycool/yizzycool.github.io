@@ -14,6 +14,7 @@ import {
   Fingerprint,
   Image,
   Keyboard,
+  KeyRound,
   Languages,
   Layers,
   PenTool,
@@ -74,6 +75,7 @@ export const ToolKeys = {
   unixTimestampConverter: 'unixTimestampConverter',
   regexTester: 'regexTester',
   hashGenerator: 'hashGenerator',
+  uuidGenerator: 'uuidGenerator',
 
   // Image Tools
   picMergeStudio: 'picMergeStudio',
@@ -115,6 +117,7 @@ export const ToolGroupItems = {
     ToolKeys.unixTimestampConverter,
     ToolKeys.regexTester,
     ToolKeys.hashGenerator,
+    ToolKeys.uuidGenerator,
   ],
   [ToolGroupKeys.imgTool]: [
     ToolKeys.picMergeStudio,
@@ -147,6 +150,7 @@ export const ToolTitles = {
   [ToolKeys.unixTimestampConverter]: 'Unix Timestamp Converter',
   [ToolKeys.regexTester]: 'Regular Expression Tester',
   [ToolKeys.hashGenerator]: 'Hash Calculator / Generator',
+  [ToolKeys.uuidGenerator]: 'UUID / Token Generator',
 
   [ToolKeys.picMergeStudio]: 'PicMerge Studio',
   [ToolKeys.base64ToImage]: 'Base64 to Image',
@@ -187,6 +191,8 @@ export const ToolDescriptions = {
     'Test and debug regular expressions in real time with instant match highlighting, capture group inspection, and a built-in regex cheat sheet.',
   [ToolKeys.hashGenerator]:
     'Generate cryptographic hashes and HMAC checksums (MD5, SHA-1, SHA-256, SHA-384, SHA-512) for text and files with instant target hash matching.',
+  [ToolKeys.uuidGenerator]:
+    'Generate cryptographically secure UUIDs (v4, v7), NanoIDs, ULIDs, and random tokens with custom lengths, alphabets, and batch export.',
 
   [ToolKeys.picMergeStudio]:
     'Combine photos into custom collages with social media canvas presets, layer controls, filters, and high-resolution export in PNG or JPEG.',
@@ -228,6 +234,7 @@ export const ToolSlugs = {
   [ToolKeys.unixTimestampConverter]: 'unix-timestamp-converter',
   [ToolKeys.regexTester]: 'regex-tester',
   [ToolKeys.hashGenerator]: 'hash-generator',
+  [ToolKeys.uuidGenerator]: 'uuid-generator',
 
   [ToolKeys.picMergeStudio]: 'pic-merge-studio',
   [ToolKeys.base64ToImage]: 'base64-to-image',
@@ -268,6 +275,7 @@ export const ToolIcons = {
   [ToolKeys.unixTimestampConverter]: Clock,
   [ToolKeys.regexTester]: Regex,
   [ToolKeys.hashGenerator]: Fingerprint,
+  [ToolKeys.uuidGenerator]: KeyRound,
 
   [ToolKeys.picMergeStudio]: Layers,
   [ToolKeys.base64ToImage]: FileImage,

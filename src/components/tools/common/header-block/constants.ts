@@ -19,6 +19,7 @@ export const TOOLS_WITH_HOTKEY = [
   ToolKeys.unixTimestampConverter,
   ToolKeys.regexTester,
   ToolKeys.hashGenerator,
+  ToolKeys.uuidGenerator,
 
   // Image Tools
   ToolKeys.picMergeStudio,

@@ -69,4 +69,5 @@ export const HASH_CASE_MODE_LABELS: Record<HashCaseMode, string> = {
   upper: 'UPPERCASE',
 };
 
-export const DEFAULT_SAMPLE_TEXT = '';
+export const DEFAULT_SAMPLE_TEXT =
+  'The quick brown fox jumps over the lazy dog';

@@ -1,0 +1,98 @@
+'use client';
+
+import { useState } from 'react';
+import { Copy, ListOrdered } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { PillTabs } from '@/components/ui/tabs';
+import LabelBar from '@/components/tools/common/label-bar';
+import useIsClient from '@/hooks/lifecycle/use-is-client';
+import { cn } from '@/utils/cn';
+
+import BatchResultItem from './batch-result-item';
+
+type BatchResultsSectionProps = {
+  items: string[];
+  formattedContent: string;
+  onCopyAll: () => void;
+};
+
+export default function BatchResultsSection({
+  items,
+  formattedContent,
+  onCopyAll,
+}: BatchResultsSectionProps) {
+  const isClient = useIsClient();
+  const [viewMode, setViewMode] = useState<'text' | 'list'>('text');
+
+  return (
+    <section className="w-full text-left">
+      <LabelBar
+        icon={ListOrdered}
+        label={`Generated Batch Output (${items.length} items)`}
+        description="Formatted output ready for clipboard copy"
+      >
+        <div className="flex items-center gap-1.5">
+          <PillTabs
+            tabs={['text', 'list']}
+            activeTab={viewMode}
+            onChange={(m) => setViewMode(m as 'text' | 'list')}
+            tabLabels={{ text: 'Raw Text', list: 'Row List' }}
+            variant="segment"
+            size="xs"
+            rounded="md"
+            className="mr-1 p-0.5"
+            tabClassName="px-2 py-0.5 text-xs"
+          />
+          <Button
+            variant="primary"
+            size="xs"
+            rounded="lg"
+            icon={Copy}
+            onClick={onCopyAll}
+            title="Copy all items"
+          >
+            Copy All
+          </Button>
+        </div>
+      </LabelBar>
+
+      {viewMode === 'text' ? (
+        <div className="relative">
+          <textarea
+            readOnly
+            value={isClient ? formattedContent : ''}
+            placeholder={isClient ? '' : 'Generating batch output...'}
+            rows={Math.min(Math.max(6, items.length), 16)}
+            className={cn(
+              'w-full resize-y rounded-xl border border-neutral-200/80 bg-white/70 p-4 font-mono text-xs outline-none backdrop-blur-md transition-all sm:text-sm',
+              'text-neutral-800 dark:border-neutral-800 dark:bg-neutral-900/40 dark:text-neutral-100',
+              'focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20'
+            )}
+            onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+            title="Click to select all"
+          />
+          <div className="mt-1 flex items-center justify-between px-1 text-xs text-neutral-400 dark:text-neutral-500">
+            <span>Click inside box to select all</span>
+            <span>
+              {isClient ? items.length : 0}{' '}
+              {items.length === 1 ? 'line' : 'lines'} •{' '}
+              {isClient ? formattedContent.length : 0} chars
+            </span>
+          </div>
+        </div>
+      ) : (
+        <div className="max-h-[460px] divide-y divide-neutral-200/70 overflow-y-auto overflow-x-hidden rounded-xl border border-neutral-200/80 bg-white/70 backdrop-blur-md dark:divide-neutral-800 dark:border-neutral-800 dark:bg-neutral-900/40">
+          {items.map((item, idx) => (
+            <BatchResultItem
+              key={isClient ? `${item}-${idx}` : `placeholder-${idx}`}
+              item={item}
+              index={idx}
+              isClient={isClient}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}

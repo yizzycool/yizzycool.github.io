@@ -17,7 +17,7 @@ import { hexToBytes, stringToUtf8Bytes } from '../utils/formatters';
 
 export function useHashCalculator() {
   const [inputMode, setInputMode] = useState<HashInputMode>('text');
-  const [textInput, setTextInput] = useState<string>(DEFAULT_SAMPLE_TEXT);
+  const [textInput, setTextInput] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
 
   const [encoding, setEncoding] = useState<HashEncoding>('hex');

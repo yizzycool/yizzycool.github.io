@@ -111,6 +111,20 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
       'All hash computations utilize native browser Web Crypto hardware acceleration and local JavaScript engines. Your private text strings and sensitive files are never uploaded, stored, or transmitted over any network.',
   },
 
+  [ToolKeys.uuidGenerator]: {
+    overview:
+      'Unique identifiers (UUIDs, NanoIDs, ULIDs, and cryptographic random tokens) are critical components of modern distributed architectures, database primary keys, session tracking, and API security. This tool provides instant generation of 9 standard identifier formats powered by browser-native Web Crypto CSPRNG (Cryptographically Secure Pseudorandom Number Generator).',
+    features: [
+      'Standard & Next-Gen UUIDs: Full support for ubiquitous RFC 4122 UUID v4 and the latest RFC 9562 time-ordered UUID v7 for optimal database indexing performance.',
+      'Customizable NanoID: Compact, URL-friendly unique strings with adjustable length (8–64) and customizable character sets (including non-ambiguous character filtering).',
+      'High-Entropy Security Tokens: Generate 16-byte (128-bit) and 32-byte (256-bit) Hex tokens, Base64URL tokens, and 26-character ULIDs.',
+      'Flexible Batch Generation: Generate up to 1,000 identifiers at once with uppercase/lowercase toggles, optional hyphens, single/double quote wrapping, and delimiter choices.',
+      'Instant Clipboard & File Export: One-click copy for all generated identifiers, plus direct download as .txt or structured .json files.',
+    ],
+    bottomNote:
+      'All random values are generated entirely client-side using the window.crypto CSPRNG entropy pool. No identifiers are transmitted, logged, or stored on external servers.',
+  },
+
   // ==================
 
   [ToolKeys.picMergeStudio]: {

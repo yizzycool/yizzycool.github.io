@@ -136,6 +136,23 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.uuidGenerator]: {
+    title:
+      'UUID / NanoID / Random Token Generator – Free Online ID Generator | Yizzy Peasy',
+    description:
+      'Generate cryptographically secure random identifiers online: UUID v4, RFC 9562 UUID v7, NanoID, ULID, CUID2, Hex tokens, and Base64URL tokens with custom lengths, alphabets, and batch export.',
+    openGraph: {
+      title: 'UUID & Random Token Generator – Online Dev Tool',
+      description:
+        'Free online tool to generate UUID v4, UUID v7, NanoID, ULID, and secure random tokens in batch with custom formatting and 100% client-side privacy.',
+    },
+    twitter: {
+      title: 'UUID & Random Token Generator – Online Dev Tool',
+      description:
+        'Generate UUID v4, UUID v7, NanoID, ULID, and random tokens securely with batch export in your browser.',
+    },
+  },
+
   // ==================
 
   [ToolKeys.picMergeStudio]: {
@@ -474,6 +491,20 @@ export const ToolJsonLdSoftwareApplication = {
       'HMAC secret key hashing mode',
       'Instant target checksum comparison and match highlighting',
       '100% client-side private computing without uploading data',
+    ],
+  },
+
+  [ToolKeys.uuidGenerator]: {
+    name: 'UUID / Token Generator',
+    applicationCategory: 'DeveloperTool',
+    description:
+      'A cryptographically secure unique identifier generator supporting UUID v4, RFC 9562 UUID v7, NanoID, ULID, Hex tokens, and batch formatting directly in your browser.',
+    featureList: [
+      'Generate RFC 4122 UUID v4 and RFC 9562 time-ordered UUID v7',
+      'NanoID with customizable length and character sets',
+      'ULID, CUID2, Hex Tokens (16/32-byte), and Base64URL tokens',
+      'Batch generation from 1 to 1,000 items with case and quote controls',
+      '100% client-side CSPRNG randomness with instant text and JSON export',
     ],
   },
 
