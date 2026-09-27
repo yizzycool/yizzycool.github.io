@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import { Copy, ListOrdered } from 'lucide-react';
 
+import LabelBar from '@/components/tools/common/label-bar';
 import { Button } from '@/components/ui/button';
 import { PillTabs } from '@/components/ui/tabs';
-import LabelBar from '@/components/tools/common/label-bar';
+import { Textarea } from '@/components/ui/textarea';
 import useIsClient from '@/hooks/lifecycle/use-is-client';
-import { cn } from '@/utils/cn';
 
 import BatchResultItem from './batch-result-item';
 
@@ -59,21 +59,15 @@ export default function BatchResultsSection({
 
       {viewMode === 'text' ? (
         <div className="relative">
-          <textarea
+          <Textarea
             readOnly
             value={isClient ? formattedContent : ''}
             placeholder={isClient ? '' : 'Generating batch output...'}
             rows={Math.min(Math.max(6, items.length), 16)}
-            className={cn(
-              'w-full resize-y rounded-xl border border-neutral-200/80 bg-white/70 p-4 font-mono text-xs outline-none backdrop-blur-md transition-all sm:text-sm',
-              'text-neutral-800 dark:border-neutral-800 dark:bg-neutral-900/40 dark:text-neutral-100',
-              'focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20'
-            )}
+            className="resize-none font-mono text-xs sm:text-sm"
             onClick={(e) => (e.target as HTMLTextAreaElement).select()}
-            title="Click to select all"
           />
-          <div className="mt-1 flex items-center justify-between px-1 text-xs text-neutral-400 dark:text-neutral-500">
-            <span>Click inside box to select all</span>
+          <div className="mt-1 flex items-center justify-end px-1 text-xs text-neutral-400 dark:text-neutral-500">
             <span>
               {isClient ? items.length : 0}{' '}
               {items.length === 1 ? 'line' : 'lines'} •{' '}

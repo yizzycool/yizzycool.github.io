@@ -1,4 +1,4 @@
-import type { ChangeEvent, Ref } from 'react';
+import type { ChangeEvent, MouseEvent, Ref } from 'react';
 
 /**
  * Props for the multiline Textarea component.
@@ -24,6 +24,8 @@ export type TextareaProps = {
   className?: string;
   /** Text change event handler */
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  /** Click event handler */
+  onClick?: (e: MouseEvent<HTMLTextAreaElement>) => void;
   /** Optional React ref */
   ref?: Ref<HTMLElement>;
 };

@@ -117,6 +117,7 @@ export default function PatternSection({
               className="flex-1 border-none bg-transparent tracking-widest text-slate-900 outline-none dark:text-slate-100"
               placeholder="e.g. ([A-Z])\w+"
               aria-label="Pattern of regular expression"
+              spellCheck="false"
             />
             <span className="text-slate-400">/</span>
             <span className="text-slate-600 dark:text-slate-400">{flags}</span>

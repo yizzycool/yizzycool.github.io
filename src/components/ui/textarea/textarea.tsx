@@ -18,6 +18,7 @@ export function Textarea({
   autoFocus = false,
   className = '',
   onChange = () => {},
+  onClick,
   ref,
 }: TextareaProps) {
   return (
@@ -43,6 +44,7 @@ export function Textarea({
         autoFocus={autoFocus}
         spellCheck={false}
         onChange={(e) => onChange(e)}
+        onClick={onClick}
       />
     </Field>
   );
