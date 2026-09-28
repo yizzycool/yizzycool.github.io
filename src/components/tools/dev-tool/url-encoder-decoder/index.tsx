@@ -151,7 +151,11 @@ export default function UrlEncoderDecoder() {
             disabled={isEmpty(input) || isEmpty(output)}
           />
         )}
-        <CopyAction content={output} disabled={isEmpty(output)} />
+        <CopyAction
+          content={output}
+          disabled={isEmpty(output)}
+          successToast="Output copied to clipboard"
+        />
       </LabelBar>
 
       {!!output ? (

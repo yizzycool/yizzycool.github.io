@@ -18,6 +18,7 @@ export function PropertyRow({
   subText,
   variant = 'default',
   copyable = true,
+  copySuccessToast,
   hoverAction = false,
   grouped = false,
   action,
@@ -115,6 +116,11 @@ export function PropertyRow({
               content={copyContent}
               disabled={!copyContent}
               ariaLabel={`Copy ${label}`}
+              successToast={
+                copySuccessToast === true
+                  ? `Copied ${label}!`
+                  : copySuccessToast
+              }
             />
           ) : null}
         </div>

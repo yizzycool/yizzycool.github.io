@@ -7,6 +7,7 @@ import { ColorPicker } from '@/components/ui/color-picker';
 import { Input } from '@/components/ui/input';
 
 type ColorInputBarProps = {
+  inputRef?: React.RefObject<HTMLInputElement | null>;
   colorInput: string;
   currentHex: string;
   isEyeDropperSupported: boolean;
@@ -17,6 +18,7 @@ type ColorInputBarProps = {
 };
 
 export default function ColorInputBar({
+  inputRef,
   colorInput,
   currentHex,
   isEyeDropperSupported,
@@ -38,6 +40,7 @@ export default function ColorInputBar({
       {/* Text color input */}
       <div className="min-w-[200px] flex-1">
         <Input
+          ref={inputRef}
           value={colorInput}
           onChange={(e) => onInputChange(e.target.value)}
           placeholder="Enter color (e.g. #3B82F6, rgb(...), hsl(...), oklch(...))"

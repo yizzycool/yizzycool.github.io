@@ -2,11 +2,7 @@
 
 import type { NormalizedRgba } from './types';
 
-import { useState } from 'react';
-import { Check, Copy } from 'lucide-react';
-
-import { Button } from '@/components/ui/button';
-import toast from '@/utils/toast';
+import { CopyAction } from '@/components/shared/action-button';
 
 type ColorPreviewCardProps = {
   rgba: NormalizedRgba;
@@ -21,19 +17,6 @@ export default function ColorPreviewCard({
   hslString,
   rgbString,
 }: ColorPreviewCardProps) {
-  const [isCopied, setIsCopied] = useState(false);
-
-  const handleCopyHex = async () => {
-    try {
-      await navigator.clipboard.writeText(hex);
-      setIsCopied(true);
-      toast.success(`Copied ${hex}!`);
-      setTimeout(() => setIsCopied(false), 1500);
-    } catch {
-      toast.error('Failed to copy to clipboard');
-    }
-  };
-
   const rgbaCssString = `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`;
 
   return (
@@ -75,24 +58,13 @@ export default function ColorPreviewCard({
           </div>
         </div>
 
-        <Button
-          variant="outline"
-          size="xs"
-          onClick={handleCopyHex}
-          className="gap-1.5 self-start sm:self-auto"
-        >
-          {isCopied ? (
-            <>
-              <Check className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
-              <span>Copied</span>
-            </>
-          ) : (
-            <>
-              <Copy className="h-3.5 w-3.5" />
-              <span>Copy HEX</span>
-            </>
-          )}
-        </Button>
+        <CopyAction
+          content={hex}
+          label="Copy HEX"
+          ariaLabel="Copy HEX color code"
+          successToast={`Copied ${hex}!`}
+          className="self-start sm:self-auto"
+        />
       </div>
     </div>
   );

@@ -113,7 +113,11 @@ export default function JsonTreeView({ data }: Props) {
           </div>
           <div className="flex items-center">
             <div className="flex items-center gap-2">
-              <CopyAction variant="ghost" content={dataString} />
+              <CopyAction
+                variant="ghost"
+                content={dataString}
+                successToast="JSON tree copied to clipboard"
+              />
             </div>
           </div>
         </div>

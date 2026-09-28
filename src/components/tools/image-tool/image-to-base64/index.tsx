@@ -125,7 +125,11 @@ export default function ImageToBase64() {
         </div>
         <div className="flex-1">
           <LabelBar label="Base64 Output" icon={FileCode}>
-            <CopyAction content={base64} className="py-1" />
+            <CopyAction
+              content={base64}
+              className="py-1"
+              successToast="Base64 string copied to clipboard"
+            />
           </LabelBar>
           <Textarea
             value={base64}

@@ -56,6 +56,14 @@ export type PropertyItem = {
   copyable?: boolean;
 
   /**
+   * Optional toast message shown on successful copy.
+   * - string: displays custom message
+   * - true: displays `Copied ${label}!`
+   * - false / undefined: does not show toast
+   */
+  copySuccessToast?: string | boolean;
+
+  /**
    * If true, the copy action is hidden on desktop until hover (`group-hover:opacity-100`), while remaining visible on mobile.
    */
   hoverAction?: boolean;

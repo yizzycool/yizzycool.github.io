@@ -139,6 +139,20 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
       'All color space mathematics and matrix conversions run 100% client-side in pure TypeScript with zero external libraries or network requests.',
   },
 
+  [ToolKeys.jwtDebugger]: {
+    overview:
+      'JSON Web Tokens (JWT) are the modern standard for stateless authentication and authorization. This lightweight JWT Debugger & Token Inspector decodes, formats, and inspects token structures locally in your browser with zero network transmission, safeguarding confidential keys and user data.',
+    features: [
+      '100% Client-Side Privacy: Decodes Base64URL tokens entirely in browser memory. Sensitive bearer tokens, signatures, and payload data are never sent to external servers.',
+      'Automatic Expiration Analysis: Intelligently detects exp, iat, and nbf claims, providing humanized countdown badges (e.g. active time remaining or time elapsed since expiry).',
+      'Dual Timezone Inspection: Displays timestamp claims in both your local system timezone and standardized UTC ISO 8601 format.',
+      'Smart Header & Payload Formatting: Formats JSON payloads with clean indentation and syntax structure for rapid inspection and debugging.',
+      'Bearer Prefix Auto-Strip: Seamlessly accepts raw tokens copied directly from HTTP headers, cURL commands, or API client authorization fields.',
+    ],
+    bottomNote:
+      'All JWT decoding and timestamp calculations run 100% client-side in pure TypeScript without any network requests or external tracking.',
+  },
+
   // ==================
 
   [ToolKeys.picMergeStudio]: {

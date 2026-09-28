@@ -2,9 +2,9 @@
 
 import type { OverviewItem } from './types';
 
-import { useState } from 'react';
-import { Check, Copy, RefreshCw } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 
+import { CopyAction } from '@/components/shared/action-button';
 import { Button } from '@/components/ui/button';
 import { InfoTooltip } from '@/components/ui/info-tooltip';
 import { cn } from '@/utils/cn';
@@ -21,15 +21,11 @@ export default function OverviewResultItem({
   isClient,
   onRegenerateSingle,
 }: OverviewResultItemProps) {
-  const [isCopied, setIsCopied] = useState(false);
-
-  const handleCopy = async () => {
+  const handleQuickCopy = async () => {
     if (!isClient || !item.value) return;
     try {
       await navigator.clipboard.writeText(item.value);
-      setIsCopied(true);
       toast.success(`Copied ${item.name}!`);
-      setTimeout(() => setIsCopied(false), 1500);
     } catch {
       toast.error('Failed to copy to clipboard');
     }
@@ -52,7 +48,7 @@ export default function OverviewResultItem({
       {/* Value Display */}
       <div className="flex-1 overflow-hidden">
         <code
-          onClick={handleCopy}
+          onClick={handleQuickCopy}
           title="Click to copy"
           className={cn(
             'flex min-h-[2.25rem] cursor-pointer items-center break-all rounded-lg px-2.5 py-1.5 font-mono text-xs transition-all sm:text-sm',
@@ -80,14 +76,16 @@ export default function OverviewResultItem({
           className="opacity-70 hover:opacity-100"
           onClick={() => onRegenerateSingle(item.id)}
         />
-        <Button
-          variant={isCopied ? 'success' : 'ghost'}
+        <CopyAction
+          display="icon"
+          variant="ghost"
           size="xs"
           rounded="lg"
-          icon={isCopied ? Check : Copy}
-          ariaLabel={isCopied ? 'Copied' : `Copy ${item.name}`}
-          title={isCopied ? 'Copied' : 'Copy'}
-          onClick={handleCopy}
+          content={isClient ? item.value : ''}
+          ariaLabel={`Copy ${item.name}`}
+          title={`Copy ${item.name}`}
+          successToast={`Copied ${item.name}!`}
+          disabled={!isClient || !item.value}
         />
       </div>
     </div>

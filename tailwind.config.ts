@@ -39,8 +39,8 @@ module.exports = {
           'Noto Color Emoji',
         ],
         serif: [
-          'var(--font-inter)',
-          'var(--font-noto-sans-tc)',
+          'var(--font-merriweather)',
+          'var(--font-noto-serif-tc)',
           'ui-serif',
           'Georgia',
           'Cambria',
@@ -49,7 +49,7 @@ module.exports = {
           'serif',
         ],
         mono: [
-          'var(--font-inter)',
+          'var(--font-fira-mono)',
           'var(--font-noto-sans-tc)',
           'ui-monospace',
           'SFMono-Regular',

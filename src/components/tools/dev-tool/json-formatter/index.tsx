@@ -123,7 +123,11 @@ export default function JsonFormatter() {
             htmlFor="output"
           >
             {!!output && (
-              <CopyAction content={output} disabled={isEmpty(output)} />
+              <CopyAction
+                content={output}
+                disabled={isEmpty(output)}
+                successToast="Result copied to clipboard"
+              />
             )}
           </LabelBar>
 

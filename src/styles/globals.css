@@ -69,6 +69,11 @@
     appearance: none;
     margin: 0;
   }
+
+  input,
+  textarea {
+    @apply font-mono;
+  }
 }
 
 @layer components {

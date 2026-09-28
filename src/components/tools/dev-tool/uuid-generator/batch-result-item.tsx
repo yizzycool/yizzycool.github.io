@@ -1,10 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { Check, Copy } from 'lucide-react';
-
-import { Button } from '@/components/ui/button';
-import { cn } from '@/utils/cn';
+import { CopyAction } from '@/components/shared/action-button';
 import toast from '@/utils/toast';
 
 type BatchResultItemProps = {
@@ -18,15 +14,11 @@ export default function BatchResultItem({
   index,
   isClient,
 }: BatchResultItemProps) {
-  const [isCopied, setIsCopied] = useState(false);
-
-  const handleCopy = async () => {
+  const handleQuickCopy = async () => {
     if (!isClient || !item) return;
     try {
       await navigator.clipboard.writeText(item);
-      setIsCopied(true);
       toast.success('Copied identifier!');
-      setTimeout(() => setIsCopied(false), 1500);
     } catch {
       toast.error('Failed to copy');
     }
@@ -39,7 +31,7 @@ export default function BatchResultItem({
           {index + 1}.
         </span>
         <code
-          onClick={handleCopy}
+          onClick={handleQuickCopy}
           className="flex min-h-[1.5rem] cursor-pointer select-all items-center break-all font-mono text-xs text-neutral-800 hover:text-blue-600 sm:text-sm dark:text-neutral-200 dark:hover:text-blue-400"
         >
           {isClient ? (
@@ -50,18 +42,16 @@ export default function BatchResultItem({
         </code>
       </div>
 
-      <Button
+      <CopyAction
+        display="icon"
         variant="ghost"
         size="xs"
         rounded="md"
-        disabled={!isClient}
-        icon={isCopied ? Check : Copy}
-        onClick={handleCopy}
+        content={isClient ? item : ''}
+        disabled={!isClient || !item}
         ariaLabel={`Copy item #${index + 1}`}
-        className={cn(
-          'shrink-0 opacity-60 group-hover:opacity-100',
-          isCopied && 'text-emerald-600 opacity-100 dark:text-emerald-400'
-        )}
+        successToast="Copied identifier!"
+        className="shrink-0 opacity-60 group-hover:opacity-100"
       />
     </div>
   );

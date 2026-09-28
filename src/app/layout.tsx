@@ -1,14 +1,21 @@
 import type { Metadata, Viewport } from 'next';
 
 import '@/styles/globals.css';
+
 import urlJoin from 'url-join';
-import { Inter, Noto_Sans_TC } from 'next/font/google';
 
 import { DEFAULT_DOMAIN } from '@/data/global';
 
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import { GTMNoScript, GTMScript } from '@/components/layout/gtm';
+import {
+  firaMono,
+  inter,
+  merriweather,
+  notoSansTC,
+  notoSerifTC,
+} from '@/data/fonts';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN || DEFAULT_DOMAIN;
 
@@ -88,18 +95,6 @@ export const metadata: Metadata = {
   },
 };
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-});
-
-const notoSansTC = Noto_Sans_TC({
-  preload: false,
-  variable: '--font-noto-sans-tc',
-  display: 'swap',
-});
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -109,7 +104,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${notoSansTC.variable}`}
+      className={`${inter.variable} ${notoSansTC.variable} ${merriweather.variable} ${notoSerifTC.variable} ${firaMono.variable}`}
     >
       <head>
         <GTMScript />

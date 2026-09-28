@@ -170,6 +170,23 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.jwtDebugger]: {
+    title:
+      'JWT Debugger & Token Inspector – Decode, Inspect & Validate JSON Web Tokens | Yizzy Peasy',
+    description:
+      'Free online JWT Debugger & Token Inspector. Securely decode, inspect, and validate JSON Web Tokens (JWT) with automatic expiration countdown, claims breakdown, and 100% client-side privacy.',
+    openGraph: {
+      title: 'JWT Debugger & Token Inspector – 100% Client-Side Private',
+      description:
+        'Decode and inspect JSON Web Tokens locally in your browser. Automatic exp/iat/nbf time analysis and formatted JSON payloads with zero network transmission.',
+    },
+    twitter: {
+      title: 'JWT Debugger & Token Inspector – 100% Client-Side Private',
+      description:
+        'Decode and inspect JSON Web Tokens locally in your browser with automatic expiration status and 100% privacy.',
+    },
+  },
+
   // ==================
 
   [ToolKeys.picMergeStudio]: {

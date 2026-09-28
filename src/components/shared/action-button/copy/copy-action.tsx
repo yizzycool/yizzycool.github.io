@@ -9,6 +9,9 @@ import { isNil } from 'lodash';
 import { useDisplay } from '../hooks/use-display';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/utils/cn';
+import toast from '@/utils/toast';
+
+let timer: NodeJS.Timeout;
 
 export function CopyAction({
   display = 'icon-label',
@@ -22,58 +25,89 @@ export function CopyAction({
   label = 'Copy',
   ariaLabel,
   title,
+  successToast,
+  errorToast = true,
+  onSuccess,
+  onError,
 }: CopyActionProps) {
   const [copied, setCopied] = useState(false);
 
+  const isStringContent = typeof content === 'string';
+
   const isActionSupported = useSyncExternalStore(
     subscribe,
-    getSnapshot,
+    () => {
+      if (typeof window === 'undefined' || !navigator.clipboard) return false;
+      return isStringContent
+        ? typeof navigator.clipboard.writeText === 'function'
+        : typeof window.ClipboardItem === 'function' &&
+            typeof navigator.clipboard.write === 'function';
+    },
     getServerSnapshot
   );
 
   const { showIcon, showLabel } = useDisplay({ display });
 
-  const mimeType = useMemo(() => {
-    if (typeof content === 'string') {
-      return 'text/plain';
-    } else if (isNil(content)) {
-      return '';
-    } else {
-      return content.type;
-    }
-  }, [content]);
-
   const isMimeTypeSupported = useMemo(() => {
+    if (isStringContent) return true;
     if (typeof window === 'undefined' || !window.ClipboardItem) return false;
+
+    const mimeType = content && typeof content !== 'string' ? content.type : '';
+    if (!mimeType) return true;
+
     return typeof ClipboardItem.supports === 'function'
       ? ClipboardItem.supports(mimeType)
-      : false;
-  }, [mimeType]);
+      : true;
+  }, [isStringContent, content]);
 
   const isButtonDisabled = useMemo(() => {
     return (
-      disabled || isNil(content) || !isMimeTypeSupported || !isActionSupported
+      disabled ||
+      isNil(content) ||
+      content === '' ||
+      !isMimeTypeSupported ||
+      !isActionSupported
     );
   }, [disabled, content, isMimeTypeSupported, isActionSupported]);
 
   const handleCopy = async () => {
-    if (isButtonDisabled) return;
-    if (!content) return;
+    if (isButtonDisabled || !content) return;
 
-    const mimeType = typeof content === 'string' ? 'text/plain' : content.type;
-    const clipboardItemData = {
-      [mimeType]: content,
-    };
-    const clipboardItem = new ClipboardItem(clipboardItemData);
-    navigator.clipboard
-      .write([clipboardItem])
-      .then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      })
-      .catch((e) => {
-        console.log('Clipboard API failed:', e);
-      });
+    clearTimeout(timer);
+
+    try {
+      if (typeof content === 'string') {
+        await navigator.clipboard.writeText(content);
+      } else {
+        const mimeType = content.type || 'application/octet-stream';
+        const clipboardItem = new ClipboardItem({
+          [mimeType]: content,
+        });
+        await navigator.clipboard.write([clipboardItem]);
+      }
+
+      setCopied(true);
+      if (successToast) {
+        const message =
+          typeof successToast === 'string'
+            ? successToast
+            : 'Copied to clipboard';
+        toast.success(message);
+      }
+      onSuccess?.();
+
+      timer = setTimeout(() => setCopied(false), 2000);
+    } catch (e) {
+      console.error('Clipboard copy failed:', e);
+      if (errorToast) {
+        const message =
+          typeof errorToast === 'string'
+            ? errorToast
+            : 'Failed to copy to clipboard';
+        toast.error(message);
+      }
+      onError?.(e);
+    }
   };
 
   if (!isActionSupported) return null;
@@ -93,7 +127,7 @@ export function CopyAction({
         className
       )}
       icon={!showIcon ? undefined : copied ? Check : Copy}
-      disabled={isButtonDisabled || copied}
+      disabled={isButtonDisabled}
       ariaLabel={ariaLabel}
       title={title}
     >
@@ -104,14 +138,6 @@ export function CopyAction({
 
 function subscribe() {
   return () => {};
-}
-
-function getSnapshot() {
-  return (
-    typeof window !== 'undefined' &&
-    !!window.ClipboardItem &&
-    !!window.navigator?.clipboard?.write
-  );
 }
 
 function getServerSnapshot() {

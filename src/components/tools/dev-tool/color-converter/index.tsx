@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 
 import HeaderBlock from '@/components/tools/common/header-block';
 import SectionGap from '@/components/tools/common/section-gap';
@@ -15,6 +15,8 @@ import ColorSpacesSection from './color-spaces-section';
 import ContrastAnalyzerSection from './contrast-analyzer-section';
 
 export default function ColorConverter() {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const {
     colorInput,
     currentRgba,
@@ -28,7 +30,6 @@ export default function ColorConverter() {
     handleInputChange,
     handleSelectColor,
     handleRandomColor,
-    handleReset,
     handleEyeDropper,
   } = useColorConverter();
 
@@ -42,16 +43,41 @@ export default function ColorConverter() {
     }
   }, [colorSpaces.hex]);
 
-  // Global hotkeys: Mod+Shift+C (onCopy), Esc (onClear)
-  useToolHotkeys({
-    onCopy: handleCopyHex,
-    onClear: handleReset,
-  });
+  const handlePasteColor = useCallback(async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (!text) {
+        toast.warning('Clipboard is empty');
+        return;
+      }
+      handleInputChange(text.trim());
+      toast.success('Pasted color from clipboard');
+    } catch {
+      toast.error('Failed to read from clipboard');
+    }
+  }, [handleInputChange]);
+
+  const handleClearInput = useCallback(() => {
+    handleInputChange('');
+  }, [handleInputChange]);
+
+  // Global hotkeys: Mod+Shift+C (onCopy), Mod+Shift+V (onPaste), Esc (onClear when input focused)
+  useToolHotkeys(
+    {
+      onCopy: handleCopyHex,
+      onPaste: handlePasteColor,
+      onClear: handleClearInput,
+    },
+    {
+      target: inputRef,
+    }
+  );
 
   return (
     <div>
       <HeaderBlock
         customShortcuts={[
+          TOOL_HOTKEYS.paste,
           TOOL_HOTKEYS.copy,
           TOOL_HOTKEYS.clear,
           TOOL_HOTKEYS.help,
@@ -62,6 +88,7 @@ export default function ColorConverter() {
 
       {/* Top: Input & Controls */}
       <ColorInputBar
+        inputRef={inputRef}
         colorInput={colorInput}
         currentHex={colorSpaces.hex}
         isEyeDropperSupported={isEyeDropperSupported}

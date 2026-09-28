@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { Copy, ListOrdered } from 'lucide-react';
+import { ListOrdered } from 'lucide-react';
 
+import { CopyAction } from '@/components/shared/action-button';
 import LabelBar from '@/components/tools/common/label-bar';
-import { Button } from '@/components/ui/button';
 import { PillTabs } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import useIsClient from '@/hooks/lifecycle/use-is-client';
@@ -14,13 +14,12 @@ import BatchResultItem from './batch-result-item';
 type BatchResultsSectionProps = {
   items: string[];
   formattedContent: string;
-  onCopyAll: () => void;
+  onCopyAll?: () => void;
 };
 
 export default function BatchResultsSection({
   items,
   formattedContent,
-  onCopyAll,
 }: BatchResultsSectionProps) {
   const isClient = useIsClient();
   const [viewMode, setViewMode] = useState<'text' | 'list'>('text');
@@ -44,16 +43,17 @@ export default function BatchResultsSection({
             className="mr-1 p-0.5"
             tabClassName="px-2 py-0.5 text-xs"
           />
-          <Button
+          <CopyAction
             variant="primary"
             size="xs"
             rounded="lg"
-            icon={Copy}
-            onClick={onCopyAll}
+            content={isClient ? formattedContent : ''}
+            disabled={!isClient || !items.length}
+            label="Copy All"
             title="Copy all items"
-          >
-            Copy All
-          </Button>
+            ariaLabel="Copy all generated batch items"
+            successToast={`Copied ${items.length} ${items.length === 1 ? 'item' : 'items'} to clipboard!`}
+          />
         </div>
       </LabelBar>
 
