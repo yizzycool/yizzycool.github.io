@@ -90,9 +90,7 @@ export default function Base64EncoderDecoder() {
       <LabelBar
         className="mt-6"
         label={
-          tab === 'Encode'
-            ? 'Text to Encode (UTF-8 / Unicode / Emoji)'
-            : 'Base64 / Base64URL to Decode'
+          tab === 'Encode' ? 'Text to Encode' : 'Base64 / Base64URL to Decode'
         }
         icon={Binary}
         htmlFor="base64-input-textarea"

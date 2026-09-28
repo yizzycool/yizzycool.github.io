@@ -187,6 +187,23 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.base64EncoderDecoder]: {
+    title:
+      'Base64 Encoder & Decoder – Standard, URL-Safe & UTF-8 Text Converter | Yizzy Peasy',
+    description:
+      'Free online Base64 Encoder & Decoder. Encode and decode text to and from Base64 with support for Standard, URL-safe (-_), MIME, and UTF-8 characters. 100% private and client-side.',
+    openGraph: {
+      title: 'Base64 Encoder & Decoder – 100% Client-Side Private',
+      description:
+        'Encode and decode text to Base64 and Base64URL instantly with UTF-8 support and format comparisons directly in your browser.',
+    },
+    twitter: {
+      title: 'Base64 Encoder & Decoder – 100% Client-Side Private',
+      description:
+        'Free online Base64 and Base64URL converter with full UTF-8 support and 100% client-side privacy.',
+    },
+  },
+
   // ==================
 
   [ToolKeys.picMergeStudio]: {
@@ -475,6 +492,20 @@ export const ToolJsonLdSoftwareApplication = {
     ],
   },
 
+  [ToolKeys.base64EncoderDecoder]: {
+    name: 'Base64 Encoder / Decoder',
+    applicationCategory: 'DeveloperTool',
+    description:
+      'Free online Base64 and Base64URL encoder and decoder with support for Standard, URL-safe, MIME, Filename-safe variants, and format comparison.',
+    featureList: [
+      'Encode text to Base64 and decode Base64 strings to readable text',
+      'Support Standard (RFC 4648 §4), URL-Safe (RFC 4648 §5), MIME, and Filename-safe formats',
+      'Full UTF-8 character and emoji encoding without corruption',
+      'Side-by-side format comparison dialog',
+      '100% client-side private computing with real-time error validation',
+    ],
+  },
+
   [ToolKeys.jsonFormatter]: {
     name: 'JSON Formatter & Minifier',
     applicationCategory: 'DeveloperTool',
@@ -551,8 +582,22 @@ export const ToolJsonLdSoftwareApplication = {
       'Convert between HEX, RGB, HSL, HSV, CMYK, CSS OKLCH, and CIE LAB',
       'Instant WCAG 2.1 contrast ratio testing against black and white text',
       'Compliance badges for AA and AAA levels with thresholds info tooltip',
-      '10-step tints and shades ramp and color harmonies (complementary, analogous, triadic)',
+      '100-step tints and shades ramp and color harmonies (complementary, analogous, triadic)',
       '100% client-side calculation with EyeDropper and native color picker support',
+    ],
+  },
+
+  [ToolKeys.jwtDebugger]: {
+    name: 'JWT Debugger & Token Inspector',
+    applicationCategory: 'DeveloperTool',
+    description:
+      'A secure, client-side JWT debugger and token inspector that decodes, validates, and analyzes JSON Web Tokens with automatic expiration countdown.',
+    featureList: [
+      'Decode Base64URL JWT header, payload, and signature locally',
+      'Automatic exp, iat, and nbf expiration analysis with countdown badges',
+      'Dual timezone inspection displaying both local and UTC ISO times',
+      'Clean formatted JSON syntax tree with 1-click clipboard copy',
+      '100% client-side privacy with zero server communication or key leakage',
     ],
   },
 

@@ -153,6 +153,19 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
       'All JWT decoding and timestamp calculations run 100% client-side in pure TypeScript without any network requests or external tracking.',
   },
 
+  [ToolKeys.base64EncoderDecoder]: {
+    overview:
+      'Base64 is a binary-to-text encoding scheme that represents binary data in an ASCII string format by translating it into a radix-64 representation. It is ubiquitous in modern web development for embedding inline data, transmitting email payloads via MIME, and safely passing sensitive tokens through URLs and HTTP headers.',
+    features: [
+      'Multi-Format Standards: Comprehensive support for Standard Base64 (RFC 4648 §4), URL-Safe Base64 (RFC 4648 §5, substituting +/ with -_), MIME Base64 with 76-character line wrapping, and Filename-safe variants.',
+      'Full UTF-8 & Emoji Support: Native multibyte character encoding using standard UTF-8 TextEncoder and TextDecoder, ensuring Chinese, Japanese, and emoji characters encode and decode accurately without garbled text.',
+      'Visual Format Comparison (Diff Dialog): Interactive side-by-side comparison modal allowing developers to inspect character differences and padding alterations across all supported formats in real time.',
+      'Instant Error Feedback: Immediate validation and error messaging for corrupted or malformed Base64 strings with live error highlighting in the input textarea.',
+    ],
+    bottomNote:
+      'All encoding and decoding operations run 100% client-side in your browser using pure JavaScript/TypeScript. Your sensitive tokens, credentials, and data are never sent over any network.',
+  },
+
   // ==================
 
   [ToolKeys.picMergeStudio]: {
