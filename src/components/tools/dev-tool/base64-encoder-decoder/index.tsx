@@ -1,8 +1,8 @@
 'use client';
 
-import type { UrlEncoderDecoderHistoryData } from './hooks/use-url-encoder-decoder';
+import type { Base64EncoderDecoderHistoryData } from './types';
 
-import { Code, Link2, Wand2, ArrowRightLeft, FileClock } from 'lucide-react';
+import { Code, Binary, Wand2, ArrowRightLeft } from 'lucide-react';
 import { isEmpty } from 'lodash';
 
 import {
@@ -16,45 +16,43 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { Tabs } from '@/components/ui/tabs';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
-import useUrlEncoderDecoder from './hooks/use-url-encoder-decoder';
+import useBase64EncoderDecoder from './hooks/use-base64-encoder-decoder';
 import { TAB_ITEMS, TAB_ICONS } from './constants';
 
 import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
 import ExecuteBar from '../../common/execute-bar';
 import LabelBar from '../../common/label-bar';
-import QueryParamsTable from './query-params-table';
+import FormatBar from './format-bar';
 
-export default function UrlEncoderDecoder() {
+export default function Base64EncoderDecoder() {
   const {
     tab,
+    format,
     input,
     output,
     error,
-    baseUrl,
-    queryParams,
     executeButtonLabel,
     historyList,
     isLoadingHistory,
     inputRef,
-    processUrl,
+    processText,
     onInputChange,
     onPaste,
     onLoadSample,
     onClear,
     onSwap,
     onTabChanged,
-    handleBaseUrlChange,
-    handleParamsChange,
+    onFormatChanged,
     onRestoreHistory,
     renameHistory,
     removeHistory,
     clearHistory,
-  } = useUrlEncoderDecoder();
+  } = useBase64EncoderDecoder();
 
   return (
     <>
-      <HeaderBlock<UrlEncoderDecoderHistoryData>
+      <HeaderBlock<Base64EncoderDecoderHistoryData>
         historyList={historyList}
         isLoadingHistory={isLoadingHistory}
         onRestoreHistory={onRestoreHistory}
@@ -83,16 +81,21 @@ export default function UrlEncoderDecoder() {
         className="text-nowrap"
       />
 
+      <SectionGap size="xs" />
+
+      {/* Format Selector Bar with Base64 vs Base64URL InfoTooltip */}
+      <FormatBar format={format} onChangeFormat={onFormatChanged} />
+
       {/* Input Section */}
       <LabelBar
         className="mt-6"
         label={
-          tab === 'Query Params'
-            ? 'Deconstruct URL or Query String'
-            : `URL to ${tab}`
+          tab === 'Encode'
+            ? 'Text to Encode (UTF-8 / Unicode / Emoji)'
+            : 'Base64 / Base64URL to Decode'
         }
-        icon={Link2}
-        htmlFor="url-input-textarea"
+        icon={Binary}
+        htmlFor="base64-input-textarea"
       >
         <SampleAction onClick={onLoadSample} />
         <PasteAction onClick={onPaste} />
@@ -101,58 +104,40 @@ export default function UrlEncoderDecoder() {
 
       <Textarea
         ref={inputRef}
-        id="url-input-textarea"
+        id="base64-input-textarea"
         value={input}
         onChange={onInputChange}
         rows={6}
         errorMessage={error}
         placeholder={
           tab === 'Encode'
-            ? 'Paste the URL or text you want to encode...'
-            : tab === 'Decode'
-              ? 'Paste the encoded URL or text you want to decode...'
-              : 'Paste a full URL to break down into query parameters...'
+            ? 'Type or paste the text you want to encode (supports full UTF-8, Chinese, Emoji)...'
+            : 'Paste the Base64 or Base64URL string you want to decode...'
         }
       />
 
-      {/* Query Params Visual Editor Table (Only shown in 'Query Params' tab) */}
-      {tab === 'Query Params' && (
-        <div className="mt-6">
-          <QueryParamsTable
-            baseUrl={baseUrl}
-            onBaseUrlChange={handleBaseUrlChange}
-            params={queryParams}
-            onParamsChange={handleParamsChange}
-          />
-        </div>
-      )}
-
-      {tab !== 'Query Params' && (
-        <ExecuteBar
-          label={executeButtonLabel}
-          icon={Wand2}
-          disabled={isEmpty(input)}
-          onClick={() => processUrl()}
-          text={input}
-          hotkeyLabel="Process"
-        />
-      )}
+      <ExecuteBar
+        label={executeButtonLabel}
+        icon={Wand2}
+        disabled={isEmpty(input)}
+        onClick={() => processText()}
+        text={input}
+        hotkeyLabel="Process"
+      />
 
       <SectionGap />
 
       {/* Result Section */}
       <LabelBar
-        label={`Result (${tab})`}
+        label={`Result (${tab} as ${format === 'base64url' ? 'Base64URL' : 'Standard Base64'})`}
         icon={Code}
-        htmlFor="url-output-textarea"
+        htmlFor="base64-output-textarea"
       >
-        {tab !== 'Query Params' && (
-          <SwapAction
-            display="icon-label"
-            onClick={onSwap}
-            disabled={isEmpty(input) || isEmpty(output)}
-          />
-        )}
+        <SwapAction
+          display="icon-label"
+          onClick={onSwap}
+          disabled={isEmpty(input) || isEmpty(output)}
+        />
         <CopyAction
           content={output}
           disabled={isEmpty(output)}
@@ -162,7 +147,7 @@ export default function UrlEncoderDecoder() {
 
       {!!output ? (
         <Textarea
-          id="url-output-textarea"
+          id="base64-output-textarea"
           value={output}
           placeholder="The processed results will be displayed here..."
           rows={6}
@@ -175,17 +160,6 @@ export default function UrlEncoderDecoder() {
             Waiting for Input or click &quot;{executeButtonLabel}&quot;...
           </span>
         </Card>
-      )}
-
-      {tab === 'Query Params' && (
-        <ExecuteBar
-          label={executeButtonLabel}
-          icon={FileClock}
-          disabled={isEmpty(input)}
-          onClick={() => processUrl()}
-          text={input}
-          hotkeyLabel="Save to History"
-        />
       )}
     </>
   );

@@ -14,7 +14,12 @@ import { useRef } from 'react';
 
 import { cn } from '@/utils/cn';
 import { Button } from '@/components/ui/button';
-import { inputBaseStyles, inputClearButtonStyles } from './input.variants';
+import { ErrorMessage } from '@/components/ui/error-message';
+import {
+  inputBaseStyles,
+  inputClearButtonStyles,
+  inputErrorStyles,
+} from './input.variants';
 
 export function Input({
   ref,
@@ -35,6 +40,7 @@ export function Input({
   onChange = () => {},
   onKeyDown,
   onBlur,
+  errorMessage,
 }: InputProps) {
   const isComposingRef = useRef(false);
 
@@ -42,6 +48,7 @@ export function Input({
     value !== undefined && value !== null && String(value).length > 0
   );
   const showClear = Boolean(onClear && hasValue && !readOnly && !disabled);
+  const hasError = Boolean(errorMessage);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (isComposingRef.current || e.nativeEvent.isComposing) {
@@ -75,6 +82,7 @@ export function Input({
           inputMode={inputMode}
           className={cn(
             inputBaseStyles,
+            hasError && inputErrorStyles,
             Icon && 'pl-10',
             showClear && 'pr-10',
             className
@@ -95,6 +103,8 @@ export function Input({
           onCompositionEnd={() => {
             isComposingRef.current = false;
           }}
+          aria-invalid={hasError || undefined}
+          aria-describedby={hasError && id ? `${id}-error` : undefined}
         />
         {showClear && (
           <Button
@@ -108,6 +118,10 @@ export function Input({
           />
         )}
       </div>
+      <ErrorMessage
+        id={id ? `${id}-error` : undefined}
+        message={errorMessage}
+      />
     </Field>
   );
 }

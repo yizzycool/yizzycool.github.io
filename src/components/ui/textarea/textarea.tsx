@@ -5,7 +5,8 @@ import type { TextareaProps } from './types';
 import { Description, Field, Label, Textarea as TA } from '@headlessui/react';
 
 import { cn } from '@/utils/cn';
-import { textareaBaseStyles } from './textarea.variants';
+import { ErrorMessage } from '@/components/ui/error-message';
+import { textareaBaseStyles, textareaErrorStyles } from './textarea.variants';
 
 export function Textarea({
   title,
@@ -19,8 +20,11 @@ export function Textarea({
   className = '',
   onChange = () => {},
   onClick,
+  errorMessage,
   ref,
 }: TextareaProps) {
+  const hasError = Boolean(errorMessage);
+
   return (
     <Field className="w-full">
       {title && (
@@ -35,7 +39,11 @@ export function Textarea({
       )}
       <TA
         ref={ref}
-        className={cn(textareaBaseStyles, className)}
+        className={cn(
+          textareaBaseStyles,
+          hasError && textareaErrorStyles,
+          className
+        )}
         rows={rows}
         id={id}
         value={value}
@@ -45,6 +53,12 @@ export function Textarea({
         spellCheck={false}
         onChange={(e) => onChange(e)}
         onClick={onClick}
+        aria-invalid={hasError || undefined}
+        aria-describedby={hasError && id ? `${id}-error` : undefined}
+      />
+      <ErrorMessage
+        id={id ? `${id}-error` : undefined}
+        message={errorMessage}
       />
     </Field>
   );

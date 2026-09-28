@@ -5,6 +5,7 @@
 
 import {
   ArrowLeftRight,
+  Binary,
   Bot,
   CaseUpper,
   Clock,
@@ -73,6 +74,7 @@ export const ToolKeys = {
 
   // Developer Tools
   urlEncoderDecoder: 'urlEncoderDecoder',
+  base64EncoderDecoder: 'base64EncoderDecoder',
   jsonFormatter: 'jsonFormatter',
   unixTimestampConverter: 'unixTimestampConverter',
   regexTester: 'regexTester',
@@ -120,6 +122,7 @@ export const ToolGroupItems = {
     ToolKeys.jwtDebugger,
     ToolKeys.unixTimestampConverter,
     ToolKeys.urlEncoderDecoder,
+    ToolKeys.base64EncoderDecoder,
     ToolKeys.uuidGenerator,
     ToolKeys.hashGenerator,
     ToolKeys.regexTester,
@@ -152,6 +155,7 @@ export const ToolTitles = {
   [ToolKeys.keyCard]: 'KeyCard',
 
   [ToolKeys.urlEncoderDecoder]: 'URL Encoder / Decoder',
+  [ToolKeys.base64EncoderDecoder]: 'Base64 Encoder / Decoder',
   [ToolKeys.jsonFormatter]: 'JSON Formatter',
   [ToolKeys.unixTimestampConverter]: 'Unix Timestamp Converter',
   [ToolKeys.regexTester]: 'Regular Expression Tester',
@@ -191,6 +195,8 @@ export const ToolDescriptions = {
 
   [ToolKeys.urlEncoderDecoder]:
     'Encode or decode URLs and inspect query parameters in an interactive table for seamless debugging and safe web data transmission.',
+  [ToolKeys.base64EncoderDecoder]:
+    'Encode and decode text to Standard Base64 and URL-safe Base64URL with 100% UTF-8 Unicode support and instant format difference comparisons.',
   [ToolKeys.jsonFormatter]:
     'Format, minify, and explore JSON data with an interactive tree view and instant syntax validation.',
   [ToolKeys.unixTimestampConverter]:
@@ -242,6 +248,7 @@ export const ToolSlugs = {
   [ToolKeys.keyCard]: 'key-card',
 
   [ToolKeys.urlEncoderDecoder]: 'url-encoder-decoder',
+  [ToolKeys.base64EncoderDecoder]: 'base64-encoder-decoder',
   [ToolKeys.jsonFormatter]: 'json-formatter',
   [ToolKeys.unixTimestampConverter]: 'unix-timestamp-converter',
   [ToolKeys.regexTester]: 'regex-tester',
@@ -285,6 +292,7 @@ export const ToolIcons = {
   [ToolKeys.keyCard]: Keyboard,
 
   [ToolKeys.urlEncoderDecoder]: ArrowLeftRight,
+  [ToolKeys.base64EncoderDecoder]: Binary,
   [ToolKeys.jsonFormatter]: CodeXml,
   [ToolKeys.unixTimestampConverter]: Clock,
   [ToolKeys.regexTester]: Regex,

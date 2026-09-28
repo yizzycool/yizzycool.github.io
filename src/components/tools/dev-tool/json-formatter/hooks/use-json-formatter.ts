@@ -28,6 +28,7 @@ export default function useJsonFormatter() {
   const [tab, setTab] = useState<string>(TAB_ITEMS[0]);
   const [input, setInput] = useState<string>('');
   const [output, setOutput] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
   const [parsedObject, setParsedObject] = useState<
     object | Array<unknown> | null
   >(null);
@@ -53,12 +54,14 @@ export default function useJsonFormatter() {
       if (!jsonString.trim()) {
         setOutput('');
         setParsedObject(null);
+        setError(null);
         return;
       }
 
       try {
         const obj = JSON.parse(jsonString);
         setParsedObject(obj);
+        setError(null);
 
         if (currentTab === 'Format') {
           setOutput(JSON.stringify(obj, null, 2));
@@ -78,7 +81,9 @@ export default function useJsonFormatter() {
 
         toast.success(successMessages[currentTab] || 'JSON processed!');
       } catch (err) {
-        toast.error((err as Error).message || 'Invalid JSON format');
+        const errorMsg = (err as Error).message || 'Invalid JSON format';
+        setError(errorMsg);
+        toast.error(errorMsg);
         setParsedObject(null);
       }
     },
@@ -88,12 +93,14 @@ export default function useJsonFormatter() {
   const onJsonStringChanged = useCallback(
     (event: ChangeEvent<HTMLTextAreaElement>) => {
       setInput(event.target.value);
+      setError(null);
     },
     []
   );
 
   const onPaste = useCallback((value: string) => {
     setInput(value);
+    setError(null);
   }, []);
 
   const onGlobalPaste = useCallback(async () => {
@@ -118,17 +125,20 @@ export default function useJsonFormatter() {
 
   const onLoadSample = useCallback(() => {
     setInput(SAMPLE_JSON);
+    setError(null);
   }, []);
 
   const onClear = useCallback(() => {
     setInput('');
     setOutput('');
     setParsedObject(null);
+    setError(null);
   }, []);
 
   const onTabChanged = useCallback(
     (newTab: string) => {
       setTab(newTab);
+      setError(null);
       if (input.trim()) {
         processJson(input, newTab);
       }
@@ -139,6 +149,7 @@ export default function useJsonFormatter() {
   const onRestoreHistory = useCallback(
     (data: JsonHistoryData) => {
       setInput(data.input);
+      setError(null);
       if (data.tab) {
         setTab(data.tab);
       }
@@ -186,6 +197,7 @@ export default function useJsonFormatter() {
     tab,
     input,
     output,
+    error,
     parsedObject,
     syntaxLanguage,
     executeButtonLabel,

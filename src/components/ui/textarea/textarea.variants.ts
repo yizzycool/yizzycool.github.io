@@ -5,3 +5,7 @@ export const textareaBaseStyles =
   'dark:border-neutral-700/80 dark:bg-neutral-900/80 dark:text-slate-100 dark:placeholder-neutral-500 ' +
   'focus:shadow-xs focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 ' +
   'dark:focus:border-sky-400 dark:focus:bg-neutral-900 dark:focus:ring-sky-400/40';
+
+export const textareaErrorStyles =
+  'border-rose-400 focus:border-rose-500 focus:ring-rose-500/20 ' +
+  'dark:border-rose-600 dark:focus:border-rose-500 dark:focus:ring-rose-500/30';

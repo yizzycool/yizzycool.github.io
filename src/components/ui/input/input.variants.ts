@@ -8,3 +8,7 @@ export const inputBaseStyles =
 
 export const inputClearButtonStyles =
   'absolute right-2 top-1/2 z-10 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200';
+
+export const inputErrorStyles =
+  'border-rose-400 focus:border-rose-500 focus:ring-rose-500/20 ' +
+  'dark:border-rose-600 dark:focus:border-rose-500 dark:focus:ring-rose-500/30';

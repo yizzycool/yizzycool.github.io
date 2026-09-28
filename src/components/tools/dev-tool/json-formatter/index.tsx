@@ -30,6 +30,7 @@ export default function JsonFormatter() {
     tab,
     input,
     output,
+    error,
     parsedObject,
     syntaxLanguage,
     executeButtonLabel,
@@ -101,6 +102,7 @@ export default function JsonFormatter() {
             value={input}
             onChange={onJsonStringChanged}
             rows={10}
+            errorMessage={error}
             className="min-h-[280px] xl:h-[480px]"
             placeholder="Paste your JSON string here..."
           />

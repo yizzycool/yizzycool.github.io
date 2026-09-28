@@ -26,6 +26,8 @@ export type TextareaProps = {
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   /** Click event handler */
   onClick?: (e: MouseEvent<HTMLTextAreaElement>) => void;
+  /** Optional error message to display below textarea */
+  errorMessage?: string | null;
   /** Optional React ref */
   ref?: Ref<HTMLElement>;
 };

@@ -30,6 +30,7 @@ export default function useUrlEncoderDecoder() {
   const [tab, setTab] = useState<TabItem>(TAB_ITEMS[0]);
   const [input, setInput] = useState<string>('');
   const [rawOutput, setOutput] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
 
   // Query Params visual editor states
   const [baseUrl, setBaseUrl] = useState<string>('');
@@ -146,6 +147,7 @@ export default function useUrlEncoderDecoder() {
 
       if (!currentInput) {
         setOutput('');
+        setError(null);
         return;
       }
 
@@ -158,6 +160,7 @@ export default function useUrlEncoderDecoder() {
         }
 
         setOutput(res);
+        setError(null);
 
         if (shouldSaveHistory) {
           addHistory(currentInput, {
@@ -171,7 +174,9 @@ export default function useUrlEncoderDecoder() {
           currentTab === 'Encode' ? 'URL Encoded!' : 'URL Decoded!'
         );
       } catch (err) {
-        toast.error((err as Error).message || 'Processing Error');
+        const errorMsg = (err as Error).message || 'Processing Error';
+        setError(errorMsg);
+        toast.error(errorMsg);
       }
     },
     [addHistory, baseUrl, input, queryParams, rebuildUrl, setOutput, tab]
@@ -182,6 +187,7 @@ export default function useUrlEncoderDecoder() {
     (e: ChangeEvent<HTMLTextAreaElement>) => {
       const val = e.target.value;
       setInput(val);
+      setError(null);
       if (tab === 'Query Params') {
         parseUrlToParams(val);
       }
@@ -193,6 +199,7 @@ export default function useUrlEncoderDecoder() {
   const onPaste = useCallback(
     (val: string) => {
       setInput(val);
+      setError(null);
       if (tab === 'Query Params') {
         parseUrlToParams(val);
       }
@@ -232,6 +239,7 @@ export default function useUrlEncoderDecoder() {
       parseUrlToParams(sample);
     }
     setInput(sample);
+    setError(null);
   }, [parseUrlToParams, setInput, tab]);
 
   // Clear Input & Output
@@ -240,6 +248,7 @@ export default function useUrlEncoderDecoder() {
     setOutput('');
     setBaseUrl('');
     setQueryParams([]);
+    setError(null);
   }, [setBaseUrl, setInput, setOutput, setQueryParams]);
 
   // Swap Input and Output
@@ -249,6 +258,7 @@ export default function useUrlEncoderDecoder() {
     const oldOutput = output;
     setInput(oldOutput);
     setOutput(oldInput);
+    setError(null);
 
     if (tab === 'Encode') {
       setTab('Decode');
@@ -263,6 +273,7 @@ export default function useUrlEncoderDecoder() {
     (newTab: string) => {
       const tabItem = newTab as TabItem;
       setTab(tabItem);
+      setError(null);
 
       if (tabItem === 'Query Params' && input.trim()) {
         parseUrlToParams(input);
@@ -335,6 +346,7 @@ export default function useUrlEncoderDecoder() {
     tab,
     input,
     output,
+    error,
     baseUrl,
     queryParams,
     executeButtonLabel,

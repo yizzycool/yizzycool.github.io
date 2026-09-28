@@ -3,11 +3,12 @@
 import type { Dispatch, RefObject, SetStateAction } from 'react';
 
 import { useMemo, useState } from 'react';
-import { AlertCircle, BookOpen, Settings2 } from 'lucide-react';
+import { BookOpen, Settings2 } from 'lucide-react';
 
 import { CopyAction } from '@/components/shared/action-button';
 import LabelBar from '@/components/tools/common/label-bar';
 import { Button } from '@/components/ui/button';
+import { ErrorMessage } from '@/components/ui/error-message';
 import { Selector } from '@/components/ui/selector';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/utils/cn';
@@ -112,6 +113,7 @@ export default function PatternSection({
             <input
               ref={patternInputRef}
               type="text"
+              id="regexp-pattern-input"
               value={pattern}
               onChange={(e) => setPattern(e.target.value)}
               className="flex-1 border-none bg-transparent tracking-widest text-slate-900 outline-none dark:text-slate-100"
@@ -145,12 +147,7 @@ export default function PatternSection({
           </div>
         </div>
 
-        {error && (
-          <div className="flex items-center gap-2 text-red-500 animate-in slide-in-from-top-1">
-            <AlertCircle className="h-4 w-4" />
-            <p className="text-xs font-medium">{error}</p>
-          </div>
-        )}
+        <ErrorMessage message={error} />
 
         <FlagSelector flags={flags} setFlags={setFlags} />
       </div>

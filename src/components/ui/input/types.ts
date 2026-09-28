@@ -48,4 +48,6 @@ export type InputProps = {
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
   /** Blur event handler */
   onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
+  /** Optional error message to display below input */
+  errorMessage?: string | null;
 };

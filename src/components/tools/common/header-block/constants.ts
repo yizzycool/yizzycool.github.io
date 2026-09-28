@@ -4,6 +4,7 @@ export const TOOLS_WITH_HISTORY = [
   ToolKeys.qrCodeGenerator,
   ToolKeys.jsonFormatter,
   ToolKeys.urlEncoderDecoder,
+  ToolKeys.base64EncoderDecoder,
   ToolKeys.chromeAiPrompt,
 ];
 
@@ -15,6 +16,7 @@ export const TOOLS_WITH_HOTKEY = [
 
   // Developer Tools
   ToolKeys.urlEncoderDecoder,
+  ToolKeys.base64EncoderDecoder,
   ToolKeys.jsonFormatter,
   ToolKeys.unixTimestampConverter,
   ToolKeys.regexTester,
