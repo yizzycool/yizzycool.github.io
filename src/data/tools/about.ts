@@ -166,6 +166,20 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
       'All encoding and decoding operations run 100% client-side in your browser using pure JavaScript/TypeScript. Your sensitive tokens, credentials, and data are never sent over any network.',
   },
 
+  [ToolKeys.zipExtractor]: {
+    overview:
+      'ZIP is the universal archive and data compression format used across software distribution, backup, and file sharing. This ZIP File Inspector & Extractor provides instant, 100% client-side archive exploration, allowing users to browse full folder tree hierarchies, preview text/code/images inline, and extract individual files without uploading any data to remote servers.',
+    features: [
+      '100% Client-Side Privacy: Decodes and decompresses archives entirely inside browser memory using pure TypeScript and Web Workers. Confidential files, keys, and documents are never uploaded to any cloud server.',
+      'Instant Virtual File Tree: Automatically parses the ZIP central directory header in milliseconds to present an interactive, collapsible directory tree with file size metrics and compression ratio statistics.',
+      'Inline Code & Image Preview: Inspect Markdown, JSON, TypeScript, HTML, CSS, logs, text files, and images (PNG, JPG, SVG, WebP, GIF) directly inside a syntax-highlighted preview modal without decompressing first.',
+      'Granular File Extraction: Download individual files with 1 click, or batch extract and download the entire archive with zero overhead.',
+      'Smart Filename Encoding: Built-in support for UTF-8 and legacy character encodings, preventing corrupted or garbled filenames when opening Windows-created ZIP files.',
+    ],
+    bottomNote:
+      'All ZIP decompression and extraction runs 100% locally in your browser memory. Your files and archive contents are never uploaded or transmitted over any network.',
+  },
+
   // ==================
 
   [ToolKeys.picMergeStudio]: {

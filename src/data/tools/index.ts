@@ -13,6 +13,7 @@ import {
   FileImage,
   FileText,
   Fingerprint,
+  FolderArchive,
   Image,
   Keyboard,
   KeyRound,
@@ -82,6 +83,7 @@ export const ToolKeys = {
   uuidGenerator: 'uuidGenerator',
   colorConverter: 'colorConverter',
   jwtDebugger: 'jwtDebugger',
+  zipExtractor: 'zipExtractor',
 
   // Image Tools
   picMergeStudio: 'picMergeStudio',
@@ -127,6 +129,7 @@ export const ToolGroupItems = {
     ToolKeys.hashGenerator,
     ToolKeys.regexTester,
     ToolKeys.colorConverter,
+    ToolKeys.zipExtractor,
   ],
   [ToolGroupKeys.imgTool]: [
     ToolKeys.imageToBase64,
@@ -163,6 +166,7 @@ export const ToolTitles = {
   [ToolKeys.uuidGenerator]: 'UUID / Token Generator',
   [ToolKeys.colorConverter]: 'Color Space Converter',
   [ToolKeys.jwtDebugger]: 'JWT Debugger',
+  [ToolKeys.zipExtractor]: 'ZIP File Inspector & Extractor',
 
   [ToolKeys.picMergeStudio]: 'PicMerge Studio',
   [ToolKeys.base64ToImage]: 'Base64 to Image',
@@ -211,6 +215,8 @@ export const ToolDescriptions = {
     'Convert colors seamlessly across HEX, RGB, HSL, HSV, CMYK, CSS OKLCH, and CIE LAB with instant WCAG 2.1 contrast ratio analysis.',
   [ToolKeys.jwtDebugger]:
     'Decode, inspect, and validate JSON Web Tokens (JWT) in real time with automatic expiration countdown, claims breakdown, and 100% client-side privacy.',
+  [ToolKeys.zipExtractor]:
+    'Inspect, explore file trees, preview code and images, and extract ZIP archives locally in your browser with 100% client-side privacy.',
 
   [ToolKeys.picMergeStudio]:
     'Combine photos into custom collages with social media canvas presets, layer controls, filters, and high-resolution export in PNG or JPEG.',
@@ -256,6 +262,7 @@ export const ToolSlugs = {
   [ToolKeys.uuidGenerator]: 'uuid-generator',
   [ToolKeys.colorConverter]: 'color-converter',
   [ToolKeys.jwtDebugger]: 'jwt-debugger',
+  [ToolKeys.zipExtractor]: 'zip-extractor',
 
   [ToolKeys.picMergeStudio]: 'pic-merge-studio',
   [ToolKeys.base64ToImage]: 'base64-to-image',
@@ -300,6 +307,7 @@ export const ToolIcons = {
   [ToolKeys.uuidGenerator]: KeyRound,
   [ToolKeys.colorConverter]: Palette,
   [ToolKeys.jwtDebugger]: ShieldCheck,
+  [ToolKeys.zipExtractor]: FolderArchive,
 
   [ToolKeys.picMergeStudio]: Layers,
   [ToolKeys.base64ToImage]: FileImage,

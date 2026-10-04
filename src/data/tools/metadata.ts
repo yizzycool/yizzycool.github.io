@@ -204,6 +204,23 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.zipExtractor]: {
+    title:
+      'ZIP File Inspector & Extractor – View & Unzip Files Online | Yizzy Peasy',
+    description:
+      'Free online ZIP File Inspector & Extractor. Inspect zip archives, browse virtual directory trees, preview code and images inline, and extract files with 100% client-side privacy.',
+    openGraph: {
+      title: 'ZIP File Inspector & Extractor – 100% Client-Side Private',
+      description:
+        'Explore and extract ZIP archives locally in your browser. Fast directory tree navigation, inline syntax-highlighted code preview, and zero server upload.',
+    },
+    twitter: {
+      title: 'ZIP File Inspector & Extractor – 100% Client-Side Private',
+      description:
+        'Free online ZIP archive viewer and extractor with instant in-browser code and image preview. 100% private.',
+    },
+  },
+
   // ==================
 
   [ToolKeys.picMergeStudio]: {
@@ -598,6 +615,20 @@ export const ToolJsonLdSoftwareApplication = {
       'Dual timezone inspection displaying both local and UTC ISO times',
       'Clean formatted JSON syntax tree with 1-click clipboard copy',
       '100% client-side privacy with zero server communication or key leakage',
+    ],
+  },
+
+  [ToolKeys.zipExtractor]: {
+    name: 'ZIP File Inspector & Extractor',
+    applicationCategory: 'DeveloperTool',
+    description:
+      'An online ZIP archive inspector and extractor that parses ZIP structures, explores nested directory trees, previews code/images inline, and extracts files 100% client-side.',
+    featureList: [
+      'Parse ZIP archives locally with zero server upload',
+      'Interactive collapsible directory tree explorer with file size and compression ratio',
+      'Instant inline code, Markdown, and image preview without decompression',
+      'Granular single-file extraction and batch full-archive download',
+      'Smart UTF-8 and legacy CP437 character encoding decoding',
     ],
   },
 

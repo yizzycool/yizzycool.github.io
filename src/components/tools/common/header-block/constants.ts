@@ -24,6 +24,7 @@ export const TOOLS_WITH_HOTKEY = [
   ToolKeys.uuidGenerator,
   ToolKeys.colorConverter,
   ToolKeys.jwtDebugger,
+  ToolKeys.zipExtractor,
 
   // Image Tools
   ToolKeys.picMergeStudio,

@@ -134,6 +134,19 @@ export const ToolTags = {
     '權限憑證',
     '過期時間分析',
   ],
+  [ToolKeys.zipExtractor]: [
+    'ZIP',
+    'Unzip',
+    'Archive',
+    'Extract',
+    'File Tree',
+    'Decompress',
+    'ZIP 解壓縮',
+    '線上解壓縮',
+    '檔案檢視',
+    '免解壓預覽',
+    '100% 本地解壓',
+  ],
 
   // ==================
 

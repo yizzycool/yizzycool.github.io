@@ -37,8 +37,8 @@ export default function AboutBlock() {
         getFadeUpClass('animate-delay-300')
       )}
     >
-      {/* Header Row: Title on Left, 100% Private Badge on Right */}
-      <div className="mb-3.5 flex flex-wrap items-center justify-between gap-3">
+      {/* Header Row: Title & 100% Private Badge */}
+      <div className="mb-3.5 flex flex-wrap items-center gap-2.5">
         <div className="flex items-center gap-1.5 text-slate-400 dark:text-neutral-500">
           <Info size={13} className="shrink-0 opacity-70" />
           <h2
@@ -50,12 +50,12 @@ export default function AboutBlock() {
         </div>
         {isClientSidePrivate && (
           <Badge
-            variant="neutral"
+            variant="success"
             size="xs"
             rounded="full"
             bordered
             icon={ShieldCheck}
-            className="border-slate-200/60 bg-transparent text-[11px] text-slate-400 opacity-80 dark:border-neutral-800/80 dark:text-neutral-500"
+            className="text-[10px] opacity-90"
           >
             100% Private
           </Badge>

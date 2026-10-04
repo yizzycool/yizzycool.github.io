@@ -1,16 +1,15 @@
 import type { RefObject } from 'react';
 
-import { Search, LayoutGrid, Settings, Info } from 'lucide-react';
+import { LayoutGrid, Settings, Info } from 'lucide-react';
 
 import {
   TooltipRoot,
   TooltipTrigger,
   TooltipPopup,
 } from '@/components/ui/tooltip';
-import { Input } from '@/components/ui/input';
+import { SearchInput } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { PillTabs } from '@/components/ui/tabs';
-import { HotkeyBadge } from '@/components/ui/badge';
 
 type ToolbarProps = {
   mode: 'dashboard' | 'management';
@@ -35,25 +34,16 @@ export default function Toolbar({
     <div className="mb-5 flex flex-col gap-3.5 sm:flex-row sm:items-center sm:justify-between">
       {/* Search Input in Dashboard mode */}
       {mode === 'dashboard' ? (
-        <div className="relative w-full max-w-md">
-          <Input
-            ref={searchInputRef}
-            type="text"
-            placeholder="Search title, tags, or markdown content..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onClear={() => setSearchQuery('')}
-            icon={Search}
-            className="pr-12 text-xs sm:text-sm"
-          />
-          {!searchQuery && (
-            <HotkeyBadge
-              size="sm"
-              symbol="/"
-              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2"
-            />
-          )}
-        </div>
+        <SearchInput
+          ref={searchInputRef}
+          placeholder="Search title, tags, or markdown content..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onClear={() => setSearchQuery('')}
+          hotkey="/"
+          containerClassName="max-w-md"
+          className="text-xs sm:text-sm"
+        />
       ) : (
         <div className="flex items-center gap-2 border border-transparent py-3 text-sm font-semibold text-slate-600 dark:text-slate-300">
           <Settings size={20} />
