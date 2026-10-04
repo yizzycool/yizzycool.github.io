@@ -141,11 +141,7 @@ export function SearchDialog({ deviceType }: SearchDialogProps) {
         {deviceType === 'desktop' && (
           <>
             <span className="mr-4 flex-1 text-left">Search...</span>
-            <HotkeyBadge
-              symbol="Mod + K"
-              layout="combined"
-              className="inline-flex"
-            />
+            <HotkeyBadge symbol="Mod + K" className="inline-flex" />
           </>
         )}
       </Button>

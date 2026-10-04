@@ -66,7 +66,6 @@ export default function ExecuteBar({
           {label}
         </Button>
         <HotkeyBadge
-          layout="combined"
           items={[{ ...TOOL_HOTKEYS.process, label: hotkeyLabel }]}
         />
         {extraActions}

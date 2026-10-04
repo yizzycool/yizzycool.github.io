@@ -19,12 +19,14 @@ export type HotkeyItem = {
   symbol: string;
   label?: string;
   hint?: string;
+  /** Layout display mode: 'split' or 'combined' (default: 'combined') */
+  layout?: HotkeyBadgeLayout;
 };
 
 export type HotkeyBadgeProps = {
   /** Color theme of the badge (default: 'neutral') */
   color?: HotkeyBadgeColor;
-  /** Layout display mode: 'split' or 'combined' (default: 'split') */
+  /** Layout display mode: 'split' or 'combined' (default: 'combined') */
   layout?: HotkeyBadgeLayout;
   /** Size variant of the badge (default: 'xs') */
   size?: BadgeSize;

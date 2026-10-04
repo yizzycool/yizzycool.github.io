@@ -1,4 +1,4 @@
-import { ArrowBigUp, Command, CornerDownLeft } from 'lucide-react';
+import { ArrowBigUp, ChevronUp, Command, CornerDownLeft } from 'lucide-react';
 
 import type { HotkeyBadgeLayout } from './types';
 
@@ -62,7 +62,7 @@ function KeyToken({ isMac, token }: KeyTokenProps) {
     if (isMac) {
       return <Command {...commonProps} />;
     }
-    return <span className="text-[10px] font-semibold">Ctrl</span>;
+    return <ChevronUp {...commonProps} />;
   }
   if (trimmed === 'Enter') {
     return <CornerDownLeft {...commonProps} />;

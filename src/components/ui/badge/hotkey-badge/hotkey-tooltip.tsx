@@ -1,5 +1,6 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 
 import { TooltipPopup, TooltipRoot, TooltipTrigger } from '../../tooltip';
@@ -7,7 +8,7 @@ import { TooltipPopup, TooltipRoot, TooltipTrigger } from '../../tooltip';
 type HotkeyTooltipProps = {
   isMac: boolean;
   symbol: string;
-  children: React.ReactElement<Record<string, unknown>>;
+  children: ReactNode;
 };
 
 export default function HotkeyTooltip({
@@ -30,13 +31,15 @@ export default function HotkeyTooltip({
 
   return (
     <TooltipRoot>
-      <TooltipTrigger>{children}</TooltipTrigger>
+      <TooltipTrigger>
+        <span className="inline-flex items-center">{children}</span>
+      </TooltipTrigger>
       {!!tooltip && (
         <TooltipPopup
           placement="top"
           variant="dark"
           showArrow
-          className="px-2 py-1 font-mono text-[11px]"
+          className="px-2 py-1 text-[11px]"
         >
           {tooltip}
         </TooltipPopup>

@@ -8,6 +8,7 @@ export const FOCUS_MODAL_SHORTCUTS: HotkeyItem[] = [
   {
     symbol: '← →',
     label: 'prev/next',
+    layout: 'split',
   },
   {
     symbol: 'Mod+C',

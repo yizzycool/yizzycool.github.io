@@ -9,6 +9,7 @@ export function FocusModalFooter() {
           <HotkeyBadge
             key={item.symbol}
             size="xs"
+            layout={item.layout}
             symbol={item.symbol}
             label={item.label}
             className="inline-flex"
