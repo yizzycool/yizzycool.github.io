@@ -221,6 +221,23 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.htmlEntities]: {
+    title:
+      'HTML Entities Encoder / Decoder – Escape & Unescape HTML Online | Yizzy Peasy',
+    description:
+      'Free online HTML Entities Encoder / Decoder. Escape and unescape HTML characters to standard named entities (&lt;, &gt;, &quot;, &amp;, &apos;) with 100% client-side privacy.',
+    openGraph: {
+      title: 'HTML Entities Encoder / Decoder – 100% Client-Side Private',
+      description:
+        'Encode and decode HTML entities instantly. Supports standard named entities, Unicode emojis, and double-escape repair.',
+    },
+    twitter: {
+      title: 'HTML Entities Encoder / Decoder – 100% Client-Side Private',
+      description:
+        'Fast and private HTML entity encoder/decoder. Convert reserved HTML characters and emojis in your browser.',
+    },
+  },
+
   // ==================
 
   [ToolKeys.picMergeStudio]: {
@@ -629,6 +646,20 @@ export const ToolJsonLdSoftwareApplication = {
       'Instant inline code, Markdown, and image preview without decompression',
       'Granular single-file extraction and batch full-archive download',
       'Smart UTF-8 and legacy CP437 character encoding decoding',
+    ],
+  },
+
+  [ToolKeys.htmlEntities]: {
+    name: 'HTML Entities Encoder / Decoder',
+    applicationCategory: 'DeveloperTool',
+    description:
+      'An online HTML entity encoder and decoder that escapes and unescapes HTML strings with standard named HTML entities and 100% client-side privacy.',
+    featureList: [
+      'Two-way instant HTML entity encoding and decoding',
+      'Clean Named HTML entities output with universal decoding compatibility',
+      'Configurable scope: Special characters only or All Non-ASCII symbols',
+      'Automatic double-escaping detection and one-click unwrap',
+      '100% client-side processing with zero server uploads',
     ],
   },
 

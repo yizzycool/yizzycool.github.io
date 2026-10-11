@@ -179,6 +179,19 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
     bottomNote:
       'All ZIP decompression and extraction runs 100% locally in your browser memory. Your files and archive contents are never uploaded or transmitted over any network.',
   },
+  [ToolKeys.htmlEntities]: {
+    overview:
+      'HTML entity encoding is essential for web security and text formatting, transforming sensitive markup characters into safe entity references to prevent cross-site scripting (XSS) and display reserved HTML characters accurately. This HTML Entities Encoder / Decoder provides instantaneous, bidirectional entity transformation with clean named entity representations and full Unicode code point compatibility.',
+    features: [
+      '100% Client-Side Privacy: All entity encoding and decoding operations run entirely in local browser memory without uploading sensitive code snippets, markup, or private data to any remote server.',
+      'Standard Named Entities: Automatically encodes reserved characters into standard, highly readable named HTML entities (&lt;, &gt;, &quot;, &apos;, &amp;, &copy;) with universal decoding support for named, decimal, and hex entities.',
+      'Adjustable Encoding Scope: Choose between escaping only HTML reserved characters (&, <, >, ", \') for maximum readability, or encoding all non-ASCII characters, CJK scripts, and Unicode emojis for legacy email systems and strict ASCII transfer.',
+      'Double-Escaping Detection: Automatically inspects decoded output for nested or redundant entities (such as &amp;lt;) and provides a one-click quick action to resolve the second layer.',
+      'Keyboard Shortcuts & History: Accelerate workflows with comprehensive keyboard shortcuts (Mod+Enter, Mod+/, Mod+Shift+C, Mod+H) and local history storage for one-click restoration.',
+    ],
+    bottomNote:
+      'All HTML entity conversions run 100% locally in your browser memory. Your input code and text are never uploaded, stored, or transmitted over any network.',
+  },
 
   // ==================
 

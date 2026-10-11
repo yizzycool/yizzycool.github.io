@@ -84,6 +84,7 @@ export const ToolKeys = {
   colorConverter: 'colorConverter',
   jwtDebugger: 'jwtDebugger',
   zipExtractor: 'zipExtractor',
+  htmlEntities: 'htmlEntities',
 
   // Image Tools
   picMergeStudio: 'picMergeStudio',
@@ -130,6 +131,7 @@ export const ToolGroupItems = {
     ToolKeys.regexTester,
     ToolKeys.colorConverter,
     ToolKeys.zipExtractor,
+    ToolKeys.htmlEntities,
   ],
   [ToolGroupKeys.imgTool]: [
     ToolKeys.imageToBase64,
@@ -167,6 +169,7 @@ export const ToolTitles = {
   [ToolKeys.colorConverter]: 'Color Space Converter',
   [ToolKeys.jwtDebugger]: 'JWT Debugger',
   [ToolKeys.zipExtractor]: 'ZIP File Inspector & Extractor',
+  [ToolKeys.htmlEntities]: 'HTML Entities Encoder / Decoder',
 
   [ToolKeys.picMergeStudio]: 'PicMerge Studio',
   [ToolKeys.base64ToImage]: 'Base64 to Image',
@@ -217,6 +220,8 @@ export const ToolDescriptions = {
     'Decode, inspect, and validate JSON Web Tokens (JWT) in real time with automatic expiration countdown, claims breakdown, and 100% client-side privacy.',
   [ToolKeys.zipExtractor]:
     'Inspect, explore file trees, preview code and images, and extract ZIP archives locally in your browser with 100% client-side privacy.',
+  [ToolKeys.htmlEntities]:
+    'Encode and decode HTML entities with support for standard named entities, full Unicode support, and instant reciprocal swapping.',
 
   [ToolKeys.picMergeStudio]:
     'Combine photos into custom collages with social media canvas presets, layer controls, filters, and high-resolution export in PNG or JPEG.',
@@ -263,6 +268,7 @@ export const ToolSlugs = {
   [ToolKeys.colorConverter]: 'color-converter',
   [ToolKeys.jwtDebugger]: 'jwt-debugger',
   [ToolKeys.zipExtractor]: 'zip-extractor',
+  [ToolKeys.htmlEntities]: 'html-entities',
 
   [ToolKeys.picMergeStudio]: 'pic-merge-studio',
   [ToolKeys.base64ToImage]: 'base64-to-image',
@@ -308,6 +314,7 @@ export const ToolIcons = {
   [ToolKeys.colorConverter]: Palette,
   [ToolKeys.jwtDebugger]: ShieldCheck,
   [ToolKeys.zipExtractor]: FolderArchive,
+  [ToolKeys.htmlEntities]: CodeXml,
 
   [ToolKeys.picMergeStudio]: Layers,
   [ToolKeys.base64ToImage]: FileImage,

@@ -147,6 +147,21 @@ export const ToolTags = {
     '免解壓預覽',
     '100% 本地解壓',
   ],
+  [ToolKeys.htmlEntities]: [
+    'HTML Entities',
+    'HTML Encode',
+    'HTML Decode',
+    'Escape HTML',
+    'Unescape HTML',
+    'XSS Protection',
+    'Named Entities',
+    'HTML Special Chars',
+    'HTML 實體編碼',
+    'HTML 實體解碼',
+    'HTML 具名實體',
+    'HTML 轉義',
+    '字元轉義',
+  ],
 
   // ==================
 
