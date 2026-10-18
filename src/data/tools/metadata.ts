@@ -206,18 +206,35 @@ export const ToolMetadata = {
 
   [ToolKeys.zipExtractor]: {
     title:
-      'ZIP File Inspector & Extractor – View & Unzip Files Online | Yizzy Peasy',
+      'ZIP Extractor & Inspector – View & Unzip Files Online | Yizzy Peasy',
     description:
-      'Free online ZIP File Inspector & Extractor. Inspect zip archives, browse virtual directory trees, preview code and images inline, and extract files with 100% client-side privacy.',
+      'Free online ZIP Extractor & Inspector. Inspect zip archives, browse virtual directory trees, preview code and images inline, and extract files with 100% client-side privacy.',
     openGraph: {
-      title: 'ZIP File Inspector & Extractor – 100% Client-Side Private',
+      title: 'ZIP Extractor & Inspector – 100% Client-Side Private',
       description:
         'Explore and extract ZIP archives locally in your browser. Fast directory tree navigation, inline syntax-highlighted code preview, and zero server upload.',
     },
     twitter: {
-      title: 'ZIP File Inspector & Extractor – 100% Client-Side Private',
+      title: 'ZIP Extractor & Inspector – 100% Client-Side Private',
       description:
         'Free online ZIP archive viewer and extractor with instant in-browser code and image preview. 100% private.',
+    },
+  },
+
+  [ToolKeys.gzipExtractor]: {
+    title:
+      'GZIP Extractor & Inspector – Decompress .gz & Streams Online | Yizzy Peasy',
+    description:
+      'Free online GZIP Extractor & Inspector. Decompress .gz and .tgz archives, explore tarballs, preview files, and decode Base64/Hex Gzip streams with 100% client-side privacy.',
+    openGraph: {
+      title: 'GZIP Extractor & Inspector – 100% Client-Side Private',
+      description:
+        'Decompress and inspect GZIP files, tarballs, and Base64 streams locally in your browser. Fast directory tree navigation, inline file preview, and zero server uploads.',
+    },
+    twitter: {
+      title: 'GZIP Extractor & Inspector – 100% Client-Side Private',
+      description:
+        'Free online GZIP archive and stream extractor with instant file tree and inline preview. 100% private in-browser decompression.',
     },
   },
 
@@ -636,7 +653,7 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   [ToolKeys.zipExtractor]: {
-    name: 'ZIP File Inspector & Extractor',
+    name: 'ZIP Extractor & Inspector',
     applicationCategory: 'DeveloperTool',
     description:
       'An online ZIP archive inspector and extractor that parses ZIP structures, explores nested directory trees, previews code/images inline, and extracts files 100% client-side.',
@@ -646,6 +663,21 @@ export const ToolJsonLdSoftwareApplication = {
       'Instant inline code, Markdown, and image preview without decompression',
       'Granular single-file extraction and batch full-archive download',
       'Smart UTF-8 and legacy CP437 character encoding decoding',
+    ],
+  },
+
+  [ToolKeys.gzipExtractor]: {
+    name: 'GZIP Extractor & Inspector',
+    applicationCategory: 'DeveloperTool',
+    description:
+      'An online GZIP archive and stream decompressor that parses GZIP headers, explores tarball directory trees, previews files inline, and extracts contents 100% client-side.',
+    featureList: [
+      'Decompress .gz and .tgz archives in browser memory with zero server uploads',
+      'Parse RFC 1952 GZIP headers, original filenames (FNAME), and compression ratios',
+      'Automatic embedded tarball extraction into an interactive virtual directory tree',
+      'Multi-format stream support for Base64, Base64URL, and Hex strings',
+      'Inline syntax-highlighted code, log, and image preview with instant extraction',
+      '100% client-side privacy with complete local in-memory processing',
     ],
   },
 

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import * as fflate from 'fflate';
 
 import toast from '@/utils/toast';
+import { getImageMimeType } from '@/utils/file-utils';
 import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
 import type {
   PreviewState,
@@ -259,7 +260,7 @@ export default function useZipExtractor() {
         const data = await extractSingleFile(zipBuffer, entry.path);
 
         if (isImage) {
-          const mimeType = ext === 'svg' ? 'image/svg+xml' : `image/${ext}`;
+          const mimeType = getImageMimeType(ext);
           const blob = new Blob([data as unknown as BlobPart], {
             type: mimeType,
           });

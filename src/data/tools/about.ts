@@ -168,7 +168,7 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
 
   [ToolKeys.zipExtractor]: {
     overview:
-      'ZIP is the universal archive and data compression format used across software distribution, backup, and file sharing. This ZIP File Inspector & Extractor provides instant, 100% client-side archive exploration, allowing users to browse full folder tree hierarchies, preview text/code/images inline, and extract individual files without uploading any data to remote servers.',
+      'ZIP is the universal archive and data compression format used across software distribution, backup, and file sharing. This ZIP Extractor & Inspector provides instant, 100% client-side archive exploration, allowing users to browse full folder tree hierarchies, preview text/code/images inline, and extract individual files without uploading any data to remote servers.',
     features: [
       '100% Client-Side Privacy: Decodes and decompresses archives entirely inside browser memory using pure TypeScript and Web Workers. Confidential files, keys, and documents are never uploaded to any cloud server.',
       'Instant Virtual File Tree: Automatically parses the ZIP central directory header in milliseconds to present an interactive, collapsible directory tree with file size metrics and compression ratio statistics.',
@@ -178,6 +178,19 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
     ],
     bottomNote:
       'All ZIP decompression and extraction runs 100% locally in your browser memory. Your files and archive contents are never uploaded or transmitted over any network.',
+  },
+  [ToolKeys.gzipExtractor]: {
+    overview:
+      'GZIP is the standard file compression format used extensively across HTTP network traffic, DevOps log storage, database backups, and Linux package distribution. This GZIP Extractor & Inspector provides instant, 100% client-side inspection and decompression for both standalone .gz/.tgz files and Base64/Hex compressed stream strings without sending any data to remote servers.',
+    features: [
+      '100% Client-Side Privacy: Decompresses and inspects archives entirely inside your browser memory using high-performance WebAssembly/JavaScript. Confidential server logs, database dumps, and sensitive payloads are never uploaded to any remote server.',
+      'GZIP Header & Metadata Inspection: Automatically parses RFC 1952 magic headers, extracts embedded original filenames (FNAME flag), and computes real-time compression ratios and uncompressed size metrics.',
+      'Embedded Tarball Explorer: Intelligently detects whether decompressed payloads are POSIX ustar tarballs (.tar.gz / .tgz), automatically extracting the archive into an interactive directory tree with inline preview and extraction.',
+      'Multi-Format Stream Decoding: Supports decompressing raw Base64, Base64URL, and Hex strings containing GZIP, Zlib, or Deflate payloads directly from clipboard or text inputs.',
+      'Inline Code, Log & Image Preview: Inspect Markdown, JSON, TypeScript, SQL, logs, text files, and images directly in your browser without needing terminal commands or desktop decompression software.',
+    ],
+    bottomNote:
+      'All GZIP decompression and inspection runs 100% locally in your browser memory. Your files, logs, and compressed streams are never uploaded or transmitted over any network.',
   },
   [ToolKeys.htmlEntities]: {
     overview:

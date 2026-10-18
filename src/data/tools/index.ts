@@ -10,6 +10,7 @@ import {
   CaseUpper,
   Clock,
   CodeXml,
+  FileArchive,
   FileImage,
   FileText,
   Fingerprint,
@@ -84,6 +85,7 @@ export const ToolKeys = {
   colorConverter: 'colorConverter',
   jwtDebugger: 'jwtDebugger',
   zipExtractor: 'zipExtractor',
+  gzipExtractor: 'gzipExtractor',
   htmlEntities: 'htmlEntities',
 
   // Image Tools
@@ -131,6 +133,7 @@ export const ToolGroupItems = {
     ToolKeys.regexTester,
     ToolKeys.colorConverter,
     ToolKeys.zipExtractor,
+    ToolKeys.gzipExtractor,
     ToolKeys.htmlEntities,
   ],
   [ToolGroupKeys.imgTool]: [
@@ -168,7 +171,8 @@ export const ToolTitles = {
   [ToolKeys.uuidGenerator]: 'UUID / Token Generator',
   [ToolKeys.colorConverter]: 'Color Space Converter',
   [ToolKeys.jwtDebugger]: 'JWT Debugger',
-  [ToolKeys.zipExtractor]: 'ZIP File Inspector & Extractor',
+  [ToolKeys.zipExtractor]: 'ZIP Extractor & Inspector',
+  [ToolKeys.gzipExtractor]: 'GZIP Extractor & Inspector',
   [ToolKeys.htmlEntities]: 'HTML Entities Encoder / Decoder',
 
   [ToolKeys.picMergeStudio]: 'PicMerge Studio',
@@ -220,6 +224,8 @@ export const ToolDescriptions = {
     'Decode, inspect, and validate JSON Web Tokens (JWT) in real time with automatic expiration countdown, claims breakdown, and 100% client-side privacy.',
   [ToolKeys.zipExtractor]:
     'Inspect, explore file trees, preview code and images, and extract ZIP archives locally in your browser with 100% client-side privacy.',
+  [ToolKeys.gzipExtractor]:
+    'Decompress, inspect headers, explore tarball directory trees, preview files, and extract GZIP (.gz, .tgz) archives and streams locally with 100% privacy.',
   [ToolKeys.htmlEntities]:
     'Encode and decode HTML entities with support for standard named entities, full Unicode support, and instant reciprocal swapping.',
 
@@ -268,6 +274,7 @@ export const ToolSlugs = {
   [ToolKeys.colorConverter]: 'color-converter',
   [ToolKeys.jwtDebugger]: 'jwt-debugger',
   [ToolKeys.zipExtractor]: 'zip-extractor',
+  [ToolKeys.gzipExtractor]: 'gzip-extractor',
   [ToolKeys.htmlEntities]: 'html-entities',
 
   [ToolKeys.picMergeStudio]: 'pic-merge-studio',
@@ -314,6 +321,7 @@ export const ToolIcons = {
   [ToolKeys.colorConverter]: Palette,
   [ToolKeys.jwtDebugger]: ShieldCheck,
   [ToolKeys.zipExtractor]: FolderArchive,
+  [ToolKeys.gzipExtractor]: FileArchive,
   [ToolKeys.htmlEntities]: CodeXml,
 
   [ToolKeys.picMergeStudio]: Layers,

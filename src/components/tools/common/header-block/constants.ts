@@ -26,6 +26,7 @@ export const TOOLS_WITH_HOTKEY = [
   ToolKeys.colorConverter,
   ToolKeys.jwtDebugger,
   ToolKeys.zipExtractor,
+  ToolKeys.gzipExtractor,
   ToolKeys.htmlEntities,
 
   // Image Tools
