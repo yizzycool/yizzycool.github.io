@@ -176,7 +176,7 @@ export const ToolTitles = {
   [ToolKeys.jsonFormatter]: 'JSON Formatter',
   [ToolKeys.unixTimestampConverter]: 'Unix Timestamp Converter',
   [ToolKeys.regexTester]: 'Regular Expression Tester',
-  [ToolKeys.hashGenerator]: 'Hash Calculator / Generator',
+  [ToolKeys.hashGenerator]: 'Hash Generator',
   [ToolKeys.uuidGenerator]: 'UUID / Token Generator',
   [ToolKeys.colorConverter]: 'Color Space Converter',
   [ToolKeys.jwtDebugger]: 'JWT Debugger',
@@ -204,6 +204,17 @@ export const ToolTitles = {
 
 const ToolTitlesForFeaturePanel = {
   ...ToolTitles,
+
+  // Developer Tools - Concise single-line titles with unified naming rhythm
+  [ToolKeys.zipExtractor]: 'ZIP Extractor',
+  [ToolKeys.gzipExtractor]: 'GZIP Extractor',
+  [ToolKeys.hexBinaryConverter]: 'Hex / Binary Converter',
+  [ToolKeys.htmlEntities]: 'HTML Entity Converter',
+  [ToolKeys.hashGenerator]: 'Hash Generator',
+  [ToolKeys.uuidGenerator]: 'UUID Generator',
+  [ToolKeys.unixTimestampConverter]: 'Timestamp Converter',
+  [ToolKeys.regexTester]: 'Regex Tester',
+  [ToolKeys.colorConverter]: 'Color Converter',
 };
 
 export const ToolDescriptions = {

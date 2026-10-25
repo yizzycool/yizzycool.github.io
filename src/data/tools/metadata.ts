@@ -52,17 +52,16 @@ export const ToolMetadata = {
   // ==================
 
   [ToolKeys.urlEncoderDecoder]: {
-    title:
-      'URL Encoder & Decoder – Encode and Decode URLs Online | Yizzy Peasy',
+    title: 'URL Encoder / Decoder – Encode & Decode URLs Online | Yizzy Peasy',
     description:
       'Instantly encode or decode URL components with this free online URL Encoder & Decoder. No signup needed.',
     openGraph: {
-      title: 'URL Encoder & Decoder – Online Dev Tool',
+      title: 'URL Encoder / Decoder – Online Dev Tool',
       description:
         'Free online URL Encoder & Decoder to encode or decode URLs for web development and debugging.',
     },
     twitter: {
-      title: 'URL Encoder & Decoder – Online Dev Tool',
+      title: 'URL Encoder / Decoder – Online Dev Tool',
       description:
         'Encode or decode URLs instantly with this free online tool for developers.',
     },
@@ -121,16 +120,16 @@ export const ToolMetadata = {
 
   [ToolKeys.hashGenerator]: {
     title:
-      'Hash Calculator & Generator – Calculate MD5, SHA-256, SHA-512 Online | Yizzy Peasy',
+      'Hash Generator – Calculate MD5, SHA-256, SHA-512 Online | Yizzy Peasy',
     description:
       'Free online Hash Calculator & Checksum Generator. Compute MD5, SHA-1, SHA-256, SHA-384, SHA-512, and HMAC checksums for text or files locally in your browser with instant hash comparison.',
     openGraph: {
-      title: 'Hash Calculator & Checksum Generator',
+      title: 'Hash Generator & Checksum Calculator',
       description:
         'Compute MD5, SHA-1, SHA-256, SHA-384, SHA-512, and HMAC checksums online with instant verification and 100% client-side privacy.',
     },
     twitter: {
-      title: 'Hash Calculator & Checksum Generator',
+      title: 'Hash Generator & Checksum Calculator',
       description:
         'Generate MD5, SHA-256, SHA-512 hashes and HMAC checksums for text and files securely in your browser.',
     },
@@ -138,16 +137,16 @@ export const ToolMetadata = {
 
   [ToolKeys.uuidGenerator]: {
     title:
-      'UUID / NanoID / Random Token Generator – Free Online ID Generator | Yizzy Peasy',
+      'UUID / Token Generator – Generate UUID v4, v7 & Random Tokens | Yizzy Peasy',
     description:
       'Generate cryptographically secure random identifiers online: UUID v4, RFC 9562 UUID v7, NanoID, ULID, CUID2, Hex tokens, and Base64URL tokens with custom lengths, alphabets, and batch export.',
     openGraph: {
-      title: 'UUID & Random Token Generator – Online Dev Tool',
+      title: 'UUID / Token Generator – Online Dev Tool',
       description:
         'Free online tool to generate UUID v4, UUID v7, NanoID, ULID, and secure random tokens in batch with custom formatting and 100% client-side privacy.',
     },
     twitter: {
-      title: 'UUID & Random Token Generator – Online Dev Tool',
+      title: 'UUID / Token Generator – Online Dev Tool',
       description:
         'Generate UUID v4, UUID v7, NanoID, ULID, and random tokens securely with batch export in your browser.',
     },
@@ -189,16 +188,16 @@ export const ToolMetadata = {
 
   [ToolKeys.base64EncoderDecoder]: {
     title:
-      'Base64 Encoder & Decoder – Standard, URL-Safe & UTF-8 Text Converter | Yizzy Peasy',
+      'Base64 Encoder / Decoder – Standard, URL-Safe & UTF-8 Text Converter | Yizzy Peasy',
     description:
-      'Free online Base64 Encoder & Decoder. Encode and decode text to and from Base64 with support for Standard, URL-safe (-_), MIME, and UTF-8 characters. 100% private and client-side.',
+      'Free online Base64 Encoder / Decoder. Encode and decode text to and from Base64 with support for Standard, URL-safe (-_), MIME, and UTF-8 characters. 100% private and client-side.',
     openGraph: {
-      title: 'Base64 Encoder & Decoder – 100% Client-Side Private',
+      title: 'Base64 Encoder / Decoder – 100% Client-Side Private',
       description:
         'Encode and decode text to Base64 and Base64URL instantly with UTF-8 support and format comparisons directly in your browser.',
     },
     twitter: {
-      title: 'Base64 Encoder & Decoder – 100% Client-Side Private',
+      title: 'Base64 Encoder / Decoder – 100% Client-Side Private',
       description:
         'Free online Base64 and Base64URL converter with full UTF-8 support and 100% client-side privacy.',
     },
@@ -240,32 +239,32 @@ export const ToolMetadata = {
 
   [ToolKeys.htmlEntities]: {
     title:
-      'HTML Entities Encoder & Decoder – Escape & Unescape HTML Online | Yizzy Peasy',
+      'HTML Entities Encoder / Decoder – Escape & Unescape HTML Online | Yizzy Peasy',
     description:
-      'Free online HTML Entities Encoder & Decoder. Escape and unescape HTML characters to standard named entities (&lt;, &gt;, &quot;, &amp;, &apos;) with 100% client-side privacy.',
+      'Free online HTML Entities Encoder / Decoder. Escape and unescape HTML characters to standard named entities (&lt;, &gt;, &quot;, &amp;, &apos;) with 100% client-side privacy.',
     openGraph: {
-      title: 'HTML Entities Encoder & Decoder – 100% Client-Side Private',
+      title: 'HTML Entities Encoder / Decoder – 100% Client-Side Private',
       description:
         'Encode and decode HTML entities instantly. Supports standard named entities, Unicode emojis, and double-escape repair.',
     },
     twitter: {
-      title: 'HTML Entities Encoder & Decoder – 100% Client-Side Private',
+      title: 'HTML Entities Encoder / Decoder – 100% Client-Side Private',
       description:
         'Fast and private HTML entity encoder/decoder. Convert reserved HTML characters and emojis in your browser.',
     },
   },
   [ToolKeys.hexBinaryConverter]: {
     title:
-      'Hex & Binary Data Converter – Text, Hex, Binary & Decimal Transcoder | Yizzy Peasy',
+      'Hex / Binary Data Converter – Text, Hex, Binary & Decimal Transcoder | Yizzy Peasy',
     description:
-      'Free online Hex & Binary Data Converter. Convert reciprocally between text, Hex (Base16), binary bits (0/1), decimal bytes, and programming formats (C Array, Python bytes) with 100% client-side privacy.',
+      'Free online Hex / Binary Data Converter. Convert reciprocally between text, Hex (Base16), binary bits (0/1), decimal bytes, and programming formats (C Array, Python bytes) with 100% client-side privacy.',
     openGraph: {
-      title: 'Hex & Binary Data Converter – 100% Client-Side Private',
+      title: 'Hex / Binary Data Converter – 100% Client-Side Private',
       description:
         'Bidirectional conversion between UTF-8 text, Hex (Base16), binary bits, and decimal byte values with zero server uploads.',
     },
     twitter: {
-      title: 'Hex & Binary Data Converter – 100% Client-Side Private',
+      title: 'Hex / Binary Data Converter – 100% Client-Side Private',
       description:
         'Fast in-browser Hex, Binary, Text, and Byte transcoder with programming array exports and 100% privacy.',
     },
@@ -547,7 +546,7 @@ export const ToolJsonLdSoftwareApplication = {
   // ==================
 
   [ToolKeys.urlEncoderDecoder]: {
-    name: 'URL Encoder & Decoder',
+    name: 'URL Encoder / Decoder',
     applicationCategory: 'DeveloperTool',
     description:
       'Free online URL Encoder & Decoder to encode or decode URL components instantly.',
@@ -613,7 +612,7 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   [ToolKeys.hashGenerator]: {
-    name: 'Hash Calculator & Generator',
+    name: 'Hash Generator',
     applicationCategory: 'DeveloperTool',
     description:
       'An online hash and checksum calculator that generates MD5, SHA-1, SHA-256, SHA-384, SHA-512, and HMAC signatures for text strings and files directly in your browser.',
