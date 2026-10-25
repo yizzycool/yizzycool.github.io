@@ -177,6 +177,22 @@ export const ToolTags = {
     'HTML 轉義',
     '字元轉義',
   ],
+  [ToolKeys.hexBinaryConverter]: [
+    'Hex Converter',
+    'Binary Converter',
+    'Base16',
+    'Base2',
+    'Hex to Text',
+    'Text to Hex',
+    'Binary to Text',
+    'Byte Array',
+    'C Array',
+    'Python Bytes',
+    '二進制轉換',
+    '十六進制轉換',
+    '進位轉換',
+    '位元組陣列',
+  ],
 
   // ==================
 

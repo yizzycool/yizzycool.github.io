@@ -134,7 +134,6 @@ export default function UrlEncoderDecoder() {
           disabled={isEmpty(input)}
           onClick={() => processUrl()}
           text={input}
-          hotkeyLabel="Process"
         />
       )}
 
@@ -184,7 +183,6 @@ export default function UrlEncoderDecoder() {
           disabled={isEmpty(input)}
           onClick={() => processUrl()}
           text={input}
-          hotkeyLabel="Save to History"
         />
       )}
     </>

@@ -148,7 +148,6 @@ export default function RewriterApi() {
         disabled={isEmpty(text) || isProcessing}
         onClick={onProcessClick}
         text={text}
-        hotkeyLabel="Rewrite"
       />
 
       <SectionGap size="sm" />

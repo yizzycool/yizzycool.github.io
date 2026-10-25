@@ -146,7 +146,6 @@ export default function WriterApi() {
         disabled={isEmpty(text) || isProcessing}
         onClick={onProcessClick}
         text={text}
-        hotkeyLabel="Write"
       />
 
       <SectionGap size="sm" />

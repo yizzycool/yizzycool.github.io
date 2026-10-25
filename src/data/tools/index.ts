@@ -87,6 +87,7 @@ export const ToolKeys = {
   zipExtractor: 'zipExtractor',
   gzipExtractor: 'gzipExtractor',
   htmlEntities: 'htmlEntities',
+  hexBinaryConverter: 'hexBinaryConverter',
 
   // Image Tools
   picMergeStudio: 'picMergeStudio',
@@ -123,18 +124,26 @@ export const ToolGroupItems = {
     ToolKeys.keyCard,
   ],
   [ToolGroupKeys.devTool]: [
+    // Data Formats & Archive Inspection
     ToolKeys.jsonFormatter,
-    ToolKeys.jwtDebugger,
-    ToolKeys.unixTimestampConverter,
-    ToolKeys.urlEncoderDecoder,
-    ToolKeys.base64EncoderDecoder,
-    ToolKeys.uuidGenerator,
-    ToolKeys.hashGenerator,
-    ToolKeys.regexTester,
-    ToolKeys.colorConverter,
     ToolKeys.zipExtractor,
     ToolKeys.gzipExtractor,
+
+    // Encodings & Transcoding
+    ToolKeys.urlEncoderDecoder,
+    ToolKeys.base64EncoderDecoder,
+    ToolKeys.hexBinaryConverter,
     ToolKeys.htmlEntities,
+
+    // Security, Auth & Identity
+    ToolKeys.jwtDebugger,
+    ToolKeys.hashGenerator,
+    ToolKeys.uuidGenerator,
+
+    // Dev Utilities & Testing
+    ToolKeys.unixTimestampConverter,
+    ToolKeys.regexTester,
+    ToolKeys.colorConverter,
   ],
   [ToolGroupKeys.imgTool]: [
     ToolKeys.imageToBase64,
@@ -174,6 +183,7 @@ export const ToolTitles = {
   [ToolKeys.zipExtractor]: 'ZIP Extractor & Inspector',
   [ToolKeys.gzipExtractor]: 'GZIP Extractor & Inspector',
   [ToolKeys.htmlEntities]: 'HTML Entities Encoder / Decoder',
+  [ToolKeys.hexBinaryConverter]: 'Hex / Binary Data Converter',
 
   [ToolKeys.picMergeStudio]: 'PicMerge Studio',
   [ToolKeys.base64ToImage]: 'Base64 to Image',
@@ -228,6 +238,8 @@ export const ToolDescriptions = {
     'Decompress, inspect headers, explore tarball directory trees, preview files, and extract GZIP (.gz, .tgz) archives and streams locally with 100% privacy.',
   [ToolKeys.htmlEntities]:
     'Encode and decode HTML entities with support for standard named entities, full Unicode support, and instant reciprocal swapping.',
+  [ToolKeys.hexBinaryConverter]:
+    'Convert text, Hex (Base16), binary (0/1), and byte values reciprocally with UTF-8 support, customizable delimiters, and programming export (C Array, Python bytes).',
 
   [ToolKeys.picMergeStudio]:
     'Combine photos into custom collages with social media canvas presets, layer controls, filters, and high-resolution export in PNG or JPEG.',
@@ -275,7 +287,8 @@ export const ToolSlugs = {
   [ToolKeys.jwtDebugger]: 'jwt-debugger',
   [ToolKeys.zipExtractor]: 'zip-extractor',
   [ToolKeys.gzipExtractor]: 'gzip-extractor',
-  [ToolKeys.htmlEntities]: 'html-entities',
+  [ToolKeys.htmlEntities]: 'html-entities-encoder-decoder',
+  [ToolKeys.hexBinaryConverter]: 'hex-binary-converter',
 
   [ToolKeys.picMergeStudio]: 'pic-merge-studio',
   [ToolKeys.base64ToImage]: 'base64-to-image',
@@ -323,6 +336,7 @@ export const ToolIcons = {
   [ToolKeys.zipExtractor]: FolderArchive,
   [ToolKeys.gzipExtractor]: FileArchive,
   [ToolKeys.htmlEntities]: CodeXml,
+  [ToolKeys.hexBinaryConverter]: Binary,
 
   [ToolKeys.picMergeStudio]: Layers,
   [ToolKeys.base64ToImage]: FileImage,

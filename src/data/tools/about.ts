@@ -205,6 +205,20 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
     bottomNote:
       'All HTML entity conversions run 100% locally in your browser memory. Your input code and text are never uploaded, stored, or transmitted over any network.',
   },
+  [ToolKeys.hexBinaryConverter]: {
+    overview:
+      'Hexadecimal (Base16) and Binary (Base2) representations are fundamental in system programming, network protocols, cryptography, and embedded firmware development. This Hex / Binary Data Converter delivers instantaneous, bidirectional transcoding between UTF-8 text, Hex strings, raw binary bits, and decimal byte values, complete with multi-programming export templates (C Array, Python bytes).',
+    features: [
+      '100% Client-Side Privacy: Operates entirely within your local browser memory using native TextEncoder, TextDecoder, and bitwise arithmetic. Confidential keys, payloads, and binary dumps are never uploaded or transmitted over the network.',
+      'Bidirectional Transcoding: Seamlessly convert between UTF-8 text, Hexadecimal, Binary bits (0/1), and Decimal byte values with real-time bidirectional synchronization.',
+      'Configurable Delimiters & Casing: Customize byte separators (Spaces, Colons, 0x Prefixes, Comma Delimited, or None) and switch between uppercase and lowercase Hex representations.',
+      'Programming Export Templates: Generate production-ready C/C++ byte arrays (const uint8_t data[] = { 0x.. };) and Python bytes literals (b"\\x..") with one-click copy.',
+      'Lenient Fault-Tolerant Parsing: Intelligently strips out spaces, colons, "0x" and "\\x" prefixes, and ignore noise characters during hex and binary parsing.',
+      'Keyboard Shortcuts & History: Full hotkey integration (Mod+Enter, Mod+Shift+C, Mod+H) and local browser history keeping track of your recent conversions for rapid recall.',
+    ],
+    bottomNote:
+      'All conversions occur 100% locally in your browser memory. Your data never leaves your device.',
+  },
 
   // ==================
 

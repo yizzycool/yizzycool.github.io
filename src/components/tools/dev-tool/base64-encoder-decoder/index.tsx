@@ -120,7 +120,6 @@ export default function Base64EncoderDecoder() {
         disabled={isEmpty(input)}
         onClick={() => processText()}
         text={input}
-        hotkeyLabel="Process"
       />
 
       <SectionGap />

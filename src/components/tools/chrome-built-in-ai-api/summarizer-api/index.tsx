@@ -148,7 +148,6 @@ export default function SummarizerApi() {
         disabled={isEmpty(text) || isProcessing}
         onClick={onProcessClick}
         text={text}
-        hotkeyLabel="Summarize"
       />
 
       <SectionGap size="sm" />

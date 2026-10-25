@@ -131,7 +131,6 @@ export default function HtmlEntities() {
         disabled={isEmpty(input)}
         onClick={() => processText()}
         text={input}
-        hotkeyLabel="Process"
       />
 
       <SectionGap />

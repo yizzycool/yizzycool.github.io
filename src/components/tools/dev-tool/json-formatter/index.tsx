@@ -113,7 +113,6 @@ export default function JsonFormatter() {
             disabled={isEmpty(input)}
             onClick={() => processJson()}
             text={input}
-            hotkeyLabel="Process"
           />
         </div>
 

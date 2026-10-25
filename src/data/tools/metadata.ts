@@ -240,18 +240,34 @@ export const ToolMetadata = {
 
   [ToolKeys.htmlEntities]: {
     title:
-      'HTML Entities Encoder / Decoder – Escape & Unescape HTML Online | Yizzy Peasy',
+      'HTML Entities Encoder & Decoder – Escape & Unescape HTML Online | Yizzy Peasy',
     description:
-      'Free online HTML Entities Encoder / Decoder. Escape and unescape HTML characters to standard named entities (&lt;, &gt;, &quot;, &amp;, &apos;) with 100% client-side privacy.',
+      'Free online HTML Entities Encoder & Decoder. Escape and unescape HTML characters to standard named entities (&lt;, &gt;, &quot;, &amp;, &apos;) with 100% client-side privacy.',
     openGraph: {
-      title: 'HTML Entities Encoder / Decoder – 100% Client-Side Private',
+      title: 'HTML Entities Encoder & Decoder – 100% Client-Side Private',
       description:
         'Encode and decode HTML entities instantly. Supports standard named entities, Unicode emojis, and double-escape repair.',
     },
     twitter: {
-      title: 'HTML Entities Encoder / Decoder – 100% Client-Side Private',
+      title: 'HTML Entities Encoder & Decoder – 100% Client-Side Private',
       description:
         'Fast and private HTML entity encoder/decoder. Convert reserved HTML characters and emojis in your browser.',
+    },
+  },
+  [ToolKeys.hexBinaryConverter]: {
+    title:
+      'Hex & Binary Data Converter – Text, Hex, Binary & Decimal Transcoder | Yizzy Peasy',
+    description:
+      'Free online Hex & Binary Data Converter. Convert reciprocally between text, Hex (Base16), binary bits (0/1), decimal bytes, and programming formats (C Array, Python bytes) with 100% client-side privacy.',
+    openGraph: {
+      title: 'Hex & Binary Data Converter – 100% Client-Side Private',
+      description:
+        'Bidirectional conversion between UTF-8 text, Hex (Base16), binary bits, and decimal byte values with zero server uploads.',
+    },
+    twitter: {
+      title: 'Hex & Binary Data Converter – 100% Client-Side Private',
+      description:
+        'Fast in-browser Hex, Binary, Text, and Byte transcoder with programming array exports and 100% privacy.',
     },
   },
 
@@ -692,6 +708,20 @@ export const ToolJsonLdSoftwareApplication = {
       'Configurable scope: Special characters only or All Non-ASCII symbols',
       'Automatic double-escaping detection and one-click unwrap',
       '100% client-side processing with zero server uploads',
+    ],
+  },
+  [ToolKeys.hexBinaryConverter]: {
+    name: 'Hex / Binary Data Converter',
+    applicationCategory: 'DeveloperTool',
+    description:
+      'An online hexadecimal and binary converter that transforms text, Hex, binary bits, and decimal bytes with customizable delimiters, programming array export, and 100% client-side privacy.',
+    featureList: [
+      'Bidirectional conversion between UTF-8 text, Hex (Base16), Binary (Base2), and Decimal bytes',
+      'Customizable delimiters (Spaces, Colons, 0x Prefixes, Comma Delimited, None) and uppercase/lowercase casing',
+      'Programming export presets for C byte array and Python bytes literal',
+      'Lenient parsing stripping 0x, \\x, colons, and spaces automatically',
+      'Comprehensive keyboard shortcuts and local conversion history',
+      '100% client-side privacy with zero data transmission',
     ],
   },
 

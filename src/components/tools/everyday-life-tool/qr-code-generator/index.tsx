@@ -97,7 +97,6 @@ export default function QrCodeGenerator() {
             disabled={isEmpty(inputText.trim())}
             onClick={() => onGenerate(true)}
             text={inputText}
-            hotkeyLabel="Generate"
           />
         </div>
 

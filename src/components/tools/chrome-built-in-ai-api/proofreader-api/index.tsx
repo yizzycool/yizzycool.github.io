@@ -151,7 +151,6 @@ export default function ProofreaderApi() {
         disabled={isEmpty(text) || isProcessing}
         onClick={onProcessClick}
         text={text}
-        hotkeyLabel="Proofread"
       />
 
       <SectionGap size="sm" />

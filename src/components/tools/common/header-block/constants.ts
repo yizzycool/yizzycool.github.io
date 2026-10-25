@@ -6,6 +6,7 @@ export const TOOLS_WITH_HISTORY = [
   ToolKeys.urlEncoderDecoder,
   ToolKeys.base64EncoderDecoder,
   ToolKeys.htmlEntities,
+  ToolKeys.hexBinaryConverter,
   ToolKeys.chromeAiPrompt,
 ];
 
@@ -28,6 +29,7 @@ export const TOOLS_WITH_HOTKEY = [
   ToolKeys.zipExtractor,
   ToolKeys.gzipExtractor,
   ToolKeys.htmlEntities,
+  ToolKeys.hexBinaryConverter,
 
   // Image Tools
   ToolKeys.picMergeStudio,

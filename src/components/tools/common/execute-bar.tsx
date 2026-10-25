@@ -19,7 +19,6 @@ type Props = {
   text?: string;
   charCount?: number;
   showCharCount?: boolean;
-  hotkeyLabel?: string;
   variant?: ButtonVariant;
   className?: string;
   extraActions?: React.ReactNode;
@@ -34,7 +33,6 @@ export default function ExecuteBar({
   text,
   charCount,
   showCharCount = true,
-  hotkeyLabel = 'Process',
   variant = 'blue',
   className,
   extraActions,
@@ -45,6 +43,14 @@ export default function ExecuteBar({
       : typeof text === 'string'
         ? size(text)
         : 0;
+
+  const isColored =
+    !variant ||
+    variant === 'blue' ||
+    variant === 'primary' ||
+    variant === 'dark-sky' ||
+    variant === 'inverse' ||
+    variant === 'error';
 
   return (
     <div
@@ -63,11 +69,13 @@ export default function ExecuteBar({
           disabled={disabled}
           onClick={onClick}
         >
-          {label}
+          <span>{label}</span>
+          <HotkeyBadge
+            symbol={TOOL_HOTKEYS.process.symbol}
+            size="xs"
+            color={isColored ? 'inverted' : 'neutral'}
+          />
         </Button>
-        <HotkeyBadge
-          items={[{ ...TOOL_HOTKEYS.process, label: hotkeyLabel }]}
-        />
         {extraActions}
       </div>
       {showCharCount && (

@@ -157,7 +157,6 @@ export default function GzipExtractor() {
             onClick={() => handleDecompressText()}
             disabled={!textInput.trim() || isProcessing}
             text={textInput}
-            hotkeyLabel="Process"
           />
         </div>
       )}
