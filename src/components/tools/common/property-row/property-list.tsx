@@ -5,6 +5,7 @@ import type { PropertyColumns, PropertyListProps } from './types';
 import { AlertCircle, Loader2 } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
+import { InsetGroup } from '@/components/tools/common/inset-group';
 
 import { PropertyRow } from './property-row';
 
@@ -105,14 +106,7 @@ export function PropertyList({
 
   if (isGrouped) {
     return (
-      <div
-        className={cn(
-          'divide-y divide-neutral-200/70 overflow-hidden rounded-xl border border-neutral-200/80 bg-white/70 backdrop-blur-md dark:divide-neutral-800 dark:border-neutral-800 dark:bg-neutral-900/40',
-          className
-        )}
-        role="region"
-        aria-live="polite"
-      >
+      <InsetGroup className={className} role="region" aria-live="polite">
         {items
           ? items.map((item, idx) => (
               <PropertyRow
@@ -126,7 +120,7 @@ export function PropertyList({
               />
             ))
           : children}
-      </div>
+      </InsetGroup>
     );
   }
 

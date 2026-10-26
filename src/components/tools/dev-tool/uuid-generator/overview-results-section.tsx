@@ -6,6 +6,7 @@ import { Fingerprint } from 'lucide-react';
 
 import useIsClient from '@/hooks/lifecycle/use-is-client';
 
+import { InsetGroup } from '@/components/tools/common/inset-group';
 import LabelBar from '@/components/tools/common/label-bar';
 
 import OverviewResultItem from './overview-result-item';
@@ -29,7 +30,7 @@ export default function OverviewResultsSection({
         description="Instant live samples of 9 modern unique identifier formats (CSPRNG secure)"
       />
 
-      <div className="divide-y divide-neutral-200/70 overflow-hidden rounded-xl border border-neutral-200/80 bg-white/70 backdrop-blur-md dark:divide-neutral-800 dark:border-neutral-800 dark:bg-neutral-900/40">
+      <InsetGroup>
         {items.map((item) => (
           <OverviewResultItem
             key={item.id}
@@ -38,7 +39,7 @@ export default function OverviewResultsSection({
             onRegenerateSingle={onRegenerateSingle}
           />
         ))}
-      </div>
+      </InsetGroup>
     </section>
   );
 }

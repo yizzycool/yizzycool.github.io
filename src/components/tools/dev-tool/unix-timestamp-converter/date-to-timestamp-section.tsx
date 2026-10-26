@@ -10,6 +10,7 @@ import { PropertyRow } from '@/components/tools/common/property-row';
 import { Button } from '@/components/ui/button';
 import { PillTabs } from '@/components/ui/tabs';
 import { cn } from '@/utils/cn';
+import useIsClient from '@/hooks/lifecycle/use-is-client';
 
 import {
   QUICK_OFFSETS,
@@ -44,6 +45,7 @@ export default function DateToTimestampSection({
   onSetToNow,
   onClear,
 }: Props) {
+  const isClient = useIsClient();
   const quickOffsets = QUICK_OFFSETS.slice(0, 4);
 
   return (
@@ -54,7 +56,6 @@ export default function DateToTimestampSection({
         htmlFor="datetime-local-input"
         description="Select date & time via native calendar or paste custom datetime string"
       >
-        <PasteAction onClick={onPasteDateString} />
         <Button
           variant="surface"
           bordered
@@ -66,6 +67,7 @@ export default function DateToTimestampSection({
         >
           Now
         </Button>
+        <PasteAction onClick={onPasteDateString} />
         <DeleteAction onClick={onClear} />
       </LabelBar>
 
@@ -114,6 +116,7 @@ export default function DateToTimestampSection({
             step="1"
             value={dateTimeString}
             onChange={(e) => onDateTimeChange(e.target.value)}
+            suppressHydrationWarning
             className={cn(
               'w-full rounded-xl border border-neutral-200/90 px-4 py-2.5 font-mono text-sm outline-none transition-all sm:text-base',
               'bg-white/70 backdrop-blur-md dark:border-neutral-700/80 dark:bg-neutral-900/60 dark:text-neutral-100',
@@ -129,12 +132,16 @@ export default function DateToTimestampSection({
             label="Timestamp in Seconds"
             badge="10 digits"
             value={
-              convertedResult.isValid ? convertedResult.seconds : undefined
+              isClient && convertedResult.isValid
+                ? convertedResult.seconds
+                : undefined
             }
             displayValue={
-              convertedResult.isValid
-                ? convertedResult.seconds
-                : 'Invalid date/time components'
+              isClient
+                ? convertedResult.isValid
+                  ? convertedResult.seconds
+                  : 'Invalid date/time components'
+                : '---'
             }
             grouped
           />
@@ -142,12 +149,16 @@ export default function DateToTimestampSection({
             label="Timestamp in Milliseconds"
             badge="13 digits"
             value={
-              convertedResult.isValid ? convertedResult.milliseconds : undefined
+              isClient && convertedResult.isValid
+                ? convertedResult.milliseconds
+                : undefined
             }
             displayValue={
-              convertedResult.isValid
-                ? convertedResult.milliseconds
-                : 'Invalid date/time components'
+              isClient
+                ? convertedResult.isValid
+                  ? convertedResult.milliseconds
+                  : 'Invalid date/time components'
+                : '---'
             }
             grouped
           />

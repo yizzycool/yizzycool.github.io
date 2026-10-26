@@ -19,6 +19,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PillTabs } from '@/components/ui/tabs';
+import useIsClient from '@/hooks/lifecycle/use-is-client';
 
 import { QUICK_OFFSETS, UNIT_MODES, UNIT_MODE_LABELS } from './constants';
 
@@ -60,6 +61,7 @@ export default function TimestampToDateSection({
   onPaste,
   onClear,
 }: Props) {
+  const isClient = useIsClient();
   const [showAllTimezones, setShowAllTimezones] = useState(false);
 
   return (
@@ -69,40 +71,33 @@ export default function TimestampToDateSection({
         icon={CalendarClock}
         htmlFor="timestamp-input"
       >
+        <Button
+          variant="surface"
+          bordered
+          size="xs"
+          rounded="lg"
+          icon={RefreshCw}
+          onClick={onSetToNow}
+          title="Set timestamp to current device time"
+        >
+          Now
+        </Button>
         <PasteAction onClick={onPaste} />
         <DeleteAction onClick={onClear} disabled={!tsInput} />
       </LabelBar>
 
       <div className="space-y-4">
-        {/* Input Box with Unit Badge & Now button */}
+        {/* Input Box with Unit Badge */}
         <div className="space-y-4">
-          <div className="relative flex items-center">
-            <Input
-              ref={inputRef}
-              id="timestamp-input"
-              inputMode="numeric"
-              value={tsInput}
-              onChange={(e) =>
-                setTsInput(e.target.value.replace(/[^0-9-]/g, ''))
-              }
-              className="py-3.5 pr-24 font-mono text-lg"
-              placeholder="e.g. 1734771000 or 1734771000000"
-            />
-
-            <div className="absolute right-2.5 z-10 flex items-center gap-1">
-              <Button
-                variant="surface"
-                bordered
-                size="xs"
-                rounded="lg"
-                icon={RefreshCw}
-                onClick={onSetToNow}
-                title="Set to current device time"
-              >
-                Now
-              </Button>
-            </div>
-          </div>
+          <Input
+            ref={inputRef}
+            id="timestamp-input"
+            inputMode="numeric"
+            value={tsInput}
+            onChange={(e) => setTsInput(e.target.value.replace(/[^0-9-]/g, ''))}
+            className="py-3.5 font-mono text-lg"
+            placeholder="e.g. 1734771000 or 1734771000000"
+          />
 
           {/* Unit Detection & Selector Bar */}
           <div className="flex flex-wrap items-center gap-2 text-xs">
@@ -153,19 +148,19 @@ export default function TimestampToDateSection({
         <div className="divide-y divide-neutral-200/70 overflow-hidden rounded-xl border border-neutral-200/80 bg-white/70 backdrop-blur-md dark:divide-neutral-800 dark:border-neutral-800 dark:bg-neutral-900/40">
           <PropertyRow
             label="GMT / UTC"
-            value={convertedValues.utc}
+            value={isClient ? convertedValues.utc || '---' : '---'}
             badge="UTC+0"
             grouped
           />
           <PropertyRow
             label="Local Time"
-            value={convertedValues.local}
+            value={isClient ? convertedValues.local || '---' : '---'}
             badge="Device Local"
             grouped
           />
           <PropertyRow
             label="ISO 8601"
-            value={convertedValues.iso}
+            value={isClient ? convertedValues.iso || '---' : '---'}
             badge="Standard"
             grouped
           />

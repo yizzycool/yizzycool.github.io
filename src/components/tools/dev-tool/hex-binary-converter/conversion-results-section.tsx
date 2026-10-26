@@ -4,6 +4,7 @@ import type { FormatOptions, HexBinaryResult } from './types';
 
 import { Code } from 'lucide-react';
 
+import { InsetGroup } from '@/components/tools/common/inset-group';
 import LabelBar from '@/components/tools/common/label-bar';
 import { PropertyRow } from '@/components/tools/common/property-row';
 
@@ -29,7 +30,7 @@ export default function ConversionResultsSection({
       <FormatControlsBar options={options} onChangeOptions={onChangeOptions} />
 
       {/* Inset Grouped Container */}
-      <div className="shadow-2xs divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200/80 bg-white/70 backdrop-blur-md dark:divide-neutral-800/60 dark:border-neutral-800/80 dark:bg-neutral-900/70">
+      <InsetGroup rounded="2xl">
         {/* 1. UTF-8 Plain Text */}
         <PropertyRow
           label="UTF-8 Plain Text"
@@ -95,7 +96,7 @@ export default function ConversionResultsSection({
           grouped
           hoverAction
         />
-      </div>
+      </InsetGroup>
     </div>
   );
 }

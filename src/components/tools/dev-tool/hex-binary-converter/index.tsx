@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react';
 import type { InputMode, HexBinaryHistoryData } from './types';
 
-import { Wand2, Binary } from 'lucide-react';
+import { Binary } from 'lucide-react';
 
 import HeaderBlock from '@/components/tools/common/header-block';
 import SectionGap from '@/components/tools/common/section-gap';
@@ -131,7 +131,6 @@ export default function HexBinaryConverter() {
 
       <ExecuteBar
         label="Convert"
-        icon={Wand2}
         onClick={handleExecute}
         disabled={!input.trim()}
         text={input}

@@ -65,7 +65,7 @@ export function PropertyRow({
       className={cn(
         'group p-3.5 text-left transition-colors',
         grouped &&
-          'bg-transparent shadow-none hover:bg-neutral-100/50 dark:hover:bg-neutral-800/40',
+          'bg-transparent shadow-none hover:bg-neutral-100/50 dark:bg-transparent dark:hover:bg-neutral-800/40',
         onClick && 'cursor-pointer hover:border-sky-500',
         className
       )}

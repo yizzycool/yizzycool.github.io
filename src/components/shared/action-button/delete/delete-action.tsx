@@ -8,6 +8,7 @@ import { Trash2 } from 'lucide-react';
 import { useDisplay } from '../hooks/use-display';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/utils/cn';
+import toast from '@/utils/toast';
 
 export function DeleteAction({
   display = 'icon-label',
@@ -21,12 +22,18 @@ export function DeleteAction({
   ariaLabel,
   title,
   onClick = () => {},
+  successToast = true,
 }: DeleteActionProps) {
   const { showIcon, showLabel } = useDisplay({ display });
 
   const onButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     if (disabled) return;
     onClick(e);
+
+    if (successToast) {
+      const msg = typeof successToast === 'string' ? successToast : 'Cleared';
+      toast.info(msg);
+    }
   };
 
   return (

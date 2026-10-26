@@ -20,6 +20,7 @@ import {
   KeyRound,
   Languages,
   Layers,
+  Network,
   Palette,
   PenTool,
   QrCode,
@@ -88,6 +89,7 @@ export const ToolKeys = {
   gzipExtractor: 'gzipExtractor',
   htmlEntities: 'htmlEntities',
   hexBinaryConverter: 'hexBinaryConverter',
+  cidrCalculator: 'cidrCalculator',
 
   // Image Tools
   picMergeStudio: 'picMergeStudio',
@@ -141,6 +143,7 @@ export const ToolGroupItems = {
     ToolKeys.uuidGenerator,
 
     // Dev Utilities & Testing
+    ToolKeys.cidrCalculator,
     ToolKeys.unixTimestampConverter,
     ToolKeys.regexTester,
     ToolKeys.colorConverter,
@@ -184,6 +187,7 @@ export const ToolTitles = {
   [ToolKeys.gzipExtractor]: 'GZIP Extractor & Inspector',
   [ToolKeys.htmlEntities]: 'HTML Entities Encoder / Decoder',
   [ToolKeys.hexBinaryConverter]: 'Hex / Binary Data Converter',
+  [ToolKeys.cidrCalculator]: 'CIDR & Subnet Calculator',
 
   [ToolKeys.picMergeStudio]: 'PicMerge Studio',
   [ToolKeys.base64ToImage]: 'Base64 to Image',
@@ -215,6 +219,7 @@ const ToolTitlesForFeaturePanel = {
   [ToolKeys.unixTimestampConverter]: 'Timestamp Converter',
   [ToolKeys.regexTester]: 'Regex Tester',
   [ToolKeys.colorConverter]: 'Color Converter',
+  [ToolKeys.cidrCalculator]: 'CIDR Calculator',
 };
 
 export const ToolDescriptions = {
@@ -251,6 +256,8 @@ export const ToolDescriptions = {
     'Encode and decode HTML entities with support for standard named entities, full Unicode support, and instant reciprocal swapping.',
   [ToolKeys.hexBinaryConverter]:
     'Convert text, Hex (Base16), binary (0/1), and byte values reciprocally with UTF-8 support, customizable delimiters, and programming export (C Array, Python bytes).',
+  [ToolKeys.cidrCalculator]:
+    'Calculate subnet masks, usable IP ranges, wildcard masks, and visual 32-bit bit distribution for IPv4 CIDR blocks 100% locally.',
 
   [ToolKeys.picMergeStudio]:
     'Combine photos into custom collages with social media canvas presets, layer controls, filters, and high-resolution export in PNG or JPEG.',
@@ -300,6 +307,7 @@ export const ToolSlugs = {
   [ToolKeys.gzipExtractor]: 'gzip-extractor',
   [ToolKeys.htmlEntities]: 'html-entities-encoder-decoder',
   [ToolKeys.hexBinaryConverter]: 'hex-binary-converter',
+  [ToolKeys.cidrCalculator]: 'cidr-calculator',
 
   [ToolKeys.picMergeStudio]: 'pic-merge-studio',
   [ToolKeys.base64ToImage]: 'base64-to-image',
@@ -348,6 +356,7 @@ export const ToolIcons = {
   [ToolKeys.gzipExtractor]: FileArchive,
   [ToolKeys.htmlEntities]: CodeXml,
   [ToolKeys.hexBinaryConverter]: Binary,
+  [ToolKeys.cidrCalculator]: Network,
 
   [ToolKeys.picMergeStudio]: Layers,
   [ToolKeys.base64ToImage]: FileImage,

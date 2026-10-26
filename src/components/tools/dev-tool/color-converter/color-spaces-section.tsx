@@ -4,6 +4,7 @@ import type { ColorSpaceValues } from './types';
 
 import { useMemo } from 'react';
 
+import { InsetGroup } from '@/components/tools/common/inset-group';
 import LabelBar from '@/components/tools/common/label-bar';
 
 import ColorSpaceItem from './color-space-item';
@@ -26,7 +27,7 @@ export default function ColorSpacesSection({
         label="Color Spaces"
         description="Real-time conversion across standard web, design, and print color spaces."
       />
-      <div className="mt-2 divide-y divide-neutral-200/60 overflow-hidden rounded-xl border border-neutral-200/80 bg-white/70 shadow-sm backdrop-blur-md dark:divide-neutral-800/60 dark:border-neutral-800 dark:bg-neutral-900/60">
+      <InsetGroup className="mt-2">
         {items.map((item) => (
           <ColorSpaceItem
             key={item.id}
@@ -34,7 +35,7 @@ export default function ColorSpacesSection({
             colorSwatchHex={currentHex}
           />
         ))}
-      </div>
+      </InsetGroup>
     </section>
   );
 }

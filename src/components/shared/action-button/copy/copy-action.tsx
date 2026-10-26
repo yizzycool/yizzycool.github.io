@@ -25,7 +25,7 @@ export function CopyAction({
   label = 'Copy',
   ariaLabel,
   title,
-  successToast,
+  successToast = true,
   errorToast = true,
   onSuccess,
   onError,

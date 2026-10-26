@@ -16,7 +16,7 @@ import {
 
 import { cn } from '@/utils/cn';
 import { toast } from '@/utils/toast';
-import { HistoryItem } from '@/hooks/tools/use-tool-history';
+import { HistoryItem, MAX_HISTORY_ITEMS } from '@/hooks/tools/use-tool-history';
 import { Drawer } from '@/components/ui/drawer';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/dialog';
@@ -132,7 +132,7 @@ export function ToolHistoryDrawer<T>({
                   showArrow
                   className="max-w-xs px-2.5 py-1.5 text-[11px] font-normal leading-snug"
                 >
-                  Stores up to 10 latest records
+                  Stores up to {MAX_HISTORY_ITEMS} latest records
                 </TooltipPopup>
               </TooltipRoot>
             </div>
@@ -346,6 +346,7 @@ export function ToolHistoryDrawer<T>({
             onClick={() => setIsConfirmOpen(true)}
             className="text-xs"
             label="Clear This Tool's History"
+            successToast={false}
           />
         )}
 

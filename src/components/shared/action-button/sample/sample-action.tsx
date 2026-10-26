@@ -5,6 +5,8 @@ import type { SampleActionProps } from './types';
 
 import { Sparkles } from 'lucide-react';
 
+import toast from '@/utils/toast';
+
 import { useDisplay } from '../hooks/use-display';
 import { Button } from '@/components/ui/button';
 
@@ -21,12 +23,19 @@ export function SampleAction({
   ariaLabel,
   title,
   onClick = () => {},
+  successToast = true,
 }: SampleActionProps) {
   const { showIcon, showLabel } = useDisplay({ display });
 
   const onButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     if (disabled) return;
     onClick(e);
+
+    if (successToast) {
+      const msg =
+        typeof successToast === 'string' ? successToast : 'Sample data loaded';
+      toast.success(msg);
+    }
   };
 
   return (

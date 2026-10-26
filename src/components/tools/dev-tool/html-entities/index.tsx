@@ -5,7 +5,6 @@ import type { HtmlEntitiesHistoryData } from './types';
 import {
   CodeXml,
   Binary,
-  Wand2,
   ArrowRightLeft,
   AlertCircle,
   Sparkles,
@@ -127,7 +126,6 @@ export default function HtmlEntities() {
 
       <ExecuteBar
         label={executeButtonLabel}
-        icon={Wand2}
         disabled={isEmpty(input)}
         onClick={() => processText()}
         text={input}

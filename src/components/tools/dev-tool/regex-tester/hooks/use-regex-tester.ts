@@ -116,7 +116,6 @@ export default function useRegexTester() {
         return;
       }
       setTestString(text);
-      toast.success('Pasted clipboard text');
       testTextareaRef.current?.focus();
     } catch {
       toast.error('Failed to read from clipboard');
@@ -126,7 +125,6 @@ export default function useRegexTester() {
   // Clear test string
   const onClearTestString = useCallback(() => {
     setTestString('');
-    toast.info('Test string cleared');
     testTextareaRef.current?.focus();
   }, []);
 

@@ -2,7 +2,7 @@
 
 import type { JsonHistoryData } from './hooks/use-json-formatter';
 
-import { Braces, CodeXml, FileText, Wand2 } from 'lucide-react';
+import { Braces, CodeXml, FileText } from 'lucide-react';
 import { isEmpty } from 'lodash';
 
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
@@ -109,7 +109,6 @@ export default function JsonFormatter() {
 
           <ExecuteBar
             label={executeButtonLabel}
-            icon={Wand2}
             disabled={isEmpty(input)}
             onClick={() => processJson()}
             text={input}

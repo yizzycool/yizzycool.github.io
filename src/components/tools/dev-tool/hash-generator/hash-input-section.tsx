@@ -27,11 +27,6 @@ type Props = {
   file: File | null;
   setFile: (file: File | null) => void;
   fileMeta: FileMetadata | null;
-  textStats: {
-    charCount: number;
-    byteCount: number;
-    lineCount: number;
-  };
   inputRef?: RefObject<HTMLTextAreaElement | null>;
   onClear: () => void;
   onPaste: (text: string) => void;
@@ -46,7 +41,6 @@ export default function HashInputSection({
   file: _file,
   setFile,
   fileMeta,
-  textStats,
   inputRef,
   onClear,
   onPaste,
@@ -92,21 +86,15 @@ export default function HashInputSection({
       </LabelBar>
 
       {inputMode === 'text' ? (
-        <div>
-          <Textarea
-            ref={inputRef}
-            id="hash-text-input"
-            value={textInput}
-            onChange={handleTextChange}
-            rows={6}
-            placeholder="Type or paste text here to compute hashes in real-time..."
-            className="font-mono text-sm leading-relaxed"
-          />
-
-          <div className="mt-2.5 flex items-center justify-end text-xs text-slate-400 dark:text-neutral-500">
-            {textStats.charCount} chars
-          </div>
-        </div>
+        <Textarea
+          ref={inputRef}
+          id="hash-text-input"
+          value={textInput}
+          onChange={handleTextChange}
+          rows={6}
+          placeholder="Type or paste text here to compute hashes..."
+          className="font-mono text-sm leading-relaxed"
+        />
       ) : (
         <div className="space-y-3">
           <FilePicker

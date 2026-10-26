@@ -3,6 +3,7 @@ import type {
   HashCaseMode,
   HashEncoding,
   HashInputMode,
+  HashResultItem,
 } from './types';
 
 export const HASH_ALGORITHMS: Array<{
@@ -71,3 +72,12 @@ export const HASH_CASE_MODE_LABELS: Record<HashCaseMode, string> = {
 
 export const DEFAULT_SAMPLE_TEXT =
   'The quick brown fox jumps over the lazy dog';
+
+export const DEFAULT_EMPTY_RESULTS: HashResultItem[] = HASH_ALGORITHMS.map(
+  (algo) => ({
+    algorithm: algo.id,
+    bitLength: algo.bitLength,
+    hex: '',
+    base64: '',
+  })
+);

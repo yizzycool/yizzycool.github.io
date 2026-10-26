@@ -1,8 +1,11 @@
 'use client';
 
+import type { MouseEventHandler } from 'react';
 import type { SwapActionProps } from './types';
 
 import { ArrowDownUp } from 'lucide-react';
+
+import toast from '@/utils/toast';
 
 import { useDisplay } from '../hooks/use-display';
 import { Button } from '@/components/ui/button';
@@ -19,12 +22,23 @@ export function SwapAction({
   ariaLabel,
   title,
   onClick = () => {},
+  successToast = true,
 }: SwapActionProps) {
   const { showIcon, showLabel } = useDisplay({ display });
 
+  const onButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    if (disabled) return;
+    onClick(e);
+
+    if (successToast) {
+      const msg = typeof successToast === 'string' ? successToast : 'Swapped';
+      toast.success(msg);
+    }
+  };
+
   return (
     <Button
-      onClick={onClick}
+      onClick={onButtonClick}
       variant={variant}
       size={size}
       rounded={rounded}

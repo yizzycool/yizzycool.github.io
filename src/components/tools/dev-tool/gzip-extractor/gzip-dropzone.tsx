@@ -34,6 +34,7 @@ export default function GzipDropzone({
                 rounded="lg"
                 label="Load Sample (.tar.gz)"
                 onClick={onLoadSample}
+                successToast={false}
               />
             )}
             {file && (

@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import isEqual from 'lodash/isEqual';
 
 import { useToolsDB } from '@/hooks/tools/use-tools-db';
 import useToolsPreferences from '@/hooks/tools/use-tools-preferences';
+import toast from '@/utils/toast';
 
 export interface HistoryItem<T = unknown> {
   id: string;
@@ -15,7 +15,7 @@ export interface HistoryItem<T = unknown> {
   data: T;
 }
 
-const MAX_HISTORY_ITEMS = 10;
+export const MAX_HISTORY_ITEMS = 30;
 
 export function useToolHistory<T = unknown>(
   toolKey: string,
@@ -99,17 +99,11 @@ export function useToolHistory<T = unknown>(
       };
 
       setHistoryList((prev = []) => {
-        const filtered = prev.filter((item) => {
-          if (existingId) {
-            return item.id !== existingId;
-          }
-          return (
-            item.preview !== trimmedPreview ||
-            item.previewImage !== previewImage ||
-            !isEqual(item.data, data)
-          );
-        });
-        const updated = [newItem, ...filtered].slice(0, maxItems);
+        // If updating an existing session/item, replace it; otherwise prepend as a new execution entry
+        const remaining = existingId
+          ? prev.filter((item) => item.id !== existingId)
+          : prev;
+        const updated = [newItem, ...remaining].slice(0, maxItems);
 
         // Async write to IndexedDB
         setValue('history', toolKey, updated).catch((_err) => {
@@ -128,6 +122,34 @@ export function useToolHistory<T = unknown>(
   const addHistory = useCallback(
     async (preview: string, data: T, previewImage?: string, title?: string) => {
       await saveHistory(preview, data, previewImage, title);
+    },
+    [saveHistory]
+  );
+
+  /**
+   * Save entry to history and trigger a toast notification if history is currently enabled.
+   * If history is disabled by the user preference, it silently skips both saving and toast.
+   */
+  const addHistoryWithToast = useCallback(
+    async (
+      preview: string,
+      data: T,
+      options?: {
+        previewImage?: string;
+        title?: string;
+        toastMessage?: string;
+      }
+    ) => {
+      const savedId = await saveHistory(
+        preview,
+        data,
+        options?.previewImage,
+        options?.title
+      );
+      if (savedId) {
+        toast.info(options?.toastMessage || 'Added to history');
+      }
+      return savedId;
     },
     [saveHistory]
   );
@@ -184,6 +206,7 @@ export function useToolHistory<T = unknown>(
     isHistoryEnabled,
     toggleHistoryEnabled,
     addHistory,
+    addHistoryWithToast,
     saveHistory,
     renameHistory,
     removeHistory,

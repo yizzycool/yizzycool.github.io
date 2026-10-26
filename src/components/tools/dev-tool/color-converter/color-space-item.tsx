@@ -3,6 +3,7 @@
 import type { ColorSpaceItemData } from './types';
 
 import { CopyAction } from '@/components/shared/action-button';
+import { InsetGroupRow } from '@/components/tools/common/inset-group';
 
 type ColorSpaceItemProps = {
   item: ColorSpaceItemData;
@@ -14,7 +15,7 @@ export default function ColorSpaceItem({
   colorSwatchHex,
 }: ColorSpaceItemProps) {
   return (
-    <div className="group flex flex-col gap-2 p-3.5 transition-colors hover:bg-neutral-100/50 sm:flex-row sm:items-center sm:justify-between sm:gap-4 dark:hover:bg-neutral-800/40">
+    <InsetGroupRow className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
       {/* Left: Swatch circle + Format Label + Badge */}
       <div className="flex min-w-[160px] items-center gap-2.5 sm:w-1/3">
         <span
@@ -46,6 +47,6 @@ export default function ColorSpaceItem({
           className="h-8 w-8 text-neutral-400 hover:text-neutral-700 dark:text-neutral-500 dark:hover:text-neutral-200"
         />
       </div>
-    </div>
+    </InsetGroupRow>
   );
 }

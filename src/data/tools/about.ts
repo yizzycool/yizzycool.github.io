@@ -219,6 +219,20 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
     bottomNote:
       'All conversions occur 100% locally in your browser memory. Your data never leaves your device.',
   },
+  [ToolKeys.cidrCalculator]: {
+    overview:
+      'Classless Inter-Domain Routing (CIDR) and IPv4 subnetting are foundational to cloud networking (AWS VPC, GCP VPC, Azure VNet), Kubernetes cluster CNI design, and firewall ACL routing rules. This CIDR & Subnet Calculator delivers instantaneous, 100% client-side subnet calculations, visual 32-bit bit distribution inspection, and VLSM subnet splitting directly in your browser without transmitting any network topology data.',
+    features: [
+      '100% Client-Side Privacy: All bitwise arithmetic and IP calculations run entirely in your local browser memory using unsigned 32-bit integers. Private network architectures and internal IP layouts are never transmitted across any network.',
+      'Comprehensive Network Attributes: Instantly computes network address, broadcast address, dotted-decimal netmask, wildcard mask (inverse mask), usable host range, and total host capacity for any prefix /0 to /32.',
+      '32-Bit Visual Bit Allocation: Features an interactive visual diagram separating network bits from host bits with 8-bit octet boundary dots for enhanced architectural clarity.',
+      'RFC Network Scope Classification: Automatically identifies private IP ranges (RFC 1918), loopback (RFC 1122), link-local APIPA (RFC 3927), Carrier-Grade NAT (RFC 6598), multicast, and public Internet IPs.',
+      'Subnet Splitting (VLSM Breakdown): Rapidly subdivides any parent network block into smaller subnets with instant CIDR, usable range, and host metrics generation.',
+      'Keyboard Shortcuts & History: Accelerate cloud engineering workflows with hotkeys (Mod+Enter, Mod+Shift+C, Mod+H) and local history storage for one-click restoration.',
+    ],
+    bottomNote:
+      'All IP math and CIDR computations run 100% locally in your browser. Your internal IP addresses and network topology never touch external servers.',
+  },
 
   // ==================
 

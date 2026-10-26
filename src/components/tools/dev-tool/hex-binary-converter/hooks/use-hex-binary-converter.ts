@@ -51,7 +51,7 @@ export default function useHexBinaryConverter() {
   const {
     historyList,
     isLoading: isLoadingHistory,
-    addHistory,
+    addHistoryWithToast,
     renameHistory,
     removeHistory,
     clearHistory,
@@ -89,15 +89,16 @@ export default function useHexBinaryConverter() {
 
     setResult(converted);
 
+    toast.success('Converted!');
+
     const title = `[${inputMode.toUpperCase()}] ${trimmed.slice(0, 32)}`;
-    addHistory(title, {
+    addHistoryWithToast(title, {
       input,
       inputMode,
       preview: converted.hex.slice(0, 48),
       byteLength: converted.byteLength,
     });
-    toast.success('Converted & saved to history!');
-  }, [input, inputMode, options, addHistory]);
+  }, [input, inputMode, options, addHistoryWithToast]);
 
   // Clear input and current result
   const handleClear = useCallback(() => {
@@ -112,7 +113,6 @@ export default function useHexBinaryConverter() {
   const handleLoadSample = useCallback(() => {
     const sample = SAMPLE_INPUTS[inputMode];
     setInput(sample);
-    toast.success(`Loaded sample for ${inputMode.toUpperCase()}`);
   }, [inputMode]);
 
   // Input change handler
@@ -189,7 +189,7 @@ export default function useHexBinaryConverter() {
     // History
     historyList,
     isLoadingHistory,
-    addHistory,
+    addHistoryWithToast,
     renameHistory,
     removeHistory,
     clearHistory,

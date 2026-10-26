@@ -2,7 +2,7 @@
 
 import type { UrlEncoderDecoderHistoryData } from './hooks/use-url-encoder-decoder';
 
-import { Code, Link2, Wand2, ArrowRightLeft, FileClock } from 'lucide-react';
+import { Code, Link2, ArrowRightLeft } from 'lucide-react';
 import { isEmpty } from 'lodash';
 
 import {
@@ -130,7 +130,6 @@ export default function UrlEncoderDecoder() {
       {tab !== 'Query Params' && (
         <ExecuteBar
           label={executeButtonLabel}
-          icon={Wand2}
           disabled={isEmpty(input)}
           onClick={() => processUrl()}
           text={input}
@@ -179,7 +178,6 @@ export default function UrlEncoderDecoder() {
       {tab === 'Query Params' && (
         <ExecuteBar
           label={executeButtonLabel}
-          icon={FileClock}
           disabled={isEmpty(input)}
           onClick={() => processUrl()}
           text={input}

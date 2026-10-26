@@ -1,11 +1,9 @@
 'use client';
 
 import type {
-  FileMetadata,
   HashAlgorithm,
   HashCaseMode,
   HashEncoding,
-  HashInputMode,
   HashResultItem as HashResultItemType,
   HmacKeyEncoding,
 } from './types';
@@ -14,8 +12,8 @@ import { Fingerprint, Loader2 } from 'lucide-react';
 import { useMemo } from 'react';
 
 import { CopyAction } from '@/components/shared/action-button';
+import { InsetGroup } from '@/components/tools/common/inset-group';
 import LabelBar from '@/components/tools/common/label-bar';
-import { Badge } from '@/components/ui/badge';
 
 import HashControlsBar from './hash-controls-bar';
 import HashResultItem from './hash-result-item';
@@ -36,9 +34,6 @@ type Props = {
   setHmacKeyEncoding: (enc: HmacKeyEncoding) => void;
   isComputing: boolean;
   isMatchedAlgorithm: (algo: HashAlgorithm) => boolean;
-  fileMeta: FileMetadata | null;
-  textInput: string;
-  inputMode: HashInputMode;
 };
 
 export default function HashResultsSection({
@@ -55,9 +50,6 @@ export default function HashResultsSection({
   setHmacKeyEncoding,
   isComputing,
   isMatchedAlgorithm,
-  fileMeta,
-  textInput,
-  inputMode,
 }: Props) {
   const hasResults =
     results.length > 0 && results.some((r) => r.hex || r.base64);
@@ -76,17 +68,7 @@ export default function HashResultsSection({
 
   return (
     <div className="w-full text-left">
-      <LabelBar
-        label={
-          <div className="flex items-center gap-2.5">
-            <span>Calculated Hashes</span>
-            <Badge size="xs" variant="primary" rounded="full">
-              {results.length} Hashes
-            </Badge>
-          </div>
-        }
-        icon={Fingerprint}
-      >
+      <LabelBar label="Calculated Hashes" icon={Fingerprint}>
         <CopyAction
           content={copyAllText}
           label="Copy All"
@@ -124,20 +106,9 @@ export default function HashResultsSection({
           </div>
         )}
 
-        {/* Empty State */}
-        {!isComputing && !hasResults && (
-          <div className="rounded-xl border border-dashed border-slate-200 py-10 text-center text-sm text-slate-400 dark:border-neutral-800 dark:text-neutral-500">
-            {inputMode === 'file' && !fileMeta
-              ? 'Please select or drop a file above to calculate hashes.'
-              : !textInput
-                ? 'Enter text above to calculate hashes.'
-                : 'No hashes available.'}
-          </div>
-        )}
-
-        {/* Hash Results List */}
-        {!isComputing && hasResults && (
-          <div className="divide-y divide-neutral-200/70 overflow-hidden rounded-xl border border-neutral-200/80 bg-white/70 backdrop-blur-md dark:divide-neutral-800 dark:border-neutral-800 dark:bg-neutral-900/40">
+        {/* Hash Results List (shows '---' for empty or initial states) */}
+        {!isComputing && (
+          <InsetGroup>
             {results.map((item) => (
               <HashResultItem
                 key={item.algorithm}
@@ -149,7 +120,7 @@ export default function HashResultsSection({
                 grouped
               />
             ))}
-          </div>
+          </InsetGroup>
         )}
       </div>
     </div>

@@ -2,7 +2,7 @@
 
 import type { Base64EncoderDecoderHistoryData } from './types';
 
-import { Code, Binary, Wand2, ArrowRightLeft } from 'lucide-react';
+import { Code, Binary, ArrowRightLeft } from 'lucide-react';
 import { isEmpty } from 'lodash';
 
 import {
@@ -116,7 +116,6 @@ export default function Base64EncoderDecoder() {
 
       <ExecuteBar
         label={executeButtonLabel}
-        icon={Wand2}
         disabled={isEmpty(input)}
         onClick={() => processText()}
         text={input}

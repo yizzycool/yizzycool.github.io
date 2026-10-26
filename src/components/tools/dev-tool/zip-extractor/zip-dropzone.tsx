@@ -34,6 +34,7 @@ export default function ZipDropzone({
                 rounded="lg"
                 label="Load Sample ZIP"
                 onClick={onLoadSample}
+                successToast={false}
               />
             )}
             {file && (

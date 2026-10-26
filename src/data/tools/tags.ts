@@ -193,6 +193,23 @@ export const ToolTags = {
     '進位轉換',
     '位元組陣列',
   ],
+  [ToolKeys.cidrCalculator]: [
+    'CIDR',
+    'Subnet Calculator',
+    'Subnet Mask',
+    'IPv4',
+    'IP Range',
+    'Wildcard Mask',
+    'VLSM',
+    'Network Address',
+    'Broadcast Address',
+    '子網遮罩',
+    '子網計算機',
+    'IP 計算器',
+    '反向遮罩',
+    '可用主機數',
+    'RFC 1918',
+  ],
 
   // ==================
 

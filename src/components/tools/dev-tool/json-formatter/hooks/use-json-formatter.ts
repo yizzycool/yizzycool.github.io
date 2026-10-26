@@ -27,7 +27,6 @@ export type JsonHistoryData = {
 export default function useJsonFormatter() {
   const [tab, setTab] = useState<string>(TAB_ITEMS[0]);
   const [input, setInput] = useState<string>('');
-  const [output, setOutput] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [parsedObject, setParsedObject] = useState<
     object | Array<unknown> | null
@@ -39,7 +38,7 @@ export default function useJsonFormatter() {
   const {
     historyList,
     isLoading: isLoadingHistory,
-    addHistory,
+    addHistoryWithToast,
     renameHistory,
     removeHistory,
     clearHistory,
@@ -52,7 +51,6 @@ export default function useJsonFormatter() {
       shouldSaveHistory = true
     ) => {
       if (!jsonString.trim()) {
-        setOutput('');
         setParsedObject(null);
         setError(null);
         return;
@@ -63,23 +61,14 @@ export default function useJsonFormatter() {
         setParsedObject(obj);
         setError(null);
 
-        if (currentTab === 'Format') {
-          setOutput(JSON.stringify(obj, null, 2));
-        } else if (currentTab === 'Minify') {
-          setOutput(JSON.stringify(obj));
-        } else if (currentTab === 'YAML') {
-          setOutput(jsonToYaml(obj));
-        } else if (currentTab === 'CSV') {
-          setOutput(jsonToCsv(obj));
-        } else if (currentTab === 'Tree View') {
-          setOutput(JSON.stringify(obj, null, 2));
-        }
+        toast.success(successMessages[currentTab] || 'JSON processed!');
 
         if (shouldSaveHistory) {
-          addHistory(jsonString, { input: jsonString, tab: currentTab });
+          addHistoryWithToast(jsonString, {
+            input: jsonString,
+            tab: currentTab,
+          });
         }
-
-        toast.success(successMessages[currentTab] || 'JSON processed!');
       } catch (err) {
         const errorMsg = (err as Error).message || 'Invalid JSON format';
         setError(errorMsg);
@@ -87,8 +76,30 @@ export default function useJsonFormatter() {
         setParsedObject(null);
       }
     },
-    [addHistory, input, tab]
+    [addHistoryWithToast, input, tab]
   );
+
+  // Derive output dynamically from parsedObject and active tab
+  const output = useMemo(() => {
+    if (!parsedObject) return '';
+    try {
+      if (tab === 'Format' || tab === 'Tree View') {
+        return JSON.stringify(parsedObject, null, 2);
+      }
+      if (tab === 'Minify') {
+        return JSON.stringify(parsedObject);
+      }
+      if (tab === 'YAML') {
+        return jsonToYaml(parsedObject);
+      }
+      if (tab === 'CSV') {
+        return jsonToCsv(parsedObject);
+      }
+      return '';
+    } catch {
+      return '';
+    }
+  }, [parsedObject, tab]);
 
   const onJsonStringChanged = useCallback(
     (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -130,21 +141,14 @@ export default function useJsonFormatter() {
 
   const onClear = useCallback(() => {
     setInput('');
-    setOutput('');
     setParsedObject(null);
     setError(null);
   }, []);
 
-  const onTabChanged = useCallback(
-    (newTab: string) => {
-      setTab(newTab);
-      setError(null);
-      if (input.trim()) {
-        processJson(input, newTab);
-      }
-    },
-    [input, processJson]
-  );
+  const onTabChanged = useCallback((newTab: string) => {
+    setTab(newTab);
+    setError(null);
+  }, []);
 
   const onRestoreHistory = useCallback(
     (data: JsonHistoryData) => {

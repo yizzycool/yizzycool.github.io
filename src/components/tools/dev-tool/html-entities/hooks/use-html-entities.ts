@@ -36,7 +36,7 @@ export default function useHtmlEntities() {
   const {
     historyList,
     isLoading: isLoadingHistory,
-    addHistory,
+    addHistoryWithToast,
     renameHistory,
     removeHistory,
     clearHistory,
@@ -65,33 +65,33 @@ export default function useHtmlEntities() {
         setOutput(encoded);
         setDoubleEscaped(false);
 
-        addHistory(textToProcess, {
+        toast.success('HTML Entities Encoded!');
+
+        addHistoryWithToast(textToProcess, {
           input: textToProcess,
           output: encoded,
           mode: currentTab,
           format: 'named',
           scope: currentScope,
         });
-
-        toast.success('HTML Entities Encoded!');
       } else {
         const { result, doubleEscaped: isDouble } =
           decodeHtmlEntities(textToProcess);
         setOutput(result);
         setDoubleEscaped(isDouble);
 
-        addHistory(textToProcess, {
+        toast.success('HTML Entities Decoded!');
+
+        addHistoryWithToast(textToProcess, {
           input: textToProcess,
           output: result,
           mode: currentTab,
           format: 'named',
           scope: currentScope,
         });
-
-        toast.success('HTML Entities Decoded!');
       }
     },
-    [addHistory, input, scope, tab]
+    [addHistoryWithToast, input, scope, tab]
   );
 
   // Handle Input text change
@@ -152,12 +152,7 @@ export default function useHtmlEntities() {
     setInput(oldOutput);
     setOutput(oldInput);
     setDoubleEscaped(false);
-
-    // Switch mode: Encode -> Decode, Decode -> Encode
-    const nextTab: HtmlEntitiesMode = tab === 'Encode' ? 'Decode' : 'Encode';
-    setTab(nextTab);
-    toast.success(`Swapped to ${nextTab} mode!`);
-  }, [input, output, tab]);
+  }, [input, output]);
 
   // Handle Tab Switch
   const onTabChanged = useCallback((newTab: string) => {

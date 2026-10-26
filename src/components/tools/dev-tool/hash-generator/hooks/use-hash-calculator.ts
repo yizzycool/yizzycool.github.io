@@ -9,11 +9,12 @@ import type {
   HmacKeyEncoding,
 } from '../types';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
-import { DEFAULT_SAMPLE_TEXT } from '../constants';
+import { DEFAULT_EMPTY_RESULTS, DEFAULT_SAMPLE_TEXT } from '../constants';
 import { computeAllHashes } from '../utils/crypto-engine';
 import { hexToBytes, stringToUtf8Bytes } from '../utils/formatters';
+import toast from '@/utils/toast';
 
 export function useHashCalculator() {
   const [inputMode, setInputMode] = useState<HashInputMode>('text');
@@ -29,7 +30,9 @@ export function useHashCalculator() {
     useState<HmacKeyEncoding>('utf-8');
 
   const [isComputing, setIsComputing] = useState<boolean>(false);
-  const [results, setResults] = useState<HashResultItem[]>([]);
+  const [results, setResults] = useState<HashResultItem[]>(
+    DEFAULT_EMPTY_RESULTS
+  );
 
   // Calculation sequence tracker to prevent out-of-order race conditions
   const calculationIdRef = useRef<number>(0);
@@ -61,6 +64,15 @@ export function useHashCalculator() {
   }, [isHmac, hmacKey, hmacKeyEncoding]);
 
   const executeCalculation = useCallback(async () => {
+    if (inputMode === 'text' && !textInput.trim()) {
+      setResults(DEFAULT_EMPTY_RESULTS);
+      return;
+    }
+    if (inputMode === 'file' && !file) {
+      setResults(DEFAULT_EMPTY_RESULTS);
+      return;
+    }
+
     const currentId = ++calculationIdRef.current;
     setIsComputing(true);
 
@@ -85,10 +97,16 @@ export function useHashCalculator() {
       // Only update state if this is still the latest calculation
       if (currentId === calculationIdRef.current) {
         setResults(computedResults);
+        toast.success(
+          isHmac
+            ? 'HMAC hashes generated successfully!'
+            : 'Hashes generated successfully!'
+        );
       }
-    } catch (_err) {
+    } catch (err) {
       if (currentId === calculationIdRef.current) {
-        setResults([]);
+        setResults(DEFAULT_EMPTY_RESULTS);
+        toast.error((err as Error).message || 'Failed to compute hashes');
       }
     } finally {
       if (currentId === calculationIdRef.current) {
@@ -97,21 +115,13 @@ export function useHashCalculator() {
     }
   }, [inputMode, textInput, file, isHmac, hmacKeyBytes]);
 
-  // Debounced auto-recalculation when text, file, or HMAC configuration changes
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      executeCalculation();
-    }, 150);
-
-    return () => clearTimeout(timer);
-  }, [executeCalculation]);
-
   const handleClear = useCallback(() => {
     if (inputMode === 'text') {
       setTextInput('');
     } else {
       setFile(null);
     }
+    setResults(DEFAULT_EMPTY_RESULTS);
   }, [inputMode]);
 
   const handlePaste = useCallback((pastedText: string) => {
@@ -152,6 +162,7 @@ export function useHashCalculator() {
     onClear: handleClear,
     onPaste: handlePaste,
     onResetSample: handleResetSample,
+    onExecute: executeCalculation,
   };
 }
 

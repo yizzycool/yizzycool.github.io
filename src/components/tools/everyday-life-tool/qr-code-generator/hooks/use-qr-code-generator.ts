@@ -33,7 +33,7 @@ export default function useQrCodeGenerator() {
   const {
     historyList,
     isLoading: isLoadingHistory,
-    addHistory,
+    addHistoryWithToast,
     renameHistory,
     removeHistory,
     clearHistory,
@@ -60,8 +60,10 @@ export default function useQrCodeGenerator() {
       if (!trimmed) return;
       setQrValue(trimmed);
 
+      toast.success('QR Code generated successfully');
+
       if (shouldSaveHistory) {
-        addHistory(trimmed, {
+        addHistoryWithToast(trimmed, {
           text: trimmed,
           size,
           fgColor,
@@ -70,10 +72,8 @@ export default function useQrCodeGenerator() {
           level,
         });
       }
-
-      toast.success('QR Code generated successfully');
     },
-    [inputText, size, fgColor, bgColor, margin, level, addHistory]
+    [inputText, size, fgColor, bgColor, margin, level, addHistoryWithToast]
   );
 
   const onRestoreHistory = useCallback((data: QrCodeHistoryData) => {

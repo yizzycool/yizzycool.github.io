@@ -166,8 +166,7 @@ export default function useGzipExtractor() {
   // Load sample text
   const onLoadSampleText = useCallback(() => {
     setTextInput(SAMPLE_BASE64_GZIP);
-    handleDecompressText(SAMPLE_BASE64_GZIP);
-  }, [handleDecompressText]);
+  }, []);
 
   // Clear all states
   const onClear = useCallback(() => {

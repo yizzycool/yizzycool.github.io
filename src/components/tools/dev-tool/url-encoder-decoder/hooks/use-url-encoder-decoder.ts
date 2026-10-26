@@ -42,7 +42,7 @@ export default function useUrlEncoderDecoder() {
   const {
     historyList,
     isLoading: isLoadingHistory,
-    addHistory,
+    addHistoryWithToast,
     renameHistory,
     removeHistory,
     clearHistory,
@@ -133,14 +133,13 @@ export default function useUrlEncoderDecoder() {
         const rebuilt = rebuildUrl();
         setOutput(rebuilt);
         if (shouldSaveHistory && (baseUrl || queryParams.length > 0)) {
-          addHistory(rebuilt, {
+          addHistoryWithToast(rebuilt, {
             input: currentInput,
             output: rebuilt,
             mode: currentTab,
             baseUrl,
             params: queryParams,
           });
-          toast.success('Saved to history!');
         }
         return;
       }
@@ -162,24 +161,32 @@ export default function useUrlEncoderDecoder() {
         setOutput(res);
         setError(null);
 
+        toast.success(
+          currentTab === 'Encode' ? 'URL Encoded!' : 'URL Decoded!'
+        );
+
         if (shouldSaveHistory) {
-          addHistory(currentInput, {
+          addHistoryWithToast(currentInput, {
             input: currentInput,
             output: res,
             mode: currentTab,
           });
         }
-
-        toast.success(
-          currentTab === 'Encode' ? 'URL Encoded!' : 'URL Decoded!'
-        );
       } catch (err) {
         const errorMsg = (err as Error).message || 'Processing Error';
         setError(errorMsg);
         toast.error(errorMsg);
       }
     },
-    [addHistory, baseUrl, input, queryParams, rebuildUrl, setOutput, tab]
+    [
+      addHistoryWithToast,
+      baseUrl,
+      input,
+      queryParams,
+      rebuildUrl,
+      setOutput,
+      tab,
+    ]
   );
 
   // Handle Input text change
@@ -259,14 +266,7 @@ export default function useUrlEncoderDecoder() {
     setInput(oldOutput);
     setOutput(oldInput);
     setError(null);
-
-    if (tab === 'Encode') {
-      setTab('Decode');
-    } else if (tab === 'Decode') {
-      setTab('Encode');
-    }
-    toast.success('Swapped Input and Output!');
-  }, [input, output, setInput, setOutput, setTab, tab]);
+  }, [input, output, setInput, setOutput]);
 
   // Tab Change Handler
   const onTabChanged = useCallback(

@@ -269,6 +269,22 @@ export const ToolMetadata = {
         'Fast in-browser Hex, Binary, Text, and Byte transcoder with programming array exports and 100% privacy.',
     },
   },
+  [ToolKeys.cidrCalculator]: {
+    title:
+      'CIDR & Subnet Calculator – IPv4 Subnet Mask & IP Range Tool | Yizzy Peasy',
+    description:
+      'Free online CIDR & Subnet Calculator. Calculate subnet masks, usable IP ranges, wildcard masks, and visual 32-bit bit distribution for IPv4 CIDR blocks with 100% client-side privacy.',
+    openGraph: {
+      title: 'CIDR & Subnet Calculator – 100% Client-Side Private',
+      description:
+        'Calculate subnet masks, usable host IP ranges, broadcast addresses, and visual 32-bit bit distribution locally in your browser with zero data transmission.',
+    },
+    twitter: {
+      title: 'CIDR & Subnet Calculator – 100% Client-Side Private',
+      description:
+        'Fast in-browser IPv4 CIDR calculator, subnet splitter, and visual bit allocation tool with 100% privacy.',
+    },
+  },
 
   // ==================
 
@@ -721,6 +737,20 @@ export const ToolJsonLdSoftwareApplication = {
       'Lenient parsing stripping 0x, \\x, colons, and spaces automatically',
       'Comprehensive keyboard shortcuts and local conversion history',
       '100% client-side privacy with zero data transmission',
+    ],
+  },
+  [ToolKeys.cidrCalculator]: {
+    name: 'CIDR & Subnet Calculator',
+    applicationCategory: 'DeveloperTool',
+    description:
+      'An online CIDR and IPv4 subnet calculator that computes subnet masks, usable host ranges, wildcard masks, 32-bit bit distribution, and VLSM subnet splits with 100% client-side privacy.',
+    featureList: [
+      'Instant IPv4 CIDR block and subnet mask calculations',
+      '32-bit visual bit distribution diagram distinguishing network and host bits',
+      'RFC 1918 private, loopback, APIPA, and Carrier-Grade NAT scope detection',
+      'Cisco ACL and OSPF wildcard mask (inverse mask) computation',
+      'VLSM subnet splitting with copyable sub-block ranges and broadcast addresses',
+      '100% client-side computation with zero server uploads',
     ],
   },
 

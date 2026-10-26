@@ -32,7 +32,7 @@ export default function useBase64EncoderDecoder() {
   const {
     historyList,
     isLoading: isLoadingHistory,
-    addHistory,
+    addHistoryWithToast,
     renameHistory,
     removeHistory,
     clearHistory,
@@ -59,18 +59,18 @@ export default function useBase64EncoderDecoder() {
           const encoded = encodeBase64(textToProcess, currentFormat);
           setOutput(encoded);
 
-          addHistory(textToProcess, {
-            input: textToProcess,
-            output: encoded,
-            mode: currentTab,
-            format: currentFormat,
-          });
-
           toast.success(
             currentFormat === 'base64url'
               ? 'Base64URL Encoded!'
               : 'Base64 Encoded!'
           );
+
+          addHistoryWithToast(textToProcess, {
+            input: textToProcess,
+            output: encoded,
+            mode: currentTab,
+            format: currentFormat,
+          });
         } catch (err) {
           const msg = (err as Error).message || 'Encoding Error';
           setError(msg);
@@ -84,13 +84,15 @@ export default function useBase64EncoderDecoder() {
         } = decodeBase64(textToProcess);
         if (success) {
           setOutput(result);
-          addHistory(textToProcess, {
+
+          toast.success('Base64 Decoded!');
+
+          addHistoryWithToast(textToProcess, {
             input: textToProcess,
             output: result,
             mode: currentTab,
             format: currentFormat,
           });
-          toast.success('Base64 Decoded!');
         } else {
           const msg = decodeError || 'Invalid Base64 or Base64URL string';
           setError(msg);
@@ -98,7 +100,7 @@ export default function useBase64EncoderDecoder() {
         }
       }
     },
-    [addHistory, format, input, tab]
+    [addHistoryWithToast, format, input, tab]
   );
 
   // Handle Input text change
@@ -164,12 +166,7 @@ export default function useBase64EncoderDecoder() {
     setInput(oldOutput);
     setOutput(oldInput);
     setError(null);
-
-    // Switch mode: Encode -> Decode, Decode -> Encode
-    const nextTab = tab === 'Encode' ? 'Decode' : 'Encode';
-    setTab(nextTab);
-    toast.success(`Swapped to ${nextTab} mode!`);
-  }, [input, output, tab]);
+  }, [input, output]);
 
   // Handle Tab Switch
   const onTabChanged = useCallback((newTab: string) => {

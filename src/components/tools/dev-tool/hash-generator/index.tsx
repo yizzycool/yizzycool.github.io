@@ -4,6 +4,7 @@ import { useCallback, useRef } from 'react';
 
 import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import HeaderBlock from '../../common/header-block';
+import ExecuteBar from '../../common/execute-bar';
 import SectionGap from '../../common/section-gap';
 import toast from '@/utils/toast';
 
@@ -25,7 +26,6 @@ export default function HashGenerator() {
     file,
     setFile,
     fileMeta,
-    textStats,
 
     encoding,
     setEncoding,
@@ -45,6 +45,7 @@ export default function HashGenerator() {
     onClear,
     onPaste,
     onResetSample,
+    onExecute,
   } = useHashCalculator();
 
   const {
@@ -105,6 +106,7 @@ export default function HashGenerator() {
 
   useToolHotkeys(
     {
+      onExecute,
       onCopy: handleCopyResults,
       onPaste: handleGlobalPaste,
       onClear,
@@ -116,6 +118,7 @@ export default function HashGenerator() {
     <>
       <HeaderBlock
         customShortcuts={[
+          TOOL_HOTKEYS.process,
           TOOL_HOTKEYS.paste,
           { ...TOOL_HOTKEYS.copy, label: 'Copy Results' },
           { ...TOOL_HOTKEYS.clear, label: 'Clear Payload' },
@@ -134,11 +137,21 @@ export default function HashGenerator() {
         file={file}
         setFile={setFile}
         fileMeta={fileMeta}
-        textStats={textStats}
         inputRef={textareaRef}
         onClear={onClear}
         onPaste={onPaste}
         onResetSample={onResetSample}
+      />
+
+      {/* Execute Bar */}
+      <ExecuteBar
+        label={isHmac ? 'Generate HMAC Hashes' : 'Generate Hashes'}
+        disabled={
+          isComputing || (inputMode === 'text' ? !textInput.trim() : !file)
+        }
+        onClick={onExecute}
+        text={inputMode === 'text' ? textInput : undefined}
+        showCharCount={inputMode === 'text'}
       />
 
       <SectionGap />
@@ -158,9 +171,6 @@ export default function HashGenerator() {
         setHmacKeyEncoding={setHmacKeyEncoding}
         isComputing={isComputing}
         isMatchedAlgorithm={isMatchedAlgorithm}
-        fileMeta={fileMeta}
-        textInput={textInput}
-        inputMode={inputMode}
       />
 
       <SectionGap />
