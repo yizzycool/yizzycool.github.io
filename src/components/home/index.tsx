@@ -102,7 +102,7 @@ export default function Home() {
               </Link>
               <Link
                 href="/blog"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-neutral-200/80 bg-white/20 px-6 py-3.5 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/60 dark:border-neutral-800/80 dark:bg-neutral-900/20 dark:text-slate-300 dark:hover:bg-neutral-900/60"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white/20 px-6 py-3.5 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/60 dark:border-neutral-700 dark:bg-neutral-900/20 dark:text-slate-300 dark:hover:bg-neutral-900/60"
               >
                 Read Blog
               </Link>

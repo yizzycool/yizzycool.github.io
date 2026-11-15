@@ -17,16 +17,16 @@ export const getButtonVariants = (
     !disabled && hoverEffect && 'hover:bg-sky-700 dark:hover:bg-sky-400'
   ),
   secondary: cn(
-    'bg-slate-50 text-slate-800 border-slate-200/80 shadow-2xs dark:bg-neutral-900/80 dark:text-slate-200 dark:border-neutral-800',
+    'bg-slate-50 text-slate-800 border-slate-200/80 shadow-2xs dark:bg-neutral-900/80 dark:text-slate-200 dark:border-neutral-700',
     !disabled &&
       hoverEffect &&
-      'hover:bg-white hover:border-slate-300 dark:hover:bg-neutral-800/80 dark:hover:border-neutral-700'
+      'hover:bg-white hover:border-slate-300 dark:hover:bg-neutral-800/80 dark:hover:border-neutral-600'
   ),
   ghost: cn(
-    'border-slate-200 text-slate-700 dark:border-neutral-800 dark:text-slate-300',
+    'border-slate-200 text-slate-700 dark:border-neutral-700 dark:text-slate-300',
     !disabled &&
       hoverEffect &&
-      'hover:bg-slate-200/50 hover:border-slate-300 dark:hover:bg-neutral-800/60 dark:hover:border-neutral-700'
+      'hover:bg-slate-200/50 hover:border-slate-300 dark:hover:bg-neutral-800/60 dark:hover:border-neutral-600'
   ),
   'ghost-sky': cn(
     'text-sky-600 dark:text-sky-400 border-transparent',
@@ -35,10 +35,10 @@ export const getButtonVariants = (
       'hover:bg-sky-50 hover:text-sky-700 dark:hover:bg-sky-950/40 dark:hover:text-sky-300'
   ),
   outline: cn(
-    'border border-slate-200 text-slate-700 dark:border-neutral-800 dark:text-slate-300',
+    'border border-slate-200 text-slate-700 dark:border-neutral-700 dark:text-slate-300',
     !disabled &&
       hoverEffect &&
-      'hover:border-slate-300 hover:bg-slate-50/50 dark:hover:border-neutral-700 dark:hover:bg-neutral-900/60'
+      'hover:border-slate-300 hover:bg-slate-50/50 dark:hover:border-neutral-600 dark:hover:bg-neutral-900/60'
   ),
   error: cn(
     'bg-rose-50 text-rose-700 border-rose-200/80 shadow-2xs dark:bg-rose-950/30 dark:text-rose-300 dark:border-rose-900/50',
@@ -51,7 +51,7 @@ export const getButtonVariants = (
     !disabled && hoverEffect && 'hover:bg-sky-500 dark:hover:bg-sky-400'
   ),
   neutral: cn(
-    'bg-slate-100/80 text-slate-600 border-slate-200/70 dark:bg-neutral-900/60 dark:text-slate-400 dark:border-neutral-800',
+    'bg-slate-100/80 text-slate-600 border-slate-200/70 dark:bg-neutral-900/60 dark:text-slate-400 dark:border-neutral-700',
     !disabled &&
       hoverEffect &&
       'hover:bg-slate-200/70 hover:text-slate-900 dark:hover:bg-neutral-800 dark:hover:text-slate-200'
