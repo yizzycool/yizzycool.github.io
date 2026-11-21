@@ -10,7 +10,12 @@ export type FeaturePanelToolItem = {
     component: ComponentType<{ className?: string }>;
   };
   badge?: string;
-  dividerBefore?: boolean;
+};
+
+export type FeaturePanelSubGroup = {
+  id: string;
+  label: string;
+  items: FeaturePanelToolItem[];
 };
 
 export type FeaturePanelToolGroup = {
@@ -19,4 +24,5 @@ export type FeaturePanelToolGroup = {
   badge?: string;
   defaultExpanded: boolean;
   items: FeaturePanelToolItem[];
+  subGroups?: FeaturePanelSubGroup[];
 };

@@ -87,7 +87,6 @@ export default function FavoritesGroup({
               item={item}
               isActive={pathname === item.href}
               side={side}
-              showDivider={false}
               onClick={onClick}
             />
           ))}

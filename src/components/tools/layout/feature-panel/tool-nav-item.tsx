@@ -13,7 +13,6 @@ type ToolNavItemProps = {
   item: FeaturePanelToolItem;
   isActive: boolean;
   side: FeaturePanelSide;
-  showDivider?: boolean;
   onClick: () => void;
 };
 
@@ -21,7 +20,6 @@ export default function ToolNavItem({
   item,
   isActive,
   side,
-  showDivider = false,
   onClick,
 }: ToolNavItemProps) {
   const linkRef = useRef<HTMLAnchorElement>(null);
@@ -35,12 +33,6 @@ export default function ToolNavItem({
 
   return (
     <li>
-      {showDivider && item.dividerBefore && (
-        <div
-          aria-hidden="true"
-          className="my-2 border-t border-neutral-200/70 dark:border-neutral-800/70"
-        />
-      )}
       <Link
         ref={linkRef}
         href={item.href}

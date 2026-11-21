@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/utils/cn';
 
 import ToolNavItem from './tool-nav-item';
+import ToolSubGroupSection from './tool-sub-group-section';
 
 type ToolGroupAccordionProps = {
   group: FeaturePanelToolGroup;
@@ -104,16 +105,26 @@ export default function ToolGroupAccordion({
             getFadeUpClass('animate-delay-200')
           )}
         >
-          {group.items.map((item) => (
-            <ToolNavItem
-              key={item.key}
-              item={item}
-              isActive={pathname === item.href}
-              side={side}
-              showDivider
-              onClick={onClick}
-            />
-          ))}
+          {group.subGroups?.length
+            ? group.subGroups.map((subGroup, index) => (
+                <ToolSubGroupSection
+                  key={subGroup.id}
+                  subGroup={subGroup}
+                  isFirst={index === 0}
+                  pathname={pathname}
+                  side={side}
+                  onClick={onClick}
+                />
+              ))
+            : group.items.map((item) => (
+                <ToolNavItem
+                  key={item.key}
+                  item={item}
+                  isActive={pathname === item.href}
+                  side={side}
+                  onClick={onClick}
+                />
+              ))}
         </ul>
       </motion.div>
     </li>

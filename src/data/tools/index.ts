@@ -36,6 +36,9 @@ import { fromPairs, findKey } from 'lodash';
 
 // Tool Groups
 
+/**
+ * Unique identifier keys for top-level tool category groups.
+ */
 export const ToolGroupKeys = {
   everydayLifeTool: 'everydayLifeTool',
   devTool: 'devTool',
@@ -44,6 +47,9 @@ export const ToolGroupKeys = {
   webDetectorApi: 'webDetectorApi',
 };
 
+/**
+ * Canonical display order of tool groups across the All Tools overview and FeaturePanel sidebar.
+ */
 export const ToolGroupKeysOrder = [
   ToolGroupKeys.everydayLifeTool,
   ToolGroupKeys.imgTool,
@@ -52,6 +58,9 @@ export const ToolGroupKeysOrder = [
   ToolGroupKeys.webDetectorApi,
 ];
 
+/**
+ * Human-readable display names for each tool category group.
+ */
 export const ToolGroupNames = {
   [ToolGroupKeys.everydayLifeTool]: 'Everyday Life Tools',
   [ToolGroupKeys.devTool]: 'Developer Tools',
@@ -60,6 +69,9 @@ export const ToolGroupNames = {
   [ToolGroupKeys.webDetectorApi]: 'Web Detector APIs',
 };
 
+/**
+ * URL path segments for each tool category group (used to build `/tools/<group-slug>/<tool-slug>`).
+ */
 export const ToolGroupSlugs = {
   [ToolGroupKeys.everydayLifeTool]: 'everyday-life-tool',
   [ToolGroupKeys.devTool]: 'dev-tool',
@@ -70,6 +82,9 @@ export const ToolGroupSlugs = {
 
 // Tools
 
+/**
+ * Unique identifier keys for all registered tools across every category.
+ */
 export const ToolKeys = {
   // Everyday Life Tools
   expenseSplitter: 'expenseSplitter',
@@ -121,6 +136,10 @@ export const NON_CLIENT_SIDE_TOOLS: string[] = [
   // Add tools that upload data or require external cloud APIs here
 ];
 
+/**
+ * Flat ordered mapping from each tool group to its member tool keys.
+ * Serves as the single source of truth for URLs, All Tools overview, sitemap, and search index.
+ */
 export const ToolGroupItems = {
   [ToolGroupKeys.everydayLifeTool]: [
     ToolKeys.expenseSplitter,
@@ -168,6 +187,9 @@ export const ToolGroupItems = {
   ],
 };
 
+/**
+ * Full display titles for tools used in page headers, tool cards, and SEO metadata.
+ */
 export const ToolTitles = {
   [ToolKeys.expenseSplitter]: 'Expense Splitter',
   [ToolKeys.qrCodeGenerator]: 'QR Code Generator',
@@ -206,6 +228,9 @@ export const ToolTitles = {
   [ToolKeys.chromeTextDetector]: 'Text Detector',
 };
 
+/**
+ * Concise single-line tool titles tailored for the narrower FeaturePanel sidebar.
+ */
 const ToolTitlesForFeaturePanel = {
   ...ToolTitles,
 
@@ -222,6 +247,9 @@ const ToolTitlesForFeaturePanel = {
   [ToolKeys.cidrCalculator]: 'CIDR Calculator',
 };
 
+/**
+ * Short tool descriptions displayed in tool cards, headers, and search results.
+ */
 export const ToolDescriptions = {
   [ToolKeys.expenseSplitter]:
     'Split group bills and travel expenses fairly with the Min-Cash-Flow debt simplification algorithm and 1-click LINE / chat summary export.',
@@ -291,6 +319,9 @@ export const ToolDescriptions = {
     'Extract text from images with Chrome’s built-in text detection API, supporting OCR tasks, data extraction, and automation workflows.',
 };
 
+/**
+ * URL path slugs for individual tools.
+ */
 export const ToolSlugs = {
   [ToolKeys.expenseSplitter]: 'expense-splitter',
   [ToolKeys.qrCodeGenerator]: 'qr-code-generator',
@@ -329,6 +360,9 @@ export const ToolSlugs = {
   [ToolKeys.chromeTextDetector]: 'text-detector',
 };
 
+/**
+ * Derived lookup mapping each tool key to its canonical route path.
+ */
 export const ToolUrls = fromPairs(
   Object.values(ToolKeys).map((toolKey) => {
     const toolGroupKey = findKey(ToolGroupItems, (value) =>
@@ -341,6 +375,9 @@ export const ToolUrls = fromPairs(
   })
 );
 
+/**
+ * Lucide icon component assigned to each tool.
+ */
 export const ToolIcons = {
   [ToolKeys.expenseSplitter]: ReceiptText,
   [ToolKeys.qrCodeGenerator]: QrCode,
@@ -379,25 +416,102 @@ export const ToolIcons = {
   [ToolKeys.chromeTextDetector]: CaseUpper,
 };
 
+/**
+ * Optional capability/status badges displayed beside category group headings.
+ */
 export const ToolGroupBadges: Record<string, string> = {
   [ToolGroupKeys.chromeAiApi]: 'On-Device',
 };
 
+/**
+ * Optional highlight badges displayed beside individual tool entries (e.g. "New", "Popular").
+ */
 export const ToolBadges: Record<string, string> = {
   [ToolKeys.expenseSplitter]: 'New',
   [ToolKeys.picMergeStudio]: 'Popular',
   [ToolKeys.jsonFormatter]: 'Popular',
 };
 
+/**
+ * Category groups expanded by default in the desktop FeaturePanel sidebar.
+ */
 const DEFAULT_EXPANDED_TOOL_GROUPS: string[] = [
   ToolGroupKeys.everydayLifeTool,
   ToolGroupKeys.imgTool,
   ToolGroupKeys.devTool,
 ];
 
-const TOOL_DIVIDER_BEFORE_KEYS: string[] = [ToolKeys.zipExtractor];
+/**
+ * Optional static sub-group sections rendered inside large FeaturePanel groups
+ * to improve scannability without altering canonical routes or sitemap structure.
+ */
+const ToolFeaturePanelSubGroups: Record<
+  string,
+  Array<{ id: string; label: string; items: string[] }>
+> = {
+  [ToolGroupKeys.devTool]: [
+    {
+      id: 'format-debug',
+      label: 'Format & Debug',
+      items: [
+        ToolKeys.jsonFormatter,
+        ToolKeys.jwtDebugger,
+        ToolKeys.regexTester,
+      ],
+    },
+    {
+      id: 'encoders',
+      label: 'Encoders',
+      items: [
+        ToolKeys.urlEncoderDecoder,
+        ToolKeys.base64EncoderDecoder,
+        ToolKeys.htmlEntities,
+      ],
+    },
+    {
+      id: 'converters',
+      label: 'Converters',
+      items: [
+        ToolKeys.unixTimestampConverter,
+        ToolKeys.colorConverter,
+        ToolKeys.hexBinaryConverter,
+      ],
+    },
+    {
+      id: 'crypto-ids',
+      label: 'Crypto & IDs',
+      items: [ToolKeys.hashGenerator, ToolKeys.uuidGenerator],
+    },
+    {
+      id: 'archives-network',
+      label: 'Archives & Network',
+      items: [
+        ToolKeys.zipExtractor,
+        ToolKeys.gzipExtractor,
+        ToolKeys.cidrCalculator,
+      ],
+    },
+  ],
+};
 
-// Tools Data
+/**
+ * Helper that maps a tool key to a FeaturePanel navigation item.
+ */
+function buildFeaturePanelItem(toolKey: string) {
+  return {
+    key: toolKey,
+    name: ToolTitlesForFeaturePanel[toolKey],
+    href: ToolUrls[toolKey],
+    icon: {
+      component: ToolIcons[toolKey],
+    },
+    badge: ToolBadges[toolKey],
+  };
+}
+
+/**
+ * Aggregated category groups with full tool metadata for the All Tools overview page.
+ */
 export const Tools = ToolGroupKeysOrder.map((groupKey) => ({
   id: groupKey,
   name: ToolGroupNames[groupKey],
@@ -414,20 +528,18 @@ export const Tools = ToolGroupKeysOrder.map((groupKey) => ({
   })),
 }));
 
-// Tools Data for Feature Panel (left side panel in tool pages)
+/**
+ * Pre-built navigation data for the left FeaturePanel sidebar and mobile tools selector.
+ */
 export const ToolDataForFeaturePanel = ToolGroupKeysOrder.map((groupKey) => ({
   id: groupKey,
   name: ToolGroupNames[groupKey],
   badge: ToolGroupBadges[groupKey],
   defaultExpanded: DEFAULT_EXPANDED_TOOL_GROUPS.includes(groupKey),
-  items: ToolGroupItems[groupKey].map((toolKey) => ({
-    key: toolKey,
-    name: ToolTitlesForFeaturePanel[toolKey],
-    href: ToolUrls[toolKey],
-    icon: {
-      component: ToolIcons[toolKey],
-    },
-    badge: ToolBadges[toolKey],
-    dividerBefore: TOOL_DIVIDER_BEFORE_KEYS.includes(toolKey),
+  items: ToolGroupItems[groupKey].map(buildFeaturePanelItem),
+  subGroups: ToolFeaturePanelSubGroups[groupKey]?.map((subGroup) => ({
+    id: subGroup.id,
+    label: subGroup.label,
+    items: subGroup.items.map(buildFeaturePanelItem),
   })),
 }));
