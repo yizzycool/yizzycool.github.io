@@ -8,6 +8,7 @@ import { useMemo } from 'react';
 import { InsetGroup } from '@/components/tools/common/inset-group';
 import LabelBar from '@/components/tools/common/label-bar';
 import { Badge } from '@/components/ui/badge';
+import { EmptyState } from '@/components/ui/empty-state';
 
 import ExpenseItemRow from './expense-item-row';
 import { formatCurrency } from './utils/settlement-engine';
@@ -57,16 +58,11 @@ export default function ExpenseListSection({
 
       {expenses.length === 0 ? (
         <InsetGroup rounded="2xl">
-          <div className="flex flex-col items-center justify-center gap-2 px-4 py-10 text-center">
-            <Receipt size={28} className="text-slate-300 dark:text-slate-600" />
-            <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-              No expenses recorded yet
-            </p>
-            <p className="text-xs text-slate-400 dark:text-slate-500">
-              Add an expense above to automatically compute optimal settlement
-              transfers.
-            </p>
-          </div>
+          <EmptyState
+            icon={Receipt}
+            title="No expenses recorded yet"
+            description="Add an expense above to automatically compute optimal settlement transfers."
+          />
         </InsetGroup>
       ) : (
         <InsetGroup rounded="2xl">

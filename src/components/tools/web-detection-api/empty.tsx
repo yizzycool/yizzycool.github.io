@@ -43,7 +43,7 @@ export default function Empty({
           onFileChange={onVideoChange}
         />
       ) : (
-        <div className="flex flex-col items-center border-2 border-transparent px-4 py-12 sm:px-8">
+        <div className="flex flex-col items-center border-2 border-transparent px-4 py-12 text-center sm:px-8">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-neutral-200 text-slate-400 dark:bg-neutral-700">
             <Webcam size={32} />
           </div>
