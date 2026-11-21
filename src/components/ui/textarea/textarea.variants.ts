@@ -1,3 +1,11 @@
+export const textareaHeaderStyles = 'mb-1.5 space-y-0.5';
+
+export const textareaLabelStyles =
+  'block text-sm/6 font-bold text-slate-700 dark:text-slate-200';
+
+export const textareaDescStyles =
+  'text-sm/6 text-slate-500 dark:text-slate-400';
+
 export const textareaBaseStyles =
   'block w-full rounded-2xl border px-4 py-3.5 ' +
   'resize-none text-sm leading-relaxed outline-none transition-all duration-200 ' +

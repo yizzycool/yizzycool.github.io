@@ -1,6 +1,20 @@
 import { ToolKeys } from '.';
 
 export const ToolTags = {
+  [ToolKeys.expenseSplitter]: [
+    'Expense Splitter',
+    'Bill Splitter',
+    'Debt Simplification',
+    'Min Cash Flow',
+    'Travel Expense',
+    'Group Bill',
+    '分帳工具',
+    '聚餐分帳',
+    '旅遊分帳',
+    '最少轉帳計算',
+    'AA制計算機',
+    'LINE 分帳',
+  ],
   [ToolKeys.qrCodeGenerator]: [
     'Generator',
     'Barcode',

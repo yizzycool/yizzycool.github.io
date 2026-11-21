@@ -25,6 +25,7 @@ import {
   PenTool,
   QrCode,
   Radar,
+  ReceiptText,
   RefreshCcw,
   Regex,
   ScanFace,
@@ -45,14 +46,14 @@ export const ToolGroupKeys = {
 
 export const ToolGroupKeysOrder = [
   ToolGroupKeys.everydayLifeTool,
-  ToolGroupKeys.devTool,
   ToolGroupKeys.imgTool,
+  ToolGroupKeys.devTool,
   ToolGroupKeys.chromeAiApi,
   ToolGroupKeys.webDetectorApi,
 ];
 
 export const ToolGroupNames = {
-  [ToolGroupKeys.everydayLifeTool]: 'Everyday Life Tool',
+  [ToolGroupKeys.everydayLifeTool]: 'Everyday Life Tools',
   [ToolGroupKeys.devTool]: 'Developer Tools',
   [ToolGroupKeys.imgTool]: 'Image Tools',
   [ToolGroupKeys.chromeAiApi]: 'Chrome AI APIs',
@@ -70,7 +71,8 @@ export const ToolGroupSlugs = {
 // Tools
 
 export const ToolKeys = {
-  // Everyday Life Tool
+  // Everyday Life Tools
+  expenseSplitter: 'expenseSplitter',
   qrCodeGenerator: 'qrCodeGenerator',
   wordCounter: 'wordCounter',
   keyCard: 'keyCard',
@@ -103,7 +105,7 @@ export const ToolKeys = {
   chromeAiWriter: 'chromeAiWriter',
   chromeAiRewriter: 'chromeAiRewriter',
   chromeAiPrompt: 'chromeAiPrompt',
-  chromeAiProofreader: 'chrochromeAiProofreadermeAi',
+  chromeAiProofreader: 'chromeAiProofreader',
 
   // Web Detector APIs
   chromeFaceDetector: 'chromeFaceDetector',
@@ -121,55 +123,53 @@ export const NON_CLIENT_SIDE_TOOLS: string[] = [
 
 export const ToolGroupItems = {
   [ToolGroupKeys.everydayLifeTool]: [
+    ToolKeys.expenseSplitter,
     ToolKeys.qrCodeGenerator,
     ToolKeys.wordCounter,
     ToolKeys.keyCard,
   ],
-  [ToolGroupKeys.devTool]: [
-    // Data Formats & Archive Inspection
-    ToolKeys.jsonFormatter,
-    ToolKeys.zipExtractor,
-    ToolKeys.gzipExtractor,
-
-    // Encodings & Transcoding
-    ToolKeys.urlEncoderDecoder,
-    ToolKeys.base64EncoderDecoder,
-    ToolKeys.hexBinaryConverter,
-    ToolKeys.htmlEntities,
-
-    // Security, Auth & Identity
-    ToolKeys.jwtDebugger,
-    ToolKeys.hashGenerator,
-    ToolKeys.uuidGenerator,
-
-    // Dev Utilities & Testing
-    ToolKeys.cidrCalculator,
-    ToolKeys.unixTimestampConverter,
-    ToolKeys.regexTester,
-    ToolKeys.colorConverter,
-  ],
   [ToolGroupKeys.imgTool]: [
+    ToolKeys.picMergeStudio,
     ToolKeys.imageToBase64,
     ToolKeys.base64ToImage,
-    ToolKeys.picMergeStudio,
+  ],
+  [ToolGroupKeys.devTool]: [
+    // High-frequency core dev tools
+    ToolKeys.jsonFormatter,
+    ToolKeys.jwtDebugger,
+    ToolKeys.urlEncoderDecoder,
+    ToolKeys.base64EncoderDecoder,
+    ToolKeys.regexTester,
+    ToolKeys.unixTimestampConverter,
+    ToolKeys.uuidGenerator,
+    ToolKeys.hashGenerator,
+    ToolKeys.colorConverter,
+    ToolKeys.htmlEntities,
+
+    // Archive inspection, network & binary utilities
+    ToolKeys.zipExtractor,
+    ToolKeys.gzipExtractor,
+    ToolKeys.cidrCalculator,
+    ToolKeys.hexBinaryConverter,
   ],
   [ToolGroupKeys.chromeAiApi]: [
     ToolKeys.chromeAiPrompt,
-    ToolKeys.chromeAiWriter,
-    ToolKeys.chromeAiRewriter,
+    ToolKeys.chromeAiTranslator,
     ToolKeys.chromeAiSummarizer,
     ToolKeys.chromeAiProofreader,
-    ToolKeys.chromeAiTranslator,
+    ToolKeys.chromeAiWriter,
+    ToolKeys.chromeAiRewriter,
     ToolKeys.chromeAiLanguageDetector,
   ],
   [ToolGroupKeys.webDetectorApi]: [
     ToolKeys.chromeBarcodeDetector,
-    ToolKeys.chromeFaceDetector,
     ToolKeys.chromeTextDetector,
+    ToolKeys.chromeFaceDetector,
   ],
 };
 
 export const ToolTitles = {
+  [ToolKeys.expenseSplitter]: 'Expense Splitter',
   [ToolKeys.qrCodeGenerator]: 'QR Code Generator',
   [ToolKeys.wordCounter]: 'Word Counter',
   [ToolKeys.keyCard]: 'KeyCard',
@@ -213,16 +213,18 @@ const ToolTitlesForFeaturePanel = {
   [ToolKeys.zipExtractor]: 'ZIP Extractor',
   [ToolKeys.gzipExtractor]: 'GZIP Extractor',
   [ToolKeys.hexBinaryConverter]: 'Hex / Binary Converter',
-  [ToolKeys.htmlEntities]: 'HTML Entity Converter',
+  [ToolKeys.htmlEntities]: 'HTML Entities',
   [ToolKeys.hashGenerator]: 'Hash Generator',
   [ToolKeys.uuidGenerator]: 'UUID Generator',
-  [ToolKeys.unixTimestampConverter]: 'Timestamp Converter',
+  [ToolKeys.unixTimestampConverter]: 'Unix Timestamp',
   [ToolKeys.regexTester]: 'Regex Tester',
   [ToolKeys.colorConverter]: 'Color Converter',
   [ToolKeys.cidrCalculator]: 'CIDR Calculator',
 };
 
 export const ToolDescriptions = {
+  [ToolKeys.expenseSplitter]:
+    'Split group bills and travel expenses fairly with the Min-Cash-Flow debt simplification algorithm and 1-click LINE / chat summary export.',
   [ToolKeys.qrCodeGenerator]:
     'Generate custom QR codes instantly with personalized colors, contrast presets, adjustable error correction, and 1-click PNG export.',
   [ToolKeys.wordCounter]:
@@ -290,6 +292,7 @@ export const ToolDescriptions = {
 };
 
 export const ToolSlugs = {
+  [ToolKeys.expenseSplitter]: 'expense-splitter',
   [ToolKeys.qrCodeGenerator]: 'qr-code-generator',
   [ToolKeys.wordCounter]: 'word-counter',
   [ToolKeys.keyCard]: 'key-card',
@@ -339,6 +342,7 @@ export const ToolUrls = fromPairs(
 );
 
 export const ToolIcons = {
+  [ToolKeys.expenseSplitter]: ReceiptText,
   [ToolKeys.qrCodeGenerator]: QrCode,
   [ToolKeys.wordCounter]: FileText,
   [ToolKeys.keyCard]: Keyboard,
@@ -375,15 +379,35 @@ export const ToolIcons = {
   [ToolKeys.chromeTextDetector]: CaseUpper,
 };
 
+export const ToolGroupBadges: Record<string, string> = {
+  [ToolGroupKeys.chromeAiApi]: 'On-Device',
+};
+
+export const ToolBadges: Record<string, string> = {
+  [ToolKeys.expenseSplitter]: 'New',
+  [ToolKeys.picMergeStudio]: 'Popular',
+  [ToolKeys.jsonFormatter]: 'Popular',
+};
+
+const DEFAULT_EXPANDED_TOOL_GROUPS: string[] = [
+  ToolGroupKeys.everydayLifeTool,
+  ToolGroupKeys.imgTool,
+  ToolGroupKeys.devTool,
+];
+
+const TOOL_DIVIDER_BEFORE_KEYS: string[] = [ToolKeys.zipExtractor];
+
 // Tools Data
 export const Tools = ToolGroupKeysOrder.map((groupKey) => ({
   id: groupKey,
   name: ToolGroupNames[groupKey],
+  badge: ToolGroupBadges[groupKey],
   items: ToolGroupItems[groupKey].map((toolKey) => ({
     key: toolKey,
     name: ToolTitles[toolKey],
     href: ToolUrls[toolKey],
     desc: ToolDescriptions[toolKey],
+    badge: ToolBadges[toolKey],
     icon: {
       component: ToolIcons[toolKey],
     },
@@ -392,12 +416,18 @@ export const Tools = ToolGroupKeysOrder.map((groupKey) => ({
 
 // Tools Data for Feature Panel (left side panel in tool pages)
 export const ToolDataForFeaturePanel = ToolGroupKeysOrder.map((groupKey) => ({
+  id: groupKey,
   name: ToolGroupNames[groupKey],
+  badge: ToolGroupBadges[groupKey],
+  defaultExpanded: DEFAULT_EXPANDED_TOOL_GROUPS.includes(groupKey),
   items: ToolGroupItems[groupKey].map((toolKey) => ({
+    key: toolKey,
     name: ToolTitlesForFeaturePanel[toolKey],
     href: ToolUrls[toolKey],
     icon: {
       component: ToolIcons[toolKey],
     },
+    badge: ToolBadges[toolKey],
+    dividerBefore: TOOL_DIVIDER_BEFORE_KEYS.includes(toolKey),
   })),
 }));

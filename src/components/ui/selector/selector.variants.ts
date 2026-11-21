@@ -1,5 +1,13 @@
 import type { SelectorSize } from './types';
 
+export const selectorHeaderStyles = 'mb-1.5 space-y-0.5';
+
+export const selectorLabelStyles =
+  'block text-sm/6 font-bold text-slate-700 dark:text-slate-200';
+
+export const selectorDescStyles =
+  'text-sm/6 text-slate-500 dark:text-slate-400';
+
 export const selectorTriggerSizes: Record<SelectorSize, string> = {
   xs: 'px-2.5 py-1 text-xs rounded-lg gap-1.5',
   sm: 'px-3 py-1.5 text-xs rounded-lg gap-1.5',
@@ -29,7 +37,7 @@ export const selectorChevronStyles =
   'shrink-0 text-slate-400 transition-transform duration-200 dark:text-slate-500';
 
 export const selectorMenuStyles =
-  'z-50 overflow-y-auto border border-neutral-200/90 bg-white/95 ' +
+  'z-40 overflow-y-auto border border-neutral-200/90 bg-white/95 ' +
   'shadow-xl shadow-neutral-900/10 backdrop-blur-xl outline-none ' +
   'dark:border-neutral-700/80 dark:bg-neutral-900/95 dark:shadow-black/40';
 

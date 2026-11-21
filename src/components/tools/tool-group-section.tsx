@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 type ToolGroup = {
   id: string;
   name: string;
+  badge?: string;
   items: ToolItem[];
 };
 
@@ -26,11 +27,16 @@ export default function ToolGroupSection({
   return (
     <RevealSection>
       <section className="space-y-4">
-        <div className="flex items-center gap-4 border-b border-neutral-200/60 pb-2 dark:border-neutral-700/80">
+        <div className="flex items-center gap-3 border-b border-neutral-200/60 pb-2 dark:border-neutral-700/80">
           <h2 className="text-xl font-bold tracking-tight text-slate-800 dark:text-slate-200">
             {group.name}
           </h2>
           <Badge>{group.items.length}</Badge>
+          {group.badge && (
+            <Badge variant="purple" size="xs" bordered>
+              {group.badge}
+            </Badge>
+          )}
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

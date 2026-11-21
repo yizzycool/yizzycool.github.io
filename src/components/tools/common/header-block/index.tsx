@@ -132,17 +132,17 @@ export default function HeaderBlock<T = unknown>({
             </div>
             {/* Description for large device */}
             {!!desc && (
-              <h2 className="hidden text-xs text-gray-500 sm:block sm:text-sm dark:text-slate-400">
+              <p className="hidden text-xs text-gray-500 sm:block sm:text-sm dark:text-slate-400">
                 {desc}
-              </h2>
+              </p>
             )}
           </div>
         </div>
         {/* Description for small device */}
         {!!desc && (
-          <h2 className="block text-xs text-gray-500 sm:hidden sm:text-sm dark:text-slate-400">
+          <p className="block text-xs text-gray-500 sm:hidden sm:text-sm dark:text-slate-400">
             {desc}
-          </h2>
+          </p>
         )}
 
         {/* Bottom: Universal Action Buttons */}

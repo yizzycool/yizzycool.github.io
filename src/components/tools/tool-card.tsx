@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, Star } from 'lucide-react';
+import { ArrowRight, Flame, Star } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { cn } from '@/utils/cn';
 
 export type ToolItem = {
@@ -89,10 +91,37 @@ export default function ToolCard({
             >
               {item.name}
             </h3>
-            {item.badge && (
-              <span className="rounded-full bg-sky-100 px-2 py-0.5 text-[10px] font-semibold text-sky-700 dark:bg-sky-950/60 dark:text-sky-300">
+            {item.badge === 'New' && (
+              <Badge
+                variant="success"
+                size="xs"
+                bordered
+                className="px-1.5 py-0 text-[10px]"
+              >
+                New
+              </Badge>
+            )}
+            {item.badge === 'Popular' && (
+              <Badge
+                variant="outline"
+                size="xs"
+                bordered
+                icon={Flame}
+                iconClassName="mr-1 fill-orange-500/20 text-orange-500 dark:fill-orange-400/20 dark:text-orange-400"
+                className="border-orange-500/25 bg-orange-50 px-1.5 py-0 text-[10px] text-orange-600 dark:border-orange-500/25 dark:bg-orange-950/40 dark:text-orange-400"
+              >
+                Popular
+              </Badge>
+            )}
+            {item.badge && item.badge !== 'New' && item.badge !== 'Popular' && (
+              <Badge
+                variant="blue"
+                size="xs"
+                bordered
+                className="px-1.5 py-0 text-[10px]"
+              >
                 {item.badge}
-              </span>
+              </Badge>
             )}
           </div>
           <p className="mt-1.5 text-xs font-light leading-relaxed text-slate-500 dark:text-slate-400">

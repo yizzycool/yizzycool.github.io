@@ -1,6 +1,7 @@
 import { ToolKeys } from '@/data/tools';
 
 export const TOOLS_WITH_HISTORY = [
+  ToolKeys.expenseSplitter,
   ToolKeys.qrCodeGenerator,
   ToolKeys.jsonFormatter,
   ToolKeys.urlEncoderDecoder,
@@ -13,6 +14,7 @@ export const TOOLS_WITH_HISTORY = [
 
 export const TOOLS_WITH_HOTKEY = [
   // Everyday Life Tools
+  ToolKeys.expenseSplitter,
   ToolKeys.qrCodeGenerator,
   ToolKeys.wordCounter,
   ToolKeys.keyCard,

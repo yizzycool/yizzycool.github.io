@@ -6,7 +6,13 @@ import { Description, Field, Label, Textarea as TA } from '@headlessui/react';
 
 import { cn } from '@/utils/cn';
 import { ErrorMessage } from '@/components/ui/error-message';
-import { textareaBaseStyles, textareaErrorStyles } from './textarea.variants';
+import {
+  textareaBaseStyles,
+  textareaDescStyles,
+  textareaErrorStyles,
+  textareaHeaderStyles,
+  textareaLabelStyles,
+} from './textarea.variants';
 
 export function Textarea({
   title,
@@ -27,15 +33,13 @@ export function Textarea({
 
   return (
     <Field className="w-full">
-      {title && (
-        <Label className="text-sm/6 font-bold text-slate-700 dark:text-slate-200">
-          {title}
-        </Label>
-      )}
-      {desc && (
-        <Description className="mb-3 text-sm/6 text-slate-500 dark:text-slate-400">
-          {desc}
-        </Description>
+      {(title || desc) && (
+        <div className={textareaHeaderStyles}>
+          {title && <Label className={textareaLabelStyles}>{title}</Label>}
+          {desc && (
+            <Description className={textareaDescStyles}>{desc}</Description>
+          )}
+        </div>
       )}
       <TA
         ref={ref}

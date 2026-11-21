@@ -44,23 +44,21 @@ export default function LeftPanel({
         <ul>
           <li>
             {/* All Articles */}
-            <h2>
-              <Link
-                className={cn(
-                  'flex items-center rounded-md p-2 font-bold',
-                  'text-slate-800 dark:text-slate-300',
-                  'hover:bg-sky-600/10',
-                  'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500',
-                  'data-[active=true]:dark:bg-sky-600/20',
-                  getFadeUpClass('animate-delay-150')
-                )}
-                href="/blog"
-                data-active={pathname === '/blog'}
-                onClick={onClick}
-              >
-                All Articles
-              </Link>
-            </h2>
+            <Link
+              className={cn(
+                'flex items-center rounded-md p-2 font-bold',
+                'text-slate-800 dark:text-slate-300',
+                'hover:bg-sky-600/10',
+                'data-[active=true]:bg-sky-600/10 data-[active=true]:text-sky-500',
+                'data-[active=true]:dark:bg-sky-600/20',
+                getFadeUpClass('animate-delay-150')
+              )}
+              href="/blog"
+              data-active={pathname === '/blog'}
+              onClick={onClick}
+            >
+              All Articles
+            </Link>
             {/* Articles by category  */}
             <ul>
               {data.map((category) => (

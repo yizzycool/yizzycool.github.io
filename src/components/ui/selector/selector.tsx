@@ -26,6 +26,9 @@ import { cn } from '@/utils/cn';
 import {
   selectorChevronSizes,
   selectorChevronStyles,
+  selectorDescStyles,
+  selectorHeaderStyles,
+  selectorLabelStyles,
   selectorMenuSizes,
   selectorMenuStyles,
   selectorOptionDisabledStyles,
@@ -152,15 +155,19 @@ export function Selector({
 
   return (
     <Field className="w-full">
-      {title && (
-        <Label className="text-sm/6 font-bold text-slate-700 dark:text-slate-200">
-          {title}
-        </Label>
-      )}
-      {desc && (
-        <Description className="mb-3 text-sm/6 text-slate-500 dark:text-slate-400">
-          {desc}
-        </Description>
+      {(title || desc) && (
+        <div className={selectorHeaderStyles}>
+          {title && (
+            <Label id={labelId} className={selectorLabelStyles}>
+              {title}
+            </Label>
+          )}
+          {desc && (
+            <Description id={descId} className={selectorDescStyles}>
+              {desc}
+            </Description>
+          )}
+        </div>
       )}
       <button
         type="button"

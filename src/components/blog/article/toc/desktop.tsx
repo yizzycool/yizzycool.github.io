@@ -27,14 +27,14 @@ export default function TocDesktop({ toc }: Props) {
       )}
     >
       <nav aria-label="table of content">
-        <h2
+        <p
           className={cn(
             'font-bold text-slate-800 dark:text-slate-300',
             getFadeUpClass('animate-delay-150')
           )}
         >
           Table of Contents
-        </h2>
+        </p>
         <div
           ref={tocRef}
           className={cn(

@@ -9,6 +9,19 @@ export interface ToolAboutData {
 export type ToolAboutContent = string | ToolAboutData;
 
 export const ToolAbout: Record<string, ToolAboutContent> = {
+  [ToolKeys.expenseSplitter]: {
+    overview:
+      'Splitting group bills after dinners, shared apartment expenses, or weekend trips often turns into messy spreadsheets and redundant bank transfers. This Expense Splitter runs the Min-Cash-Flow greedy graph algorithm completely in your browser to offset mutual debts and calculate the minimum number of transfers required to settle everyone fairly.',
+    features: [
+      '100% Client-Side Privacy: All member lists, expenses, and financial calculations stay strictly in your local browser storage with zero server uploads or account signups.',
+      'Min-Cash-Flow Debt Simplification: Automatically offsets mutual debts using a greedy graph algorithm, reducing transfer counts to at most N-1 transactions.',
+      'Flexible Split Modes & Custom Currencies: Split expenses equally among all or selected participants, assign exact custom amounts per person, and use major currencies or define any custom currency code and symbol.',
+      '1-Click LINE & Chat Bill Export: Generate clean, emoji-formatted settlement summaries ready to paste into LINE, Discord, or WhatsApp.',
+      'Auto-Save & Snapshot History: Automatically persists your active group session in localStorage and lets you save completed trip or dinner bills to local history for instant recall.',
+    ],
+    bottomNote:
+      'All expense records and settlement calculations run 100% locally in your browser. Your financial data never leaves your device.',
+  },
   [ToolKeys.qrCodeGenerator]: {
     overview:
       'Quick Response (QR) codes are indispensable for instantly connecting physical media to digital experiences, links, contact details, and plain text. This QR Code Generator enables users to convert any URL or text into an interactive, high-contrast QR code with instant visual feedback.',

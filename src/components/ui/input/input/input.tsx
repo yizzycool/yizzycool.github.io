@@ -18,7 +18,10 @@ import { ErrorMessage } from '@/components/ui/error-message';
 import {
   inputBaseStyles,
   inputClearButtonStyles,
+  inputDescStyles,
   inputErrorStyles,
+  inputHeaderStyles,
+  inputLabelStyles,
 } from './input.variants';
 
 export function Input({
@@ -59,11 +62,13 @@ export function Input({
 
   return (
     <Field className="w-full">
-      {title && <Label className="text-sm/6 font-bold">{title}</Label>}
-      {desc && (
-        <Description className="mb-3 text-sm/6 text-slate-500 dark:text-slate-400">
-          {desc}
-        </Description>
+      {(title || desc) && (
+        <div className={inputHeaderStyles}>
+          {title && <Label className={inputLabelStyles}>{title}</Label>}
+          {desc && (
+            <Description className={inputDescStyles}>{desc}</Description>
+          )}
+        </div>
       )}
       <div className="relative w-full">
         {Icon && (

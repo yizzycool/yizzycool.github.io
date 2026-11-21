@@ -13,16 +13,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="mx-auto flex min-h-dvh pt-[101px]">
+    <div className="mx-auto flex min-h-dvh pt-[101px]">
       <GlimmerBackground configs={GlimmerBackgroundConfigs} />
       <FeaturePanel />
       <VerticalLine />
-      <div className="mx-auto w-full min-w-0 max-w-full flex-grow overflow-x-clip px-5 pb-20 pt-4 lg:px-10 xl:max-w-screen-xl">
+      <main className="mx-auto w-full min-w-0 max-w-full flex-grow overflow-x-clip px-5 pb-20 pt-4 lg:px-10 xl:max-w-screen-xl">
         {children}
         <AboutBlock />
-      </div>
+      </main>
       <ScrollToTop />
       <GlobalSnackbar />
-    </main>
+    </div>
   );
 }

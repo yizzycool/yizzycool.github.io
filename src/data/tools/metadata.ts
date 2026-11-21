@@ -1,6 +1,22 @@
 import { ToolKeys } from '.';
 
 export const ToolMetadata = {
+  [ToolKeys.expenseSplitter]: {
+    title: 'Expense Splitter – Group Bill Calculator | Yizzy Peasy',
+    description:
+      'Free online Expense Splitter. Split travel and dinner bills with minimum transfers using the Min-Cash-Flow algorithm and export chat bill summaries with 100% client-side privacy.',
+    openGraph: {
+      title: 'Expense Splitter',
+      description:
+        'Split group bills and travel expenses fairly with the Min-Cash-Flow algorithm and 1-click LINE/Discord summary export. No signup required.',
+    },
+    twitter: {
+      title: 'Expense Splitter',
+      description:
+        'Calculate optimal group bill settlements with minimal transfers and export LINE summaries 100% locally.',
+    },
+  },
+
   [ToolKeys.qrCodeGenerator]: {
     title: 'QR Code Generator – Generate QR Codes Online | Yizzy Peasy',
     description:
@@ -439,16 +455,16 @@ export const ToolMetadata = {
   },
 
   [ToolKeys.chromeAiPrompt]: {
-    title: 'AI Prompt Helper – Chrome Built-In AI API Tool | Yizzy Peasy',
+    title: 'AI Chat (Prompt API) – Chrome Built-In AI API Tool | Yizzy Peasy',
     description:
       'Generate and test prompts with this free AI Prompt Helper using Chrome Built-In AI API.',
     openGraph: {
-      title: 'AI Prompt Helper – Dev Tool',
+      title: 'AI Chat (Prompt API) – Dev Tool',
       description:
         'Online prompt generator and helper for Chrome Built-In AI API.',
     },
     twitter: {
-      title: 'AI Prompt Helper – Chrome Built-In AI API',
+      title: 'AI Chat (Prompt API) – Chrome Built-In AI API',
       description:
         'Free online tool to craft and test AI prompts using Chrome Built-In AI API.',
     },
@@ -519,6 +535,20 @@ export const ToolMetadata = {
 };
 
 export const ToolJsonLdSoftwareApplication = {
+  [ToolKeys.expenseSplitter]: {
+    name: 'Expense Splitter',
+    applicationCategory: 'FinanceApplication',
+    description:
+      'A free client-side group expense splitter and debt simplification calculator that uses the Min-Cash-Flow algorithm to minimize transfers and exports LINE/Discord summaries.',
+    featureList: [
+      'Split expenses equally among selected participants or with exact custom amounts',
+      'Minimize transfer count using the Min-Cash-Flow greedy algorithm',
+      'Generate customizable chat bill summaries ready to paste into group chats',
+      'Auto-save active group workspace locally and store snapshots in browser history',
+      '100% client-side privacy without server uploads or registration',
+    ],
+  },
+
   [ToolKeys.qrCodeGenerator]: {
     name: 'QR Code Generator',
     applicationCategory: 'Utility',
@@ -865,7 +895,7 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   [ToolKeys.chromeAiPrompt]: {
-    name: 'AI Prompt Helper',
+    name: 'AI Chat',
     applicationCategory: 'AIApplication',
     description: 'Generate and test AI prompts using Chrome Built-In AI API.',
     featureList: [
