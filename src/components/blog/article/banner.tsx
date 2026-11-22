@@ -1,11 +1,16 @@
+'use client';
+
 import type { BlogArticle } from '@/types/blog';
 
-import { cn } from '@/utils/cn';
 import { useEffect, useRef, useState } from 'react';
 import { get } from 'lodash';
 
+import { cn } from '@/utils/cn';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import strapiUtils from '@/utils/strapi-utils';
+import {
+  ResponsiveStrapiImage,
+  STRAPI_IMAGE_SIZES,
+} from '@/components/shared/responsive-strapi-image';
 
 type Props = {
   article: BlogArticle;
@@ -13,7 +18,7 @@ type Props = {
 
 export default function Banner({ article }: Props) {
   const data = get(article, 'data.0') || {};
-  const { banner } = data;
+  const { banner, title } = data;
 
   const [bannerLoaded, setBannerLoaded] = useState(false);
 
@@ -31,6 +36,8 @@ export default function Banner({ article }: Props) {
     }
   }, []);
 
+  if (!banner?.url) return null;
+
   return (
     <figure
       className={cn(
@@ -39,18 +46,15 @@ export default function Banner({ article }: Props) {
         getFadeUpClass('animate-delay-300')
       )}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <ResponsiveStrapiImage
         ref={imgRef}
-        className={cn(
-          'aspect-video w-full object-cover',
-          bannerLoaded ? 'opacity-100' : 'opacity-0'
-        )}
-        src={strapiUtils.toMediaUrl(banner.url)}
-        srcSet={strapiUtils.buildSrcSet(banner.formats)}
-        sizes="(max-width: 1024px) 100vw, 1024px"
-        alt={banner.alternativeText ?? 'banner image'}
-        loading="eager"
+        media={banner}
+        priority
+        sizes={STRAPI_IMAGE_SIZES.articleBanner}
+        alt={banner.alternativeText || title || 'banner image'}
+        aspectRatio="video"
+        objectFit="cover"
+        className={cn('w-full', bannerLoaded ? 'opacity-100' : 'opacity-0')}
         onLoad={() => setBannerLoaded(true)}
       />
     </figure>

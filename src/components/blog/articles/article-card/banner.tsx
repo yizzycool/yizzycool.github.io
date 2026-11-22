@@ -1,16 +1,22 @@
+'use client';
+
 import type { BlogArticleData } from '@/types/blog/article';
 
 import { useEffect, useRef, useState } from 'react';
 
-import strapiUtils from '@/utils/strapi-utils';
 import { cn } from '@/utils/cn';
 import { Shimmer } from '@/components/ui/skeleton';
+import {
+  ResponsiveStrapiImage,
+  STRAPI_IMAGE_SIZES,
+} from '@/components/shared/responsive-strapi-image';
 
 type Props = {
   article: BlogArticleData;
+  priority?: boolean;
 };
 
-export default function Banner({ article }: Props) {
+export default function Banner({ article, priority = false }: Props) {
   const { banner } = article;
 
   const [bannerLoaded, setBannerLoaded] = useState(false);
@@ -30,7 +36,9 @@ export default function Banner({ article }: Props) {
   return (
     <div className="relative h-full w-full overflow-hidden">
       {/* Loading Skeleton */}
-      {!bannerLoaded && <Shimmer className="absolute inset-0 z-0" />}
+      {!bannerLoaded && Boolean(banner?.url) && (
+        <Shimmer className="absolute inset-0 z-0" />
+      )}
 
       {/* Mask */}
       {bannerLoaded && (
@@ -42,18 +50,16 @@ export default function Banner({ article }: Props) {
         />
       )}
 
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <ResponsiveStrapiImage
         ref={imgRef}
+        media={banner}
+        priority={priority}
+        sizes={STRAPI_IMAGE_SIZES.articleCard}
+        objectFit="cover"
         className={cn(
-          'h-full w-full transform object-cover transition-transform duration-700 ease-out group-hover:scale-105',
+          'h-full w-full transform transition-transform duration-700 ease-out group-hover:scale-105',
           bannerLoaded ? 'opacity-100' : 'opacity-0'
         )}
-        src={strapiUtils.toMediaUrl(banner.url)}
-        srcSet={strapiUtils.buildSrcSet(banner.formats)}
-        sizes="(max-width: 768px) 100vw, 350px"
-        alt={banner.alternativeText ?? ''}
-        loading="lazy"
         onLoad={() => setBannerLoaded(true)}
       />
     </div>

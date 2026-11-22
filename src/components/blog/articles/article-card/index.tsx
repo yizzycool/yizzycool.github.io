@@ -14,9 +14,10 @@ import Banner from './banner';
 
 type Props = {
   article: BlogArticleData;
+  priority?: boolean;
 };
 
-export default function ArticleCard({ article }: Props) {
+export default function ArticleCard({ article, priority = false }: Props) {
   const date = new Date(article.updatedAt as string);
   const dateString = date.toLocaleDateString('en-US', {
     month: 'short',
@@ -49,7 +50,7 @@ export default function ArticleCard({ article }: Props) {
           <div className="h-full md:flex">
             {/* Image Container */}
             <div className="relative h-48 overflow-hidden md:h-auto md:w-1/3">
-              <Banner article={article} />
+              <Banner article={article} priority={priority} />
             </div>
 
             {/* Content Container */}

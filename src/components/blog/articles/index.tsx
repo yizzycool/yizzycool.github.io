@@ -55,7 +55,7 @@ export default function Articles({ articles, categorySlug, tagSlug }: Props) {
 
       <div className="grid gap-6">
         {data.map((article, index) => (
-          <ArticleCard key={index} article={article} />
+          <ArticleCard key={index} article={article} priority={index === 0} />
         ))}
       </div>
 

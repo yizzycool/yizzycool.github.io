@@ -1,19 +1,39 @@
 'use client';
 
+import type { BlogMediaData } from '@/types/blog/media';
+
 import { MoveRight } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { cn } from '@/utils/cn';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import { SocialIcons } from '@/components/shared/social-icons';
+import { ResponsiveStrapiImage } from '@/components/shared/responsive-strapi-image';
+
 import Typewritter from './typewriter';
 
-export default function Home() {
+type Props = {
+  avatar?: BlogMediaData | null;
+};
+
+export default function Home({ avatar = null }: Props) {
   const [avatarLoaded, setAvatarLoaded] = useState(false);
 
+  const imgRef = useRef<HTMLImageElement | null>(null);
+
   const { getFadeUpClass } = useGetTransitionClass();
+
+  useEffect(() => {
+    const img = imgRef.current;
+    if (!img) return;
+
+    if (img.complete && img.naturalWidth > 0) {
+      // Image is in Cache
+      setAvatarLoaded(true);
+    }
+  }, []);
 
   return (
     <main className="relative flex min-h-[100dvh] w-full pt-[101px]">
@@ -140,20 +160,35 @@ export default function Home() {
                   'transition-transform duration-500 hover:-translate-y-2'
                 )}
               >
-                <Image
+                <ResponsiveStrapiImage
+                  ref={imgRef}
+                  media={avatar}
                   priority
-                  fetchPriority="high"
-                  loading="eager"
+                  sizes="(max-width: 768px) 288px, 384px"
+                  alt={avatar?.alternativeText || 'Yizzy avatar'}
+                  objectFit="contain"
+                  rounded="base"
                   className={cn(
-                    'm-auto rounded object-contain object-center',
+                    'm-auto h-full w-full object-center',
                     'group-hover:contrast-110 transition-all duration-500 ease-in-out group-hover:scale-110',
                     avatarLoaded ? 'opacity-100' : 'opacity-0'
                   )}
-                  width={500}
-                  height={500}
-                  src="/assets/images/home/avatar.jpg"
-                  alt="main image"
                   onLoad={() => setAvatarLoaded(true)}
+                  fallback={
+                    <Image
+                      priority
+                      fetchPriority="high"
+                      loading="eager"
+                      className={cn(
+                        'm-auto rounded object-contain object-center',
+                        'group-hover:contrast-110 transition-all duration-500 ease-in-out group-hover:scale-110'
+                      )}
+                      width={500}
+                      height={500}
+                      src="/assets/images/home/avatar.jpg"
+                      alt="Yizzy avatar"
+                    />
+                  }
                 />
               </div>
 

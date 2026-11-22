@@ -1,10 +1,13 @@
 import seoUtils from '@/utils/seo-utils';
+import { fetchStrapiMediaByName } from '@/utils/strapi-utils';
 
 import { GlimmerBackground } from '@/components/ui/glimmer-background';
 import GlimmerBackgroundConfigs from '@/data/glimmer-background-config/home';
 import Home from '@/components/home';
 
-export default function HomePage() {
+export default async function HomePage() {
+  const avatar = await fetchStrapiMediaByName('avatar.webp');
+
   return (
     <>
       <script
@@ -20,7 +23,7 @@ export default function HomePage() {
         }}
       />
       <GlimmerBackground configs={GlimmerBackgroundConfigs} />
-      <Home />
+      <Home avatar={avatar} />
     </>
   );
 }

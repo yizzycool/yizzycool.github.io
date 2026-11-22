@@ -45,8 +45,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       image: data.banner?.url
         ? {
             url: strapiUtils.toMediaUrl(data.banner.url),
-            width: data.banner.width,
-            height: data.banner.height,
+            width: data.banner.width ?? undefined,
+            height: data.banner.height ?? undefined,
             alt: data.title,
           }
         : null,
