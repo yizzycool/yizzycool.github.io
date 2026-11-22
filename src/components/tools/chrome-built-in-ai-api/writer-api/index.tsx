@@ -2,7 +2,7 @@
 
 import type { ChangeEventHandler } from 'react';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { LoaderCircle, PencilLine, PenLine } from 'lucide-react';
 import { isEmpty } from 'lodash';
 
@@ -27,6 +27,7 @@ export default function WriterApi() {
   const [text, setText] = useState('');
   const [results, setResults] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const {
     hasCheckedAIStatus,
@@ -75,18 +76,21 @@ export default function WriterApi() {
     });
   };
 
-  useToolHotkeys({
-    onExecute: onProcessClick,
-    onPaste: async () => {
-      try {
-        const clipText = await navigator.clipboard.readText();
-        setText(clipText);
-      } catch (_e) {
-        // ignore
-      }
+  useToolHotkeys(
+    {
+      onExecute: onProcessClick,
+      onPaste: async () => {
+        try {
+          const clipText = await navigator.clipboard.readText();
+          setText(clipText);
+        } catch (_e) {
+          // ignore
+        }
+      },
+      onClear: onClearClick,
     },
-    onClear: onClearClick,
-  });
+    { target: textareaRef }
+  );
 
   return (
     <>
@@ -131,6 +135,7 @@ export default function WriterApi() {
         <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
       </LabelBar>
       <Textarea
+        ref={textareaRef}
         id="text-textarea"
         onChange={onChange}
         value={text}

@@ -17,6 +17,23 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.markdownNotes]: {
+    title:
+      'Markdown Notes – Keep-Style Sticky Notes with Markdown | Yizzy Peasy',
+    description:
+      'Free offline-first Keep-style Markdown sticky notes board. Supports interactive checklists, GFM tables, active-recall ||spoiler|| blurs, 100% local Google Keep Takeout import, speech playback, and optional Chrome AI.',
+    openGraph: {
+      title: 'Markdown Notes – Keep-Style Sticky Notes with Markdown',
+      description:
+        'Organize notes in a Google Keep-style Masonry board with full Markdown rendering, study spoilers, local IndexedDB storage, and Takeout .zip import.',
+    },
+    twitter: {
+      title: 'Markdown Notes',
+      description:
+        'Keep-style Markdown sticky notes with local IndexedDB privacy, Google Keep Takeout import, and study helpers.',
+    },
+  },
+
   [ToolKeys.qrCodeGenerator]: {
     title: 'QR Code Generator – Generate QR Codes Online | Yizzy Peasy',
     description:
@@ -546,6 +563,20 @@ export const ToolJsonLdSoftwareApplication = {
       'Generate customizable chat bill summaries ready to paste into group chats',
       'Auto-save active group workspace locally and store snapshots in browser history',
       '100% client-side privacy without server uploads or registration',
+    ],
+  },
+
+  [ToolKeys.markdownNotes]: {
+    name: 'Markdown Notes',
+    applicationCategory: 'ProductivityApplication',
+    description:
+      'A 100% client-side, Keep-style Markdown sticky notes board stored in browser IndexedDB, featuring GFM rendering, active-recall spoilers, Google Keep Takeout import, and optional Chrome on-device AI.',
+    featureList: [
+      'Masonry grid and list views with pinning, color coding, labels, archive, and trash',
+      'Full Markdown rendering with interactive task checkboxes, tables, math, and ||spoiler|| blurs',
+      '100% client-side Google Keep Takeout .zip/.json selective importer with no login required',
+      'Web Speech API audio playback (0.7x / 1.0x, US / UK) and optional Chrome on-device AI assist',
+      'One-click export as Obsidian-compatible Markdown ZIP archives, JSON backups, or .ics reminders',
     ],
   },
 

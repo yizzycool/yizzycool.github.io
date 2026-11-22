@@ -25,12 +25,14 @@ type ConfigPanelDesktopProps = {
   fabricHelper: FabricHelper;
   configHelper: ConfigHelper;
   onOpenExport?: () => void;
+  onRequestBatchDelete: (onAfterConfirm?: () => void) => void;
 };
 
 export default function ConfigPanelDesktop({
   fabricHelper,
   configHelper,
   onOpenExport,
+  onRequestBatchDelete,
 }: ConfigPanelDesktopProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [activeToolId, setActiveToolId] = useState<ActionToolId | null>(null);
@@ -82,8 +84,7 @@ export default function ConfigPanelDesktop({
   };
 
   const handleDeleteBatch = () => {
-    fabricHelper.layersUpdater.batchDelete();
-    setActiveToolId(null);
+    onRequestBatchDelete(() => setActiveToolId(null));
   };
 
   const handleExport = () => {

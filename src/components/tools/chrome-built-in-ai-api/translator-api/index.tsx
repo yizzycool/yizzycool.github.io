@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowRightLeft } from 'lucide-react';
 import { isNull, isEmpty, size } from 'lodash';
 
@@ -23,6 +23,8 @@ export default function TranslatorApi() {
 
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const textRef = useRef(text);
+  const translateRequestIdRef = useRef(0);
 
   const {
     hasCheckedAIStatus,
@@ -37,34 +39,111 @@ export default function TranslatorApi() {
     downloadProgress,
   } = useAiTranslator();
 
+  useEffect(() => {
+    textRef.current = text;
+  }, [text]);
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!translator) return;
+
+    const currentText = textRef.current;
+    if (isEmpty(currentText)) return;
+
+    let cancelled = false;
+    const requestId = ++translateRequestIdRef.current;
+
+    translator
+      .translate(currentText)
+      .then((result) => {
+        if (!cancelled && translateRequestIdRef.current === requestId) {
+          setTranslation(result);
+        }
+      })
+      .catch(() => {
+        // Ignore errors from cancelled or destroyed translator instances
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [translator]);
+
+  const translateString = async (nextText: string) => {
+    const requestId = ++translateRequestIdRef.current;
+    if (isEmpty(nextText)) {
+      setTranslation('');
+      return;
+    }
+
+    try {
+      const result = await translate(nextText);
+      if (translateRequestIdRef.current === requestId) {
+        setTranslation(result);
+      }
+    } catch {
+      // Ignore errors from cancelled or destroyed translator instances
+    }
+  };
+
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (availability !== 'available') return;
-    const text = e.target.value;
-    setText(text);
+    const nextText = e.target.value;
+    textRef.current = nextText;
+    setText(nextText);
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
-    timerRef.current = setTimeout(() => translateString(text), 500);
-  };
-
-  const translateString = async (text: string) => {
-    if (isEmpty(text)) {
-      setTranslation('');
-    } else {
-      const result = await translate(text);
-      setTranslation(result);
-    }
+    timerRef.current = setTimeout(() => {
+      void translateString(nextText);
+    }, 500);
   };
 
   const switchSourceTargetLanguage = () => {
-    setTranslatorLang(options.targetLanguage, options.sourceLanguage);
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    translateRequestIdRef.current += 1;
+
+    if (!isEmpty(translation)) {
+      textRef.current = translation;
+      setText(translation);
+    } else {
+      textRef.current = text;
+    }
+    setTranslation('');
+    void setTranslatorLang(options.targetLanguage, options.sourceLanguage);
   };
 
   const changeLanguage = (type: string, languageCode: string) => {
+    if (
+      (type === 'source' && languageCode === options.targetLanguage) ||
+      (type === 'target' && languageCode === options.sourceLanguage)
+    ) {
+      switchSourceTargetLanguage();
+      return;
+    }
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    translateRequestIdRef.current += 1;
+    textRef.current = text;
+    setTranslation('');
+
     if (type === 'source') {
-      setTranslatorLang(languageCode, options.targetLanguage);
+      void setTranslatorLang(languageCode, options.targetLanguage);
     } else {
-      setTranslatorLang(options.sourceLanguage, languageCode);
+      void setTranslatorLang(options.sourceLanguage, languageCode);
     }
   };
 
@@ -83,16 +162,25 @@ export default function TranslatorApi() {
       onPaste: async () => {
         try {
           const clipText = await navigator.clipboard.readText();
+          textRef.current = clipText;
           setText(clipText);
           if (timerRef.current) {
             clearTimeout(timerRef.current);
           }
-          timerRef.current = setTimeout(() => translateString(clipText), 500);
+          timerRef.current = setTimeout(() => {
+            void translateString(clipText);
+          }, 500);
         } catch (_e) {
           // ignore
         }
       },
       onClear: () => {
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+          timerRef.current = null;
+        }
+        translateRequestIdRef.current += 1;
+        textRef.current = '';
         setText('');
         setTranslation('');
       },
@@ -192,6 +280,7 @@ export default function TranslatorApi() {
                   size="sm"
                   disabled={isEmpty(text)}
                   content={text}
+                  lang={options.sourceLanguage}
                 />
                 <div className="text-xs opacity-50">{size(text)} chars</div>
               </div>
@@ -216,6 +305,7 @@ export default function TranslatorApi() {
                   size="sm"
                   disabled={isEmpty(translation)}
                   content={translation}
+                  lang={options.targetLanguage}
                 />
                 <CopyAction
                   variant="ghost"

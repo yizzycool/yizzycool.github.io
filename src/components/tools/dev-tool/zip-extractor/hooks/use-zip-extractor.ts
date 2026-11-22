@@ -5,7 +5,9 @@ import * as fflate from 'fflate';
 
 import toast from '@/utils/toast';
 import { getImageMimeType } from '@/utils/file-utils';
-import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
+import useToolHotkeys, {
+  hasOpenModalDialog,
+} from '@/hooks/tools/use-tool-hotkeys';
 import type {
   PreviewState,
   ZipFileEntry,
@@ -316,6 +318,8 @@ export default function useZipExtractor() {
   // Global shortcut to focus search input on '/'
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.defaultPrevented || hasOpenModalDialog()) return;
+
       const active = document.activeElement;
       const isTyping =
         active &&

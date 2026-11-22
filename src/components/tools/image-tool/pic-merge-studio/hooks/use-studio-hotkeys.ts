@@ -5,28 +5,39 @@ import type { ConfigHelper } from '../types/config-helper';
 
 import { useEffect } from 'react';
 
-import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
+import useToolHotkeys, {
+  hasOpenModalDialog,
+} from '@/hooks/tools/use-tool-hotkeys';
 
 type Props = {
   fabricHelper: FabricHelper;
   configHelper: ConfigHelper;
   onOpenExport: () => void;
+  onRequestBatchDelete?: () => void;
+  suppressHotkeys?: boolean;
 };
 
 export default function useStudioHotkeys({
   fabricHelper,
   configHelper,
   onOpenExport,
+  onRequestBatchDelete,
+  suppressHotkeys = false,
 }: Props) {
   // Global Tool Hotkeys (Mod + S for export, Esc for deselect)
-  useToolHotkeys({
-    onSave: onOpenExport,
-    onClear: () => fabricHelper.canvasUpdater.discardActiveObject(),
-  });
+  useToolHotkeys(
+    {
+      onSave: onOpenExport,
+      onClear: () => fabricHelper.canvasUpdater.discardActiveObject(),
+    },
+    { enabled: !suppressHotkeys }
+  );
 
   // Keyboard navigation & quick delete
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (suppressHotkeys || e.defaultPrevented || hasOpenModalDialog()) return;
+
       const activeEl = document.activeElement;
       const isEditingInput =
         activeEl &&
@@ -53,7 +64,11 @@ export default function useStudioHotkeys({
           fabricHelper.gridUpdater.deleteImage();
         } else {
           if (fabricHelper.layersUpdater?.selectedCount >= 2) {
-            fabricHelper.layersUpdater.batchDelete();
+            if (onRequestBatchDelete) {
+              onRequestBatchDelete();
+            } else {
+              fabricHelper.layersUpdater.batchDelete();
+            }
           } else {
             fabricHelper.imageUpdater.deleteImage();
           }
@@ -77,5 +92,10 @@ export default function useStudioHotkeys({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [fabricHelper, configHelper.canvasConfig.layout]);
+  }, [
+    fabricHelper,
+    configHelper.canvasConfig.layout,
+    onRequestBatchDelete,
+    suppressHotkeys,
+  ]);
 }

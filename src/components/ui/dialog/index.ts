@@ -1,8 +1,9 @@
 export { BaseDialog } from './base-dialog';
 export type { BaseDialogProps } from './base-dialog';
 
-export { ConfirmDialog } from './confirm-dialog';
+export { ConfirmDialog, useConfirmDialog } from './confirm-dialog';
 export type {
+  ConfirmDialogOptions,
   ConfirmDialogProps,
   ConfirmDialogVariant,
 } from './confirm-dialog';

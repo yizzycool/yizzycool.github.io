@@ -31,6 +31,7 @@ import {
   ScanFace,
   ShieldCheck,
   SpellCheck,
+  StickyNote,
 } from 'lucide-react';
 import { fromPairs, findKey } from 'lodash';
 
@@ -88,6 +89,7 @@ export const ToolGroupSlugs = {
 export const ToolKeys = {
   // Everyday Life Tools
   expenseSplitter: 'expenseSplitter',
+  markdownNotes: 'markdownNotes',
   qrCodeGenerator: 'qrCodeGenerator',
   wordCounter: 'wordCounter',
   keyCard: 'keyCard',
@@ -143,6 +145,7 @@ export const NON_CLIENT_SIDE_TOOLS: string[] = [
 export const ToolGroupItems = {
   [ToolGroupKeys.everydayLifeTool]: [
     ToolKeys.expenseSplitter,
+    ToolKeys.markdownNotes,
     ToolKeys.qrCodeGenerator,
     ToolKeys.wordCounter,
     ToolKeys.keyCard,
@@ -192,6 +195,7 @@ export const ToolGroupItems = {
  */
 export const ToolTitles = {
   [ToolKeys.expenseSplitter]: 'Expense Splitter',
+  [ToolKeys.markdownNotes]: 'Markdown Notes',
   [ToolKeys.qrCodeGenerator]: 'QR Code Generator',
   [ToolKeys.wordCounter]: 'Word Counter',
   [ToolKeys.keyCard]: 'KeyCard',
@@ -253,6 +257,8 @@ const ToolTitlesForFeaturePanel = {
 export const ToolDescriptions = {
   [ToolKeys.expenseSplitter]:
     'Split group bills and travel expenses fairly with the Min-Cash-Flow debt simplification algorithm and 1-click LINE / chat summary export.',
+  [ToolKeys.markdownNotes]:
+    'Keep-style sticky notes board with full Markdown support, interactive checklists, blurred study spoilers, Google Keep Takeout import, and optional Chrome on-device AI.',
   [ToolKeys.qrCodeGenerator]:
     'Generate custom QR codes instantly with personalized colors, contrast presets, adjustable error correction, and 1-click PNG export.',
   [ToolKeys.wordCounter]:
@@ -324,6 +330,7 @@ export const ToolDescriptions = {
  */
 export const ToolSlugs = {
   [ToolKeys.expenseSplitter]: 'expense-splitter',
+  [ToolKeys.markdownNotes]: 'markdown-notes',
   [ToolKeys.qrCodeGenerator]: 'qr-code-generator',
   [ToolKeys.wordCounter]: 'word-counter',
   [ToolKeys.keyCard]: 'key-card',
@@ -380,6 +387,7 @@ export const ToolUrls = fromPairs(
  */
 export const ToolIcons = {
   [ToolKeys.expenseSplitter]: ReceiptText,
+  [ToolKeys.markdownNotes]: StickyNote,
   [ToolKeys.qrCodeGenerator]: QrCode,
   [ToolKeys.wordCounter]: FileText,
   [ToolKeys.keyCard]: Keyboard,
@@ -428,6 +436,7 @@ export const ToolGroupBadges: Record<string, string> = {
  */
 export const ToolBadges: Record<string, string> = {
   [ToolKeys.expenseSplitter]: 'New',
+  [ToolKeys.markdownNotes]: 'New',
   [ToolKeys.picMergeStudio]: 'Popular',
   [ToolKeys.jsonFormatter]: 'Popular',
 };

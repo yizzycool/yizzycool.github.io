@@ -16,7 +16,6 @@ export function useJwtDebugger() {
 
   const handleLoadSample = useCallback(() => {
     setTokenInput(SAMPLE_JWT);
-    toast.success('Loaded sample JWT');
   }, []);
 
   const handleClear = useCallback(() => {

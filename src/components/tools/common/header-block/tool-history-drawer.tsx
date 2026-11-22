@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Clock,
   RotateCcw,
@@ -59,19 +59,6 @@ export function ToolHistoryDrawer<T>({
   const [editTitle, setEditTitle] = useState<string>('');
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isWipeAllConfirmOpen, setIsWipeAllConfirmOpen] = useState(false);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
 
   const handleStartEdit = (item: HistoryItem<T>) => {
     setEditingId(item.id);
@@ -226,7 +213,11 @@ export function ToolHistoryDrawer<T>({
                     onChange={(e) => setEditTitle(e.target.value)}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') handleSaveEdit(item.id);
-                      if (e.key === 'Escape') handleCancelEdit();
+                      if (e.key === 'Escape') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleCancelEdit();
+                      }
                     }}
                     placeholder="Enter snapshot name..."
                     autoFocus

@@ -27,12 +27,14 @@ type Props = {
   fabricHelper: FabricHelper;
   configHelper: ConfigHelper;
   onOpenExport?: () => void;
+  onRequestBatchDelete: (onAfterConfirm?: () => void) => void;
 };
 
 export default function ConfigPanelMobile({
   fabricHelper,
   configHelper,
   onOpenExport,
+  onRequestBatchDelete,
 }: Props) {
   const replaceInputRef = useRef<HTMLInputElement>(null);
   const isGridLayout = configHelper.canvasConfig.layout === 'grid';
@@ -175,7 +177,7 @@ export default function ConfigPanelMobile({
               <IconTextButton
                 icon={Trash2}
                 text="Delete"
-                onClick={fabricHelper.layersUpdater.batchDelete}
+                onClick={() => onRequestBatchDelete()}
               />
               {!isGridLayout && (
                 <Arrangement

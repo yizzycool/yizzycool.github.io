@@ -150,12 +150,15 @@ export default function useCidrCalculator() {
   );
 
   // Keyboard shortcuts integration
-  useToolHotkeys({
-    onExecute: handleExecute,
-    onCopy: handleCopyMain,
-    onClear: handleClear,
-    onPaste: handlePaste,
-  });
+  useToolHotkeys(
+    {
+      onExecute: handleExecute,
+      onCopy: handleCopyMain,
+      onClear: handleClear,
+      onPaste: handlePaste,
+    },
+    { target: inputRef }
+  );
 
   return {
     input,

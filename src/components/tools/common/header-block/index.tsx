@@ -9,7 +9,10 @@ import { Star, Clock, Keyboard, LucideIcon, PauseCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/utils/cn';
-import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
+import useToolHotkeys, {
+  getOpenModalDialogCount,
+  hasOpenModalDialog,
+} from '@/hooks/tools/use-tool-hotkeys';
 import useToolsPreferences from '@/hooks/tools/use-tools-preferences';
 import { useToolsDB } from '@/hooks/tools/use-tools-db';
 import { HistoryItem } from '@/hooks/tools/use-tool-history';
@@ -103,18 +106,22 @@ export default function HeaderBlock<T = unknown>({
     }
   };
 
-  useToolHotkeys({
-    onHistory: () => {
-      if (!showHistory) return;
+  useToolHotkeys(
+    {
+      onHistory: () => {
+        if (!showHistory) return;
+        if (isHistoryOpen && getOpenModalDialogCount() > 1) return;
 
-      setIsHistoryOpen((prev) => !prev);
-    },
-    onHelp: () => {
-      if (!showHotkey) return;
+        setIsHistoryOpen((prev) => !prev);
+      },
+      onHelp: () => {
+        if (!showHotkey || hasOpenModalDialog()) return;
 
-      handleOpenHotkeys();
+        handleOpenHotkeys();
+      },
     },
-  });
+    { ignoreWhenModalOpen: !isHistoryOpen }
+  );
 
   return (
     <header className="mb-6">

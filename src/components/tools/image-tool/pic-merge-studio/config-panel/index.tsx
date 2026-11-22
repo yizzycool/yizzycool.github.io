@@ -11,6 +11,7 @@ type Props = {
   fabricHelper: FabricHelper;
   configHelper: ConfigHelper;
   onOpenExport: () => void;
+  onRequestBatchDelete: (onAfterConfirm?: () => void) => void;
 };
 
 export default function ConfigPanel(props: Props) {

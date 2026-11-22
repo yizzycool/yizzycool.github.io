@@ -2,7 +2,9 @@ import type { Param, WebDetectionFileType } from '../result-canvas';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
+import useToolHotkeys, {
+  hasOpenModalDialog,
+} from '@/hooks/tools/use-tool-hotkeys';
 import toast from '@/utils/toast';
 
 import useWebcam from './use-webcam';
@@ -196,6 +198,8 @@ export default function useCommonFunction({ detect, getCopyText }: Props) {
   // Mode switching (1: Image, 2: Video, 3: Webcam) and Camera Flip (F)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.defaultPrevented || hasOpenModalDialog()) return;
+
       const activeEl = document.activeElement;
       const isInput =
         activeEl &&

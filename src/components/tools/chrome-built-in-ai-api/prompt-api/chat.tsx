@@ -10,6 +10,7 @@ import { ProseMarkdown } from '@/components/shared/markdown';
 import { Button } from '@/components/ui/button';
 import { ScrollToBottom } from '@/components/shared/scroll-to-bottom';
 import useAutoScrollToBottom from '@/hooks/dom/use-auto-scroll-to-bottom';
+import { hasOpenModalDialog } from '@/hooks/tools/use-tool-hotkeys';
 import { cn } from '@/utils/cn';
 
 type Props = {
@@ -54,6 +55,8 @@ export default function Chat({
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.defaultPrevented || hasOpenModalDialog()) return;
+
       const isCmdOrCtrl = e.metaKey || e.ctrlKey;
       if (
         isCmdOrCtrl &&

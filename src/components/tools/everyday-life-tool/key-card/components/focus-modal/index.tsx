@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 
 import { BaseDialog } from '@/components/ui/dialog';
 import { ProseMarkdown } from '@/components/shared/markdown';
+import { getOpenModalDialogCount } from '@/hooks/tools/use-tool-hotkeys';
 
 import { FocusModalHeader } from './focus-modal-header';
 import { FocusModalTabs } from './focus-modal-tabs';
@@ -48,6 +49,7 @@ export default function FocusModal({
     if (!isOpen || !cardToRender?.contents) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.defaultPrevented || getOpenModalDialogCount() > 1) return;
       const target = e.target as HTMLElement;
       if (
         target.tagName === 'INPUT' ||

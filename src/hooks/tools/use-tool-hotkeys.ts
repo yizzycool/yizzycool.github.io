@@ -12,6 +12,36 @@ type HotkeyTarget =
   | undefined
   | React.RefObject<HTMLElement | null | undefined>;
 
+const MODAL_DIALOG_SELECTOR =
+  '[role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"], dialog[open]';
+
+/**
+ * Returns the number of currently open modal dialogs or drawers in the DOM.
+ */
+export function getOpenModalDialogCount(): number {
+  if (typeof document === 'undefined') return 0;
+  return document.querySelectorAll(MODAL_DIALOG_SELECTOR).length;
+}
+
+/**
+ * Returns true if any modal dialog or drawer (e.g., SearchDialog, BaseDialog,
+ * ConfirmDialog, ToolHistoryDrawer, ToolHotkeysModal) is currently open.
+ */
+export function hasOpenModalDialog(): boolean {
+  return getOpenModalDialogCount() > 0;
+}
+
+function resolveTargetElement(target: HotkeyTarget): HTMLElement | null {
+  if (!target) return null;
+  if ('current' in target) {
+    return (target.current as HTMLElement) ?? null;
+  }
+  if (target instanceof HTMLElement) {
+    return target;
+  }
+  return null;
+}
+
 type HotkeyHandlers = {
   /** Triggered on Cmd+Enter / Ctrl+Enter (Format / Process / Execute) - Window listener */
   onExecute?: (e: KeyboardEvent) => void;
@@ -38,6 +68,8 @@ type HotkeyOptions = {
   preventDefault?: boolean;
   /** Target element or React Ref for target-bound listeners (Esc) and focusing target on paste. */
   target?: HotkeyTarget;
+  /** If true, ignores tool hotkeys while any modal dialog or drawer is open (default: true) */
+  ignoreWhenModalOpen?: boolean;
 };
 
 export type HotkeyName =
@@ -79,7 +111,12 @@ export default function useToolHotkeys(
   handlers: HotkeyHandlers,
   options: HotkeyOptions = {}
 ) {
-  const { enabled = true, preventDefault = true, target } = options;
+  const {
+    enabled = true,
+    preventDefault = true,
+    target,
+    ignoreWhenModalOpen = true,
+  } = options;
 
   // Store handlers in ref to ensure fresh closure without re-subscribing event listener
   const handlersRef = useRef(handlers);
@@ -90,43 +127,10 @@ export default function useToolHotkeys(
   useEffect(() => {
     if (!enabled || typeof window === 'undefined') return;
 
-    let targetElement: HTMLElement | null = null;
-    if (target) {
-      if ('current' in target) {
-        targetElement = (target.current as HTMLElement) ?? null;
-      } else if (target instanceof HTMLElement) {
-        targetElement = target;
-      }
-    }
-
-    // 1. Target-bound listener for Target-level shortcuts:
-    // - Esc (Clear/Reset)
-    const handleTargetKeyDown = (event: KeyboardEvent) => {
-      const key = event.key;
-
-      // Esc: Clear / Reset
-      if (key === 'Escape') {
-        if (handlersRef.current.onClear) {
-          if (preventDefault) event.preventDefault();
-          handlersRef.current.onClear(event);
-        }
-        return;
-      }
-    };
-
-    if (targetElement) {
-      targetElement.addEventListener('keydown', handleTargetKeyDown);
-    }
-
-    // 2. Window-bound listener for Global shortcuts:
-    // - Ctrl/Cmd + Enter (Execute)
-    // - Ctrl/Cmd + Shift + C (Copy Result)
-    // - Ctrl/Cmd + Shift + V (Paste & Focus Target)
-    // - Ctrl/Cmd + / (Swap Input & Output)
-    // - Ctrl/Cmd + S (Save / Export)
-    // - ? (Shortcuts Modal)
-    // - Esc fallback if target is not specified
     const handleWindowKeyDown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented) return;
+      if (ignoreWhenModalOpen && hasOpenModalDialog()) return;
+
       const isCmdOrCtrl = event.metaKey || event.ctrlKey;
       const isShift = event.shiftKey;
       const key = event.key;
@@ -160,8 +164,9 @@ export default function useToolHotkeys(
         isShift &&
         (key === 'v' || key === 'V' || code === 'KeyV')
       ) {
-        if (targetElement && typeof targetElement.focus === 'function') {
-          targetElement.focus();
+        const resolvedTarget = resolveTargetElement(target);
+        if (resolvedTarget && typeof resolvedTarget.focus === 'function') {
+          resolvedTarget.focus();
         }
         if (handlersRef.current.onPaste) {
           if (preventDefault) event.preventDefault();
@@ -225,25 +230,40 @@ export default function useToolHotkeys(
         return;
       }
 
-      // Fallback for Target listener if target is not specified
-      if (!targetElement) {
-        if (key === 'Escape' && handlersRef.current.onClear) {
-          if (preventDefault) event.preventDefault();
-          handlersRef.current.onClear(event);
-          return;
+      // 8. Escape (Clear / Reset)
+      if (key === 'Escape' && handlersRef.current.onClear) {
+        // Never intercept Escape while any modal dialog or drawer is open
+        if (hasOpenModalDialog()) return;
+
+        const hasExplicitTarget =
+          target !== undefined &&
+          target !== null &&
+          target !== window &&
+          target !== document;
+
+        if (hasExplicitTarget) {
+          const resolvedTarget = resolveTargetElement(target);
+          if (
+            !resolvedTarget ||
+            !(event.target instanceof Node) ||
+            (event.target !== resolvedTarget &&
+              !resolvedTarget.contains(event.target))
+          ) {
+            return;
+          }
         }
+
+        if (preventDefault) event.preventDefault();
+        handlersRef.current.onClear(event);
       }
     };
 
     window.addEventListener('keydown', handleWindowKeyDown);
 
     return () => {
-      if (targetElement) {
-        targetElement.removeEventListener('keydown', handleTargetKeyDown);
-      }
       window.removeEventListener('keydown', handleWindowKeyDown);
     };
-  }, [enabled, preventDefault, target]);
+  }, [enabled, preventDefault, target, ignoreWhenModalOpen]);
 }
 
 export const TOOL_HOTKEYS: Record<HotkeyName, HotkeyItem> = {

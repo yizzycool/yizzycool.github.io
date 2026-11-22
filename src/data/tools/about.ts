@@ -22,6 +22,19 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
     bottomNote:
       'All expense records and settlement calculations run 100% locally in your browser. Your financial data never leaves your device.',
   },
+  [ToolKeys.markdownNotes]: {
+    overview:
+      'Sticky-note boards like Google Keep make capturing ideas fast, yet lack Markdown formatting, tables, active-recall blurs, and portable `.md` exports. Markdown Notes brings a Keep-inspired Masonry board together with full GitHub-Flavored Markdown rendering, interactive checklists, Chrome on-device AI study assistance, and 100% client-side Google Keep Takeout import.',
+    features: [
+      '100% Client-Side Privacy (IndexedDB): All notes, labels, colors, and preferences stay strictly inside your browser IndexedDB storage with zero server uploads or accounts.',
+      'Masonry Board & Quick Capture: Organize pinned and active notes with 9 light/dark pastel themes, custom #labels, Archive/Trash workflow, and instant fuzzy search via Fuse.js.',
+      'Full Markdown & Active Recall Spoilers: Render GFM tables, syntax-highlighted code, LaTeX math, clickable task checklists, and ||blurred spoiler|| study chips.',
+      'Google Keep Takeout Importer: Drop your Google Takeout .zip or .json directly in the browser to selectively filter and import notebooks without signing into Google.',
+      'Speech & Optional Chrome On-Device AI: Listen to notes at 0.7x/1.0x speed (US/UK), look up phrases on Cambridge/YouGlish, or unlock offline Gemini Nano AI translation, proofreading, and study card generation.',
+    ],
+    bottomNote:
+      'All notes and backups live locally in your browser IndexedDB. Export your entire library anytime as Obsidian-compatible .md files (.zip) or JSON.',
+  },
   [ToolKeys.qrCodeGenerator]: {
     overview:
       'Quick Response (QR) codes are indispensable for instantly connecting physical media to digital experiences, links, contact details, and plain text. This QR Code Generator enables users to convert any URL or text into an interactive, high-contrast QR code with instant visual feedback.',

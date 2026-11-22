@@ -86,7 +86,7 @@ export default function MemberManagerSection({
             <DeleteAction
               label="Reset All"
               onClick={onResetAll}
-              successToast="Reset group workspace"
+              successToast={false}
             />
           </div>
         }

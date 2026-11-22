@@ -2,7 +2,7 @@
 
 import type { ChangeEventHandler } from 'react';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { LoaderCircle, PenLine, WandSparkles } from 'lucide-react';
 import { isEmpty } from 'lodash';
 
@@ -26,6 +26,7 @@ export default function ProofreaderApi() {
   const [text, setText] = useState('');
   const [result, setResult] = useState<ProofreadResult>();
   const [isProcessing, setIsProcessing] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const {
     hasCheckedAIStatus,
@@ -85,18 +86,21 @@ export default function ProofreaderApi() {
     });
   };
 
-  useToolHotkeys({
-    onExecute: onProcessClick,
-    onPaste: async () => {
-      try {
-        const clipText = await navigator.clipboard.readText();
-        setText(clipText);
-      } catch (_e) {
-        // ignore
-      }
+  useToolHotkeys(
+    {
+      onExecute: onProcessClick,
+      onPaste: async () => {
+        try {
+          const clipText = await navigator.clipboard.readText();
+          setText(clipText);
+        } catch (_e) {
+          // ignore
+        }
+      },
+      onClear: onClearClick,
     },
-    onClear: onClearClick,
-  });
+    { target: textareaRef }
+  );
 
   return (
     <>
@@ -136,6 +140,7 @@ export default function ProofreaderApi() {
         <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
       </LabelBar>
       <Textarea
+        ref={textareaRef}
         id="proofreader-textarea"
         onChange={onChange}
         value={text}

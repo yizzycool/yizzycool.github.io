@@ -4,6 +4,7 @@ import { Plus, Trash2, Link, Eye, EyeOff } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { ConfirmDialog, useConfirmDialog } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/utils/cn';
 
@@ -27,6 +28,8 @@ export default function QueryParamsTable({
   params,
   onParamsChange,
 }: QueryParamsTableProps) {
+  const { confirm, dialogProps: confirmDialogProps } = useConfirmDialog();
+
   const handleAddParam = () => {
     const newItem: QueryParamItem = {
       id: `${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
@@ -56,7 +59,19 @@ export default function QueryParamsTable({
   };
 
   const handleClearAll = () => {
-    onParamsChange([]);
+    if (params.length <= 1) {
+      onParamsChange([]);
+      return;
+    }
+
+    void confirm({
+      title: 'Clear All Query Parameters',
+      message: `Remove all ${params.length} query parameters from this URL?`,
+      confirmText: 'Clear All',
+      cancelText: 'Cancel',
+      confirmVariant: 'error',
+      onConfirm: () => onParamsChange([]),
+    });
   };
 
   return (
@@ -194,6 +209,8 @@ export default function QueryParamsTable({
           ))}
         </div>
       )}
+
+      <ConfirmDialog {...confirmDialogProps} />
     </div>
   );
 }

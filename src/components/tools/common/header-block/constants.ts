@@ -15,6 +15,7 @@ export const TOOLS_WITH_HISTORY = [
 export const TOOLS_WITH_HOTKEY = [
   // Everyday Life Tools
   ToolKeys.expenseSplitter,
+  ToolKeys.markdownNotes,
   ToolKeys.qrCodeGenerator,
   ToolKeys.wordCounter,
   ToolKeys.keyCard,

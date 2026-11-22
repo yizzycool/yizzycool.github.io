@@ -24,6 +24,7 @@ export default function LanguageDetectorApi() {
   );
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const {
     hasCheckedAIStatus,
@@ -62,17 +63,20 @@ export default function LanguageDetectorApi() {
     }
   };
 
-  useToolHotkeys({
-    onPaste: async () => {
-      try {
-        const clipText = await navigator.clipboard.readText();
-        onPasteText(clipText);
-      } catch (_e) {
-        // ignore
-      }
+  useToolHotkeys(
+    {
+      onPaste: async () => {
+        try {
+          const clipText = await navigator.clipboard.readText();
+          onPasteText(clipText);
+        } catch (_e) {
+          // ignore
+        }
+      },
+      onClear: onClearClick,
     },
-    onClear: onClearClick,
-  });
+    { target: textareaRef }
+  );
 
   return (
     <>
@@ -107,6 +111,7 @@ export default function LanguageDetectorApi() {
           <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
         </LabelBar>
         <Textarea
+          ref={textareaRef}
           id="text-textarea"
           onChange={onChange}
           value={text}

@@ -4,7 +4,9 @@ import type { ExpenseSplitterHistoryData } from './types';
 
 import HeaderBlock from '@/components/tools/common/header-block';
 import SectionGap from '@/components/tools/common/section-gap';
+import { ConfirmDialog, useConfirmDialog } from '@/components/ui/dialog';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
+import toast from '@/utils/toast';
 
 import ExpenseFormSection from './expense-form-section';
 import ExpenseListSection from './expense-list-section';
@@ -14,6 +16,8 @@ import SettlementSection from './settlement-section';
 import ShareBillModal from './share-bill-modal';
 
 export default function ExpenseSplitter() {
+  const { confirm, dialogProps: confirmDialogProps } = useConfirmDialog();
+
   const {
     workspace,
     summary,
@@ -70,6 +74,20 @@ export default function ExpenseSplitter() {
     handleRestoreHistory,
   } = useExpenseSplitter();
 
+  const handleRequestResetAll = () => {
+    void confirm({
+      title: 'Reset Group Workspace',
+      message: `Reset the event name, ${workspace.members.length} member${workspace.members.length === 1 ? '' : 's'}, and ${workspace.expenses.length} recorded expense${workspace.expenses.length === 1 ? '' : 's'} back to defaults? This action cannot be undone.`,
+      confirmText: 'Reset All',
+      cancelText: 'Cancel',
+      confirmVariant: 'error',
+      onConfirm: () => {
+        handleResetAll();
+        toast.info('Reset group workspace');
+      },
+    });
+  };
+
   return (
     <div>
       {/* Header Block with History Drawer & Shortcuts */}
@@ -118,7 +136,7 @@ export default function ExpenseSplitter() {
         onAddMember={handleAddMember}
         onRemoveMember={handleRemoveMember}
         onSaveSnapshot={handleSaveSnapshot}
-        onResetAll={handleResetAll}
+        onResetAll={handleRequestResetAll}
       />
 
       <SectionGap />
@@ -182,6 +200,9 @@ export default function ExpenseSplitter() {
         onChangeIncludeBalances={setIncludeBalances}
         shareableBillText={shareableBillText}
       />
+
+      {/* Reset Workspace Confirmation */}
+      <ConfirmDialog {...confirmDialogProps} />
     </div>
   );
 }

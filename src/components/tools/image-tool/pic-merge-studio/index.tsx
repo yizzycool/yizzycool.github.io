@@ -11,6 +11,7 @@ import { useRef, useState } from 'react';
 
 import { cn } from '@/utils/cn';
 import { Badge } from '@/components/ui/badge';
+import { ConfirmDialog, useConfirmDialog } from '@/components/ui/dialog';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 
 import useFabric from './hooks/use-fabric';
@@ -91,6 +92,12 @@ export default function PicMergeStudio() {
     setImageConfig,
   };
 
+  const {
+    isOpen: isConfirmDialogOpen,
+    confirm,
+    dialogProps: confirmDialogProps,
+  } = useConfirmDialog();
+
   const fabricHelper = useFabric({
     refs: {
       containerRef,
@@ -99,11 +106,32 @@ export default function PicMergeStudio() {
     configHelper,
   });
 
+  const handleRequestBatchDelete = (onAfterConfirm?: () => void) => {
+    const count =
+      fabricHelper.layersUpdater?.selectedCount ??
+      fabricHelper.states.selectedCount;
+    if (count < 2) return;
+
+    void confirm({
+      title: `Delete ${count} Images`,
+      message: `Remove ${count} selected images from the canvas? This action cannot be undone.`,
+      confirmText: `Delete ${count} Images`,
+      cancelText: 'Cancel',
+      confirmVariant: 'error',
+      onConfirm: () => {
+        fabricHelper.layersUpdater.batchDelete();
+        onAfterConfirm?.();
+      },
+    });
+  };
+
   // Global Hotkeys & Keyboard Navigation (Export, Deselect, Delete, Arrow Nudge)
   useStudioHotkeys({
     fabricHelper,
     configHelper,
     onOpenExport: () => setIsExportModalOpen(true),
+    onRequestBatchDelete: () => handleRequestBatchDelete(),
+    suppressHotkeys: isConfirmDialogOpen,
   });
 
   return (
@@ -152,6 +180,7 @@ export default function PicMergeStudio() {
           fabricHelper={fabricHelper}
           configHelper={configHelper}
           onOpenExport={() => setIsExportModalOpen(true)}
+          onRequestBatchDelete={handleRequestBatchDelete}
         />
       </div>
 
@@ -162,6 +191,9 @@ export default function PicMergeStudio() {
         fabricHelper={fabricHelper}
         configHelper={configHelper}
       />
+
+      {/* Batch Delete Confirmation */}
+      <ConfirmDialog {...confirmDialogProps} />
     </>
   );
 }

@@ -2,11 +2,12 @@
 
 import type { SpeakActionProps } from './types';
 
-import { Volume2 } from 'lucide-react';
-import { useSyncExternalStore } from 'react';
+import { Square, Volume2 } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import useSpeechSynthesis from '@/hooks/window/use-speech-synthesis';
 
 import { useDisplay } from '../hooks/use-display';
-import { Button } from '@/components/ui/button';
 
 export function SpeakAction({
   display = 'icon-label',
@@ -17,26 +18,25 @@ export function SpeakAction({
   className,
   disabled = false,
   content = '',
+  lang,
+  rate,
   label = 'Speak',
   ariaLabel,
   title,
 }: SpeakActionProps) {
-  const isSpeechSupported = useSyncExternalStore(
-    subscribe,
-    getSnapshot,
-    getServerSnapshot
-  );
-
+  const { isSupported, isSpeaking, speak, stop } = useSpeechSynthesis();
   const { showIcon, showLabel } = useDisplay({ display });
 
   const onClick = () => {
-    if (!content) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(content);
-    window.speechSynthesis.speak(utterance);
+    if (isSpeaking) {
+      stop();
+      return;
+    }
+    if (!content.trim()) return;
+    speak(content, { lang, rate });
   };
 
-  if (!isSpeechSupported) {
+  if (!isSupported) {
     return null;
   }
 
@@ -48,24 +48,12 @@ export function SpeakAction({
       rounded={rounded}
       bordered={bordered}
       className={className}
-      icon={showIcon ? Volume2 : undefined}
+      icon={showIcon ? (isSpeaking ? Square : Volume2) : undefined}
       disabled={disabled}
-      ariaLabel={ariaLabel}
-      title={title}
+      ariaLabel={isSpeaking ? 'Stop speaking' : ariaLabel}
+      title={isSpeaking ? 'Stop speaking' : title}
     >
-      {showLabel ? label : null}
+      {showLabel ? (isSpeaking ? 'Stop' : label) : null}
     </Button>
   );
-}
-
-function subscribe() {
-  return () => {};
-}
-
-function getSnapshot() {
-  return typeof window !== 'undefined' && 'speechSynthesis' in window;
-}
-
-function getServerSnapshot() {
-  return false;
 }

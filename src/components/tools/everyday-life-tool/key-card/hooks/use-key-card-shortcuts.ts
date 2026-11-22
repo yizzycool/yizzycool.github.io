@@ -2,6 +2,10 @@ import type { CardData } from '../types';
 
 import { useState, useEffect, useCallback, type RefObject } from 'react';
 
+import {
+  getOpenModalDialogCount,
+  hasOpenModalDialog,
+} from '@/hooks/tools/use-tool-hotkeys';
 import toast from '@/utils/toast';
 
 type UseKeyCardShortcutsParams = {
@@ -78,6 +82,8 @@ export function useKeyCardShortcuts({
     if (listeningCardId !== null) return;
 
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (e.defaultPrevented) return;
+
       const active = document.activeElement;
       const isTyping =
         active &&
@@ -85,45 +91,23 @@ export function useKeyCardShortcuts({
           active.tagName === 'TEXTAREA' ||
           active.getAttribute('contenteditable') === 'true');
 
-      // 1. Search focus (/)
-      if (e.key === '/' && !isTyping) {
-        if (mode === 'dashboard') {
+      if (isShortcutsGuideOpen) {
+        if (
+          e.key === '?' &&
+          !isTyping &&
+          !e.metaKey &&
+          !e.ctrlKey &&
+          getOpenModalDialogCount() <= 1
+        ) {
           e.preventDefault();
-          searchInputRef?.current?.focus();
-          return;
+          setIsShortcutsGuideOpen(false);
         }
-      }
-
-      // 2. Open Shortcuts Guide (?)
-      if (e.key === '?' && !isTyping && !e.metaKey && !e.ctrlKey) {
-        e.preventDefault();
-        setIsShortcutsGuideOpen((prev) => !prev);
         return;
       }
 
-      // 3. Escape handling
-      if (e.key === 'Escape') {
-        if (isShortcutsGuideOpen) {
-          setIsShortcutsGuideOpen(false);
-          return;
-        }
-        if (focusCardId) {
-          setFocusCardId(null);
-          return;
-        }
-        if (isTyping && active instanceof HTMLElement) {
-          active.blur();
-          return;
-        }
-        if (searchQuery) {
-          setSearchQuery('');
-          return;
-        }
-      }
-
-      // 4. Focus Modal specific shortcuts
+      // Focus Modal specific shortcuts (skip if an external modal is stacked on top)
       if (focusCardId !== null) {
-        if (isTyping) return;
+        if (isTyping || getOpenModalDialogCount() > 1) return;
 
         // Copy on Cmd+C / Ctrl+C (only if no text is actively highlighted/selected)
         if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'c') {
@@ -148,6 +132,36 @@ export function useKeyCardShortcuts({
         }
 
         return;
+      }
+
+      if (hasOpenModalDialog()) return;
+
+      // 1. Search focus (/)
+      if (e.key === '/' && !isTyping) {
+        if (mode === 'dashboard') {
+          e.preventDefault();
+          searchInputRef?.current?.focus();
+          return;
+        }
+      }
+
+      // 2. Open Shortcuts Guide (?)
+      if (e.key === '?' && !isTyping && !e.metaKey && !e.ctrlKey) {
+        e.preventDefault();
+        setIsShortcutsGuideOpen((prev) => !prev);
+        return;
+      }
+
+      // 3. Escape handling
+      if (e.key === 'Escape') {
+        if (isTyping && active instanceof HTMLElement) {
+          active.blur();
+          return;
+        }
+        if (searchQuery) {
+          setSearchQuery('');
+          return;
+        }
       }
 
       // If user is typing in form inputs, do not trigger single-key actions below
@@ -221,6 +235,7 @@ export function useKeyCardShortcuts({
     if (!listeningCardId) return;
 
     const handleBindKeyDown = (e: KeyboardEvent) => {
+      if (e.defaultPrevented || hasOpenModalDialog()) return;
       if (e.ctrlKey || e.altKey || e.metaKey) return;
 
       e.preventDefault();

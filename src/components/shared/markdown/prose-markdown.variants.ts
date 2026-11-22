@@ -67,5 +67,12 @@ export const proseMarkdownBaseStyles = cn(
   'hover:[&_tbody_tr]:bg-neutral-300/10',
   'dark:hover:[&_tbody_tr]:bg-neutral-700/10',
 
+  // customize GFM task lists (remove duplicate bullet dot beside checkboxes)
+  '[&_ul.contains-task-list]:list-none',
+  '[&_ul.contains-task-list]:ps-0',
+  '[&_li.task-list-item]:list-none',
+  '[&_li.task-list-item]:ps-0',
+  '[&_li_ul.contains-task-list]:ps-5',
+
   'leading-loose'
 );
