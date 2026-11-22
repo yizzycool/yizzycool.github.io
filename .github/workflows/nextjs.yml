@@ -33,7 +33,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      NODE_VERSION: 20
+      NODE_VERSION: 22
       PACKAGE_MANAGER: yarn
       DEPENDENCY_FILE: yarn.lock
       STRAPI_FOLDER: strapi
