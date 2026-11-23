@@ -34,6 +34,23 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.signatureStampMaker]: {
+    title:
+      'Signature Pad & Stamp Maker – Client-Side Transparent PNG/SVG | Yizzy Peasy',
+    description:
+      'Free 100% client-side electronic signature pad, transparent stamp generator, and paper signature photo background remover. Supports MacBook Trackpad Mode (Hold Shift to Draw), shadow normalization, and PNG/SVG export.',
+    openGraph: {
+      title: 'Signature Pad & Stamp Maker',
+      description:
+        'Draw smooth handwritten signatures, remove paper backgrounds from signature photos, or craft transparent seals 100% privately in your browser.',
+    },
+    twitter: {
+      title: 'Signature Pad & Stamp Maker',
+      description:
+        '100% local electronic signature pad, photo signature background remover, and transparent PNG/SVG stamp maker.',
+    },
+  },
+
   [ToolKeys.qrCodeGenerator]: {
     title: 'QR Code Generator – Generate QR Codes Online | Yizzy Peasy',
     description:
@@ -577,6 +594,20 @@ export const ToolJsonLdSoftwareApplication = {
       '100% client-side Google Keep Takeout .zip/.json selective importer with no login required',
       'Web Speech API audio playback (0.7x / 1.0x, US / UK) and optional Chrome on-device AI assist',
       'One-click export as Obsidian-compatible Markdown ZIP archives, JSON backups, or .ics reminders',
+    ],
+  },
+
+  [ToolKeys.signatureStampMaker]: {
+    name: 'Signature & Stamp Maker',
+    applicationCategory: 'UtilitiesApplication',
+    description:
+      'A 100% client-side electronic signature pad, paper-photo signature extractor, and transparent stamp maker supporting Trackpad Mode (hold Shift to glide), shadow normalization, custom seals, and high-DPI PNG or SVG export.',
+    featureList: [
+      'Handwritten signature canvas with Pointer Events coalesced sampling, velocity ink tapering, and EMA jitter smoothing',
+      'Trackpad Mode: hold Shift and glide lightly on MacBook or laptop trackpads without clicking down',
+      'Local paper-photo signature and stamp extraction with shadow normalization, soft-alpha ramp, edge cropping, and ink recoloring',
+      'Customizable round, square, and oval stamp generator with CJK vertical seal layout and ink-pad texture',
+      '100% client-side transparent PNG (1x/2x/3x), clipboard copy, and scalable SVG export with automatic margin trimming',
     ],
   },
 

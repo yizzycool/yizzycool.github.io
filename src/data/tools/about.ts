@@ -35,6 +35,18 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
     bottomNote:
       'All notes and backups live locally in your browser IndexedDB. Export your entire library anytime as Obsidian-compatible .md files (.zip) or JSON.',
   },
+  [ToolKeys.signatureStampMaker]: {
+    overview:
+      'Signing contracts, tax forms, and PDF documents online often exposes your personal signature to third-party servers. Signature & Stamp Maker runs 100% in your browser memory—offering smooth velocity-sensitive ink, a dedicated Trackpad Mode (hold Shift to glide lightly without clicking), personal/company seal generation, local paper-photo background removal, and instant transparent PNG & vector SVG export.',
+    features: [
+      '100% Client-Side Privacy: Every brushstroke, uploaded photo, seal layout, and exported image stays strictly in local canvas memory with zero server uploads.',
+      'Trackpad Mode & High-DPI Touch Support: Hold Shift to glide smoothly on MacBook or laptop trackpads without dragging clicks, or sign naturally on mobile and stylus with coalesced high-frequency pointer sampling.',
+      'Photo Signature & Stamp Extraction: Upload or paste a photo of a handwritten paper signature or physical stamp—locally normalize uneven phone shadows, extract crisp soft-alpha ink, recolor or keep original ink colors, crop edges, and export transparent PNGs.',
+      'Anti-Jitter Ink Smoothing & Personal Seals: Real-time EMA jitter filtering, velocity-tapered nib thickness, round/square/oval seal frames with traditional CJK layouts, vintage ink grain, and 1x/2x/3x auto-trimmed export.',
+    ],
+    bottomNote:
+      'Your handwriting and stamp designs stay completely inside your local browser session and are never transmitted over the network.',
+  },
   [ToolKeys.qrCodeGenerator]: {
     overview:
       'Quick Response (QR) codes are indispensable for instantly connecting physical media to digital experiences, links, contact details, and plain text. This QR Code Generator enables users to convert any URL or text into an interactive, high-contrast QR code with instant visual feedback.',

@@ -30,6 +30,7 @@ import {
   Regex,
   ScanFace,
   ShieldCheck,
+  Signature,
   SpellCheck,
   StickyNote,
 } from 'lucide-react';
@@ -90,6 +91,7 @@ export const ToolKeys = {
   // Everyday Life Tools
   expenseSplitter: 'expenseSplitter',
   markdownNotes: 'markdownNotes',
+  signatureStampMaker: 'signatureStampMaker',
   qrCodeGenerator: 'qrCodeGenerator',
   wordCounter: 'wordCounter',
   keyCard: 'keyCard',
@@ -146,6 +148,7 @@ export const ToolGroupItems = {
   [ToolGroupKeys.everydayLifeTool]: [
     ToolKeys.expenseSplitter,
     ToolKeys.markdownNotes,
+    ToolKeys.signatureStampMaker,
     ToolKeys.qrCodeGenerator,
     ToolKeys.wordCounter,
     ToolKeys.keyCard,
@@ -196,6 +199,7 @@ export const ToolGroupItems = {
 export const ToolTitles = {
   [ToolKeys.expenseSplitter]: 'Expense Splitter',
   [ToolKeys.markdownNotes]: 'Markdown Notes',
+  [ToolKeys.signatureStampMaker]: 'Signature & Stamp Maker',
   [ToolKeys.qrCodeGenerator]: 'QR Code Generator',
   [ToolKeys.wordCounter]: 'Word Counter',
   [ToolKeys.keyCard]: 'KeyCard',
@@ -259,6 +263,8 @@ export const ToolDescriptions = {
     'Split group bills and travel expenses fairly with the Min-Cash-Flow debt simplification algorithm and 1-click LINE / chat summary export.',
   [ToolKeys.markdownNotes]:
     'Keep-style sticky notes board with full Markdown support, interactive checklists, blurred study spoilers, Google Keep Takeout import, and optional Chrome on-device AI.',
+  [ToolKeys.signatureStampMaker]:
+    '100% local electronic signature pad, transparent stamp maker, and paper photo background remover with Trackpad Mode, shadow normalization, auto-trim PNG/SVG export, and zero uploads.',
   [ToolKeys.qrCodeGenerator]:
     'Generate custom QR codes instantly with personalized colors, contrast presets, adjustable error correction, and 1-click PNG export.',
   [ToolKeys.wordCounter]:
@@ -331,6 +337,7 @@ export const ToolDescriptions = {
 export const ToolSlugs = {
   [ToolKeys.expenseSplitter]: 'expense-splitter',
   [ToolKeys.markdownNotes]: 'markdown-notes',
+  [ToolKeys.signatureStampMaker]: 'signature-stamp-maker',
   [ToolKeys.qrCodeGenerator]: 'qr-code-generator',
   [ToolKeys.wordCounter]: 'word-counter',
   [ToolKeys.keyCard]: 'key-card',
@@ -388,6 +395,7 @@ export const ToolUrls = fromPairs(
 export const ToolIcons = {
   [ToolKeys.expenseSplitter]: ReceiptText,
   [ToolKeys.markdownNotes]: StickyNote,
+  [ToolKeys.signatureStampMaker]: Signature,
   [ToolKeys.qrCodeGenerator]: QrCode,
   [ToolKeys.wordCounter]: FileText,
   [ToolKeys.keyCard]: Keyboard,
@@ -437,6 +445,7 @@ export const ToolGroupBadges: Record<string, string> = {
 export const ToolBadges: Record<string, string> = {
   [ToolKeys.expenseSplitter]: 'New',
   [ToolKeys.markdownNotes]: 'New',
+  [ToolKeys.signatureStampMaker]: 'New',
   [ToolKeys.picMergeStudio]: 'Popular',
   [ToolKeys.jsonFormatter]: 'Popular',
 };
