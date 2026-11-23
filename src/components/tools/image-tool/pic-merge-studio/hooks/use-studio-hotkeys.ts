@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import useToolHotkeys, {
   hasOpenModalDialog,
 } from '@/hooks/tools/use-tool-hotkeys';
+import toast from '@/utils/toast';
 
 type Props = {
   fabricHelper: FabricHelper;
@@ -16,6 +17,16 @@ type Props = {
   onRequestBatchDelete?: () => void;
   suppressHotkeys?: boolean;
 };
+
+function isEditableElementFocused(): boolean {
+  const activeEl = document.activeElement;
+  if (!activeEl) return false;
+  return (
+    activeEl.tagName === 'INPUT' ||
+    activeEl.tagName === 'TEXTAREA' ||
+    (activeEl as HTMLElement).isContentEditable
+  );
+}
 
 export default function useStudioHotkeys({
   fabricHelper,
@@ -33,22 +44,34 @@ export default function useStudioHotkeys({
     { enabled: !suppressHotkeys }
   );
 
-  // Keyboard navigation & quick delete
+  // Keyboard navigation, Undo/Redo, Select All, Quick Delete & Nudge
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (suppressHotkeys || e.defaultPrevented || hasOpenModalDialog()) return;
+      if (isEditableElementFocused()) return;
 
-      const activeEl = document.activeElement;
-      const isEditingInput =
-        activeEl &&
-        (activeEl.tagName === 'INPUT' ||
-          activeEl.tagName === 'TEXTAREA' ||
-          (activeEl as HTMLElement).isContentEditable);
+      const isMod = e.ctrlKey || e.metaKey;
+      const keyLower = e.key.toLowerCase();
 
-      if (isEditingInput) return;
+      // Redo (Ctrl/Cmd + Shift + Z or Ctrl + Y)
+      if (
+        (isMod && e.shiftKey && keyLower === 'z') ||
+        (e.ctrlKey && keyLower === 'y')
+      ) {
+        e.preventDefault();
+        void fabricHelper.historyUpdater.redo();
+        return;
+      }
+
+      // Undo (Ctrl/Cmd + Z)
+      if (isMod && !e.shiftKey && keyLower === 'z') {
+        e.preventDefault();
+        void fabricHelper.historyUpdater.undo();
+        return;
+      }
 
       // Select all layers (Ctrl + A or Cmd + A)
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') {
+      if (isMod && keyLower === 'a') {
         e.preventDefault();
         fabricHelper.layersUpdater?.selectAll();
         return;
@@ -90,8 +113,63 @@ export default function useStudioHotkeys({
       }
     };
 
+    const handlePaste = async (e: ClipboardEvent) => {
+      if (suppressHotkeys || hasOpenModalDialog()) return;
+      if (isEditableElementFocused()) return;
+
+      const items = e.clipboardData?.items;
+      if (!items || items.length === 0) return;
+
+      const imageFiles: File[] = [];
+      for (const item of items) {
+        if (item.type.startsWith('image/')) {
+          const blob = item.getAsFile();
+          if (blob) {
+            const ext = item.type.split('/')[1]?.replace('+xml', '') || 'png';
+            const namedFile =
+              blob.name && blob.name !== 'image.png'
+                ? blob
+                : new File([blob], `pasted-image-${Date.now()}.${ext}`, {
+                    type: item.type,
+                  });
+            imageFiles.push(namedFile);
+          }
+        }
+      }
+
+      if (imageFiles.length === 0) return;
+      e.preventDefault();
+
+      if (configHelper.canvasConfig.layout === 'grid') {
+        const addedCount =
+          await fabricHelper.gridUpdater.handleImagesUpload(imageFiles);
+        if (addedCount === 0) {
+          toast.info(
+            'All grid cells are occupied. Clear a cell or switch to Free layout.'
+          );
+        } else {
+          toast.success(
+            addedCount === 1
+              ? 'Pasted image into grid cell'
+              : `Pasted ${addedCount} images into grid cells`
+          );
+        }
+      } else {
+        await fabricHelper.canvasUpdater.handleImagesUpload(imageFiles);
+        toast.success(
+          imageFiles.length === 1
+            ? 'Pasted image onto canvas'
+            : `Pasted ${imageFiles.length} images onto canvas`
+        );
+      }
+    };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('paste', handlePaste);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('paste', handlePaste);
+    };
   }, [
     fabricHelper,
     configHelper.canvasConfig.layout,

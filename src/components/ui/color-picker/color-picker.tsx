@@ -4,7 +4,7 @@ import type { ChangeEvent } from 'react';
 import type { ColorPickerProps } from './types';
 
 import { Pipette } from 'lucide-react';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/utils/cn';
@@ -29,6 +29,7 @@ export function ColorPicker({
   value = DEFAULT_COLOR_PICKER_VALUE,
   onChange,
   onColorChange,
+  onChangeEnd,
   variant = DEFAULT_COLOR_PICKER_VARIANT,
   label,
   showHex = DEFAULT_COLOR_PICKER_SHOW_HEX,
@@ -44,6 +45,20 @@ export function ColorPicker({
   icon: Icon = Pipette,
 }: ColorPickerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const input = inputRef.current;
+    if (!input || !onChangeEnd) return;
+
+    const handleNativeChange = () => {
+      onChangeEnd();
+    };
+
+    input.addEventListener('change', handleNativeChange);
+    return () => {
+      input.removeEventListener('change', handleNativeChange);
+    };
+  }, [onChangeEnd, variant]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange?.(e);
@@ -151,6 +166,7 @@ export function ColorPicker({
           )}
         </div>
         <input
+          ref={inputRef}
           id={id}
           type="color"
           value={value}
@@ -169,6 +185,7 @@ export function ColorPicker({
 
   return (
     <input
+      ref={inputRef}
       id={id}
       type="color"
       value={value}

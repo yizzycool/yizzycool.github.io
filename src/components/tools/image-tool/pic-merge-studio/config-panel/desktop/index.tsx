@@ -95,6 +95,10 @@ export default function ConfigPanelDesktop({
     }
   };
 
+  const handleCommitHistory = () => {
+    fabricHelper.historyUpdater.commitHistory('immediate');
+  };
+
   if (!isOpen) {
     return (
       <div className="absolute right-4 top-4 z-40">
@@ -279,6 +283,7 @@ export default function ConfigPanelDesktop({
                 setBackgroundColor={
                   fabricHelper.canvasUpdater.setBackgroundColor
                 }
+                onChangeEnd={handleCommitHistory}
               />
             )}
 
@@ -309,6 +314,7 @@ export default function ConfigPanelDesktop({
                     ? fabricHelper.gridUpdater.setShowOuterBorder
                     : undefined
                 }
+                onChangeEnd={handleCommitHistory}
               />
             )}
 
@@ -341,6 +347,7 @@ export default function ConfigPanelDesktop({
                 setSize={fabricHelper.imageUpdater.setSize}
                 resetOriginalSize={fabricHelper.imageUpdater.resetOriginalSize}
                 resetAspectRatio={fabricHelper.imageUpdater.resetAspectRatio}
+                onChangeEnd={handleCommitHistory}
               />
             )}
 
@@ -348,6 +355,7 @@ export default function ConfigPanelDesktop({
               <Opacity
                 opacity={configHelper.imageConfig.opacity}
                 setImageOpacity={fabricHelper.imageUpdater.setOpacity}
+                onChangeEnd={handleCommitHistory}
               />
             )}
 
@@ -357,6 +365,7 @@ export default function ConfigPanelDesktop({
                 setBorderWidth={fabricHelper.imageUpdater.setBorderWidth}
                 setBorderColor={fabricHelper.imageUpdater.setBorderColor}
                 resetBorder={fabricHelper.imageUpdater.resetBorder}
+                onChangeEnd={handleCommitHistory}
               />
             )}
 
@@ -364,6 +373,7 @@ export default function ConfigPanelDesktop({
               <Filters
                 filters={configHelper.imageConfig.filters}
                 setFilters={fabricHelper.imageUpdater.setFilters}
+                onChangeEnd={handleCommitHistory}
               />
             )}
 
@@ -386,6 +396,7 @@ export default function ConfigPanelDesktop({
               <Opacity
                 opacity={configHelper.imageConfig.opacity}
                 setImageOpacity={fabricHelper.layersUpdater.batchSetOpacity}
+                onChangeEnd={handleCommitHistory}
               />
             )}
 
@@ -395,6 +406,7 @@ export default function ConfigPanelDesktop({
                 setBorderWidth={fabricHelper.layersUpdater.batchSetBorderWidth}
                 setBorderColor={fabricHelper.layersUpdater.batchSetBorderColor}
                 resetBorder={fabricHelper.layersUpdater.batchResetBorder}
+                onChangeEnd={handleCommitHistory}
               />
             )}
           </div>

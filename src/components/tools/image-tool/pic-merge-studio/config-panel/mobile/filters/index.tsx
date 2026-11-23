@@ -70,6 +70,7 @@ export default function Filters({ filters, setFilters, onChangeEnd }: Props) {
     });
 
     setFilters([...nextPresets, ...adjTypes], params);
+    onChangeEnd?.();
   };
 
   const handleResetPresets = () => {
@@ -90,6 +91,7 @@ export default function Filters({ filters, setFilters, onChangeEnd }: Props) {
     });
 
     setFilters(adjTypes, params);
+    onChangeEnd?.();
   };
 
   const handleAdjustmentChange = (
@@ -134,10 +136,12 @@ export default function Filters({ filters, setFilters, onChangeEnd }: Props) {
 
   const handleResetSingleAdjustment = (config: AdjustmentFilterConfig) => {
     handleAdjustmentChange(config, config.neutral);
+    onChangeEnd?.();
   };
 
   const handleResetAllAdjustments = () => {
     setFilters([...activePresetTypes], {});
+    onChangeEnd?.();
   };
 
   const hasActivePresets = activePresetTypes.length > 0;

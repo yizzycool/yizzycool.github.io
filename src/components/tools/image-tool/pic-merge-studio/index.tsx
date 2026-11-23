@@ -10,7 +10,6 @@ import type { ConfigHelper } from './types/config-helper';
 import { useRef, useState } from 'react';
 
 import { cn } from '@/utils/cn';
-import { Badge } from '@/components/ui/badge';
 import { ConfirmDialog, useConfirmDialog } from '@/components/ui/dialog';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 
@@ -22,6 +21,7 @@ import {
 } from './config-panel/data/background';
 import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
+import CanvasHudBar from './canvas-hud-bar';
 import Config from './config-panel';
 import ExportModal from './export-modal';
 
@@ -47,7 +47,7 @@ export const DEFAULT_CANVAS_CONFIG: CanvasConfig = {
   },
 };
 
-const defaultGlobalImageConfig: GlobalImageConfig = {
+export const DEFAULT_GLOBAL_IMAGE_CONFIG: GlobalImageConfig = {
   border: { width: 0, color: '', opacity: 1 },
   radius: 0,
 };
@@ -73,10 +73,11 @@ const defaultImageConfig: ImageConfig = {
 export default function PicMergeStudio() {
   const [canvasConfig, setCanvasConfig] = useState(DEFAULT_CANVAS_CONFIG);
   const [globalImageConfig, setGlobalImageConfig] = useState(
-    defaultGlobalImageConfig
+    DEFAULT_GLOBAL_IMAGE_CONFIG
   );
   const [imageConfig, setImageConfig] = useState(defaultImageConfig);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [snapGuidesEnabled, setSnapGuidesEnabled] = useState(true);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -104,6 +105,7 @@ export default function PicMergeStudio() {
       canvasRef,
     },
     configHelper,
+    snapGuidesEnabled,
   });
 
   const handleRequestBatchDelete = (onAfterConfirm?: () => void) => {
@@ -125,7 +127,21 @@ export default function PicMergeStudio() {
     });
   };
 
-  // Global Hotkeys & Keyboard Navigation (Export, Deselect, Delete, Arrow Nudge)
+  const handleRequestResetStudio = () => {
+    void confirm({
+      title: 'Reset Studio Canvas',
+      message:
+        'Clear all images and reset canvas settings to defaults? Your saved local draft will also be removed.',
+      confirmText: 'Reset Studio',
+      cancelText: 'Cancel',
+      confirmVariant: 'error',
+      onConfirm: async () => {
+        await fabricHelper.historyUpdater.resetStudio();
+      },
+    });
+  };
+
+  // Global Hotkeys & Keyboard Navigation (Export, Undo/Redo, Paste, Deselect, Delete, Arrow Nudge)
   useStudioHotkeys({
     fabricHelper,
     configHelper,
@@ -139,6 +155,9 @@ export default function PicMergeStudio() {
       <HeaderBlock
         customShortcuts={[
           { ...TOOL_HOTKEYS.save, label: 'Export Image' },
+          { symbol: 'Ctrl + Z', label: 'Undo' },
+          { symbol: 'Ctrl + Shift + Z', label: 'Redo' },
+          { symbol: 'Ctrl + V', label: 'Paste Image from Clipboard' },
           { symbol: 'Ctrl + A', label: 'Select All Layers' },
           { symbol: 'Delete', label: 'Delete Selected Image' },
           { symbol: 'Esc', label: 'Deselect Active Object' },
@@ -168,10 +187,19 @@ export default function PicMergeStudio() {
               <canvas ref={canvasRef} />
             </div>
 
-            <Badge variant="outline" className="absolute left-3 top-3">
-              {configHelper.canvasConfig.size.width} ×{' '}
-              {configHelper.canvasConfig.size.height}
-            </Badge>
+            <CanvasHudBar
+              width={configHelper.canvasConfig.size.width}
+              height={configHelper.canvasConfig.size.height}
+              isFreeLayout={configHelper.canvasConfig.layout === 'free'}
+              snapGuidesEnabled={snapGuidesEnabled}
+              onToggleSnapGuides={setSnapGuidesEnabled}
+              canUndo={fabricHelper.historyUpdater.canUndo}
+              canRedo={fabricHelper.historyUpdater.canRedo}
+              canReset={fabricHelper.historyUpdater.canReset}
+              onUndo={() => void fabricHelper.historyUpdater.undo()}
+              onRedo={() => void fabricHelper.historyUpdater.redo()}
+              onRequestReset={handleRequestResetStudio}
+            />
           </div>
         </div>
 

@@ -1,13 +1,27 @@
 import type { ConfigHelper } from '../types/config-helper';
 import type { GridCell, GridEdge, GridTemplate } from '../types/grid-layout';
-import type { CanvasBorder } from '../types/config';
+import type { CanvasBorder, CanvasConfig } from '../types/config';
+import type {
+  ExtendedFabricImage,
+  StudioSnapshot,
+} from '../utils/studio-snapshot';
 
 import * as fabric from 'fabric';
 import { range } from 'lodash';
 
-import useCommon from './use-common';
-import { FABRIC_IMAGE_CONFIG, type FabricInternalStates } from './use-fabric';
 import colorUtils from '@/utils/color-utils';
+
+import useCommon from './use-common';
+import {
+  FABRIC_CONTROL_CONFIG,
+  FABRIC_IMAGE_CONFIG,
+  type FabricInternalStates,
+} from './use-fabric';
+import {
+  attachImageAssetMeta,
+  deserializeFilters,
+  serializeFilters,
+} from '../utils/studio-snapshot';
 
 type Props = {
   refs: {
@@ -84,9 +98,24 @@ export default function useGridLogic({
 
         let img;
         if (id < images.length) {
-          const src = images[id].getSrc();
+          const sourceImg = images[id];
+          const sourceExt = sourceImg as ExtendedFabricImage;
+          const src = sourceImg.getSrc();
           // new image
-          img = await fabric.FabricImage.fromURL(src);
+          img = await fabric.FabricImage.fromURL(src, {
+            crossOrigin: 'anonymous',
+          });
+          attachImageAssetMeta(img, {
+            assetId: sourceExt._assetId,
+            fileName: sourceExt._fileName,
+            layerName: sourceExt._layerName,
+            layerId: sourceExt._layerId,
+          });
+          const serializedFilters = serializeFilters(sourceImg.filters);
+          if (serializedFilters.length > 0) {
+            img.set({ filters: deserializeFilters(serializedFilters) });
+            img.applyFilters();
+          }
 
           const scale = Math.max(
             cellWidth / img.width,
@@ -333,10 +362,16 @@ export default function useGridLogic({
 
     // Retrive edges
     for (let i = 1; i < root.edges.horizontal.length; i++) {
-      fabricCanvasRef.current?.add(root.edges.horizontal[i][1].element);
+      const edgeEl =
+        root.edges.horizontal[i]?.[1]?.element ??
+        root.edges.horizontal[i]?.[0]?.element;
+      if (edgeEl) fabricCanvasRef.current?.add(edgeEl);
     }
-    for (let j = 1; j < root.edges.vertical[1].length; j++) {
-      fabricCanvasRef.current?.add(root.edges.vertical[1][j].element);
+    for (let j = 1; j < (root.edges.vertical[1]?.length ?? 0); j++) {
+      const edgeEl =
+        root.edges.vertical[1]?.[j]?.element ??
+        root.edges.vertical[0]?.[j]?.element;
+      if (edgeEl) fabricCanvasRef.current?.add(edgeEl);
     }
   };
 
@@ -497,9 +532,235 @@ export default function useGridLogic({
     fabricCanvasRef.current.requestRenderAll();
   };
 
+  const restoreGridFromSnapshot = async (
+    gridData: NonNullable<StudioSnapshot['gridData']>,
+    gridBorder: CanvasConfig['gridConfig']['border'],
+    resolveAssetUrl: (assetId: string, fallbackSrc: string) => string | null
+  ): Promise<GridTemplate | null> => {
+    if (!fabricCanvasRef.current) return null;
+
+    const { rows, cols, cells, edges } = gridData;
+    const root: GridTemplate = {
+      cellIds: new Set(range(1, rows * cols + 1)),
+      edgeIds: new Set(range(1, Math.max(1, (rows - 1) * (cols - 1)))),
+      edges: {
+        horizontal: Array.from({ length: rows }, () =>
+          Array.from({ length: cols })
+        ),
+        vertical: Array.from({ length: rows }, () =>
+          Array.from({ length: cols })
+        ),
+      },
+      cells: Array.from({ length: rows }, () => Array.from({ length: cols })),
+    };
+
+    let cellId = 1;
+    for (const cellData of cells) {
+      const { row, col, hasSrc, layer, clipPath: clip } = cellData;
+      let img: fabric.FabricImage | null = null;
+
+      if (hasSrc && layer) {
+        const url = resolveAssetUrl(layer.assetId, layer.src);
+        if (url) {
+          try {
+            img = await fabric.FabricImage.fromURL(url, {
+              crossOrigin: 'anonymous',
+            });
+            attachImageAssetMeta(img, {
+              assetId: layer.assetId,
+              fileName: layer.fileName,
+              layerName: layer.layerName,
+              layerId: layer.layerId,
+            });
+            img.set({
+              left: layer.left,
+              top: layer.top,
+              scaleX: layer.scaleX,
+              scaleY: layer.scaleY,
+              angle: layer.angle,
+              opacity: layer.opacity,
+              visible: layer.visible,
+              flipX: layer.flipX,
+              flipY: layer.flipY,
+              lockMovementX: layer.lockMovementX,
+              lockMovementY: layer.lockMovementY,
+              snapAngle: layer.snapAngle,
+              snapThreshold: layer.snapThreshold,
+              stroke: layer.stroke,
+              strokeWidth: layer.strokeWidth,
+              _strokeWidthRatio: layer.strokeWidthRatio,
+              lockScalingFlip: true,
+              lockSkewingX: true,
+              lockSkewingY: true,
+              centeredScaling: true,
+              ...FABRIC_CONTROL_CONFIG,
+            });
+
+            if (layer.filters.length > 0) {
+              img.set({ filters: deserializeFilters(layer.filters) });
+              img.applyFilters();
+            }
+          } catch {
+            img = null;
+          }
+        }
+      }
+
+      if (!img) {
+        const imageEl = new Image();
+        img = new fabric.FabricImage(imageEl, {
+          width: clip.width,
+          height: clip.height,
+          left: clip.left,
+          top: clip.top,
+          ...FABRIC_IMAGE_CONFIG,
+          lockMovementX: true,
+          lockMovementY: true,
+          lockRotation: true,
+          lockScalingX: true,
+          lockScalingY: true,
+          hasControls: false,
+        } as fabric.ImageProps & { _strokeWidthRatio: number });
+      }
+
+      img.clipPath = new fabric.Rect({
+        width: clip.width,
+        height: clip.height,
+        left: clip.left,
+        top: clip.top,
+        absolutePositioned: true,
+      });
+
+      root.cells[row][col] = {
+        id: cellId,
+        adjacentEdges: [],
+        element: img,
+      };
+      cellId += 1;
+    }
+
+    const rgba = colorUtils.hexToRgba(gridBorder.color);
+    const edgeFill = colorUtils.rgbaToHex({ ...rgba, a: gridBorder.opacity });
+    const commonEdgeConfig = {
+      fill: edgeFill,
+      lockRotation: true,
+      lockScalingX: true,
+      lockScalingY: true,
+      lockSkewingX: true,
+      lockSkewingY: true,
+      hasControls: false,
+      hasBorders: false,
+      strokeWidth: 0,
+    };
+
+    let edgeId = 1;
+    for (const edgeData of edges) {
+      if (edgeData.direction === 'horizontal') {
+        const i = edgeData.index;
+        const obj = new fabric.Rect({
+          width: edgeData.width,
+          height: edgeData.height,
+          left: edgeData.left,
+          top: edgeData.top,
+          lockMovementX: true,
+          hoverCursor: 'row-resize',
+          moveCursor: 'row-resize',
+          ...commonEdgeConfig,
+        } as fabric.RectProps & { _customKey: string; _edgeIndex: number });
+        (
+          obj as unknown as { _customKey: string; _edgeIndex: number }
+        )._customKey = 'grid-edge-h';
+        (
+          obj as unknown as { _customKey: string; _edgeIndex: number }
+        )._edgeIndex = i;
+
+        const edge: GridEdge = {
+          id: edgeId,
+          direction: 'horizontal',
+          adjacentCells: {
+            prev: (root.cells[i - 1] ?? []).filter(Boolean) as GridCell[],
+            next: (root.cells[i] ?? []).filter(Boolean) as GridCell[],
+          },
+          element: obj,
+        };
+        edge.adjacentCells.prev.forEach((cell) =>
+          cell.adjacentEdges.push(edge)
+        );
+        edge.adjacentCells.next.forEach((cell) =>
+          cell.adjacentEdges.push(edge)
+        );
+        bindEdgeListener(edge);
+
+        if (cols <= 1) {
+          root.edges.horizontal[i][0] = edge;
+        } else {
+          for (let e = 1; e < cols; e++) {
+            root.edges.horizontal[i][e] = edge;
+          }
+        }
+      } else {
+        const j = edgeData.index;
+        const obj = new fabric.Rect({
+          width: edgeData.width,
+          height: edgeData.height,
+          left: edgeData.left,
+          top: edgeData.top,
+          lockMovementY: true,
+          hoverCursor: 'col-resize',
+          moveCursor: 'col-resize',
+          ...commonEdgeConfig,
+        } as fabric.RectProps & { _customKey: string; _edgeIndex: number });
+        (
+          obj as unknown as { _customKey: string; _edgeIndex: number }
+        )._customKey = 'grid-edge-v';
+        (
+          obj as unknown as { _customKey: string; _edgeIndex: number }
+        )._edgeIndex = j;
+
+        const edge: GridEdge = {
+          id: edgeId,
+          direction: 'vertical',
+          adjacentCells: {
+            prev: range(rows)
+              .map((idx) => root.cells[idx]?.[j - 1])
+              .filter(Boolean) as GridCell[],
+            next: range(rows)
+              .map((idx) => root.cells[idx]?.[j])
+              .filter(Boolean) as GridCell[],
+          },
+          element: obj,
+        };
+        edge.adjacentCells.prev.forEach((cell) =>
+          cell.adjacentEdges.push(edge)
+        );
+        edge.adjacentCells.next.forEach((cell) =>
+          cell.adjacentEdges.push(edge)
+        );
+        bindEdgeListener(edge);
+
+        if (rows <= 1) {
+          root.edges.vertical[0][j] = edge;
+        } else {
+          for (let e = 1; e < rows; e++) {
+            root.edges.vertical[e][j] = edge;
+          }
+        }
+      }
+      edgeId += 1;
+    }
+
+    fabricCanvasRef.current.remove(...fabricCanvasRef.current.getObjects());
+    addAllObjectsToCanvas(root);
+    gridRef.current = root;
+    fabricCanvasRef.current.requestRenderAll();
+
+    return root;
+  };
+
   return {
     createGridTemplate,
     updateAfterResize,
     updateEdges,
+    restoreGridFromSnapshot,
   };
 }

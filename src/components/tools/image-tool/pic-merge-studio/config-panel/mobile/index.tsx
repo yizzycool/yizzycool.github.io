@@ -64,6 +64,10 @@ export default function ConfigPanelMobile({
     }
   };
 
+  const handleCommitHistory = () => {
+    fabricHelper.historyUpdater.commitHistory('immediate');
+  };
+
   return (
     <div
       className={cn(
@@ -114,6 +118,7 @@ export default function ConfigPanelMobile({
                   setBackgroundColor={
                     fabricHelper.canvasUpdater.setBackgroundColor
                   }
+                  onChangeEnd={handleCommitHistory}
                 />
                 <Border
                   border={
@@ -141,6 +146,7 @@ export default function ConfigPanelMobile({
                       ? fabricHelper.gridUpdater.setShowOuterBorder
                       : undefined
                   }
+                  onChangeEnd={handleCommitHistory}
                 />
               </div>
             </div>
@@ -191,6 +197,7 @@ export default function ConfigPanelMobile({
               <Opacity
                 opacity={configHelper.imageConfig.opacity}
                 setImageOpacity={fabricHelper.layersUpdater.batchSetOpacity}
+                onChangeEnd={handleCommitHistory}
               />
               {!isGridLayout && (
                 <Border
@@ -202,6 +209,7 @@ export default function ConfigPanelMobile({
                     fabricHelper.layersUpdater.batchSetBorderColor
                   }
                   resetBorder={fabricHelper.layersUpdater.batchResetBorder}
+                  onChangeEnd={handleCommitHistory}
                 />
               )}
             </div>
@@ -271,10 +279,12 @@ export default function ConfigPanelMobile({
                     resetAspectRatio={
                       fabricHelper.imageUpdater.resetAspectRatio
                     }
+                    onChangeEnd={handleCommitHistory}
                   />
                   <Opacity
                     opacity={configHelper.imageConfig.opacity}
                     setImageOpacity={fabricHelper.imageUpdater.setOpacity}
+                    onChangeEnd={handleCommitHistory}
                   />
                   {!isGridLayout && (
                     <Border
@@ -282,11 +292,13 @@ export default function ConfigPanelMobile({
                       setBorderWidth={fabricHelper.imageUpdater.setBorderWidth}
                       setBorderColor={fabricHelper.imageUpdater.setBorderColor}
                       resetBorder={fabricHelper.imageUpdater.resetBorder}
+                      onChangeEnd={handleCommitHistory}
                     />
                   )}
                   <Filters
                     filters={configHelper.imageConfig.filters}
                     setFilters={fabricHelper.imageUpdater.setFilters}
+                    onChangeEnd={handleCommitHistory}
                   />
                 </>
               )}

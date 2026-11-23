@@ -1,16 +1,18 @@
 import type { FabricHelperCanvasUpdater } from '../types/fabric-helper';
 import type { ConfigHelper } from '../types/config-helper';
 import type { FabricInternalStates } from './use-fabric';
-
-import { useCallback } from 'react';
-import * as fabric from 'fabric'; // v6
-
-import useCommon from './use-common';
-import colorUtils from '@/utils/color-utils';
 import type { CanvasConfig } from '../types/config';
 
+import { useCallback } from 'react';
+import * as fabric from 'fabric';
+
+import colorUtils from '@/utils/color-utils';
+import toast from '@/utils/toast';
+
+import useCommon from './use-common';
 import { FABRIC_IMAGE_CONFIG } from './use-fabric';
 import { DEFAULT_CANVAS_CONFIG } from '..';
+import { attachImageAssetMeta } from '../utils/studio-snapshot';
 
 type Props = {
   refs: {
@@ -21,6 +23,8 @@ type Props = {
   };
   configHelper: ConfigHelper;
   fabricHelper: FabricInternalStates;
+  registerAssetFile?: (file: File) => { assetId: string; url: string };
+  onCommitHistory?: (mode?: 'immediate' | 'debounced') => void;
 };
 
 // Functions to update canvas-related config and update Fabric canvas
@@ -28,6 +32,8 @@ export default function useCanvasUpdater({
   refs,
   configHelper,
   fabricHelper,
+  registerAssetFile,
+  onCommitHistory,
 }: Props): FabricHelperCanvasUpdater {
   const { fabricCanvasRef, canvasConfigRef } = refs;
 
@@ -99,15 +105,37 @@ export default function useCanvasUpdater({
     fabricCanvasRef.current.requestRenderAll();
 
     // Update CanvasConfig
+    if (canvasConfigRef) {
+      canvasConfigRef.current = {
+        ...canvasConfigRef.current,
+        layout: 'free',
+      };
+    }
     setCanvasConfig((prev) => ({
       ...prev,
       layout: 'free',
     }));
-  }, [fabricCanvasRef, getAllImages, updateBorderRect, setCanvasConfig]);
+
+    onCommitHistory?.('immediate');
+  }, [
+    fabricCanvasRef,
+    getAllImages,
+    updateBorderRect,
+    canvasConfigRef,
+    setCanvasConfig,
+    onCommitHistory,
+  ]);
 
   const handleImagesUpload = useCallback(
-    async (files: FileList) => {
-      if (!files || !fabricCanvasRef.current || !isFabricReady) return;
+    async (files: FileList | File[]) => {
+      if (
+        !files ||
+        files.length === 0 ||
+        !fabricCanvasRef.current ||
+        !isFabricReady
+      ) {
+        return;
+      }
 
       const shortEdge = Math.min(
         fabricCanvasRef.current.width,
@@ -117,16 +145,17 @@ export default function useCanvasUpdater({
 
       for (let idx = 0; idx < files.length; idx++) {
         const file = files[idx];
-        const objectUrl = window.URL.createObjectURL(file);
+        const registered = registerAssetFile?.(file);
+        const objectUrl = registered?.url ?? window.URL.createObjectURL(file);
         const img = await fabric.FabricImage.fromURL(objectUrl, {
           crossOrigin: 'anonymous',
         });
-        (
-          img as unknown as { _fileName: string; _layerName: string }
-        )._fileName = file.name;
-        (
-          img as unknown as { _fileName: string; _layerName: string }
-        )._layerName = file.name;
+
+        attachImageAssetMeta(img, {
+          assetId: registered?.assetId,
+          fileName: file.name,
+          layerName: file.name,
+        });
 
         const scale = Math.min(
           shortEdge / 2 / img.width,
@@ -147,8 +176,10 @@ export default function useCanvasUpdater({
         }
         fabricCanvasRef.current.requestRenderAll();
       }
+
+      onCommitHistory?.('immediate');
     },
-    [fabricCanvasRef, isFabricReady]
+    [fabricCanvasRef, isFabricReady, registerAssetFile, onCommitHistory]
   );
 
   const exportCanvas = useCallback(
@@ -188,11 +219,51 @@ export default function useCanvasUpdater({
     [fabricCanvasRef, isFabricReady, setIsExporting, canvasConfig.exportFormat]
   );
 
+  const copyToClipboard = useCallback(async (): Promise<boolean> => {
+    if (!fabricCanvasRef.current || !isFabricReady) return false;
+
+    if (
+      typeof navigator === 'undefined' ||
+      !navigator.clipboard?.write ||
+      typeof ClipboardItem === 'undefined'
+    ) {
+      toast.error('Clipboard image copy is not supported in this browser');
+      return false;
+    }
+
+    try {
+      const dataUrl = fabricCanvasRef.current.toDataURL({
+        format: 'png',
+        quality: 1,
+        multiplier: 1,
+        enableRetinaScaling: false,
+      });
+      const response = await fetch(dataUrl);
+      const blob = await response.blob();
+      await navigator.clipboard.write([
+        new ClipboardItem({ 'image/png': blob }),
+      ]);
+      toast.success('PNG copied to clipboard');
+      return true;
+    } catch {
+      toast.error(
+        'Clipboard permission denied. Please download the image instead.'
+      );
+      return false;
+    }
+  }, [fabricCanvasRef, isFabricReady]);
+
   const setSize = useCallback(
     (width: number, height: number) => {
       if (!fabricCanvasRef.current || !isFabricReady) return;
 
       // Update states
+      if (canvasConfigRef) {
+        canvasConfigRef.current = {
+          ...canvasConfigRef.current,
+          size: { width, height },
+        };
+      }
       setCanvasConfig((prev) => ({ ...prev, size: { width, height } }));
 
       // Update Fabric Canvas
@@ -205,13 +276,17 @@ export default function useCanvasUpdater({
       updateBorderRect();
       // Update stroke width of all images
       updateAllImagesBorderWidth();
+
+      onCommitHistory?.('immediate');
     },
     [
       fabricCanvasRef,
       isFabricReady,
+      canvasConfigRef,
       setCanvasConfig,
       updateBorderRect,
       updateAllImagesBorderWidth,
+      onCommitHistory,
     ]
   );
 
@@ -220,6 +295,12 @@ export default function useCanvasUpdater({
       if (!fabricCanvasRef.current || !isFabricReady) return;
 
       // Update states
+      if (canvasConfigRef) {
+        canvasConfigRef.current = {
+          ...canvasConfigRef.current,
+          background: { type: 'color', color: { color, opacity } },
+        };
+      }
       setCanvasConfig((prev) => ({
         ...prev,
         background: { type: 'color', color: { color, opacity } },
@@ -232,7 +313,7 @@ export default function useCanvasUpdater({
       });
       fabricCanvasRef.current.requestRenderAll();
     },
-    [fabricCanvasRef, isFabricReady, setCanvasConfig]
+    [fabricCanvasRef, isFabricReady, canvasConfigRef, setCanvasConfig]
   );
 
   const setBorderWidth = useCallback(
@@ -296,7 +377,8 @@ export default function useCanvasUpdater({
     }));
 
     fabricCanvasRef.current.requestRenderAll();
-  }, [fabricCanvasRef, canvasConfigRef, setCanvasConfig]);
+    onCommitHistory?.('immediate');
+  }, [fabricCanvasRef, canvasConfigRef, setCanvasConfig, onCommitHistory]);
 
   const discardActiveObject = useCallback(() => {
     if (!fabricCanvasRef.current) return;
@@ -308,6 +390,7 @@ export default function useCanvasUpdater({
     switchToFreeLayout,
     handleImagesUpload,
     export: exportCanvas,
+    copyToClipboard,
     setSize,
     setBackgroundColor,
     setBorderWidth,

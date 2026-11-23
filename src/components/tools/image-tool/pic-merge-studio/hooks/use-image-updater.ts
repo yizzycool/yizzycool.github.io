@@ -5,12 +5,14 @@ import type {
 import type { ConfigHelper } from '../types/config-helper';
 
 import { useCallback } from 'react';
-import * as fabric from 'fabric'; // v6
+import * as fabric from 'fabric';
 import { find, fromPairs, get, keys } from 'lodash';
 
-import useCommon from './use-common';
 import colorUtils from '@/utils/color-utils';
+
+import useCommon from './use-common';
 import { FABRIC_FILTER_MAP } from '../data/fabric-filters';
+import { attachImageAssetMeta } from '../utils/studio-snapshot';
 
 type Props = {
   refs: {
@@ -19,12 +21,16 @@ type Props = {
     fabricCanvasRef: React.MutableRefObject<fabric.Canvas | null>;
   };
   configHelper: ConfigHelper;
+  registerAssetFile?: (file: File) => { assetId: string; url: string };
+  onCommitHistory?: (mode?: 'immediate' | 'debounced') => void;
 };
 
 // Functions to update selected-image-related config and update Fabric canvas
 export default function useImageUpdater({
   refs,
   configHelper,
+  registerAssetFile,
+  onCommitHistory,
 }: Props): FabricHelperImageUpdater {
   const { fabricCanvasRef } = refs;
 
@@ -42,14 +48,14 @@ export default function useImageUpdater({
       const image = getSelectedImage();
       if (!image) return;
 
-      const objectUrl = window.URL.createObjectURL(file);
+      const registered = registerAssetFile?.(file);
+      const objectUrl = registered?.url ?? window.URL.createObjectURL(file);
       await image.setSrc(objectUrl, { crossOrigin: 'anonymous' });
-      (
-        image as unknown as { _fileName: string; _layerName: string }
-      )._fileName = file.name;
-      (
-        image as unknown as { _fileName: string; _layerName: string }
-      )._layerName = file.name;
+      attachImageAssetMeta(image, {
+        assetId: registered?.assetId,
+        fileName: file.name,
+        layerName: file.name,
+      });
       const scale = Math.min(300 / image.width, 300 / image.height);
       image.set({
         scaleX: scale,
@@ -60,7 +66,7 @@ export default function useImageUpdater({
       fabricCanvasRef.current.requestRenderAll();
       fabricCanvasRef.current.fire('object:modified', { target: image });
     },
-    [fabricCanvasRef, getSelectedImage]
+    [fabricCanvasRef, getSelectedImage, registerAssetFile]
   );
 
   const deleteImage = useCallback(() => {
@@ -73,7 +79,8 @@ export default function useImageUpdater({
     fabricCanvasRef.current.remove(image);
     fabricCanvasRef.current.discardActiveObject();
     fabricCanvasRef.current.requestRenderAll();
-  }, [fabricCanvasRef, getSelectedImage]);
+    onCommitHistory?.('immediate');
+  }, [fabricCanvasRef, getSelectedImage, onCommitHistory]);
 
   const setOpacity = useCallback(
     (opacity: number) => {
@@ -169,10 +176,12 @@ export default function useImageUpdater({
     image.set({
       stroke: '',
       strokeWidth: 0,
+      _strokeWidthRatio: 0,
     });
     image.setCoords(); // to recalc transform matrix and align controls
     fabricCanvasRef.current.requestRenderAll();
-  }, [fabricCanvasRef, setImageConfig, getSelectedImage]);
+    onCommitHistory?.('immediate');
+  }, [fabricCanvasRef, setImageConfig, getSelectedImage, onCommitHistory]);
 
   // Function to update angle/rotateX/rotateY/flipX/flipY/lockMovementX/lockMovementY
   const setGeometry = useCallback(
@@ -203,8 +212,18 @@ export default function useImageUpdater({
       }
       image.setCoords(); // to recalc transform matrix and align controls
       fabricCanvasRef.current.requestRenderAll();
+
+      // Commit discrete geometry toggles immediately; angle slider & editor-assist snapAngle do not push mid-drag/preference snapshots
+      if (
+        key === 'flipX' ||
+        key === 'flipY' ||
+        key === 'lockMovementX' ||
+        key === 'lockMovementY'
+      ) {
+        onCommitHistory?.('immediate');
+      }
     },
-    [fabricCanvasRef, setImageConfig, getSelectedImage]
+    [fabricCanvasRef, setImageConfig, getSelectedImage, onCommitHistory]
   );
 
   const setSize = useCallback(
@@ -247,7 +266,8 @@ export default function useImageUpdater({
       width: image.width,
       height: image.height,
     }));
-  }, [fabricCanvasRef, setImageConfig, getSelectedImage]);
+    onCommitHistory?.('immediate');
+  }, [fabricCanvasRef, setImageConfig, getSelectedImage, onCommitHistory]);
 
   const resetAspectRatio = useCallback(() => {
     if (!fabricCanvasRef.current) return;
@@ -266,7 +286,8 @@ export default function useImageUpdater({
       width: Math.round(image.width * uniformScale),
       height: Math.round(image.height * uniformScale),
     }));
-  }, [fabricCanvasRef, setImageConfig, getSelectedImage]);
+    onCommitHistory?.('immediate');
+  }, [fabricCanvasRef, setImageConfig, getSelectedImage, onCommitHistory]);
 
   const setFilters = useCallback(
     (filters: string[], params?: FabricFilterValuesMap) => {
@@ -337,8 +358,10 @@ export default function useImageUpdater({
       } else if (type === 'backward') {
         fabricCanvasRef.current.sendObjectBackwards(image);
       }
+      fabricCanvasRef.current.requestRenderAll();
+      onCommitHistory?.('immediate');
     },
-    [fabricCanvasRef, getSelectedImage]
+    [fabricCanvasRef, getSelectedImage, onCommitHistory]
   );
 
   const setAlignment = useCallback(
@@ -389,8 +412,9 @@ export default function useImageUpdater({
 
       img.setCoords();
       fabricCanvasRef.current.requestRenderAll();
+      onCommitHistory?.('immediate');
     },
-    [fabricCanvasRef, getSelectedImage]
+    [fabricCanvasRef, getSelectedImage, onCommitHistory]
   );
 
   const setObjectFit = useCallback(
@@ -430,8 +454,9 @@ export default function useImageUpdater({
         scaleX: scale,
         scaleY: scale,
       }));
+      onCommitHistory?.('immediate');
     },
-    [fabricCanvasRef, getSelectedImage, setImageConfig]
+    [fabricCanvasRef, getSelectedImage, setImageConfig, onCommitHistory]
   );
 
   const nudge = useCallback(
@@ -446,8 +471,9 @@ export default function useImageUpdater({
       });
       img.setCoords();
       fabricCanvasRef.current.requestRenderAll();
+      onCommitHistory?.('debounced');
     },
-    [fabricCanvasRef, getSelectedImage]
+    [fabricCanvasRef, getSelectedImage, onCommitHistory]
   );
 
   return {

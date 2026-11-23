@@ -4,8 +4,8 @@ import type { CanvasExportFormat } from '../types/config';
 import type { FabricHelper } from '../types/fabric-helper';
 import type { ConfigHelper } from '../types/config-helper';
 
-import { useEffect, useState } from 'react';
-import { Download, ImageDown } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { Check, Copy, Download, ImageDown } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import { motion } from 'motion/react';
 
@@ -38,6 +38,9 @@ export default function ExportModal({
     () => `pic-merge-${getFormattedDate()}`
   );
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isCopying, setIsCopying] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const copyTimerRef = useRef<number | null>(null);
 
   const { width, height } = configHelper.canvasConfig.size;
 
@@ -45,8 +48,17 @@ export default function ExportModal({
     if (!isOpen) return;
     setTimeout(() => {
       setFilename(`pic-merge-${getFormattedDate()}`);
+      setCopied(false);
     }, 0);
   }, [isOpen]);
+
+  useEffect(() => {
+    return () => {
+      if (copyTimerRef.current !== null) {
+        window.clearTimeout(copyTimerRef.current);
+      }
+    };
+  }, []);
 
   const handleDownload = () => {
     setIsDownloading(true);
@@ -59,6 +71,24 @@ export default function ExportModal({
       onClose();
     } finally {
       setIsDownloading(false);
+    }
+  };
+
+  const handleCopyPng = async () => {
+    setIsCopying(true);
+    try {
+      const ok = await fabricHelper.canvasUpdater.copyToClipboard();
+      if (ok) {
+        setCopied(true);
+        if (copyTimerRef.current !== null) {
+          window.clearTimeout(copyTimerRef.current);
+        }
+        copyTimerRef.current = window.setTimeout(() => {
+          setCopied(false);
+        }, 2000);
+      }
+    } finally {
+      setIsCopying(false);
     }
   };
 
@@ -149,7 +179,7 @@ export default function ExportModal({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-3 pt-2">
+        <div className="flex flex-wrap gap-2.5 pt-2 sm:flex-nowrap">
           <Button
             size="xs"
             variant="surface"
@@ -163,10 +193,23 @@ export default function ExportModal({
 
           <Button
             size="xs"
+            variant="secondary"
+            bordered
+            rounded="xl"
+            icon={copied ? Check : Copy}
+            disabled={isCopying || isDownloading}
+            onClick={() => void handleCopyPng()}
+            className="flex-1 font-bold"
+          >
+            {copied ? 'Copied' : isCopying ? 'Copying...' : 'Copy PNG'}
+          </Button>
+
+          <Button
+            size="xs"
             variant="primary"
             rounded="xl"
             icon={Download}
-            disabled={isDownloading}
+            disabled={isDownloading || isCopying}
             onClick={handleDownload}
             className="flex-1 font-bold shadow-md"
           >

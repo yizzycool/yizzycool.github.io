@@ -153,6 +153,7 @@ export default function Geometry({
     if (safeW !== width || safeH !== height) {
       setSize(safeW, safeH);
     }
+    onChangeEnd?.();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

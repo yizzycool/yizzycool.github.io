@@ -31,8 +31,13 @@ export default function Border({
 }: Props) {
   const { color, opacity, width, showOuter } = border;
 
-  const handleColorSelect = (hex: string) => {
+  const handlePickerChange = (hex: string) => {
     setBorderColor(hex, opacity ?? 1);
+  };
+
+  const handleSwatchSelect = (hex: string) => {
+    setBorderColor(hex, opacity ?? 1);
+    onChangeEnd?.();
   };
 
   const isColorActive = (hex: string) => {
@@ -47,7 +52,6 @@ export default function Border({
 
   const onGridOuterBorderSwitched = (value: boolean) => {
     setShowOuterBorder(value);
-    onChangeEnd?.();
   };
 
   return (
@@ -94,7 +98,8 @@ export default function Border({
           <ColorPicker
             variant="swatch"
             value={color || '#000000'}
-            onColorChange={handleColorSelect}
+            onColorChange={handlePickerChange}
+            onChangeEnd={onChangeEnd}
           />
           {/* Ban */}
           <ColorSwatch
@@ -110,7 +115,7 @@ export default function Border({
               key={hex}
               color={hex}
               isActive={isColorActive(hex)}
-              onClick={handleColorSelect}
+              onClick={handleSwatchSelect}
             />
           ))}
         </div>

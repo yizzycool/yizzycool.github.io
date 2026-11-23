@@ -32,7 +32,11 @@ export default function Background({
 
   const { isOpen, openDrawer, closeDrawer } = useControlDrawer();
 
-  const handleColorSelect = (hex: string) => {
+  const handlePickerChange = (hex: string) => {
+    setBackgroundColor(hex, opacity ?? 1);
+  };
+
+  const handleSwatchSelect = (hex: string) => {
     setBackgroundColor(hex, opacity ?? 1);
     onChangeEnd?.();
   };
@@ -68,7 +72,8 @@ export default function Background({
             <ColorPicker
               variant="swatch"
               value={color || '#ffffff'}
-              onColorChange={handleColorSelect}
+              onColorChange={handlePickerChange}
+              onChangeEnd={onChangeEnd}
               showTitle={false}
             />
             {/* Preset Colors */}
@@ -77,7 +82,7 @@ export default function Background({
                 key={hex}
                 color={hex}
                 isActive={isColorActive(hex)}
-                onClick={handleColorSelect}
+                onClick={handleSwatchSelect}
                 showTitle={false}
               />
             ))}

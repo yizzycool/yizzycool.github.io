@@ -2,17 +2,18 @@ import type { ConfigHelper } from '../types/config-helper';
 import type { GridTemplate } from '../types/grid-layout';
 import type { FabricInternalStates } from './use-fabric';
 import type { FabricHelperGridUpdater } from '../types/fabric-helper';
+import type { CanvasConfig } from '../types/config';
 
 import { useCallback } from 'react';
 import * as fabric from 'fabric';
 import { flatMap } from 'lodash';
 
-import type { CanvasConfig } from '../types/config';
+import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 
 import useCommon from './use-common';
 import useGridLogic from './use-grid-logic';
-import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import { DEFAULT_CANVAS_CONFIG } from '..';
+import { attachImageAssetMeta } from '../utils/studio-snapshot';
 
 type Props = {
   refs: {
@@ -24,6 +25,8 @@ type Props = {
   };
   configHelper: ConfigHelper;
   fabricHelper: FabricInternalStates;
+  registerAssetFile?: (file: File) => { assetId: string; url: string };
+  onCommitHistory?: (mode?: 'immediate' | 'debounced') => void;
 };
 
 // Functions to control grid system
@@ -31,7 +34,13 @@ export default function useGridUpdater({
   refs,
   configHelper,
   fabricHelper,
-}: Props): FabricHelperGridUpdater {
+  registerAssetFile,
+  onCommitHistory,
+}: Props): FabricHelperGridUpdater & {
+  restoreGridFromSnapshot: ReturnType<
+    typeof useGridLogic
+  >['restoreGridFromSnapshot'];
+} {
   const { fabricCanvasRef, gridRef, canvasConfigRef } = refs;
 
   const { setCanvasConfig, setImageConfig } = configHelper;
@@ -40,7 +49,12 @@ export default function useGridUpdater({
 
   const { getSelectedImage } = useCommon({ refs: { fabricCanvasRef } });
 
-  const { createGridTemplate, updateAfterResize, updateEdges } = useGridLogic({
+  const {
+    createGridTemplate,
+    updateAfterResize,
+    updateEdges,
+    restoreGridFromSnapshot,
+  } = useGridLogic({
     refs,
     configHelper,
     fabricHelper,
@@ -52,24 +66,45 @@ export default function useGridUpdater({
       // Generate cells and edges
       gridRef.current = await createGridTemplate(rows, cols);
       // Update CanvasConfig
+      if (canvasConfigRef) {
+        canvasConfigRef.current = {
+          ...canvasConfigRef.current,
+          layout: 'grid',
+          gridConfig: {
+            ...canvasConfigRef.current.gridConfig,
+            rows,
+            cols,
+          },
+        };
+      }
       setCanvasConfig((prev) => ({
         ...prev,
         layout: 'grid',
         gridConfig: { ...prev.gridConfig, rows, cols },
       }));
+      onCommitHistory?.('immediate');
     },
-    [fabricCanvasRef, gridRef, createGridTemplate, setCanvasConfig]
+    [
+      fabricCanvasRef,
+      gridRef,
+      createGridTemplate,
+      canvasConfigRef,
+      setCanvasConfig,
+      onCommitHistory,
+    ]
   );
 
   const handleImagesUpload = useCallback(
-    async (files: FileList) => {
+    async (files: FileList | File[]): Promise<number> => {
       if (
         !files ||
+        files.length === 0 ||
         !fabricCanvasRef.current ||
         !isFabricReady ||
         !gridRef.current
-      )
-        return;
+      ) {
+        return 0;
+      }
 
       // To find empty image
       const emptyImagePosition = flatMap(gridRef.current.cells, (row, i) => {
@@ -92,14 +127,14 @@ export default function useGridUpdater({
         const clipPath = img.clipPath;
 
         const file = files[idx];
-        const objectUrl = window.URL.createObjectURL(file);
-        await img.setSrc(objectUrl);
-        (
-          img as unknown as { _fileName: string; _layerName: string }
-        )._fileName = file.name;
-        (
-          img as unknown as { _fileName: string; _layerName: string }
-        )._layerName = file.name;
+        const registered = registerAssetFile?.(file);
+        const objectUrl = registered?.url ?? window.URL.createObjectURL(file);
+        await img.setSrc(objectUrl, { crossOrigin: 'anonymous' });
+        attachImageAssetMeta(img, {
+          assetId: registered?.assetId,
+          fileName: file.name,
+          layerName: file.name,
+        });
 
         const scale = Math.max(
           clipPath!.width / img.width,
@@ -121,8 +156,20 @@ export default function useGridUpdater({
 
         nowIdx += 1;
       }
+
+      if (nowIdx > 0) {
+        onCommitHistory?.('immediate');
+      }
+
+      return nowIdx;
     },
-    [fabricCanvasRef, isFabricReady, gridRef]
+    [
+      fabricCanvasRef,
+      isFabricReady,
+      gridRef,
+      registerAssetFile,
+      onCommitHistory,
+    ]
   );
 
   const setSize = useCallback(
@@ -130,6 +177,12 @@ export default function useGridUpdater({
       if (!fabricCanvasRef.current || !isFabricReady) return;
 
       // Update states
+      if (canvasConfigRef) {
+        canvasConfigRef.current = {
+          ...canvasConfigRef.current,
+          size: { width, height },
+        };
+      }
       setCanvasConfig((prev) => ({ ...prev, size: { width, height } }));
 
       // Update Fabric Canvas
@@ -141,8 +194,16 @@ export default function useGridUpdater({
 
       // Update cells & edges
       updateAfterResize();
+      onCommitHistory?.('immediate');
     },
-    [fabricCanvasRef, isFabricReady, setCanvasConfig, updateAfterResize]
+    [
+      fabricCanvasRef,
+      isFabricReady,
+      canvasConfigRef,
+      setCanvasConfig,
+      updateAfterResize,
+      onCommitHistory,
+    ]
   );
 
   const replaceImage = useCallback(
@@ -154,14 +215,14 @@ export default function useGridUpdater({
       const clipPath = image?.clipPath;
       if (!image || !clipPath) return;
 
-      const objectUrl = window.URL.createObjectURL(file);
-      await image.setSrc(objectUrl);
-      (
-        image as unknown as { _fileName: string; _layerName: string }
-      )._fileName = file.name;
-      (
-        image as unknown as { _fileName: string; _layerName: string }
-      )._layerName = file.name;
+      const registered = registerAssetFile?.(file);
+      const objectUrl = registered?.url ?? window.URL.createObjectURL(file);
+      await image.setSrc(objectUrl, { crossOrigin: 'anonymous' });
+      attachImageAssetMeta(image, {
+        assetId: registered?.assetId,
+        fileName: file.name,
+        layerName: file.name,
+      });
       const scale = Math.max(
         clipPath.width / image.width,
         clipPath.height / image.height
@@ -186,7 +247,7 @@ export default function useGridUpdater({
       // Update `hasImageSrc` state
       customEventUtils.emit(CustomEvents.tools.fabricRecalcSelection);
     },
-    [fabricCanvasRef, getSelectedImage]
+    [fabricCanvasRef, getSelectedImage, registerAssetFile]
   );
 
   const deleteImage = useCallback(async () => {
@@ -250,8 +311,15 @@ export default function useGridUpdater({
       }));
 
       updateEdges({ showOuter });
+      onCommitHistory?.('immediate');
     },
-    [fabricCanvasRef, canvasConfigRef, setCanvasConfig, updateEdges]
+    [
+      fabricCanvasRef,
+      canvasConfigRef,
+      setCanvasConfig,
+      updateEdges,
+      onCommitHistory,
+    ]
   );
 
   const setBorderWidth = useCallback(
@@ -347,7 +415,14 @@ export default function useGridUpdater({
     }));
 
     updateEdges(DEFAULT_CANVAS_CONFIG.gridConfig.border);
-  }, [fabricCanvasRef, canvasConfigRef, setCanvasConfig, updateEdges]);
+    onCommitHistory?.('immediate');
+  }, [
+    fabricCanvasRef,
+    canvasConfigRef,
+    setCanvasConfig,
+    updateEdges,
+    onCommitHistory,
+  ]);
 
   const setAlignment = useCallback(
     (horizontal: string, vertical: string) => {
@@ -398,8 +473,9 @@ export default function useGridUpdater({
 
       img.setCoords();
       fabricCanvasRef.current.requestRenderAll();
+      onCommitHistory?.('immediate');
     },
-    [fabricCanvasRef, gridRef, getSelectedImage]
+    [fabricCanvasRef, gridRef, getSelectedImage, onCommitHistory]
   );
 
   const setObjectFit = useCallback(
@@ -440,8 +516,15 @@ export default function useGridUpdater({
         scaleX: scale,
         scaleY: scale,
       }));
+      onCommitHistory?.('immediate');
     },
-    [fabricCanvasRef, gridRef, getSelectedImage, setImageConfig]
+    [
+      fabricCanvasRef,
+      gridRef,
+      getSelectedImage,
+      setImageConfig,
+      onCommitHistory,
+    ]
   );
 
   return {
@@ -459,5 +542,6 @@ export default function useGridUpdater({
 
     setAlignment,
     setObjectFit,
+    restoreGridFromSnapshot,
   };
 }

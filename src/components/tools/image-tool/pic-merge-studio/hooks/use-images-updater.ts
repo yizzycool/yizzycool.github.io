@@ -17,12 +17,14 @@ type Props = {
     gridRef: React.MutableRefObject<GridTemplate | null>;
   };
   configHelper: ConfigHelper;
+  onCommitHistory?: (mode?: 'immediate' | 'debounced') => void;
 };
 
 // Functions to update selected-image(s)-related config and update Fabric canvas
 export default function useImagesUpdater({
   refs,
   configHelper,
+  onCommitHistory,
 }: Props): FabricHelperImagesUpdater {
   const { fabricCanvasRef, gridRef } = refs;
 
@@ -150,11 +152,13 @@ export default function useImagesUpdater({
       img.setCoords(); // to recalc transform matrix and align controls
     });
     fabricCanvasRef.current.requestRenderAll();
+    onCommitHistory?.('immediate');
   }, [
     fabricCanvasRef,
     discardActiveObject,
     setGlobalImageConfig,
     getAllImages,
+    onCommitHistory,
   ]);
 
   const setAlignment = useCallback(
@@ -275,6 +279,7 @@ export default function useImagesUpdater({
         restoreSelection(selectedImages);
       }
       fabricCanvasRef.current?.requestRenderAll();
+      onCommitHistory?.('immediate');
     },
     [
       fabricCanvasRef,
@@ -284,6 +289,7 @@ export default function useImagesUpdater({
       isGridLayout,
       discardActiveObject,
       restoreSelection,
+      onCommitHistory,
     ]
   );
 
@@ -369,6 +375,7 @@ export default function useImagesUpdater({
         restoreSelection(selectedImages);
       }
       fabricCanvasRef.current?.requestRenderAll();
+      onCommitHistory?.('immediate');
     },
     [
       fabricCanvasRef,
@@ -378,6 +385,7 @@ export default function useImagesUpdater({
       isGridLayout,
       discardActiveObject,
       restoreSelection,
+      onCommitHistory,
     ]
   );
 

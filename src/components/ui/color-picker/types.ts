@@ -18,6 +18,8 @@ export type ColorPickerProps = {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   /** Direct color string callback for convenience */
   onColorChange?: (color: string) => void;
+  /** Callback fired when the native color picker finishes/commits a selection */
+  onChangeEnd?: () => void;
   /** Visual variant: 'card' (full card), 'input' (color block), 'swatch' / 'circle' (round rainbow button), or 'solid' (swatch displaying current color) */
   variant?: ColorPickerVariant;
   /** Optional display label (used in 'card' variant) */

@@ -21,12 +21,14 @@ type Props = {
   };
   configHelper: ConfigHelper;
   isFabricReady: boolean;
+  onCommitHistory?: (mode?: 'immediate' | 'debounced') => void;
 };
 
 export default function useLayersUpdater({
   refs,
   configHelper,
   isFabricReady,
+  onCommitHistory,
 }: Props): FabricHelperLayersUpdater & {
   layers: LayerItem[];
   selectedCount: number;
@@ -178,8 +180,9 @@ export default function useLayersUpdater({
       image.set('visible', !image.visible);
       fabricCanvasRef.current.requestRenderAll();
       syncLayers();
+      onCommitHistory?.('immediate');
     },
-    [fabricCanvasRef, syncLayers]
+    [fabricCanvasRef, syncLayers, onCommitHistory]
   );
 
   // Drag & drop reorder layers
@@ -202,8 +205,9 @@ export default function useLayersUpdater({
 
       canvas.requestRenderAll();
       syncLayers();
+      onCommitHistory?.('immediate');
     },
-    [fabricCanvasRef, syncLayers]
+    [fabricCanvasRef, syncLayers, onCommitHistory]
   );
 
   const reorderLayer = useCallback(
@@ -285,7 +289,8 @@ export default function useLayersUpdater({
       border: { width: 0, color: '', opacity: 1 },
     }));
     fabricCanvasRef.current.requestRenderAll();
-  }, [fabricCanvasRef, getSelectedImages, configHelper]);
+    onCommitHistory?.('immediate');
+  }, [fabricCanvasRef, getSelectedImages, configHelper, onCommitHistory]);
 
   // Batch filters
   const batchSetFilters = useCallback(
@@ -306,8 +311,9 @@ export default function useLayersUpdater({
       });
 
       fabricCanvasRef.current.requestRenderAll();
+      onCommitHistory?.('immediate');
     },
-    [fabricCanvasRef, getSelectedImages]
+    [fabricCanvasRef, getSelectedImages, onCommitHistory]
   );
 
   // Batch delete
@@ -319,7 +325,8 @@ export default function useLayersUpdater({
     canvas.discardActiveObject();
     canvas.requestRenderAll();
     syncLayers();
-  }, [fabricCanvasRef, getSelectedImages, syncLayers]);
+    onCommitHistory?.('immediate');
+  }, [fabricCanvasRef, getSelectedImages, syncLayers, onCommitHistory]);
 
   // Batch order (front, back, forward, backward)
   const batchSetLayer = useCallback(
@@ -346,8 +353,9 @@ export default function useLayersUpdater({
 
       canvas.requestRenderAll();
       syncLayers();
+      onCommitHistory?.('immediate');
     },
-    [fabricCanvasRef, getSelectedImages, syncLayers]
+    [fabricCanvasRef, getSelectedImages, syncLayers, onCommitHistory]
   );
 
   return {

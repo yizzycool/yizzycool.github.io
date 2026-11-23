@@ -29,12 +29,24 @@ export type ExportOptions = {
   filename?: string;
 };
 
+export type FabricHelperHistoryUpdater = {
+  canUndo: boolean;
+  canRedo: boolean;
+  canReset: boolean;
+  undo: () => Promise<void>;
+  redo: () => Promise<void>;
+  resetStudio: () => Promise<void>;
+  commitHistory: (mode?: 'immediate' | 'debounced') => void;
+};
+
 export type FabricHelperCanvasUpdater = {
   switchToFreeLayout: () => void;
   // Add images into Fabric Canvas
-  handleImagesUpload: (files: FileList) => void;
+  handleImagesUpload: (files: FileList | File[]) => Promise<void> | void;
   // Extract image from Fabric Canvas
   export: (options?: ExportOptions) => void;
+  // Copy rendered PNG directly to clipboard
+  copyToClipboard: () => Promise<boolean>;
   // Update size of Fabric Canvas
   setSize: (width: number, height: number) => void;
   // Update background of Fabric Canvas
@@ -105,7 +117,7 @@ export type FabricHelperGridUpdater = {
   // To switch from `free` to grid`
   switchToGridLayout: (rows: number, cols: number) => void;
   // Add images into Fabric Canvas
-  handleImagesUpload: (files: FileList) => void;
+  handleImagesUpload: (files: FileList | File[]) => Promise<number> | void;
   // Update size of Fabric Canvas
   setSize: (width: number, height: number) => void;
 
@@ -160,4 +172,5 @@ export type FabricHelper = {
   imagesUpdater: FabricHelperImagesUpdater;
   gridUpdater: FabricHelperGridUpdater;
   layersUpdater: FabricHelperLayersUpdater;
+  historyUpdater: FabricHelperHistoryUpdater;
 };

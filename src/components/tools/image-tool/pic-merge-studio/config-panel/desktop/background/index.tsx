@@ -23,7 +23,11 @@ export default function Background({
   const { type, color: colorObj } = background;
   const { color, opacity } = colorObj || {};
 
-  const handleColorSelect = (hex: string) => {
+  const handlePickerChange = (hex: string) => {
+    setBackgroundColor(hex, opacity ?? 1);
+  };
+
+  const handleSwatchSelect = (hex: string) => {
     setBackgroundColor(hex, opacity ?? 1);
     onChangeEnd?.();
   };
@@ -70,7 +74,8 @@ export default function Background({
           <ColorPicker
             variant="swatch"
             value={color || '#ffffff'}
-            onColorChange={handleColorSelect}
+            onColorChange={handlePickerChange}
+            onChangeEnd={onChangeEnd}
           />
           {/* Preset Colors */}
           {PRESET_BACKGROUND_COLORS.map((hex) => (
@@ -78,7 +83,7 @@ export default function Background({
               key={hex}
               color={hex}
               isActive={isColorActive(hex)}
-              onClick={handleColorSelect}
+              onClick={handleSwatchSelect}
             />
           ))}
         </div>

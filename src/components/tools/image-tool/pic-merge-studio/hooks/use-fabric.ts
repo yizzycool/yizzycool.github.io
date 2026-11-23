@@ -4,9 +4,14 @@ import type { FabricHelper } from '../types/fabric-helper';
 import type { ConfigHelper } from '../types/config-helper';
 import type { GridTemplate } from '../types/grid-layout';
 import type { SupportedFabricFilterType } from '../types/fabric-filter';
+import type { AssetEntry } from './use-studio-history';
 
 import * as fabric from 'fabric';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { head } from 'lodash';
+
+import colorUtils from '@/utils/color-utils';
+import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 
 import useCanvasUpdater from './use-canvas-updater';
 import useImageUpdater from './use-image-updater';
@@ -14,9 +19,9 @@ import useImagesUpdater from './use-images-updater';
 import useCommon from './use-common';
 import useGridUpdater from './use-grid-updater';
 import useLayersUpdater from './use-layers-updater';
-import { head } from 'lodash';
-import colorUtils from '@/utils/color-utils';
-import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
+import useSnapGuides from './use-snap-guides';
+import useStudioHistory from './use-studio-history';
+import { applyAngleSnap, shortestAngleDelta } from '../utils/angle-snap';
 import { DEFAULT_CANVAS_CONFIG } from '..';
 
 export const FABRIC_CONTROL_CONFIG = {
@@ -61,20 +66,16 @@ type Props = {
     canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
   };
   configHelper: ConfigHelper;
+  snapGuidesEnabled?: boolean;
 };
 
-export default function useFabric({ refs, configHelper }: Props): FabricHelper {
+export default function useFabric({
+  refs,
+  configHelper,
+  snapGuidesEnabled = true,
+}: Props): FabricHelper {
   const { containerRef, canvasRef } = refs;
-  const {
-    canvasConfig,
-    // setCanvasConfig,
-
-    // globalImageConfig,
-    // setGlobalImageConfig,
-
-    // imageConfig,
-    setImageConfig,
-  } = configHelper;
+  const { canvasConfig, globalImageConfig, setImageConfig } = configHelper;
 
   const [isFabricReady, setIsFabricReady] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
@@ -86,9 +87,51 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
   const gridRef = useRef<GridTemplate | null>(null);
 
   const canvasConfigRef = useRef(canvasConfig);
+  const globalImageConfigRef = useRef(globalImageConfig);
+  const assetMapRef = useRef<Map<string, AssetEntry>>(new Map());
+  const commitHistoryRef = useRef<(mode?: 'immediate' | 'debounced') => void>(
+    () => {}
+  );
+
   useEffect(() => {
     canvasConfigRef.current = canvasConfig;
   }, [canvasConfig]);
+
+  useEffect(() => {
+    globalImageConfigRef.current = globalImageConfig;
+  }, [globalImageConfig]);
+
+  const registerAssetBlob = useCallback((assetId: string, blob: Blob) => {
+    const existing = assetMapRef.current.get(assetId);
+    if (existing) {
+      return existing.url;
+    }
+    const url = window.URL.createObjectURL(blob);
+    assetMapRef.current.set(assetId, { blob, url });
+    return url;
+  }, []);
+
+  const registerAssetFile = useCallback(
+    (file: File) => {
+      const assetId = `asset_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+      const url = registerAssetBlob(assetId, file);
+      return { assetId, url };
+    },
+    [registerAssetBlob]
+  );
+
+  const resolveAssetUrl = useCallback(
+    (assetId: string, fallbackSrc: string): string | null => {
+      const entry = assetMapRef.current.get(assetId);
+      if (entry?.url) return entry.url;
+      return fallbackSrc || null;
+    },
+    []
+  );
+
+  const onCommitHistory = useCallback((mode?: 'immediate' | 'debounced') => {
+    commitHistoryRef.current(mode);
+  }, []);
 
   const fabricHelper: FabricInternalStates = {
     isFabricReady,
@@ -105,28 +148,36 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
     refs: { ...refs, fabricCanvasRef, canvasConfigRef },
     configHelper,
     fabricHelper,
+    registerAssetFile,
+    onCommitHistory,
   });
 
   const imageUpdater = useImageUpdater({
     refs: { ...refs, fabricCanvasRef },
     configHelper,
+    registerAssetFile,
+    onCommitHistory,
   });
 
   const imagesUpdater = useImagesUpdater({
     refs: { ...refs, fabricCanvasRef, gridRef },
     configHelper,
+    onCommitHistory,
   });
 
   const gridUpdater = useGridUpdater({
     refs: { ...refs, fabricCanvasRef, gridRef, canvasConfigRef },
     configHelper,
     fabricHelper,
+    registerAssetFile,
+    onCommitHistory,
   });
 
   const layersUpdater = useLayersUpdater({
     refs: { fabricCanvasRef },
     configHelper,
     isFabricReady,
+    onCommitHistory,
   });
 
   const { getSelectedImage, getSelectedImages } = useCommon({
@@ -293,11 +344,14 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
     );
   };
 
-  const initHammerPinch = async () => {
-    if (!fabricCanvasRef.current) return;
+  const initHammerPinch = async (
+    shouldAbort: () => boolean
+  ): Promise<InstanceType<typeof import('hammerjs').Manager> | null> => {
+    if (!fabricCanvasRef.current) return null;
 
-    // Ned to import Hammer dynamically or `window` issue will occur while running `yarn build`
+    // Need to import Hammer dynamically or `window` issue will occur while running `yarn build`
     const Hammer = (await import('hammerjs')).default;
+    if (shouldAbort() || !fabricCanvasRef.current) return null;
 
     const el = fabricCanvasRef.current.upperCanvasEl;
     const hammer = new Hammer.Manager(el, {
@@ -317,13 +371,15 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
 
     const hammerStates = {
       initScale: 1,
-      initAngle: 0,
+      lastRotation: 0,
+      accumulatedRotation: 0,
+      didMutate: false,
     };
 
     let target: fabric.FabricObject | null = null;
 
-    hammer.on('pinchstart', (e) => {
-      if (!fabricCanvasRef.current) return;
+    const beginGesture = (e: { scale?: number; rotation?: number }) => {
+      if (!fabricCanvasRef.current || target) return;
       const activeObject = fabricCanvasRef.current.getActiveObject();
       if (!activeObject) return;
 
@@ -333,49 +389,123 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
       fabricStates.lockMovementY = activeObject.lockMovementY;
       fabricStates.initScale = activeObject.scaleX ?? 1;
       fabricStates.initAngle = activeObject.angle ?? 0;
+
       activeObject.set({
         lockMovementX: true,
         lockMovementY: true,
       });
       fabricCanvasRef.current.requestRenderAll();
 
-      hammerStates.initScale = e.scale ?? 1;
-      hammerStates.initAngle = e.rotation ?? 0;
-    });
+      hammerStates.initScale = e.scale || 1;
+      hammerStates.lastRotation = e.rotation ?? 0;
+      hammerStates.accumulatedRotation = 0;
+      hammerStates.didMutate = false;
+    };
+
+    hammer.on('pinchstart rotatestart', beginGesture);
 
     hammer.on('pinchmove', (e) => {
       if (!fabricCanvasRef.current || !target) return;
+      if (target.lockScalingX || target.lockScalingY) return;
 
       const scale = fabricStates.initScale * (e.scale / hammerStates.initScale);
       target.scale(scale);
       target.setCoords();
+      hammerStates.didMutate = true;
+
+      setImageConfig((prev) => ({
+        ...prev,
+        scaleX: target?.scaleX ?? prev.scaleX,
+        scaleY: target?.scaleY ?? prev.scaleY,
+        width: target ? Math.round(target.getScaledWidth()) : prev.width,
+        height: target ? Math.round(target.getScaledHeight()) : prev.height,
+      }));
+
       fabricCanvasRef.current.requestRenderAll();
     });
 
     hammer.on('rotatemove', (e) => {
       if (!fabricCanvasRef.current || !target) return;
+      if (target.lockRotation) return;
 
-      target.rotate(
-        fabricStates.initAngle + (e.rotation - hammerStates.initAngle)
+      const currentRotation = e.rotation ?? 0;
+      const stepDelta = shortestAngleDelta(
+        hammerStates.lastRotation,
+        currentRotation
       );
+      hammerStates.lastRotation = currentRotation;
+      hammerStates.accumulatedRotation += stepDelta;
+
+      // Resolve snapAngle from the target (or first child when rotating an ActiveSelection)
+      const primaryObject =
+        target instanceof fabric.ActiveSelection
+          ? target.getObjects()[0]
+          : target;
+      const effectiveSnapAngle = primaryObject?.snapAngle ?? 90;
+      const rawThreshold = primaryObject?.snapThreshold ?? 5;
+      const effectiveThreshold =
+        effectiveSnapAngle > 0 ? Math.max(rawThreshold, 7) : 0;
+
+      const rawAngle =
+        fabricStates.initAngle + hammerStates.accumulatedRotation;
+      const snappedAngle = applyAngleSnap(
+        rawAngle,
+        effectiveSnapAngle,
+        effectiveThreshold
+      );
+
+      target.rotate(snappedAngle);
       target.setCoords();
+      hammerStates.didMutate = true;
+
+      setImageConfig((prev) => ({
+        ...prev,
+        angle: snappedAngle,
+      }));
+
       fabricCanvasRef.current.requestRenderAll();
     });
 
-    hammer.on('pinchend pinchcancel rotateend', () => {
+    const finalizeGesture = () => {
       if (!fabricCanvasRef.current || !target) return;
-      target.set({
+
+      const modifiedTarget = target;
+      const shouldCommit = hammerStates.didMutate;
+
+      modifiedTarget.set({
         lockMovementX: fabricStates.lockMovementX,
         lockMovementY: fabricStates.lockMovementY,
       });
-      fabricCanvasRef.current.requestRenderAll();
+      modifiedTarget.setCoords();
+
       target = null;
+      hammerStates.didMutate = false;
+
+      fabricCanvasRef.current.requestRenderAll();
+      if (shouldCommit) {
+        fabricCanvasRef.current.fire('object:modified', {
+          target: modifiedTarget,
+        });
+      }
+    };
+
+    hammer.on('pinchend pinchcancel rotateend rotatecancel', finalizeGesture);
+    hammer.on('hammer.input', (e) => {
+      if (e.isFinal && target) {
+        finalizeGesture();
+      }
     });
+
+    return hammer;
   };
 
   // Init Fabric.js
   useEffect(() => {
     if (!canvasRef.current) return;
+
+    let isDisposed = false;
+    let hammerInstance: InstanceType<typeof import('hammerjs').Manager> | null =
+      null;
 
     // Create a Canvas
     const canvas = new fabric.Canvas(canvasRef.current, {
@@ -435,7 +565,13 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
     // Init all monitors
     initHasImageSelectionMonitor();
     initSelectedImageMonitor();
-    initHammerPinch();
+    void initHammerPinch(() => isDisposed).then((instance) => {
+      if (isDisposed) {
+        instance?.destroy();
+        return;
+      }
+      hammerInstance = instance;
+    });
 
     // Custom event to update image selection status
     const unsubscriber = customEventUtils.on(
@@ -449,9 +585,17 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
     // Init Fabric completely
     setIsFabricReady(true);
 
+    const assetMapSnapshot = assetMapRef.current;
+
     return () => {
+      isDisposed = true;
+      hammerInstance?.destroy();
       canvas.dispose();
       unsubscriber();
+      for (const entry of assetMapSnapshot.values()) {
+        window.URL.revokeObjectURL(entry.url);
+      }
+      assetMapSnapshot.clear();
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -471,6 +615,35 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFabricReady, canvasConfig.size]);
 
+  // Magnetic snap guides (Free layout)
+  useSnapGuides({
+    fabricCanvasRef,
+    canvasConfigRef,
+    isFabricReady,
+    enabled: snapGuidesEnabled,
+  });
+
+  // Undo/Redo History + IndexedDB auto-save
+  const historyUpdater = useStudioHistory({
+    refs: {
+      fabricCanvasRef,
+      gridRef,
+      canvasConfigRef,
+      globalImageConfigRef,
+      assetMapRef,
+    },
+    configHelper,
+    isFabricReady,
+    resizeDisplay,
+    restoreGridFromSnapshot: gridUpdater.restoreGridFromSnapshot,
+    registerAssetBlob,
+    resolveAssetUrl,
+  });
+
+  useEffect(() => {
+    commitHistoryRef.current = historyUpdater.commitHistory;
+  }, [historyUpdater.commitHistory]);
+
   return {
     states: {
       isFabricReady,
@@ -485,5 +658,6 @@ export default function useFabric({ refs, configHelper }: Props): FabricHelper {
     imagesUpdater,
     gridUpdater,
     layersUpdater,
+    historyUpdater,
   };
 }
