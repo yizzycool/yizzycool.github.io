@@ -12,10 +12,12 @@ type Props = {
   testString: string;
   matches: Array<RegExpExecArray>;
   error: string | null;
+  hoveredMatchIndex?: number | null;
 };
 
 type HighlightList = Array<{
   matched?: boolean;
+  matchIndex?: number;
   text?: string;
   subGroup?: Array<{
     isGroup?: boolean;
@@ -30,6 +32,7 @@ export default function HighlightMark({
   testString,
   matches,
   error,
+  hoveredMatchIndex = null,
 }: Props) {
   const highlightList: HighlightList = useMemo(() => {
     try {
@@ -45,6 +48,7 @@ export default function HighlightMark({
       let iterations = 0;
 
       while ((match = regex.exec(testString)) !== null && iterations < 500) {
+        const currentMatchIndex = iterations;
         iterations++;
 
         // Text before match
@@ -56,6 +60,7 @@ export default function HighlightMark({
         // Matched text
         parts.push({
           matched: true,
+          matchIndex: currentMatchIndex,
           text: match[0],
           subGroup: [],
         });
@@ -107,11 +112,12 @@ export default function HighlightMark({
     } catch (_e) {
       return [];
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pattern, testString]);
+  }, [pattern, flags, testString]);
 
   if (!pattern || error || matches.length === 0) return null;
+
+  const hasHoveredMatch =
+    hoveredMatchIndex !== null && hoveredMatchIndex !== undefined;
 
   return (
     <div
@@ -123,31 +129,35 @@ export default function HighlightMark({
         'text-transparent'
       )}
     >
-      {highlightList.map(({ matched, text, subGroup }, idx) =>
+      {highlightList.map(({ matched, matchIndex, text, subGroup }, idx) =>
         matched ? (
-          <span key={idx} className="relative">
-            {map(subGroup, ({ isGroup, text, color }, idx) =>
+          <span
+            key={idx}
+            className={cn(
+              'rounded-sm box-decoration-clone py-[1px] transition-all duration-150',
+              hasHoveredMatch &&
+                matchIndex !== hoveredMatchIndex &&
+                'opacity-35',
+              hasHoveredMatch && matchIndex === hoveredMatchIndex
+                ? 'bg-sky-500/20 ring-2 ring-sky-500 dark:bg-sky-400/20 dark:ring-sky-400'
+                : 'ring-1 ring-neutral-400/60 dark:ring-neutral-400/50'
+            )}
+          >
+            {map(subGroup, ({ isGroup, text, color }, subIdx) =>
               isGroup ? (
                 <span
-                  key={idx}
+                  key={subIdx}
                   className={cn(
-                    'rounded-sm transition-colors duration-200',
+                    'rounded-sm box-decoration-clone transition-colors duration-200',
                     color?.bg
                   )}
                 >
                   {text}
                 </span>
               ) : (
-                <span key={idx}>{text}</span>
+                <span key={subIdx}>{text}</span>
               )
             )}
-            {/* Ring */}
-            <div
-              className={cn(
-                'absolute -bottom-[2px] -left-[2px] -right-[2px] -top-[2px]',
-                'rounded-sm border border-neutral-400/50 dark:border-neutral-400/50'
-              )}
-            />
           </span>
         ) : (
           text

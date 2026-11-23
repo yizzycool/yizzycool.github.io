@@ -1,15 +1,16 @@
 'use client';
 
+import { useState } from 'react';
+
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 
 import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
 
-import CheatSheetSection from './cheat-sheet-section';
-import DetailSection from './detail-section';
+import useRegexTester from './hooks/use-regex-tester';
 import PatternSection from './pattern-section';
 import TestSection from './test-section';
-import useRegexTester from './hooks/use-regex-tester';
+import WorkbenchInspector from './workbench-inspector';
 
 export type RegexColorType = {
   bg: string;
@@ -71,6 +72,10 @@ export const RegexColors: Array<RegexColorType> = [
 ];
 
 export default function RegexTester() {
+  const [hoveredMatchIndex, setHoveredMatchIndex] = useState<number | null>(
+    null
+  );
+
   const {
     pattern,
     setPattern,
@@ -88,6 +93,25 @@ export default function RegexTester() {
     onClearTestString,
   } = useRegexTester();
 
+  const handleInsertToken = (token: string) => {
+    const inputEl = patternInputRef.current;
+    if (!inputEl) {
+      setPattern((prev) => `${prev}${token}`);
+      return;
+    }
+
+    const start = inputEl.selectionStart ?? pattern.length;
+    const end = inputEl.selectionEnd ?? pattern.length;
+    const nextPattern = `${pattern.slice(0, start)}${token}${pattern.slice(end)}`;
+    setPattern(nextPattern);
+
+    requestAnimationFrame(() => {
+      inputEl.focus();
+      const cursor = start + token.length;
+      inputEl.setSelectionRange(cursor, cursor);
+    });
+  };
+
   return (
     <>
       <HeaderBlock
@@ -99,13 +123,14 @@ export default function RegexTester() {
         ]}
       />
 
-      <SectionGap />
+      <SectionGap size="sm" />
 
-      {/* Pattern input + Presets + Visualizer */}
+      {/* Top RegExr-Style Command Bar */}
       <PatternSection
         pattern={pattern}
-        setPattern={setPattern}
         flags={flags}
+        matchCount={matches.length}
+        setPattern={setPattern}
         setFlags={setFlags}
         error={error}
         patternInputRef={patternInputRef}
@@ -113,30 +138,36 @@ export default function RegexTester() {
         onSelectPreset={onSelectPreset}
       />
 
-      <SectionGap />
+      <SectionGap size="sm" />
 
-      {/* Test string textarea + Highlighting + Actions */}
-      <TestSection
-        pattern={pattern}
-        flags={flags}
-        matches={matches}
-        testString={testString}
-        setTestString={setTestString}
-        error={error}
-        testTextareaRef={testTextareaRef}
-        onPaste={onPasteTestString}
-        onClear={onClearTestString}
-      />
+      {/* Desktop 7:5 IDE Split Workbench */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">
+        <div className="lg:col-span-7">
+          <TestSection
+            pattern={pattern}
+            flags={flags}
+            matches={matches}
+            testString={testString}
+            setTestString={setTestString}
+            error={error}
+            hoveredMatchIndex={hoveredMatchIndex}
+            testTextareaRef={testTextareaRef}
+            onPaste={onPasteTestString}
+            onClear={onClearTestString}
+          />
+        </div>
 
-      <SectionGap />
-
-      {/* Match Details with Named Groups */}
-      <DetailSection matches={matches} />
-
-      <SectionGap />
-
-      {/* Regex Cheat Sheet Reference Section */}
-      <CheatSheetSection />
+        <div className="lg:sticky lg:top-24 lg:col-span-5">
+          <WorkbenchInspector
+            matches={matches}
+            hoveredMatchIndex={hoveredMatchIndex}
+            onHoverMatch={setHoveredMatchIndex}
+            selectedPresetId={selectedPresetId}
+            onSelectPreset={onSelectPreset}
+            onInsertToken={handleInsertToken}
+          />
+        </div>
+      </div>
     </>
   );
 }

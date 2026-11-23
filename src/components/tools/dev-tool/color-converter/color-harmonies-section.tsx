@@ -1,15 +1,21 @@
 'use client';
 
 import type { ColorHarmonySwatch } from './types';
-import type { TintShadeStep } from './utils/color-harmonies';
+import type { ColorScaleStep, TintShadeStep } from './utils/color-harmonies';
 
+import { CopyAction } from '@/components/shared/action-button';
 import LabelBar from '@/components/tools/common/label-bar';
 
 import HarmonySwatchItem from './harmony-swatch-item';
 import TintShadeButton from './tint-shade-button';
+import {
+  formatCssVariablesSnippet,
+  formatTailwindScaleSnippet,
+} from './utils/color-harmonies';
 
 type ColorHarmoniesSectionProps = {
   currentHex: string;
+  colorScale: ColorScaleStep[];
   tints: TintShadeStep[];
   shades: TintShadeStep[];
   harmonies: ColorHarmonySwatch[];
@@ -18,14 +24,53 @@ type ColorHarmoniesSectionProps = {
 
 export default function ColorHarmoniesSection({
   currentHex,
+  colorScale,
   tints,
   shades,
   harmonies,
   onSelectColor,
 }: ColorHarmoniesSectionProps) {
+  const cssVariablesSnippet = formatCssVariablesSnippet(colorScale);
+  const tailwindScaleSnippet = formatTailwindScaleSnippet(colorScale);
+
   return (
     <div className="flex flex-col gap-6">
-      {/* 1. Tints & Shades Ramp */}
+      {/* 1. Tailwind / CSS Variables Scale (50-950) */}
+      <section>
+        <LabelBar
+          label="Design Token Scale (50–950)"
+          description="Click any swatch to jump to that step, or copy the generated 11-step scale directly into CSS or Tailwind."
+        >
+          <div className="flex items-center gap-1.5">
+            <CopyAction
+              content={cssVariablesSnippet}
+              label="Copy CSS Vars"
+              variant="outline"
+              successToast="Copied CSS custom properties (--color-50 ~ 950)"
+            />
+            <CopyAction
+              content={tailwindScaleSnippet}
+              label="Copy Tailwind"
+              variant="outline"
+              successToast="Copied Tailwind color scale object"
+            />
+          </div>
+        </LabelBar>
+
+        <div className="shadow-xs mt-2 flex w-full overflow-hidden rounded-xl border border-neutral-200/80 dark:border-neutral-800">
+          {colorScale.map((item) => (
+            <TintShadeButton
+              key={item.step}
+              hex={item.hex}
+              name={`${item.step}`}
+              isCurrent={item.isBase}
+              onSelectColor={onSelectColor}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* 2. Tints & Shades Ramp */}
       <section>
         <LabelBar
           label="Tints & Shades"
@@ -62,7 +107,7 @@ export default function ColorHarmoniesSection({
         </div>
       </section>
 
-      {/* 2. Color Harmonies */}
+      {/* 3. Color Harmonies */}
       <section>
         <LabelBar
           label="Color Harmonies"

@@ -10,6 +10,8 @@ import type {
 
 import { clamp } from './color-parser';
 
+export { hsvToRgb as hsvToRgba } from './color-parser';
+
 /** Convert byte to 2-digit uppercase hex */
 function toHexByte(n: number): string {
   return clamp(Math.round(n), 0, 255)

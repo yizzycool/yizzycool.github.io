@@ -5,18 +5,22 @@ import type { ContrastResult, NormalizedRgba } from './types';
 import LabelBar from '@/components/tools/common/label-bar';
 import { InfoTooltip } from '@/components/ui/info-tooltip';
 
+import { cn } from '@/utils/cn';
+
 import ContrastPreviewItem from './contrast-preview-item';
 
 type ContrastAnalyzerSectionProps = {
   backgroundColorRgba: NormalizedRgba;
   contrastAgainstBlack: ContrastResult;
   contrastAgainstWhite: ContrastResult;
+  stackedOnDesktop?: boolean;
 };
 
 export default function ContrastAnalyzerSection({
   backgroundColorRgba,
   contrastAgainstBlack,
   contrastAgainstWhite,
+  stackedOnDesktop = false,
 }: ContrastAnalyzerSectionProps) {
   return (
     <section>
@@ -44,7 +48,12 @@ export default function ContrastAnalyzerSection({
         actionsClassName="self-auto"
       />
 
-      <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div
+        className={cn(
+          'mt-2 grid grid-cols-1 gap-4 md:grid-cols-2',
+          stackedOnDesktop && 'lg:grid-cols-1'
+        )}
+      >
         <ContrastPreviewItem
           title="Black Text (#000000)"
           textColorHex="#000000"

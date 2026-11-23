@@ -7,12 +7,13 @@ import SectionGap from '@/components/tools/common/section-gap';
 import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import toast from '@/utils/toast';
 
-import { useColorConverter } from './hooks/use-color-converter';
 import ColorHarmoniesSection from './color-harmonies-section';
 import ColorInputBar from './color-input-bar';
 import ColorPreviewCard from './color-preview-card';
 import ColorSpacesSection from './color-spaces-section';
+import ColorStudioPicker from './color-studio-picker';
 import ContrastAnalyzerSection from './contrast-analyzer-section';
+import { useColorConverter } from './hooks/use-color-converter';
 
 export default function ColorConverter() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -25,10 +26,12 @@ export default function ColorConverter() {
     contrastAgainstWhite,
     tints,
     shades,
+    colorScale,
     harmonies,
     isEyeDropperSupported,
     handleInputChange,
     handleSelectColor,
+    handleRgbaChange,
     handleRandomColor,
     handleEyeDropper,
   } = useColorConverter();
@@ -100,36 +103,46 @@ export default function ColorConverter() {
 
       <SectionGap size="sm" />
 
-      {/* Color preview card */}
+      {/* Hero Ambient Canvas Card with Floating WCAG Contrast Badges */}
       <ColorPreviewCard
         rgba={currentRgba}
         hex={colorSpaces.hex}
+        oklchString={colorSpaces.oklch}
         hslString={colorSpaces.hsl}
         rgbString={colorSpaces.rgb}
-      />
-
-      <SectionGap size="sm" />
-
-      {/* Color spaces conversion */}
-      <ColorSpacesSection
-        colorSpaces={colorSpaces}
-        currentHex={colorSpaces.hex}
-      />
-
-      <SectionGap size="sm" />
-
-      {/* WCAG 2.1 Contrast analyzer */}
-      <ContrastAnalyzerSection
-        backgroundColorRgba={currentRgba}
         contrastAgainstBlack={contrastAgainstBlack}
         contrastAgainstWhite={contrastAgainstWhite}
       />
 
       <SectionGap size="sm" />
 
-      {/* Color harmonies and tints/shades */}
+      {/* Desktop 5:7 Studio Workbench: Interactive 2D Pad + Contrast | Color Spaces */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">
+        <div className="space-y-6 lg:col-span-5">
+          <ColorStudioPicker rgba={currentRgba} onChange={handleRgbaChange} />
+
+          <ContrastAnalyzerSection
+            backgroundColorRgba={currentRgba}
+            contrastAgainstBlack={contrastAgainstBlack}
+            contrastAgainstWhite={contrastAgainstWhite}
+            stackedOnDesktop
+          />
+        </div>
+
+        <div className="lg:col-span-7">
+          <ColorSpacesSection
+            colorSpaces={colorSpaces}
+            currentHex={colorSpaces.hex}
+          />
+        </div>
+      </div>
+
+      <SectionGap size="sm" />
+
+      {/* Token Scale (50-950), Tints & Shades, and Color Harmonies */}
       <ColorHarmoniesSection
         currentHex={colorSpaces.hex}
+        colorScale={colorScale}
         tints={tints}
         shades={shades}
         harmonies={harmonies}

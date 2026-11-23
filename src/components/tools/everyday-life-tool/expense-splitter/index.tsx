@@ -116,79 +116,84 @@ export default function ExpenseSplitter() {
         ]}
       />
 
-      <SectionGap />
+      <SectionGap size="sm" />
 
-      {/* 1. Group & Members Manager */}
-      <MemberManagerSection
-        eventName={workspace.eventName}
-        currency={workspace.currency}
-        customCurrencyCode={customCurrencyCode}
-        customCurrencySymbol={customCurrencySymbol}
-        members={workspace.members}
-        newMemberName={newMemberName}
-        memberError={memberError}
-        hasExpenses={workspace.expenses.length > 0}
-        onEventNameChange={handleEventNameChange}
-        onCurrencyChange={handleCurrencyChange}
-        onCustomCurrencyCodeChange={handleCustomCurrencyCodeChange}
-        onCustomCurrencySymbolChange={handleCustomCurrencySymbolChange}
-        onNewMemberNameChange={handleNewMemberNameChange}
-        onAddMember={handleAddMember}
-        onRemoveMember={handleRemoveMember}
-        onSaveSnapshot={handleSaveSnapshot}
-        onResetAll={handleRequestResetAll}
-      />
+      {/* Desktop 7:5 Split Ledger + Live Digital Receipt */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">
+        {/* Left Rail: Group Settings, Expense Input & Breakdown */}
+        <div className="space-y-6 lg:col-span-7">
+          {/* 1. Group & Members Manager */}
+          <MemberManagerSection
+            eventName={workspace.eventName}
+            currency={workspace.currency}
+            customCurrencyCode={customCurrencyCode}
+            customCurrencySymbol={customCurrencySymbol}
+            members={workspace.members}
+            newMemberName={newMemberName}
+            memberError={memberError}
+            hasExpenses={workspace.expenses.length > 0}
+            onEventNameChange={handleEventNameChange}
+            onCurrencyChange={handleCurrencyChange}
+            onCustomCurrencyCodeChange={handleCustomCurrencyCodeChange}
+            onCustomCurrencySymbolChange={handleCustomCurrencySymbolChange}
+            onNewMemberNameChange={handleNewMemberNameChange}
+            onAddMember={handleAddMember}
+            onRemoveMember={handleRemoveMember}
+            onSaveSnapshot={handleSaveSnapshot}
+            onResetAll={handleRequestResetAll}
+          />
 
-      <SectionGap />
+          {/* 2. Add Expense Form */}
+          <ExpenseFormSection
+            titleInputRef={expenseTitleInputRef}
+            currency={workspace.currency}
+            currencySymbol={currencySymbol}
+            members={workspace.members}
+            expenseTitle={expenseTitle}
+            expenseAmount={expenseAmount}
+            paidById={paidById}
+            splitType={splitType}
+            selectedParticipantIds={selectedParticipantIds}
+            exactAmounts={exactAmounts}
+            exactRemainder={exactRemainder}
+            parsedExpenseAmount={parsedExpenseAmount}
+            expenseError={expenseError}
+            onExpenseTitleChange={setExpenseTitle}
+            onExpenseAmountChange={setExpenseAmount}
+            onPaidByChange={setPaidById}
+            onSplitTypeChange={setSplitType}
+            onToggleParticipant={handleToggleParticipant}
+            onSelectAllParticipants={handleSelectAllParticipants}
+            onExactAmountChange={handleExactAmountChange}
+            onFillExactRemainder={handleFillExactRemainder}
+            onAddExpense={handleAddExpense}
+          />
 
-      {/* 2. Add Expense Form */}
-      <ExpenseFormSection
-        titleInputRef={expenseTitleInputRef}
-        currency={workspace.currency}
-        currencySymbol={currencySymbol}
-        members={workspace.members}
-        expenseTitle={expenseTitle}
-        expenseAmount={expenseAmount}
-        paidById={paidById}
-        splitType={splitType}
-        selectedParticipantIds={selectedParticipantIds}
-        exactAmounts={exactAmounts}
-        exactRemainder={exactRemainder}
-        parsedExpenseAmount={parsedExpenseAmount}
-        expenseError={expenseError}
-        onExpenseTitleChange={setExpenseTitle}
-        onExpenseAmountChange={setExpenseAmount}
-        onPaidByChange={setPaidById}
-        onSplitTypeChange={setSplitType}
-        onToggleParticipant={handleToggleParticipant}
-        onSelectAllParticipants={handleSelectAllParticipants}
-        onExactAmountChange={handleExactAmountChange}
-        onFillExactRemainder={handleFillExactRemainder}
-        onAddExpense={handleAddExpense}
-      />
+          {/* 3. Recorded Expense Breakdown */}
+          <ExpenseListSection
+            expenses={workspace.expenses}
+            members={workspace.members}
+            currency={workspace.currency}
+            currencySymbol={currencySymbol}
+            totalSpending={summary.totalSpending}
+            onRemoveExpense={handleRemoveExpense}
+          />
+        </div>
 
-      <SectionGap />
-
-      {/* 3. Recorded Expense Breakdown */}
-      <ExpenseListSection
-        expenses={workspace.expenses}
-        members={workspace.members}
-        currency={workspace.currency}
-        currencySymbol={currencySymbol}
-        totalSpending={summary.totalSpending}
-        onRemoveExpense={handleRemoveExpense}
-      />
-
-      <SectionGap />
-
-      {/* 4. Min-Cash-Flow Optimal Settlement & Member Balances */}
-      <SettlementSection
-        summary={summary}
-        currency={workspace.currency}
-        currencySymbol={currencySymbol}
-        hasExpenses={workspace.expenses.length > 0}
-        onOpenShareModal={() => setIsShareModalOpen(true)}
-      />
+        {/* Right Rail: Sticky Live Digital Receipt & Settlement */}
+        <div className="lg:sticky lg:top-24 lg:col-span-5">
+          <SettlementSection
+            eventName={workspace.eventName}
+            memberCount={workspace.members.length}
+            expenseCount={workspace.expenses.length}
+            summary={summary}
+            currency={workspace.currency}
+            currencySymbol={currencySymbol}
+            hasExpenses={workspace.expenses.length > 0}
+            onOpenShareModal={() => setIsShareModalOpen(true)}
+          />
+        </div>
+      </div>
 
       {/* 5. LINE / Chat Export Modal */}
       <ShareBillModal

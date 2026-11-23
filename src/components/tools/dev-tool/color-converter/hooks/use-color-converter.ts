@@ -3,10 +3,15 @@ import type { NormalizedRgba } from '../types';
 import { useCallback, useMemo, useState, useSyncExternalStore } from 'react';
 
 import { DEFAULT_COLOR, DEFAULT_RGBA } from '../constants';
-import { getAllColorSpaces, rgbaToHex } from '../utils/color-converter';
+import {
+  getAllColorSpaces,
+  rgbaToHex,
+  rgbaToHex8,
+} from '../utils/color-converter';
 import {
   getColorHarmonies,
   getShades,
+  getTailwindColorScale,
   getTints,
 } from '../utils/color-harmonies';
 import { parseColorString } from '../utils/color-parser';
@@ -36,6 +41,12 @@ export function useColorConverter() {
     if (parsed) {
       setCurrentRgba(parsed);
     }
+  }, []);
+
+  // Update directly from interactive 2D studio picker
+  const handleRgbaChange = useCallback((nextRgba: NormalizedRgba) => {
+    setCurrentRgba(nextRgba);
+    setColorInput(nextRgba.a < 1 ? rgbaToHex8(nextRgba) : rgbaToHex(nextRgba));
   }, []);
 
   // Reset to default
@@ -92,6 +103,10 @@ export function useColorConverter() {
 
   const tints = useMemo(() => getTints(currentRgba, 5), [currentRgba]);
   const shades = useMemo(() => getShades(currentRgba, 5), [currentRgba]);
+  const colorScale = useMemo(
+    () => getTailwindColorScale(currentRgba),
+    [currentRgba]
+  );
   const harmonies = useMemo(
     () => getColorHarmonies(currentRgba),
     [currentRgba]
@@ -105,10 +120,12 @@ export function useColorConverter() {
     contrastAgainstWhite,
     tints,
     shades,
+    colorScale,
     harmonies,
     isEyeDropperSupported,
     handleInputChange,
     handleSelectColor,
+    handleRgbaChange,
     handleRandomColor,
     handleReset,
     handleEyeDropper,

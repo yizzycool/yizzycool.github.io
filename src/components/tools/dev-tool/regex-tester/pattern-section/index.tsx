@@ -2,18 +2,17 @@
 
 import type { Dispatch, RefObject, SetStateAction } from 'react';
 
-import { useMemo, useState } from 'react';
-import { BookOpen, Settings2 } from 'lucide-react';
+import { Settings2 } from 'lucide-react';
+import { useMemo } from 'react';
 
 import { CopyAction } from '@/components/shared/action-button';
 import LabelBar from '@/components/tools/common/label-bar';
-import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { ErrorMessage } from '@/components/ui/error-message';
 import { Selector } from '@/components/ui/selector';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/utils/cn';
 
-import CheatSheetModal from '../cheat-sheet-modal';
 import { CUSTOM_PRESET_ID, REGEX_PRESETS } from '../constants';
 import FlagSelector from './flag-selector';
 import PatternVisualizer from './pattern-visualizer';
@@ -21,6 +20,7 @@ import PatternVisualizer from './pattern-visualizer';
 type Props = {
   pattern: string;
   flags: string;
+  matchCount: number;
   setPattern: Dispatch<SetStateAction<string>>;
   setFlags: Dispatch<SetStateAction<string>>;
   error: string | null;
@@ -32,6 +32,7 @@ type Props = {
 export default function PatternSection({
   pattern,
   flags,
+  matchCount,
   setPattern,
   setFlags,
   error,
@@ -39,8 +40,6 @@ export default function PatternSection({
   selectedPresetId = CUSTOM_PRESET_ID,
   onSelectPreset,
 }: Props) {
-  const [isCheatSheetOpen, setIsCheatSheetOpen] = useState(false);
-
   const presetOptions = useMemo(
     () => [
       { label: 'Custom Pattern', value: CUSTOM_PRESET_ID },
@@ -75,6 +74,20 @@ export default function PatternSection({
         description={description}
       >
         <div className="flex items-center gap-2">
+          {error ? (
+            <Badge variant="error" size="xs" rounded="full">
+              Invalid Pattern
+            </Badge>
+          ) : (
+            <Badge
+              variant={matchCount > 0 ? 'success' : 'neutral'}
+              size="xs"
+              rounded="full"
+            >
+              {matchCount} {matchCount === 1 ? 'Match' : 'Matches'}
+            </Badge>
+          )}
+
           {onSelectPreset && (
             <div className="w-40 sm:w-44">
               <Selector
@@ -86,76 +99,74 @@ export default function PatternSection({
               />
             </div>
           )}
-
-          <Button
-            variant="ghost"
-            rounded="full"
-            size="xs"
-            icon={BookOpen}
-            onClick={() => setIsCheatSheetOpen(true)}
-            title="Regex Cheat Sheet"
-            ariaLabel="Open Regex Cheat Sheet"
-          />
         </div>
       </LabelBar>
 
-      <div className="space-y-3">
+      <div className="space-y-2.5">
+        {/* RegExr-style Top Command Bar */}
         <div
           className={cn(
-            'shadow-2xs rounded-xl border p-4 pb-2 backdrop-blur-md transition-all duration-200',
+            'shadow-2xs rounded-xl border p-3.5 pb-2.5 backdrop-blur-md transition-all duration-200',
             'border-neutral-200/90 bg-white/80 dark:border-neutral-700/80 dark:bg-neutral-900/80',
             'focus-within:border-sky-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-sky-500/20',
             'dark:focus-within:border-sky-400 dark:focus-within:bg-neutral-900 dark:focus-within:ring-sky-400/40'
           )}
         >
-          <div className="mb-2 flex items-center gap-2 font-mono text-lg">
-            <span className="text-slate-400">/</span>
-            <input
-              ref={patternInputRef}
-              type="text"
-              id="regexp-pattern-input"
-              value={pattern}
-              onChange={(e) => setPattern(e.target.value)}
-              className="flex-1 border-none bg-transparent tracking-widest text-slate-900 outline-none dark:text-slate-100"
-              placeholder="e.g. ([A-Z])\w+"
-              aria-label="Pattern of regular expression"
-              spellCheck="false"
-            />
-            <span className="text-slate-400">/</span>
-            <span className="text-slate-600 dark:text-slate-400">{flags}</span>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex min-w-[200px] flex-1 items-center gap-1.5 font-mono text-base sm:text-lg">
+              <span className="select-none font-bold text-slate-400">/</span>
+              <input
+                ref={patternInputRef}
+                type="text"
+                id="regexp-pattern-input"
+                value={pattern}
+                onChange={(e) => setPattern(e.target.value)}
+                className="min-w-0 flex-1 border-none bg-transparent tracking-wider text-slate-900 outline-none dark:text-slate-100"
+                placeholder="e.g. ([A-Z])\w+"
+                aria-label="Pattern of regular expression"
+                spellCheck="false"
+              />
+              <span className="select-none font-bold text-slate-400">/</span>
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              <FlagSelector flags={flags} setFlags={setFlags} inline />
+
+              <span
+                aria-hidden="true"
+                className="mx-0.5 h-4 w-px bg-neutral-200 dark:bg-neutral-700"
+              />
+
+              <CopyAction
+                display="icon"
+                variant="ghost"
+                size="xs"
+                rounded="full"
+                content={`/${pattern}/${flags}`}
+                title="Copy Regex Pattern"
+                successToast="Copied regex pattern"
+                className="shrink-0"
+              />
+            </div>
           </div>
 
-          <Separator className="mb-2 mt-4" />
+          <Separator className="my-2.5" />
 
           <div className="flex items-center justify-between gap-2">
             <div className="no-scrollbar flex-1 overflow-x-auto whitespace-nowrap font-mono text-xs tracking-widest">
               <span className="mr-2 select-none font-sans text-slate-400">
-                Preview:
+                Tokens:
               </span>
               <PatternVisualizer pattern={pattern} />
             </div>
-
-            <CopyAction
-              display="icon"
-              variant="ghost"
-              size="xs"
-              rounded="full"
-              content={`/${pattern}/${flags}`}
-              title="Copy Regex Pattern"
-              className="shrink-0"
-            />
+            <span className="hidden shrink-0 font-mono text-[11px] text-slate-400 sm:inline dark:text-slate-500">
+              Flags: /{flags}
+            </span>
           </div>
         </div>
 
         <ErrorMessage message={error} />
-
-        <FlagSelector flags={flags} setFlags={setFlags} />
       </div>
-
-      <CheatSheetModal
-        isOpen={isCheatSheetOpen}
-        onClose={() => setIsCheatSheetOpen(false)}
-      />
     </div>
   );
 }

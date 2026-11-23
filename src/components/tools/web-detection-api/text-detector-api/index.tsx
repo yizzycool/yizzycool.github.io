@@ -1,30 +1,18 @@
 'use client';
 
-import type { WebDetectionFileType } from '../result-canvas';
-
-import { Square, Trash2 } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { isNull, map } from 'lodash';
 
+import HeaderBlock from '../../common/header-block';
+import SectionGap from '../../common/section-gap';
+import DarkroomInspector from '../darkroom-inspector';
+import { DETECTION_SHORTCUTS } from '../data/detection-shortcuts';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
+import DetectionTabs from '../detection-tabs';
 import useCommonFunction from '../hooks/use-common-function';
 import useTextDetector from '../hooks/use-text-detector';
-import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
-import { DETECTION_SHORTCUTS } from '../data/detection-shortcuts';
-import HeaderBlock from '../../common/header-block';
 import SystemChecking from '../system-checking';
-import Empty from '../empty';
-import BoundingBox from '../bounding-box';
-import FlipCamera from '../flip-camera';
 import UnsupportedCard from '../unsupported-card';
-import SectionGap from '../../common/section-gap';
-import DetectionTabs from '../detection-tabs';
-import { Tabs } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
-import ResultCanvas from '../result-canvas';
-import DetectionResult from '../detection-result';
-import RawData from '../raw-data';
-
-const TabList: Array<WebDetectionFileType> = ['image', 'video', 'webcam'];
 
 export default function TextDetectorApi() {
   const { hasCheckedApiStatus, isApiSupported, isProcessing, detect } =
@@ -32,9 +20,7 @@ export default function TextDetectorApi() {
 
   const {
     param,
-    // setParam,
     results,
-    // setResults,
     tab,
     setTab,
     resultRef,
@@ -49,15 +35,6 @@ export default function TextDetectorApi() {
   } = useCommonFunction({ detect });
 
   const [ratio, setRatio] = useState(1);
-
-  useEffect(() => {
-    if (isNull(results) || !resultRef.current || !canvasRef.current) return;
-    const { clientWidth } = resultRef.current;
-    const { width } = canvasRef.current;
-    if (width > 0) {
-      setRatio(clientWidth / width);
-    }
-  }, [results, resultRef, canvasRef]);
 
   const transformedResults = useMemo(() => {
     if (isNull(results)) return [];
@@ -77,12 +54,10 @@ export default function TextDetectorApi() {
           x: boundingBox.x * ratio,
           y: boundingBox.y * ratio,
         },
-        cornerPoints: map(cornerPoints, ({ x, y }) => {
-          return {
-            x: x * ratio,
-            y: y * ratio,
-          };
-        }),
+        cornerPoints: map(cornerPoints, ({ x, y }) => ({
+          x: x * ratio,
+          y: y * ratio,
+        })),
       };
     });
   }, [results, ratio]);
@@ -106,57 +81,24 @@ export default function TextDetectorApi() {
 
       <SectionGap size="sm" />
 
-      <div className="w-full text-left">
-        <div className="mb-4 flex items-center justify-between">
-          <Tabs
-            tabs={TabList}
-            activeTab={tab}
-            onChange={(tab) => setTab(tab as WebDetectionFileType)}
-          />
-          {!!param.type && (
-            <Button
-              variant="error"
-              size="xs"
-              icon={param.type === 'webcam' ? Square : Trash2}
-              iconStrokeWidth={param.type === 'webcam' ? 4 : 2}
-              onClick={onClear}
-            >
-              {param.type === 'webcam' ? 'Stop' : 'Clear'}
-            </Button>
-          )}
-        </div>
-        {isEmpty ? (
-          <Empty
-            tab={tab}
-            processImage={processImage}
-            processVideo={processVideo}
-            processWebcam={processWebcam}
-          />
-        ) : (
-          <div className="rounded-xl border border-neutral-200/80 bg-neutral-50/50 py-8 dark:border-neutral-800 dark:bg-neutral-900/30">
-            <div ref={resultRef} className="relative mx-auto h-fit w-fit">
-              <ResultCanvas
-                canvasRef={canvasRef}
-                param={param}
-                onCanvasDraw={onCanvasDraw}
-              />
-              <BoundingBox results={transformedResults} />
-              {param.type === 'webcam' && <FlipCamera onClick={flipWebcam} />}
-            </div>
-          </div>
-        )}
-      </div>
-
-      <SectionGap size="sm" />
-
-      <DetectionResult
-        results={transformedResults}
+      <DarkroomInspector
+        tab={tab}
+        setTab={setTab}
+        param={param}
+        isEmpty={isEmpty}
         isProcessing={isProcessing}
+        results={transformedResults}
+        rawResults={results}
+        resultRef={resultRef}
+        canvasRef={canvasRef}
+        processImage={processImage}
+        processVideo={processVideo}
+        processWebcam={processWebcam}
+        flipWebcam={flipWebcam}
+        onCanvasDraw={onCanvasDraw}
+        onClear={onClear}
+        onRatioChange={setRatio}
       />
-
-      <SectionGap size="sm" />
-
-      <RawData results={results} />
     </>
   );
 }

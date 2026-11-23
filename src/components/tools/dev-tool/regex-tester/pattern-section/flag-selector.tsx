@@ -1,8 +1,10 @@
 import { Button } from '@/components/ui/button';
+import { cn } from '@/utils/cn';
 
 type Props = {
   flags: string;
   setFlags: React.Dispatch<React.SetStateAction<string>>;
+  inline?: boolean;
 };
 
 export const regexFlags = [
@@ -14,7 +16,11 @@ export const regexFlags = [
   { key: 'y', label: 'sticky' },
 ];
 
-export default function FlagSelector({ flags, setFlags }: Props) {
+export default function FlagSelector({
+  flags,
+  setFlags,
+  inline = false,
+}: Props) {
   const toggleFlag = (flag: string) => {
     if (flag === 'g') return;
 
@@ -24,20 +30,31 @@ export default function FlagSelector({ flags, setFlags }: Props) {
   };
 
   return (
-    <div className="mt-6 flex flex-wrap gap-2">
+    <div
+      className={cn(
+        'flex flex-wrap items-center',
+        inline ? 'gap-1' : 'mt-6 gap-2'
+      )}
+    >
       {regexFlags.map((f) => (
         <Button
           key={f.key}
           variant={flags.includes(f.key) ? 'primary' : 'ghost'}
           size="xs"
-          bordered
+          bordered={!inline}
+          rounded={inline ? 'md' : undefined}
           onClick={() => toggleFlag(f.key)}
           disabled={f.key === 'g'}
+          title={`${f.key} — ${f.label}`}
+          ariaLabel={`Toggle ${f.label} flag (${f.key})`}
+          className={inline ? 'h-7 px-2 font-mono text-xs' : undefined}
         >
           <span className="font-bold">{f.key}</span>
-          <span className="ml-1.5 hidden font-normal opacity-80 sm:inline">
-            {f.label}
-          </span>
+          {!inline && (
+            <span className="ml-1.5 hidden font-normal opacity-80 sm:inline">
+              {f.label}
+            </span>
+          )}
         </Button>
       ))}
     </div>

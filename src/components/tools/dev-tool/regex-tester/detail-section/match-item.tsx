@@ -7,18 +7,32 @@ type Props = {
   match: RegExpExecArray;
   index: number;
   grouped?: boolean;
+  isHighlighted?: boolean;
+  onHoverStart?: () => void;
+  onHoverEnd?: () => void;
 };
 
-export default function MatchItem({ match, index, grouped = false }: Props) {
+export default function MatchItem({
+  match,
+  index,
+  grouped = false,
+  isHighlighted = false,
+  onHoverStart,
+  onHoverEnd,
+}: Props) {
   const hasIndexedGroups = match.length > 1;
 
   return (
     <div
+      onMouseEnter={onHoverStart}
+      onMouseLeave={onHoverEnd}
       className={cn(
         'p-3.5 transition-colors',
         grouped
           ? 'hover:bg-neutral-100/40 dark:hover:bg-neutral-800/30'
-          : 'shadow-2xs rounded-xl border border-neutral-200/90 bg-white/80 dark:border-neutral-800 dark:bg-neutral-900/60'
+          : 'shadow-2xs rounded-xl border border-neutral-200/90 bg-white/80 dark:border-neutral-800 dark:bg-neutral-900/60',
+        isHighlighted &&
+          'bg-sky-50/80 ring-1 ring-inset ring-sky-500/30 dark:bg-sky-950/30 dark:ring-sky-400/30'
       )}
       style={{ animationDelay: `${index * 30}ms` }}
     >

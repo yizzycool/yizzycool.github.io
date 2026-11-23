@@ -135,7 +135,10 @@ export default function ResultCanvas({
 
   return (
     <>
-      <canvas ref={canvasRef} className="h-fit w-full lg:max-w-screen-sm" />
+      <canvas
+        ref={canvasRef}
+        className="block h-auto max-h-[64vh] w-auto max-w-full rounded-lg"
+      />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         ref={imageRef}

@@ -23,6 +23,7 @@ type Props = {
   setTestString: Dispatch<SetStateAction<string>>;
   matches: Array<RegExpExecArray>;
   error: string | null;
+  hoveredMatchIndex?: number | null;
   testTextareaRef?: RefObject<HTMLTextAreaElement | null>;
   onPaste?: () => void;
   onClear?: () => void;
@@ -35,6 +36,7 @@ export default function TestSection({
   setTestString,
   matches,
   error,
+  hoveredMatchIndex = null,
   testTextareaRef,
   onPaste,
   onClear,
@@ -77,7 +79,7 @@ export default function TestSection({
       {/* Textarea + Highlighting Overlay */}
       <div
         className={cn(
-          'shadow-2xs relative h-[300px] overflow-auto rounded-xl border backdrop-blur-md transition-all duration-200',
+          'shadow-2xs relative h-[360px] overflow-auto rounded-xl border backdrop-blur-md transition-all duration-200 lg:h-[520px]',
           'border-neutral-200/90 bg-white/80 dark:border-neutral-700/80 dark:bg-neutral-900/80',
           'has-[:focus]:border-sky-500 has-[:focus]:bg-white has-[:focus]:ring-2 has-[:focus]:ring-sky-500/20',
           'dark:has-[:focus]:border-sky-400 dark:has-[:focus]:bg-neutral-900 dark:has-[:focus]:ring-sky-400/40'
@@ -89,6 +91,7 @@ export default function TestSection({
           matches={matches}
           testString={testString}
           error={error}
+          hoveredMatchIndex={hoveredMatchIndex}
         />
 
         <textarea
