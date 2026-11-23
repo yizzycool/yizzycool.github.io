@@ -5,23 +5,25 @@ import type { FileTreeNode } from './types';
 
 import { ChevronDown, ChevronRight, Download, Eye } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/utils/cn';
 import {
-  formatFileSize,
   calculateCompressionRatio,
-  getFileIconConfig,
+  formatFileSize,
   getExtension,
-  TEXT_EXTENSIONS,
+  getFileIconConfig,
   IMAGE_EXTENSIONS,
+  TEXT_EXTENSIONS,
 } from '@/utils/file-utils';
 
 interface FileTreeItemProps<T = unknown> {
   node: FileTreeNode<T>;
   depth: number;
   isExpanded: boolean;
+  selectedPath?: string | null;
   onToggleFolder: (path: string) => void;
+  onSelect?: (node: FileTreeNode<T>) => void;
   onPreview?: (node: FileTreeNode<T>) => void;
   onDownload?: (node: FileTreeNode<T>) => void;
 }
@@ -30,11 +32,14 @@ export function FileTreeItem<T = unknown>({
   node,
   depth,
   isExpanded,
+  selectedPath = null,
   onToggleFolder,
+  onSelect,
   onPreview,
   onDownload,
 }: FileTreeItemProps<T>) {
   const isDir = node.isDirectory;
+  const isSelected = !isDir && !!selectedPath && selectedPath === node.path;
   const ext = node.extension || getExtension(node.name);
   const iconConfig = getFileIconConfig(ext, isDir, isExpanded);
   const IconComponent = iconConfig.icon;
@@ -43,6 +48,8 @@ export function FileTreeItem<T = unknown>({
     !isDir &&
     !!onPreview &&
     (TEXT_EXTENSIONS.has(ext) || IMAGE_EXTENSIONS.has(ext));
+
+  const isClickableRow = isDir || !!onSelect || canPreview;
 
   const ratio =
     !isDir && node.compressedSize !== undefined
@@ -57,13 +64,22 @@ export function FileTreeItem<T = unknown>({
     <div
       className={cn(
         'group flex items-center justify-between gap-2 px-3 py-2 text-xs transition',
-        'hover:bg-slate-100/80 dark:hover:bg-neutral-800/60',
+        isSelected
+          ? 'bg-sky-50/90 ring-1 ring-inset ring-sky-200/80 dark:bg-sky-950/40 dark:ring-sky-800/60'
+          : 'hover:bg-slate-100/80 dark:hover:bg-neutral-800/60',
         depth > 0 && 'border-l border-slate-200/50 dark:border-neutral-800/50',
-        isDir && 'cursor-pointer select-none font-medium'
+        isClickableRow && 'cursor-pointer',
+        isDir && 'select-none font-medium'
       )}
       style={{ paddingLeft: `${Math.max(12, depth * 20 + 12)}px` }}
       onClick={() => {
-        if (isDir) onToggleFolder(node.path);
+        if (isDir) {
+          onToggleFolder(node.path);
+        } else if (onSelect) {
+          onSelect(node);
+        } else if (canPreview) {
+          onPreview?.(node);
+        }
       }}
     >
       {/* Left: Icon and Name */}
@@ -89,7 +105,9 @@ export function FileTreeItem<T = unknown>({
             'truncate font-mono text-xs',
             isDir
               ? 'font-semibold text-slate-800 dark:text-slate-100'
-              : 'text-slate-700 dark:text-slate-300'
+              : isSelected
+                ? 'font-semibold text-sky-700 dark:text-sky-300'
+                : 'text-slate-700 dark:text-slate-300'
           )}
           title={node.path}
         >
@@ -123,7 +141,6 @@ export function FileTreeItem<T = unknown>({
           </Badge>
         )}
 
-        {/* Action Buttons */}
         {!isDir && (
           <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100">
             {canPreview && (
@@ -133,7 +150,7 @@ export function FileTreeItem<T = unknown>({
                 rounded="md"
                 icon={Eye}
                 onClick={() => onPreview?.(node)}
-                title="Preview file content"
+                title="Open fullscreen preview"
                 className="h-7 w-7 p-0"
               />
             )}

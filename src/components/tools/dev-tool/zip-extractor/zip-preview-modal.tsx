@@ -17,7 +17,7 @@ export default function ZipPreviewModal({
 }: ZipPreviewModalProps) {
   const {
     entry,
-    isOpen,
+    isModalOpen,
     isLoading,
     isText,
     isImage,
@@ -31,7 +31,7 @@ export default function ZipPreviewModal({
 
   return (
     <FilePreviewModal
-      isOpen={isOpen}
+      isOpen={isModalOpen}
       onClose={onClose}
       fileName={entry.name}
       fileSize={entry.size}

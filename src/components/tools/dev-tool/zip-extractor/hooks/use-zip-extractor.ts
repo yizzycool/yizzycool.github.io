@@ -3,11 +3,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as fflate from 'fflate';
 
-import toast from '@/utils/toast';
-import { getImageMimeType } from '@/utils/file-utils';
 import useToolHotkeys, {
   hasOpenModalDialog,
 } from '@/hooks/tools/use-tool-hotkeys';
+import { getImageMimeType } from '@/utils/file-utils';
+import toast from '@/utils/toast';
+
+import {
+  IMAGE_EXTENSIONS,
+  INITIAL_PREVIEW_STATE,
+  MAX_PREVIEW_TEXT_SIZE,
+  SYNTAX_LANGUAGE_MAP,
+  TEXT_EXTENSIONS,
+} from '../constants';
 import type {
   PreviewState,
   ZipFileEntry,
@@ -15,17 +23,27 @@ import type {
   ZipTreeNode,
 } from '../types';
 import {
-  INITIAL_PREVIEW_STATE,
-  MAX_PREVIEW_TEXT_SIZE,
-  IMAGE_EXTENSIONS,
-  SYNTAX_LANGUAGE_MAP,
-  TEXT_EXTENSIONS,
-} from '../constants';
-import {
   extractSingleFile,
   parseZipArchive,
   triggerDownload,
 } from '../utils/zip-core';
+
+function findFirstPreviewableEntry(
+  entries: ZipFileEntry[]
+): ZipFileEntry | null {
+  const readme = entries.find(
+    (entry) => !entry.isDirectory && entry.name.toLowerCase() === 'readme.md'
+  );
+  if (readme) return readme;
+
+  return (
+    entries.find((entry) => {
+      if (entry.isDirectory) return false;
+      const ext = entry.extension.toLowerCase();
+      return TEXT_EXTENSIONS.has(ext) || IMAGE_EXTENSIONS.has(ext);
+    }) ?? null
+  );
+}
 
 export default function useZipExtractor() {
   const [file, setFile] = useState<File | null>(null);
@@ -49,57 +67,139 @@ export default function useZipExtractor() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Load and parse ZIP file
-  const handleFileSelect = useCallback(async (selectedFile: File) => {
-    if (!selectedFile) return;
+  const loadPreviewEntry = useCallback(
+    async (buffer: Uint8Array, entry: ZipFileEntry, openModal: boolean) => {
+      const ext = entry.extension.toLowerCase();
+      const isText = TEXT_EXTENSIONS.has(ext);
+      const isImage = IMAGE_EXTENSIONS.has(ext);
 
-    if (
-      !selectedFile.name.toLowerCase().endsWith('.zip') &&
-      selectedFile.type !== 'application/zip'
-    ) {
-      const msg = 'Please select a valid .zip archive file.';
-      setError(msg);
-      toast.error(msg);
-      return;
-    }
-
-    setIsParsing(true);
-    setError(null);
-    setSearchQuery('');
-    setPreviewState(INITIAL_PREVIEW_STATE);
-
-    try {
-      const buffer = new Uint8Array(await selectedFile.arrayBuffer());
-      setZipBuffer(buffer);
-      setFile(selectedFile);
-
-      const parsed = await parseZipArchive(selectedFile);
-      setFlatEntries(parsed.entries);
-      setSummary(parsed.summary);
-      setTree(parsed.tree);
-
-      // Default expand top-level folders
-      const initialExpanded = new Set<string>();
-      for (const child of parsed.tree.children) {
-        if (child.isDirectory) {
-          initialExpanded.add(child.path);
-        }
+      if (!isText && !isImage) {
+        setPreviewState({
+          isModalOpen: openModal,
+          entry,
+          isLoading: false,
+          isText: false,
+          isImage: false,
+          textContent: null,
+          imageUrl: null,
+          syntaxLanguage: 'text',
+          error: null,
+        });
+        return;
       }
-      setExpandedFolders(initialExpanded);
 
-      toast.success(
-        `Loaded ${parsed.summary.totalFiles} files from ZIP archive`
-      );
-    } catch (err) {
-      const msg = (err as Error).message || 'Failed to read or parse ZIP file.';
-      setError(msg);
-      toast.error(msg);
-    } finally {
-      setIsParsing(false);
-    }
-  }, []);
+      setPreviewState({
+        isModalOpen: openModal,
+        entry,
+        isLoading: true,
+        isText,
+        isImage,
+        textContent: null,
+        imageUrl: null,
+        syntaxLanguage: SYNTAX_LANGUAGE_MAP[ext] || 'text',
+        error: null,
+      });
 
-  // Clear current archive
+      try {
+        const data = await extractSingleFile(buffer, entry.path);
+
+        if (isImage) {
+          const mimeType = getImageMimeType(ext);
+          const blob = new Blob([data as unknown as BlobPart], {
+            type: mimeType,
+          });
+          const url = URL.createObjectURL(blob);
+          setPreviewState((prev) => ({
+            ...prev,
+            isLoading: false,
+            imageUrl: url,
+          }));
+        } else if (isText) {
+          if (entry.size > MAX_PREVIEW_TEXT_SIZE) {
+            setPreviewState((prev) => ({
+              ...prev,
+              isLoading: false,
+              error: `File is too large to preview inline (${(entry.size / (1024 * 1024)).toFixed(1)} MB). Please download directly.`,
+            }));
+            return;
+          }
+
+          const decoded = new TextDecoder('utf-8').decode(data);
+          setPreviewState((prev) => ({
+            ...prev,
+            isLoading: false,
+            textContent: decoded,
+          }));
+        }
+      } catch (err) {
+        setPreviewState((prev) => ({
+          ...prev,
+          isLoading: false,
+          error: (err as Error).message || 'Failed to extract preview data',
+        }));
+      }
+    },
+    []
+  );
+
+  // Load and parse ZIP file
+  const handleFileSelect = useCallback(
+    async (selectedFile: File) => {
+      if (!selectedFile) return;
+
+      if (
+        !selectedFile.name.toLowerCase().endsWith('.zip') &&
+        selectedFile.type !== 'application/zip'
+      ) {
+        const msg = 'Please select a valid .zip archive file.';
+        setError(msg);
+        toast.error(msg);
+        return;
+      }
+
+      setIsParsing(true);
+      setError(null);
+      setSearchQuery('');
+      setPreviewState(INITIAL_PREVIEW_STATE);
+
+      try {
+        const buffer = new Uint8Array(await selectedFile.arrayBuffer());
+        setZipBuffer(buffer);
+        setFile(selectedFile);
+
+        const parsed = await parseZipArchive(selectedFile);
+        setFlatEntries(parsed.entries);
+        setSummary(parsed.summary);
+        setTree(parsed.tree);
+
+        const initialExpanded = new Set<string>();
+        for (const child of parsed.tree.children) {
+          if (child.isDirectory) {
+            initialExpanded.add(child.path);
+          }
+        }
+        setExpandedFolders(initialExpanded);
+
+        const firstEntry = findFirstPreviewableEntry(parsed.entries);
+        if (firstEntry) {
+          void loadPreviewEntry(buffer, firstEntry, false);
+        }
+
+        toast.success(
+          `Loaded ${parsed.summary.totalFiles} files from ZIP archive`
+        );
+      } catch (err) {
+        const msg =
+          (err as Error).message || 'Failed to read or parse ZIP file.';
+        setError(msg);
+        toast.error(msg);
+      } finally {
+        setIsParsing(false);
+      }
+    },
+    [loadPreviewEntry]
+  );
+
   const handleClear = useCallback(() => {
     setFile(null);
     setZipBuffer(null);
@@ -109,15 +209,9 @@ export default function useZipExtractor() {
     setError(null);
     setSearchQuery('');
     setExpandedFolders(new Set());
-    setPreviewState((prev) => {
-      if (prev.imageUrl) {
-        URL.revokeObjectURL(prev.imageUrl);
-      }
-      return INITIAL_PREVIEW_STATE;
-    });
+    setPreviewState(INITIAL_PREVIEW_STATE);
   }, []);
 
-  // Generate and load a mock sample ZIP archive
   const handleLoadSample = useCallback(() => {
     try {
       const sampleFiles: Record<string, Uint8Array> = {
@@ -165,7 +259,6 @@ export default function useZipExtractor() {
     }
   }, [handleFileSelect]);
 
-  // Toggle single folder
   const handleToggleFolder = useCallback((folderPath: string) => {
     setExpandedFolders((prev) => {
       const next = new Set(prev);
@@ -178,7 +271,6 @@ export default function useZipExtractor() {
     });
   }, []);
 
-  // Expand all folders
   const handleExpandAll = useCallback(() => {
     if (!tree) return;
     const all = new Set<string>();
@@ -192,12 +284,10 @@ export default function useZipExtractor() {
     setExpandedFolders(all);
   }, [tree]);
 
-  // Collapse all folders
   const handleCollapseAll = useCallback(() => {
     setExpandedFolders(new Set());
   }, []);
 
-  // Download single file
   const handleDownloadSingle = useCallback(
     async (entry: ZipFileEntry) => {
       if (!zipBuffer) return;
@@ -212,12 +302,10 @@ export default function useZipExtractor() {
     [zipBuffer]
   );
 
-  // Download all files
   const handleDownloadAll = useCallback(async () => {
     if (!zipBuffer || !file) return;
     setIsDownloadingAll(true);
     try {
-      // Direct download the archive or unzipped bundle
       triggerDownload(zipBuffer, file.name);
       toast.success('Archive downloaded successfully');
     } catch (err) {
@@ -227,90 +315,35 @@ export default function useZipExtractor() {
     }
   }, [file, zipBuffer]);
 
-  // Preview file
   const handlePreview = useCallback(
-    async (entry: ZipFileEntry) => {
+    async (entry: ZipFileEntry, options?: { openModal?: boolean }) => {
       if (!zipBuffer) return;
-
-      const ext = entry.extension.toLowerCase();
-      const isText = TEXT_EXTENSIONS.has(ext);
-      const isImage = IMAGE_EXTENSIONS.has(ext);
-
-      if (!isText && !isImage) {
-        toast.warning('Preview not available for this binary format');
-        return;
-      }
-
-      setPreviewState((prev) => {
-        if (prev.imageUrl) {
-          URL.revokeObjectURL(prev.imageUrl);
-        }
-        return {
-          isOpen: true,
-          entry,
-          isLoading: true,
-          isText,
-          isImage,
-          textContent: null,
-          imageUrl: null,
-          syntaxLanguage: SYNTAX_LANGUAGE_MAP[ext] || 'text',
-          error: null,
-        };
-      });
-
-      try {
-        const data = await extractSingleFile(zipBuffer, entry.path);
-
-        if (isImage) {
-          const mimeType = getImageMimeType(ext);
-          const blob = new Blob([data as unknown as BlobPart], {
-            type: mimeType,
-          });
-          const url = URL.createObjectURL(blob);
-          setPreviewState((prev) => ({
-            ...prev,
-            isLoading: false,
-            imageUrl: url,
-          }));
-        } else if (isText) {
-          if (entry.size > MAX_PREVIEW_TEXT_SIZE) {
-            setPreviewState((prev) => ({
-              ...prev,
-              isLoading: false,
-              error: `File is too large to preview inline (${(entry.size / (1024 * 1024)).toFixed(1)} MB). Please download directly.`,
-            }));
-            return;
-          }
-
-          const decoded = new TextDecoder('utf-8').decode(data);
-          setPreviewState((prev) => ({
-            ...prev,
-            isLoading: false,
-            textContent: decoded,
-          }));
-        }
-      } catch (err) {
-        setPreviewState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: (err as Error).message || 'Failed to extract preview data',
-        }));
-      }
+      const shouldOpenModal =
+        options?.openModal ??
+        (typeof window !== 'undefined' && window.innerWidth < 1024);
+      await loadPreviewEntry(zipBuffer, entry, shouldOpenModal);
     },
-    [zipBuffer]
+    [loadPreviewEntry, zipBuffer]
   );
 
-  const handleClosePreview = useCallback(() => {
+  const handleOpenPreviewModal = useCallback(() => {
+    setPreviewState((prev) =>
+      prev.entry ? { ...prev, isModalOpen: true } : prev
+    );
+  }, []);
+
+  const handleClosePreviewModal = useCallback(() => {
     setPreviewState((prev) => ({
       ...prev,
-      isOpen: false,
+      isModalOpen: false,
     }));
   }, []);
 
   useEffect(() => {
+    const objectUrl = previewState.imageUrl;
     return () => {
-      if (previewState.imageUrl) {
-        URL.revokeObjectURL(previewState.imageUrl);
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
       }
     };
   }, [previewState.imageUrl]);
@@ -327,7 +360,7 @@ export default function useZipExtractor() {
           active.tagName === 'TEXTAREA' ||
           active.getAttribute('contenteditable') === 'true');
 
-      if (e.key === '/' && !isTyping && !previewState.isOpen && file) {
+      if (e.key === '/' && !isTyping && !previewState.isModalOpen && file) {
         e.preventDefault();
         searchInputRef.current?.focus();
       }
@@ -335,13 +368,12 @@ export default function useZipExtractor() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [file, previewState.isOpen]);
+  }, [file, previewState.isModalOpen]);
 
-  // Hook global hotkeys
   useToolHotkeys({
     onClear: () => {
-      if (previewState.isOpen) {
-        handleClosePreview();
+      if (previewState.isModalOpen) {
+        handleClosePreviewModal();
       } else if (file) {
         handleClear();
       }
@@ -371,6 +403,7 @@ export default function useZipExtractor() {
     handleDownloadSingle,
     handleDownloadAll,
     handlePreview,
-    handleClosePreview,
+    handleOpenPreviewModal,
+    handleClosePreviewModal,
   };
 }

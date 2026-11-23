@@ -187,7 +187,7 @@ export default function TimestampToDateSection({
               </Button>
             </div>
 
-            <div className="mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+            <div className="mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
               {(showAllTimezones
                 ? convertedValues.timezones
                 : convertedValues.timezones.slice(0, 4)

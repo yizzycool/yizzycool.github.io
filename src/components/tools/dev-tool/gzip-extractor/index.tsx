@@ -11,28 +11,36 @@ import {
   FolderPlus,
 } from 'lucide-react';
 
-import HeaderBlock from '@/components/tools/common/header-block';
-import SectionGap from '@/components/tools/common/section-gap';
-import LabelBar from '@/components/tools/common/label-bar';
-import ExecuteBar from '@/components/tools/common/execute-bar';
-import { PillTabs } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
-import { SearchInput } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { ErrorMessage } from '@/components/ui/error-message';
 import {
   CopyAction,
   DeleteAction,
   SampleAction,
 } from '@/components/shared/action-button';
+import {
+  FilePreviewBody,
+  FilePreviewModal,
+  FilePreviewPane,
+} from '@/components/shared/file-preview-modal';
 import { FileTree } from '@/components/shared/file-tree';
-import { FilePreviewModal } from '@/components/shared/file-preview-modal';
+import ExecuteBar from '@/components/tools/common/execute-bar';
+import HeaderBlock from '@/components/tools/common/header-block';
+import LabelBar from '@/components/tools/common/label-bar';
+import SectionGap from '@/components/tools/common/section-gap';
+import { Button } from '@/components/ui/button';
+import { ErrorMessage } from '@/components/ui/error-message';
+import { SearchInput } from '@/components/ui/input';
+import { PillTabs } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
-import { formatFileSize } from '@/utils/file-utils';
+import {
+  formatFileSize,
+  getExtension,
+  SYNTAX_LANGUAGE_MAP,
+} from '@/utils/file-utils';
 
-import useGzipExtractor from './hooks/use-gzip-extractor';
 import GzipDropzone from './gzip-dropzone';
 import GzipSummaryBar from './gzip-summary-bar';
+import useGzipExtractor from './hooks/use-gzip-extractor';
 
 const INPUT_SOURCE_TABS: InputSource[] = ['file', 'text'];
 
@@ -50,6 +58,29 @@ const INPUT_SOURCE_TAB_LABELS: Record<InputSource, ReactNode> = {
     </span>
   ),
 };
+
+const MAX_HIGHLIGHTED_TEXT_LENGTH = 100_000;
+
+function inferTextLanguage(fileName: string, content: string): string {
+  const ext = getExtension(fileName);
+  const mapped = SYNTAX_LANGUAGE_MAP[ext];
+  if (mapped && mapped !== 'text') return mapped;
+
+  const trimmed = content.trim();
+  if (
+    (trimmed.startsWith('{') && trimmed.endsWith('}')) ||
+    (trimmed.startsWith('[') && trimmed.endsWith(']'))
+  ) {
+    try {
+      JSON.parse(trimmed);
+      return 'json';
+    } catch {
+      return 'text';
+    }
+  }
+
+  return mapped || 'text';
+}
 
 export default function GzipExtractor() {
   const {
@@ -76,9 +107,15 @@ export default function GzipExtractor() {
     onExpandAll,
     onCollapseAll,
     onPreviewTarEntry,
+    onOpenPreviewModal,
     onClosePreview,
     onDownloadTarEntry,
   } = useGzipExtractor();
+
+  const textLanguage =
+    result && !result.isTar && result.isText && result.textContent !== null
+      ? inferTextLanguage(result.fileName, result.textContent)
+      : 'text';
 
   return (
     <div>
@@ -93,7 +130,6 @@ export default function GzipExtractor() {
 
       <SectionGap size="sm" />
 
-      {/* Mode Switcher Tabs */}
       <div className="flex items-center justify-between">
         <PillTabs<InputSource>
           tabs={INPUT_SOURCE_TABS}
@@ -108,7 +144,6 @@ export default function GzipExtractor() {
 
       <SectionGap size="sm" />
 
-      {/* Mode 1: File Upload Mode */}
       {inputSource === 'file' && (
         <GzipDropzone
           file={file}
@@ -119,7 +154,6 @@ export default function GzipExtractor() {
         />
       )}
 
-      {/* Mode 2: Base64 / Hex Stream Input Mode */}
       {inputSource === 'text' && (
         <div className="flex flex-col gap-3">
           <LabelBar
@@ -161,16 +195,13 @@ export default function GzipExtractor() {
         </div>
       )}
 
-      {/* Error Feedback */}
       <ErrorMessage message={error} className="mt-3" />
 
-      {/* Decompressed Result & Inspection Section */}
       {result && (
-        <div className="mt-6 flex flex-col gap-6">
-          {/* Summary Metric Bar */}
+        <div className="mt-6 flex flex-col gap-5">
           <GzipSummaryBar summary={result.summary} />
 
-          {/* Result Type 1: TAR Archive Multi-file Explorer */}
+          {/* Result Type 1: Master-Detail TAR Archive Explorer */}
           {result.isTar && result.tarTree && (
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -220,28 +251,63 @@ export default function GzipExtractor() {
                 </div>
               </div>
 
-              {/* Shared File Tree */}
-              <FileTree<TarFileEntry>
-                tree={result.tarTree}
-                searchQuery={searchQuery}
-                expandedFolders={expandedFolders}
-                onToggleFolder={onToggleFolder}
-                onPreview={(node) => {
-                  if (node.entry) onPreviewTarEntry(node.entry);
-                }}
-                onDownload={(node) => {
-                  if (node.entry) onDownloadTarEntry(node.entry);
-                }}
-              />
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:items-start">
+                <div className="lg:col-span-5 xl:col-span-4">
+                  <FileTree<TarFileEntry>
+                    tree={result.tarTree}
+                    searchQuery={searchQuery}
+                    expandedFolders={expandedFolders}
+                    selectedPath={preview.entry?.path ?? null}
+                    onToggleFolder={onToggleFolder}
+                    onSelect={(node) => {
+                      if (node.entry) onPreviewTarEntry(node.entry);
+                    }}
+                    onPreview={(node) => {
+                      if (node.entry) {
+                        onPreviewTarEntry(node.entry, { openModal: true });
+                      }
+                    }}
+                    onDownload={(node) => {
+                      if (node.entry) onDownloadTarEntry(node.entry);
+                    }}
+                    className="max-h-[600px] overflow-y-auto"
+                  />
+                </div>
+
+                <div className="hidden lg:col-span-7 lg:block xl:col-span-8">
+                  <FilePreviewPane
+                    className="h-[600px]"
+                    fileName={preview.entry?.name ?? ''}
+                    fileSize={preview.entry?.size ?? 0}
+                    filePath={preview.entry?.path}
+                    extension={preview.entry?.extension}
+                    isText={preview.isText}
+                    isImage={preview.isImage}
+                    textContent={preview.textContent}
+                    imageUrl={preview.imageUrl}
+                    syntaxLanguage={preview.syntaxLanguage}
+                    onDownload={
+                      preview.entry
+                        ? () => onDownloadTarEntry(preview.entry!)
+                        : undefined
+                    }
+                    onExpandModal={
+                      preview.entry ? onOpenPreviewModal : undefined
+                    }
+                    emptyTitle="Select a TAR entry to inspect"
+                    emptyDescription="Click any text, code, config, or image entry in the TAR tree on the left to preview it inline."
+                  />
+                </div>
+              </div>
             </div>
           )}
 
-          {/* Result Type 2: Plain Text / JSON / Log Preview */}
+          {/* Result Type 2: Decompressed Text / JSON / Code Preview */}
           {!result.isTar && result.isText && result.textContent !== null && (
             <div className="flex flex-col gap-2">
               <LabelBar
                 label="Decompressed Text Content"
-                description={`Format: UTF-8 Text (${formatFileSize(result.decompressedData.length)})`}
+                description={`Format: UTF-8 (${textLanguage.toUpperCase()}) • ${formatFileSize(result.decompressedData.length)}`}
                 actions={
                   <div className="flex items-center gap-2">
                     <CopyAction
@@ -264,11 +330,22 @@ export default function GzipExtractor() {
                 }
               />
 
-              <div className="backdrop-blur-xs shadow-xs relative overflow-hidden rounded-xl border border-slate-200/80 bg-white/70 dark:border-neutral-800/80 dark:bg-neutral-900/70">
-                <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-800 selection:bg-blue-500/20 dark:text-slate-200">
-                  {result.textContent}
-                </pre>
-              </div>
+              {result.textContent.length <= MAX_HIGHLIGHTED_TEXT_LENGTH ? (
+                <FilePreviewBody
+                  fileName={result.fileName}
+                  fileSize={result.decompressedData.length}
+                  isText
+                  textContent={result.textContent}
+                  syntaxLanguage={textLanguage}
+                  codeMaxHeightClassName="[&_pre>div>div:nth-child(2)]:max-h-[480px]"
+                />
+              ) : (
+                <div className="backdrop-blur-xs shadow-xs relative overflow-hidden rounded-xl border border-slate-200/80 bg-white/70 dark:border-neutral-800/80 dark:bg-neutral-900/70">
+                  <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-800 selection:bg-blue-500/20 dark:text-slate-200">
+                    {result.textContent}
+                  </pre>
+                </div>
+              )}
             </div>
           )}
 
@@ -308,9 +385,8 @@ export default function GzipExtractor() {
         </div>
       )}
 
-      {/* Shared In-Browser Modal for Tar Entries */}
       <FilePreviewModal
-        isOpen={preview.isOpen}
+        isOpen={preview.isModalOpen}
         onClose={onClosePreview}
         fileName={preview.entry?.name ?? ''}
         fileSize={preview.entry?.size ?? 0}

@@ -37,9 +37,7 @@ export function getExtension(filename: string): string {
 /**
  * Parse ZIP file header and directory tree without loading full content into memory (Lazy metadata parsing)
  */
-export async function parseZipArchive(
-  file: File
-): Promise<{
+export async function parseZipArchive(file: File): Promise<{
   entries: ZipFileEntry[];
   summary: ZipSummary;
   tree: ZipTreeNode;

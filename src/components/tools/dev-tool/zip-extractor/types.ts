@@ -31,7 +31,7 @@ export interface ZipSummary {
 }
 
 export interface PreviewState {
-  isOpen: boolean;
+  isModalOpen: boolean;
   entry: ZipFileEntry | null;
   isLoading: boolean;
   isText: boolean;

@@ -7,9 +7,9 @@ import { LoaderCircle, PenLine, WandSparkles } from 'lucide-react';
 import { isEmpty } from 'lodash';
 
 import browserUtils from '@/utils/browser-utils';
+import toast from '@/utils/toast';
 import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
-import { PasteAction } from '@/components/shared/action-button';
-import { DeleteAction } from '@/components/shared/action-button';
+import { DeleteAction, PasteAction } from '@/components/shared/action-button';
 import { Textarea } from '@/components/ui/textarea';
 
 import useAiRewriter from '../hooks/use-ai-rewriter';
@@ -25,6 +25,7 @@ import Config from './config';
 
 export default function RewriterApi() {
   const [text, setText] = useState('');
+  const [sourceSnapshot, setSourceSnapshot] = useState('');
   const [results, setResults] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -32,10 +33,8 @@ export default function RewriterApi() {
   const {
     hasCheckedAIStatus,
     isApiSupported,
-    // availability,
     options,
     isOptionUpdating,
-    // rewrite,
     rewriteStreaming,
     updateRewriter,
     shouldDownloadModel,
@@ -44,11 +43,12 @@ export default function RewriterApi() {
   } = useAiRewriter();
 
   const onPasteText = (value: string) => {
-    setText(value as string);
+    setText(value);
   };
 
   const onClearClick = () => {
     setText('');
+    setSourceSnapshot('');
     setResults('');
   };
 
@@ -56,9 +56,21 @@ export default function RewriterApi() {
     setText(e.target.value);
   };
 
+  const scrollToResultBlock = () => {
+    if (typeof window !== 'undefined' && window.innerWidth >= 1024) return;
+    const result = document.getElementById('result');
+    if (!result) return;
+    result.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'start',
+    });
+  };
+
   const onProcessClick = async () => {
     if (isEmpty(text) || isProcessing) return;
     setIsProcessing(true);
+    setSourceSnapshot(text);
     await browserUtils.sleep(100);
     scrollToResultBlock();
     setResults('');
@@ -68,14 +80,12 @@ export default function RewriterApi() {
     setIsProcessing(false);
   };
 
-  const scrollToResultBlock = () => {
-    const result = document.getElementById('result');
-    if (!result) return;
-    result.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-      inline: 'start',
-    });
+  const handleAcceptToInput = (nextText: string) => {
+    setText(nextText);
+    setSourceSnapshot('');
+    setResults('');
+    toast.success('Replaced input with rewritten text');
+    textareaRef.current?.focus();
   };
 
   useToolHotkeys(
@@ -127,38 +137,48 @@ export default function RewriterApi() {
 
       <SectionGap size="sm" />
 
-      {/* Input */}
-      <LabelBar
-        label="Start by adding your text"
-        icon={PenLine}
-        htmlFor="text-textarea"
-      >
-        <PasteAction onClick={onPasteText} />
-        <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
-      </LabelBar>
-      <Textarea
-        ref={textareaRef}
-        id="text-textarea"
-        onChange={onChange}
-        value={text}
-        rows={10}
-        placeholder="e.g. Rewrite this sentence to sound more professional: “I might be late to the meeting.”"
-      />
+      {/* Editorial Split Editor (Desktop 6:6, Mobile Stacked) */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">
+        <div className="flex flex-col lg:col-span-6">
+          <LabelBar
+            label="Source Draft"
+            icon={PenLine}
+            htmlFor="rewriter-textarea"
+          >
+            <PasteAction onClick={onPasteText} />
+            <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
+          </LabelBar>
+          <Textarea
+            ref={textareaRef}
+            id="rewriter-textarea"
+            onChange={onChange}
+            value={text}
+            rows={14}
+            className="min-h-[340px] lg:h-[420px]"
+            placeholder="e.g. Rewrite this sentence to sound more professional: “I might be late to the meeting.”"
+          />
+          <ExecuteBar
+            label={isProcessing ? 'Rewriting...' : 'Rewrite'}
+            icon={isProcessing ? LoaderCircle : WandSparkles}
+            iconClassName={isProcessing ? 'animate-spin' : ''}
+            disabled={isEmpty(text) || isProcessing}
+            onClick={onProcessClick}
+            text={text}
+          />
+        </div>
 
-      {/* Execute Bar */}
-      <ExecuteBar
-        label={isProcessing ? 'Rewriting...' : 'Rewrite'}
-        icon={isProcessing ? LoaderCircle : WandSparkles}
-        iconClassName={isProcessing ? 'animate-spin' : ''}
-        disabled={isEmpty(text) || isProcessing}
-        onClick={onProcessClick}
-        text={text}
-      />
-
-      <SectionGap size="sm" />
-
-      {/* Result */}
-      <PromptResult results={results} isProcessing={isProcessing} />
+        <div className="lg:col-span-6">
+          <PromptResult
+            label="Output"
+            results={results}
+            isProcessing={isProcessing}
+            enableDiff
+            originalText={sourceSnapshot || text}
+            onAcceptToInput={handleAcceptToInput}
+            panelClassName="min-h-[340px] lg:h-[420px]"
+          />
+        </div>
+      </div>
     </>
   );
 }

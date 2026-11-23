@@ -1,31 +1,96 @@
 'use client';
 
 import type { ChangeEvent } from 'react';
+import type { FileTreeNode } from '@/components/shared/file-tree';
 import type {
   GzipDecompressResult,
   InputSource,
   TarFileEntry,
   TarPreviewState,
 } from '../types';
-import type { FileTreeNode } from '@/components/shared/file-tree';
 
-import { useState, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import * as fflate from 'fflate';
 
 import useToolHotkeys from '@/hooks/tools/use-tool-hotkeys';
-import toast from '@/utils/toast';
 import {
-  TEXT_EXTENSIONS,
+  getImageMimeType,
   IMAGE_EXTENSIONS,
   SYNTAX_LANGUAGE_MAP,
-  getImageMimeType,
+  TEXT_EXTENSIONS,
 } from '@/utils/file-utils';
+import toast from '@/utils/toast';
+
 import { INITIAL_PREVIEW_STATE, SAMPLE_BASE64_GZIP } from '../constants';
 import {
   createTarArchive,
   decodeCompressedString,
   decompressBuffer,
 } from '../utils/gzip-core';
+
+function findFirstPreviewableTarEntry(
+  root: FileTreeNode<TarFileEntry>
+): TarFileEntry | null {
+  const flat: TarFileEntry[] = [];
+
+  const collect = (node: FileTreeNode<TarFileEntry>) => {
+    if (!node.isDirectory && node.entry) {
+      flat.push(node.entry);
+    }
+    for (const child of node.children) {
+      collect(child);
+    }
+  };
+  collect(root);
+
+  const readme = flat.find((entry) => entry.name.toLowerCase() === 'readme.md');
+  if (readme) return readme;
+
+  return (
+    flat.find((entry) => {
+      const ext = entry.extension.toLowerCase();
+      return TEXT_EXTENSIONS.has(ext) || IMAGE_EXTENSIONS.has(ext);
+    }) ?? null
+  );
+}
+
+function buildTarPreviewState(
+  entry: TarFileEntry,
+  isModalOpen: boolean
+): TarPreviewState {
+  const ext = entry.extension.toLowerCase();
+  const isTxt = TEXT_EXTENSIONS.has(ext);
+  const isImg = IMAGE_EXTENSIONS.has(ext);
+
+  let txtContent: string | null = null;
+  let imgUrl: string | null = null;
+
+  if (entry.data && isTxt) {
+    try {
+      txtContent = new TextDecoder('utf-8').decode(entry.data);
+    } catch {
+      txtContent = null;
+    }
+  }
+
+  if (entry.data && isImg) {
+    const mimeType = getImageMimeType(ext);
+    const blob = new Blob([entry.data as unknown as BlobPart], {
+      type: mimeType,
+    });
+    imgUrl = URL.createObjectURL(blob);
+  }
+
+  return {
+    isModalOpen,
+    entry,
+    isText: isTxt,
+    isImage: isImg,
+    textContent: txtContent,
+    imageUrl: imgUrl,
+    syntaxLanguage: SYNTAX_LANGUAGE_MAP[ext] || 'text',
+  };
+}
 
 export default function useGzipExtractor() {
   const [inputSource, setInputSource] = useState<InputSource>('file');
@@ -35,7 +100,6 @@ export default function useGzipExtractor() {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Tar archive tree state
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
     new Set()
@@ -46,34 +110,59 @@ export default function useGzipExtractor() {
 
   const textInputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Decompress a File
-  const handleDecompressFile = useCallback(async (selectedFile: File) => {
-    setIsProcessing(true);
-    setError(null);
-    try {
-      const buffer = new Uint8Array(await selectedFile.arrayBuffer());
-      const res = decompressBuffer(buffer, selectedFile.name);
-      setResult(res);
-      setFile(selectedFile);
-      setSearchQuery('');
+  const applyDecompressedResult = useCallback((res: GzipDecompressResult) => {
+    setResult(res);
+    setSearchQuery('');
+
+    if (res.isTar && res.tarTree) {
+      const topFolders = new Set<string>();
+      for (const child of res.tarTree.children) {
+        if (child.isDirectory) {
+          topFolders.add(child.path);
+        }
+      }
+      setExpandedFolders(topFolders);
+
+      const firstEntry = findFirstPreviewableTarEntry(res.tarTree);
+      setPreview(
+        firstEntry
+          ? buildTarPreviewState(firstEntry, false)
+          : INITIAL_PREVIEW_STATE
+      );
+    } else {
       setExpandedFolders(new Set());
-      toast.success('GZIP archive successfully decompressed!');
-    } catch (err) {
-      const msg = (err as Error).message || 'Failed to decompress GZIP file';
-      setError(msg);
-      toast.error(msg);
-    } finally {
-      setIsProcessing(false);
+      setPreview(INITIAL_PREVIEW_STATE);
     }
   }, []);
 
-  // Decompress Text String (Base64 / Hex)
+  const handleDecompressFile = useCallback(
+    async (selectedFile: File) => {
+      setIsProcessing(true);
+      setError(null);
+      try {
+        const buffer = new Uint8Array(await selectedFile.arrayBuffer());
+        const res = decompressBuffer(buffer, selectedFile.name);
+        setFile(selectedFile);
+        applyDecompressedResult(res);
+        toast.success('GZIP archive successfully decompressed!');
+      } catch (err) {
+        const msg = (err as Error).message || 'Failed to decompress GZIP file';
+        setError(msg);
+        toast.error(msg);
+      } finally {
+        setIsProcessing(false);
+      }
+    },
+    [applyDecompressedResult]
+  );
+
   const handleDecompressText = useCallback(
     (raw: string = textInput) => {
       const trimmed = raw.trim();
       if (!trimmed) {
         setResult(null);
         setError(null);
+        setPreview(INITIAL_PREVIEW_STATE);
         return;
       }
 
@@ -83,9 +172,7 @@ export default function useGzipExtractor() {
       try {
         const bytes = decodeCompressedString(trimmed);
         const res = decompressBuffer(bytes, 'decompressed.txt');
-        setResult(res);
-        setSearchQuery('');
-        setExpandedFolders(new Set());
+        applyDecompressedResult(res);
         toast.success('Compressed string successfully decompressed!');
       } catch (err) {
         const msg = (err as Error).message || 'Failed to decompress string';
@@ -95,10 +182,9 @@ export default function useGzipExtractor() {
         setIsProcessing(false);
       }
     },
-    [textInput]
+    [applyDecompressedResult, textInput]
   );
 
-  // Load sample .gz file
   const onLoadSampleFile = useCallback(async () => {
     setIsProcessing(true);
     try {
@@ -163,12 +249,10 @@ export default function useGzipExtractor() {
     }
   }, [handleDecompressFile]);
 
-  // Load sample text
   const onLoadSampleText = useCallback(() => {
     setTextInput(SAMPLE_BASE64_GZIP);
   }, []);
 
-  // Clear all states
   const onClear = useCallback(() => {
     setFile(null);
     setTextInput('');
@@ -179,7 +263,6 @@ export default function useGzipExtractor() {
     setPreview(INITIAL_PREVIEW_STATE);
   }, []);
 
-  // Text input change handler
   const onTextInputChange = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
       const val = e.target.value;
@@ -210,7 +293,6 @@ export default function useGzipExtractor() {
     }
   }, [onPaste]);
 
-  // Copy text result to clipboard
   const onCopyTextResult = useCallback(async () => {
     if (!result?.textContent) return;
     try {
@@ -221,7 +303,6 @@ export default function useGzipExtractor() {
     }
   }, [result]);
 
-  // Download entire decompressed result file
   const onDownloadResultFile = useCallback(() => {
     if (!result) return;
     try {
@@ -242,7 +323,6 @@ export default function useGzipExtractor() {
     }
   }, [result]);
 
-  // Tar folder toggle
   const onToggleFolder = useCallback((path: string) => {
     setExpandedFolders((prev) => {
       const next = new Set(prev);
@@ -274,50 +354,36 @@ export default function useGzipExtractor() {
     setExpandedFolders(new Set());
   }, []);
 
-  // Tar entry preview
-  const onPreviewTarEntry = useCallback((entry: TarFileEntry) => {
-    const ext = entry.extension.toLowerCase();
-    const isTxt = TEXT_EXTENSIONS.has(ext);
-    const isImg = IMAGE_EXTENSIONS.has(ext);
+  const onPreviewTarEntry = useCallback(
+    (entry: TarFileEntry, options?: { openModal?: boolean }) => {
+      const shouldOpenModal =
+        options?.openModal ??
+        (typeof window !== 'undefined' && window.innerWidth < 1024);
+      setPreview(buildTarPreviewState(entry, shouldOpenModal));
+    },
+    []
+  );
 
-    let txtContent: string | null = null;
-    let imgUrl: string | null = null;
-
-    if (entry.data && isTxt) {
-      try {
-        txtContent = new TextDecoder('utf-8').decode(entry.data);
-      } catch {
-        txtContent = null;
-      }
-    }
-
-    if (entry.data && isImg) {
-      const mimeType = getImageMimeType(ext);
-      const blob = new Blob([entry.data as unknown as BlobPart], {
-        type: mimeType,
-      });
-      imgUrl = URL.createObjectURL(blob);
-    }
-
-    setPreview({
-      isOpen: true,
-      entry,
-      isText: isTxt,
-      isImage: isImg,
-      textContent: txtContent,
-      imageUrl: imgUrl,
-      syntaxLanguage: SYNTAX_LANGUAGE_MAP[ext] || 'text',
-    });
+  const onOpenPreviewModal = useCallback(() => {
+    setPreview((prev) => (prev.entry ? { ...prev, isModalOpen: true } : prev));
   }, []);
 
   const onClosePreview = useCallback(() => {
-    if (preview.imageUrl) {
-      URL.revokeObjectURL(preview.imageUrl);
-    }
-    setPreview(INITIAL_PREVIEW_STATE);
+    setPreview((prev) => ({
+      ...prev,
+      isModalOpen: false,
+    }));
+  }, []);
+
+  useEffect(() => {
+    const objectUrl = preview.imageUrl;
+    return () => {
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
+    };
   }, [preview.imageUrl]);
 
-  // Download single Tar entry
   const onDownloadTarEntry = useCallback((entry: TarFileEntry) => {
     if (!entry.data) return;
     try {
@@ -338,13 +404,18 @@ export default function useGzipExtractor() {
     }
   }, []);
 
-  // Hotkeys
   useToolHotkeys(
     {
       onExecute: () => {
         if (inputSource === 'text') handleDecompressText();
       },
-      onClear,
+      onClear: () => {
+        if (preview.isModalOpen) {
+          onClosePreview();
+        } else {
+          onClear();
+        }
+      },
       onPaste: onGlobalPaste,
       onCopy: onCopyTextResult,
     },
@@ -377,6 +448,7 @@ export default function useGzipExtractor() {
     onExpandAll,
     onCollapseAll,
     onPreviewTarEntry,
+    onOpenPreviewModal,
     onClosePreview,
     onDownloadTarEntry,
   };

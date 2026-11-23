@@ -8,8 +8,7 @@ import { isEmpty } from 'lodash';
 
 import browserUtils from '@/utils/browser-utils';
 import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
-import { PasteAction } from '@/components/shared/action-button';
-import { DeleteAction } from '@/components/shared/action-button';
+import { DeleteAction, PasteAction } from '@/components/shared/action-button';
 import { Textarea } from '@/components/ui/textarea';
 
 import useAiSummarizer from '../hooks/use-ai-summarizer';
@@ -25,6 +24,7 @@ import Config from './config';
 
 export default function SummarizerApi() {
   const [text, setText] = useState('');
+  const [sourceSnapshot, setSourceSnapshot] = useState('');
   const [results, setResults] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -32,10 +32,8 @@ export default function SummarizerApi() {
   const {
     hasCheckedAIStatus,
     isApiSupported,
-    // availability,
     options,
     isOptionUpdating,
-    // summarize,
     summarizeStreaming,
     updateSummarizer,
     shouldDownloadModel,
@@ -44,11 +42,12 @@ export default function SummarizerApi() {
   } = useAiSummarizer();
 
   const onPasteText = (value: string) => {
-    setText(value as string);
+    setText(value);
   };
 
   const onClearClick = () => {
     setText('');
+    setSourceSnapshot('');
     setResults('');
   };
 
@@ -56,19 +55,8 @@ export default function SummarizerApi() {
     setText(e.target.value);
   };
 
-  const onProcessClick = async () => {
-    if (isEmpty(text) || isProcessing) return;
-    setIsProcessing(true);
-    await browserUtils.sleep(100);
-    scrollToResultBlock();
-    setResults('');
-    await summarizeStreaming(text, (chunk) => {
-      setResults((prev) => prev + chunk);
-    });
-    setIsProcessing(false);
-  };
-
   const scrollToResultBlock = () => {
+    if (typeof window !== 'undefined' && window.innerWidth >= 1024) return;
     const result = document.getElementById('result');
     if (!result) return;
     result.scrollIntoView({
@@ -76,6 +64,19 @@ export default function SummarizerApi() {
       block: 'start',
       inline: 'start',
     });
+  };
+
+  const onProcessClick = async () => {
+    if (isEmpty(text) || isProcessing) return;
+    setIsProcessing(true);
+    setSourceSnapshot(text);
+    await browserUtils.sleep(100);
+    scrollToResultBlock();
+    setResults('');
+    await summarizeStreaming(text, (chunk) => {
+      setResults((prev) => prev + chunk);
+    });
+    setIsProcessing(false);
   };
 
   useToolHotkeys(
@@ -127,38 +128,48 @@ export default function SummarizerApi() {
 
       <SectionGap size="sm" />
 
-      {/* Input */}
-      <LabelBar
-        label="Start by adding your text"
-        icon={PenLine}
-        htmlFor="text-textarea"
-      >
-        <PasteAction onClick={onPasteText} />
-        <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
-      </LabelBar>
-      <Textarea
-        ref={textareaRef}
-        id="text-textarea"
-        onChange={onChange}
-        value={text}
-        rows={10}
-        placeholder="Type or paste the artice or text here to summarize..."
-      />
+      {/* Editorial Split Editor (Desktop 7:5, Mobile Stacked) */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">
+        <div className="flex flex-col lg:col-span-7">
+          <LabelBar
+            label="Source Article or Notes"
+            icon={PenLine}
+            htmlFor="summarizer-textarea"
+          >
+            <PasteAction onClick={onPasteText} />
+            <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
+          </LabelBar>
+          <Textarea
+            ref={textareaRef}
+            id="summarizer-textarea"
+            onChange={onChange}
+            value={text}
+            rows={14}
+            className="min-h-[340px] lg:h-[420px]"
+            placeholder="Type or paste an article, meeting notes, or document here to summarize..."
+          />
+          <ExecuteBar
+            label={isProcessing ? 'Summarizing...' : 'Summarize'}
+            icon={isProcessing ? LoaderCircle : Sparkles}
+            iconClassName={isProcessing ? 'animate-spin' : ''}
+            disabled={isEmpty(text) || isProcessing}
+            onClick={onProcessClick}
+            text={text}
+          />
+        </div>
 
-      {/* Execute Bar */}
-      <ExecuteBar
-        label={isProcessing ? 'Summarizing...' : 'Summarize'}
-        icon={isProcessing ? LoaderCircle : Sparkles}
-        iconClassName={isProcessing ? 'animate-spin' : ''}
-        disabled={isEmpty(text) || isProcessing}
-        onClick={onProcessClick}
-        text={text}
-      />
-
-      <SectionGap size="sm" />
-
-      {/* Result */}
-      <PromptResult results={results} isProcessing={isProcessing} />
+        <div className="lg:col-span-5">
+          <PromptResult
+            label="Summary"
+            results={results}
+            isProcessing={isProcessing}
+            originalText={sourceSnapshot || text}
+            showCharCount
+            showCompressionRatio
+            panelClassName="min-h-[340px] lg:h-[420px]"
+          />
+        </div>
+      </div>
     </>
   );
 }

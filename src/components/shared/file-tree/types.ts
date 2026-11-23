@@ -15,7 +15,9 @@ export interface FileTreeProps<T = unknown> {
   tree: FileTreeNode<T>;
   searchQuery?: string;
   expandedFolders: Set<string>;
+  selectedPath?: string | null;
   onToggleFolder: (path: string) => void;
+  onSelect?: (node: FileTreeNode<T>) => void;
   onPreview?: (node: FileTreeNode<T>) => void;
   onDownload?: (node: FileTreeNode<T>) => void;
   emptyText?: string;

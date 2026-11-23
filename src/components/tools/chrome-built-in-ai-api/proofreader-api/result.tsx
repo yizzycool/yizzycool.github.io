@@ -1,5 +1,8 @@
+'use client';
+
 import { useMemo, useState } from 'react';
 import {
+  ArrowLeft,
   BookCheck,
   Check,
   Cpu,
@@ -8,17 +11,29 @@ import {
   SpellCheck2,
   X,
 } from 'lucide-react';
-import { forEach, map, isEmpty, join } from 'lodash';
+import { forEach, isEmpty, join, map } from 'lodash';
 
-import { cn } from '@/utils/cn';
-import LabelBar from '../../common/label-bar';
 import { CopyAction } from '@/components/shared/action-button';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { PillTabs } from '@/components/ui/tabs';
 import {
   TooltipPopup,
   TooltipRoot,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { cn } from '@/utils/cn';
+
+import LabelBar from '../../common/label-bar';
+
+type ViewMode = 'suggestions' | 'diff';
+
+const VIEW_MODE_TABS: ViewMode[] = ['suggestions', 'diff'];
+
+const VIEW_MODE_LABELS: Record<ViewMode, string> = {
+  suggestions: 'Suggestions',
+  diff: 'Inline Diff',
+};
 
 const Colors: Record<CorrectionType, ColorType> = {
   spelling: {
@@ -79,9 +94,19 @@ type Props = {
   text: string;
   result?: ProofreadResult;
   isProcessing: boolean;
+  onAcceptToInput?: (value: string) => void;
+  panelClassName?: string;
 };
 
-export default function Result({ text, result, isProcessing }: Props) {
+export default function Result({
+  text,
+  result,
+  isProcessing,
+  onAcceptToInput,
+  panelClassName,
+}: Props) {
+  const [viewMode, setViewMode] = useState<ViewMode>('diff');
+
   const initialHighlightList = useMemo(() => {
     try {
       const parts: HighlightList = [];
@@ -131,12 +156,37 @@ export default function Result({ text, result, isProcessing }: Props) {
 
   const copyText = useMemo(() => {
     return join(
-      map(highlightList, ({ applySuggestion, text, correction }) => {
+      map(highlightList, ({ applySuggestion, text: partText, correction }) => {
         if (applySuggestion) return correction;
-        else return text;
-      })
+        return partText;
+      }),
+      ''
     );
   }, [highlightList]);
+
+  const allCorrectedText = useMemo(() => {
+    return join(
+      map(highlightList, ({ error, text: partText, correction }) => {
+        if (error && correction !== undefined) return correction;
+        return partText;
+      }),
+      ''
+    );
+  }, [highlightList]);
+
+  const pendingCount = useMemo(
+    () =>
+      highlightList.filter((item) => item.error && !item.applySuggestion)
+        .length,
+    [highlightList]
+  );
+
+  const hasAppliedAny = useMemo(
+    () => highlightList.some((item) => item.applySuggestion),
+    [highlightList]
+  );
+
+  const acceptedText = hasAppliedAny ? copyText : allCorrectedText;
 
   const onApply = (idx: number) => {
     setHighlightList((prev) => [
@@ -156,136 +206,242 @@ export default function Result({ text, result, isProcessing }: Props) {
   };
 
   return (
-    <>
+    <div className="flex flex-col">
       <LabelBar
         id="result"
         className="scroll-mt-20"
-        label="Proofreader Suggestions"
+        label={<span className="whitespace-nowrap">Result</span>}
         icon={SpellCheck}
+        actionsClassName="shrink-0"
       >
-        {/* Apply all suggestions */}
-        <Button
-          variant="success"
-          size="xs"
-          icon={BookCheck}
-          onClick={onApplyAll}
-        >
-          Apply All
-        </Button>
-        <CopyAction content={copyText} disabled={isEmpty(copyText)} />
+        <div className="flex items-center gap-2">
+          <PillTabs<ViewMode>
+            tabs={VIEW_MODE_TABS}
+            activeTab={viewMode}
+            onChange={setViewMode}
+            tabLabels={VIEW_MODE_LABELS}
+            variant="segment"
+            size="xs"
+            rounded="md"
+            className="p-0.5"
+            tabClassName="px-2 py-0.5"
+          />
+          <CopyAction content={copyText} disabled={isEmpty(copyText)} />
+        </div>
       </LabelBar>
 
       <div
         className={cn(
           'relative h-[300px] w-full overflow-y-auto rounded-xl border px-4 py-3.5 transition-all duration-200',
           'shadow-2xs border-neutral-200/90 bg-white/80 backdrop-blur-md',
-          'dark:border-neutral-700/80 dark:bg-neutral-900/80'
+          'dark:border-neutral-700/80 dark:bg-neutral-900/80',
+          panelClassName
         )}
       >
         {isEmpty(result) ? (
-          <div className="m-auto flex h-full flex-col items-center justify-center text-center text-lg font-bold text-slate-500">
+          <div className="m-auto flex h-full flex-col items-center justify-center text-center text-sm font-medium text-slate-400 dark:text-slate-500">
             {isProcessing ? (
               <>
                 <Cpu
-                  className="mx-auto mb-4 block animate-bounce animate-duration-[2000ms] animate-infinite"
-                  size={40}
+                  className="mx-auto mb-3 block animate-bounce text-sky-500 animate-duration-[2000ms] animate-infinite"
+                  size={36}
                 />
-                <div className="flex items-center gap-2">Processing...</div>
+                <div className="font-semibold text-slate-700 dark:text-slate-200">
+                  Processing...
+                </div>
               </>
             ) : (
               <>
-                <ScrollText className="mx-auto mb-4 block" size={40} />
+                <ScrollText
+                  className="mx-auto mb-3 block opacity-50"
+                  size={36}
+                />
                 <div>Waiting for input...</div>
               </>
             )}
           </div>
         ) : (
-          <div className="w-full whitespace-pre-wrap break-words text-left text-base leading-loose">
-            {highlightList.map(
-              (
-                { text, error, correction, type, color, applySuggestion },
-                idx
-              ) =>
-                error && !applySuggestion ? (
-                  <span key={idx} className="group relative">
-                    <TooltipRoot>
-                      <TooltipTrigger>
-                        <span
-                          key={idx}
-                          className={cn(
-                            'transition-colors duration-300',
-                            color?.hoverBg,
-                            'border-b-2',
-                            color?.border
-                          )}
-                        >
-                          {text}
-                        </span>
-                      </TooltipTrigger>
-                      <TooltipPopup showArrow variant="card" className="p-3.5">
-                        <div
-                          key={idx}
-                          className="min-w-[min(90vw,_240px)] max-w-[min(90vw,_280px)] space-y-3 text-xs"
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                              <SpellCheck2 size={15} className={color?.text} />
-                              <span>{type}</span>
-                            </div>
-                          </div>
+          <div className="space-y-3 text-left">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200/70 pb-2 text-xs dark:border-neutral-800">
+              <span className="text-slate-500 dark:text-slate-400">
+                {pendingCount === 0
+                  ? 'All suggestions applied'
+                  : viewMode === 'diff'
+                    ? 'Click any green suggestion to apply inline'
+                    : 'Hover or tap underlined spans to inspect suggestions'}
+              </span>
+              <Badge
+                variant={pendingCount === 0 ? 'success' : 'blue'}
+                size="xs"
+                rounded="full"
+              >
+                {pendingCount}{' '}
+                {pendingCount === 1 ? 'pending fix' : 'pending fixes'}
+              </Badge>
+            </div>
 
-                          <div
+            <div className="w-full whitespace-pre-wrap break-words text-sm leading-loose text-slate-800 dark:text-slate-200">
+              {highlightList.map(
+                (
+                  {
+                    text: partText,
+                    error,
+                    correction,
+                    type,
+                    color,
+                    applySuggestion,
+                  },
+                  idx
+                ) => {
+                  if (!error) return partText;
+
+                  if (applySuggestion) {
+                    return (
+                      <span
+                        key={idx}
+                        className="rounded bg-emerald-500/10 px-0.5 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300"
+                      >
+                        {correction}
+                      </span>
+                    );
+                  }
+
+                  if (viewMode === 'diff') {
+                    return (
+                      <span
+                        key={idx}
+                        className="inline-flex flex-wrap items-baseline gap-1 align-baseline"
+                      >
+                        {!!partText && (
+                          <del className="rounded bg-rose-500/15 px-1 text-rose-700 line-through decoration-rose-400/80 dark:bg-rose-500/20 dark:text-rose-300">
+                            {partText}
+                          </del>
+                        )}
+                        {!!correction && (
+                          <button
+                            type="button"
+                            onClick={() => onApply(idx)}
+                            title={`Apply ${type ?? 'correction'}`}
+                            className="cursor-pointer rounded bg-emerald-500/15 px-1 font-medium text-emerald-700 transition-colors hover:bg-emerald-500/25 dark:bg-emerald-500/20 dark:text-emerald-300 dark:hover:bg-emerald-500/30"
+                          >
+                            {correction}
+                          </button>
+                        )}
+                      </span>
+                    );
+                  }
+
+                  return (
+                    <span key={idx} className="group relative">
+                      <TooltipRoot>
+                        <TooltipTrigger>
+                          <span
                             className={cn(
-                              'space-y-2 overflow-hidden rounded-lg',
-                              'border border-slate-100 bg-slate-50/80 p-2.5 dark:border-neutral-800/60 dark:bg-neutral-950/50'
+                              'transition-colors duration-300',
+                              color?.hoverBg,
+                              'border-b-2',
+                              color?.border
                             )}
                           >
-                            {!!text && (
-                              <div className="flex items-center gap-2 text-rose-600/90 dark:text-rose-400">
-                                <X
-                                  size={14}
-                                  className="shrink-0 text-rose-500"
+                            {partText}
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipPopup
+                          showArrow
+                          variant="card"
+                          className="p-3.5"
+                        >
+                          <div className="min-w-[min(90vw,_240px)] max-w-[min(90vw,_280px)] space-y-3 text-xs">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                                <SpellCheck2
+                                  size={15}
+                                  className={color?.text}
                                 />
-                                <span className="line-through decoration-rose-400/60">
-                                  {text}
-                                </span>
+                                <span>{type}</span>
                               </div>
-                            )}
-                            {!!correction && (
-                              <div className="flex items-center gap-2 font-medium text-emerald-700 dark:text-emerald-400">
-                                <Check
-                                  size={14}
-                                  className="shrink-0 text-emerald-500"
-                                />
-                                <span>{correction}</span>
-                              </div>
-                            )}
-                          </div>
+                            </div>
 
-                          {/* Apply suggestion */}
-                          <div className="flex justify-end">
-                            <Button
-                              size="xs"
-                              variant="blue"
-                              className="rounded-md px-3 font-medium"
-                              onClick={() => onApply(idx)}
+                            <div
+                              className={cn(
+                                'space-y-2 overflow-hidden rounded-lg',
+                                'border border-slate-100 bg-slate-50/80 p-2.5 dark:border-neutral-800/60 dark:bg-neutral-950/50'
+                              )}
                             >
-                              Apply
-                            </Button>
+                              {!!partText && (
+                                <div className="flex items-center gap-2 text-rose-600/90 dark:text-rose-400">
+                                  <X
+                                    size={14}
+                                    className="shrink-0 text-rose-500"
+                                  />
+                                  <span className="line-through decoration-rose-400/60">
+                                    {partText}
+                                  </span>
+                                </div>
+                              )}
+                              {!!correction && (
+                                <div className="flex items-center gap-2 font-medium text-emerald-700 dark:text-emerald-400">
+                                  <Check
+                                    size={14}
+                                    className="shrink-0 text-emerald-500"
+                                  />
+                                  <span>{correction}</span>
+                                </div>
+                              )}
+                            </div>
+
+                            <div className="flex justify-end">
+                              <Button
+                                size="xs"
+                                variant="blue"
+                                className="rounded-md px-3 font-medium"
+                                onClick={() => onApply(idx)}
+                              >
+                                Apply
+                              </Button>
+                            </div>
                           </div>
-                        </div>
-                      </TooltipPopup>
-                    </TooltipRoot>
-                  </span>
-                ) : applySuggestion ? (
-                  correction
-                ) : (
-                  text
-                )
-            )}
+                        </TooltipPopup>
+                      </TooltipRoot>
+                    </span>
+                  );
+                }
+              )}
+            </div>
           </div>
         )}
       </div>
-    </>
+
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <Button
+            variant="success"
+            size="sm"
+            rounded="lg"
+            icon={BookCheck}
+            disabled={pendingCount === 0}
+            onClick={onApplyAll}
+          >
+            Apply All
+          </Button>
+          {onAcceptToInput && (
+            <Button
+              variant="outline"
+              size="sm"
+              rounded="lg"
+              icon={ArrowLeft}
+              disabled={isEmpty(result) || isProcessing}
+              onClick={() => onAcceptToInput(acceptedText)}
+              title="Replace the input editor with proofread text for another pass"
+            >
+              Accept to Input
+            </Button>
+          )}
+        </div>
+        <div className="text-right text-xs text-slate-400 dark:text-slate-500">
+          {copyText.length} chars
+        </div>
+      </div>
+    </div>
   );
 }

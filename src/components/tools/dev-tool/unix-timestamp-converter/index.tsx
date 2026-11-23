@@ -7,17 +7,16 @@ import CurrentTimeSection from './current-time-section';
 import DateToTimestampSection from './date-to-timestamp-section';
 import ReferenceSection from './reference-section';
 import TimestampToDateSection from './timestamp-to-date-section';
+import WorldClockStrip from './world-clock-strip';
 import useUnixTimestampConverter from './hooks/use-unix-timestamp-converter';
 
 export default function UnixTimestampConverter() {
   const {
-    // Live clock
     now,
     isClockPaused,
     toggleClockPause,
     deviceTimezone,
 
-    // Timestamp -> Date
     tsInput,
     setTsInput,
     unitMode,
@@ -30,7 +29,6 @@ export default function UnixTimestampConverter() {
     onPasteTsInput,
     onClearTsInput,
 
-    // Date -> Timestamp
     dateTimeString,
     dateTzMode,
     setDateTzMode,
@@ -55,7 +53,7 @@ export default function UnixTimestampConverter() {
 
       <SectionGap />
 
-      {/* Live Device Time with Pause / Play Controls */}
+      {/* Live Epoch Clock Hero with Stopwatch Pause/Resume */}
       <CurrentTimeSection
         now={now}
         isPaused={isClockPaused}
@@ -65,35 +63,43 @@ export default function UnixTimestampConverter() {
 
       <SectionGap />
 
-      {/* Timestamp to Date with Presets, Offsets, Relative Time & World Timezones */}
-      <TimestampToDateSection
-        tsInput={tsInput}
-        setTsInput={setTsInput}
-        unitMode={unitMode}
-        setUnitMode={setUnitMode}
-        inputRef={tsInputRef}
-        parsedInfo={parsedTimestampInfo}
-        convertedValues={tsConvertedValues}
-        onSetToNow={setTsInputToNow}
-        onApplyOffset={applyOffset}
-        onPaste={onPasteTsInput}
-        onClear={onClearTsInput}
-      />
+      {/* 50/50 Bidirectional Conversion Cards */}
+      <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">
+        <div className="rounded-2xl border border-neutral-200/80 bg-white/60 p-5 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-900/40">
+          <TimestampToDateSection
+            tsInput={tsInput}
+            setTsInput={setTsInput}
+            unitMode={unitMode}
+            setUnitMode={setUnitMode}
+            inputRef={tsInputRef}
+            parsedInfo={parsedTimestampInfo}
+            convertedValues={tsConvertedValues}
+            onSetToNow={setTsInputToNow}
+            onApplyOffset={applyOffset}
+            onPaste={onPasteTsInput}
+            onClear={onClearTsInput}
+          />
+        </div>
+
+        <div className="rounded-2xl border border-neutral-200/80 bg-white/60 p-5 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-900/40">
+          <DateToTimestampSection
+            dateTimeString={dateTimeString}
+            timezoneMode={dateTzMode}
+            setTimezoneMode={setDateTzMode}
+            convertedResult={convertedFromDate}
+            onDateTimeChange={onDateTimeChange}
+            onApplyOffset={onApplyDateOffset}
+            onPasteDateString={onPasteDateString}
+            onSetToNow={setDateToNow}
+            onClear={onClearDateInput}
+          />
+        </div>
+      </div>
 
       <SectionGap />
 
-      {/* Date to Timestamp with Timezone Toggle & Quick Jump Presets */}
-      <DateToTimestampSection
-        dateTimeString={dateTimeString}
-        timezoneMode={dateTzMode}
-        setTimezoneMode={setDateTzMode}
-        convertedResult={convertedFromDate}
-        onDateTimeChange={onDateTimeChange}
-        onApplyOffset={onApplyDateOffset}
-        onPasteDateString={onPasteDateString}
-        onSetToNow={setDateToNow}
-        onClear={onClearDateInput}
-      />
+      {/* World Clock Quick Strip */}
+      <WorldClockStrip now={now} deviceTimezone={deviceTimezone} />
 
       <SectionGap />
 

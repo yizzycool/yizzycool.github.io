@@ -32,7 +32,7 @@ export interface GzipDecompressResult {
 }
 
 export interface TarPreviewState {
-  isOpen: boolean;
+  isModalOpen: boolean;
   entry: TarFileEntry | null;
   isText: boolean;
   isImage: boolean;

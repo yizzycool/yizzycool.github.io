@@ -1,21 +1,31 @@
 'use client';
 
+import { useMemo, useState } from 'react';
 import { FileCode, ImageIcon } from 'lucide-react';
-import { useState } from 'react';
-import { isNull, size } from 'lodash';
-import Image from 'next/image';
+import { isNull } from 'lodash';
 
-import { cn } from '@/utils/cn';
-import imageUtils from '@/utils/image-utils';
-import HeaderBlock from '../../common/header-block';
+import { CopyAction, DeleteAction } from '@/components/shared/action-button';
 import { FilePicker } from '@/components/ui/file-picker';
-import { CopyAction } from '@/components/shared/action-button';
-import ImageInfoTag from '../image-info-tag';
-import SectionGap from '../../common/section-gap';
-import LabelBar from '../../common/label-bar';
-import { Label } from '@/components/ui/label';
+import { PillTabs } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
+import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
+import imageUtils from '@/utils/image-utils';
 import toast from '@/utils/toast';
+
+import HeaderBlock from '../../common/header-block';
+import LabelBar from '../../common/label-bar';
+import SectionGap from '../../common/section-gap';
+import ImagePreviewStage from '../image-preview-stage';
+
+type OutputFormat = 'raw' | 'html' | 'css';
+
+const OUTPUT_FORMAT_TABS: OutputFormat[] = ['raw', 'html', 'css'];
+
+const OUTPUT_FORMAT_LABELS: Record<OutputFormat, string> = {
+  raw: 'Raw String',
+  html: 'HTML <img>',
+  css: 'CSS url()',
+};
 
 type ImageInfo = {
   image: HTMLImageElement | null;
@@ -23,6 +33,8 @@ type ImageInfo = {
   height: number;
   error: boolean;
   blob: Blob | null;
+  fileName: string;
+  mimeType: string;
 };
 
 const defaultImageInfo: ImageInfo = {
@@ -31,30 +43,39 @@ const defaultImageInfo: ImageInfo = {
   height: 0,
   error: false,
   blob: null,
+  fileName: '',
+  mimeType: '',
 };
 
 export default function ImageToBase64() {
   const [base64, setBase64] = useState<string>('');
+  const [outputFormat, setOutputFormat] = useState<OutputFormat>('raw');
   const [imageInfo, setImageInfo] = useState<ImageInfo>(defaultImageInfo);
 
   const transferToBase64 = async (file: File) => {
     if (isNull(file)) return;
     setImageInfo(defaultImageInfo);
     try {
-      const base64 = await imageUtils.blobToBase64(file);
+      const encoded = await imageUtils.blobToBase64(file);
       const image = await imageUtils.newImageFromBlob(file);
       const { width, height } = image;
-      setBase64(base64);
-      setImageInfo({ image, width, height, error: false, blob: file });
+      setBase64(encoded);
+      setImageInfo({
+        image,
+        width,
+        height,
+        error: false,
+        blob: file,
+        fileName: file.name,
+        mimeType: file.type || 'image/png',
+      });
       toast.success('Image converted to Base64 successfully');
     } catch (e) {
       console.log('[ERROR] convert image:', e);
+      setBase64('');
       setImageInfo({
-        image: null,
-        width: 0,
-        height: 0,
+        ...defaultImageInfo,
         error: true,
-        blob: null,
       });
       toast.error(
         'Uploaded image is not supported. Please choose another image and try again.'
@@ -62,85 +83,112 @@ export default function ImageToBase64() {
     }
   };
 
-  const onFileChange = (file: File) => {
-    transferToBase64(file);
+  const handleClear = () => {
+    setBase64('');
+    setImageInfo(defaultImageInfo);
   };
+
+  const formattedOutput = useMemo(() => {
+    if (!base64) return '';
+    if (outputFormat === 'html') {
+      const safeAlt = (imageInfo.fileName || 'image').replace(/"/g, '&quot;');
+      return `<img src="${base64}" alt="${safeAlt}" width="${imageInfo.width}" height="${imageInfo.height}" />`;
+    }
+    if (outputFormat === 'css') {
+      return `background-image: url('${base64}');`;
+    }
+    return base64;
+  }, [
+    base64,
+    imageInfo.fileName,
+    imageInfo.height,
+    imageInfo.width,
+    outputFormat,
+  ]);
+
+  useToolHotkeys({
+    onCopy: async () => {
+      if (!formattedOutput) return;
+      try {
+        await navigator.clipboard.writeText(formattedOutput);
+        toast.success('Copied output to clipboard');
+      } catch (_e) {
+        // ignore clipboard error
+      }
+    },
+    onClear: handleClear,
+  });
 
   return (
     <>
-      <HeaderBlock />
+      <HeaderBlock
+        customShortcuts={[
+          { ...TOOL_HOTKEYS.copy, label: 'Copy Active Output' },
+          TOOL_HOTKEYS.clear,
+          TOOL_HOTKEYS.help,
+        ]}
+      />
 
       <SectionGap />
 
-      {/* File Picker */}
-      <FilePicker onFileChange={onFileChange} />
+      <FilePicker onFileChange={transferToBase64} />
 
       <SectionGap />
 
-      {/* Image Preview & Output */}
-      <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
-        <div className="flex-1">
-          <div className="mb-3 flex items-center font-semibold">
-            <Label icon={ImageIcon}>Image Preview</Label>
-          </div>
-          <div
-            className={cn(
-              'relative flex h-[300px] w-full flex-col items-center justify-center rounded-xl border p-4 transition-all duration-200',
-              'shadow-2xs border-neutral-200/90 bg-white/80 backdrop-blur-md',
-              'dark:border-neutral-700/80 dark:bg-neutral-900/80'
-            )}
-          >
-            {!imageInfo.error && !isNull(imageInfo.image) ? (
-              <>
-                <Image
-                  width={0}
-                  height={0}
-                  className="h-full max-h-full w-full max-w-full object-contain"
-                  src={imageInfo.image.src}
-                  alt="result image"
-                />
-                <div className="absolute bottom-4 left-4 z-20 flex gap-2 overflow-hidden">
-                  <ImageInfoTag
-                    title=""
-                    value={`${imageInfo.width} × ${imageInfo.height} px`}
-                  />
-                  <ImageInfoTag
-                    title=""
-                    value={imageUtils.toHumanReadableSize(
-                      imageInfo.blob?.size || 0
-                    )}
-                  />
-                </div>
-              </>
-            ) : (
-              <div className="m-auto text-center text-sm font-medium text-slate-400 dark:text-slate-500">
-                <ImageIcon
-                  className="mx-auto mb-3 block opacity-50"
-                  size={36}
-                />
-                <div>Image will be displayed here</div>
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="flex-1">
-          <LabelBar label="Base64 Output" icon={FileCode}>
-            <CopyAction
-              content={base64}
-              className="py-1"
-              successToast="Base64 string copied to clipboard"
-            />
+      {/* 50/50 Split Media Asset Inspector */}
+      <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">
+        <div className="flex flex-col">
+          <LabelBar label="Media Preview" icon={ImageIcon}>
+            <DeleteAction onClick={handleClear} disabled={!base64} />
           </LabelBar>
-          <Textarea
-            value={base64}
-            readOnly
-            rows={11}
-            placeholder="Base64 output will appear here after uploading an image..."
-            className="font-mono text-xs"
+
+          <ImagePreviewStage
+            imageSrc={!imageInfo.error ? (imageInfo.image?.src ?? null) : null}
+            alt={imageInfo.fileName || 'Uploaded image preview'}
+            width={imageInfo.width}
+            height={imageInfo.height}
+            originalBytes={imageInfo.blob?.size ?? 0}
+            base64Bytes={base64.length}
+            mimeType={imageInfo.mimeType}
+            emptyText="Upload an image above to inspect transparency & overhead"
           />
-          {/* Char count block */}
-          <div className="mt-2.5 w-full text-right text-xs text-slate-400 dark:text-slate-500">
-            {size(base64)} chars
+        </div>
+
+        <div className="flex flex-col">
+          <LabelBar label="Encoded Output" icon={FileCode}>
+            <div className="flex flex-wrap items-center gap-2">
+              <PillTabs<OutputFormat>
+                tabs={OUTPUT_FORMAT_TABS}
+                activeTab={outputFormat}
+                onChange={setOutputFormat}
+                tabLabels={OUTPUT_FORMAT_LABELS}
+                variant="segment"
+                size="xs"
+                rounded="md"
+                className="p-0.5"
+                tabClassName="px-2 py-0.5"
+              />
+              <CopyAction
+                content={formattedOutput}
+                disabled={!formattedOutput}
+                successToast="Output copied to clipboard"
+              />
+            </div>
+          </LabelBar>
+
+          <Textarea
+            value={formattedOutput}
+            readOnly
+            rows={13}
+            placeholder="Base64 Data URI, HTML <img> snippet, or CSS url() output will appear here..."
+            className="min-h-[320px] font-mono text-xs"
+          />
+
+          <div className="mt-2.5 flex items-center justify-between text-xs text-slate-400 dark:text-slate-500">
+            <span>Format: {OUTPUT_FORMAT_LABELS[outputFormat]}</span>
+            <span className="font-mono tabular-nums">
+              {formattedOutput.length.toLocaleString()} chars
+            </span>
           </div>
         </div>
       </div>

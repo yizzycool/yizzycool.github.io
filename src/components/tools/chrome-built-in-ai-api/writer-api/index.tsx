@@ -8,8 +8,7 @@ import { isEmpty } from 'lodash';
 
 import browserUtils from '@/utils/browser-utils';
 import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
-import { PasteAction } from '@/components/shared/action-button';
-import { DeleteAction } from '@/components/shared/action-button';
+import { DeleteAction, PasteAction } from '@/components/shared/action-button';
 import { Textarea } from '@/components/ui/textarea';
 
 import useAiWriter from '../hooks/use-ai-writer';
@@ -46,12 +45,23 @@ export default function WriterApi() {
   };
 
   const onPasteText = (value: string) => {
-    setText(value as string);
+    setText(value);
   };
 
   const onClearClick = () => {
     setText('');
     setResults('');
+  };
+
+  const scrollToResultBlock = () => {
+    if (typeof window !== 'undefined' && window.innerWidth >= 1024) return;
+    const result = document.getElementById('result');
+    if (!result) return;
+    result.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'start',
+    });
   };
 
   const onProcessClick = async () => {
@@ -64,16 +74,6 @@ export default function WriterApi() {
       setResults((prev) => prev + chunk);
     });
     setIsProcessing(false);
-  };
-
-  const scrollToResultBlock = () => {
-    const result = document.getElementById('result');
-    if (!result) return;
-    result.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-      inline: 'start',
-    });
   };
 
   useToolHotkeys(
@@ -125,38 +125,46 @@ export default function WriterApi() {
 
       <SectionGap size="sm" />
 
-      {/* Input */}
-      <LabelBar
-        label="Start by adding your text"
-        icon={PenLine}
-        htmlFor="text-textarea"
-      >
-        <PasteAction onClick={onPasteText} />
-        <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
-      </LabelBar>
-      <Textarea
-        ref={textareaRef}
-        id="text-textarea"
-        onChange={onChange}
-        value={text}
-        rows={10}
-        placeholder="e.g. Draft a friendly email asking a coworker for a project update"
-      />
+      {/* Editorial Split Editor (Desktop 6:6, Mobile Stacked) */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">
+        <div className="flex flex-col lg:col-span-6">
+          <LabelBar
+            label="Prompt & Outline"
+            icon={PenLine}
+            htmlFor="writer-textarea"
+          >
+            <PasteAction onClick={onPasteText} />
+            <DeleteAction onClick={onClearClick} disabled={isEmpty(text)} />
+          </LabelBar>
+          <Textarea
+            ref={textareaRef}
+            id="writer-textarea"
+            onChange={onChange}
+            value={text}
+            rows={14}
+            className="min-h-[340px] lg:h-[420px]"
+            placeholder="e.g. Draft a friendly email asking a coworker for a project update"
+          />
+          <ExecuteBar
+            label={isProcessing ? 'Writing...' : 'Write'}
+            icon={isProcessing ? LoaderCircle : PencilLine}
+            iconClassName={isProcessing ? 'animate-spin' : ''}
+            disabled={isEmpty(text) || isProcessing}
+            onClick={onProcessClick}
+            text={text}
+          />
+        </div>
 
-      {/* Execute Bar */}
-      <ExecuteBar
-        label={isProcessing ? 'Writing...' : 'Write'}
-        icon={isProcessing ? LoaderCircle : PencilLine}
-        iconClassName={isProcessing ? 'animate-spin' : ''}
-        disabled={isEmpty(text) || isProcessing}
-        onClick={onProcessClick}
-        text={text}
-      />
-
-      <SectionGap size="sm" />
-
-      {/* Result */}
-      <PromptResult results={results} isProcessing={isProcessing} />
+        <div className="lg:col-span-6">
+          <PromptResult
+            label="Generated Draft"
+            results={results}
+            isProcessing={isProcessing}
+            showCharCount
+            panelClassName="min-h-[340px] lg:h-[420px]"
+          />
+        </div>
+      </div>
     </>
   );
 }

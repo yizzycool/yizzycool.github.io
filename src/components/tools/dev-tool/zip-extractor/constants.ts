@@ -61,7 +61,7 @@ export const IMAGE_EXTENSIONS = new Set([
 ]);
 
 export const INITIAL_PREVIEW_STATE: PreviewState = {
-  isOpen: false,
+  isModalOpen: false,
   entry: null,
   isLoading: false,
   isText: false,

@@ -30,7 +30,9 @@ export function FileTree<T = unknown>({
   tree,
   searchQuery = '',
   expandedFolders,
+  selectedPath = null,
   onToggleFolder,
+  onSelect,
   onPreview,
   onDownload,
   emptyText = 'No files found',
@@ -45,7 +47,6 @@ export function FileTree<T = unknown>({
       const isExpanded =
         isDir && (isSearching || expandedFolders.has(node.path));
 
-      // Filter check when searching
       const matchesSearch =
         !isSearching ||
         node.name.toLowerCase().includes(normalizedQuery) ||
@@ -64,12 +65,13 @@ export function FileTree<T = unknown>({
             node={node}
             depth={depth}
             isExpanded={isExpanded}
+            selectedPath={selectedPath}
             onToggleFolder={onToggleFolder}
+            onSelect={onSelect}
             onPreview={onPreview}
             onDownload={onDownload}
           />
 
-          {/* Children render */}
           {isDir && isExpanded && node.children.length > 0 && (
             <div className="flex flex-col">
               {renderTreeNodes(node.children, depth + 1)}
