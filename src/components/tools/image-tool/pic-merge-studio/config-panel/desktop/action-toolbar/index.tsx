@@ -15,6 +15,7 @@ import {
   Sparkles,
   Square,
   Trash2,
+  Type,
 } from 'lucide-react';
 
 import { ActionToolbarList, type ToolbarAction } from './action-toolbar-list';
@@ -30,6 +31,7 @@ export type ActionToolId =
   | 'canvas-layout'
   | 'canvas-background'
   | 'canvas-border'
+  | 'canvas-caption'
   | 'image-align'
   | 'image-arrangement'
   | 'image-opacity'
@@ -126,6 +128,13 @@ export default function ActionToolbar({
           Icon: Frame,
           onClick: () => toggleTool('canvas-border'),
           isActive: activeToolId === 'canvas-border',
+        },
+        {
+          id: 'canvas-caption',
+          label: 'Captions & Watermark',
+          Icon: Type,
+          onClick: () => toggleTool('canvas-caption'),
+          isActive: activeToolId === 'canvas-caption',
         },
         ...(onExport
           ? [

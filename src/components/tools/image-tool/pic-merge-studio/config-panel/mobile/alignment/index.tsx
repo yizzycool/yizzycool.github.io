@@ -5,8 +5,10 @@ import {
   AlignCenterVertical,
   AlignEndHorizontal,
   AlignEndVertical,
+  AlignHorizontalSpaceAround,
   AlignStartHorizontal,
   AlignStartVertical,
+  AlignVerticalSpaceAround,
   FoldHorizontal,
   FoldVertical,
   ImageUpscale,
@@ -32,9 +34,16 @@ import PanelLabel from '../../panel-label';
 type Props = {
   setAlignment: (horizontal: string, vertical: string) => void;
   setObjectFit: (type: string) => void;
+  distributeSpacing?: (axis: 'horizontal' | 'vertical') => void;
+  selectedCount?: number;
 };
 
-export default function Alignment({ setAlignment, setObjectFit }: Props) {
+export default function Alignment({
+  setAlignment,
+  setObjectFit,
+  distributeSpacing,
+  selectedCount = 1,
+}: Props) {
   const { isOpen, openDrawer, closeDrawer } = useControlDrawer();
 
   return (
@@ -190,6 +199,31 @@ export default function Alignment({ setAlignment, setObjectFit }: Props) {
                 </Button>
               </div>
             </div>
+
+            {distributeSpacing && (
+              <>
+                <div className="mb-2 h-[30px] self-end border-l border-neutral-700" />
+                <div>
+                  <PanelLabel className="mb-2">Distribute</PanelLabel>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="secondary"
+                      bordered
+                      disabled={selectedCount < 3}
+                      icon={AlignHorizontalSpaceAround}
+                      onClick={() => distributeSpacing('horizontal')}
+                    />
+                    <Button
+                      variant="secondary"
+                      bordered
+                      disabled={selectedCount < 3}
+                      icon={AlignVerticalSpaceAround}
+                      onClick={() => distributeSpacing('vertical')}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
             {/* End */}
           </div>
         </div>

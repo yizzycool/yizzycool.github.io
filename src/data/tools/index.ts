@@ -33,6 +33,7 @@ import {
   Signature,
   SpellCheck,
   StickyNote,
+  WandSparkles,
 } from 'lucide-react';
 import { fromPairs, findKey } from 'lodash';
 
@@ -113,6 +114,7 @@ export const ToolKeys = {
   cidrCalculator: 'cidrCalculator',
 
   // Image Tools
+  photoEditorStudio: 'photoEditorStudio',
   picMergeStudio: 'picMergeStudio',
   base64ToImage: 'base64ToImage',
   imageToBase64: 'imageToBase64',
@@ -154,6 +156,7 @@ export const ToolGroupItems = {
     ToolKeys.keyCard,
   ],
   [ToolGroupKeys.imgTool]: [
+    ToolKeys.photoEditorStudio,
     ToolKeys.picMergeStudio,
     ToolKeys.imageToBase64,
     ToolKeys.base64ToImage,
@@ -219,6 +222,7 @@ export const ToolTitles = {
   [ToolKeys.hexBinaryConverter]: 'Hex / Binary Data Converter',
   [ToolKeys.cidrCalculator]: 'CIDR & Subnet Calculator',
 
+  [ToolKeys.photoEditorStudio]: 'Photo Editor Studio',
   [ToolKeys.picMergeStudio]: 'PicMerge Studio',
   [ToolKeys.base64ToImage]: 'Base64 to Image',
   [ToolKeys.imageToBase64]: 'Image to Base64',
@@ -301,6 +305,8 @@ export const ToolDescriptions = {
   [ToolKeys.cidrCalculator]:
     'Calculate subnet masks, usable IP ranges, wildcard masks, and visual 32-bit bit distribution for IPv4 CIDR blocks 100% locally.',
 
+  [ToolKeys.photoEditorStudio]:
+    'Free desktop-class Fabric.js v7 photo editor with layers, 16 blend modes, WebGL color filters, clipping masks, brushes, vector shapes, SVG/PNG export, and portable .pes projects.',
   [ToolKeys.picMergeStudio]:
     'Combine photos into custom collages with social media canvas presets, layer controls, filters, and high-resolution export in PNG or JPEG.',
   [ToolKeys.base64ToImage]:
@@ -357,6 +363,7 @@ export const ToolSlugs = {
   [ToolKeys.hexBinaryConverter]: 'hex-binary-converter',
   [ToolKeys.cidrCalculator]: 'cidr-calculator',
 
+  [ToolKeys.photoEditorStudio]: 'photo-editor',
   [ToolKeys.picMergeStudio]: 'pic-merge-studio',
   [ToolKeys.base64ToImage]: 'base64-to-image',
   [ToolKeys.imageToBase64]: 'image-to-base64',
@@ -415,6 +422,7 @@ export const ToolIcons = {
   [ToolKeys.hexBinaryConverter]: Binary,
   [ToolKeys.cidrCalculator]: Network,
 
+  [ToolKeys.photoEditorStudio]: WandSparkles,
   [ToolKeys.picMergeStudio]: Layers,
   [ToolKeys.base64ToImage]: FileImage,
   [ToolKeys.imageToBase64]: Image,
@@ -443,9 +451,9 @@ export const ToolGroupBadges: Record<string, string> = {
  * Optional highlight badges displayed beside individual tool entries (e.g. "New", "Popular").
  */
 export const ToolBadges: Record<string, string> = {
-  [ToolKeys.expenseSplitter]: 'New',
-  [ToolKeys.markdownNotes]: 'New',
   [ToolKeys.signatureStampMaker]: 'New',
+  [ToolKeys.photoEditorStudio]: 'New',
+  [ToolKeys.qrCodeGenerator]: 'Popular',
   [ToolKeys.picMergeStudio]: 'Popular',
   [ToolKeys.jsonFormatter]: 'Popular',
 };

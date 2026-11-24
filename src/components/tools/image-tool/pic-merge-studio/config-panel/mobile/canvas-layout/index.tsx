@@ -1,6 +1,6 @@
 'use client';
 
-import type { CanvasGridConfig } from '../../../types/config';
+import type { BentoTemplateId, CanvasGridConfig } from '../../../types/config';
 import type { ConfigHelper } from '../../../types/config-helper';
 import type { LucideIcon } from 'lucide-react';
 
@@ -17,6 +17,7 @@ import { InfoTooltip } from '@/components/ui/info-tooltip';
 import usePreventNumberWheel from '@/hooks/dom/use-prevent-number-wheel';
 
 import { DEFAULT_CANVAS_CONFIG } from '../../..';
+import { BENTO_TEMPLATES } from '../../../data/bento-templates';
 import { useControlDrawer } from '../hooks/use-control-drawer';
 import IconTextButton from '../icon-text-button';
 import BottomDrawer from '../bottom-drawer';
@@ -49,12 +50,14 @@ const GRID_FIELDS = [
 type Props = {
   configHelper: ConfigHelper;
   switchToGridLayout: (rows: number, cols: number) => void;
+  switchToBentoTemplate: (templateId: BentoTemplateId) => void;
   switchToFreeLayout: () => void;
 };
 
 export default function CanvasLayout({
   configHelper,
   switchToGridLayout,
+  switchToBentoTemplate,
   switchToFreeLayout,
 }: Props) {
   const currentAppliedLayout = configHelper.canvasConfig.layout;
@@ -251,6 +254,31 @@ export default function CanvasLayout({
                 cols={gridSize.cols}
                 active={isGridLayout}
               />
+            </div>
+
+            {/* Bento / Asymmetric Templates */}
+            <div className="space-y-1.5">
+              <PanelLabel className="pl-1">Bento Templates</PanelLabel>
+              <div className="grid grid-cols-5 gap-1.5">
+                {BENTO_TEMPLATES.map((tpl) => {
+                  const isSelected =
+                    currentAppliedLayout === 'grid' &&
+                    configHelper.canvasConfig.gridConfig.templateId === tpl.id;
+                  return (
+                    <Button
+                      key={tpl.id}
+                      size="xs"
+                      variant={isSelected ? 'primary' : 'secondary'}
+                      bordered={!isSelected}
+                      disabled={!isGridLayout}
+                      onClick={() => switchToBentoTemplate(tpl.id)}
+                      className="!px-1 font-mono text-[10px] font-semibold"
+                    >
+                      {tpl.shortLabel}
+                    </Button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Presets Selector - Placed below row/col inputs */}

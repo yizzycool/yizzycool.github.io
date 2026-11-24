@@ -18,15 +18,23 @@ import colorUtils from '@/utils/color-utils';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import toast from '@/utils/toast';
 
+import {
+  clearHandoffQueryParam,
+  consumeStudioHandoff,
+  hasHandoffQueryParam,
+} from '../../studio-handoff';
 import { DEFAULT_CANVAS_CONFIG, DEFAULT_GLOBAL_IMAGE_CONFIG } from '..';
 import {
   attachImageAssetMeta,
+  buildImageClipPath,
   captureStudioSnapshot,
   collectSnapshotAssetIds,
   deserializeFilters,
+  type ExtendedCaptionTextbox,
+  type ExtendedFabricImage,
   hasStudioContent,
 } from '../utils/studio-snapshot';
-import { FABRIC_CONTROL_CONFIG } from './use-fabric';
+import { FABRIC_CONTROL_CONFIG, FABRIC_IMAGE_CONFIG } from './use-fabric';
 
 const DRAFT_STORAGE_KEY = 'pic-merge-studio:draft';
 const MAX_HISTORY_STEPS = 30;
@@ -280,12 +288,71 @@ export default function useStudioHistory({
                 img.applyFilters();
               }
 
+              const extImg = img as ExtendedFabricImage;
+              extImg._cropAspect = layer.cropAspect ?? 'none';
+              extImg._maskShape = layer.maskShape ?? 'none';
+              if (
+                (extImg._cropAspect && extImg._cropAspect !== 'none') ||
+                (extImg._maskShape && extImg._maskShape !== 'none')
+              ) {
+                img.clipPath = buildImageClipPath(
+                  img,
+                  extImg._maskShape,
+                  extImg._cropAspect
+                );
+              }
+              if (layer.shadow?.enabled) {
+                const rgba = colorUtils.hexToRgba(
+                  layer.shadow.color || '#000000'
+                );
+                img.set({
+                  shadow: new fabric.Shadow({
+                    color: colorUtils.rgbaToHex({
+                      r: rgba.r,
+                      g: rgba.g,
+                      b: rgba.b,
+                      a: layer.shadow.opacity,
+                    }),
+                    blur: layer.shadow.blur,
+                    offsetX: layer.shadow.offsetX,
+                    offsetY: layer.shadow.offsetY,
+                  }),
+                });
+              }
+
               img.setCoords();
               canvas.add(img);
             } catch {
               // Skip broken asset gracefully while restoring remaining layers
             }
           }
+        }
+
+        // Restore Quick Captions
+        for (const cap of snapshot.captions ?? []) {
+          const textbox = new fabric.Textbox(cap.text, {
+            left: cap.left,
+            top: cap.top,
+            width: cap.width,
+            fontSize: cap.fontSize,
+            fill: cap.fill,
+            fontWeight: cap.fontWeight,
+            textAlign: cap.textAlign,
+            angle: cap.angle,
+            opacity: cap.opacity,
+            scaleX: cap.scaleX,
+            scaleY: cap.scaleY,
+            originX: 'center',
+            originY: 'center',
+            fontFamily: 'Inter, system-ui, sans-serif',
+            stroke: '#0f172a',
+            strokeWidth: 1,
+            ...FABRIC_CONTROL_CONFIG,
+          }) as ExtendedCaptionTextbox;
+          textbox._customKey = 'studio-caption';
+          textbox._captionId = cap.id;
+          textbox.setCoords();
+          canvas.add(textbox);
         }
 
         resizeDisplay();
@@ -499,6 +566,84 @@ export default function useStudioHistory({
       }
 
       if (fabricCanvasRef.current) {
+        if (isDbSupported && hasHandoffQueryParam()) {
+          const payload = await consumeStudioHandoff(
+            getValue,
+            deleteValue,
+            'pic-merge-studio'
+          );
+          clearHandoffQueryParam();
+          if (payload && payload.items.length > 0) {
+            const canvas = fabricCanvasRef.current;
+            const nextSize = { width: payload.width, height: payload.height };
+            canvasConfigRef.current = {
+              ...canvasConfigRef.current,
+              layout: 'free',
+              size: nextSize,
+              ...(payload.backgroundColor
+                ? {
+                    background: {
+                      type: 'color',
+                      color: { color: payload.backgroundColor, opacity: 1 },
+                    },
+                  }
+                : {}),
+            };
+            setCanvasConfig(canvasConfigRef.current);
+            canvas.setDimensions(nextSize);
+            if (payload.backgroundColor) {
+              canvas.set({ backgroundColor: payload.backgroundColor });
+            }
+
+            const shortEdge = Math.min(nextSize.width, nextSize.height);
+            for (const item of payload.items) {
+              const assetId = `asset_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+              const url = registerAssetBlob(assetId, item.blob);
+              const img = await fabric.FabricImage.fromURL(url, {
+                crossOrigin: 'anonymous',
+              });
+              attachImageAssetMeta(img, {
+                assetId,
+                fileName: item.name,
+                layerName: item.name,
+              });
+              const scale = Math.min(
+                (shortEdge * 0.78) / (img.width || 1),
+                (shortEdge * 0.78) / (img.height || 1),
+                1
+              );
+              img.set({
+                left: nextSize.width / 2,
+                top: nextSize.height / 2,
+                originX: 'center',
+                originY: 'center',
+                scaleX: scale,
+                scaleY: scale,
+                ...FABRIC_IMAGE_CONFIG,
+              });
+              img.setCoords();
+              canvas.add(img);
+              canvas.setActiveObject(img);
+            }
+
+            resizeDisplay();
+            canvas.requestRenderAll();
+            const handoffSnap = captureStudioSnapshot(
+              canvas,
+              gridRef.current,
+              canvasConfigRef.current,
+              globalImageConfigRef.current
+            );
+            historyStackRef.current = [handoffSnap];
+            historyIndexRef.current = 0;
+            serializedTopRef.current = JSON.stringify(handoffSnap);
+            syncHistoryMeta();
+            customEventUtils.emit(CustomEvents.tools.fabricRecalcSelection);
+            toast.success('Imported artwork from Photo Editor Studio');
+            return;
+          }
+        }
+
         const initialSnapshot = captureStudioSnapshot(
           fabricCanvasRef.current,
           gridRef.current,
@@ -515,6 +660,7 @@ export default function useStudioHistory({
     void hydrate();
   }, [
     canvasConfigRef,
+    deleteValue,
     fabricCanvasRef,
     getValue,
     globalImageConfigRef,
@@ -522,7 +668,9 @@ export default function useStudioHistory({
     isDbSupported,
     isFabricReady,
     registerAssetBlob,
+    resizeDisplay,
     restoreSnapshot,
+    setCanvasConfig,
     syncHistoryMeta,
   ]);
 

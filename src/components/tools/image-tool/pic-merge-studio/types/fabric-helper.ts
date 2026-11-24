@@ -1,6 +1,15 @@
 import type * as fabric from 'fabric';
+import type {
+  BentoTemplateId,
+  CanvasWatermarkConfig,
+  CaptionConfig,
+  ImageCropAspect,
+  ImageMaskShape,
+  ImageShadowConfig,
+} from './config';
+import type { GridCell } from './grid-layout';
 
-export type FabricFilterValue = number | string | boolean;
+export type FabricFilterValue = number | string | boolean | number[];
 export type FabricFilterValuesMap = Record<
   string,
   Record<string, FabricFilterValue> | FabricFilterValue
@@ -21,11 +30,18 @@ export type FabricHelperStates = {
   hasImageSelection: boolean;
   hasImageSrc: boolean;
   selectedCount: number;
+  viewportZoom: number;
+  setViewportZoom: (nextZoom: number) => void;
+  editingCellId: number | null;
+  exitCellFocus: () => void;
+  selectedCaption: CaptionConfig | null;
+  hasCaptionSelection: boolean;
 };
 
 export type ExportOptions = {
   format?: 'png' | 'jpeg' | 'webp';
   quality?: number;
+  multiplier?: 1 | 2 | 3;
   filename?: string;
 };
 
@@ -58,6 +74,17 @@ export type FabricHelperCanvasUpdater = {
   // Reset border width and color of Fabric Canvas
   resetBorder: () => void;
 
+  // Add quick caption textbox
+  addCaption: (text?: string) => void;
+  // Update active caption styling
+  updateSelectedCaption: (patch: Partial<CaptionConfig>) => void;
+  // Delete selected caption
+  deleteSelectedCaption: () => void;
+  // Update tiled diagonal watermark settings
+  setWatermark: (patch: Partial<CanvasWatermarkConfig>) => void;
+  // Hand off canvas / layers into Photo Editor Studio
+  sendToPhotoEditor: () => Promise<void>;
+
   // To de-selected object
   discardActiveObject: () => void;
 };
@@ -76,6 +103,11 @@ export type FabricHelperImageUpdater = {
   setBorderColor: (color: string, opacity: number) => void;
   // Reset border width and color of Fabric Image
   resetBorder: () => void;
+
+  // Non-destructive crop & geometric mask shape (Free mode)
+  setClipMask: (maskShape: ImageMaskShape, cropAspect: ImageCropAspect) => void;
+  // Drop shadow toggle and blur/offset/opacity
+  setShadow: (patch: Partial<ImageShadowConfig>) => void;
 
   // Update angle/rotateX/rotateY/flipX/flipY of Fabric Image
   setGeometry: (key: string, value: number | boolean) => void;
@@ -111,11 +143,17 @@ export type FabricHelperImagesUpdater = {
   setAlignment: (horizontal: string, vertical: string) => void;
   // Update object-fit of Fabric Image
   setObjectFit: (type: string) => void;
+  // Distribute 3+ selected images evenly along axis
+  distributeSpacing: (axis: 'horizontal' | 'vertical') => void;
 };
 
 export type FabricHelperGridUpdater = {
   // To switch from `free` to grid`
   switchToGridLayout: (rows: number, cols: number) => void;
+  // Apply an asymmetric Bento or Polaroid collage template
+  switchToBentoTemplate: (templateId: BentoTemplateId) => void;
+  // Swap two occupied or empty grid cells cleanly
+  swapCells: (cellA: GridCell, cellB: GridCell) => Promise<void>;
   // Add images into Fabric Canvas
   handleImagesUpload: (files: FileList | File[]) => Promise<number> | void;
   // Update size of Fabric Canvas

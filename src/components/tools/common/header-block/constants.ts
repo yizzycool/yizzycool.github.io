@@ -38,6 +38,7 @@ export const TOOLS_WITH_HOTKEY = [
   ToolKeys.cidrCalculator,
 
   // Image Tools
+  ToolKeys.photoEditorStudio,
   ToolKeys.picMergeStudio,
 
   // Chrome AI APIs

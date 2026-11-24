@@ -1,6 +1,10 @@
 'use client';
 
-import type { ImageConfig } from '../../../types/config';
+import type {
+  ImageConfig,
+  ImageCropAspect,
+  ImageMaskShape,
+} from '../../../types/config';
 
 import { useState } from 'react';
 import {
@@ -25,17 +29,40 @@ import PanelLabel from '../../panel-label';
 
 type Props = {
   imageConfig: ImageConfig;
+  isGridLayout?: boolean;
   setGeometry: (key: string, value: number | boolean) => void;
   setSize: (width: number, height: number) => void;
+  setClipMask?: (
+    maskShape: ImageMaskShape,
+    cropAspect: ImageCropAspect
+  ) => void;
   resetOriginalSize: () => void;
   resetAspectRatio: () => void;
   onChangeEnd?: () => void;
 };
 
+const CROP_ASPECTS: Array<{ value: ImageCropAspect; label: string }> = [
+  { value: 'none', label: 'Free' },
+  { value: '1:1', label: '1:1' },
+  { value: '4:3', label: '4:3' },
+  { value: '16:9', label: '16:9' },
+  { value: '4:5', label: '4:5' },
+];
+
+const MASK_SHAPES: Array<{ value: ImageMaskShape; label: string }> = [
+  { value: 'none', label: 'None' },
+  { value: 'circle', label: 'Circle' },
+  { value: 'rounded', label: 'Rounded' },
+  { value: 'squircle', label: 'Squircle' },
+  { value: 'polaroid', label: 'Polaroid' },
+];
+
 export default function Geometry({
   imageConfig,
+  isGridLayout = false,
   setGeometry,
   setSize,
+  setClipMask,
   resetOriginalSize,
   resetAspectRatio,
   onChangeEnd,
@@ -51,6 +78,8 @@ export default function Geometry({
     flipY,
     lockMovementX,
     lockMovementY,
+    cropAspect = 'none',
+    maskShape = 'none',
   } = imageConfig;
 
   const isSnapEnabled = snapAngle !== 0;
@@ -329,6 +358,47 @@ export default function Geometry({
           />
         </div>
       </div>
+
+      {/* Non-destructive Crop & Shape Mask (Free Mode) */}
+      {!isGridLayout && setClipMask && (
+        <>
+          <div className="space-y-1.5">
+            <PanelLabel>Crop Aspect</PanelLabel>
+            <div className="grid grid-cols-5 gap-1">
+              {CROP_ASPECTS.map((item) => (
+                <Button
+                  key={item.value}
+                  size="xs"
+                  variant={cropAspect === item.value ? 'primary' : 'secondary'}
+                  bordered={cropAspect !== item.value}
+                  onClick={() => setClipMask(maskShape, item.value)}
+                  className="!px-1 font-mono text-[10px]"
+                >
+                  {item.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <PanelLabel>Frame Mask</PanelLabel>
+            <div className="grid grid-cols-3 gap-1.5">
+              {MASK_SHAPES.map((item) => (
+                <Button
+                  key={item.value}
+                  size="xs"
+                  variant={maskShape === item.value ? 'primary' : 'secondary'}
+                  bordered={maskShape !== item.value}
+                  onClick={() => setClipMask(item.value, cropAspect)}
+                  className="!px-1.5 text-[10px]"
+                >
+                  {item.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

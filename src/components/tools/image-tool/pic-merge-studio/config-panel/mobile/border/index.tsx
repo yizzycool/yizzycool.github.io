@@ -1,6 +1,6 @@
 'use client';
 
-import type { CanvasBorder } from '../../../types/config';
+import type { CanvasBorder, ImageShadowConfig } from '../../../types/config';
 
 import { Palette, SquareDashedTopSolid } from 'lucide-react';
 import { isUndefined } from 'lodash';
@@ -23,6 +23,8 @@ type Props = {
   setBorderColor: (color: string, opacity: number) => void;
   resetBorder: () => void;
   setShowOuterBorder?: (show: boolean) => void; // For Grid layout
+  shadow?: ImageShadowConfig;
+  setShadow?: (patch: Partial<ImageShadowConfig>) => void;
   onChangeEnd?: () => void;
 };
 
@@ -32,6 +34,8 @@ export default function Border({
   setBorderColor,
   resetBorder,
   setShowOuterBorder = () => {},
+  shadow,
+  setShadow,
   onChangeEnd,
 }: Props) {
   const { color, opacity, width, showOuter } = border;
@@ -135,6 +139,53 @@ export default function Border({
                 checked={!!border?.showOuter}
                 onChange={onGridOuterBorderSwitched}
               />
+            </div>
+          )}
+
+          {/* Drop Shadow (Free Image Mode) */}
+          {shadow && setShadow && (
+            <div className="space-y-2 border-t border-neutral-200/70 pt-3 dark:border-neutral-800/70">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                  Drop Shadow
+                </span>
+                <Switch
+                  size="sm"
+                  checked={shadow.enabled}
+                  onChange={(checked) => {
+                    setShadow({ enabled: checked });
+                    onChangeEnd?.();
+                  }}
+                />
+              </div>
+              {shadow.enabled && (
+                <div className="grid grid-cols-2 gap-3">
+                  <Slider
+                    title="Blur"
+                    min={0}
+                    max={60}
+                    step={1}
+                    value={shadow.blur}
+                    showValueBadge
+                    onChange={(e) =>
+                      setShadow({ blur: Number(e.target.value) })
+                    }
+                    onChangeEnd={onChangeEnd}
+                  />
+                  <Slider
+                    title="Opacity"
+                    min={0.05}
+                    max={1}
+                    step={0.05}
+                    value={shadow.opacity}
+                    showValueBadge
+                    onChange={(e) =>
+                      setShadow({ opacity: Number(e.target.value) })
+                    }
+                    onChangeEnd={onChangeEnd}
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>

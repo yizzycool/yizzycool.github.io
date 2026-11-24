@@ -33,11 +33,20 @@ export const DEFAULT_CANVAS_CONFIG: CanvasConfig = {
     color: { color: PRESET_BACKGROUND_COLORS[0], opacity: 1 },
   },
   border: { width: 0, color: '', opacity: 1 },
+  watermark: {
+    enabled: false,
+    text: '© PicMerge Studio',
+    color: '#ffffff',
+    opacity: 0.28,
+    fontSize: 32,
+    angle: -30,
+  },
   exportFormat: 'png',
 
   gridConfig: {
     rows: 2,
     cols: 2,
+    templateId: 'uniform',
     border: {
       showOuter: false,
       width: 25,
@@ -67,6 +76,16 @@ const defaultImageConfig: ImageConfig = {
   lockMovementY: false,
   flipX: false,
   flipY: false,
+  cropAspect: 'none',
+  maskShape: 'none',
+  shadow: {
+    enabled: false,
+    blur: 18,
+    offsetX: 0,
+    offsetY: 8,
+    opacity: 0.35,
+    color: '#000000',
+  },
   filters: [],
 };
 
@@ -193,6 +212,13 @@ export default function PicMergeStudio() {
               isFreeLayout={configHelper.canvasConfig.layout === 'free'}
               snapGuidesEnabled={snapGuidesEnabled}
               onToggleSnapGuides={setSnapGuidesEnabled}
+              viewportZoom={fabricHelper.states.viewportZoom}
+              onChangeViewportZoom={fabricHelper.states.setViewportZoom}
+              editingCellId={fabricHelper.states.editingCellId}
+              onExitCellFocus={fabricHelper.states.exitCellFocus}
+              onSendToPhotoEditor={() =>
+                void fabricHelper.canvasUpdater.sendToPhotoEditor()
+              }
               canUndo={fabricHelper.historyUpdater.canUndo}
               canRedo={fabricHelper.historyUpdater.canRedo}
               canReset={fabricHelper.historyUpdater.canReset}

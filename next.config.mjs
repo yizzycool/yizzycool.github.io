@@ -22,6 +22,16 @@ const withBundleAnalyzer = NextBundleAnalyzer({
 const nextConfig = {
   output: 'export',
   images: { unoptimized: true },
+  turbopack: {},
+  webpack(config, { isServer }) {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      sharp: false,
+      'onnxruntime-node': false,
+      ...(isServer ? { 'paper/dist/paper-core': false } : {}),
+    };
+    return config;
+  },
   // eslint: {
   //   ignoreDuringBuilds: true,
   // },

@@ -1,8 +1,8 @@
 import type { ConfigHelper } from '../types/config-helper';
-import type { GridTemplate } from '../types/grid-layout';
+import type { GridCell, GridTemplate } from '../types/grid-layout';
 import type { FabricInternalStates } from './use-fabric';
 import type { FabricHelperGridUpdater } from '../types/fabric-helper';
-import type { CanvasConfig } from '../types/config';
+import type { BentoTemplateId, CanvasConfig } from '../types/config';
 
 import { useCallback } from 'react';
 import * as fabric from 'fabric';
@@ -13,7 +13,12 @@ import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import useCommon from './use-common';
 import useGridLogic from './use-grid-logic';
 import { DEFAULT_CANVAS_CONFIG } from '..';
-import { attachImageAssetMeta } from '../utils/studio-snapshot';
+import {
+  attachImageAssetMeta,
+  deserializeFilters,
+  type ExtendedFabricImage,
+  serializeFilters,
+} from '../utils/studio-snapshot';
 
 type Props = {
   refs: {
@@ -51,6 +56,7 @@ export default function useGridUpdater({
 
   const {
     createGridTemplate,
+    createBentoGridTemplate,
     updateAfterResize,
     updateEdges,
     restoreGridFromSnapshot,
@@ -74,13 +80,14 @@ export default function useGridUpdater({
             ...canvasConfigRef.current.gridConfig,
             rows,
             cols,
+            templateId: 'uniform',
           },
         };
       }
       setCanvasConfig((prev) => ({
         ...prev,
         layout: 'grid',
-        gridConfig: { ...prev.gridConfig, rows, cols },
+        gridConfig: { ...prev.gridConfig, rows, cols, templateId: 'uniform' },
       }));
       onCommitHistory?.('immediate');
     },
@@ -91,6 +98,51 @@ export default function useGridUpdater({
       canvasConfigRef,
       setCanvasConfig,
       onCommitHistory,
+    ]
+  );
+
+  const switchToBentoTemplate = useCallback(
+    async (templateId: BentoTemplateId) => {
+      if (templateId === 'uniform') {
+        await switchToGridLayout(
+          canvasConfigRef?.current.gridConfig.rows ?? 2,
+          canvasConfigRef?.current.gridConfig.cols ?? 2
+        );
+        return;
+      }
+      if (!fabricCanvasRef.current) return;
+      const nextGrid = await createBentoGridTemplate(templateId);
+      if (!nextGrid) return;
+      gridRef.current = nextGrid;
+      const cols = nextGrid.cells[0]?.length ?? 2;
+
+      if (canvasConfigRef) {
+        canvasConfigRef.current = {
+          ...canvasConfigRef.current,
+          layout: 'grid',
+          gridConfig: {
+            ...canvasConfigRef.current.gridConfig,
+            rows: 1,
+            cols,
+            templateId,
+          },
+        };
+      }
+      setCanvasConfig((prev) => ({
+        ...prev,
+        layout: 'grid',
+        gridConfig: { ...prev.gridConfig, rows: 1, cols, templateId },
+      }));
+      onCommitHistory?.('immediate');
+    },
+    [
+      canvasConfigRef,
+      createBentoGridTemplate,
+      fabricCanvasRef,
+      gridRef,
+      onCommitHistory,
+      setCanvasConfig,
+      switchToGridLayout,
     ]
   );
 
@@ -527,9 +579,101 @@ export default function useGridUpdater({
     ]
   );
 
+  const swapCells = useCallback(
+    async (cellA: GridCell, cellB: GridCell) => {
+      if (!fabricCanvasRef.current || cellA.id === cellB.id) return;
+      const imgA = cellA.element as ExtendedFabricImage;
+      const imgB = cellB.element as ExtendedFabricImage;
+      const clipA = imgA.clipPath;
+      const clipB = imgB.clipPath;
+      if (!clipA || !clipB) return;
+
+      const metaA = {
+        src: imgA.getSrc?.() || '',
+        assetId: imgA._assetId,
+        fileName: imgA._fileName,
+        layerName: imgA._layerName,
+        filters: serializeFilters(imgA.filters),
+      };
+      const metaB = {
+        src: imgB.getSrc?.() || '',
+        assetId: imgB._assetId,
+        fileName: imgB._fileName,
+        layerName: imgB._layerName,
+        filters: serializeFilters(imgB.filters),
+      };
+
+      const applyCellPayload = async (
+        img: ExtendedFabricImage,
+        clip: NonNullable<fabric.FabricObject['clipPath']>,
+        payload: typeof metaA
+      ) => {
+        if (!payload.src) {
+          await img.setSrc('');
+          img.set({
+            scaleX: 1,
+            scaleY: 1,
+            width: clip.width,
+            height: clip.height,
+            left: clip.left,
+            top: clip.top,
+            angle: 0,
+            filters: [],
+            lockMovementX: true,
+            lockMovementY: true,
+            lockRotation: true,
+            lockScalingX: true,
+            lockScalingY: true,
+            hasControls: false,
+          });
+          img._assetId = undefined;
+          img._fileName = undefined;
+          img._layerName = undefined;
+        } else {
+          await img.setSrc(payload.src, { crossOrigin: 'anonymous' });
+          attachImageAssetMeta(img, {
+            assetId: payload.assetId,
+            fileName: payload.fileName,
+            layerName: payload.layerName,
+          });
+          const restoredFilters = deserializeFilters(payload.filters);
+          img.set({ filters: restoredFilters });
+          img.applyFilters();
+          const scale = Math.max(
+            clip.width / (img.width || 1),
+            clip.height / (img.height || 1)
+          );
+          img.set({
+            scaleX: scale,
+            scaleY: scale,
+            left: clip.left,
+            top: clip.top,
+            angle: 0,
+            lockMovementX: false,
+            lockMovementY: false,
+            lockRotation: false,
+            lockScalingX: false,
+            lockScalingY: false,
+            hasControls: true,
+          });
+        }
+        img.setCoords();
+      };
+
+      await applyCellPayload(imgA, clipA, metaB);
+      await applyCellPayload(imgB, clipB, metaA);
+      fabricCanvasRef.current.requestRenderAll();
+      customEventUtils.emit(CustomEvents.tools.fabricRecalcSelection);
+      onCommitHistory?.('immediate');
+    },
+    [fabricCanvasRef, onCommitHistory]
+  );
+
   return {
     handleImagesUpload,
     switchToGridLayout,
+    switchToBentoTemplate,
+    swapCells,
     setSize,
 
     setShowOuterBorder,

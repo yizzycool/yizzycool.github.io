@@ -1,18 +1,32 @@
 import type { FabricHelperCanvasUpdater } from '../types/fabric-helper';
 import type { ConfigHelper } from '../types/config-helper';
 import type { FabricInternalStates } from './use-fabric';
-import type { CanvasConfig } from '../types/config';
+import type {
+  CanvasConfig,
+  CanvasWatermarkConfig,
+  CaptionConfig,
+} from '../types/config';
+import type { AssetEntry } from './use-studio-history';
 
 import { useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import * as fabric from 'fabric';
 
+import { useToolsDB } from '@/hooks/tools/use-tools-db';
+import { ToolKeys, ToolUrls } from '@/data/tools';
 import colorUtils from '@/utils/color-utils';
+import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import toast from '@/utils/toast';
 
+import { writeStudioHandoff } from '../../studio-handoff';
 import useCommon from './use-common';
-import { FABRIC_IMAGE_CONFIG } from './use-fabric';
+import { FABRIC_CONTROL_CONFIG, FABRIC_IMAGE_CONFIG } from './use-fabric';
 import { DEFAULT_CANVAS_CONFIG } from '..';
-import { attachImageAssetMeta } from '../utils/studio-snapshot';
+import {
+  attachImageAssetMeta,
+  type ExtendedCaptionTextbox,
+  type ExtendedFabricImage,
+} from '../utils/studio-snapshot';
 
 type Props = {
   refs: {
@@ -20,6 +34,7 @@ type Props = {
     canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
     fabricCanvasRef: React.MutableRefObject<fabric.Canvas | null>;
     canvasConfigRef?: React.MutableRefObject<CanvasConfig>;
+    assetMapRef?: React.MutableRefObject<Map<string, AssetEntry>>;
   };
   configHelper: ConfigHelper;
   fabricHelper: FabricInternalStates;
@@ -35,7 +50,9 @@ export default function useCanvasUpdater({
   registerAssetFile,
   onCommitHistory,
 }: Props): FabricHelperCanvasUpdater {
-  const { fabricCanvasRef, canvasConfigRef } = refs;
+  const { fabricCanvasRef, canvasConfigRef, assetMapRef } = refs;
+  const router = useRouter();
+  const { isSupported: isDbSupported, setValue: dbSetValue } = useToolsDB();
 
   const { canvasConfig, setCanvasConfig } = configHelper;
 
@@ -186,6 +203,7 @@ export default function useCanvasUpdater({
     (options?: {
       format?: 'png' | 'jpeg' | 'webp';
       quality?: number;
+      multiplier?: 1 | 2 | 3;
       filename?: string;
     }) => {
       if (!fabricCanvasRef.current || !isFabricReady) return;
@@ -204,12 +222,13 @@ export default function useCanvasUpdater({
       setIsExporting(true);
       const format = options?.format || canvasConfig.exportFormat || 'png';
       const quality = options?.quality ?? 0.92;
+      const multiplier = options?.multiplier ?? 1;
       const filename = options?.filename?.trim() || `picmerge-${Date.now()}`;
 
       const dataUrl = fabricCanvasRef.current.toDataURL({
         format,
         quality,
-        multiplier: 1,
+        multiplier,
         enableRetinaScaling: false, // to prevent wrong output canvas size
       });
       const extension = format === 'jpeg' ? 'jpg' : format;
@@ -386,6 +405,198 @@ export default function useCanvasUpdater({
     fabricCanvasRef.current.requestRenderAll();
   }, [fabricCanvasRef]);
 
+  const addCaption = useCallback(
+    (initialText = 'Double-click to edit') => {
+      const canvas = fabricCanvasRef.current;
+      if (!canvas) return;
+
+      const textbox = new fabric.Textbox(initialText, {
+        left: canvas.width / 2,
+        top: canvas.height / 2,
+        width: Math.min(canvas.width * 0.75, 480),
+        originX: 'center',
+        originY: 'center',
+        fontFamily: 'Inter, system-ui, sans-serif',
+        fontSize: Math.max(
+          28,
+          Math.round(Math.min(canvas.width, canvas.height) * 0.05)
+        ),
+        fontWeight: 'bold',
+        fill: '#ffffff',
+        stroke: '#0f172a',
+        strokeWidth: 1,
+        textAlign: 'center',
+        ...FABRIC_CONTROL_CONFIG,
+      }) as ExtendedCaptionTextbox;
+
+      textbox._customKey = 'studio-caption';
+      textbox._captionId = `cap_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+
+      canvas.add(textbox);
+      canvas.setActiveObject(textbox);
+      canvas.bringObjectToFront(textbox);
+      canvas.requestRenderAll();
+      customEventUtils.emit(CustomEvents.tools.fabricRecalcSelection);
+      onCommitHistory?.('immediate');
+    },
+    [fabricCanvasRef, onCommitHistory]
+  );
+
+  const updateSelectedCaption = useCallback(
+    (patch: Partial<CaptionConfig>) => {
+      const canvas = fabricCanvasRef.current;
+      if (!canvas) return;
+      const active = canvas.getActiveObject();
+      if (!(active instanceof fabric.Textbox)) return;
+
+      active.set({
+        ...(patch.text !== undefined ? { text: patch.text } : {}),
+        ...(patch.fontSize !== undefined ? { fontSize: patch.fontSize } : {}),
+        ...(patch.fill !== undefined ? { fill: patch.fill } : {}),
+        ...(patch.fontWeight !== undefined
+          ? { fontWeight: patch.fontWeight }
+          : {}),
+        ...(patch.textAlign !== undefined
+          ? { textAlign: patch.textAlign }
+          : {}),
+        ...(patch.opacity !== undefined ? { opacity: patch.opacity } : {}),
+      });
+      active.setCoords();
+      canvas.requestRenderAll();
+      customEventUtils.emit(CustomEvents.tools.fabricRecalcSelection);
+    },
+    [fabricCanvasRef]
+  );
+
+  const deleteSelectedCaption = useCallback(() => {
+    const canvas = fabricCanvasRef.current;
+    if (!canvas) return;
+    const active = canvas.getActiveObject();
+    if (!(active instanceof fabric.Textbox)) return;
+
+    canvas.remove(active);
+    canvas.discardActiveObject();
+    canvas.requestRenderAll();
+    customEventUtils.emit(CustomEvents.tools.fabricRecalcSelection);
+    onCommitHistory?.('immediate');
+  }, [fabricCanvasRef, onCommitHistory]);
+
+  const setWatermark = useCallback(
+    (patch: Partial<CanvasWatermarkConfig>) => {
+      const current = canvasConfigRef?.current.watermark ?? {
+        enabled: false,
+        text: '© PicMerge Studio',
+        color: '#ffffff',
+        opacity: 0.28,
+        fontSize: 32,
+        angle: -30,
+      };
+      const next: CanvasWatermarkConfig = { ...current, ...patch };
+      if (canvasConfigRef) {
+        canvasConfigRef.current = {
+          ...canvasConfigRef.current,
+          watermark: next,
+        };
+      }
+      setCanvasConfig((prev) => ({
+        ...prev,
+        watermark: next,
+      }));
+      fabricCanvasRef.current?.requestRenderAll();
+    },
+    [canvasConfigRef, fabricCanvasRef, setCanvasConfig]
+  );
+
+  const sendToPhotoEditor = useCallback(async () => {
+    const canvas = fabricCanvasRef.current;
+    if (!canvas || !isFabricReady) return;
+    if (!isDbSupported) {
+      toast.error('IndexedDB is unavailable in this browser session.');
+      return;
+    }
+
+    const currentCfg = canvasConfigRef?.current ?? canvasConfig;
+    const items: Array<{
+      name: string;
+      blob: Blob;
+      left?: number;
+      top?: number;
+      scaleX?: number;
+      scaleY?: number;
+      angle?: number;
+      opacity?: number;
+    }> = [];
+
+    if (currentCfg.layout === 'free') {
+      const imgs = getAllImages();
+      for (const img of imgs) {
+        const ext = img as ExtendedFabricImage;
+        const entry = ext._assetId
+          ? assetMapRef?.current.get(ext._assetId)
+          : undefined;
+        let blob: Blob | null = entry?.blob ?? null;
+        if (!blob && img.getSrc?.()) {
+          try {
+            blob = await (await fetch(img.getSrc())).blob();
+          } catch {
+            blob = null;
+          }
+        }
+        if (!blob) continue;
+        items.push({
+          name: ext._layerName || ext._fileName || 'Collage Layer',
+          blob,
+          left: img.left,
+          top: img.top,
+          scaleX: img.scaleX,
+          scaleY: img.scaleY,
+          angle: img.angle,
+          opacity: img.opacity,
+        });
+      }
+    }
+
+    if (items.length === 0) {
+      const dataUrl = canvas.toDataURL({
+        format: 'png',
+        quality: 1,
+        multiplier: 1,
+        enableRetinaScaling: false,
+      });
+      const blob = await (await fetch(dataUrl)).blob();
+      items.push({
+        name: 'PicMerge Collage',
+        blob,
+        left: canvas.width / 2,
+        top: canvas.height / 2,
+      });
+    }
+
+    await writeStudioHandoff(dbSetValue, 'photo-editor', {
+      version: 1,
+      createdAt: Date.now(),
+      source: 'pic-merge-studio',
+      width: currentCfg.size.width,
+      height: currentCfg.size.height,
+      backgroundColor: currentCfg.background.color?.color,
+      items,
+    });
+
+    const targetUrl =
+      ToolUrls[ToolKeys.photoEditorStudio] || '/tools/image-tool/photo-editor';
+    router.push(`${targetUrl}?handoff=1`);
+  }, [
+    assetMapRef,
+    canvasConfig,
+    canvasConfigRef,
+    dbSetValue,
+    fabricCanvasRef,
+    getAllImages,
+    isDbSupported,
+    isFabricReady,
+    router,
+  ]);
+
   return {
     switchToFreeLayout,
     handleImagesUpload,
@@ -396,6 +607,11 @@ export default function useCanvasUpdater({
     setBorderWidth,
     setBorderColor,
     resetBorder,
+    addCaption,
+    updateSelectedCaption,
+    deleteSelectedCaption,
+    setWatermark,
+    sendToPhotoEditor,
 
     discardActiveObject,
   };

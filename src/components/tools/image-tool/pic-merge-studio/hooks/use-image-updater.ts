@@ -3,6 +3,11 @@ import type {
   FabricFilterValuesMap,
 } from '../types/fabric-helper';
 import type { ConfigHelper } from '../types/config-helper';
+import type {
+  ImageCropAspect,
+  ImageMaskShape,
+  ImageShadowConfig,
+} from '../types/config';
 
 import { useCallback } from 'react';
 import * as fabric from 'fabric';
@@ -12,7 +17,12 @@ import colorUtils from '@/utils/color-utils';
 
 import useCommon from './use-common';
 import { FABRIC_FILTER_MAP } from '../data/fabric-filters';
-import { attachImageAssetMeta } from '../utils/studio-snapshot';
+import {
+  attachImageAssetMeta,
+  buildImageClipPath,
+  extractImageShadowConfig,
+  type ExtendedFabricImage,
+} from '../utils/studio-snapshot';
 
 type Props = {
   refs: {
@@ -322,6 +332,39 @@ export default function useImageUpdater({
       // Create Fabric Filters
       const fabricFilters = filters.map((filterType) => {
         const p = extractParams(filterType);
+        if (filterType === 'Convolute') {
+          const sharpenRaw = get(params, ['Convolute', '_sharpenAmount']);
+          const existingFilter = find(
+            image.filters,
+            (f) => f.type === 'Convolute'
+          ) as
+            | (fabric.filters.Convolute & { _sharpenAmount?: number })
+            | undefined;
+          const amount =
+            typeof sharpenRaw === 'number'
+              ? sharpenRaw
+              : (existingFilter?._sharpenAmount ?? 0);
+          const s = amount * 0.85;
+          const conv = new fabric.filters.Convolute({
+            matrix: [0, -s, 0, -s, 1 + 4 * s, -s, 0, -s, 0],
+          });
+          (conv as unknown as { _sharpenAmount?: number })._sharpenAmount =
+            amount;
+          return conv;
+        }
+        if (filterType === 'Gamma') {
+          const gammaRaw = get(params, ['Gamma', 'gamma']);
+          const gArr = Array.isArray(gammaRaw)
+            ? gammaRaw
+            : typeof gammaRaw === 'number'
+              ? [gammaRaw, gammaRaw, gammaRaw]
+              : p?.gamma;
+          return new fabric.filters.Gamma({
+            gamma: Array.isArray(gArr)
+              ? (gArr as [number, number, number])
+              : [1, 1, 1],
+          });
+        }
         return new FABRIC_FILTER_MAP[filterType].filter(p);
       });
 
@@ -476,6 +519,64 @@ export default function useImageUpdater({
     [fabricCanvasRef, getSelectedImage, onCommitHistory]
   );
 
+  const setClipMask = useCallback(
+    (maskShape: ImageMaskShape, cropAspect: ImageCropAspect) => {
+      if (!fabricCanvasRef.current) return;
+      const image = getSelectedImage() as ExtendedFabricImage | undefined;
+      if (!image) return;
+
+      image._maskShape = maskShape;
+      image._cropAspect = cropAspect;
+      image.clipPath = buildImageClipPath(image, maskShape, cropAspect);
+      image.set({ dirty: true });
+      image.setCoords();
+      fabricCanvasRef.current.requestRenderAll();
+
+      setImageConfig((prev) => ({
+        ...prev,
+        maskShape,
+        cropAspect,
+      }));
+      onCommitHistory?.('immediate');
+    },
+    [fabricCanvasRef, getSelectedImage, onCommitHistory, setImageConfig]
+  );
+
+  const setShadow = useCallback(
+    (patch: Partial<ImageShadowConfig>) => {
+      if (!fabricCanvasRef.current) return;
+      const image = getSelectedImage();
+      if (!image) return;
+
+      const current = extractImageShadowConfig(image);
+      const next: ImageShadowConfig = { ...current, ...patch };
+      if (!next.enabled) {
+        image.set({ shadow: null });
+      } else {
+        const rgba = colorUtils.hexToRgba(next.color || '#000000');
+        image.set({
+          shadow: new fabric.Shadow({
+            color: colorUtils.rgbaToHex({
+              r: rgba.r,
+              g: rgba.g,
+              b: rgba.b,
+              a: next.opacity,
+            }),
+            blur: next.blur,
+            offsetX: next.offsetX,
+            offsetY: next.offsetY,
+          }),
+        });
+      }
+      fabricCanvasRef.current.requestRenderAll();
+      setImageConfig((prev) => ({
+        ...prev,
+        shadow: next,
+      }));
+    },
+    [fabricCanvasRef, getSelectedImage, setImageConfig]
+  );
+
   return {
     replaceImage,
     deleteImage,
@@ -484,6 +585,8 @@ export default function useImageUpdater({
     setBorderWidth,
     setBorderColor,
     resetBorder,
+    setClipMask,
+    setShadow,
 
     setGeometry,
     setSize,

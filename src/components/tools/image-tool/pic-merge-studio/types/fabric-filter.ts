@@ -33,6 +33,8 @@ export type FabricFilterParams = {
   brightness?: FabricFilterSliderParam;
   contrast?: FabricFilterSliderParam;
   gamma?: FabricFilterGammaParam;
+  matrix?: FabricFilterGammaParam;
+  rotation?: FabricFilterSliderParam;
   noise?: FabricFilterSliderParam;
   blocksize?: FabricFilterSliderParam;
   distance?: FabricFilterSliderParam;

@@ -274,6 +274,18 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
 
   // ==================
 
+  [ToolKeys.photoEditorStudio]: {
+    overview:
+      'Photo Editor Studio brings a multi-layer, Photoshop-style workspace directly into your desktop browser—powered by Fabric.js v7 and hardware-accelerated WebGL filters. Open images or vector SVGs, composite layers with 16 blend modes and clipping masks, draw or erase freely, grade colors with real-time adjustments, auto-save drafts in IndexedDB, and export crisp raster artwork, SVG vectors, or portable .pes project files.',
+    features: [
+      '100% Client-Side Privacy: Every image, layer edit, brush stroke, and .pes project stays strictly in your browser memory and IndexedDB with zero server uploads or logins.',
+      'Photoshop-Style Layer Stack & Compositing: Drag-and-drop layer reordering, inline renaming, visibility/lock toggles, layer grouping (Ctrl+G), 16 blend modes (Multiply, Screen, Overlay, Soft Light, etc.), drop shadows, and circle/rounded/star clipping masks.',
+      'Infinite Zoom/Pan Canvas & Magnetic Snapping: Smooth wheel zoom (5%–1600%), Space+Drag panning, cursor coordinates, smart alignment snap guidelines (hold Alt/Option to bypass), and Before/After filter comparison.',
+      'WebGL Color Grading, Vector Tools & Portable .pes Projects: Apply 8 preset looks plus 10 real-time adjustments (Brightness, Contrast, Saturation, Vibrance, Hue, Blur, Sharpen, Noise, Pixelate, Gamma), draw with Pencil/Spray/Eraser brushes, and export PNG/JPEG/WebP (1x–3x), SVG, or compressed .pes archives.',
+    ],
+    bottomNote:
+      'All rendering, WebGL filtering, and ZIP .pes packaging run 100% locally in your browser. Your artwork never leaves your computer.',
+  },
   [ToolKeys.picMergeStudio]: {
     overview:
       'PicMerge Studio is an intuitive browser-based image editor and collage creation tool designed for arranging multi-picture compositions. Whether assembling social media graphic assets, side-by-side comparisons, or custom photo grids, it provides complete creative control on a clean digital canvas.',

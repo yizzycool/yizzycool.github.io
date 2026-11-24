@@ -17,6 +17,7 @@ import Geometry from './geometry';
 import Filters from './filters';
 import Arrangement from './arrangement';
 import Alignment from './alignment';
+import CaptionWatermark from './caption-watermark';
 import Opacity from './opacity';
 import ActionToolbar, { type ActionToolId } from './action-toolbar';
 import LayerStack from './layers-panel/layer-stack';
@@ -39,9 +40,13 @@ export default function ConfigPanelDesktop({
 
   const isGridLayout = configHelper.canvasConfig.layout === 'grid';
   const { layers, selectedCount } = fabricHelper.layersUpdater;
+  const { hasCaptionSelection, selectedCaption } = fabricHelper.states;
 
   // Derive effective active tool cleanly without cascading setState in effects
   const effectiveActiveToolId = useMemo(() => {
+    if (hasCaptionSelection) {
+      return 'canvas-caption';
+    }
     if (selectedCount === 0) {
       if (activeToolId && !activeToolId.startsWith('canvas-')) {
         return null;
@@ -56,7 +61,7 @@ export default function ConfigPanelDesktop({
       }
     }
     return activeToolId;
-  }, [selectedCount, activeToolId]);
+  }, [hasCaptionSelection, selectedCount, activeToolId]);
 
   const handleAddImages = (files: FileList) => {
     if (isGridLayout) {
@@ -130,6 +135,8 @@ export default function ConfigPanelDesktop({
         return 'Canvas Background';
       case 'canvas-border':
         return 'Canvas Border';
+      case 'canvas-caption':
+        return 'Captions & Watermark';
       case 'image-geometry':
         return 'Geometry & Transform';
       case 'image-arrangement':
@@ -271,6 +278,9 @@ export default function ConfigPanelDesktop({
               <CanvasLayout
                 configHelper={configHelper}
                 switchToGridLayout={fabricHelper.gridUpdater.switchToGridLayout}
+                switchToBentoTemplate={
+                  fabricHelper.gridUpdater.switchToBentoTemplate
+                }
                 switchToFreeLayout={
                   fabricHelper.canvasUpdater.switchToFreeLayout
                 }
@@ -318,6 +328,31 @@ export default function ConfigPanelDesktop({
               />
             )}
 
+            {effectiveActiveToolId === 'canvas-caption' && (
+              <CaptionWatermark
+                selectedCaption={selectedCaption}
+                watermark={
+                  configHelper.canvasConfig.watermark ?? {
+                    enabled: false,
+                    text: '© PicMerge Studio',
+                    color: '#ffffff',
+                    opacity: 0.28,
+                    fontSize: 32,
+                    angle: -30,
+                  }
+                }
+                onAddCaption={fabricHelper.canvasUpdater.addCaption}
+                onUpdateCaption={
+                  fabricHelper.canvasUpdater.updateSelectedCaption
+                }
+                onDeleteCaption={
+                  fabricHelper.canvasUpdater.deleteSelectedCaption
+                }
+                onUpdateWatermark={fabricHelper.canvasUpdater.setWatermark}
+                onChangeEnd={handleCommitHistory}
+              />
+            )}
+
             {/* Image Tools */}
 
             {effectiveActiveToolId === 'image-align' && (
@@ -343,8 +378,10 @@ export default function ConfigPanelDesktop({
             {effectiveActiveToolId === 'image-geometry' && (
               <Geometry
                 imageConfig={configHelper.imageConfig}
+                isGridLayout={isGridLayout}
                 setGeometry={fabricHelper.imageUpdater.setGeometry}
                 setSize={fabricHelper.imageUpdater.setSize}
+                setClipMask={fabricHelper.imageUpdater.setClipMask}
                 resetOriginalSize={fabricHelper.imageUpdater.resetOriginalSize}
                 resetAspectRatio={fabricHelper.imageUpdater.resetAspectRatio}
                 onChangeEnd={handleCommitHistory}
@@ -365,6 +402,8 @@ export default function ConfigPanelDesktop({
                 setBorderWidth={fabricHelper.imageUpdater.setBorderWidth}
                 setBorderColor={fabricHelper.imageUpdater.setBorderColor}
                 resetBorder={fabricHelper.imageUpdater.resetBorder}
+                shadow={configHelper.imageConfig.shadow}
+                setShadow={fabricHelper.imageUpdater.setShadow}
                 onChangeEnd={handleCommitHistory}
               />
             )}
@@ -382,6 +421,7 @@ export default function ConfigPanelDesktop({
               <Alignment
                 setAlignment={fabricHelper.imagesUpdater.setAlignment}
                 setObjectFit={fabricHelper.imagesUpdater.setObjectFit}
+                distributeSpacing={fabricHelper.imagesUpdater.distributeSpacing}
                 selectedCount={selectedCount}
               />
             )}

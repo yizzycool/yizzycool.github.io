@@ -1,6 +1,6 @@
 'use client';
 
-import type { CanvasGridConfig } from '../../../types/config';
+import type { BentoTemplateId, CanvasGridConfig } from '../../../types/config';
 import type { ConfigHelper } from '../../../types/config-helper';
 import type { LucideIcon } from 'lucide-react';
 
@@ -17,6 +17,7 @@ import { InfoTooltip } from '@/components/ui/info-tooltip';
 import usePreventNumberWheel from '@/hooks/dom/use-prevent-number-wheel';
 
 import { DEFAULT_CANVAS_CONFIG } from '../../..';
+import { BENTO_TEMPLATES } from '../../../data/bento-templates';
 import PanelLabel from '../../panel-label';
 import GridVisualizer from '../../grid-visualizer';
 
@@ -45,12 +46,14 @@ const GRID_FIELDS = [
 type Props = {
   configHelper: ConfigHelper;
   switchToGridLayout: (rows: number, cols: number) => void;
+  switchToBentoTemplate: (templateId: BentoTemplateId) => void;
   switchToFreeLayout: () => void;
 };
 
 export default function CanvasLayout({
   configHelper,
   switchToGridLayout,
+  switchToBentoTemplate,
   switchToFreeLayout,
 }: Props) {
   const currentAppliedLayout = configHelper.canvasConfig.layout;
@@ -232,6 +235,35 @@ export default function CanvasLayout({
             cols={gridSize.cols}
             active={isGridLayout}
           />
+        </div>
+
+        {/* Bento / Asymmetric Templates */}
+        <div className="space-y-1.5">
+          <PanelLabel>Bento &amp; Collage Templates</PanelLabel>
+          <div className="grid grid-cols-3 gap-1.5">
+            {BENTO_TEMPLATES.map((tpl) => {
+              const isSelected =
+                currentAppliedLayout === 'grid' &&
+                configHelper.canvasConfig.gridConfig.templateId === tpl.id;
+              return (
+                <Button
+                  key={tpl.id}
+                  size="xs"
+                  variant={isSelected ? 'primary' : 'secondary'}
+                  bordered={!isSelected}
+                  disabled={!isGridLayout}
+                  onClick={() => switchToBentoTemplate(tpl.id)}
+                  title={`${tpl.label} — Drag cells to swap, double-click to pan/zoom`}
+                  className="!px-1.5 font-mono text-[10px] font-semibold"
+                >
+                  {tpl.shortLabel}
+                </Button>
+              );
+            })}
+          </div>
+          <p className="text-[10px] text-neutral-400 dark:text-neutral-500">
+            Drag cell onto another to swap · Double-click cell to pan/zoom
+          </p>
         </div>
 
         {/* Presets Selector - Placed below row/col inputs */}

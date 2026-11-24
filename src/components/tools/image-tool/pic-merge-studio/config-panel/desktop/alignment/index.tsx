@@ -7,6 +7,8 @@ import {
   AlignEndVertical,
   AlignStartHorizontal,
   AlignStartVertical,
+  AlignHorizontalSpaceAround,
+  AlignVerticalSpaceAround,
   FoldHorizontal,
   FoldVertical,
   ImageUpscale,
@@ -26,12 +28,14 @@ import PanelLabel from '../../panel-label';
 type Props = {
   setAlignment: (horizontal: string, vertical: string) => void;
   setObjectFit: (type: string) => void;
+  distributeSpacing?: (axis: 'horizontal' | 'vertical') => void;
   selectedCount: number;
 };
 
 export default function Alignment({
   setAlignment,
   setObjectFit,
+  distributeSpacing,
   selectedCount,
 }: Props) {
   return (
@@ -186,6 +190,37 @@ export default function Alignment({
           </Button>
         </div>
       </div>
+
+      {/* Distribute Spacing (Free Mode with >= 3 Selected Objects) */}
+      {distributeSpacing && (
+        <div className="space-y-1.5 border-t border-neutral-200/70 pt-2.5 dark:border-neutral-800/70">
+          <PanelLabel>Distribute Spacing (3+ layers)</PanelLabel>
+          <div className="grid grid-cols-2 gap-2">
+            <Button
+              size="xs"
+              variant="secondary"
+              bordered
+              disabled={selectedCount < 3}
+              icon={AlignHorizontalSpaceAround}
+              onClick={() => distributeSpacing('horizontal')}
+              title="Distribute Horizontally Evenly"
+            >
+              Horizontal
+            </Button>
+            <Button
+              size="xs"
+              variant="secondary"
+              bordered
+              disabled={selectedCount < 3}
+              icon={AlignVerticalSpaceAround}
+              onClick={() => distributeSpacing('vertical')}
+              title="Distribute Vertically Evenly"
+            >
+              Vertical
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

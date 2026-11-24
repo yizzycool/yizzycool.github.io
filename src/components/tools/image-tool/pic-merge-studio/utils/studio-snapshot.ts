@@ -1,13 +1,21 @@
-import type { CanvasConfig, GlobalImageConfig } from '../types/config';
+import type {
+  CanvasConfig,
+  GlobalImageConfig,
+  ImageCropAspect,
+  ImageMaskShape,
+  ImageShadowConfig,
+} from '../types/config';
 import type { GridTemplate } from '../types/grid-layout';
 
 import * as fabric from 'fabric';
+
+import colorUtils from '@/utils/color-utils';
 
 import { FABRIC_FILTER_MAP } from '../data/fabric-filters';
 
 export type SerializedFilter = {
   type: string;
-  params: Record<string, number | string | boolean>;
+  params: Record<string, number | string | boolean | number[]>;
 };
 
 export type SerializedImageLayer = {
@@ -32,7 +40,26 @@ export type SerializedImageLayer = {
   stroke: string;
   strokeWidth: number;
   strokeWidthRatio: number;
+  cropAspect?: ImageCropAspect;
+  maskShape?: ImageMaskShape;
+  shadow?: ImageShadowConfig;
   filters: SerializedFilter[];
+};
+
+export type SerializedCaptionLayer = {
+  id: string;
+  text: string;
+  left: number;
+  top: number;
+  width: number;
+  fontSize: number;
+  fill: string;
+  fontWeight: 'normal' | 'bold';
+  textAlign: 'left' | 'center' | 'right';
+  angle: number;
+  opacity: number;
+  scaleX: number;
+  scaleY: number;
 };
 
 export type SerializedGridCell = {
@@ -61,6 +88,7 @@ export type StudioSnapshot = {
   canvasConfig: CanvasConfig;
   globalImageConfig: GlobalImageConfig;
   freeLayers: SerializedImageLayer[];
+  captions?: SerializedCaptionLayer[];
   gridData: {
     rows: number;
     cols: number;
@@ -82,7 +110,136 @@ export type ExtendedFabricImage = fabric.FabricImage & {
   _fileName?: string;
   _layerName?: string;
   _strokeWidthRatio?: number;
+  _cropAspect?: ImageCropAspect;
+  _maskShape?: ImageMaskShape;
 };
+
+export type ExtendedCaptionTextbox = fabric.Textbox & {
+  _customKey?: string;
+  _captionId?: string;
+};
+
+/**
+ * Build a relative non-destructive Fabric clipPath implementing both
+ * optional crop aspect ratio and geometric mask shape (circle, rounded, squircle, polaroid).
+ */
+export function buildImageClipPath(
+  img: fabric.FabricImage,
+  maskShape: ImageMaskShape = 'none',
+  cropAspect: ImageCropAspect = 'none'
+): fabric.FabricObject | undefined {
+  const rawW = img.width || 100;
+  const rawH = img.height || 100;
+  if (maskShape === 'none' && cropAspect === 'none') {
+    return undefined;
+  }
+
+  let boxW = rawW;
+  let boxH = rawH;
+
+  if (cropAspect !== 'none') {
+    const [arW, arH] = cropAspect.split(':').map(Number);
+    const targetRatio = arW && arH ? arW / arH : rawW / rawH;
+    const currentRatio = rawW / rawH;
+    if (currentRatio > targetRatio) {
+      boxW = rawH * targetRatio;
+    } else {
+      boxH = rawW / targetRatio;
+    }
+  }
+
+  if (maskShape === 'circle') {
+    const radius = Math.min(boxW, boxH) / 2;
+    return new fabric.Circle({
+      radius,
+      originX: 'center',
+      originY: 'center',
+    });
+  }
+
+  if (maskShape === 'polaroid') {
+    return new fabric.Rect({
+      width: boxW * 0.88,
+      height: boxH * 0.78,
+      top: -boxH * 0.05,
+      left: 0,
+      rx: Math.min(boxW, boxH) * 0.02,
+      ry: Math.min(boxW, boxH) * 0.02,
+      originX: 'center',
+      originY: 'center',
+    });
+  }
+
+  if (maskShape === 'squircle') {
+    const rx = boxW * 0.5;
+    const ry = boxH * 0.5;
+    const c = 0.82;
+    const d = [
+      `M 0 ${-ry}`,
+      `C ${rx * c} ${-ry}, ${rx} ${-ry * c}, ${rx} 0`,
+      `C ${rx} ${ry * c}, ${rx * c} ${ry}, 0 ${ry}`,
+      `C ${-rx * c} ${ry}, ${-rx} ${ry * c}, ${-rx} 0`,
+      `C ${-rx} ${-ry * c}, ${-rx * c} ${-ry}, 0 ${-ry} Z`,
+    ].join(' ');
+    return new fabric.Path(d, {
+      originX: 'center',
+      originY: 'center',
+    });
+  }
+
+  if (maskShape === 'rounded') {
+    const radius = Math.min(boxW, boxH) * 0.14;
+    return new fabric.Rect({
+      width: boxW,
+      height: boxH,
+      rx: radius,
+      ry: radius,
+      originX: 'center',
+      originY: 'center',
+    });
+  }
+
+  return new fabric.Rect({
+    width: boxW,
+    height: boxH,
+    originX: 'center',
+    originY: 'center',
+  });
+}
+
+/**
+ * Extract normalized ImageShadowConfig from a Fabric object's shadow.
+ */
+export function extractImageShadowConfig(
+  img: fabric.FabricObject
+): ImageShadowConfig {
+  const s = img.shadow as fabric.Shadow | null | undefined;
+  if (!s) {
+    return {
+      enabled: false,
+      blur: 18,
+      offsetX: 0,
+      offsetY: 8,
+      opacity: 0.35,
+      color: '#000000',
+    };
+  }
+  const rgba = colorUtils.hexToRgba(s.color || '#000000');
+  const hex = colorUtils.rgbaToHex({
+    r: rgba.r,
+    g: rgba.g,
+    b: rgba.b,
+    a: 1,
+  });
+  return {
+    enabled: true,
+    blur: s.blur ?? 18,
+    offsetX: s.offsetX ?? 0,
+    offsetY: s.offsetY ?? 8,
+    opacity: typeof rgba.a === 'number' ? Math.round(rgba.a * 100) / 100 : 0.35,
+    color: hex.slice(0, 7).toUpperCase(),
+  };
+}
 
 /**
  * Stamp internal asset and layer identifiers onto a FabricImage instance.
@@ -125,7 +282,7 @@ export function serializeFilters(
     const filterDef = FABRIC_FILTER_MAP[filterType];
     if (!filterDef) continue;
 
-    const params: Record<string, number | string | boolean> = {};
+    const params: Record<string, number | string | boolean | number[]> = {};
     if (filterDef.params) {
       const record = filter as unknown as Record<string, unknown>;
       for (const paramKey of Object.keys(filterDef.params)) {
@@ -133,10 +290,14 @@ export function serializeFilters(
         if (
           typeof val === 'number' ||
           typeof val === 'string' ||
-          typeof val === 'boolean'
+          typeof val === 'boolean' ||
+          (Array.isArray(val) && val.every((n) => typeof n === 'number'))
         ) {
           params[paramKey] = val;
         }
+      }
+      if (typeof record._sharpenAmount === 'number') {
+        params._sharpenAmount = record._sharpenAmount;
       }
     }
 
@@ -157,7 +318,13 @@ export function deserializeFilters(
   for (const item of serialized) {
     const filterDef = FABRIC_FILTER_MAP[item.type];
     if (!filterDef) continue;
-    const instance = new filterDef.filter(item.params);
+    const instance = new filterDef.filter(
+      item.params as Record<string, unknown>
+    );
+    if (typeof item.params._sharpenAmount === 'number') {
+      (instance as unknown as { _sharpenAmount?: number })._sharpenAmount =
+        item.params._sharpenAmount;
+    }
     filters.push(instance as fabric.filters.BaseFilter<string>);
   }
 
@@ -220,8 +387,39 @@ function serializeImageObject(
     stroke: typeof img.stroke === 'string' ? img.stroke : '',
     strokeWidth: img.strokeWidth ?? 0,
     strokeWidthRatio: extImg._strokeWidthRatio ?? 0,
+    cropAspect: extImg._cropAspect ?? 'none',
+    maskShape: extImg._maskShape ?? 'none',
+    shadow: extractImageShadowConfig(img),
     filters: serializeFilters(img.filters),
   };
+}
+
+function serializeCaptions(canvas: fabric.Canvas): SerializedCaptionLayer[] {
+  const captions: SerializedCaptionLayer[] = [];
+  for (const obj of canvas.getObjects()) {
+    const ext = obj as ExtendedCaptionTextbox;
+    if (obj instanceof fabric.Textbox && ext._customKey === 'studio-caption') {
+      captions.push({
+        id: ext._captionId || `cap_${Date.now()}`,
+        text: obj.text || '',
+        left: obj.left ?? 0,
+        top: obj.top ?? 0,
+        width: obj.width ?? 360,
+        fontSize: obj.fontSize ?? 42,
+        fill: typeof obj.fill === 'string' ? obj.fill : '#ffffff',
+        fontWeight: obj.fontWeight === 'bold' ? 'bold' : 'normal',
+        textAlign:
+          obj.textAlign === 'left' || obj.textAlign === 'right'
+            ? obj.textAlign
+            : 'center',
+        angle: obj.angle ?? 0,
+        opacity: obj.opacity ?? 1,
+        scaleX: obj.scaleX ?? 1,
+        scaleY: obj.scaleY ?? 1,
+      });
+    }
+  }
+  return captions;
 }
 
 /**
@@ -307,6 +505,7 @@ export function captureStudioSnapshot(
       canvasConfig: clonedCanvasConfig,
       globalImageConfig: clonedGlobalConfig,
       freeLayers: [],
+      captions: serializeCaptions(canvas),
       gridData: { rows, cols, cells, edges },
     };
   }
@@ -334,6 +533,7 @@ export function captureStudioSnapshot(
     canvasConfig: clonedCanvasConfig,
     globalImageConfig: clonedGlobalConfig,
     freeLayers,
+    captions: serializeCaptions(canvas),
     gridData: null,
   };
 }
@@ -362,6 +562,8 @@ export function hasStudioContent(
   defaultCanvasConfig: CanvasConfig
 ): boolean {
   if (snapshot.freeLayers.length > 0) return true;
+  if ((snapshot.captions?.length ?? 0) > 0) return true;
+  if (snapshot.canvasConfig.watermark?.enabled) return true;
   if (snapshot.canvasConfig.layout !== defaultCanvasConfig.layout) return true;
   if (
     snapshot.gridData?.cells.some((cell) => cell.hasSrc && cell.layer !== null)

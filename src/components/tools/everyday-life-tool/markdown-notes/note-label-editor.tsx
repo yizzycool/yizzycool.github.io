@@ -39,6 +39,7 @@ export default function NoteLabelEditor({
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing || e.keyCode === 229) return;
     if (e.key === 'Enter' || e.key === ',') {
       e.preventDefault();
       addLabel(inputValue);

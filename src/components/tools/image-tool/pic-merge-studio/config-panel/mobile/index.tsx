@@ -18,6 +18,7 @@ import Border from './border';
 import Alignment from './alignment';
 import OutputFormat from './output-format';
 import Arrangement from './arrangement';
+import CaptionWatermark from './caption-watermark';
 import Geometry from './geometry';
 import Filters from './filters';
 import Opacity from './opacity';
@@ -109,9 +110,34 @@ export default function ConfigPanelMobile({
                   switchToGridLayout={
                     fabricHelper.gridUpdater.switchToGridLayout
                   }
+                  switchToBentoTemplate={
+                    fabricHelper.gridUpdater.switchToBentoTemplate
+                  }
                   switchToFreeLayout={
                     fabricHelper.canvasUpdater.switchToFreeLayout
                   }
+                />
+                <CaptionWatermark
+                  selectedCaption={fabricHelper.states.selectedCaption}
+                  watermark={
+                    configHelper.canvasConfig.watermark ?? {
+                      enabled: false,
+                      text: '© PicMerge Studio',
+                      color: '#ffffff',
+                      opacity: 0.28,
+                      fontSize: 32,
+                      angle: -30,
+                    }
+                  }
+                  onAddCaption={fabricHelper.canvasUpdater.addCaption}
+                  onUpdateCaption={
+                    fabricHelper.canvasUpdater.updateSelectedCaption
+                  }
+                  onDeleteCaption={
+                    fabricHelper.canvasUpdater.deleteSelectedCaption
+                  }
+                  onUpdateWatermark={fabricHelper.canvasUpdater.setWatermark}
+                  onChangeEnd={handleCommitHistory}
                 />
                 <Background
                   background={configHelper.canvasConfig.background}
@@ -193,6 +219,8 @@ export default function ConfigPanelMobile({
               <Alignment
                 setAlignment={fabricHelper.imagesUpdater.setAlignment}
                 setObjectFit={fabricHelper.imagesUpdater.setObjectFit}
+                distributeSpacing={fabricHelper.imagesUpdater.distributeSpacing}
+                selectedCount={selectedCount}
               />
               <Opacity
                 opacity={configHelper.imageConfig.opacity}
@@ -271,8 +299,10 @@ export default function ConfigPanelMobile({
                   />
                   <Geometry
                     imageConfig={configHelper.imageConfig}
+                    isGridLayout={isGridLayout}
                     setGeometry={fabricHelper.imageUpdater.setGeometry}
                     setSize={fabricHelper.imageUpdater.setSize}
+                    setClipMask={fabricHelper.imageUpdater.setClipMask}
                     resetOriginalSize={
                       fabricHelper.imageUpdater.resetOriginalSize
                     }
@@ -292,6 +322,8 @@ export default function ConfigPanelMobile({
                       setBorderWidth={fabricHelper.imageUpdater.setBorderWidth}
                       setBorderColor={fabricHelper.imageUpdater.setBorderColor}
                       resetBorder={fabricHelper.imageUpdater.resetBorder}
+                      shadow={configHelper.imageConfig.shadow}
+                      setShadow={fabricHelper.imageUpdater.setShadow}
                       onChangeEnd={handleCommitHistory}
                     />
                   )}

@@ -39,7 +39,10 @@ export default function useStudioHotkeys({
   useToolHotkeys(
     {
       onSave: onOpenExport,
-      onClear: () => fabricHelper.canvasUpdater.discardActiveObject(),
+      onClear: () => {
+        fabricHelper.states.exitCellFocus();
+        fabricHelper.canvasUpdater.discardActiveObject();
+      },
     },
     { enabled: !suppressHotkeys }
   );

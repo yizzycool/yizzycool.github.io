@@ -2,13 +2,14 @@
 
 import type { FabricHelper } from '../types/fabric-helper';
 import type { ConfigHelper } from '../types/config-helper';
-import type { GridTemplate } from '../types/grid-layout';
+import type { GridCell, GridTemplate } from '../types/grid-layout';
 import type { SupportedFabricFilterType } from '../types/fabric-filter';
+import type { CaptionConfig } from '../types/config';
 import type { AssetEntry } from './use-studio-history';
 
 import * as fabric from 'fabric';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { head } from 'lodash';
+import { clamp, head } from 'lodash';
 
 import colorUtils from '@/utils/color-utils';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
@@ -22,13 +23,17 @@ import useLayersUpdater from './use-layers-updater';
 import useSnapGuides from './use-snap-guides';
 import useStudioHistory from './use-studio-history';
 import { applyAngleSnap, shortestAngleDelta } from '../utils/angle-snap';
+import {
+  extractImageShadowConfig,
+  type ExtendedFabricImage,
+} from '../utils/studio-snapshot';
 import { DEFAULT_CANVAS_CONFIG } from '..';
 
 export const FABRIC_CONTROL_CONFIG = {
   strokeUniform: true,
   borderColor: '#12a29282',
   cornerColor: '#12a29282',
-  cornerStyle: 'circle',
+  cornerStyle: 'circle' as const,
   cornerStrokeColor: '#ffffff7f',
   transparentCorners: false,
   cornerSize: 20,
@@ -82,12 +87,23 @@ export default function useFabric({
   const [hasImageSelection, setHasImageSelection] = useState(false);
   const [hasImageSrc, setHasImageSrc] = useState(false);
   const [selectedCount, setSelectedCount] = useState(0);
+  const [viewportZoom, setViewportZoomState] = useState(1);
+  const [editingCellId, setEditingCellId] = useState<number | null>(null);
+  const [selectedCaption, setSelectedCaption] = useState<CaptionConfig | null>(
+    null
+  );
+  const [hasCaptionSelection, setHasCaptionSelection] = useState(false);
 
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
   const gridRef = useRef<GridTemplate | null>(null);
 
   const canvasConfigRef = useRef(canvasConfig);
   const globalImageConfigRef = useRef(globalImageConfig);
+  const viewportZoomRef = useRef(1);
+  const editingCellIdRef = useRef<number | null>(null);
+  const swapCellsRef = useRef<
+    ((cellA: GridCell, cellB: GridCell) => Promise<void>) | null
+  >(null);
   const assetMapRef = useRef<Map<string, AssetEntry>>(new Map());
   const commitHistoryRef = useRef<(mode?: 'immediate' | 'debounced') => void>(
     () => {}
@@ -145,7 +161,7 @@ export default function useFabric({
   };
 
   const canvasUpdater = useCanvasUpdater({
-    refs: { ...refs, fabricCanvasRef, canvasConfigRef },
+    refs: { ...refs, fabricCanvasRef, canvasConfigRef, assetMapRef },
     configHelper,
     fabricHelper,
     registerAssetFile,
@@ -173,6 +189,10 @@ export default function useFabric({
     onCommitHistory,
   });
 
+  useEffect(() => {
+    swapCellsRef.current = gridUpdater.swapCells;
+  }, [gridUpdater.swapCells]);
+
   const layersUpdater = useLayersUpdater({
     refs: { fabricCanvasRef },
     configHelper,
@@ -191,7 +211,7 @@ export default function useFabric({
     const containerWidth = containerRef.current.clientWidth;
     const containerHeight = containerRef.current.clientHeight;
 
-    const canvasSize = canvasConfig.size;
+    const canvasSize = canvasConfigRef.current.size;
 
     // Provide comfortable breathing room around the canvas
     const horizontalPadding = containerWidth < 640 ? 16 : 36;
@@ -203,10 +223,11 @@ export default function useFabric({
       80
     );
 
-    const scale = Math.min(
+    const baseScale = Math.min(
       availableWidth / canvasSize.width,
       availableHeight / canvasSize.height
     );
+    const scale = baseScale * viewportZoomRef.current;
 
     // Update canvas wrapper
     const wrapper = document.querySelector('.canvas-container') as HTMLElement;
@@ -231,7 +252,22 @@ export default function useFabric({
 
     // Update fabricCanvas key
     fabricCanvasRef.current.set('_scale', scale);
-  }, [containerRef, fabricCanvasRef, canvasConfig.size]);
+  }, [containerRef, fabricCanvasRef]);
+
+  const setViewportZoom = useCallback(
+    (nextZoom: number) => {
+      const clamped = clamp(Math.round(nextZoom * 100) / 100, 0.25, 2);
+      viewportZoomRef.current = clamped;
+      setViewportZoomState(clamped);
+      resizeDisplay();
+    },
+    [resizeDisplay]
+  );
+
+  const exitCellFocus = useCallback(() => {
+    editingCellIdRef.current = null;
+    setEditingCellId(null);
+  }, []);
 
   // Handler to update if any selection exists in Fabric Canvas
   const recalcSelection = useCallback(() => {
@@ -239,6 +275,25 @@ export default function useFabric({
 
     const selectedImages = getSelectedImages();
     const selectedImage = head(selectedImages);
+    const activeObj = fabricCanvasRef.current.getActiveObject();
+
+    if (activeObj instanceof fabric.Textbox) {
+      setHasCaptionSelection(true);
+      setSelectedCaption({
+        text: activeObj.text || '',
+        fontSize: activeObj.fontSize ?? 42,
+        fill: typeof activeObj.fill === 'string' ? activeObj.fill : '#ffffff',
+        fontWeight: activeObj.fontWeight === 'bold' ? 'bold' : 'normal',
+        textAlign:
+          activeObj.textAlign === 'left' || activeObj.textAlign === 'right'
+            ? activeObj.textAlign
+            : 'center',
+        opacity: activeObj.opacity ?? 1,
+      });
+    } else {
+      setHasCaptionSelection(false);
+      setSelectedCaption(null);
+    }
 
     setHasImageSelection(selectedImages.length > 0);
     setHasImageSrc(!!selectedImage?.getSrc?.());
@@ -287,6 +342,7 @@ export default function useFabric({
       const rgbaHex = (selectedImage.stroke || '') as string;
       const { color, opacity } = colorUtils.hexToColorOpacity(rgbaHex);
 
+      const selectedExt = selectedImage as ExtendedFabricImage;
       setImageConfig((prev) => ({
         ...prev,
         opacity: selectedImage.opacity,
@@ -307,6 +363,9 @@ export default function useFabric({
         flipX: selectedImage.flipX,
         flipY: selectedImage.flipY,
         snapAngle: selectedImage.snapAngle,
+        cropAspect: selectedExt._cropAspect ?? 'none',
+        maskShape: selectedExt._maskShape ?? 'none',
+        shadow: extractImageShadowConfig(selectedImage),
         filters:
           selectedImage.filters as InstanceType<SupportedFabricFilterType>[],
       }));
@@ -522,7 +581,140 @@ export default function useFabric({
       height: DEFAULT_CANVAS_CONFIG.size.height,
     });
 
-    // Draw canvas border on top of all objects via after:render
+    // Draw canvas border & tiled watermark + swap highlight via after:render
+    let hoverSwapCell: GridCell | null = null;
+    let draggingSourceCell: GridCell | null = null;
+
+    const findGridCellByImage = (obj: fabric.FabricObject): GridCell | null => {
+      if (!gridRef.current) return null;
+      for (const row of gridRef.current.cells) {
+        for (const cell of row) {
+          if (cell && cell.element === obj) return cell;
+        }
+      }
+      return null;
+    };
+
+    const findGridCellAtPoint = (
+      x: number,
+      y: number,
+      excludeCellId?: number
+    ): GridCell | null => {
+      if (!gridRef.current) return null;
+      for (const row of gridRef.current.cells) {
+        for (const cell of row) {
+          if (!cell || cell.id === excludeCellId) continue;
+          const clip = cell.element.clipPath;
+          if (!clip) continue;
+          const halfW = (clip.width ?? 0) / 2;
+          const halfH = (clip.height ?? 0) / 2;
+          if (
+            Math.abs(x - (clip.left ?? 0)) <= halfW &&
+            Math.abs(y - (clip.top ?? 0)) <= halfH
+          ) {
+            return cell;
+          }
+        }
+      }
+      return null;
+    };
+
+    canvas.on('mouse:dblclick', (opt) => {
+      if (canvasConfigRef.current.layout !== 'grid' || !opt.target) return;
+      const cell = findGridCellByImage(opt.target);
+      if (cell && cell.element.getSrc?.()) {
+        editingCellIdRef.current =
+          editingCellIdRef.current === cell.id ? null : cell.id;
+        setEditingCellId(editingCellIdRef.current);
+      }
+    });
+
+    canvas.on('mouse:down', (opt) => {
+      hoverSwapCell = null;
+      draggingSourceCell = null;
+      if (canvasConfigRef.current.layout !== 'grid' || !opt.target) {
+        if (editingCellIdRef.current !== null) {
+          editingCellIdRef.current = null;
+          setEditingCellId(null);
+        }
+        return;
+      }
+      const cell = findGridCellByImage(opt.target);
+      if (!cell) return;
+      if (
+        editingCellIdRef.current !== null &&
+        editingCellIdRef.current !== cell.id
+      ) {
+        editingCellIdRef.current = null;
+        setEditingCellId(null);
+      }
+      if (editingCellIdRef.current !== cell.id && cell.element.getSrc?.()) {
+        draggingSourceCell = cell;
+      }
+    });
+
+    canvas.on('object:moving', (opt) => {
+      if (
+        canvasConfigRef.current.layout !== 'grid' ||
+        !draggingSourceCell ||
+        opt.target !== draggingSourceCell.element
+      ) {
+        hoverSwapCell = null;
+        return;
+      }
+      const pointer = canvas.getScenePoint(opt.e);
+      hoverSwapCell = findGridCellAtPoint(
+        pointer.x,
+        pointer.y,
+        draggingSourceCell.id
+      );
+    });
+
+    canvas.on('mouse:up', () => {
+      if (draggingSourceCell && hoverSwapCell && swapCellsRef.current) {
+        const srcCell = draggingSourceCell;
+        const dstCell = hoverSwapCell;
+        draggingSourceCell = null;
+        hoverSwapCell = null;
+        void swapCellsRef.current(srcCell, dstCell);
+        return;
+      }
+      draggingSourceCell = null;
+      hoverSwapCell = null;
+    });
+
+    canvas.on('mouse:wheel', (opt) => {
+      const e = opt.e;
+      if (
+        canvasConfigRef.current.layout === 'grid' &&
+        editingCellIdRef.current !== null
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        const focusedCell = gridRef.current?.cells
+          .flat()
+          .find((c) => c?.id === editingCellIdRef.current);
+        if (focusedCell?.element) {
+          const factor = 0.9985 ** e.deltaY;
+          const nextScale = clamp(
+            (focusedCell.element.scaleX ?? 1) * factor,
+            0.1,
+            8
+          );
+          focusedCell.element.scale(nextScale);
+          focusedCell.element.setCoords();
+          canvas.requestRenderAll();
+        }
+        return;
+      }
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        e.stopPropagation();
+        const factor = e.deltaY < 0 ? 1.08 : 0.92;
+        setViewportZoom(viewportZoomRef.current * factor);
+      }
+    });
+
     canvas.on('after:render', (opt) => {
       const ctx = opt.ctx;
       if (!ctx) return;
@@ -532,6 +724,58 @@ export default function useFabric({
       const borderConfig = isGrid
         ? currentConfig.gridConfig.border
         : currentConfig.border;
+
+      const v = canvas.viewportTransform || [1, 0, 0, 1, 0, 0];
+
+      // 1) Tiled Diagonal Watermark Overlay
+      const wm = currentConfig.watermark;
+      if (wm?.enabled && wm.text.trim()) {
+        const rgba = colorUtils.hexToRgba(wm.color || '#ffffff');
+        const fillStyle = colorUtils.rgbaToHex({
+          r: rgba.r,
+          g: rgba.g,
+          b: rgba.b,
+          a: wm.opacity,
+        });
+        ctx.save();
+        ctx.transform(v[0], v[1], v[2], v[3], v[4], v[5]);
+        ctx.beginPath();
+        ctx.rect(0, 0, canvas.width, canvas.height);
+        ctx.clip();
+        ctx.fillStyle = fillStyle;
+        ctx.font = `600 ${Math.max(12, wm.fontSize)}px Inter, system-ui, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const stepX = Math.max(180, wm.text.length * wm.fontSize * 0.72 + 70);
+        const stepY = Math.max(120, wm.fontSize * 3.4);
+        const rad = ((wm.angle ?? -30) * Math.PI) / 180;
+        const diag = Math.hypot(canvas.width, canvas.height);
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate(rad);
+        for (let y = -diag; y <= diag; y += stepY) {
+          for (let x = -diag; x <= diag; x += stepX) {
+            ctx.fillText(wm.text, x, y);
+          }
+        }
+        ctx.restore();
+      }
+
+      // 2) Hover swap cell outline during Grid Drag-to-Swap
+      if (hoverSwapCell?.element.clipPath) {
+        const clip = hoverSwapCell.element.clipPath;
+        ctx.save();
+        ctx.transform(v[0], v[1], v[2], v[3], v[4], v[5]);
+        ctx.strokeStyle = '#0ea5e9';
+        ctx.lineWidth = 6;
+        ctx.setLineDash([12, 8]);
+        ctx.strokeRect(
+          (clip.left ?? 0) - (clip.width ?? 0) / 2 + 4,
+          (clip.top ?? 0) - (clip.height ?? 0) / 2 + 4,
+          Math.max(8, (clip.width ?? 0) - 8),
+          Math.max(8, (clip.height ?? 0) - 8)
+        );
+        ctx.restore();
+      }
 
       if (isGrid && !currentConfig.gridConfig.border.showOuter) {
         return;
@@ -548,7 +792,6 @@ export default function useFabric({
       const rgba = colorUtils.hexToRgba(color);
       const strokeStyle = colorUtils.rgbaToHex({ ...rgba, a: opacity });
 
-      const v = canvas.viewportTransform || [1, 0, 0, 1, 0, 0];
       ctx.save();
       ctx.transform(v[0], v[1], v[2], v[3], v[4], v[5]);
       ctx.strokeStyle = strokeStyle;
@@ -651,6 +894,12 @@ export default function useFabric({
       hasImageSelection,
       hasImageSrc,
       selectedCount,
+      viewportZoom,
+      setViewportZoom,
+      editingCellId,
+      exitCellFocus,
+      selectedCaption,
+      hasCaptionSelection,
     },
 
     canvasUpdater,

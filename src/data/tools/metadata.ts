@@ -338,6 +338,37 @@ export const ToolMetadata = {
 
   // ==================
 
+  [ToolKeys.photoEditorStudio]: {
+    title:
+      'Photo Editor Studio – Free Online Layer, Blend Mode & WebGL Photo Editor | Yizzy Peasy',
+    description:
+      'Free 100% client-side online photo editor with layers, 16 blend modes, clipping masks, WebGL filters, brushes, vector shapes, SVG export, and auto-saved .pes projects.',
+    keywords: [
+      'free online photo editor',
+      'browser photoshop alternative',
+      'online layer photo editor',
+      'blend modes editor',
+      'webgl image filters',
+      'svg photo editor',
+      'clipping mask online',
+      '免費線上修圖',
+      '網頁版 Photoshop',
+      '線上圖層修圖',
+      '照片混合模式',
+      '去背遮罩',
+    ],
+    openGraph: {
+      title: 'Photo Editor Studio – Free Online Layer & WebGL Photo Editor',
+      description:
+        'Edit photos with layers, 16 blend modes, clipping masks, brushes, WebGL filters, and SVG/.pes export—100% privately in your browser.',
+    },
+    twitter: {
+      title: 'Photo Editor Studio – Online Layer & WebGL Photo Editor',
+      description:
+        '100% client-side multi-layer photo editor with blend modes, clipping masks, WebGL filters, and crisp 1x–3x export.',
+    },
+  },
+
   [ToolKeys.picMergeStudio]: {
     title:
       'PicMerge Studio - Merge Images Online, Free Photo Collage, Resize & Custom Canvas Editor | Yizzy Peasy',
@@ -847,6 +878,21 @@ export const ToolJsonLdSoftwareApplication = {
   },
 
   // ==================
+
+  [ToolKeys.photoEditorStudio]: {
+    name: 'Photo Editor Studio',
+    applicationCategory: 'MultimediaApplication',
+    description:
+      'Photo Editor Studio is a free 100% client-side online photo and design editor featuring multi-layer compositing, 16 blend modes, clipping masks, WebGL color grading, freehand brushes, vector shapes, and PNG/JPEG/WebP/SVG/.pes export.',
+    featureList: [
+      'Multi-layer canvas with drag reordering, groups, visibility, and lock controls',
+      '16 Photoshop-style blend modes and geometric clipping masks',
+      'WebGL-accelerated preset filters, color adjustments, and sharpening',
+      'Pencil, spray, circle, and transparent eraser brushes plus editable text and shapes',
+      'Infinite zoom/pan viewport, magnetic snap guides, and labeled Undo/Redo history',
+      '1x–3x PNG/JPEG/WebP, SVG vector, clipboard PNG, and portable .pes archive export',
+    ],
+  },
 
   [ToolKeys.picMergeStudio]: {
     name: 'PicMerge Studio',

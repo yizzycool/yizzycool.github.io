@@ -45,8 +45,14 @@ export default function Filters({ filters, setFilters, onChangeEnd }: Props) {
   const getAdjustmentValue = (config: AdjustmentFilterConfig) => {
     const f = filters.find((item) => item.type === config.type);
     if (!f) return config.neutral;
-    const record = f as unknown as Record<string, number | undefined>;
+    const record = f as unknown as Record<
+      string,
+      number | number[] | undefined
+    >;
     const val = record[config.paramKey];
+    if (Array.isArray(val)) {
+      return val.length > 0 ? round(val[0], 2) : config.default;
+    }
     return val !== undefined ? round(val, 2) : config.default;
   };
 

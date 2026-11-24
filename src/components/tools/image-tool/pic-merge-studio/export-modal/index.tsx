@@ -5,7 +5,7 @@ import type { FabricHelper } from '../types/fabric-helper';
 import type { ConfigHelper } from '../types/config-helper';
 
 import { useEffect, useRef, useState } from 'react';
-import { Check, Copy, Download, ImageDown } from 'lucide-react';
+import { Check, Copy, Download, ImageDown, Sparkles } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import { motion } from 'motion/react';
 
@@ -33,6 +33,7 @@ export default function ExportModal({
   const [format, setFormat] = useState<CanvasExportFormat>(
     configHelper.canvasConfig.exportFormat || 'png'
   );
+  const [multiplier, setMultiplier] = useState<1 | 2 | 3>(1);
   const [quality, setQuality] = useState<number>(0.92);
   const [filename, setFilename] = useState<string>(
     () => `pic-merge-${getFormattedDate()}`
@@ -66,6 +67,7 @@ export default function ExportModal({
       fabricHelper.canvasUpdater.export({
         format,
         quality,
+        multiplier,
         filename,
       });
       onClose();
@@ -110,8 +112,28 @@ export default function ExportModal({
             Output Dimensions
           </span>
           <span className="font-mono font-semibold text-slate-700 dark:text-slate-300">
-            {width} × {height} px
+            {width * multiplier} × {height * multiplier} px
           </span>
+        </div>
+
+        {/* Resolution Multiplier */}
+        <div className="space-y-2">
+          <Label className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+            Resolution Scale
+          </Label>
+          <div className="grid grid-cols-3 gap-2">
+            {([1, 2, 3] as const).map((m) => (
+              <Button
+                key={m}
+                size="xs"
+                variant={multiplier === m ? 'primary' : 'secondary'}
+                bordered={multiplier !== m}
+                onClick={() => setMultiplier(m)}
+              >
+                {m}x
+              </Button>
+            ))}
+          </div>
         </div>
 
         {/* Output Format Tabs */}
@@ -177,6 +199,21 @@ export default function ExportModal({
             </span>
           </div>
         </div>
+
+        {/* Handoff Bridge to Photo Editor Studio */}
+        <Button
+          size="xs"
+          variant="outline"
+          rounded="xl"
+          icon={Sparkles}
+          onClick={() => {
+            onClose();
+            void fabricHelper.canvasUpdater.sendToPhotoEditor();
+          }}
+          className="w-full font-semibold text-sky-600 dark:text-sky-400"
+        >
+          Send to Photo Editor Studio (Layers, Pen &amp; AI)
+        </Button>
 
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-2.5 pt-2 sm:flex-nowrap">

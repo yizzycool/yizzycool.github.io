@@ -1,6 +1,10 @@
 import type { ConfigHelper } from '../types/config-helper';
 import type { GridCell, GridEdge, GridTemplate } from '../types/grid-layout';
-import type { CanvasBorder, CanvasConfig } from '../types/config';
+import type {
+  BentoTemplateId,
+  CanvasBorder,
+  CanvasConfig,
+} from '../types/config';
 import type {
   ExtendedFabricImage,
   StudioSnapshot,
@@ -17,6 +21,7 @@ import {
   FABRIC_IMAGE_CONFIG,
   type FabricInternalStates,
 } from './use-fabric';
+import { getBentoTemplateById } from '../data/bento-templates';
 import {
   attachImageAssetMeta,
   deserializeFilters,
@@ -407,6 +412,109 @@ export default function useGridLogic({
     return root;
   };
 
+  const createBentoGridTemplate = async (
+    templateId: BentoTemplateId
+  ): Promise<GridTemplate | null> => {
+    const spec = getBentoTemplateById(templateId);
+    if (!fabricCanvasRef.current || !spec) return null;
+
+    const existingImages = getAllImages();
+    const canvasWidth = fabricCanvasRef.current.width;
+    const canvasHeight = fabricCanvasRef.current.height;
+    const { width: gridBorderWidth } = canvasConfig.gridConfig.border;
+    const gutter = Math.max(4, getNormStrokeWidth(gridBorderWidth) / 2);
+
+    const cellCount = spec.cells.length;
+    const root: GridTemplate = {
+      cellIds: new Set(range(1, cellCount + 1)),
+      edgeIds: new Set(),
+      edges: {
+        horizontal: [[]],
+        vertical: [[]],
+      },
+      cells: [Array.from({ length: cellCount })],
+    };
+
+    for (let idx = 0; idx < cellCount; idx++) {
+      const box = spec.cells[idx];
+      const rawW = box.w * canvasWidth;
+      const rawH = box.h * canvasHeight;
+      const cellW = Math.max(40, rawW - gutter);
+      const cellH = Math.max(
+        40,
+        rawH - gutter - (box.polaroidBottom ? rawH * box.polaroidBottom : 0)
+      );
+      const centerX = box.x * canvasWidth + rawW / 2;
+      const centerY =
+        box.y * canvasHeight +
+        (rawH - (box.polaroidBottom ? rawH * box.polaroidBottom : 0)) / 2;
+
+      let img: fabric.FabricImage;
+      if (idx < existingImages.length) {
+        const sourceImg = existingImages[idx];
+        const sourceExt = sourceImg as ExtendedFabricImage;
+        img = await fabric.FabricImage.fromURL(sourceImg.getSrc(), {
+          crossOrigin: 'anonymous',
+        });
+        attachImageAssetMeta(img, {
+          assetId: sourceExt._assetId,
+          fileName: sourceExt._fileName,
+          layerName: sourceExt._layerName,
+          layerId: sourceExt._layerId,
+        });
+        const serializedFilters = serializeFilters(sourceImg.filters);
+        if (serializedFilters.length > 0) {
+          img.set({ filters: deserializeFilters(serializedFilters) });
+          img.applyFilters();
+        }
+        const scale = Math.max(cellW / img.width, cellH / img.height);
+        img.set({
+          scaleX: scale,
+          scaleY: scale,
+          left: centerX,
+          top: centerY,
+          ...FABRIC_IMAGE_CONFIG,
+        });
+      } else {
+        const imageEl = new Image();
+        img = new fabric.FabricImage(imageEl, {
+          width: cellW,
+          height: cellH,
+          left: centerX,
+          top: centerY,
+          ...FABRIC_IMAGE_CONFIG,
+          lockMovementX: true,
+          lockMovementY: true,
+          lockRotation: true,
+          lockScalingX: true,
+          lockScalingY: true,
+          hasControls: false,
+        } as fabric.ImageProps & { _strokeWidthRatio: number });
+      }
+
+      img.clipPath = new fabric.Rect({
+        width: cellW,
+        height: cellH,
+        left: centerX,
+        top: centerY,
+        rx: box.polaroidBottom ? 4 : 12,
+        ry: box.polaroidBottom ? 4 : 12,
+        absolutePositioned: true,
+      });
+
+      root.cells[0][idx] = {
+        id: idx + 1,
+        adjacentEdges: [],
+        element: img,
+      };
+    }
+
+    fabricCanvasRef.current.remove(...fabricCanvasRef.current.getObjects());
+    addAllObjectsToCanvas(root);
+    fabricCanvasRef.current.requestRenderAll();
+    return root;
+  };
+
   const updateAfterResize = () => {
     if (!fabricCanvasRef.current || !gridRef.current) return;
 
@@ -759,6 +867,7 @@ export default function useGridLogic({
 
   return {
     createGridTemplate,
+    createBentoGridTemplate,
     updateAfterResize,
     updateEdges,
     restoreGridFromSnapshot,

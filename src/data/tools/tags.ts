@@ -261,6 +261,19 @@ export const ToolTags = {
 
   // ==================
 
+  [ToolKeys.photoEditorStudio]: [
+    'Photo Editor',
+    'Online Photoshop',
+    'Layer Editor',
+    'Blend Modes',
+    'WebGL Filters',
+    'Clipping Mask',
+    'SVG Export',
+    '線上修圖',
+    '網頁版 Photoshop',
+    '圖層編輯',
+    '照片調色',
+  ],
   [ToolKeys.picMergeStudio]: [
     'Image Merge',
     'Photo Collage',

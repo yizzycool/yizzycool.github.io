@@ -389,6 +389,71 @@ export default function useImagesUpdater({
     ]
   );
 
+  const distributeSpacing = useCallback(
+    (axis: 'horizontal' | 'vertical') => {
+      const selectedImages = getSelectedImages();
+      if (
+        isGridLayout ||
+        selectedImages.length < 3 ||
+        !fabricCanvasRef.current
+      ) {
+        return;
+      }
+
+      discardActiveObject();
+
+      const items = selectedImages
+        .map((img) => {
+          img.setCoords();
+          const rect = img.getBoundingRect();
+          return { img, rect };
+        })
+        .sort((a, b) =>
+          axis === 'horizontal'
+            ? a.rect.left - b.rect.left
+            : a.rect.top - b.rect.top
+        );
+
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (axis === 'horizontal') {
+        const totalWidth = items.reduce((sum, it) => sum + it.rect.width, 0);
+        const span = last.rect.left + last.rect.width - first.rect.left;
+        const gap = (span - totalWidth) / (items.length - 1);
+        let cursor = first.rect.left + first.rect.width + gap;
+        for (let i = 1; i < items.length - 1; i++) {
+          const dx = cursor - items[i].rect.left;
+          items[i].img.set({ left: (items[i].img.left ?? 0) + dx });
+          items[i].img.setCoords();
+          cursor += items[i].rect.width + gap;
+        }
+      } else {
+        const totalHeight = items.reduce((sum, it) => sum + it.rect.height, 0);
+        const span = last.rect.top + last.rect.height - first.rect.top;
+        const gap = (span - totalHeight) / (items.length - 1);
+        let cursor = first.rect.top + first.rect.height + gap;
+        for (let i = 1; i < items.length - 1; i++) {
+          const dy = cursor - items[i].rect.top;
+          items[i].img.set({ top: (items[i].img.top ?? 0) + dy });
+          items[i].img.setCoords();
+          cursor += items[i].rect.height + gap;
+        }
+      }
+
+      restoreSelection(selectedImages);
+      fabricCanvasRef.current.requestRenderAll();
+      onCommitHistory?.('immediate');
+    },
+    [
+      discardActiveObject,
+      fabricCanvasRef,
+      getSelectedImages,
+      isGridLayout,
+      onCommitHistory,
+      restoreSelection,
+    ]
+  );
+
   return {
     setBorderWidth,
     setBorderColor,
@@ -396,5 +461,6 @@ export default function useImagesUpdater({
 
     setAlignment,
     setObjectFit,
+    distributeSpacing,
   };
 }
