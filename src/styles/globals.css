@@ -146,4 +146,28 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  @media (width >= 1024px) {
+    html[data-blog-sidebar='collapsed'] [data-collapsible-sidebar='blog'],
+    html[data-tools-sidebar='collapsed'] [data-collapsible-sidebar='tools'] {
+      width: 0;
+      border-right-color: transparent;
+    }
+
+    html[data-blog-sidebar='collapsed'] [data-collapsible-sidebar-inner='blog'],
+    html[data-tools-sidebar='collapsed']
+      [data-collapsible-sidebar-inner='tools'] {
+      pointer-events: none;
+      transform: translateX(-14px);
+      opacity: 0;
+    }
+
+    html[data-blog-sidebar='collapsed'] [data-sidebar-expand-trigger='blog'],
+    html[data-tools-sidebar='collapsed'] [data-sidebar-expand-trigger='tools'] {
+      pointer-events: auto;
+      transform: translateX(0);
+      opacity: 1;
+      transition-delay: 120ms;
+    }
+  }
 }

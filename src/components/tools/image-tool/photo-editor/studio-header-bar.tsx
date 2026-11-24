@@ -332,19 +332,18 @@ export default function StudioHeaderBar({
             </TooltipTrigger>
             <TooltipPopup
               placement="bottom"
-              showArrow
               className="max-w-[235px] px-2.5 py-2 text-left text-xs leading-relaxed"
             >
-              <div className="font-semibold text-white">
+              <div className="font-semibold text-slate-900 dark:text-white">
                 Smart Alignment Guides
               </div>
-              <div className="mt-0.5 text-neutral-300">
+              <div className="mt-0.5 font-normal text-slate-600 dark:text-slate-300">
                 Hold{' '}
-                <span className="font-mono font-semibold text-sky-300">
+                <span className="font-mono font-semibold text-sky-600 dark:text-sky-400">
                   Alt
                 </span>{' '}
                 (or{' '}
-                <span className="font-mono font-semibold text-sky-300">
+                <span className="font-mono font-semibold text-sky-600 dark:text-sky-400">
                   Option
                 </span>{' '}
                 on Mac) while dragging to temporarily bypass snapping.

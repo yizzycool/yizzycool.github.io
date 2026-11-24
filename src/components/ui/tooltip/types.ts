@@ -2,6 +2,7 @@ import type { Placement } from '@floating-ui/react';
 import type { ReactElement, ReactNode } from 'react';
 
 export type TooltipVariant =
+  | 'default'
   | 'card'
   | 'dark'
   | 'light'
@@ -42,7 +43,7 @@ export type TooltipPopupProps = {
   placement?: Placement;
   /** Whether to show a decorative pointer arrow */
   showArrow?: boolean;
-  /** Color theme variant for the tooltip (default: 'dark') */
+  /** Color theme variant for the tooltip (default: 'default') */
   variant?: TooltipVariant;
   /** Additional CSS class names for the popup */
   className?: string;

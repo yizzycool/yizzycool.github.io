@@ -10,7 +10,7 @@ import { BaseButton } from './base-button';
 export function Button({
   title,
   tooltipPlacement = 'bottom',
-  tooltipVariant = 'dark',
+  tooltipVariant = 'default',
   tooltipDelay = { open: 200, close: 100 },
   showTooltipArrow = false,
   tooltipClassName = '',
@@ -29,7 +29,7 @@ export function Button({
         placement={tooltipPlacement}
         variant={tooltipVariant}
         showArrow={showTooltipArrow}
-        className={cn('px-2.5 py-1 text-xs font-medium', tooltipClassName)}
+        className={cn('px-2.5 py-1.5 text-xs font-medium', tooltipClassName)}
       >
         {title}
       </TooltipPopup>

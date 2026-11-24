@@ -10,4 +10,4 @@ export const DEFAULT_INFO_TOOLTIP_DELAY: TooltipDelay = {
 
 export const DEFAULT_INFO_TOOLTIP_PLACEMENT = 'top' as const;
 
-export const DEFAULT_INFO_TOOLTIP_SHOW_ARROW = true;
+export const DEFAULT_INFO_TOOLTIP_SHOW_ARROW = false;

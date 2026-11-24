@@ -37,9 +37,7 @@ export default function HotkeyTooltip({
       {!!tooltip && (
         <TooltipPopup
           placement="top"
-          variant="dark"
-          showArrow
-          className="px-2 py-1 text-[11px]"
+          className="px-2 py-1 text-[11px] font-medium"
         >
           {tooltip}
         </TooltipPopup>

@@ -60,10 +60,8 @@ export default function Toolbar({
               />
             </TooltipTrigger>
             <TooltipPopup
-              showArrow
               placement="top"
-              variant="dark"
-              className="max-w-xs px-3.5 py-2.5 text-xs leading-relaxed"
+              className="max-w-xs px-3.5 py-2.5 text-xs font-normal leading-relaxed"
             >
               Edit titles, tags, hotkey bindings, and multi-version content.
               Click the hotkey button on any card to register a new shortcut

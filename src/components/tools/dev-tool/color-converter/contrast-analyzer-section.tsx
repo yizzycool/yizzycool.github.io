@@ -30,7 +30,9 @@ export default function ContrastAnalyzerSection({
         actions={
           <InfoTooltip size="base" ariaLabel="WCAG 2.1 guideline description">
             <div>
-              <div className="font-semibold text-white">WCAG 2.1 Criteria:</div>
+              <div className="font-semibold text-slate-900 dark:text-white">
+                WCAG 2.1 Criteria:
+              </div>
               {/* <div>• Normal Text (&lt;18pt): AA ≥ 4.5:1, AAA ≥ 7.0:1</div> */}
               <div>Normal Text (&lt;18pt)</div>
               <div>• AA ≥ 4.5 : 1</div>

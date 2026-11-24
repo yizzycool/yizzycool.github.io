@@ -39,8 +39,7 @@ export default function FeaturePanel({
   return (
     <aside
       className={cn(
-        side === 'featurePanel' &&
-          'sticky top-[101px] hidden h-[calc(100dvh_-_101px)] w-[300px] shrink-0 overflow-y-auto px-2 pb-20 pt-4 lg:block',
+        side === 'featurePanel' && 'px-2 pb-20 pt-1',
         side === 'headerToolsSelector' && 'py-4',
         getFadeUpClass('animate-delay-150')
       )}

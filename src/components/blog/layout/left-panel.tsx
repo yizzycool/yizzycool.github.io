@@ -32,11 +32,7 @@ export default function LeftPanel({
     <aside
       className={cn(
         getFadeUpClass(),
-        side === 'leftPanel' &&
-          cn(
-            'sticky top-[101px] hidden h-[calc(100dvh_-_101px)] w-[300px] lg:block',
-            'shrink-0 overflow-y-auto px-4 pb-20 pt-4'
-          ),
+        side === 'leftPanel' && 'px-4 pb-20 pt-1',
         side === 'headerBlogSelector' && 'py-4'
       )}
     >

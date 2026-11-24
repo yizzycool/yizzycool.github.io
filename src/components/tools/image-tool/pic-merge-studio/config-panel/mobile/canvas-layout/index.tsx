@@ -188,15 +188,19 @@ export default function CanvasLayout({
               popupClassName="max-w-[220px] p-2.5 text-left leading-relaxed"
             >
               <div>
-                <div className="mb-1 font-semibold text-sky-400">
+                <div className="mb-1 font-semibold text-sky-600 dark:text-sky-400">
                   Layout Modes
                 </div>
                 <div className="mb-1">
-                  <span className="font-medium text-white">Free:</span> Freely
-                  drag, resize, rotate, and overlap.
+                  <span className="font-medium text-slate-900 dark:text-white">
+                    Free:
+                  </span>{' '}
+                  Freely drag, resize, rotate, and overlap.
                 </div>
                 <div>
-                  <span className="font-medium text-white">Grid:</span>{' '}
+                  <span className="font-medium text-slate-900 dark:text-white">
+                    Grid:
+                  </span>{' '}
                   Structured N × M grid with auto photo snapping.
                 </div>
               </div>

@@ -111,7 +111,7 @@ export function TooltipTrigger({ children }: TooltipTriggerProps) {
 export function TooltipPopup({
   placement = 'bottom',
   showArrow,
-  variant = 'dark',
+  variant = 'default',
   className,
   arrowClassName,
   children,
@@ -120,7 +120,7 @@ export function TooltipPopup({
 
   const [arrowEl, setArrowEl] = useState<HTMLDivElement | null>(null);
 
-  const offsetValue = showArrow ? 8 : 4;
+  const offsetValue = showArrow ? 8 : 6;
 
   const floating = useFloating({
     rootContext,
@@ -157,7 +157,7 @@ export function TooltipPopup({
 
   if (!isMounted) return null;
 
-  const currentVariant = tooltipVariants[variant] || tooltipVariants.dark;
+  const currentVariant = tooltipVariants[variant] || tooltipVariants.default;
   const computedArrowBorder =
     variant !== 'raw' && arrowSide ? arrowBorderBySide[arrowSide] : '';
 

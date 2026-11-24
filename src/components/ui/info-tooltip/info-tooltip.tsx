@@ -38,9 +38,17 @@ export function InfoTooltip({
 }: InfoTooltipProps) {
   const popupContent = children ?? (
     <div>
-      {title && <div className="font-semibold text-white">{title}</div>}
+      {title && (
+        <div className="font-semibold text-slate-900 dark:text-white">
+          {title}
+        </div>
+      )}
       {content && (
-        <div className={cn(title && 'mt-0.5 text-neutral-300')}>{content}</div>
+        <div
+          className={cn(title && 'mt-0.5 text-slate-600 dark:text-slate-300')}
+        >
+          {content}
+        </div>
       )}
     </div>
   );
@@ -66,7 +74,7 @@ export function InfoTooltip({
         showArrow={showArrow}
         variant={variant}
         className={cn(
-          'max-w-xs px-2.5 py-1.5 text-xs leading-relaxed',
+          'max-w-xs px-2.5 py-1.5 text-xs font-normal leading-relaxed',
           popupClassName
         )}
       >

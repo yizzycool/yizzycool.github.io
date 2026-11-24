@@ -6,6 +6,12 @@ type VariantStyles = {
 };
 
 export const tooltipVariants: Record<TooltipVariant, VariantStyles> = {
+  default: {
+    container:
+      'rounded-lg border border-slate-200/90 bg-white/95 text-xs font-medium text-slate-700 shadow-lg shadow-slate-900/10 backdrop-blur-md dark:border-neutral-700/80 dark:bg-neutral-900/95 dark:text-slate-200 dark:shadow-black/40',
+    arrow:
+      'bg-white dark:bg-neutral-900 border-slate-200/90 dark:border-neutral-700/80',
+  },
   card: {
     container:
       'rounded-xl border border-slate-200/90 bg-white/95 text-slate-800 shadow-xl shadow-slate-900/10 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-900/95 dark:text-slate-100 dark:shadow-black/50',

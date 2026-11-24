@@ -75,8 +75,6 @@ export function ToolHotkeysModal({
                   </TooltipTrigger>
                   <TooltipPopup
                     placement="top"
-                    variant="dark"
-                    showArrow
                     className="max-w-xs px-2.5 py-1.5 text-[11px] font-normal leading-snug"
                   >
                     {item.hint}

@@ -40,8 +40,7 @@ export default function ToolNavBadge({ badge, side }: ToolNavBadgeProps) {
         <TooltipTrigger>{flameIndicator}</TooltipTrigger>
         <TooltipPopup
           placement="right"
-          showArrow
-          className="px-2 py-1 text-xs font-medium"
+          className="px-2.5 py-1 text-xs font-medium"
         >
           Popular
         </TooltipPopup>

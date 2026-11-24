@@ -93,14 +93,10 @@ export default function ToolRail({
                   <Icon className="h-4 w-4" />
                 </button>
               </TooltipTrigger>
-              <TooltipPopup
-                placement="right"
-                showArrow
-                className="px-2.5 py-1.5 text-xs"
-              >
+              <TooltipPopup placement="right" className="px-2.5 py-1.5 text-xs">
                 <div className="flex items-center gap-2">
                   <span>{tool.label}</span>
-                  <kbd className="rounded bg-white/15 px-1.5 py-0.5 font-mono text-[10px]">
+                  <kbd className="rounded border border-slate-200/90 bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] font-medium leading-none text-slate-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-400">
                     {tool.hotkey}
                   </kbd>
                 </div>

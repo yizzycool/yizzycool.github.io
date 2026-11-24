@@ -1,15 +1,21 @@
 'use client';
 
 import { useState } from 'react';
-import { Lock, ShieldCheck, Zap, SlidersHorizontal } from 'lucide-react';
+import { Lock, Settings, ShieldCheck, Zap } from 'lucide-react';
 
+import {
+  TooltipPopup,
+  TooltipRoot,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
+import useToolsPreferences from '@/hooks/tools/use-tools-preferences';
 import { cn } from '@/utils/cn';
-import { Button } from '@/components/ui/button';
 import { ToolsSettingsModal } from './tools-settings-modal';
 
 export default function HeaderBlock() {
   const { getFadeUpClass } = useGetTransitionClass();
+  const { isGlobalHistoryPaused } = useToolsPreferences();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const trustBadges = [
@@ -31,23 +37,55 @@ export default function HeaderBlock() {
           Tools Directory
         </h1>
 
-        <Button
-          variant="ghost"
-          bordered
-          size="xs"
-          rounded="xl"
-          icon={SlidersHorizontal}
-          onClick={() => setIsSettingsOpen(true)}
-          ariaLabel="Tools history and privacy settings"
-          title="History & Privacy Settings"
-          className={cn(
-            'shrink-0 p-2 sm:px-3 sm:py-1.5',
-            'backdrop-blur-xs bg-white/50 dark:bg-neutral-900/40',
-            'hover:bg-white/80 dark:hover:bg-neutral-800/60'
-          )}
-        >
-          <span className="hidden sm:inline">History & Privacy</span>
-        </Button>
+        <TooltipRoot delay={{ open: 200, close: 100 }}>
+          <TooltipTrigger>
+            <button
+              type="button"
+              onClick={() => setIsSettingsOpen(true)}
+              aria-label={
+                isGlobalHistoryPaused
+                  ? 'History paused — open history and privacy settings'
+                  : 'History and privacy settings'
+              }
+              className={cn(
+                'group relative inline-flex size-9 shrink-0 items-center justify-center rounded-xl border transition-all duration-200',
+                'border-slate-200/90 bg-white/85 text-slate-600 shadow-sm shadow-slate-900/5 backdrop-blur-md',
+                'hover:border-slate-300 hover:bg-white hover:text-slate-900 hover:shadow',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/60',
+                'dark:border-neutral-700/80 dark:bg-neutral-900/80 dark:text-slate-300 dark:shadow-black/30',
+                'dark:hover:border-neutral-600 dark:hover:bg-neutral-800 dark:hover:text-white'
+              )}
+            >
+              <Settings
+                size={18}
+                strokeWidth={1.85}
+                className="transition-transform duration-300 group-hover:rotate-45"
+              />
+              {isGlobalHistoryPaused && (
+                <span
+                  aria-hidden="true"
+                  className="absolute right-1.5 top-1.5 size-2 rounded-full bg-amber-500 ring-2 ring-white dark:ring-neutral-900"
+                />
+              )}
+            </button>
+          </TooltipTrigger>
+          <TooltipPopup
+            placement="bottom-end"
+            className="flex items-center gap-2 whitespace-nowrap px-2.5 py-1.5"
+          >
+            {isGlobalHistoryPaused ? (
+              <>
+                <span
+                  aria-hidden="true"
+                  className="size-1.5 rounded-full bg-amber-500"
+                />
+                <span>History Paused · Settings</span>
+              </>
+            ) : (
+              <span>History &amp; Privacy</span>
+            )}
+          </TooltipPopup>
+        </TooltipRoot>
       </div>
 
       {/* Description */}

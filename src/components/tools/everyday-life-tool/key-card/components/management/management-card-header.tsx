@@ -214,9 +214,7 @@ export function ManagementCardHeader({
             </span>
           </TooltipTrigger>
           <TooltipPopup
-            showArrow
             placement="top"
-            variant="dark"
             className="max-w-xs px-2.5 py-1.5 text-[11px] font-medium leading-normal"
           >
             {isListening
@@ -274,9 +272,7 @@ export function ManagementCardHeader({
           </TooltipTrigger>
           {!isManualReorderEnabled && (
             <TooltipPopup
-              showArrow
               placement="top"
-              variant="dark"
               className="max-w-xs px-2.5 py-1.5 text-[11px] font-medium leading-normal"
             >
               Sorting or filtering active. Switch to Default (Asc) to reorder
