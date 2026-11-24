@@ -9,6 +9,7 @@ import { DEFAULT_DOMAIN } from '@/data/global';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import { GTMNoScript, GTMScript } from '@/components/layout/gtm';
+import { AdSenseScript } from '@/components/layout/adsense';
 import { SidebarInitScript } from '@/components/shared/collapsible-sidebar';
 import {
   firaMono,
@@ -110,6 +111,7 @@ export default function RootLayout({
       <head>
         <SidebarInitScript />
         <GTMScript />
+        <AdSenseScript />
       </head>
       <body className="overflow-x-clip bg-gray-50 text-slate-500 antialiased dark:bg-neutral-900 dark:text-slate-400">
         <GTMNoScript />
