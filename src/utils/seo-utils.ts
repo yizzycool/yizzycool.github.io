@@ -241,6 +241,28 @@ const seoUtils = {
     };
   },
 
+  // For /privacy/page.tsx
+  generatePrivacyBreadcrumbJsonLd: () => {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: domain,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Privacy Policy',
+          item: urlJoin(domain, 'privacy'),
+        },
+      ],
+    };
+  },
+
   // For /blog/category/[category]/page.tsx
   generateCategoryBreadcrumbJsonLd: (
     categoryName: string,

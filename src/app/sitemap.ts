@@ -78,6 +78,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 1.0,
     },
+    {
+      url: urlJoin(domain, '/privacy'),
+      lastModified,
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
     ...ToolsSitemap,
   ];
 
