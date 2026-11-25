@@ -111,12 +111,12 @@ export default function HeaderMobile({ categoryArticles }: HeaderMobileProps) {
           </nav>
 
           {/* Buy Me a Coffee */}
-          <BuyMeACoffee
-            linkClassName={cn('lg:hidden ml-auto w-44 px-4 max-w-full')}
-          />
+          <div className="px-4 pt-4 lg:hidden">
+            <BuyMeACoffee variant="card" />
+          </div>
 
           {/* Drawer Footer */}
-          <footer className="mt-6 border-t border-neutral-200 px-4 pt-6 dark:border-neutral-700">
+          <footer className="mt-4 border-t border-neutral-200 px-4 pt-6 dark:border-neutral-700">
             <SocialIcons
               types={['github', 'linkedin', 'email']}
               className="justify-center"

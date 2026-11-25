@@ -68,11 +68,16 @@ export default function LeftPanel({
           </li>
         </ul>
       </nav>
-      <div className={cn(getFadeUpClass('animate-delay-150'))}>
-        <BuyMeACoffee
-          linkClassName={cn('hidden lg:block my-4 w-32 max-w-full')}
-        />
-      </div>
+      {side === 'leftPanel' && (
+        <div
+          className={cn(
+            'mt-4 hidden border-t border-neutral-200/70 pt-4 lg:block dark:border-neutral-800/70',
+            getFadeUpClass('animate-delay-150')
+          )}
+        >
+          <BuyMeACoffee variant="compact" />
+        </div>
+      )}
     </aside>
   );
 }

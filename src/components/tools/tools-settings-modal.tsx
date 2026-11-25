@@ -66,8 +66,6 @@ export function ToolsSettingsModal({
           bordered={false}
         />
 
-        <Separator />
-
         {/* Settings Body */}
         <div className="space-y-3.5 py-4">
           {/* Section 1: Global History Recording & Per-Tool Permissions */}

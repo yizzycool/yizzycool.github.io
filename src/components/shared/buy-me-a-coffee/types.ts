@@ -1,13 +1,15 @@
-export type BuyMeACoffeeColor = 'yellow' | 'violet' | 'blue' | 'green' | 'red';
+export type BuyMeACoffeeVariant = 'compact' | 'card';
 
 /**
- * Props for the BuyMeACoffee donation widget.
+ * Props for the BuyMeACoffee support widget.
  */
 export type BuyMeACoffeeProps = {
-  /** Color theme for the coffee button (default: 'yellow') */
-  color?: BuyMeACoffeeColor;
+  /** Presentation variant: compact pill row for sidebars or rich support card for mobile drawer */
+  variant?: BuyMeACoffeeVariant;
+  /** Primary heading text */
+  title?: string;
+  /** Secondary helper copy shown in the 'card' variant */
+  subtitle?: string;
   /** Additional CSS class names for the anchor link */
-  linkClassName?: string;
-  /** Additional CSS class names for the coffee button image */
-  imageClassName?: string;
+  className?: string;
 };
