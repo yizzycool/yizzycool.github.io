@@ -1,7 +1,7 @@
 'use client';
 
 import type { LucideIcon } from 'lucide-react';
-import type { TransformAction } from './hooks/use-word-counter';
+import type { TransformAction } from './utils/text-transforms';
 
 import {
   ArrowDown,
@@ -10,12 +10,15 @@ import {
   ArrowUp,
   ArrowUpZA,
   Code2,
+  FileCode2,
   FoldVertical,
   Heading,
   Info,
   ListFilter,
   ListOrdered,
+  Minimize2,
   Minus,
+  Pilcrow,
   Scissors,
   Space,
   Sparkles,
@@ -25,9 +28,10 @@ import {
 } from 'lucide-react';
 import { Fragment, useState } from 'react';
 
-import { cn } from '@/utils/cn';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/utils/cn';
+
 import TextToolsModal from './text-tools-modal';
 
 export type ToolItem = {
@@ -109,6 +113,42 @@ const TOOL_GROUPS: ToolGroup[] = [
   {
     name: 'Clean & Format',
     items: [
+      {
+        label: 'CJK-Latin Space',
+        icon: Pilcrow,
+        actionType: 'pangu-spacing',
+        title: 'Auto CJK-Latin Spacing (Pangu)',
+        description:
+          'Insert clean typographic spaces between Chinese/CJK characters and English letters or numbers.',
+        example: '中文English與123 → 中文 English 與 123',
+      },
+      {
+        label: 'To Half-Width',
+        icon: Minimize2,
+        actionType: 'to-halfwidth',
+        title: 'Convert to Half-Width',
+        description:
+          'Convert full-width ASCII letters, digits, punctuation, and ideographic spaces to half-width.',
+        example: 'Ｈｅｌｌｏ　１２３！ → Hello 123!',
+      },
+      {
+        label: 'To Full-Width',
+        icon: Type,
+        actionType: 'to-fullwidth',
+        title: 'Convert to Full-Width',
+        description:
+          'Convert standard half-width ASCII characters into full-width glyphs.',
+        example: 'Hello 123! → Ｈｅｌｌｏ １２３！',
+      },
+      {
+        label: 'Strip Markdown',
+        icon: FileCode2,
+        actionType: 'strip-markdown',
+        title: 'Strip Markdown Syntax',
+        description:
+          'Remove Markdown headings, bold/italic markers, links, list bullets, and code backticks cleanly.',
+        example: '**Hello** [world](url) → Hello world',
+      },
       {
         label: 'Compact Spaces',
         icon: Space,

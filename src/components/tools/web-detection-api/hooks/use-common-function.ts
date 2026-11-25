@@ -9,19 +9,16 @@ import toast from '@/utils/toast';
 
 import useWebcam from './use-webcam';
 
+type DetectionUnion =
+  | FaceDetectionResults
+  | BarcodeDetectionResults
+  | TextDetectionResults;
+
 type Props = {
   detect: (
     image: HTMLImageElement | HTMLCanvasElement
-  ) => Promise<
-    FaceDetectionResults | BarcodeDetectionResults | TextDetectionResults | null
-  >;
-  getCopyText?: (
-    results:
-      | FaceDetectionResults
-      | BarcodeDetectionResults
-      | TextDetectionResults
-      | null
-  ) => string | null;
+  ) => Promise<DetectionUnion | null>;
+  getCopyText?: (results: DetectionUnion | null) => string | null;
 };
 
 export const defaultParam: Param = {
@@ -32,7 +29,6 @@ export const defaultParam: Param = {
 
 const defaultGetCopyText = (res: unknown): string | null => {
   if (!res || !Array.isArray(res) || res.length === 0) return null;
-  // If barcode or text detector result contains rawValue
   if ('rawValue' in res[0] && typeof res[0].rawValue === 'string') {
     return res
       .map((r: { rawValue: string; format?: string }) =>
@@ -40,7 +36,6 @@ const defaultGetCopyText = (res: unknown): string | null => {
       )
       .join('\n');
   }
-  // Face detector or other complex structure
   if ('boundingBox' in res[0]) {
     return `Detected ${res.length} face(s)\n` + JSON.stringify(res, null, 2);
   }
@@ -49,13 +44,13 @@ const defaultGetCopyText = (res: unknown): string | null => {
 
 export default function useCommonFunction({ detect, getCopyText }: Props) {
   const [param, setParam] = useState<Param>(defaultParam);
-  const [results, setResults] = useState<
-    FaceDetectionResults | BarcodeDetectionResults | TextDetectionResults | null
-  >(null);
+  const [results, setResults] = useState<DetectionUnion | null>(null);
   const [tab, setTabState] = useState<WebDetectionFileType>('image');
+  const [isDemoResult, setIsDemoResult] = useState(false);
 
   const resultRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const pendingSampleResultsRef = useRef<DetectionUnion | null>(null);
 
   const { isCameraOpened, startCamera, stopCamera, flipCamera } = useWebcam();
 
@@ -63,6 +58,8 @@ export default function useCommonFunction({ detect, getCopyText }: Props) {
     if (param.type === 'webcam') {
       stopCamera();
     }
+    pendingSampleResultsRef.current = null;
+    setIsDemoResult(false);
     setParam(defaultParam);
     setResults(null);
   }, [param.type, stopCamera]);
@@ -81,6 +78,19 @@ export default function useCommonFunction({ detect, getCopyText }: Props) {
     async (file: File | undefined) => {
       if (!file) return;
       stopCamera();
+      pendingSampleResultsRef.current = null;
+      setIsDemoResult(false);
+      setParam({ type: 'image', blob: file, stream: null });
+    },
+    [stopCamera]
+  );
+
+  const loadSamplePreset = useCallback(
+    async (file: File, demoResults?: DetectionUnion) => {
+      stopCamera();
+      pendingSampleResultsRef.current = demoResults ?? null;
+      setIsDemoResult(false);
+      setTabState('image');
       setParam({ type: 'image', blob: file, stream: null });
     },
     [stopCamera]
@@ -90,12 +100,16 @@ export default function useCommonFunction({ detect, getCopyText }: Props) {
     async (file: File | undefined) => {
       if (!file) return;
       stopCamera();
+      pendingSampleResultsRef.current = null;
+      setIsDemoResult(false);
       setParam({ type: 'video', blob: file, stream: null });
     },
     [stopCamera]
   );
 
   const processWebcam = useCallback(async () => {
+    pendingSampleResultsRef.current = null;
+    setIsDemoResult(false);
     if (isCameraOpened) {
       setParam(defaultParam);
       stopCamera();
@@ -113,12 +127,36 @@ export default function useCommonFunction({ detect, getCopyText }: Props) {
 
   const onCanvasDraw = useCallback(
     async (canvas: HTMLCanvasElement) => {
-      setResults(null);
+      if (param.type === 'image') {
+        setResults(null);
+      }
       const detectionResults = await detect(canvas);
-      setResults(detectionResults);
+      if (detectionResults === null && param.type !== 'image') {
+        return;
+      }
+
+      const fallback = pendingSampleResultsRef.current;
+
+      if (
+        (!detectionResults || detectionResults.length === 0) &&
+        fallback &&
+        fallback.length > 0
+      ) {
+        setResults(fallback);
+        setIsDemoResult(true);
+      } else {
+        setResults(detectionResults);
+        setIsDemoResult(false);
+      }
     },
-    [detect]
+    [detect, param.type]
   );
+
+  const rerunDetection = useCallback(async () => {
+    const canvas = canvasRef.current;
+    if (!canvas || !param.type) return;
+    await onCanvasDraw(canvas);
+  }, [onCanvasDraw, param.type]);
 
   const handleCopyResults = useCallback(async () => {
     const textToCopy = (getCopyText || defaultGetCopyText)(results);
@@ -181,7 +219,7 @@ export default function useCommonFunction({ detect, getCopyText }: Props) {
           if (file) {
             e.preventDefault();
             setTab('image');
-            processImage(file);
+            void processImage(file);
             toast.success('Image pasted from clipboard!');
             return;
           }
@@ -227,7 +265,7 @@ export default function useCommonFunction({ detect, getCopyText }: Props) {
       }
       if ((e.key === 'f' || e.key === 'F') && param.type === 'webcam') {
         e.preventDefault();
-        flipWebcam();
+        void flipWebcam();
         return;
       }
     };
@@ -248,11 +286,14 @@ export default function useCommonFunction({ detect, getCopyText }: Props) {
     resultRef,
     canvasRef,
     isEmpty: !param.type,
+    isDemoResult,
     processImage,
+    loadSamplePreset,
     processVideo,
     processWebcam,
     flipWebcam,
     onCanvasDraw,
+    rerunDetection,
     onClear,
     handleCopyResults,
   };

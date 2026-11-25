@@ -5,14 +5,14 @@ import type { TransformedResults } from './types';
 import { Copy, LoaderCircle, ScanSearch } from 'lucide-react';
 import { size } from 'lodash';
 
-import { CopyAction } from '@/components/shared/action-button';
 import { InsetGroup } from '@/components/tools/common/inset-group';
 import LabelBar from '@/components/tools/common/label-bar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
-import { cn } from '@/utils/cn';
 import toast from '@/utils/toast';
+
+import { DetectionResultItem } from './detection-result-item';
 
 type Props = {
   results: TransformedResults;
@@ -20,6 +20,7 @@ type Props = {
   activeIndex?: number | null;
   onHoverIndex?: (index: number | null) => void;
   compact?: boolean;
+  enableBarcodeActions?: boolean;
 };
 
 export default function DetectionResult({
@@ -28,6 +29,7 @@ export default function DetectionResult({
   activeIndex = null,
   onHoverIndex,
   compact = false,
+  enableBarcodeActions = false,
 }: Props) {
   const handleCopyAll = () => {
     const textToCopy = results
@@ -108,56 +110,20 @@ export default function DetectionResult({
           <EmptyState
             icon={ScanSearch}
             title="No objects detected"
-            description="Try a clearer image or adjust the camera framing."
+            description="Try a clearer image, another sample, or adjust the camera framing."
           />
         </InsetGroup>
       ) : (
-        <InsetGroup rounded="xl" className="max-h-[420px] overflow-y-auto">
+        <InsetGroup rounded="xl" className="max-h-[380px] overflow-y-auto">
           {results.map((item, idx) => (
-            <div
+            <DetectionResultItem
               key={`${item.label ?? 'det'}-${idx}`}
-              onMouseEnter={() => onHoverIndex?.(idx)}
-              onMouseLeave={() => onHoverIndex?.(null)}
-              className={cn(
-                'flex items-start justify-between gap-3 px-3.5 py-2.5 transition-colors',
-                activeIndex === idx
-                  ? 'bg-sky-50/90 ring-1 ring-inset ring-sky-500/35 dark:bg-sky-950/35 dark:ring-sky-400/35'
-                  : 'hover:bg-neutral-50/80 dark:hover:bg-neutral-800/35'
-              )}
-            >
-              <div className="min-w-0 flex-1 space-y-1">
-                <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="rounded bg-sky-500/15 px-1.5 py-0.5 font-mono text-[10px] font-bold text-sky-700 dark:bg-sky-400/15 dark:text-sky-300">
-                    #{idx + 1}
-                  </span>
-                  <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
-                    {item.label || 'Detected Object'}
-                  </span>
-                  {item.confidence ? (
-                    <Badge variant="success" size="xs">
-                      {Math.round(item.confidence * 100)}%
-                    </Badge>
-                  ) : null}
-                </div>
-
-                {item.text && (
-                  <p className="break-all font-mono text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-                    {item.text}
-                  </p>
-                )}
-              </div>
-
-              <CopyAction
-                display="icon"
-                variant="ghost"
-                size="xs"
-                rounded="lg"
-                content={item.text || item.label || ''}
-                title="Copy detected value"
-                successToast="Copied detection value"
-                className="shrink-0"
-              />
-            </div>
+              item={item}
+              index={idx}
+              isActive={activeIndex === idx}
+              enableBarcodeActions={enableBarcodeActions}
+              onHoverIndex={onHoverIndex}
+            />
           ))}
         </InsetGroup>
       )}

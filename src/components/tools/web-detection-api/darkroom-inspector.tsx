@@ -3,6 +3,7 @@
 import type { ReactNode, RefObject } from 'react';
 import type { Param, WebDetectionFileType } from './result-canvas';
 import type { TransformedResults } from './types';
+import type { SamplePresetOption } from './utils/sample-presets';
 
 import {
   Braces,
@@ -25,6 +26,7 @@ import Empty from './empty';
 import FlipCamera from './flip-camera';
 import RawData from './raw-data';
 import ResultCanvas from './result-canvas';
+import SamplePresetBar from './sample-preset-bar';
 
 type InspectorTab = 'extracted' | 'raw';
 type StageSurface = 'darkroom' | 'checkerboard';
@@ -63,6 +65,12 @@ type Props = {
   onCanvasDraw: (canvas: HTMLCanvasElement) => Promise<void>;
   onClear: () => void;
   onRatioChange: (ratio: number) => void;
+  samples?: SamplePresetOption[];
+  onSelectSample?: (sampleId: string) => void;
+  isSampleLoading?: boolean;
+  isDemoResult?: boolean;
+  enableBarcodeActions?: boolean;
+  inspectorActions?: ReactNode;
 };
 
 export default function DarkroomInspector({
@@ -82,6 +90,12 @@ export default function DarkroomInspector({
   onCanvasDraw,
   onClear,
   onRatioChange,
+  samples,
+  onSelectSample,
+  isSampleLoading = false,
+  isDemoResult = false,
+  enableBarcodeActions = false,
+  inspectorActions,
 }: Props) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [inspectorTab, setInspectorTab] = useState<InspectorTab>('extracted');
@@ -132,6 +146,12 @@ export default function DarkroomInspector({
 
         {!!param.type && (
           <div className="flex flex-wrap items-center gap-2">
+            {isDemoResult && (
+              <Badge variant="amber" size="xs">
+                Sample Demo
+              </Badge>
+            )}
+
             <Badge
               variant={results.length > 0 ? 'primary' : 'neutral'}
               size="xs"
@@ -166,6 +186,15 @@ export default function DarkroomInspector({
           </div>
         )}
       </div>
+
+      {/* Interactive Sample Presets Strip */}
+      {samples && samples.length > 0 && onSelectSample && (
+        <SamplePresetBar
+          samples={samples}
+          onSelectSample={onSelectSample}
+          isLoading={isSampleLoading}
+        />
+      )}
 
       {isEmpty ? (
         <Empty
@@ -209,21 +238,19 @@ export default function DarkroomInspector({
           </div>
 
           {/* Right 5 Cols: Sticky Inspector Sidebar */}
-          <aside className="rounded-2xl border border-neutral-200/80 bg-white/80 p-4 shadow-sm backdrop-blur-md lg:sticky lg:top-24 lg:col-span-5 dark:border-neutral-800 dark:bg-neutral-900/65">
-            <div className="mb-3">
-              <PillTabs<InspectorTab>
-                tabs={INSPECTOR_TABS}
-                activeTab={inspectorTab}
-                tabLabels={INSPECTOR_LABELS}
-                tabIcons={INSPECTOR_ICONS}
-                tabBadges={renderInspectorBadge}
-                onChange={setInspectorTab}
-                size="xs"
-                rounded="lg"
-                variant="segment"
-                fullWidth
-              />
-            </div>
+          <aside className="space-y-3 rounded-2xl border border-neutral-200/80 bg-white/80 p-4 shadow-sm backdrop-blur-md lg:sticky lg:top-24 lg:col-span-5 dark:border-neutral-800 dark:bg-neutral-900/65">
+            <PillTabs<InspectorTab>
+              tabs={INSPECTOR_TABS}
+              activeTab={inspectorTab}
+              tabLabels={INSPECTOR_LABELS}
+              tabIcons={INSPECTOR_ICONS}
+              tabBadges={renderInspectorBadge}
+              onChange={setInspectorTab}
+              size="xs"
+              rounded="lg"
+              variant="segment"
+              fullWidth
+            />
 
             {inspectorTab === 'extracted' ? (
               <DetectionResult
@@ -231,10 +258,17 @@ export default function DarkroomInspector({
                 isProcessing={isProcessing}
                 activeIndex={activeIndex}
                 onHoverIndex={setActiveIndex}
+                enableBarcodeActions={enableBarcodeActions}
                 compact
               />
             ) : (
               <RawData results={rawResults} compact />
+            )}
+
+            {results.length > 0 && inspectorActions && (
+              <div className="border-t border-neutral-200/70 pt-3 dark:border-neutral-800/80">
+                {inspectorActions}
+              </div>
             )}
           </aside>
         </div>

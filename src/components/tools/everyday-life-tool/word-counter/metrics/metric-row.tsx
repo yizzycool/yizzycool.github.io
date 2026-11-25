@@ -2,6 +2,7 @@
 
 import type { LucideIcon } from 'lucide-react';
 
+import { InsetGroupRow } from '@/components/tools/common/inset-group';
 import { cn } from '@/utils/cn';
 
 type MetricRowProps = {
@@ -16,38 +17,24 @@ export default function MetricRow({
   icon: Icon,
 }: MetricRowProps) {
   return (
-    <div
-      className={cn(
-        'group flex items-center justify-between rounded-xl px-4 py-2.5 transition-colors',
-        'hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50'
-      )}
-    >
-      <div className="flex items-center gap-3">
+    <InsetGroupRow className="flex items-center justify-between gap-3 px-3.5 py-2.5">
+      <div className="flex min-w-0 items-center gap-2.5">
         <div
           className={cn(
-            'rounded-lg p-2 transition-colors',
-            'bg-neutral-100 text-slate-600 dark:bg-neutral-800 dark:text-slate-300 dark:group-hover:bg-neutral-700'
+            'flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-colors',
+            'bg-neutral-100 text-slate-600 dark:bg-neutral-800 dark:text-slate-300'
           )}
         >
-          <Icon size={16} />
+          <Icon size={14} />
         </div>
-        <span
-          className={cn(
-            'font-medium tracking-tight transition-colors',
-            'text-sm text-slate-800 dark:text-slate-100'
-          )}
-        >
+        <span className="truncate text-xs font-medium text-slate-700 dark:text-slate-200">
           {label}
         </span>
       </div>
-      <span
-        className={cn(
-          'font-mono font-bold tabular-nums',
-          'text-base text-slate-900 dark:text-slate-50'
-        )}
-      >
+
+      <span className="shrink-0 font-mono text-sm font-bold tabular-nums text-slate-900 dark:text-slate-50">
         {value}
       </span>
-    </div>
+    </InsetGroupRow>
   );
 }

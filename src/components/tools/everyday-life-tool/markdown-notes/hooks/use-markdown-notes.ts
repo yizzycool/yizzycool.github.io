@@ -13,6 +13,11 @@ import type {
 import Fuse from 'fuse.js';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import {
+  clearTextHandoffQueryParam,
+  consumeTextHandoff,
+  hasTextHandoffQueryParam,
+} from '@/components/tools/common/text-handoff';
 import { useToolsDB } from '@/hooks/tools/use-tools-db';
 import useToolHotkeys, {
   hasOpenModalDialog,
@@ -54,7 +59,12 @@ export default function useMarkdownNotes({
   onTriggerNewNote,
   suppressEscape = false,
 }: UseMarkdownNotesOptions = {}) {
-  const { isSupported: isDbSupported, getValue, setValue } = useToolsDB();
+  const {
+    isSupported: isDbSupported,
+    getValue,
+    setValue,
+    deleteValue,
+  } = useToolsDB();
 
   const [notes, setNotes] = useState<NoteItem[]>([]);
   const [prefs, setPrefs] = useState<NotesPreferences>(DEFAULT_NOTES_PREFS);
@@ -106,8 +116,45 @@ export default function useMarkdownNotes({
         if (cancelled) return;
 
         const validNotes = Array.isArray(storedNotes) ? storedNotes : [];
-        notesRef.current = validNotes;
-        setNotes(validNotes);
+        let nextNotes = validNotes;
+
+        if (hasTextHandoffQueryParam()) {
+          clearTextHandoffQueryParam();
+          const handoffPayload = await consumeTextHandoff(
+            getValue,
+            deleteValue,
+            'markdown-notes'
+          );
+          if (!cancelled && handoffPayload) {
+            const now = Date.now();
+            const importedNote: NoteItem = {
+              id: createNoteId(),
+              title: handoffPayload.title || 'OCR Extract',
+              content: handoffPayload.text,
+              labels:
+                handoffPayload.labels && handoffPayload.labels.length > 0
+                  ? handoffPayload.labels
+                  : ['OCR'],
+              color: 'default',
+              isPinned: false,
+              isArchived: false,
+              isTrashed: false,
+              createdAt: now,
+              updatedAt: now,
+            };
+            nextNotes = [importedNote, ...validNotes];
+            await setValue(NOTES_DB_STORE, NOTES_DB_KEY, nextNotes).catch(
+              () => {}
+            );
+            setEditingNoteId(importedNote.id);
+            toast.success('Imported extracted text into a new note');
+          }
+        }
+
+        if (cancelled) return;
+
+        notesRef.current = nextNotes;
+        setNotes(nextNotes);
 
         if (storedPrefs) {
           setPrefs({ ...DEFAULT_NOTES_PREFS, ...storedPrefs });
@@ -128,7 +175,7 @@ export default function useMarkdownNotes({
     return () => {
       cancelled = true;
     };
-  }, [isDbSupported, getValue]);
+  }, [isDbSupported, getValue, setValue, deleteValue]);
 
   const commitNotes = useCallback(
     (nextNotes: NoteItem[]) => {

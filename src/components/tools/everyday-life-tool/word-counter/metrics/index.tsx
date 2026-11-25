@@ -1,128 +1,169 @@
 'use client';
 
 import {
+  BarChart3,
   Binary,
+  BookOpen,
   ChartColumn,
+  Clock,
   FileText,
+  Gauge,
   Globe,
   Hash,
   Languages,
   LetterText,
+  MessageSquareText,
+  Mic,
   Pilcrow,
+  Search,
+  Space,
   Type,
 } from 'lucide-react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
-import { Card, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+import { InsetGroup } from '@/components/tools/common/inset-group';
+import LabelBar from '@/components/tools/common/label-bar';
+import { PillTabs } from '@/components/ui/tabs';
+
+import { computeTextStats, formatMinutesLabel } from '../utils/text-analysis';
+
+import { KeywordDensity } from './keyword-density';
+import { KpiTile } from './kpi-tile';
 import MetricRow from './metric-row';
+import { PlatformLimits } from './platform-limits';
+
+type MetricsTab = 'overview' | 'limits' | 'keywords';
+
+const METRICS_TABS: MetricsTab[] = ['overview', 'limits', 'keywords'];
+
+const METRICS_TAB_LABELS: Record<MetricsTab, string> = {
+  overview: 'Overview',
+  limits: 'SEO & Limits',
+  keywords: 'Keywords',
+};
+
+const METRICS_TAB_ICONS: Record<MetricsTab, typeof BarChart3> = {
+  overview: BarChart3,
+  limits: Gauge,
+  keywords: Search,
+};
 
 type MetricsProps = {
   text: string;
 };
 
 export default function Metrics({ text }: MetricsProps) {
-  const stats = useMemo(() => {
-    if (!text) {
-      return {
-        totalChars: 0,
-        lines: 0,
-        numbers: 0,
-        chineseChars: 0,
-        chinesePunc: 0,
-        englishLetters: 0,
-        englishPunc: 0,
-        englishWords: 0,
-        bytes: 0,
-      };
-    }
-
-    const chineseRegex = /[\u4e00-\u9fa5]/g;
-    const chinesePuncRegex =
-      /[\u3000-\u303f\uff01-\uff0f\uff1a-\uff20\uff3b-\uff40\uff5b-\uff65]/g;
-    const englishLetterRegex = /[a-zA-Z]/g;
-    const englishPuncRegex = /[!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]/g;
-    const numberRegex = /\d/g;
-    const englishWordRegex = /[a-zA-Z0-9']+/g;
-
-    const chineseChars = (text.match(chineseRegex) || []).length;
-    const chinesePunc = (text.match(chinesePuncRegex) || []).length;
-    const englishLetters = (text.match(englishLetterRegex) || []).length;
-    const englishPunc = (text.match(englishPuncRegex) || []).length;
-    const numbers = (text.match(numberRegex) || []).length;
-    const englishWords = (text.match(englishWordRegex) || []).length;
-
-    const lines = text.trim() === '' ? 0 : text.split('\n').length;
-    const totalChars = text.length;
-    const bytes = new TextEncoder().encode(text).length;
-
-    return {
-      totalChars,
-      lines,
-      numbers,
-      chineseChars,
-      chinesePunc,
-      englishLetters,
-      englishPunc,
-      englishWords,
-      bytes,
-    };
-  }, [text]);
+  const [activeTab, setActiveTab] = useState<MetricsTab>('overview');
+  const stats = useMemo(() => computeTextStats(text), [text]);
 
   return (
-    <Card className="flex flex-col overflow-hidden p-0 lg:max-h-[calc(100vh-7rem)]">
-      <CardTitle icon={ChartColumn} className="p-4">
-        Detailed Metrics
-      </CardTitle>
+    <div className="space-y-3 text-left">
+      <LabelBar icon={ChartColumn} label="Live Analytics" />
 
-      {/* Separate */}
-      <Separator />
-
-      {/* Metrics */}
-      <div className="overflow-y-auto p-4">
-        {/* Core Items */}
-        <MetricRow
-          label="Total Characters"
+      {/* 4-Tile KPI Grid */}
+      <div className="grid grid-cols-2 gap-2.5">
+        <KpiTile
+          label="Words (EN + CJK)"
+          value={stats.smartWords}
+          subLabel={`${stats.englishWords} EN / ${stats.chineseChars} ZH`}
+          icon={BookOpen}
+        />
+        <KpiTile
+          label="Characters"
           value={stats.totalChars}
+          subLabel={`${stats.charsNoSpaces} no spaces`}
           icon={FileText}
         />
-        <MetricRow
-          label="English Words"
-          value={stats.englishWords}
-          icon={Type}
+        <KpiTile
+          label="Sentences"
+          value={stats.sentences}
+          subLabel={`${stats.paragraphs} paragraphs`}
+          icon={MessageSquareText}
         />
-        <MetricRow
-          label="Chinese Characters"
-          value={stats.chineseChars}
-          icon={Languages}
-        />
-        <MetricRow label="Total Lines" value={stats.lines} icon={Pilcrow} />
-
-        <Separator className="my-2" />
-
-        {/* Secondary Items */}
-        <MetricRow
-          label="English Letters"
-          value={stats.englishLetters}
-          icon={LetterText}
-        />
-        <MetricRow
-          label="English Punc."
-          value={stats.englishPunc}
-          icon={Hash}
-        />
-        <MetricRow
-          label="Chinese Punc."
-          value={stats.chinesePunc}
-          icon={Hash}
-        />
-        <MetricRow label="Numbers" value={stats.numbers} icon={Binary} />
-        <MetricRow
-          label="Bytes (UTF-8)"
-          value={`${stats.bytes} B`}
-          icon={Globe}
+        <KpiTile
+          label="Read Time"
+          value={formatMinutesLabel(stats.readingMinutes)}
+          subLabel={`Speak ~${formatMinutesLabel(stats.speakingMinutes)}`}
+          icon={Clock}
         />
       </div>
-    </Card>
+
+      {/* Mode Switcher */}
+      <PillTabs<MetricsTab>
+        tabs={METRICS_TABS}
+        activeTab={activeTab}
+        tabLabels={METRICS_TAB_LABELS}
+        tabIcons={METRICS_TAB_ICONS}
+        onChange={setActiveTab}
+        size="xs"
+        rounded="lg"
+        variant="segment"
+        fullWidth
+      />
+
+      {/* Tab Body */}
+      {activeTab === 'overview' && (
+        <div className="space-y-3">
+          <InsetGroup rounded="xl">
+            <MetricRow
+              label="Total Characters"
+              value={stats.totalChars}
+              icon={FileText}
+            />
+            <MetricRow
+              label="Without Spaces"
+              value={stats.charsNoSpaces}
+              icon={Space}
+            />
+            <MetricRow
+              label="English Words"
+              value={stats.englishWords}
+              icon={Type}
+            />
+            <MetricRow
+              label="Chinese Characters"
+              value={stats.chineseChars}
+              icon={Languages}
+            />
+            <MetricRow label="Total Lines" value={stats.lines} icon={Pilcrow} />
+          </InsetGroup>
+
+          <InsetGroup rounded="xl">
+            <MetricRow
+              label="English Letters"
+              value={stats.englishLetters}
+              icon={LetterText}
+            />
+            <MetricRow
+              label="English Punctuation"
+              value={stats.englishPunc}
+              icon={Hash}
+            />
+            <MetricRow
+              label="Chinese Punctuation"
+              value={stats.chinesePunc}
+              icon={Hash}
+            />
+            <MetricRow label="Digits" value={stats.numbers} icon={Binary} />
+            <MetricRow
+              label="Speak Duration"
+              value={formatMinutesLabel(stats.speakingMinutes)}
+              icon={Mic}
+            />
+            <MetricRow
+              label="Payload (UTF-8)"
+              value={`${stats.bytes} B`}
+              icon={Globe}
+            />
+          </InsetGroup>
+        </div>
+      )}
+
+      {activeTab === 'limits' && (
+        <PlatformLimits charCount={stats.totalChars} />
+      )}
+
+      {activeTab === 'keywords' && <KeywordDensity text={text} />}
+    </div>
   );
 }
