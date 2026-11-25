@@ -59,6 +59,19 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
     bottomNote:
       'QR codes are rendered dynamically on a local canvas element. Your input data remains strictly confidential on your device.',
   },
+  [ToolKeys.wifiCardGenerator]: {
+    overview:
+      'Sharing your home, cafe, Airbnb, or office Wi-Fi credentials with guests often means repeating complex passwords or exposing plain text notes. Wi-Fi Card Generator turns your network details into a print-ready guest card and scannable QR code completely inside your browser—allowing visitors on iOS and Android to connect with a single camera scan.',
+    features: [
+      '100% Client-Side Privacy: Your Wi-Fi SSID, password, and security settings stay strictly in your local browser memory and draft storage with zero cloud uploads.',
+      'Standard Wi-Fi QR URI Encoding: Generates standards-compliant WPA/WPA2/WPA3, WEP, Open, and Hidden SSID payloads that trigger instant OS join prompts.',
+      'Designer Card Themes & Print Formats: Switch between Nordic Minimal, Cafe Kraft, Obsidian Dark, and Sage Studio palettes in 5×7 Table Tent, 7×5 Guest Card, and 3.5×3.5 Sticker layouts.',
+      'Password Masking & Cut Guides: Choose to show the readable password for backup typing or mask it on the card to enforce QR-only access, with optional dashed print trim guides.',
+      'Direct Print, PNG Download & Clipboard Copy: Print centered physical cards straight from the browser or export crisp high-DPI PNG images for digital menus and welcome guides.',
+    ],
+    bottomNote:
+      'All Wi-Fi credentials and QR code cards are generated locally on your device and are never transmitted to any server.',
+  },
   [ToolKeys.wordCounter]: {
     overview:
       'Accurately measuring text length and character distribution is essential for writers, editors, translators, and developers. When dealing with multilingual documents, standard word counters frequently miscalculate Chinese characters, English words, or payload byte limits. This tool provides instant, comprehensive character breakdown and text analysis directly in your browser.',

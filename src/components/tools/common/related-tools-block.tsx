@@ -22,8 +22,13 @@ const RELATED_TOOLS_MAP: Record<string, readonly string[]> = {
   [ToolKeys.wordCounter]: [ToolKeys.markdownNotes, ToolKeys.keyCard],
   [ToolKeys.keyCard]: [ToolKeys.markdownNotes, ToolKeys.wordCounter],
   [ToolKeys.qrCodeGenerator]: [
+    ToolKeys.wifiCardGenerator,
     ToolKeys.chromeBarcodeDetector,
     ToolKeys.photoEditorStudio,
+  ],
+  [ToolKeys.wifiCardGenerator]: [
+    ToolKeys.qrCodeGenerator,
+    ToolKeys.chromeBarcodeDetector,
     ToolKeys.picMergeStudio,
   ],
   [ToolKeys.signatureStampMaker]: [

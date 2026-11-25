@@ -34,6 +34,7 @@ import {
   SpellCheck,
   StickyNote,
   WandSparkles,
+  Wifi,
 } from 'lucide-react';
 import { fromPairs, findKey } from 'lodash';
 
@@ -94,6 +95,7 @@ export const ToolKeys = {
   markdownNotes: 'markdownNotes',
   signatureStampMaker: 'signatureStampMaker',
   qrCodeGenerator: 'qrCodeGenerator',
+  wifiCardGenerator: 'wifiCardGenerator',
   wordCounter: 'wordCounter',
   keyCard: 'keyCard',
 
@@ -152,6 +154,7 @@ export const ToolGroupItems = {
     ToolKeys.markdownNotes,
     ToolKeys.signatureStampMaker,
     ToolKeys.qrCodeGenerator,
+    ToolKeys.wifiCardGenerator,
     ToolKeys.wordCounter,
     ToolKeys.keyCard,
   ],
@@ -204,6 +207,7 @@ export const ToolTitles = {
   [ToolKeys.markdownNotes]: 'Markdown Notes',
   [ToolKeys.signatureStampMaker]: 'Signature & Stamp Maker',
   [ToolKeys.qrCodeGenerator]: 'QR Code Generator',
+  [ToolKeys.wifiCardGenerator]: 'Wi-Fi Card Generator',
   [ToolKeys.wordCounter]: 'Word Counter',
   [ToolKeys.keyCard]: 'KeyCard',
 
@@ -271,6 +275,8 @@ export const ToolDescriptions = {
     '100% local electronic signature pad, transparent stamp maker, and paper photo background remover with Trackpad Mode, shadow normalization, auto-trim PNG/SVG export, and zero uploads.',
   [ToolKeys.qrCodeGenerator]:
     'Generate custom QR codes instantly with personalized colors, contrast presets, adjustable error correction, and 1-click PNG export.',
+  [ToolKeys.wifiCardGenerator]:
+    'Create printable Wi-Fi QR code guest cards and table tents with Nordic, cafe, dark, and botanical themes, password masking, dashed cut guides, PNG export, and 100% browser privacy.',
   [ToolKeys.wordCounter]:
     'Accurately count words, characters, and UTF-8 bytes for Chinese and English text, with real-time social media limits and text formatting tools.',
   [ToolKeys.keyCard]:
@@ -345,6 +351,7 @@ export const ToolSlugs = {
   [ToolKeys.markdownNotes]: 'markdown-notes',
   [ToolKeys.signatureStampMaker]: 'signature-stamp-maker',
   [ToolKeys.qrCodeGenerator]: 'qr-code-generator',
+  [ToolKeys.wifiCardGenerator]: 'wifi-card-generator',
   [ToolKeys.wordCounter]: 'word-counter',
   [ToolKeys.keyCard]: 'key-card',
 
@@ -404,6 +411,7 @@ export const ToolIcons = {
   [ToolKeys.markdownNotes]: StickyNote,
   [ToolKeys.signatureStampMaker]: Signature,
   [ToolKeys.qrCodeGenerator]: QrCode,
+  [ToolKeys.wifiCardGenerator]: Wifi,
   [ToolKeys.wordCounter]: FileText,
   [ToolKeys.keyCard]: Keyboard,
 
@@ -451,6 +459,7 @@ export const ToolGroupBadges: Record<string, string> = {
  * Optional highlight badges displayed beside individual tool entries (e.g. "New", "Popular").
  */
 export const ToolBadges: Record<string, string> = {
+  [ToolKeys.wifiCardGenerator]: 'New',
   [ToolKeys.signatureStampMaker]: 'New',
   [ToolKeys.photoEditorStudio]: 'New',
   [ToolKeys.qrCodeGenerator]: 'Popular',

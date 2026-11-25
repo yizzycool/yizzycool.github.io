@@ -67,6 +67,22 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.wifiCardGenerator]: {
+    title: 'Wi-Fi Card Generator – Printable Wi-Fi QR Code Cards | Yizzy Peasy',
+    description:
+      'Free 100% private Wi-Fi QR code card generator. Design printable table tents, guest cards, and stickers with custom themes, dashed cut guides, password masking, and instant PNG export.',
+    openGraph: {
+      title: 'Wi-Fi Card Generator',
+      description:
+        'Design and print scannable Wi-Fi guest cards and table tents 100% locally in your browser.',
+    },
+    twitter: {
+      title: 'Wi-Fi Card Generator',
+      description:
+        'Generate printable Wi-Fi QR code cards for homes, cafes, and offices with zero server uploads.',
+    },
+  },
+
   [ToolKeys.wordCounter]: {
     title: 'Word Counter – Count Words & Characters Online | Yizzy Peasy',
     description:
@@ -652,6 +668,19 @@ export const ToolJsonLdSoftwareApplication = {
       'Instant QR code preview',
       'Download generated QR codes',
       'Client-side processing without data upload',
+    ],
+  },
+
+  [ToolKeys.wifiCardGenerator]: {
+    name: 'Wi-Fi Card Generator',
+    applicationCategory: 'UtilitiesApplication',
+    description:
+      'A 100% client-side printable Wi-Fi QR code card maker allowing guests to scan and join wireless networks without typing passwords, featuring Table Tent, Guest Card, and Sticker formats.',
+    featureList: [
+      'Standard WIFI QR encoding for WPA/WPA2/WPA3, WEP, Open, and Hidden SSIDs',
+      'Curated Nordic, Cafe, Obsidian Dark, and Sage Studio card themes',
+      'Table Tent (5x7), Guest Card (7x5), and Sticker (3.5x3.5) layouts with cut guides',
+      '100% local print preview, high-DPI PNG download, and clipboard image copy',
     ],
   },
 

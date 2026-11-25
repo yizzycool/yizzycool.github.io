@@ -19,6 +19,7 @@ export const TOOLS_WITH_HOTKEY = [
   ToolKeys.markdownNotes,
   ToolKeys.signatureStampMaker,
   ToolKeys.qrCodeGenerator,
+  ToolKeys.wifiCardGenerator,
   ToolKeys.wordCounter,
   ToolKeys.keyCard,
 
