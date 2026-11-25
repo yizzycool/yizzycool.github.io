@@ -9,7 +9,7 @@ import HeaderBlock from '@/components/tools/common/header-block';
 import SectionGap from '@/components/tools/common/section-gap';
 import LabelBar from '@/components/tools/common/label-bar';
 import ExecuteBar from '@/components/tools/common/execute-bar';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import {
   DeleteAction,
@@ -84,7 +84,7 @@ export default function HexBinaryConverter() {
 
       {/* Input Mode Selector */}
       <div className="flex items-center justify-between">
-        <PillTabs<InputMode>
+        <Tabs<InputMode>
           tabs={INPUT_MODES}
           activeTab={inputMode}
           onChange={setInputMode}

@@ -6,7 +6,7 @@ import { GitFork } from 'lucide-react';
 
 import { CopyAction } from '@/components/shared/action-button';
 import LabelBar from '@/components/tools/common/label-bar';
-import { PillTabs } from '@/components/ui/tabs/pill-tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 interface SubnetSplitSectionProps {
   result: CidrCalculationResult | null;
@@ -124,7 +124,7 @@ interface SubnetSplitSelectorProps {
 }
 
 /**
- * Subnet Split Prefix Selector using PillTabs
+ * Subnet Split Prefix Selector using Tabs
  */
 function SubnetSplitSelector({
   currentPrefix,
@@ -146,7 +146,7 @@ function SubnetSplitSelector({
       <span className="font-medium text-slate-500 dark:text-slate-400">
         Split into:
       </span>
-      <PillTabs
+      <Tabs
         tabs={tabs}
         activeTab={activeTab}
         onChange={(val) => onChangeSplitPrefix(Number(val))}

@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 
 import { InsetGroup } from '@/components/tools/common/inset-group';
 import { EmptyState } from '@/components/ui/empty-state';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 import { computeKeywordDensity } from '../utils/text-analysis';
 
@@ -37,7 +37,7 @@ export function KeywordDensity({ text }: KeywordDensityProps) {
 
   return (
     <div className="space-y-3">
-      <PillTabs<NGramMode>
+      <Tabs<NGramMode>
         tabs={NGRAM_MODES}
         activeTab={nGramMode}
         tabLabels={NGRAM_LABELS}

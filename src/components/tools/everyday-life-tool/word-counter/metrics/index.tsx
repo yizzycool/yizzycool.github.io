@@ -23,7 +23,7 @@ import { useMemo, useState } from 'react';
 
 import { InsetGroup } from '@/components/tools/common/inset-group';
 import LabelBar from '@/components/tools/common/label-bar';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 import { computeTextStats, formatMinutesLabel } from '../utils/text-analysis';
 
@@ -89,7 +89,7 @@ export default function Metrics({ text }: MetricsProps) {
       </div>
 
       {/* Mode Switcher */}
-      <PillTabs<MetricsTab>
+      <Tabs<MetricsTab>
         tabs={METRICS_TABS}
         activeTab={activeTab}
         tabLabels={METRICS_TAB_LABELS}

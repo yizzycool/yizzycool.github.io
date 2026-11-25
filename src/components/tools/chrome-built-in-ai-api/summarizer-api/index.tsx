@@ -18,7 +18,6 @@ import ExecuteBar from '../../common/execute-bar';
 import SectionGap from '../../common/section-gap';
 import LabelBar from '../../common/label-bar';
 import AiStatusGate from '../ai-status-gate';
-import TextTabs from '../text-tabs';
 import PromptResult from '../prompt-result';
 import Config from './config';
 
@@ -98,6 +97,13 @@ export default function SummarizerApi() {
   return (
     <>
       <HeaderBlock
+        headerAction={
+          <Config
+            options={options}
+            isOptionUpdating={isOptionUpdating}
+            updateOption={updateSummarizer}
+          />
+        }
         customShortcuts={[
           { ...TOOL_HOTKEYS.process, label: 'Summarize' },
           TOOL_HOTKEYS.paste,
@@ -116,17 +122,6 @@ export default function SummarizerApi() {
         downloadProgress={downloadProgress}
         downloadModel={downloadModel}
       />
-
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
-        <TextTabs />
-        <Config
-          options={options}
-          isOptionUpdating={isOptionUpdating}
-          updateOption={updateSummarizer}
-        />
-      </div>
-
-      <SectionGap size="sm" />
 
       {/* Editorial Split Editor (Desktop 7:5, Mobile Stacked) */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">

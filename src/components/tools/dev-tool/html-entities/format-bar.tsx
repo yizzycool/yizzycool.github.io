@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react';
 import type { EntityScope } from './types';
 
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 type Props = {
   scope: EntityScope;
@@ -23,7 +23,7 @@ export default function FormatBar({ scope, onChangeScope }: Props) {
       <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
         Scope:
       </span>
-      <PillTabs<EntityScope>
+      <Tabs<EntityScope>
         tabs={SCOPE_TABS}
         activeTab={scope}
         onChange={onChangeScope}

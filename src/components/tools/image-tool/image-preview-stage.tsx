@@ -7,7 +7,7 @@ import { Grid2x2, ImageIcon, Moon, Sun } from 'lucide-react';
 import Image from 'next/image';
 
 import { Badge } from '@/components/ui/badge';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { cn } from '@/utils/cn';
 import imageUtils from '@/utils/image-utils';
 
@@ -86,7 +86,7 @@ export default function ImagePreviewStage({
         )}
       >
         <div className="absolute right-3 top-3 z-20">
-          <PillTabs<BackdropMode>
+          <Tabs<BackdropMode>
             tabs={BACKDROP_TABS}
             activeTab={backdrop}
             onChange={setBackdrop}

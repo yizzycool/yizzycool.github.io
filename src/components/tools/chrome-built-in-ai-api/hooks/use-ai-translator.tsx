@@ -26,6 +26,32 @@ function safeDestroyTranslator(instance: AITranslator | null | undefined) {
   }
 }
 
+/**
+ * Translate text line-by-line so Chrome TranslateKit preserves newline breaks and leading indentation.
+ */
+async function translatePreservingNewlines(
+  instance: AITranslator,
+  text: string
+): Promise<string> {
+  const lines = text.split(/\r?\n/);
+  if (lines.length <= 1) {
+    return instance.translate(text);
+  }
+
+  const translatedLines = await Promise.all(
+    lines.map(async (line) => {
+      if (!line.trim()) return line;
+      const leadingMatch = /^(\s*)/.exec(line);
+      const leading = leadingMatch?.[1] ?? '';
+      const core = line.slice(leading.length);
+      const translatedCore = await instance.translate(core);
+      return `${leading}${translatedCore}`;
+    })
+  );
+
+  return translatedLines.join('\n');
+}
+
 export default function useAiTranslator() {
   const [translator, setTranslator] = useState<AITranslator | null>(null);
   const [options, setOptions] = useState(Options);
@@ -173,7 +199,7 @@ export default function useAiTranslator() {
     async (text: string): Promise<string> => {
       const activeTranslator = translatorRef.current ?? translator;
       if (!activeTranslator) return '';
-      return activeTranslator.translate(text);
+      return translatePreservingNewlines(activeTranslator, text);
     },
     [translator]
   );

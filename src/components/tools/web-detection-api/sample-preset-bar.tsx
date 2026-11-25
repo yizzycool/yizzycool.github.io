@@ -20,13 +20,13 @@ export default function SamplePresetBar({
   if (samples.length === 0) return null;
 
   return (
-    <div className="mb-4 flex flex-wrap items-center gap-2 rounded-xl border border-neutral-200/80 bg-white/70 px-3.5 py-2.5 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-900/50">
-      <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300">
+    <div className="flex flex-wrap items-center justify-center gap-2 pb-4">
+      <div className="flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
         <Sparkles size={13} className="text-sky-500" />
-        <span>Try Interactive Sample:</span>
+        <span>Or try a sample:</span>
       </div>
 
-      <div className="flex flex-wrap items-center gap-1.5">
+      <div className="flex flex-wrap items-center justify-center gap-1.5">
         {samples.map((sample) => (
           <Button
             key={sample.id}

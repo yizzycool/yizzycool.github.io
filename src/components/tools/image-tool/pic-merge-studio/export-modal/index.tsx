@@ -11,7 +11,7 @@ import { motion } from 'motion/react';
 
 import { BaseDialog, DialogHeader } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -143,7 +143,7 @@ export default function ExportModal({
           <Label className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
             Output Format
           </Label>
-          <PillTabs
+          <Tabs
             tabs={['png', 'jpeg', 'webp']}
             tabLabels={{
               png: 'PNG',

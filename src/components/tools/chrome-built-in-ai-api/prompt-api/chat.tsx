@@ -2,13 +2,13 @@
 
 import type { PromptMessage } from './types';
 
-import { Bot, LoaderCircle, RotateCcw, SendHorizonal } from 'lucide-react';
+import { Bot, RotateCcw, SendHorizonal } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { size, isEmpty, trim } from 'lodash';
+import { isEmpty, size, trim } from 'lodash';
 
 import { ProseMarkdown } from '@/components/shared/markdown';
-import { Button } from '@/components/ui/button';
 import { ScrollToBottom } from '@/components/shared/scroll-to-bottom';
+import { Button } from '@/components/ui/button';
 import useAutoScrollToBottom from '@/hooks/dom/use-auto-scroll-to-bottom';
 import { hasOpenModalDialog } from '@/hooks/tools/use-tool-hotkeys';
 import { cn } from '@/utils/cn';
@@ -19,12 +19,10 @@ type Props = {
   onMessagesChange: (messages: PromptMessage[]) => void;
   onTurnCompleted?: (messages: PromptMessage[]) => void;
   onNewChat?: () => void;
-  isRestoring?: boolean;
   promptStreaming: (
     text: string,
     callback: (chunk: string) => void
   ) => Promise<string | null>;
-  session?: AILanguageModel | null | undefined;
 };
 
 export default function Chat({
@@ -33,12 +31,10 @@ export default function Chat({
   onMessagesChange,
   onTurnCompleted,
   onNewChat,
-  isRestoring = false,
   promptStreaming,
-  session,
 }: Props) {
   const [text, setText] = useState('');
-  const [isComposing, setIsCompsing] = useState(false);
+  const [isComposing, setIsComposing] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -82,14 +78,14 @@ export default function Chat({
   });
 
   const onInput: React.InputEventHandler<HTMLDivElement> = (event) => {
-    setText(event.currentTarget.innerHTML);
+    setText(event.currentTarget.innerText);
   };
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (isComposing) return;
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
-      process();
+      void process();
     }
   };
 
@@ -97,7 +93,7 @@ export default function Chat({
     if (!textRef.current) return;
     if (isEmpty(trim(textRef.current.innerText))) return;
 
-    const promptText = text;
+    const promptText = textRef.current.innerText;
     if (textRef.current) {
       textRef.current.innerHTML = '';
     }
@@ -127,20 +123,6 @@ export default function Chat({
 
   return (
     <div ref={containerRef} className="-mb-12 flex flex-1 flex-col">
-      {isRestoring ? (
-        <div className="absolute left-0 top-0 flex items-center gap-1.5 rounded-br-lg bg-blue-600/10 px-4 py-2 text-xs font-medium text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
-          <LoaderCircle size={14} className="animate-spin" />
-          <span>Restoring model context...</span>
-        </div>
-      ) : (
-        !!(session as AILanguageModel)?.tokensLeft && (
-          <div className="absolute left-0 top-0 bg-neutral-700/20 px-4 py-2 text-xs">
-            <span className="hidden sm:inline">Tokens Left:</span>{' '}
-            {(session as AILanguageModel)?.tokensLeft}/
-            {(session as AILanguageModel)?.maxTokens}
-          </div>
-        )
-      )}
       <div className="w-full flex-1 overflow-y-hidden pb-20">
         <div className="h-full w-full">
           <div className="flex w-full flex-col">
@@ -153,7 +135,6 @@ export default function Chat({
                 {result.role === 'assistant' && (
                   <div className="relative mx-2 my-1 inline-block rounded-full bg-gradient-to-br from-indigo-500 to-blue-600 p-1">
                     <Bot size={16} className="text-white" />
-                    {/* Spinner Ring - Only visible during processing */}
                     {isProcessing && idx === size(messages) - 1 && (
                       <div className="absolute -inset-1 animate-spin rounded-full border-2 border-transparent border-r-indigo-500 border-t-blue-500" />
                     )}
@@ -173,6 +154,7 @@ export default function Chat({
           </div>
         </div>
       </div>
+
       <div
         className={cn(
           'sticky -bottom-1 left-0 right-0',
@@ -189,7 +171,6 @@ export default function Chat({
             'bg-white/80 dark:bg-neutral-900/80'
           )}
         >
-          {/* Placeholder  */}
           {isEmpty(text) && (
             <div
               className={cn(
@@ -205,14 +186,14 @@ export default function Chat({
             ref={textRef}
             contentEditable
             className={cn(
-              'max-h-[120px] flex-1 overflow-y-auto bg-transparent',
+              'max-h-[120px] flex-1 overflow-y-auto whitespace-pre-wrap bg-transparent',
               'font-mono text-sm leading-relaxed focus:outline-none',
               'text-slate-700 dark:text-slate-200'
             )}
             onInput={onInput}
             onKeyDown={onKeyDown}
-            onCompositionStart={() => setIsCompsing(true)}
-            onCompositionEnd={() => setIsCompsing(false)}
+            onCompositionStart={() => setIsComposing(true)}
+            onCompositionEnd={() => setIsComposing(false)}
           />
           {messages.length > 0 && (
             <Button
@@ -229,7 +210,7 @@ export default function Chat({
             />
           )}
           <Button
-            onClick={process}
+            onClick={() => void process()}
             variant="secondary"
             size="base"
             rounded="full"
@@ -241,6 +222,7 @@ export default function Chat({
           />
         </div>
       </div>
+
       <ScrollToBottom
         threshold={1000}
         onClick={() => scrollToBottom(true)}

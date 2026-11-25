@@ -18,7 +18,7 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 import Alignment from './alignment';
 import Arrangement from './arrangement';
@@ -120,9 +120,9 @@ export default function ConfigPanelDesktop({
         }}
       />
 
-      {/* Top PillTabs Bar */}
+      {/* Top Tabs Bar */}
       <div className="border-b border-neutral-200/80 p-2 dark:border-neutral-800/80">
-        <PillTabs<InspectorTabId>
+        <Tabs<InspectorTabId>
           tabs={TABS}
           activeTab={effectiveTab}
           onChange={(tab) => {

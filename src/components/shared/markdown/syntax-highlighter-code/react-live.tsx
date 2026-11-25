@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from 'react';
 import useDarkModeObserver from '@/hooks/window/use-dark-mode-observer';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import { CopyAction } from '@/components/shared/action-button';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import useIsClient from '@/hooks/lifecycle/use-is-client';
@@ -139,7 +139,7 @@ export default function ReactLive({ code = '', metadata }: Props) {
               </>
             )}
             {!lockMode && (
-              <PillTabs
+              <Tabs
                 tabs={['code', 'preview']}
                 defaultActiveTab="code"
                 size="xs"

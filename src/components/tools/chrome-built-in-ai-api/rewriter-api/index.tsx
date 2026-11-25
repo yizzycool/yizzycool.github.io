@@ -19,7 +19,6 @@ import ExecuteBar from '../../common/execute-bar';
 import SectionGap from '../../common/section-gap';
 import LabelBar from '../../common/label-bar';
 import AiStatusGate from '../ai-status-gate';
-import TextTabs from '../text-tabs';
 import PromptResult from '../prompt-result';
 import Config from './config';
 
@@ -107,6 +106,13 @@ export default function RewriterApi() {
   return (
     <>
       <HeaderBlock
+        headerAction={
+          <Config
+            options={options}
+            isOptionUpdating={isOptionUpdating}
+            updateOption={updateRewriter}
+          />
+        }
         customShortcuts={[
           { ...TOOL_HOTKEYS.process, label: 'Rewrite' },
           TOOL_HOTKEYS.paste,
@@ -125,17 +131,6 @@ export default function RewriterApi() {
         downloadProgress={downloadProgress}
         downloadModel={downloadModel}
       />
-
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
-        <TextTabs />
-        <Config
-          options={options}
-          isOptionUpdating={isOptionUpdating}
-          updateOption={updateRewriter}
-        />
-      </div>
-
-      <SectionGap size="sm" />
 
       {/* Editorial Split Editor (Desktop 6:6, Mobile Stacked) */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">

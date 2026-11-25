@@ -4,13 +4,12 @@ import { LoaderCircle } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { isEqual } from 'lodash';
 
-import useWindowDevice from '@/hooks/window/use-window-device';
-import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
-import { Selector } from '@/components/ui/selector';
-import { Textarea } from '@/components/ui/textarea';
 import { ConfigDialog } from '@/components/shared/config-dialog';
 import { Button } from '@/components/ui/button';
+import { Selector } from '@/components/ui/selector';
 import { Separator } from '@/components/ui/separator';
+import { Textarea } from '@/components/ui/textarea';
+import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 import toast from '@/utils/toast';
 
 import { REWRITER_OUTPUT_LANGUAGES } from '../data/language-options';
@@ -59,8 +58,6 @@ export default function Config({
 }: Props) {
   const [newOptions, setNewOptions] = useState(options);
 
-  const { isMobile } = useWindowDevice();
-
   const buttonDisabled = useMemo(() => {
     return isEqual(options, newOptions) || isOptionUpdating;
   }, [options, newOptions, isOptionUpdating]);
@@ -79,7 +76,7 @@ export default function Config({
 
   return (
     <>
-      <ConfigDialog display={isMobile ? 'icon' : 'icon-label'}>
+      <ConfigDialog>
         <div className="border-b border-slate-100 dark:border-white/5" />
         <div className="flex flex-col overflow-y-auto px-4 py-8 sm:px-8">
           <div className="">

@@ -8,7 +8,7 @@ import { CopyAction, DeleteAction } from '@/components/shared/action-button';
 import { FilePicker } from '@/components/ui/file-picker';
 import { Selector } from '@/components/ui/selector';
 import { Slider } from '@/components/ui/slider';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import imageUtils from '@/utils/image-utils';
@@ -17,7 +17,6 @@ import toast from '@/utils/toast';
 import HeaderBlock from '../../common/header-block';
 import LabelBar from '../../common/label-bar';
 import SectionGap from '../../common/section-gap';
-import Base64ModeSwitcher from '../base64-mode-switcher';
 import ImagePreviewStage from '../image-preview-stage';
 
 type OutputFormat = 'raw' | 'html' | 'css';
@@ -243,10 +242,6 @@ export default function ImageToBase64() {
 
       <SectionGap />
 
-      <Base64ModeSwitcher active="image-to-base64" />
-
-      <SectionGap size="sm" />
-
       <FilePicker onFileChange={transferToBase64} />
 
       <SectionGap size="sm" />
@@ -346,7 +341,7 @@ export default function ImageToBase64() {
         <div className="flex flex-col">
           <LabelBar label="Encoded Output" icon={FileCode}>
             <div className="flex flex-wrap items-center gap-2">
-              <PillTabs<OutputFormat>
+              <Tabs<OutputFormat>
                 tabs={OUTPUT_FORMAT_TABS}
                 activeTab={outputFormat}
                 onChange={setOutputFormat}

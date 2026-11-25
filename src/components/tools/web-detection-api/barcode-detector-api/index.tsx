@@ -11,7 +11,6 @@ import CompatibilityBanner from '../compatibility-banner';
 import DarkroomInspector from '../darkroom-inspector';
 import { DETECTION_SHORTCUTS } from '../data/detection-shortcuts';
 import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
-import DetectionTabs from '../detection-tabs';
 import useBarcodeDetector from '../hooks/use-barcode-detector';
 import useCommonFunction from '../hooks/use-common-function';
 import SystemChecking from '../system-checking';
@@ -132,12 +131,6 @@ export default function BarcodeDetectorApi() {
           }
         />
       ) : null}
-
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
-        <DetectionTabs />
-      </div>
-
-      <SectionGap size="sm" />
 
       <DarkroomInspector
         tab={tab}

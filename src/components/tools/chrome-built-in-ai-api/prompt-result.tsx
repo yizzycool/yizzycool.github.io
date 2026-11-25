@@ -8,7 +8,7 @@ import { ProseMarkdown } from '@/components/shared/markdown';
 import { CopyAction } from '@/components/shared/action-button';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { cn } from '@/utils/cn';
 
 import LabelBar from '../common/label-bar';
@@ -78,7 +78,7 @@ export default function PromptResult({
       >
         <div className="flex items-center gap-2">
           {enableDiff && (
-            <PillTabs<ViewMode>
+            <Tabs<ViewMode>
               tabs={VIEW_MODE_TABS}
               activeTab={activeMode}
               onChange={setViewMode}

@@ -13,7 +13,7 @@ import { Settings2 } from 'lucide-react';
 import LabelBar from '@/components/tools/common/label-bar';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 import { FORMAT_METADATA_LIST } from './constants';
 
@@ -87,12 +87,12 @@ export default function BatchConfigSection({
       />
 
       <div className="space-y-4 rounded-xl border border-neutral-200/80 bg-white/70 p-4 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-900/40">
-        {/* 1. Format Selection with PillTabs */}
+        {/* 1. Format Selection with Tabs */}
         <div className="w-fit space-y-1.5">
           <label className="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
             Target Identifier Format
           </label>
-          <PillTabs
+          <Tabs
             tabs={FORMAT_TABS}
             activeTab={options.format}
             onChange={(tab) => onChange('format', tab as IdentifierFormat)}
@@ -132,7 +132,7 @@ export default function BatchConfigSection({
             <label className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
               Letter Case
             </label>
-            <PillTabs
+            <Tabs
               tabs={['lower', 'upper']}
               activeTab={options.uppercase ? 'upper' : 'lower'}
               onChange={(tab) => onChange('uppercase', tab === 'upper')}
@@ -151,7 +151,7 @@ export default function BatchConfigSection({
               <label className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                 Hyphens Separators
               </label>
-              <PillTabs
+              <Tabs
                 tabs={['with', 'without']}
                 activeTab={options.hyphens ? 'with' : 'without'}
                 onChange={(tab) => onChange('hyphens', tab === 'with')}
@@ -168,12 +168,12 @@ export default function BatchConfigSection({
             </div>
           )}
 
-          {/* Quote Style with PillTabs */}
+          {/* Quote Style with Tabs */}
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
               Wrap with Quotes
             </label>
-            <PillTabs
+            <Tabs
               tabs={QUOTE_STYLE_TABS}
               activeTab={options.quoteStyle}
               onChange={(tab) => onChange('quoteStyle', tab as QuoteStyle)}
@@ -186,12 +186,12 @@ export default function BatchConfigSection({
             />
           </div>
 
-          {/* Delimiter / Separator with PillTabs */}
+          {/* Delimiter / Separator with Tabs */}
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
               Delimiter / Separator
             </label>
-            <PillTabs
+            <Tabs
               tabs={SEPARATOR_TABS}
               activeTab={options.separator}
               onChange={(tab) => onChange('separator', tab as SeparatorStyle)}
@@ -223,12 +223,12 @@ export default function BatchConfigSection({
               }
             />
 
-            {/* Alphabet Preset with PillTabs */}
+            {/* Alphabet Preset with Tabs */}
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                 Alphabet Preset
               </label>
-              <PillTabs
+              <Tabs
                 tabs={ALPHABET_TABS}
                 activeTab={options.alphabetPreset}
                 onChange={(tab) =>

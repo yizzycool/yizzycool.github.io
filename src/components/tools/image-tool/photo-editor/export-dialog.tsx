@@ -23,7 +23,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Selector } from '@/components/ui/selector';
 import { Slider } from '@/components/ui/slider';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { getFormattedDate } from '@/utils/time-utils';
 
 import { MOBILE_MAX_EXPORT_EDGE } from './constants';
@@ -167,7 +167,7 @@ export default function ExportDialog({
           <Label className="text-xs font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400">
             Format
           </Label>
-          <PillTabs
+          <Tabs
             tabs={['png', 'jpeg', 'webp', 'gif', 'svg', 'psd', 'pes']}
             tabLabels={{
               png: 'PNG',

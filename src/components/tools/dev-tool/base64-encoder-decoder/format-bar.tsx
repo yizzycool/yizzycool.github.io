@@ -6,7 +6,7 @@ import type { Base64Format } from './types';
 import { useState } from 'react';
 import { HelpCircle } from 'lucide-react';
 
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 import DiffDialog from './diff-dialog';
 import { Button } from '@/components/ui/button';
@@ -29,7 +29,7 @@ export default function FormatBar({ format, onChangeFormat }: Props) {
   return (
     <>
       <div className="flex items-center gap-2">
-        <PillTabs<Base64Format>
+        <Tabs<Base64Format>
           tabs={FORMAT_TABS}
           activeTab={format}
           onChange={onChangeFormat}

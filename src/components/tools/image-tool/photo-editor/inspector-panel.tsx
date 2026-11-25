@@ -11,7 +11,7 @@ import {
   SunMedium,
 } from 'lucide-react';
 
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 import InspectorAdjustTab from './inspector-adjust-tab';
 import InspectorAiTab from './inspector-ai-tab';
@@ -51,7 +51,7 @@ export default function InspectorPanel({
       className="hidden w-[320px] shrink-0 flex-col border-l border-neutral-200/80 bg-white/95 lg:flex dark:border-neutral-800/80 dark:bg-neutral-900/95"
     >
       <div className="border-b border-neutral-200/80 p-2 dark:border-neutral-800/80">
-        <PillTabs<InspectorTabId>
+        <Tabs<InspectorTabId>
           tabs={TABS}
           activeTab={activeTab}
           onChange={onTabChange}

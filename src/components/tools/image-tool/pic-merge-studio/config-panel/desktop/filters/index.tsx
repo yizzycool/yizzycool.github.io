@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { RotateCcw, SlidersHorizontal, Sparkles } from 'lucide-react';
 import { round, xor } from 'lodash';
 
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 
 import {
@@ -160,7 +160,7 @@ export default function Filters({
 
   return (
     <div className="space-y-3">
-      <PillTabs<TabType>
+      <Tabs<TabType>
         tabs={['presets', 'adjustments']}
         activeTab={activeTab}
         onChange={(tab) => setActiveTab(tab)}

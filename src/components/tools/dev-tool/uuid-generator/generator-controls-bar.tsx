@@ -5,7 +5,7 @@ import type { GeneratorMode } from './types';
 import { Sparkles } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 import { GENERATOR_MODES, GENERATOR_MODE_LABELS } from './constants';
 
@@ -23,7 +23,7 @@ export default function GeneratorControlsBar({
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 py-1 text-xs">
       {/* Mode Selector */}
-      <PillTabs
+      <Tabs
         tabs={GENERATOR_MODES}
         activeTab={mode}
         onChange={onModeChange}

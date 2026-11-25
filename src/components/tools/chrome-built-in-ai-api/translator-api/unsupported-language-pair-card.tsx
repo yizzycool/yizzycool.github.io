@@ -1,10 +1,8 @@
 import { X } from 'lucide-react';
 
-import intlUtils from '@/utils/intl-utils';
-import { cn } from '@/utils/cn';
-
-import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/utils/cn';
+import intlUtils from '@/utils/intl-utils';
 
 export default function UnsupportedLanguagePairCard({
   options,
@@ -18,19 +16,18 @@ export default function UnsupportedLanguagePairCard({
         'backdrop-blur-sm'
       )}
     >
-      <Card className="max-w-[80%]">
-        {/* Text Content */}
+      <div className="max-w-[82%] rounded-2xl border border-neutral-200/80 bg-white/90 p-6 shadow-lg backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-900/90">
         <h3
           className={cn(
             'mb-2 flex items-center gap-2 text-xl font-bold tracking-tight',
             'text-slate-900 dark:text-slate-100'
           )}
         >
-          <X className="text-red-600" />
+          <X className="text-red-600 dark:text-red-400" />
           Not Supported Yet
         </h3>
 
-        <div className="text-sm">
+        <div className="text-sm text-slate-600 dark:text-slate-300">
           Translation between{' '}
           <Badge variant="blue" rounded="sm" className="inline-block">
             {intlUtils.languageTagToHumanReadable(options.sourceLanguage)}
@@ -41,7 +38,7 @@ export default function UnsupportedLanguagePairCard({
           </Badge>{' '}
           is not currently available.
         </div>
-      </Card>
+      </div>
     </div>
   );
 }

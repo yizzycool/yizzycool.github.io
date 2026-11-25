@@ -85,6 +85,9 @@ export default function HtmlEntities() {
         tabs={[...TAB_ITEMS]}
         tabIcons={[...TAB_ICONS]}
         activeTab={tab}
+        variant="segment"
+        size="sm"
+        rounded="lg"
         onChange={onTabChanged}
         className="text-nowrap"
       />

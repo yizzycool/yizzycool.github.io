@@ -7,7 +7,7 @@ import { RotateCcw, Stamp } from 'lucide-react';
 
 import LabelBar from '@/components/tools/common/label-bar';
 import { Button } from '@/components/ui/button';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { cn } from '@/utils/cn';
 
 import {
@@ -60,7 +60,7 @@ export default function StampCanvas({
         headerClassName="min-h-8 flex-wrap gap-2"
       >
         <div className="flex flex-wrap items-center gap-2">
-          <PillTabs<StageBackdrop>
+          <Tabs<StageBackdrop>
             tabs={STAGE_BACKDROPS}
             activeTab={settings.backdrop}
             onChange={(backdrop) => onUpdateSettings({ backdrop })}

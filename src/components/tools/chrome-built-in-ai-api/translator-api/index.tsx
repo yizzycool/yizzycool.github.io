@@ -1,25 +1,56 @@
 'use client';
 
+import { ArrowRightLeft, BookmarkPlus } from 'lucide-react';
+import { isEmpty, isNull, size } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRightLeft } from 'lucide-react';
-import { isNull, isEmpty, size } from 'lodash';
 
-import useAiTranslator from '../hooks/use-ai-translator';
+import {
+  CopyAction,
+  DeleteAction,
+  PasteAction,
+  SpeakAction,
+} from '@/components/shared/action-button';
+import HeaderBlock from '@/components/tools/common/header-block';
+import SectionGap from '@/components/tools/common/section-gap';
+import { Button } from '@/components/ui/button';
+import { ToolKeys } from '@/data/tools';
+import { useToolHistory } from '@/hooks/tools/use-tool-history';
 import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import { cn } from '@/utils/cn';
-import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
-import HeaderBlock from '../../common/header-block';
-import LanguageSelector from './language-selector';
+import toast from '@/utils/toast';
+
 import AiStatusGate from '../ai-status-gate';
-import { CopyAction } from '@/components/shared/action-button';
-import { SpeakAction } from '@/components/shared/action-button';
-import UnsupportedLanguagePairCard from './unsupported-language-pair-card';
+import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
+import DemoModeBanner from '../demo-mode-banner';
+import useAiTranslator from '../hooks/use-ai-translator';
 import InlineDownloadCard from './inline-download-card';
-import SectionGap from '../../common/section-gap';
+import LanguageSelector from './language-selector';
+import UnsupportedLanguagePairCard from './unsupported-language-pair-card';
+
+type TranslatorHistoryData = {
+  sourceText: string;
+  translatedText: string;
+  sourceLanguage: string;
+  targetLanguage: string;
+};
+
+function buildDemoTranslation(input: string, targetLanguage: string): string {
+  return input
+    .split(/\r?\n/)
+    .map((line) => (line.trim() ? `[Demo → ${targetLanguage}] ${line}` : line))
+    .join('\n');
+}
 
 export default function TranslatorApi() {
   const [text, setText] = useState('');
   const [translation, setTranslation] = useState('');
+  const [isDemoMode, setIsDemoMode] = useState(false);
+  const [demoOptions, setDemoOptions] = useState<AITranslatorCreateCoreOptions>(
+    {
+      sourceLanguage: 'en',
+      targetLanguage: 'zh-Hant',
+    }
+  );
 
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -38,6 +69,19 @@ export default function TranslatorApi() {
     downloadModel,
     downloadProgress,
   } = useAiTranslator();
+
+  const {
+    historyList,
+    isLoading: isLoadingHistory,
+    addHistoryWithToast,
+    renameHistory,
+    removeHistory,
+    clearHistory,
+  } = useToolHistory<TranslatorHistoryData>(ToolKeys.chromeAiTranslator);
+
+  const activeIsDemo = isApiSupported === false && isDemoMode;
+  const activeOptions = activeIsDemo ? demoOptions : options;
+  const canEditInput = availability === 'available' || activeIsDemo;
 
   useEffect(() => {
     textRef.current = text;
@@ -60,8 +104,7 @@ export default function TranslatorApi() {
     let cancelled = false;
     const requestId = ++translateRequestIdRef.current;
 
-    translator
-      .translate(currentText)
+    translate(currentText)
       .then((result) => {
         if (!cancelled && translateRequestIdRef.current === requestId) {
           setTranslation(result);
@@ -74,12 +117,21 @@ export default function TranslatorApi() {
     return () => {
       cancelled = true;
     };
-  }, [translator]);
+  }, [translator, translate]);
 
-  const translateString = async (nextText: string) => {
+  const translateString = async (
+    nextText: string,
+    targetLangOverride?: string
+  ) => {
     const requestId = ++translateRequestIdRef.current;
     if (isEmpty(nextText)) {
       setTranslation('');
+      return;
+    }
+
+    if (activeIsDemo) {
+      const targetLang = targetLangOverride ?? demoOptions.targetLanguage;
+      setTranslation(buildDemoTranslation(nextText, targetLang));
       return;
     }
 
@@ -94,7 +146,7 @@ export default function TranslatorApi() {
   };
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (availability !== 'available') return;
+    if (!canEditInput) return;
     const nextText = e.target.value;
     textRef.current = nextText;
     setText(nextText);
@@ -103,7 +155,30 @@ export default function TranslatorApi() {
     }
     timerRef.current = setTimeout(() => {
       void translateString(nextText);
-    }, 500);
+    }, 450);
+  };
+
+  const handlePasteText = (clipText: string) => {
+    if (!canEditInput) return;
+    textRef.current = clipText;
+    setText(clipText);
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    timerRef.current = setTimeout(() => {
+      void translateString(clipText);
+    }, 300);
+  };
+
+  const handleClearInput = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    translateRequestIdRef.current += 1;
+    textRef.current = '';
+    setText('');
+    setTranslation('');
   };
 
   const switchSourceTargetLanguage = () => {
@@ -113,20 +188,36 @@ export default function TranslatorApi() {
     }
     translateRequestIdRef.current += 1;
 
+    const nextInput = !isEmpty(translation) ? translation : text;
     if (!isEmpty(translation)) {
       textRef.current = translation;
       setText(translation);
     } else {
       textRef.current = text;
     }
+
+    if (activeIsDemo) {
+      const nextPair = {
+        sourceLanguage: demoOptions.targetLanguage,
+        targetLanguage: demoOptions.sourceLanguage,
+      };
+      setDemoOptions(nextPair);
+      setTranslation(
+        nextInput
+          ? buildDemoTranslation(nextInput, nextPair.targetLanguage)
+          : ''
+      );
+      return;
+    }
+
     setTranslation('');
     void setTranslatorLang(options.targetLanguage, options.sourceLanguage);
   };
 
   const changeLanguage = (type: string, languageCode: string) => {
     if (
-      (type === 'source' && languageCode === options.targetLanguage) ||
-      (type === 'target' && languageCode === options.sourceLanguage)
+      (type === 'source' && languageCode === activeOptions.targetLanguage) ||
+      (type === 'target' && languageCode === activeOptions.sourceLanguage)
     ) {
       switchSourceTargetLanguage();
       return;
@@ -138,13 +229,56 @@ export default function TranslatorApi() {
     }
     translateRequestIdRef.current += 1;
     textRef.current = text;
-    setTranslation('');
 
+    if (activeIsDemo) {
+      const nextPair =
+        type === 'source'
+          ? { ...demoOptions, sourceLanguage: languageCode }
+          : { ...demoOptions, targetLanguage: languageCode };
+      setDemoOptions(nextPair);
+      setTranslation(
+        text ? buildDemoTranslation(text, nextPair.targetLanguage) : ''
+      );
+      return;
+    }
+
+    setTranslation('');
     if (type === 'source') {
       void setTranslatorLang(languageCode, options.targetLanguage);
     } else {
       void setTranslatorLang(options.sourceLanguage, languageCode);
     }
+  };
+
+  const handleSaveSnapshot = () => {
+    if (!text.trim() || !translation.trim()) return;
+    addHistoryWithToast(
+      `${activeOptions.sourceLanguage} → ${activeOptions.targetLanguage}: ${text.slice(0, 60)}`,
+      {
+        sourceText: text,
+        translatedText: translation,
+        sourceLanguage: activeOptions.sourceLanguage,
+        targetLanguage: activeOptions.targetLanguage,
+      }
+    );
+  };
+
+  const handleRestoreHistory = (data: TranslatorHistoryData) => {
+    textRef.current = data.sourceText;
+    setText(data.sourceText);
+    setTranslation(data.translatedText);
+    if (activeIsDemo) {
+      setDemoOptions({
+        sourceLanguage: data.sourceLanguage,
+        targetLanguage: data.targetLanguage,
+      });
+    } else if (
+      data.sourceLanguage !== options.sourceLanguage ||
+      data.targetLanguage !== options.targetLanguage
+    ) {
+      void setTranslatorLang(data.sourceLanguage, data.targetLanguage);
+    }
+    toast.success('Restored translation from history');
   };
 
   useToolHotkeys(
@@ -162,47 +296,37 @@ export default function TranslatorApi() {
       onPaste: async () => {
         try {
           const clipText = await navigator.clipboard.readText();
-          textRef.current = clipText;
-          setText(clipText);
-          if (timerRef.current) {
-            clearTimeout(timerRef.current);
-          }
-          timerRef.current = setTimeout(() => {
-            void translateString(clipText);
-          }, 500);
+          handlePasteText(clipText);
         } catch (_e) {
           // ignore
         }
       },
-      onClear: () => {
-        if (timerRef.current) {
-          clearTimeout(timerRef.current);
-          timerRef.current = null;
-        }
-        translateRequestIdRef.current += 1;
-        textRef.current = '';
-        setText('');
-        setTranslation('');
-      },
+      onClear: handleClearInput,
     },
     { target: inputRef }
   );
 
   return (
     <>
-      <HeaderBlock
+      <HeaderBlock<TranslatorHistoryData>
+        historyList={historyList}
+        isLoadingHistory={isLoadingHistory}
+        onRestoreHistory={handleRestoreHistory}
+        onRenameHistory={renameHistory}
+        onRemoveHistory={removeHistory}
+        onClearHistory={clearHistory}
         customShortcuts={[
           { ...TOOL_HOTKEYS.swap, label: 'Swap Languages' },
           TOOL_HOTKEYS.paste,
           { ...TOOL_HOTKEYS.copy, label: 'Copy Translation' },
           TOOL_HOTKEYS.clear,
           TOOL_HOTKEYS.help,
+          TOOL_HOTKEYS.history,
         ]}
       />
 
       <SectionGap />
 
-      {/* Status Modal */}
       <AiStatusGate
         hasCheckedAIStatus={hasCheckedAIStatus}
         isApiSupported={isApiSupported}
@@ -210,103 +334,139 @@ export default function TranslatorApi() {
         shouldDownloadModel={isNull(translator) && shouldDownloadModel}
         downloadProgress={downloadProgress}
         downloadModel={downloadModel}
+        isDemoMode={isDemoMode}
+        onEnterDemo={() => setIsDemoMode(true)}
       />
 
-      {/* Translator */}
-      <>
+      {activeIsDemo && (
+        <DemoModeBanner
+          toolName="AI Translator"
+          onExitDemo={() => setIsDemoMode(false)}
+        />
+      )}
+
+      {/* Rounded Glass Translator Workbench */}
+      <div
+        className={cn(
+          'shadow-2xs flex flex-col justify-center overflow-hidden rounded-2xl border backdrop-blur-md',
+          'border-neutral-200/80 bg-white/75 dark:border-neutral-800 dark:bg-neutral-900/55',
+          'placeholder-neutral-400 dark:placeholder-neutral-500'
+        )}
+      >
+        {/* Language selector block */}
         <div
           className={cn(
-            'flex flex-col justify-center overflow-hidden rounded-xl border',
-            'border-neutral-200 dark:border-neutral-700',
-            'bg-white/40 dark:bg-neutral-900/40',
-            'placeholder-neutral-400 dark:placeholder-neutral-500'
+            'flex w-full items-center justify-stretch gap-2 px-3 py-2',
+            'border-b border-neutral-200/80 dark:border-neutral-800'
           )}
         >
-          {/* Lauguage selector block */}
-          <div
-            className={cn(
-              'flex w-full items-center justify-stretch gap-3 p-2',
-              'border-b border-neutral-200 dark:border-neutral-700'
-            )}
-          >
-            <div className="flex-1">
-              <LanguageSelector
-                params={options}
-                type="source"
-                changeLanguage={changeLanguage}
-              />
-            </div>
-            <button
-              className={cn('mx-auto block cursor-pointer px-4')}
-              onClick={switchSourceTargetLanguage}
-            >
-              <ArrowRightLeft className="" size={16} />
-            </button>
-            <div className="flex-1">
-              <LanguageSelector
-                params={options}
-                type="target"
-                changeLanguage={changeLanguage}
-              />
-            </div>
+          <div className="flex-1">
+            <LanguageSelector
+              params={activeOptions}
+              type="source"
+              changeLanguage={changeLanguage}
+            />
           </div>
 
-          {/* Textarea block */}
-          <div className="relative flex flex-col sm:flex-row">
-            {/* input */}
-            <div
+          <Button
+            variant="outline"
+            size="xs"
+            rounded="full"
+            icon={ArrowRightLeft}
+            ariaLabel="Swap languages"
+            title="Swap languages (Mod + Shift + S)"
+            onClick={switchSourceTargetLanguage}
+          />
+
+          <div className="flex-1">
+            <LanguageSelector
+              params={activeOptions}
+              type="target"
+              changeLanguage={changeLanguage}
+            />
+          </div>
+        </div>
+
+        {/* Textarea block */}
+        <div className="relative flex flex-col sm:flex-row">
+          {/* Input pane */}
+          <div
+            className={cn(
+              'relative flex h-60 w-full flex-col sm:h-[360px]',
+              'border-b border-neutral-200/80 sm:border-b-0 sm:border-r dark:border-neutral-800'
+            )}
+          >
+            <textarea
+              ref={inputRef}
+              id="input"
               className={cn(
-                'relative flex h-56 w-full flex-col sm:h-[350px]',
-                'border-b border-neutral-200 sm:border-b-0 sm:border-r dark:border-neutral-700'
+                'block w-full flex-1 resize-none bg-transparent px-4 py-3 text-sm leading-relaxed focus:outline-none',
+                'text-slate-800 dark:text-slate-100',
+                'placeholder-neutral-400 dark:placeholder-neutral-500'
               )}
-            >
-              <textarea
-                ref={inputRef}
-                id="input"
-                className={cn(
-                  'block w-full flex-1 resize-none bg-transparent px-3 py-2 focus:outline-none',
-                  'text-slate-700 dark:text-slate-200',
-                  'placeholder-neutral-400 dark:placeholder-neutral-500'
-                )}
-                onChange={onChange}
-                value={text}
-                disabled={availability !== 'available'}
-                placeholder="Enter the text to be translated..."
-              />
-              {/* Word count */}
-              <div className="flex items-center justify-between px-3 py-2">
+              onChange={onChange}
+              value={text}
+              disabled={!canEditInput}
+              placeholder="Enter text to translate (line breaks are preserved)..."
+            />
+
+            <div className="flex items-center justify-between gap-2 border-t border-neutral-200/70 px-3 py-2 dark:border-neutral-800/80">
+              <div className="flex items-center gap-1.5">
                 <SpeakAction
                   display="icon"
                   size="sm"
                   disabled={isEmpty(text)}
                   content={text}
-                  lang={options.sourceLanguage}
+                  lang={activeOptions.sourceLanguage}
                 />
-                <div className="text-xs opacity-50">{size(text)} chars</div>
+                <PasteAction onClick={handlePasteText} />
+                <DeleteAction
+                  onClick={handleClearInput}
+                  disabled={isEmpty(text)}
+                />
+              </div>
+
+              <div className="font-mono text-xs tabular-nums text-slate-400 dark:text-slate-500">
+                {size(text)} chars
               </div>
             </div>
+          </div>
 
-            {/* output */}
-            <div className="relative flex h-64 w-full flex-col sm:h-[350px]">
-              <textarea
-                id="output"
-                className={cn(
-                  'block h-full w-full flex-1 resize-none bg-transparent px-3 py-2 focus:outline-none',
-                  'text-slate-700 dark:text-slate-200',
-                  'placeholder-neutral-400 dark:placeholder-neutral-500'
-                )}
-                value={translation}
-                readOnly
+          {/* Output pane */}
+          <div className="relative flex h-64 w-full flex-col bg-neutral-50/40 sm:h-[360px] dark:bg-neutral-950/25">
+            <textarea
+              id="output"
+              className={cn(
+                'block h-full w-full flex-1 resize-none bg-transparent px-4 py-3 text-sm leading-relaxed focus:outline-none',
+                'text-slate-800 dark:text-slate-100',
+                'placeholder-neutral-400 dark:placeholder-neutral-500'
+              )}
+              value={translation}
+              placeholder="Translation appears here..."
+              readOnly
+            />
+
+            <div className="flex items-center justify-between gap-2 border-t border-neutral-200/70 px-3 py-2 dark:border-neutral-800/80">
+              <SpeakAction
+                display="icon"
+                size="sm"
+                disabled={isEmpty(translation)}
+                content={translation}
+                lang={activeOptions.targetLanguage}
               />
-              {/* Copy */}
-              <div className="flex items-center justify-between border-t border-neutral-200 px-3 py-2 dark:border-neutral-700">
-                <SpeakAction
-                  display="icon"
-                  size="sm"
-                  disabled={isEmpty(translation)}
-                  content={translation}
-                  lang={options.targetLanguage}
-                />
+
+              <div className="flex items-center gap-1.5">
+                {!isEmpty(translation) && (
+                  <Button
+                    variant="ghost"
+                    size="xs"
+                    rounded="lg"
+                    icon={BookmarkPlus}
+                    onClick={handleSaveSnapshot}
+                  >
+                    Save
+                  </Button>
+                )}
                 <CopyAction
                   variant="ghost"
                   content={translation}
@@ -314,20 +474,20 @@ export default function TranslatorApi() {
                 />
               </div>
             </div>
-
-            {shouldDownloadModel && (
-              <InlineDownloadCard
-                options={options}
-                progress={downloadProgress || 0}
-              />
-            )}
-
-            {availability === 'unavailable' && (
-              <UnsupportedLanguagePairCard options={options} />
-            )}
           </div>
+
+          {!activeIsDemo && shouldDownloadModel && (
+            <InlineDownloadCard
+              options={options}
+              progress={downloadProgress || 0}
+            />
+          )}
+
+          {!activeIsDemo && availability === 'unavailable' && (
+            <UnsupportedLanguagePairCard options={options} />
+          )}
         </div>
-      </>
+      </div>
     </>
   );
 }

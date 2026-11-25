@@ -2,7 +2,7 @@
 
 import type { FormatOptions, HexCase, HexDelimiter } from './types';
 
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 import { DELIMITER_LABELS, HEX_CASE_LABELS } from './constants';
 
@@ -32,7 +32,7 @@ export default function FormatControlsBar({
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-neutral-400">
             Delimiter:
           </span>
-          <PillTabs<HexDelimiter>
+          <Tabs<HexDelimiter>
             tabs={DELIMITERS}
             activeTab={options.delimiter}
             onChange={(delimiter) => onChangeOptions({ ...options, delimiter })}
@@ -48,7 +48,7 @@ export default function FormatControlsBar({
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-neutral-400">
             Case:
           </span>
-          <PillTabs<HexCase>
+          <Tabs<HexCase>
             tabs={HEX_CASES}
             activeTab={options.hexCase}
             onChange={(hexCase) => onChangeOptions({ ...options, hexCase })}

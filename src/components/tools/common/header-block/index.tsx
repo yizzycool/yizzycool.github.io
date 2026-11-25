@@ -1,6 +1,7 @@
 'use client';
 
 import type { HotkeyItem } from '@/components/ui/badge';
+import type { ReactNode } from 'react';
 
 import { useState, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
@@ -46,6 +47,8 @@ type HeaderBlockProps<T = unknown> = {
   customShortcuts?: HotkeyItem[];
   /** Custom callback when clicking the Shortcuts button or pressing '?'. Overrides the default ToolHotkeysModal */
   onOpenHotkeys?: () => void;
+  /** Optional action element pinned to the top-right corner of the title row */
+  headerAction?: ReactNode;
 };
 
 export default function HeaderBlock<T = unknown>({
@@ -57,6 +60,7 @@ export default function HeaderBlock<T = unknown>({
   onClearHistory,
   customShortcuts,
   onOpenHotkeys,
+  headerAction,
 }: HeaderBlockProps<T>) {
   const pathname = usePathname();
   const resolvedToolKey = get(InvertToolUrls, pathname, '');
@@ -126,24 +130,30 @@ export default function HeaderBlock<T = unknown>({
   return (
     <header className="mb-6">
       <div className="flex flex-col gap-4">
-        {/* Top: Icon, Title, Privacy Badge, Description */}
-        <div className="flex items-start gap-3.5 text-left text-slate-900 dark:text-slate-200">
-          <HeaderIcon toolKey={resolvedToolKey} />
-          <div className="space-y-1">
-            <div className="flex flex-col flex-wrap gap-2 sm:flex-row sm:items-center">
-              {!!title && (
-                <h1 className="text-xl font-bold tracking-tight sm:text-2xl">
-                  {title}
-                </h1>
+        {/* Top: Icon, Title, Privacy Badge, Description & Optional Header Action */}
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex min-w-0 flex-1 items-start gap-3.5 text-left text-slate-900 dark:text-slate-200">
+            <HeaderIcon toolKey={resolvedToolKey} />
+            <div className="space-y-1">
+              <div className="flex flex-col flex-wrap gap-2 sm:flex-row sm:items-center">
+                {!!title && (
+                  <h1 className="text-xl font-bold tracking-tight sm:text-2xl">
+                    {title}
+                  </h1>
+                )}
+              </div>
+              {/* Description for large device */}
+              {!!desc && (
+                <p className="hidden text-xs text-gray-500 sm:block sm:text-sm dark:text-slate-400">
+                  {desc}
+                </p>
               )}
             </div>
-            {/* Description for large device */}
-            {!!desc && (
-              <p className="hidden text-xs text-gray-500 sm:block sm:text-sm dark:text-slate-400">
-                {desc}
-              </p>
-            )}
           </div>
+
+          {headerAction && (
+            <div className="shrink-0 pt-0.5">{headerAction}</div>
+          )}
         </div>
         {/* Description for small device */}
         {!!desc && (

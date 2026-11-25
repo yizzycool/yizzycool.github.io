@@ -12,7 +12,7 @@ import SectionGap from '@/components/tools/common/section-gap';
 import { writeStudioHandoff } from '@/components/tools/image-tool/studio-handoff';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog, useConfirmDialog } from '@/components/ui/dialog';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { useToolsDB } from '@/hooks/tools/use-tools-db';
 import toast from '@/utils/toast';
 
@@ -20,7 +20,6 @@ import CompatibilityBanner from '../compatibility-banner';
 import DarkroomInspector from '../darkroom-inspector';
 import { DETECTION_SHORTCUTS } from '../data/detection-shortcuts';
 import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
-import DetectionTabs from '../detection-tabs';
 import useCommonFunction from '../hooks/use-common-function';
 import useFaceDetector from '../hooks/use-face-detector';
 import SystemChecking from '../system-checking';
@@ -203,7 +202,7 @@ export default function FaceDetectorApi() {
           Auto Privacy Shield
         </div>
 
-        <PillTabs<FaceRedactionMode>
+        <Tabs<FaceRedactionMode>
           tabs={REDACTION_MODES}
           activeTab={redactionMode}
           tabLabels={REDACTION_LABELS}
@@ -257,12 +256,6 @@ export default function FaceDetectorApi() {
           }
         />
       ) : null}
-
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
-        <DetectionTabs />
-      </div>
-
-      <SectionGap size="sm" />
 
       <DarkroomInspector
         tab={tab}

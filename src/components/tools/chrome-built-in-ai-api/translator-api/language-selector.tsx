@@ -1,12 +1,14 @@
 'use client';
 
-import { cn } from '@/utils/cn';
 import { MouseEvent, useMemo, useState } from 'react';
 import { Check, ChevronDown, Globe, Search, X } from 'lucide-react';
 import { isEmpty, filter, startsWith } from 'lodash';
 
-import intlUtils from '@/utils/intl-utils';
+import { Button } from '@/components/ui/button';
 import { BaseDialog } from '@/components/ui/dialog';
+import { cn } from '@/utils/cn';
+import intlUtils from '@/utils/intl-utils';
+
 import BCP47 from '@/components/tools/chrome-built-in-ai-api/translator-api/data/bcp-47';
 
 export default function LanguageSelector({
@@ -60,17 +62,16 @@ export default function LanguageSelector({
 
   return (
     <div className="text-sm font-semibold">
-      <button
-        className={cn(
-          'm-auto flex items-center justify-center rounded-md px-3 py-2 transition-all',
-          'hover:bg-neutral-200 dark:hover:bg-neutral-700',
-          'text-slate-500 dark:text-slate-400'
-        )}
+      <Button
+        variant="ghost"
+        size="sm"
+        rounded="lg"
+        className="m-auto flex items-center justify-center font-semibold text-slate-700 dark:text-slate-200"
         onClick={openMenu}
       >
         {language}
-        <ChevronDown className="ml-2" size={16} />
-      </button>
+        <ChevronDown className="ml-1.5" size={15} />
+      </Button>
 
       <BaseDialog isOpen={isOpen} onClose={closeMenu} dialogClassName="w-full">
         <div className="flex items-center justify-end px-8 pb-4 pt-6">

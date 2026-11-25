@@ -1,7 +1,6 @@
 'use client';
 
 import type { MouseEventHandler } from 'react';
-
 import type { UnsupportedApiType } from './data/unsupported-types';
 
 import ModelDownloadCard from './model-download-card';
@@ -15,6 +14,8 @@ type Props = {
   shouldDownloadModel?: boolean;
   downloadProgress?: number | null;
   downloadModel?: MouseEventHandler;
+  isDemoMode?: boolean;
+  onEnterDemo?: () => void;
 };
 
 export default function AiStatusGate({
@@ -24,13 +25,16 @@ export default function AiStatusGate({
   shouldDownloadModel = false,
   downloadProgress = null,
   downloadModel,
+  isDemoMode = false,
+  onEnterDemo,
 }: Props) {
   if (!hasCheckedAIStatus) {
     return <SystemChecking />;
   }
 
   if (!isApiSupported) {
-    return <UnsupportedCard apiType={apiType} />;
+    if (isDemoMode) return null;
+    return <UnsupportedCard apiType={apiType} onEnterDemo={onEnterDemo} />;
   }
 
   if (shouldDownloadModel) {

@@ -2,13 +2,27 @@
 
 import { usePathname } from 'next/navigation';
 import { findKey, get } from 'lodash';
-import { Info, ShieldCheck } from 'lucide-react';
+import { Check, Info, ShieldCheck } from 'lucide-react';
 
-import { cn } from '@/utils/cn';
-import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import { Badge } from '@/components/ui/badge';
-import { ToolTitles, ToolUrls, NON_CLIENT_SIDE_TOOLS } from '@/data/tools';
+import { NON_CLIENT_SIDE_TOOLS, ToolTitles, ToolUrls } from '@/data/tools';
 import { ToolAbout } from '@/data/tools/about';
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
+import { cn } from '@/utils/cn';
+
+/** Splits `"Heading: Description"` strings at the first colon separator for scannable rendering. */
+function parseFeature(feature: string): {
+  heading: string | null;
+  description: string;
+} {
+  const idx = feature.indexOf(': ');
+  if (idx > 0) {
+    return {
+      heading: feature.slice(0, idx),
+      description: feature.slice(idx + 2),
+    };
+  }
+  return { heading: null, description: feature };
+}
 
 export default function AboutBlock() {
   const pathname = usePathname();
@@ -33,58 +47,86 @@ export default function AboutBlock() {
     <section
       aria-labelledby="about-tool-heading"
       className={cn(
-        'mt-20 border-t border-slate-200/60 pt-8 text-left sm:mt-24 sm:pt-10 dark:border-neutral-800/60',
+        'mt-14 border-t border-slate-200/60 pt-8 text-left dark:border-neutral-800/60',
         getFadeUpClass('animate-delay-300')
       )}
     >
-      {/* Header Row: Title & 100% Private Badge */}
-      <div className="mb-3.5 flex flex-wrap items-center gap-2.5">
-        <div className="flex items-center gap-1.5 text-slate-400 dark:text-neutral-500">
-          <Info size={13} className="shrink-0 opacity-70" />
-          <h2
-            id="about-tool-heading"
-            className="text-xs font-medium tracking-wide text-slate-400 dark:text-neutral-500"
-          >
-            About {title}
-          </h2>
-        </div>
-        {isClientSidePrivate && (
-          <Badge
-            variant="success"
-            size="xs"
-            rounded="full"
-            bordered
-            icon={ShieldCheck}
-            className="text-[10px] opacity-90"
-          >
-            100% Private
-          </Badge>
-        )}
+      {/* Header Row: Aligned with RelatedToolsBlock */}
+      <div className="mb-5 flex items-center gap-1.5 text-slate-500 dark:text-neutral-400">
+        <Info size={14} className="shrink-0 text-sky-500 dark:text-sky-400" />
+        <h2
+          id="about-tool-heading"
+          className="text-xs font-semibold uppercase tracking-wider"
+        >
+          About {title}
+        </h2>
       </div>
 
-      {/* Description Body */}
-      <p className="text-xs leading-relaxed text-slate-400/90 dark:text-neutral-500">
-        {overview}
-      </p>
+      {/* Frameless Editorial Split: intentionally flat & receded from elevated workspace cards */}
+      <div
+        className={
+          features && features.length > 0
+            ? 'grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10'
+            : 'max-w-3xl'
+        }
+      >
+        <div
+          className={
+            features && features.length > 0 ? 'lg:col-span-5' : undefined
+          }
+        >
+          <p className="text-[13px] leading-relaxed text-slate-500 dark:text-neutral-400">
+            {overview}
+          </p>
 
-      {/* Feature Highlights (SEO & List Snippet) */}
-      {features && features.length > 0 && (
-        <ul className="mt-3 space-y-1.5 text-xs leading-relaxed text-slate-400/85 dark:text-neutral-500">
-          {features.map((feature, idx) => (
-            <li key={idx} className="flex items-start gap-2">
-              <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-300 dark:bg-neutral-700" />
-              <span>{feature}</span>
-            </li>
-          ))}
-        </ul>
-      )}
+          {bottomNote && (
+            <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-slate-400 dark:text-neutral-500">
+              {isClientSidePrivate ? (
+                <ShieldCheck
+                  size={14}
+                  aria-hidden="true"
+                  className="mt-0.5 shrink-0 text-emerald-500/80 dark:text-emerald-400/80"
+                />
+              ) : (
+                <Info
+                  size={14}
+                  aria-hidden="true"
+                  className="mt-0.5 shrink-0 text-slate-400/90 dark:text-neutral-500"
+                />
+              )}
+              <span>{bottomNote}</span>
+            </p>
+          )}
+        </div>
 
-      {/* Bottom Note */}
-      {bottomNote && (
-        <p className="mt-3 text-[11px] italic leading-relaxed text-slate-400/60 dark:text-neutral-600">
-          {bottomNote}
-        </p>
-      )}
+        {features && features.length > 0 && (
+          <ul className="grid grid-cols-1 gap-x-7 gap-y-4 sm:grid-cols-2 lg:col-span-7">
+            {features.map((feature, idx) => {
+              const { heading, description } = parseFeature(feature);
+              return (
+                <li key={idx} className="flex items-start gap-2.5">
+                  <span
+                    aria-hidden="true"
+                    className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-sky-500/10 text-sky-600 dark:bg-sky-400/10 dark:text-sky-400"
+                  >
+                    <Check size={10} strokeWidth={2.5} />
+                  </span>
+                  <div className="min-w-0 space-y-0.5">
+                    {heading && (
+                      <p className="text-xs font-medium leading-snug text-slate-600 dark:text-neutral-300">
+                        {heading}
+                      </p>
+                    )}
+                    <p className="text-xs leading-relaxed text-slate-500/85 dark:text-neutral-400/90">
+                      {description}
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
     </section>
   );
 }

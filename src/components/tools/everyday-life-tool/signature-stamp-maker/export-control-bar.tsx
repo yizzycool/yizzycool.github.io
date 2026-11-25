@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Surface } from '@/components/ui/surface';
 import { Switch } from '@/components/ui/switch';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 import { EXPORT_SCALES, EXPORT_SCALE_LABELS } from './constants';
 
@@ -59,7 +59,7 @@ export default function ExportControlBar({
 
         <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
           <span>Scale:</span>
-          <PillTabs<ExportScale>
+          <Tabs<ExportScale>
             tabs={EXPORT_SCALES}
             activeTab={scale}
             onChange={onScaleChange}

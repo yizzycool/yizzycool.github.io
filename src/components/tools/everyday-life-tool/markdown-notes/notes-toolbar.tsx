@@ -33,7 +33,7 @@ import { Button } from '@/components/ui/button';
 import { Chip } from '@/components/ui/chip';
 import { Dropdown } from '@/components/ui/dropdown';
 import { SearchInput } from '@/components/ui/input';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 import FolderSyncStatusBar from './folder-sync-status-bar';
 import LabelFilterChip from './label-filter-chip';
@@ -170,7 +170,7 @@ export default function NotesToolbar({
       <div className="shadow-2xs flex flex-col gap-2 rounded-2xl border border-neutral-200/80 bg-white/75 p-1.5 backdrop-blur-md md:flex-row md:items-center md:gap-2 dark:border-neutral-800/90 dark:bg-neutral-900/65">
         {/* Zone 1: Scope Tabs */}
         <div className="shrink-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <PillTabs<NotesViewScope>
+          <Tabs<NotesViewScope>
             tabs={SCOPE_TABS}
             activeTab={viewScope}
             tabLabels={scopeLabels}

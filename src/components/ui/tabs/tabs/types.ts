@@ -1,13 +1,21 @@
-import type { ReactNode } from 'react';
-import type { LucideIcon } from 'lucide-react';
+import type { Rounded } from '@/types/common';
 import type { ButtonSize } from '@/types/common/button';
+import type { LucideIcon } from 'lucide-react';
+import type { ReactNode } from 'react';
 
-export type TabsVariant = 'default' | 'sky' | 'neutral' | 'pill-bottom';
+export type TabsVariant =
+  | 'segment'
+  | 'default'
+  | 'neutral'
+  | 'primary'
+  | 'ghost'
+  | 'outline'
+  | 'blue';
 
 export type TabsSize = ButtonSize;
 
 /**
- * Props for the Tabs component.
+ * Props for the unified Tabs component.
  */
 export type TabsProps<T extends ReactNode = string> = {
   /** List of tab identifiers */
@@ -28,7 +36,9 @@ export type TabsProps<T extends ReactNode = string> = {
     | ((tab: T, index: number) => ReactNode);
   /** Visual variant style (default: 'default') */
   variant?: TabsVariant;
-  /** Size scale (default: 'base') */
+  /** Rounded corner style (default: 'base') */
+  rounded?: Rounded;
+  /** Size scale (default: 'xs') */
   size?: TabsSize;
   /** Whether tabs expand to fill the entire container */
   fullWidth?: boolean;
@@ -49,12 +59,14 @@ export type TabsProps<T extends ReactNode = string> = {
 export type TabItemProps<T extends ReactNode = string> = {
   mode: T;
   index: number;
+  indicatorLayoutId: string;
   isActive: boolean;
   isDisabled: boolean;
   icon?: LucideIcon;
   label: ReactNode;
   badge?: ReactNode;
   size: TabsSize;
+  rounded: Rounded;
   variant: TabsVariant;
   fullWidth?: boolean;
   tabClassName?: string;

@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import { BookOpen, Hash, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { cn } from '@/utils/cn';
 
 import CheatSheetSection from './cheat-sheet-section';
@@ -59,7 +59,7 @@ export default function WorkbenchInspector({
   return (
     <aside className="rounded-2xl border border-neutral-200/80 bg-white/80 p-4 shadow-sm backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-900/65">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <PillTabs<InspectorTab>
+        <Tabs<InspectorTab>
           tabs={INSPECTOR_TABS}
           activeTab={activeTab}
           tabLabels={TAB_LABELS}

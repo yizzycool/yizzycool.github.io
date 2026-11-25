@@ -8,7 +8,7 @@ import { DeleteAction, PasteAction } from '@/components/shared/action-button';
 import LabelBar from '@/components/tools/common/label-bar';
 import { PropertyRow } from '@/components/tools/common/property-row';
 import { Button } from '@/components/ui/button';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { cn } from '@/utils/cn';
 import useIsClient from '@/hooks/lifecycle/use-is-client';
 
@@ -78,7 +78,7 @@ export default function DateToTimestampSection({
             <span className="font-medium text-slate-500 dark:text-slate-400">
               Interpreted As:
             </span>
-            <PillTabs
+            <Tabs
               tabs={TIMEZONE_MODES}
               activeTab={timezoneMode}
               onChange={setTimezoneMode}

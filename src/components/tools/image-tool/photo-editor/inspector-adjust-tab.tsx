@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Selector } from '@/components/ui/selector';
 import { Slider } from '@/components/ui/slider';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 import {
   BUILTIN_LUT_PRESETS,
@@ -142,7 +142,7 @@ export default function InspectorAdjustTab({
 
   return (
     <div className="space-y-4">
-      <PillTabs<AdjustSubTab>
+      <Tabs<AdjustSubTab>
         tabs={SUB_TABS}
         activeTab={subTab}
         onChange={setSubTab}

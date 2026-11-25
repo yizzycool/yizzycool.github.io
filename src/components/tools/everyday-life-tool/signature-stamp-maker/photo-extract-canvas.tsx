@@ -15,7 +15,7 @@ import { DeleteAction } from '@/components/shared/action-button';
 import LabelBar from '@/components/tools/common/label-bar';
 import { Button } from '@/components/ui/button';
 import { FilePicker } from '@/components/ui/file-picker';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { cn } from '@/utils/cn';
 
 import {
@@ -127,7 +127,7 @@ export default function PhotoExtractCanvas({
         headerClassName="min-h-8 flex-wrap gap-2"
       >
         <div className="flex flex-wrap items-center gap-2">
-          <PillTabs<StageBackdrop>
+          <Tabs<StageBackdrop>
             tabs={STAGE_BACKDROPS}
             activeTab={settings.backdrop}
             onChange={(backdrop) => onUpdateSettings({ backdrop })}
@@ -140,7 +140,7 @@ export default function PhotoExtractCanvas({
           />
 
           {sourceCanvas && (
-            <PillTabs<PhotoViewMode>
+            <Tabs<PhotoViewMode>
               tabs={PHOTO_VIEW_MODES}
               activeTab={viewMode}
               onChange={onViewModeChange}

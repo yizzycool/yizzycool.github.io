@@ -39,7 +39,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { BaseDialog } from '@/components/ui/dialog';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { getOpenModalDialogCount } from '@/hooks/tools/use-tool-hotkeys';
 import { cn } from '@/utils/cn';
 import toast from '@/utils/toast';
@@ -402,7 +402,7 @@ export default function NoteEditorModal({
         />
 
         <div className="flex flex-wrap items-center gap-2">
-          <PillTabs<NoteEditorMode>
+          <Tabs<NoteEditorMode>
             tabs={EDITOR_MODES}
             activeTab={editorMode}
             tabLabels={EDITOR_MODE_LABELS}

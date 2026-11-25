@@ -2,17 +2,25 @@
 
 import type { LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
-import type { TabsProps, TabItemProps } from './types';
+import type { TabItemProps, TabsProps } from './types';
 
 import { Tab, TabGroup, TabList } from '@headlessui/react';
-import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
+import { useEffect, useId, useState } from 'react';
 
 import { cn } from '@/utils/cn';
 import customEventUtils, { CustomEvents } from '@/utils/custom-event-utils';
 
-import { tabsVariantStyles, tabsSizeStyles } from './tabs.variants';
-import { DEFAULT_TABS_VARIANT, DEFAULT_TABS_SIZE } from './constants';
+import {
+  DEFAULT_TABS_ROUNDED,
+  DEFAULT_TABS_SIZE,
+  DEFAULT_TABS_VARIANT,
+} from './constants';
+import {
+  tabsRoundedMap,
+  tabsSizeStyles,
+  tabsVariantStyles,
+} from './tabs.variants';
 
 export function Tabs<const T extends ReactNode = string>({
   tabs,
@@ -22,18 +30,19 @@ export function Tabs<const T extends ReactNode = string>({
   tabLabels,
   tabBadges,
   variant = DEFAULT_TABS_VARIANT,
+  rounded = DEFAULT_TABS_ROUNDED,
   size = DEFAULT_TABS_SIZE,
   fullWidth = false,
   disabled = false,
-  className,
-  tabClassName,
-  activeClassName,
-  inactiveClassName,
+  className = '',
+  tabClassName = '',
+  activeClassName = '',
+  inactiveClassName = '',
   onChange = () => {},
 }: TabsProps<T>) {
   const [internalTab, setInternalTab] = useState(defaultActiveTab || tabs[0]);
+  const instanceId = useId();
 
-  // Support controlled vs uncontrolled mode
   const currentTab = activeTab !== undefined ? activeTab : internalTab;
 
   const currentIdx = Math.max(
@@ -41,7 +50,6 @@ export function Tabs<const T extends ReactNode = string>({
     tabs.findIndex((t) => t === currentTab)
   );
 
-  // Bind custom event listener to trigger tab switch remotely
   useEffect(() => {
     const handler = (e: CustomEvent) => {
       const { tab = '' } = e.detail;
@@ -77,6 +85,7 @@ export function Tabs<const T extends ReactNode = string>({
 
   const currentVariant =
     tabsVariantStyles[variant] || tabsVariantStyles.default;
+  const currentRounded = tabsRoundedMap[rounded] || tabsRoundedMap.base;
 
   const getTabIcon = (mode: T, idx: number): LucideIcon | undefined => {
     if (!tabIcons) return undefined;
@@ -110,7 +119,8 @@ export function Tabs<const T extends ReactNode = string>({
     <TabGroup selectedIndex={currentIdx} onChange={handleIndexChange}>
       <TabList
         className={cn(
-          'flex max-w-full items-stretch overflow-x-auto overflow-y-hidden',
+          'inline-flex max-w-full items-center overflow-x-auto overflow-y-hidden',
+          currentRounded.container,
           currentVariant.container,
           fullWidth && 'w-full',
           className
@@ -121,12 +131,14 @@ export function Tabs<const T extends ReactNode = string>({
             key={idx}
             mode={mode}
             index={idx}
+            indicatorLayoutId={`tabs-indicator-${instanceId}`}
             isActive={currentTab === mode}
             isDisabled={getIsDisabled(mode, idx)}
             icon={getTabIcon(mode, idx)}
             label={getTabLabel(mode, idx)}
             badge={getTabBadge(mode, idx)}
             size={size}
+            rounded={rounded}
             variant={variant}
             fullWidth={fullWidth}
             tabClassName={tabClassName}
@@ -142,12 +154,14 @@ export function Tabs<const T extends ReactNode = string>({
 
 function TabItem<const T extends ReactNode = string>({
   mode,
+  indicatorLayoutId,
   isActive,
   isDisabled,
   icon: Icon,
   label,
   badge,
   size,
+  rounded,
   variant,
   fullWidth,
   tabClassName,
@@ -157,14 +171,16 @@ function TabItem<const T extends ReactNode = string>({
 }: TabItemProps<T>) {
   const currentVariant =
     tabsVariantStyles[variant] || tabsVariantStyles.default;
-  const currentSize = tabsSizeStyles[size] || tabsSizeStyles.base;
+  const currentRounded = tabsRoundedMap[rounded] || tabsRoundedMap.base;
+  const currentSize = tabsSizeStyles[size] || tabsSizeStyles.xs;
 
   return (
     <Tab
       disabled={isDisabled}
       onClick={() => onClick(mode)}
       className={cn(
-        'relative -mb-px flex select-none items-center justify-center outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-sky-500/50',
+        'relative z-0 flex shrink-0 cursor-pointer select-none items-center justify-center whitespace-nowrap font-medium outline-none transition-colors duration-200',
+        currentRounded.item,
         currentSize.padding,
         currentSize.text,
         currentSize.gap,
@@ -176,15 +192,22 @@ function TabItem<const T extends ReactNode = string>({
         tabClassName
       )}
     >
-      {Icon && <Icon className="h-4 w-4 shrink-0" />}
-      <span>{label}</span>
-      {badge}
       {isActive && (
         <motion.div
-          layoutId="tab-underline"
-          className="absolute bottom-0 h-1 w-full bg-sky-600 dark:bg-sky-400"
+          layoutId={indicatorLayoutId}
+          transition={{ type: 'spring', stiffness: 440, damping: 34 }}
+          className={cn(
+            'absolute inset-0 -z-10',
+            currentRounded.item,
+            currentVariant.indicator
+          )}
         />
       )}
+      {Icon && (
+        <Icon size={currentSize.iconSize} className="relative z-10 shrink-0" />
+      )}
+      <span className="relative z-10">{label}</span>
+      {badge && <span className="relative z-10">{badge}</span>}
     </Tab>
   );
 }

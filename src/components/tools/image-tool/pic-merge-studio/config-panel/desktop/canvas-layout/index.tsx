@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { clamp } from 'lodash';
 
 import { cn } from '@/utils/cn';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { Selector } from '@/components/ui/selector';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -197,7 +197,7 @@ export default function CanvasLayout({
         </InfoTooltip>
       </div>
 
-      <PillTabs
+      <Tabs
         tabs={layoutPresets}
         tabIcons={layoutIcons}
         activeTab={isGridLayout ? layoutPresets[1] : layoutPresets[0]}

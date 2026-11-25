@@ -13,7 +13,7 @@ import SettingHeader from '@/components/tools/common/setting-header';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { Surface } from '@/components/ui/surface';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 import {
   STAMP_BORDER_LABELS,
@@ -45,7 +45,7 @@ export default function StampControls({ settings, onUpdateSettings }: Props) {
       {/* Shape */}
       <div className="space-y-2">
         <SettingHeader label="Stamp Shape" />
-        <PillTabs<StampShape>
+        <Tabs<StampShape>
           tabs={STAMP_SHAPES}
           activeTab={settings.shape}
           onChange={(shape) => onUpdateSettings({ shape })}
@@ -97,7 +97,7 @@ export default function StampControls({ settings, onUpdateSettings }: Props) {
       {/* Typography Style */}
       <div className="space-y-2">
         <SettingHeader label="Typography Style" />
-        <PillTabs<StampFontStyle>
+        <Tabs<StampFontStyle>
           tabs={STAMP_FONT_STYLES}
           activeTab={settings.fontStyle}
           onChange={(fontStyle) => onUpdateSettings({ fontStyle })}
@@ -121,7 +121,7 @@ export default function StampControls({ settings, onUpdateSettings }: Props) {
       {/* Border Style & Weight */}
       <div className="space-y-3">
         <SettingHeader label="Border Frame" />
-        <PillTabs<StampBorderStyle>
+        <Tabs<StampBorderStyle>
           tabs={STAMP_BORDER_STYLES}
           activeTab={settings.borderStyle}
           onChange={(borderStyle) => onUpdateSettings({ borderStyle })}

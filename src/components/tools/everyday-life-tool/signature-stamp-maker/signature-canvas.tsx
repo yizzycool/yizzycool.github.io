@@ -9,7 +9,7 @@ import { PenLine, Redo2, Undo2 } from 'lucide-react';
 import { DeleteAction } from '@/components/shared/action-button';
 import LabelBar from '@/components/tools/common/label-bar';
 import { Button } from '@/components/ui/button';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { hasOpenModalDialog } from '@/hooks/tools/use-tool-hotkeys';
 import { cn } from '@/utils/cn';
 
@@ -394,7 +394,7 @@ export default function SignatureCanvas({
         headerClassName="min-h-8 flex-wrap gap-2"
       >
         <div className="flex flex-wrap items-center gap-2">
-          <PillTabs<StageBackdrop>
+          <Tabs<StageBackdrop>
             tabs={STAGE_BACKDROPS}
             activeTab={settings.backdrop}
             onChange={(backdrop) => onUpdateSettings({ backdrop })}

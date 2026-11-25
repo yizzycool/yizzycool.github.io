@@ -4,7 +4,7 @@ import type { HashCaseMode, HashEncoding } from './types';
 
 import { KeyRound } from 'lucide-react';
 
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 
 import {
@@ -39,7 +39,7 @@ export default function HashControlsBar({
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-neutral-400">
             Format:
           </span>
-          <PillTabs
+          <Tabs
             tabs={HASH_ENCODINGS}
             activeTab={encoding}
             onChange={setEncoding}
@@ -54,7 +54,7 @@ export default function HashControlsBar({
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-neutral-400">
             Case:
           </span>
-          <PillTabs
+          <Tabs
             tabs={HASH_CASE_MODES}
             activeTab={caseMode}
             onChange={setCaseMode}

@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/tooltip';
 import { SearchInput } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 type ToolbarProps = {
   mode: 'dashboard' | 'management';
@@ -86,7 +86,7 @@ export default function Toolbar({
           Starter Packs
         </Button>
 
-        <PillTabs
+        <Tabs
           tabs={['dashboard', 'management']}
           activeTab={mode}
           tabIcons={[LayoutGrid, Settings]}

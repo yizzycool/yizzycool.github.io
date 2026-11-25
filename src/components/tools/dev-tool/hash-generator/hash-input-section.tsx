@@ -13,7 +13,7 @@ import {
 import LabelBar from '@/components/tools/common/label-bar';
 import { Button } from '@/components/ui/button';
 import { FilePicker } from '@/components/ui/file-picker';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 
 import { HASH_INPUT_MODE_LABELS, HASH_INPUT_MODES } from './constants';
@@ -62,7 +62,7 @@ export default function HashInputSection({
             <span>
               {inputMode === 'text' ? 'Payload to Hash' : 'File to Hash'}
             </span>
-            <PillTabs
+            <Tabs
               tabs={HASH_INPUT_MODES}
               activeTab={inputMode}
               onChange={setInputMode}

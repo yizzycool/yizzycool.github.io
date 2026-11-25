@@ -3,7 +3,7 @@
 import type { ConfigHelper } from '../../../types/config-helper';
 import type { CanvasExportFormat } from '../../../types/config';
 
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 type Props = {
   configHelper: ConfigHelper;
@@ -16,7 +16,7 @@ export default function OutputFormat({ configHelper }: Props) {
 
   return (
     <div className="space-y-4">
-      <PillTabs
+      <Tabs
         tabs={['png', 'jpeg']}
         onChange={(tab) => updateOutputFormat(tab as CanvasExportFormat)}
         size="sm"

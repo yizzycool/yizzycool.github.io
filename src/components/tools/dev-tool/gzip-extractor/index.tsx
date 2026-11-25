@@ -29,7 +29,7 @@ import SectionGap from '@/components/tools/common/section-gap';
 import { Button } from '@/components/ui/button';
 import { ErrorMessage } from '@/components/ui/error-message';
 import { SearchInput } from '@/components/ui/input';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import {
@@ -131,7 +131,7 @@ export default function GzipExtractor() {
       <SectionGap size="sm" />
 
       <div className="flex items-center justify-between">
-        <PillTabs<InputSource>
+        <Tabs<InputSource>
           tabs={INPUT_SOURCE_TABS}
           activeTab={inputSource}
           onChange={setInputSource}

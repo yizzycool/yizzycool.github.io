@@ -8,7 +8,7 @@ import { PenLine, ScanLine, Stamp } from 'lucide-react';
 import HeaderBlock from '@/components/tools/common/header-block';
 import SectionGap from '@/components/tools/common/section-gap';
 import { ConfirmDialog } from '@/components/ui/dialog';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 
 import { STUDIO_MODES, STUDIO_MODE_LABELS } from './constants';
@@ -102,7 +102,7 @@ export default function SignatureStampMaker() {
 
       {/* Studio Mode Switcher */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <PillTabs<StudioMode>
+        <Tabs<StudioMode>
           tabs={STUDIO_MODES}
           activeTab={mode}
           onChange={setMode}

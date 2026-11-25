@@ -18,7 +18,7 @@ import { PropertyRow } from '@/components/tools/common/property-row';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import useIsClient from '@/hooks/lifecycle/use-is-client';
 
 import { QUICK_OFFSETS, UNIT_MODES, UNIT_MODE_LABELS } from './constants';
@@ -102,7 +102,7 @@ export default function TimestampToDateSection({
           {/* Unit Detection & Selector Bar */}
           <div className="flex flex-wrap items-center gap-2 text-xs">
             <span className="text-slate-500 dark:text-slate-400">Unit:</span>
-            <PillTabs
+            <Tabs
               tabs={UNIT_MODES}
               activeTab={unitMode}
               onChange={setUnitMode}

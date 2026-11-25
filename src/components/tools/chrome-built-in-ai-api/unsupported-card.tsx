@@ -1,23 +1,46 @@
 'use client';
 
-import { AlertTriangle, ExternalLink, Settings } from 'lucide-react';
+import type { UnsupportedApiType } from './data/unsupported-types';
+
+import {
+  AlertTriangle,
+  Copy,
+  ExternalLink,
+  Settings,
+  Sparkles,
+} from 'lucide-react';
 import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
+import toast from '@/utils/toast';
 
 import {
   CHROME_BUILT_IN_AI_API_FLAGS,
   CHROME_BUILT_IN_AI_API_NAMES,
-  UnsupportedApiType,
 } from './data/unsupported-types';
 import StatusCardOverlay from './status-card-overlay';
 
 type Props = {
   apiType: UnsupportedApiType;
   isOpen?: boolean;
+  onEnterDemo?: () => void;
 };
 
-export default function UnsupportedCard({ apiType, isOpen = true }: Props) {
+export default function UnsupportedCard({
+  apiType,
+  isOpen = true,
+  onEnterDemo,
+}: Props) {
+  const handleCopyLink = async () => {
+    if (typeof window === 'undefined') return;
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success('Copied link for Chrome Desktop');
+    } catch {
+      toast.error('Failed to copy link');
+    }
+  };
+
   return (
     <StatusCardOverlay isOpen={isOpen}>
       <div className="flex flex-col items-center justify-center">
@@ -31,8 +54,8 @@ export default function UnsupportedCard({ apiType, isOpen = true }: Props) {
           Browser Not Supported
         </h2>
         <p className="mb-8 text-sm leading-relaxed">
-          Chrome's built-in AI ({CHROME_BUILT_IN_AI_API_NAMES[apiType]}) is not
-          available on this device or browser configuration.
+          Chrome&apos;s built-in AI ({CHROME_BUILT_IN_AI_API_NAMES[apiType]}) is
+          not available on this device or browser configuration.
         </p>
 
         {/* Checklist */}
@@ -77,10 +100,36 @@ export default function UnsupportedCard({ apiType, isOpen = true }: Props) {
         </div>
 
         {/* Actions */}
-        <div className="w-full space-y-3">
-          <Button onClick={() => window.location.reload()} className="w-full">
-            Check Again
-          </Button>
+        <div className="w-full space-y-2.5">
+          {onEnterDemo && (
+            <Button
+              variant="primary"
+              icon={Sparkles}
+              onClick={onEnterDemo}
+              className="w-full"
+            >
+              Preview Interactive Demo
+            </Button>
+          )}
+
+          <div className="flex gap-2">
+            <Button
+              variant={onEnterDemo ? 'outline' : 'primary'}
+              onClick={() => window.location.reload()}
+              className="flex-1"
+            >
+              Check Again
+            </Button>
+
+            <Button
+              variant="outline"
+              icon={Copy}
+              onClick={() => void handleCopyLink()}
+              title="Copy link to open in Chrome Desktop"
+            >
+              Copy URL
+            </Button>
+          </div>
 
           <a
             href="https://developer.chrome.com/docs/ai/built-in"

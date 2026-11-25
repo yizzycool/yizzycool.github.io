@@ -1,36 +1,54 @@
 'use client';
 
+import type { TabItem } from './constants';
 import type { JsonHistoryData } from './hooks/use-json-formatter';
 
-import { Braces, CodeXml, FileText } from 'lucide-react';
+import {
+  Braces,
+  CodeXml,
+  Download,
+  FileText,
+  GitCompareArrows,
+  Wrench,
+} from 'lucide-react';
 import { isEmpty } from 'lodash';
 
-import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
-import useJsonFormatter from './hooks/use-json-formatter';
-import { TAB_ITEMS, TAB_ICONS } from './constants';
-import HeaderBlock from '../../common/header-block';
-import SectionGap from '../../common/section-gap';
-import ExecuteBar from '../../common/execute-bar';
-import LabelBar from '../../common/label-bar';
 import {
+  CopyAction,
   DeleteAction,
   PasteAction,
-  CopyAction,
   SampleAction,
 } from '@/components/shared/action-button';
-import { Textarea } from '@/components/ui/textarea';
-import { Card } from '@/components/ui/card';
-import { Tabs } from '@/components/ui/tabs';
 import { ProseMarkdown } from '@/components/shared/markdown';
+import ExecuteBar from '@/components/tools/common/execute-bar';
+import HeaderBlock from '@/components/tools/common/header-block';
+import { InsetGroup } from '@/components/tools/common/inset-group';
+import LabelBar from '@/components/tools/common/label-bar';
+import SectionGap from '@/components/tools/common/section-gap';
+import { Button } from '@/components/ui/button';
+import { EmptyState } from '@/components/ui/empty-state';
+import { Tabs } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 
+import { TAB_ICON_MAP, TAB_ITEMS } from './constants';
+import useJsonFormatter from './hooks/use-json-formatter';
+import { JsonDiffView } from './json-diff-view';
+import { JsonTelemetryBar } from './json-telemetry-bar';
 import JsonTreeView from './json-tree-view';
 
 export default function JsonFormatter() {
   const {
     tab,
     input,
+    compareInput,
+    compareError,
+    compareReady,
+    diffEntries,
     output,
     error,
+    repairPreview,
+    telemetry,
     parsedObject,
     syntaxLanguage,
     executeButtonLabel,
@@ -38,10 +56,15 @@ export default function JsonFormatter() {
     isLoadingHistory,
     inputRef,
     processJson,
+    onAutoRepair,
     onJsonStringChanged,
+    onCompareInputChanged,
+    onClearCompareInput,
     onPaste,
     onLoadSample,
+    onLoadDiffSample,
     onClear,
+    onDownloadOutput,
     onTabChanged,
     onRestoreHistory,
     renameHistory,
@@ -70,24 +93,25 @@ export default function JsonFormatter() {
 
       <SectionGap />
 
-      {/* Mode Tabs */}
-      <Tabs
-        tabs={[...TAB_ITEMS]}
-        tabIcons={[...TAB_ICONS]}
-        activeTab={tab}
-        onChange={onTabChanged}
-        className="text-nowrap"
-      />
+      {/* Modern Pill Mode Switcher */}
+      <div className="overflow-x-auto pb-1">
+        <Tabs<TabItem>
+          tabs={[...TAB_ITEMS]}
+          tabIcons={TAB_ICON_MAP}
+          activeTab={tab}
+          onChange={onTabChanged}
+          size="xs"
+          rounded="lg"
+          variant="segment"
+        />
+      </div>
 
-      {/* Responsive Layout:
-          - Screens (< xl): Natural flow (1. Input + Execute -> 2. Result)
-          - Large Desktop (xl:): 2-Column Split Dashboard (Left: Col 1-6 Input & Action, Right: Col 7-12 Sticky Output / Tree)
-      */}
-      <div className="mt-8 flex flex-col gap-8 xl:grid xl:grid-cols-12 xl:items-start xl:gap-8">
-        {/* 1. Input Section & Action (Desktop: Col 1-6) */}
+      {/* Responsive Split Workbench */}
+      <div className="mt-6 flex flex-col gap-8 xl:grid xl:grid-cols-12 xl:items-start xl:gap-8">
+        {/* Left Col 1-6: JSON Input + Repair + Telemetry */}
         <div className="space-y-4 text-left xl:col-span-6">
           <LabelBar
-            label="Paste JSON below"
+            label={tab === 'Diff' ? 'Baseline JSON (Left)' : 'Paste JSON below'}
             icon={FileText}
             htmlFor="json-string-textarea"
           >
@@ -103,47 +127,131 @@ export default function JsonFormatter() {
             onChange={onJsonStringChanged}
             rows={10}
             errorMessage={error}
-            className="min-h-[280px] xl:h-[480px]"
-            placeholder="Paste your JSON string here..."
+            className="min-h-[280px] xl:h-[440px]"
+            placeholder="Paste your JSON string (or messy JS object / trailing-comma JSON) here..."
           />
 
-          <ExecuteBar
-            label={executeButtonLabel}
-            disabled={isEmpty(input)}
-            onClick={() => processJson()}
-            text={input}
+          {repairPreview && (
+            <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-amber-200/80 bg-amber-50/80 px-3.5 py-2.5 text-xs text-amber-950 dark:border-amber-900/60 dark:bg-amber-950/35 dark:text-amber-100">
+              <div className="space-y-0.5">
+                <div className="font-semibold">
+                  Malformed JSON can be auto-repaired
+                </div>
+                {repairPreview.fixes.length > 0 && (
+                  <div className="text-[11px] text-amber-700 dark:text-amber-300">
+                    Detected: {repairPreview.fixes.join(' • ')}
+                  </div>
+                )}
+              </div>
+              <Button
+                variant="primary"
+                size="xs"
+                rounded="lg"
+                icon={Wrench}
+                onClick={onAutoRepair}
+              >
+                Auto Fix JSON
+              </Button>
+            </div>
+          )}
+
+          <JsonTelemetryBar
+            telemetry={telemetry}
+            hasInput={!isEmpty(input.trim())}
+            error={error}
           />
+
+          {tab !== 'Diff' && (
+            <ExecuteBar
+              label={executeButtonLabel}
+              disabled={isEmpty(input)}
+              onClick={() => processJson()}
+              text={input}
+            />
+          )}
         </div>
 
-        {/* 2. Output Section (Desktop: Col 7-12, Sticky) */}
+        {/* Right Col 7-12: Output / Tree / Schema / Diff */}
         <div className="space-y-4 text-left xl:col-span-6">
-          <LabelBar
-            label={`Result ${tab !== 'Format' ? `(${tab})` : ''}`}
-            icon={Braces}
-            htmlFor="output"
-          >
-            {!!output && (
-              <CopyAction
-                content={output}
-                disabled={isEmpty(output)}
-                successToast="Result copied to clipboard"
-              />
-            )}
-          </LabelBar>
+          {tab === 'Diff' ? (
+            <>
+              <LabelBar
+                label="Target JSON (Right)"
+                icon={GitCompareArrows}
+                htmlFor="json-compare-textarea"
+              >
+                <Button
+                  variant="outline"
+                  size="xs"
+                  rounded="lg"
+                  onClick={onLoadDiffSample}
+                >
+                  Sample Diff
+                </Button>
+                <DeleteAction
+                  onClick={onClearCompareInput}
+                  disabled={isEmpty(compareInput)}
+                />
+              </LabelBar>
 
-          {/* Render Tree View Tab */}
-          {tab === 'Tree View' && parsedObject ? (
-            <JsonTreeView data={parsedObject} />
-          ) : output ? (
-            /* Render Syntax Highlighted Output for Format / Minify / YAML / CSV */
-            <ProseMarkdown className="[&_pre>div>div:nth-child(2)]:max-h-[540px]">{`\`\`\`${syntaxLanguage}\n${output}\n\`\`\``}</ProseMarkdown>
+              <Textarea
+                id="json-compare-textarea"
+                value={compareInput}
+                onChange={onCompareInputChanged}
+                rows={7}
+                errorMessage={compareError}
+                className="min-h-[180px]"
+                placeholder="Paste the second JSON payload to compare against the baseline..."
+              />
+
+              <JsonDiffView
+                entries={diffEntries}
+                compareReady={compareReady}
+                compareError={compareError}
+              />
+            </>
           ) : (
-            <Card className="flex h-80 flex-col items-center justify-center gap-4 text-xs text-slate-500 xl:h-[540px] dark:text-slate-400">
-              <CodeXml size={28} className="text-slate-400" />
-              <span>
-                Waiting for Input or click &quot;{executeButtonLabel}&quot;...
-              </span>
-            </Card>
+            <>
+              <LabelBar
+                label={`Result ${tab !== 'Format' ? `(${tab})` : ''}`}
+                icon={Braces}
+                htmlFor="output"
+              >
+                {!!output && (
+                  <>
+                    <Button
+                      variant="outline"
+                      size="xs"
+                      rounded="lg"
+                      icon={Download}
+                      onClick={onDownloadOutput}
+                    >
+                      Download
+                    </Button>
+                    <CopyAction
+                      content={output}
+                      disabled={isEmpty(output)}
+                      successToast="Result copied to clipboard"
+                    />
+                  </>
+                )}
+              </LabelBar>
+
+              {tab === 'Tree View' && parsedObject ? (
+                <JsonTreeView data={parsedObject} />
+              ) : output ? (
+                <ProseMarkdown className="[&_pre>div>div:nth-child(2)]:max-h-[540px]">{`\`\`\`${syntaxLanguage}\n${output}\n\`\`\``}</ProseMarkdown>
+              ) : (
+                <InsetGroup rounded="2xl">
+                  <EmptyState
+                    icon={CodeXml}
+                    title={`Ready for ${tab}`}
+                    description={`Paste valid JSON on the left or click Sample to inspect ${tab} output.`}
+                    className="h-80 xl:h-[520px]"
+                  />
+                </InsetGroup>
+              )}
+            </>
           )}
         </div>
       </div>

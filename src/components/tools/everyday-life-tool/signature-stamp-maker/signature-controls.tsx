@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
 import { Surface } from '@/components/ui/surface';
 import { Switch } from '@/components/ui/switch';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { cn } from '@/utils/cn';
 
 import {
@@ -132,7 +132,7 @@ export default function SignatureControls({
       {/* Canvas Paper Guide */}
       <div className="space-y-2">
         <SettingHeader label="Paper Guide" />
-        <PillTabs<PaperGuide>
+        <Tabs<PaperGuide>
           tabs={PAPER_GUIDES}
           activeTab={settings.guide}
           onChange={(guide) => onUpdateSettings({ guide })}

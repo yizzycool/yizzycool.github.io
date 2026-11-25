@@ -6,7 +6,7 @@ import { RotateCcw } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 import { evaluateCurveSpline } from './shaders';
 
@@ -162,7 +162,7 @@ export default function CurvesEditor({ curves, onChange, onChangeEnd }: Props) {
   return (
     <div className="space-y-2.5">
       <div className="flex items-center justify-between gap-2">
-        <PillTabs<CurveChannel>
+        <Tabs<CurveChannel>
           tabs={CHANNELS}
           activeTab={channel}
           onChange={setChannel}

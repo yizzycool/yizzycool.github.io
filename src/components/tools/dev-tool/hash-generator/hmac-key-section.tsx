@@ -7,7 +7,7 @@ import { Key, ShieldAlert } from 'lucide-react';
 import { DeleteAction, PasteAction } from '@/components/shared/action-button';
 import LabelBar from '@/components/tools/common/label-bar';
 import { Input } from '@/components/ui/input';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 type Props = {
   hmacKey: string;
@@ -41,7 +41,7 @@ export default function HmacKeySection({
           </span>
         </div>
 
-        <PillTabs
+        <Tabs
           tabs={KEY_ENCODINGS}
           activeTab={hmacKeyEncoding}
           onChange={setHmacKeyEncoding}

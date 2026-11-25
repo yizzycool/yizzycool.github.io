@@ -1,37 +1,84 @@
-import type { TabsVariant, TabsSize } from './types';
+import type { Rounded } from '@/types/common';
+import type { TabsSize, TabsVariant } from './types';
+
+export const tabsRoundedMap: Record<
+  Rounded,
+  { container: string; item: string }
+> = {
+  none: { container: 'rounded-none', item: 'rounded-none' },
+  sm: { container: 'rounded-md', item: 'rounded-sm' },
+  base: { container: 'rounded-xl', item: 'rounded-lg' },
+  md: { container: 'rounded-lg', item: 'rounded-md' },
+  lg: { container: 'rounded-xl', item: 'rounded-lg' },
+  xl: { container: 'rounded-2xl', item: 'rounded-xl' },
+  '2xl': { container: 'rounded-2xl', item: 'rounded-xl' },
+  '3xl': { container: 'rounded-3xl', item: 'rounded-2xl' },
+  full: { container: 'rounded-full', item: 'rounded-full' },
+};
 
 export const tabsVariantStyles: Record<
   TabsVariant,
   {
     container: string;
+    indicator: string;
     active: string;
     inactive: string;
   }
 > = {
-  default: {
-    container: 'border-b border-slate-200/80 dark:border-neutral-700',
+  segment: {
+    container:
+      'border border-neutral-200/80 bg-neutral-100/80 p-1 dark:border-neutral-700/80 dark:bg-neutral-800/80',
+    indicator: 'shadow-xs bg-white dark:bg-neutral-900',
     active: 'text-sky-600 dark:text-sky-400',
     inactive:
-      'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200',
+      'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200',
   },
-  sky: {
-    container: 'border-b border-sky-100 dark:border-sky-900/50',
-    active: 'text-sky-600 dark:text-sky-400',
+  default: {
+    container: 'bg-slate-100/80 p-1 shadow-inner dark:bg-neutral-800/80',
+    indicator: 'shadow-xs bg-white dark:bg-neutral-900',
+    active: 'text-slate-900 dark:text-slate-100',
     inactive:
-      'border-transparent text-slate-500 hover:text-sky-600 dark:text-slate-400 dark:hover:text-sky-300',
+      'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200',
   },
   neutral: {
-    container: 'border-b border-neutral-200 dark:border-neutral-800',
-    active: 'text-neutral-900 dark:text-white',
+    container:
+      'border border-neutral-200/80 bg-neutral-100/70 p-1 dark:border-neutral-800 dark:bg-neutral-900/60',
+    indicator: 'shadow-xs bg-white dark:bg-neutral-800',
+    active: 'text-slate-900 dark:text-slate-100',
     inactive:
-      'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200',
+      'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200',
   },
-  'pill-bottom': {
-    container: 'border-b border-slate-200/80 dark:border-neutral-800 gap-1',
-    active:
-      'bg-sky-50/60 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300 rounded-t-lg',
+  primary: {
+    container:
+      'border border-neutral-200/80 bg-neutral-100/90 p-1 dark:border-neutral-700/80 dark:bg-neutral-800/90',
+    indicator: 'shadow-xs bg-sky-600 dark:bg-sky-500',
+    active: 'text-white dark:text-white',
     inactive:
-      'text-slate-500 hover:bg-neutral-100/70 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-neutral-800/60 dark:hover:text-slate-200 rounded-t-lg',
+      'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200',
+  },
+  ghost: {
+    container: 'bg-neutral-100/50 p-1 dark:bg-neutral-800/40',
+    indicator: 'bg-neutral-200/80 dark:bg-neutral-700/80',
+    active: 'text-slate-900 dark:text-slate-100',
+    inactive:
+      'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200',
+  },
+  outline: {
+    container:
+      'border border-neutral-200/80 bg-transparent p-1 dark:border-neutral-700/80',
+    indicator:
+      'border border-sky-300 bg-sky-50 dark:border-sky-800 dark:bg-sky-950/80',
+    active: 'text-sky-700 dark:text-sky-300',
+    inactive:
+      'text-slate-600 hover:bg-neutral-100/60 dark:text-slate-400 dark:hover:bg-neutral-800/60',
+  },
+  blue: {
+    container:
+      'border border-sky-100 bg-sky-50/60 p-1 dark:border-sky-900/40 dark:bg-sky-950/30',
+    indicator: 'shadow-xs bg-sky-600 dark:bg-sky-500',
+    active: 'text-white dark:text-slate-950',
+    inactive:
+      'text-sky-700 hover:text-sky-900 dark:text-sky-300 dark:hover:text-sky-100',
   },
 };
 
@@ -46,31 +93,31 @@ export const tabsSizeStyles: Record<
 > = {
   xs: {
     text: 'text-xs',
-    padding: 'pt-1 pb-2 px-2.5',
+    padding: 'px-3 py-1.5',
     gap: 'gap-1.5',
     iconSize: 13,
   },
   sm: {
-    text: 'text-xs sm:text-sm',
-    padding: 'pt-1.5 pb-2.5 px-3',
+    text: 'text-xs',
+    padding: 'px-3.5 py-1.5',
     gap: 'gap-1.5',
     iconSize: 14,
   },
   base: {
     text: 'text-sm',
-    padding: 'pt-2 pb-3 px-3.5',
+    padding: 'px-4 py-2',
     gap: 'gap-2',
     iconSize: 16,
   },
   lg: {
     text: 'text-base',
-    padding: 'pt-2.5 pb-3.5 px-4',
+    padding: 'px-5 py-2.5',
     gap: 'gap-2',
     iconSize: 18,
   },
   xl: {
     text: 'text-lg',
-    padding: 'pt-3 pb-4 px-5',
+    padding: 'px-6 py-3',
     gap: 'gap-2.5',
     iconSize: 20,
   },

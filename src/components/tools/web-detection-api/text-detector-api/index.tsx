@@ -11,7 +11,7 @@ import HeaderBlock from '@/components/tools/common/header-block';
 import SectionGap from '@/components/tools/common/section-gap';
 import { writeTextHandoff } from '@/components/tools/common/text-handoff';
 import { Button } from '@/components/ui/button';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { useToolsDB } from '@/hooks/tools/use-tools-db';
 import toast from '@/utils/toast';
 
@@ -19,7 +19,6 @@ import CompatibilityBanner from '../compatibility-banner';
 import DarkroomInspector from '../darkroom-inspector';
 import { DETECTION_SHORTCUTS } from '../data/detection-shortcuts';
 import { UNSUPPORTED_API_TYPES } from '../data/unsupported-types';
-import DetectionTabs from '../detection-tabs';
 import useCommonFunction from '../hooks/use-common-function';
 import useTextDetector from '../hooks/use-text-detector';
 import SystemChecking from '../system-checking';
@@ -216,27 +215,23 @@ export default function TextDetectorApi() {
         />
       ) : null}
 
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <DetectionTabs />
-
-        {(!isApiSupported || usingOcrFallback) && (
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400">
-              <Languages size={13} className="text-sky-500" />
-              <span>OCR Language:</span>
-            </span>
-            <PillTabs<OcrLanguage>
-              tabs={OCR_LANGUAGES}
-              activeTab={ocrLang}
-              tabLabels={OCR_LANGUAGE_LABELS}
-              onChange={handleOcrLangChange}
-              size="xs"
-              rounded="lg"
-              variant="segment"
-            />
-          </div>
-        )}
-      </div>
+      {(!isApiSupported || usingOcrFallback) && (
+        <div className="mb-4 flex flex-wrap items-center justify-end gap-2">
+          <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400">
+            <Languages size={13} className="text-sky-500" />
+            <span>OCR Language:</span>
+          </span>
+          <Tabs<OcrLanguage>
+            tabs={OCR_LANGUAGES}
+            activeTab={ocrLang}
+            tabLabels={OCR_LANGUAGE_LABELS}
+            onChange={handleOcrLangChange}
+            size="xs"
+            rounded="lg"
+            variant="segment"
+          />
+        </div>
+      )}
 
       {isProcessing && ocrStatus && (
         <div className="mb-4 flex items-center gap-2 rounded-xl border border-sky-200/80 bg-sky-50/75 px-3.5 py-2 text-xs text-sky-800 dark:border-sky-900/60 dark:bg-sky-950/35 dark:text-sky-200">

@@ -8,16 +8,19 @@ import type { SamplePresetOption } from './utils/sample-presets';
 import {
   Braces,
   Grid2x2,
+  Image as ImageIcon,
   ListChecks,
   Moon,
   Square,
   Trash2,
+  Video,
+  Webcam,
 } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { PillTabs, Tabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { cn } from '@/utils/cn';
 
 import BoundingBox from './bounding-box';
@@ -32,6 +35,21 @@ type InspectorTab = 'extracted' | 'raw';
 type StageSurface = 'darkroom' | 'checkerboard';
 
 const TAB_LIST: Array<WebDetectionFileType> = ['image', 'video', 'webcam'];
+
+const TAB_LABELS: Record<WebDetectionFileType, string> = {
+  '': '',
+  image: 'Image',
+  video: 'Video',
+  webcam: 'Webcam',
+};
+
+const TAB_ICONS: Record<WebDetectionFileType, typeof ImageIcon> = {
+  '': ImageIcon,
+  image: ImageIcon,
+  video: Video,
+  webcam: Webcam,
+};
+
 const INSPECTOR_TABS: InspectorTab[] = ['extracted', 'raw'];
 
 const INSPECTOR_LABELS: Record<InspectorTab, string> = {
@@ -140,7 +158,12 @@ export default function DarkroomInspector({
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <Tabs
           tabs={TAB_LIST}
+          tabLabels={TAB_LABELS}
+          tabIcons={TAB_ICONS}
           activeTab={tab}
+          variant="segment"
+          size="sm"
+          rounded="lg"
           onChange={(nextTab) => setTab(nextTab as WebDetectionFileType)}
         />
 
@@ -187,22 +210,25 @@ export default function DarkroomInspector({
         )}
       </div>
 
-      {/* Interactive Sample Presets Strip */}
-      {samples && samples.length > 0 && onSelectSample && (
-        <SamplePresetBar
-          samples={samples}
-          onSelectSample={onSelectSample}
-          isLoading={isSampleLoading}
-        />
-      )}
-
       {isEmpty ? (
-        <Empty
-          tab={tab}
-          processImage={processImage}
-          processVideo={processVideo}
-          processWebcam={processWebcam}
-        />
+        <>
+          <Empty
+            tab={tab}
+            processImage={processImage}
+            processVideo={processVideo}
+            processWebcam={processWebcam}
+          />
+          {tab === 'image' &&
+            samples &&
+            samples.length > 0 &&
+            onSelectSample && (
+              <SamplePresetBar
+                samples={samples}
+                onSelectSample={onSelectSample}
+                isLoading={isSampleLoading}
+              />
+            )}
+        </>
       ) : (
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-12 lg:items-start">
           {/* Left 7 Cols: Darkroom Media Stage */}
@@ -239,7 +265,7 @@ export default function DarkroomInspector({
 
           {/* Right 5 Cols: Sticky Inspector Sidebar */}
           <aside className="space-y-3 rounded-2xl border border-neutral-200/80 bg-white/80 p-4 shadow-sm backdrop-blur-md lg:sticky lg:top-24 lg:col-span-5 dark:border-neutral-800 dark:bg-neutral-900/65">
-            <PillTabs<InspectorTab>
+            <Tabs<InspectorTab>
               tabs={INSPECTOR_TABS}
               activeTab={inspectorTab}
               tabLabels={INSPECTOR_LABELS}

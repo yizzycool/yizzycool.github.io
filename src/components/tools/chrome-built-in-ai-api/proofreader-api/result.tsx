@@ -16,7 +16,7 @@ import { forEach, isEmpty, join, map } from 'lodash';
 import { CopyAction } from '@/components/shared/action-button';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import {
   TooltipPopup,
   TooltipRoot,
@@ -215,7 +215,7 @@ export default function Result({
         actionsClassName="shrink-0"
       >
         <div className="flex items-center gap-2">
-          <PillTabs<ViewMode>
+          <Tabs<ViewMode>
             tabs={VIEW_MODE_TABS}
             activeTab={viewMode}
             onChange={setViewMode}

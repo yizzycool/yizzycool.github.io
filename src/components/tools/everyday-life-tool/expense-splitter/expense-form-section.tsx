@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button';
 import { ErrorMessage } from '@/components/ui/error-message';
 import { Input } from '@/components/ui/input';
 import { Selector } from '@/components/ui/selector';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 import { SPLIT_TYPE_LABELS, SPLIT_TYPE_TABS } from './constants';
 import ExactSplitInputItem from './exact-split-input-item';
@@ -150,7 +150,7 @@ export default function ExpenseFormSection({
         <InsetGroupRow hoverable={false}>
           <div className="space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <PillTabs<SplitType>
+              <Tabs<SplitType>
                 tabs={SPLIT_TYPE_TABS}
                 activeTab={splitType}
                 tabLabels={SPLIT_TYPE_LABELS}

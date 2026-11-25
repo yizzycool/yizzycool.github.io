@@ -26,7 +26,6 @@ import toast from '@/utils/toast';
 import HeaderBlock from '../../common/header-block';
 import LabelBar from '../../common/label-bar';
 import SectionGap from '../../common/section-gap';
-import Base64ModeSwitcher from '../base64-mode-switcher';
 import ImagePreviewStage from '../image-preview-stage';
 import { writeStudioHandoff } from '../studio-handoff';
 
@@ -201,10 +200,6 @@ export default function Base64ToImage() {
       />
 
       <SectionGap />
-
-      <Base64ModeSwitcher active="base64-to-image" />
-
-      <SectionGap size="sm" />
 
       {/* 50/50 Split Media Asset Inspector */}
       <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">

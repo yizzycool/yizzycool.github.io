@@ -14,7 +14,7 @@ import { DeleteAction, PasteAction } from '@/components/shared/action-button';
 import { Input } from '@/components/ui/input';
 import { Selector } from '@/components/ui/selector';
 import { Switch } from '@/components/ui/switch';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 
 import LabelBar from '../../common/label-bar';
@@ -75,7 +75,7 @@ export default function PayloadForm({
 }: Props) {
   return (
     <div className="space-y-4">
-      <PillTabs<QrPayloadType>
+      <Tabs<QrPayloadType>
         tabs={PAYLOAD_TABS}
         activeTab={payloadType}
         onChange={onChangePayloadType}

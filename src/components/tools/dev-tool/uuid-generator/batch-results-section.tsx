@@ -5,7 +5,7 @@ import { ListOrdered } from 'lucide-react';
 
 import { CopyAction } from '@/components/shared/action-button';
 import LabelBar from '@/components/tools/common/label-bar';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import useIsClient from '@/hooks/lifecycle/use-is-client';
 
@@ -32,7 +32,7 @@ export default function BatchResultsSection({
         description="Formatted output ready for clipboard copy"
       >
         <div className="flex items-center gap-1.5">
-          <PillTabs
+          <Tabs
             tabs={['text', 'list']}
             activeTab={viewMode}
             onChange={(m) => setViewMode(m as 'text' | 'list')}

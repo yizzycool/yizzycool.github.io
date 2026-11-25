@@ -9,6 +9,7 @@ export const TOOLS_WITH_HISTORY = [
   ToolKeys.htmlEntities,
   ToolKeys.hexBinaryConverter,
   ToolKeys.cidrCalculator,
+  ToolKeys.chromeAiTranslator,
   ToolKeys.chromeAiPrompt,
 ];
 

@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Surface } from '@/components/ui/surface';
 import { Switch } from '@/components/ui/switch';
-import { PillTabs } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 
 import {
   DEFAULT_PHOTO_CROP,
@@ -128,7 +128,7 @@ export default function PhotoExtractControls({
       {/* Color Mode & Recolor Picker */}
       <div className="space-y-3">
         <SettingHeader label="Ink Output Color" />
-        <PillTabs<PhotoColorMode>
+        <Tabs<PhotoColorMode>
           tabs={PHOTO_COLOR_MODES}
           activeTab={settings.colorMode}
           onChange={(colorMode) => onUpdateSettings({ colorMode })}
