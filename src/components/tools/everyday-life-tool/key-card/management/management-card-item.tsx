@@ -1,19 +1,18 @@
 'use client';
 
-import type { CardData, ContentVersion } from '../../types';
+import type { CardData, ContentVersion } from '../types';
 
-import { Plus } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { useRef, useState } from 'react';
 import { useSortable } from '@dnd-kit/react/sortable';
+import { Plus } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 
-import { cn } from '@/utils/cn';
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { InfoTooltip } from '@/components/ui/info-tooltip';
+import { cn } from '@/utils/cn';
 
 import { ManagementCardHeader } from './management-card-header';
 import { ManagementVersionItem } from './management-version-item';
-import { useRef, useState } from 'react';
 
 type ManagementCardItemProps = {
   id: string;
@@ -72,12 +71,11 @@ export function ManagementCardItem({
   });
 
   return (
-    <Card
+    <div
       ref={setElement}
       id={card.id}
-      rounded="2xl"
       className={cn(
-        'relative p-0 transition-all duration-200',
+        'relative rounded-2xl border border-neutral-200/80 bg-white/75 p-0 shadow-sm backdrop-blur-md transition-all duration-200 dark:border-neutral-800 dark:bg-neutral-900/50',
         isListening && 'ring-2 ring-sky-500/50',
         isDragging && 'shadow-xl'
       )}
@@ -189,6 +187,6 @@ export function ManagementCardItem({
           </motion.div>
         )}
       </AnimatePresence>
-    </Card>
+    </div>
   );
 }

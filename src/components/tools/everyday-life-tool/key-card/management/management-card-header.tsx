@@ -9,7 +9,7 @@ import {
   Trash2,
   GripVertical,
 } from 'lucide-react';
-import type { CardData } from '../../types';
+import type { CardData } from '../types';
 import { cn } from '@/utils/cn';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

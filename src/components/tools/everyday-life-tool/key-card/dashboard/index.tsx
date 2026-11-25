@@ -1,4 +1,4 @@
-import type { CardData } from '../../types';
+import type { CardData } from '../types';
 
 import { Grid2X2 } from 'lucide-react';
 import { motion } from 'motion/react';

@@ -3,7 +3,8 @@
 import type { ChangeEvent } from 'react';
 
 import { useEffect, useRef, useState } from 'react';
-import { FileText, View } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { FileText, Layers, View, WandSparkles } from 'lucide-react';
 import { isEmpty, isNull } from 'lodash';
 
 import {
@@ -12,15 +13,22 @@ import {
   DownloadAction,
   PasteAction,
 } from '@/components/shared/action-button';
+import { Button } from '@/components/ui/button';
+import { ConfirmDialog, useConfirmDialog } from '@/components/ui/dialog';
 import { ErrorMessage } from '@/components/ui/error-message';
 import { Textarea } from '@/components/ui/textarea';
+import { ToolKeys, ToolUrls } from '@/data/tools';
+import { useToolsDB } from '@/hooks/tools/use-tools-db';
 import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 import imageUtils from '@/utils/image-utils';
+import toast from '@/utils/toast';
 
 import HeaderBlock from '../../common/header-block';
 import LabelBar from '../../common/label-bar';
 import SectionGap from '../../common/section-gap';
+import Base64ModeSwitcher from '../base64-mode-switcher';
 import ImagePreviewStage from '../image-preview-stage';
+import { writeStudioHandoff } from '../studio-handoff';
 
 type ImageInfo = {
   blob: Blob | null;
@@ -41,12 +49,21 @@ const defaultImageInfo: ImageInfo = {
 const DATA_URI_PREFIX = /^data:(image\/[a-z0-9.+-]+);base64,/i;
 
 export default function Base64ToImage() {
+  const router = useRouter();
+  const { isSupported: isDbSupported, setValue: dbSetValue } = useToolsDB();
+
   const [base64, setBase64] = useState<string>('');
   const [decodeError, setDecodeError] = useState<string | null>(null);
   const [imageInfo, setImageInfo] = useState<ImageInfo>(defaultImageInfo);
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const {
+    isOpen: isConfirmOpen,
+    confirm,
+    dialogProps: confirmDialogProps,
+  } = useConfirmDialog();
 
   useEffect(() => {
     return () => {
@@ -80,7 +97,7 @@ export default function Base64ToImage() {
 
       setImageInfo({ image, width, height, blob, mimeType });
       setDecodeError(null);
-    } catch (_e) {
+    } catch {
       setImageInfo(defaultImageInfo);
       setDecodeError(
         'Could not decode Base64 input into a valid image. Verify the Data URI or raw Base64 payload.'
@@ -111,19 +128,66 @@ export default function Base64ToImage() {
     setDecodeError(null);
   };
 
+  const handleSendToStudio = async (
+    target: 'pic-merge-studio' | 'photo-editor'
+  ) => {
+    if (!imageInfo.blob) return;
+    if (!isDbSupported) {
+      toast.error('IndexedDB is unavailable in this browser session');
+      return;
+    }
+
+    await writeStudioHandoff(dbSetValue, target, {
+      version: 1,
+      createdAt: Date.now(),
+      source: target === 'photo-editor' ? 'pic-merge-studio' : 'photo-editor',
+      mode: target === 'pic-merge-studio' ? 'append' : 'replace',
+      width: Math.max(100, imageInfo.width || 1080),
+      height: Math.max(100, imageInfo.height || 1080),
+      items: [{ name: 'decoded-image.png', blob: imageInfo.blob }],
+    });
+
+    const targetUrl =
+      target === 'photo-editor'
+        ? ToolUrls[ToolKeys.photoEditorStudio] ||
+          '/tools/image-tool/photo-editor'
+        : ToolUrls[ToolKeys.picMergeStudio] ||
+          '/tools/image-tool/pic-merge-studio';
+    router.push(`${targetUrl}?handoff=1`);
+  };
+
+  const requestSendToStudio = (target: 'pic-merge-studio' | 'photo-editor') => {
+    if (!imageInfo.blob) return;
+    const isPicMerge = target === 'pic-merge-studio';
+    void confirm({
+      title: isPicMerge
+        ? 'Add Image to PicMerge Studio'
+        : 'Open Image in Photo Editor Studio',
+      message: isPicMerge
+        ? 'Add this decoded image into your PicMerge Studio collage? Your existing PicMerge draft will be preserved.'
+        : 'Open this decoded image in Photo Editor Studio for layers, filters, and cutouts? This will replace the current Photo Editor canvas.',
+      confirmText: isPicMerge ? 'Add to PicMerge' : 'Open in Photo Editor',
+      cancelText: 'Cancel',
+      confirmVariant: 'primary',
+      onConfirm: () => {
+        void handleSendToStudio(target);
+      },
+    });
+  };
+
   useToolHotkeys(
     {
       onPaste: async () => {
         try {
           const clipText = await navigator.clipboard.readText();
           onPasteBase64(clipText);
-        } catch (_e) {
-          // ignore
+        } catch {
+          // Ignore clipboard errors
         }
       },
       onClear: onClearBase64,
     },
-    { target: textareaRef }
+    { target: textareaRef, enabled: !isConfirmOpen }
   );
 
   return (
@@ -137,6 +201,10 @@ export default function Base64ToImage() {
       />
 
       <SectionGap />
+
+      <Base64ModeSwitcher active="base64-to-image" />
+
+      <SectionGap size="sm" />
 
       {/* 50/50 Split Media Asset Inspector */}
       <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">
@@ -172,7 +240,7 @@ export default function Base64ToImage() {
 
         <div className="flex flex-col">
           <LabelBar label="Media Preview" icon={View}>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <CopyAction content={imageInfo.blob} />
               <DownloadAction
                 blob={imageInfo.blob}
@@ -192,8 +260,34 @@ export default function Base64ToImage() {
             mimeType={imageInfo.mimeType}
             emptyText="Decoded image will appear here with grid/light/dark preview"
           />
+
+          {imageInfo.blob && (
+            <div className="mt-3 flex flex-wrap items-center justify-end gap-2">
+              <Button
+                variant="secondary"
+                size="xs"
+                bordered
+                icon={Layers}
+                onClick={() => requestSendToStudio('pic-merge-studio')}
+              >
+                Add to PicMerge
+              </Button>
+              <Button
+                variant="secondary"
+                size="xs"
+                bordered
+                icon={WandSparkles}
+                onClick={() => requestSendToStudio('photo-editor')}
+                className="text-sky-600 dark:text-sky-400"
+              >
+                Edit in Photo Editor
+              </Button>
+            </div>
+          )}
         </div>
       </div>
+
+      <ConfirmDialog {...confirmDialogProps} />
     </>
   );
 }

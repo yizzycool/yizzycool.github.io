@@ -4,10 +4,10 @@ import type { QrCodeLevel } from './hooks/use-qr-code-generator';
 
 import { Frame, LayoutTemplate, ShieldCheck } from 'lucide-react';
 
-import { Label } from '@/components/ui/label';
-import { Card } from '@/components/ui/card';
-import { Slider } from '@/components/ui/slider';
 import { Chip } from '@/components/ui/chip';
+import { Slider } from '@/components/ui/slider';
+
+import LabelBar from '../../common/label-bar';
 import SettingHeader from '../../common/setting-header';
 
 type Props = {
@@ -38,25 +38,27 @@ export default function Layout({
 }: Props) {
   return (
     <div className="space-y-3 text-left">
-      <Label icon={LayoutTemplate}>Dimensions & Reliability</Label>
+      <LabelBar label="Dimensions & Reliability" icon={LayoutTemplate} />
 
-      <Card className="space-y-6 p-5">
+      <div className="space-y-5 rounded-xl border border-neutral-200/80 bg-white/70 p-4 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-900/40">
         {/* Output Resolution Presets */}
         <div className="space-y-3">
           <SettingHeader
             label="Output Resolution"
             value={`${size} × ${size} px`}
-            valueClassName="font-semibold text-sky-600 dark:text-sky-400"
+            valueClassName="font-mono font-semibold text-sky-600 dark:text-sky-400"
           />
 
           <div className="grid grid-cols-4 gap-2">
             {SIZE_PRESETS.map((preset) => (
-              <SizePreset
+              <Chip
                 key={preset}
-                size={size}
-                setSize={setSize}
-                preset={preset}
-              />
+                selected={size === preset}
+                onClick={() => setSize(preset)}
+                className="justify-center py-1.5 font-mono text-xs"
+              >
+                {preset}px
+              </Chip>
             ))}
           </div>
 
@@ -73,7 +75,7 @@ export default function Layout({
         </div>
 
         {/* Error Correction Level */}
-        <div className="space-y-3 border-t border-neutral-200/60 pt-4 dark:border-neutral-800/60">
+        <div className="space-y-3 border-t border-neutral-200/70 pt-4 dark:border-neutral-800/70">
           <SettingHeader
             label="Error Correction (ECC)"
             icon={ShieldCheck}
@@ -83,18 +85,25 @@ export default function Layout({
 
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {ECC_LEVELS.map((item) => (
-              <EccPreset
+              <Chip
                 key={item.id}
-                level={level}
-                setLevel={setLevel}
-                item={item}
-              />
+                selected={level === item.id}
+                onClick={() => setLevel(item.id)}
+                className="flex-col p-2 text-center"
+              >
+                <span className="text-xs font-bold uppercase">
+                  {item.label}
+                </span>
+                <span className="mt-0.5 text-[10px] text-neutral-400 dark:text-neutral-500">
+                  {item.desc}
+                </span>
+              </Chip>
             ))}
           </div>
         </div>
 
         {/* Margin / Quiet Zone Slider */}
-        <div className="space-y-3 border-t border-neutral-200/60 pt-4 dark:border-neutral-800/60">
+        <div className="space-y-3 border-t border-neutral-200/70 pt-4 dark:border-neutral-800/70">
           <SettingHeader
             label="Quiet Zone (Margin)"
             icon={Frame}
@@ -112,54 +121,7 @@ export default function Layout({
             ariaLabel="Margin slider to adjust whitespace surrounding QR code"
           />
         </div>
-      </Card>
+      </div>
     </div>
-  );
-}
-
-type SizePresetProps = {
-  size: number;
-  setSize: React.Dispatch<React.SetStateAction<number>>;
-  preset: number;
-};
-
-function SizePreset({ size, setSize, preset }: SizePresetProps) {
-  const isSelected = size === preset;
-  return (
-    <Chip
-      selected={isSelected}
-      onClick={() => setSize(preset)}
-      className="justify-center py-1.5"
-    >
-      {preset}px
-    </Chip>
-  );
-}
-
-type EccLevelItem = {
-  id: QrCodeLevel;
-  label: string;
-  desc: string;
-};
-
-type EccPresetProps = {
-  level: QrCodeLevel;
-  setLevel: React.Dispatch<React.SetStateAction<QrCodeLevel>>;
-  item: EccLevelItem;
-};
-
-function EccPreset({ level, setLevel, item }: EccPresetProps) {
-  const isSelected = level === item.id;
-  return (
-    <Chip
-      selected={isSelected}
-      onClick={() => setLevel(item.id)}
-      className="flex-col p-2 text-center"
-    >
-      <span className="text-xs font-bold uppercase">{item.label}</span>
-      <span className="mt-0.5 text-[10px] text-slate-400 dark:text-slate-500">
-        {item.desc}
-      </span>
-    </Chip>
   );
 }

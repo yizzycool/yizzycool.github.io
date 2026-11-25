@@ -154,6 +154,44 @@ export function useKeyCards() {
     toast.success('Reset all cheat sheets to default templates.');
   };
 
+  // Merge a curated Starter Pack without clobbering existing cards or hotkeys
+  const importStarterPack = (packCards: CardData[], packName: string) => {
+    const existingKeys = new Set(cards.map((c) => c.key).filter(Boolean));
+    const existingTitles = new Set(
+      cards.map((c) => c.title.trim().toLowerCase())
+    );
+    const now = Date.now();
+
+    const filteredIncoming = packCards.filter(
+      (item) => !existingTitles.has(item.title.trim().toLowerCase())
+    );
+
+    if (filteredIncoming.length === 0) {
+      toast.info(`All cards from "${packName}" are already in your library.`);
+      return;
+    }
+
+    const prepared: CardData[] = filteredIncoming.map((item, idx) => {
+      let key = item.key;
+      if (key && existingKeys.has(key)) {
+        key = '';
+      } else if (key) {
+        existingKeys.add(key);
+      }
+      return {
+        ...item,
+        id: `pack_${now}_${idx}`,
+        key,
+        contents: item.contents.map((c) => ({ ...c })),
+        createdAt: now,
+        updatedAt: now,
+      };
+    });
+
+    saveCards([...cards, ...prepared]);
+    toast.success(`Imported ${prepared.length} cards from "${packName}"`);
+  };
+
   // Update Main Card Field (title, tags, key)
   const updateCardField = (
     id: string,
@@ -369,6 +407,7 @@ export function useKeyCards() {
     deleteCardContent,
     exportCards,
     importCards,
+    importStarterPack,
     saveCards,
     moveCard,
   };

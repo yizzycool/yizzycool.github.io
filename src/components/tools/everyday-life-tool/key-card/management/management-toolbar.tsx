@@ -1,5 +1,5 @@
 import type { RefObject } from 'react';
-import type { SortOrderOption } from '../../types';
+import type { SortOrderOption } from '../types';
 
 import {
   Plus,

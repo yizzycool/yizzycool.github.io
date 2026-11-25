@@ -2,26 +2,25 @@
 
 import type { CardData } from './types';
 
-import { useState, useRef, useMemo } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
-
-import { useKeyCards } from './hooks/use-key-cards';
+import Dashboard from './dashboard';
+import FocusModal from './focus-modal';
 import { useKeyCardSettings } from './hooks/use-key-card-settings';
 import { useKeyCardShortcuts } from './hooks/use-key-card-shortcuts';
-
-import Toolbar from './components/toolbar';
-import Dashboard from './components/dashboard';
-import Management from './components/management';
-import FocusModal from './components/focus-modal';
-import ShortcutsGuideModal from './components/shortcuts-guide-modal';
+import { useKeyCards } from './hooks/use-key-cards';
+import Management from './management';
+import ShortcutsGuideModal from './shortcuts-guide-modal';
+import StarterPacksModal from './starter-packs-modal';
+import Toolbar from './toolbar';
 
 export default function KeyCard() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [isStarterPacksOpen, setIsStarterPacksOpen] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Persistent Settings Hook (IndexedDB)
   const {
     settings,
     setMode,
@@ -32,7 +31,6 @@ export default function KeyCard() {
     setAllCardsCollapsed,
   } = useKeyCardSettings();
 
-  // Cards Data Model Hook
   const {
     cards,
     addCard,
@@ -47,13 +45,12 @@ export default function KeyCard() {
     deleteCardContent,
     exportCards,
     importCards,
+    importStarterPack,
     saveCards,
   } = useKeyCards();
 
-  // Filter cards on Dashboard by text search & active tag
   const filteredCards = useMemo(() => {
     return cards.filter((card: CardData) => {
-      // 1. Tag filter matching
       if (settings.selectedTag) {
         const cardTags = card.tags
           .split(',')
@@ -63,7 +60,6 @@ export default function KeyCard() {
         }
       }
 
-      // 2. Text query matching
       const query = searchQuery.toLowerCase().trim();
       if (!query) return true;
 
@@ -80,7 +76,6 @@ export default function KeyCard() {
     });
   }, [cards, searchQuery, settings.selectedTag]);
 
-  // Keybinding and shortcut logic hook
   const {
     focusCardId,
     setFocusCardId,
@@ -125,7 +120,6 @@ export default function KeyCard() {
 
       <SectionGap />
 
-      {/* Control Navigation Header */}
       <Toolbar
         mode={settings.mode}
         setMode={setMode}
@@ -134,9 +128,9 @@ export default function KeyCard() {
         cardsCount={cards.length}
         filteredCount={filteredCards.length}
         searchInputRef={searchInputRef}
+        onOpenStarterPacks={() => setIsStarterPacksOpen(true)}
       />
 
-      {/* Conditional Rendering of Views */}
       {settings.mode === 'dashboard' ? (
         <Dashboard
           allCards={cards}
@@ -180,7 +174,6 @@ export default function KeyCard() {
         />
       )}
 
-      {/* Focus Modal Overlay */}
       <FocusModal
         focusCard={focusCard}
         isOpen={focusCardId !== null}
@@ -192,11 +185,16 @@ export default function KeyCard() {
         onCopy={copyCurrentFocusContent}
       />
 
-      {/* Shortcuts Guide Modal */}
       <ShortcutsGuideModal
         isOpen={isShortcutsGuideOpen}
         onClose={() => setIsShortcutsGuideOpen(false)}
         cards={cards}
+      />
+
+      <StarterPacksModal
+        isOpen={isStarterPacksOpen}
+        onClose={() => setIsStarterPacksOpen(false)}
+        onImportPack={(pack) => importStarterPack(pack.cards, pack.name)}
       />
     </div>
   );

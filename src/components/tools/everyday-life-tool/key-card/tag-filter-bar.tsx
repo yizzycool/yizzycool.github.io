@@ -1,4 +1,4 @@
-import type { CardData } from '../types';
+import type { CardData } from './types';
 
 import { useMemo } from 'react';
 import { Tag as TagIcon } from 'lucide-react';

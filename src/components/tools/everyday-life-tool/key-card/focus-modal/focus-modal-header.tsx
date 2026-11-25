@@ -1,4 +1,4 @@
-import type { CardData } from '../../types';
+import type { CardData } from '../types';
 
 import { X, Pencil, ChevronLeft, ChevronRight } from 'lucide-react';
 

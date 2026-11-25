@@ -1,6 +1,6 @@
 import type { RefObject } from 'react';
 
-import { LayoutGrid, Settings, Info } from 'lucide-react';
+import { Info, LayoutGrid, PackagePlus, Settings } from 'lucide-react';
 
 import {
   TooltipRoot,
@@ -19,6 +19,7 @@ type ToolbarProps = {
   cardsCount: number;
   filteredCount: number;
   searchInputRef?: RefObject<HTMLInputElement | null>;
+  onOpenStarterPacks: () => void;
 };
 
 export default function Toolbar({
@@ -29,6 +30,7 @@ export default function Toolbar({
   cardsCount,
   filteredCount,
   searchInputRef,
+  onOpenStarterPacks,
 }: ToolbarProps) {
   return (
     <div className="mb-5 flex flex-col gap-3.5 sm:flex-row sm:items-center sm:justify-between">
@@ -71,8 +73,19 @@ export default function Toolbar({
         </div>
       )}
 
-      {/* Mode Switcher Tabs */}
-      <div className="flex items-center justify-end">
+      {/* Mode Switcher & Starter Packs */}
+      <div className="flex items-center justify-end gap-2">
+        <Button
+          variant="secondary"
+          size="xs"
+          bordered
+          icon={PackagePlus}
+          onClick={onOpenStarterPacks}
+          className="whitespace-nowrap font-semibold"
+        >
+          Starter Packs
+        </Button>
+
         <PillTabs
           tabs={['dashboard', 'management']}
           activeTab={mode}

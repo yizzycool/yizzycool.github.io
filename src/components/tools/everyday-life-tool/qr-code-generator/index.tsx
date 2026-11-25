@@ -2,26 +2,37 @@
 
 import type { QrCodeHistoryData } from './hooks/use-qr-code-generator';
 
-import { Link } from 'lucide-react';
-import { isNull, isEmpty } from 'lodash';
-
-import useQrCodeGenerator from './hooks/use-qr-code-generator';
+import { ConfirmDialog, useConfirmDialog } from '@/components/ui/dialog';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
+
+import ExecuteBar from '../../common/execute-bar';
 import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
-import ExecuteBar from '../../common/execute-bar';
-import LabelBar from '../../common/label-bar';
-import { PasteAction } from '@/components/shared/action-button';
-import { DeleteAction } from '@/components/shared/action-button';
-import { Textarea } from '@/components/ui/textarea';
 import Appearance from './appearance';
+import useQrCodeGenerator from './hooks/use-qr-code-generator';
 import Layout from './layout';
+import PayloadForm from './payload-form';
 import Preview from './preview';
 
 export default function QrCodeGenerator() {
   const {
+    isOpen: isConfirmOpen,
+    confirm,
+    dialogProps: confirmDialogProps,
+  } = useConfirmDialog();
+
+  const {
+    payloadType,
+    setPayloadType,
     inputText,
     setInputText,
+    wifi,
+    updateWifi,
+    vcard,
+    updateVCard,
+    email,
+    updateEmail,
+    computedContent,
     qrValue,
     size,
     setSize,
@@ -33,20 +44,47 @@ export default function QrCodeGenerator() {
     setMargin,
     level,
     setLevel,
+    logoDataUrl,
+    logoSizeRatio,
+    setLogoSizeRatio,
+    onUploadLogo,
+    onRemoveLogo,
     inputRef,
     canvasRef,
+    svgContainerRef,
     historyList,
     isLoadingHistory,
     onRestoreHistory,
     renameHistory,
     removeHistory,
     clearHistory,
-    onInputChange,
     onClear,
     onGenerate,
-    onDownload,
+    onDownloadPng,
+    onDownloadSvg,
     onCopy,
-  } = useQrCodeGenerator();
+    onSendToStudio,
+  } = useQrCodeGenerator(isConfirmOpen);
+
+  const handleRequestSendToStudio = (
+    target: 'pic-merge-studio' | 'photo-editor'
+  ) => {
+    const isPicMerge = target === 'pic-merge-studio';
+    void confirm({
+      title: isPicMerge
+        ? 'Add QR Code to PicMerge Studio'
+        : 'Open QR Code in Photo Editor Studio',
+      message: isPicMerge
+        ? 'Add this QR code image layer into your PicMerge Studio collage? Your current PicMerge draft will be preserved.'
+        : 'Open this QR code in Photo Editor Studio to add posters, text, or effects? This will replace the current canvas in Photo Editor Studio.',
+      confirmText: isPicMerge ? 'Add to PicMerge' : 'Open in Photo Editor',
+      cancelText: 'Cancel',
+      confirmVariant: 'primary',
+      onConfirm: () => {
+        void onSendToStudio(target);
+      },
+    });
+  };
 
   return (
     <>
@@ -70,62 +108,65 @@ export default function QrCodeGenerator() {
 
       <SectionGap />
 
-      {/* Responsive Layout:
-          - Mobile (< lg): Natural flow (1. Input -> 2. Preview -> 3. Settings)
-          - Desktop (lg:): 2-Column Split Dashboard (Left: Input & Settings, Right: Sticky Preview)
-      */}
       <div className="flex flex-col gap-8 lg:grid lg:grid-cols-12 lg:items-start">
-        {/* 1. Input Section (Mobile: Order 1, Desktop: Col 1-7 Row 1) */}
-        <div className="order-1 space-y-2 text-left lg:order-none lg:col-span-7">
-          <LabelBar label="Content or URL" icon={Link} htmlFor="url-textarea">
-            <PasteAction onClick={setInputText} />
-            <DeleteAction
-              onClick={onClear}
-              disabled={isNull(inputText) || isEmpty(inputText)}
-            />
-          </LabelBar>
-          <Textarea
-            ref={inputRef}
-            id="url-textarea"
-            placeholder="Enter URL or text to generate your QR Code..."
-            onChange={onInputChange}
-            value={inputText}
-            rows={5}
+        {/* 1. Payload Template & Input Section */}
+        <div className="order-1 space-y-3 text-left lg:order-none lg:col-span-7">
+          <PayloadForm
+            payloadType={payloadType}
+            onChangePayloadType={setPayloadType}
+            inputText={inputText}
+            onChangeInputText={setInputText}
+            onClearText={onClear}
+            inputRef={inputRef}
+            wifi={wifi}
+            onChangeWifi={updateWifi}
+            vcard={vcard}
+            onChangeVCard={updateVCard}
+            email={email}
+            onChangeEmail={updateEmail}
           />
           <ExecuteBar
             label="Generate QR Code"
-            disabled={isEmpty(inputText.trim())}
+            disabled={!computedContent}
             onClick={() => onGenerate(true)}
-            text={inputText}
+            text={computedContent}
           />
         </div>
 
-        {/* 2. Live Preview Hub (Mobile: Order 2 immediately below Input, Desktop: Col 8-12 Sticky) */}
+        {/* 2. Live Studio Preview Hub */}
         <div className="order-2 lg:sticky lg:top-24 lg:order-none lg:col-span-5 lg:row-span-2">
           <Preview
             canvasRef={canvasRef}
+            svgContainerRef={svgContainerRef}
             qrValue={qrValue}
             size={size}
             fgColor={fgColor}
             bgColor={bgColor}
             margin={margin}
             level={level}
-            onDownload={onDownload}
+            logoDataUrl={logoDataUrl}
+            logoSizeRatio={logoSizeRatio}
+            onDownloadPng={onDownloadPng}
+            onDownloadSvg={onDownloadSvg}
             onCopy={onCopy}
+            onRequestSendToStudio={handleRequestSendToStudio}
           />
         </div>
 
-        {/* 3. Customization Controls (Mobile: Order 3, Desktop: Col 1-7 Row 2) */}
+        {/* 3. Appearance & Dimensions Controls */}
         <div className="order-3 space-y-6 text-left lg:order-none lg:col-span-7">
-          {/* Color Theme Customization */}
           <Appearance
             fgColor={fgColor}
             setFgColor={setFgColor}
             bgColor={bgColor}
             setBgColor={setBgColor}
+            logoDataUrl={logoDataUrl}
+            logoSizeRatio={logoSizeRatio}
+            setLogoSizeRatio={setLogoSizeRatio}
+            onUploadLogo={onUploadLogo}
+            onRemoveLogo={onRemoveLogo}
           />
 
-          {/* Dimensions & Reliability */}
           <Layout
             size={size}
             setSize={setSize}
@@ -136,6 +177,8 @@ export default function QrCodeGenerator() {
           />
         </div>
       </div>
+
+      <ConfirmDialog {...confirmDialogProps} />
     </>
   );
 }

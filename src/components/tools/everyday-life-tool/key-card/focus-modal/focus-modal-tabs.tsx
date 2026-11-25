@@ -1,4 +1,4 @@
-import type { ContentVersion } from '../../types';
+import type { ContentVersion } from '../types';
 
 import { Copy, Check } from 'lucide-react';
 

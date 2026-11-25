@@ -40,6 +40,8 @@ export const TOOLS_WITH_HOTKEY = [
   // Image Tools
   ToolKeys.photoEditorStudio,
   ToolKeys.picMergeStudio,
+  ToolKeys.imageToBase64,
+  ToolKeys.base64ToImage,
 
   // Chrome AI APIs
   ToolKeys.chromeAiPrompt,

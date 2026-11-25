@@ -1,11 +1,22 @@
 'use client';
 
-import { Palette } from 'lucide-react';
-import { Label } from '@/components/ui/label';
+import { useRef } from 'react';
+import {
+  AlertTriangle,
+  CheckCircle2,
+  ImagePlus,
+  Palette,
+  Trash2,
+} from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 import { ColorPicker } from '@/components/ui/color-picker';
-import { Card } from '@/components/ui/card';
-import { Chip } from '@/components/ui/chip';
+import { Slider } from '@/components/ui/slider';
+
+import LabelBar from '../../common/label-bar';
 import SettingHeader from '../../common/setting-header';
+import ColorPresetChip from './color-preset-chip';
+import { getContrastRatio } from './utils/qr-payload';
 
 export type ColorPresetItem = {
   name: string;
@@ -32,6 +43,11 @@ type Props = {
   setFgColor: React.Dispatch<React.SetStateAction<string>>;
   bgColor: string;
   setBgColor: React.Dispatch<React.SetStateAction<string>>;
+  logoDataUrl: string | null;
+  logoSizeRatio: number;
+  setLogoSizeRatio: (ratio: number) => void;
+  onUploadLogo: (file: File) => void;
+  onRemoveLogo: () => void;
 };
 
 export default function Appearance({
@@ -39,12 +55,43 @@ export default function Appearance({
   setFgColor,
   bgColor,
   setBgColor,
+  logoDataUrl,
+  logoSizeRatio,
+  setLogoSizeRatio,
+  onUploadLogo,
+  onRemoveLogo,
 }: Props) {
+  const logoInputRef = useRef<HTMLInputElement>(null);
+  const contrastRatio = getContrastRatio(fgColor, bgColor);
+  const isLowContrast = contrastRatio < 3.0;
+  const isMediumContrast = contrastRatio >= 3.0 && contrastRatio < 4.5;
+
   return (
     <div className="space-y-3 text-left">
-      <Label icon={Palette}>Color Theme</Label>
+      <LabelBar label="Color Theme & Center Logo" icon={Palette}>
+        <span
+          className={
+            isLowContrast
+              ? 'inline-flex items-center gap-1 rounded-full border border-amber-300/80 bg-amber-50/90 px-2.5 py-0.5 text-[11px] font-semibold text-amber-700 dark:border-amber-700/70 dark:bg-amber-950/40 dark:text-amber-300'
+              : isMediumContrast
+                ? 'inline-flex items-center gap-1 rounded-full border border-sky-200/80 bg-sky-50/90 px-2.5 py-0.5 text-[11px] font-semibold text-sky-700 dark:border-sky-800/70 dark:bg-sky-950/40 dark:text-sky-300'
+                : 'inline-flex items-center gap-1 rounded-full border border-emerald-200/80 bg-emerald-50/90 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700 dark:border-emerald-800/70 dark:bg-emerald-950/40 dark:text-emerald-300'
+          }
+        >
+          {isLowContrast ? (
+            <AlertTriangle className="h-3 w-3" />
+          ) : (
+            <CheckCircle2 className="h-3 w-3" />
+          )}
+          <span>
+            {isLowContrast
+              ? `Low Contrast (${contrastRatio.toFixed(1)}:1)`
+              : `Scan Ready (${contrastRatio.toFixed(1)}:1)`}
+          </span>
+        </span>
+      </LabelBar>
 
-      <Card className="space-y-5 p-5">
+      <div className="space-y-5 rounded-xl border border-neutral-200/80 bg-white/70 p-4 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-900/40">
         {/* Custom Color Pickers */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <ColorPicker
@@ -61,63 +108,95 @@ export default function Appearance({
           />
         </div>
 
+        {/* Low contrast readability notice */}
+        {isLowContrast && (
+          <p className="rounded-lg border border-amber-200/80 bg-amber-50/70 px-3 py-2 text-xs text-amber-800 dark:border-amber-800/60 dark:bg-amber-950/30 dark:text-amber-300">
+            Foreground and background colors are too similar. Some camera
+            scanners may struggle unless contrast is at least 3.0:1.
+          </p>
+        )}
+
         {/* Color Presets */}
         <div>
           <SettingHeader label="Curated Palettes" className="mb-2" />
-
           <div className="flex flex-wrap gap-2">
             {qrCodeColorPresets.map((p) => (
-              <ColorPreset
+              <ColorPresetChip
                 key={p.name}
-                fgColor={fgColor}
-                setFgColor={setFgColor}
-                bgColor={bgColor}
-                setBgColor={setBgColor}
                 preset={p}
+                isSelected={
+                  fgColor.toLowerCase() === p.fg.toLowerCase() &&
+                  bgColor.toLowerCase() === p.bg.toLowerCase()
+                }
+                onSelect={(fg, bg) => {
+                  setFgColor(fg);
+                  setBgColor(bg);
+                }}
               />
             ))}
           </div>
         </div>
-      </Card>
+
+        {/* Center Brand Logo */}
+        <div className="space-y-3 border-t border-neutral-200/70 pt-4 dark:border-neutral-800/70">
+          <SettingHeader
+            label="Center Brand Logo (Optional)"
+            hint="Automatically enables High (30%) error correction so the QR code remains scannable with a logo."
+            value={logoDataUrl ? `${Math.round(logoSizeRatio * 100)}%` : 'None'}
+          />
+
+          <input
+            ref={logoInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) onUploadLogo(file);
+              e.target.value = '';
+            }}
+          />
+
+          <div className="flex flex-wrap items-center gap-3">
+            <Button
+              variant="secondary"
+              size="xs"
+              bordered
+              icon={ImagePlus}
+              onClick={() => logoInputRef.current?.click()}
+            >
+              {logoDataUrl ? 'Change Logo' : 'Upload Center Logo'}
+            </Button>
+
+            {logoDataUrl && (
+              <>
+                <Button
+                  variant="ghost"
+                  size="xs"
+                  icon={Trash2}
+                  onClick={onRemoveLogo}
+                  className="text-red-500 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
+                >
+                  Remove
+                </Button>
+                <div className="min-w-[160px] flex-1">
+                  <Slider
+                    title="Logo Scale"
+                    min={0.14}
+                    max={0.28}
+                    step={0.02}
+                    value={logoSizeRatio}
+                    showBubble={false}
+                    onChange={(e) =>
+                      setLogoSizeRatio(parseFloat(e.target.value))
+                    }
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
-  );
-}
-
-type ColorPresetProps = {
-  fgColor: string;
-  setFgColor: React.Dispatch<React.SetStateAction<string>>;
-  bgColor: string;
-  setBgColor: React.Dispatch<React.SetStateAction<string>>;
-  preset: ColorPresetItem;
-};
-
-function ColorPreset({
-  fgColor,
-  setFgColor,
-  bgColor,
-  setBgColor,
-  preset,
-}: ColorPresetProps) {
-  const isSelected =
-    fgColor.toLowerCase() === preset.fg.toLowerCase() &&
-    bgColor.toLowerCase() === preset.bg.toLowerCase();
-  return (
-    <Chip
-      selected={isSelected}
-      onClick={() => {
-        setFgColor(preset.fg);
-        setBgColor(preset.bg);
-      }}
-      title={`${preset.name} (FG: ${preset.fg}, BG: ${preset.bg})`}
-      showCheck
-    >
-      <span
-        className="shadow-2xs h-3.5 w-3.5 shrink-0 rounded-full border border-neutral-300/80 dark:border-neutral-600"
-        style={{
-          background: `linear-gradient(135deg, ${preset.fg} 50%, ${preset.bg} 50%)`,
-        }}
-      />
-      <span>{preset.name}</span>
-    </Chip>
   );
 }

@@ -1,11 +1,13 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import { FileCode, ImageIcon } from 'lucide-react';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { FileCode, ImageIcon, SlidersHorizontal } from 'lucide-react';
 import { isNull } from 'lodash';
 
 import { CopyAction, DeleteAction } from '@/components/shared/action-button';
 import { FilePicker } from '@/components/ui/file-picker';
+import { Selector } from '@/components/ui/selector';
+import { Slider } from '@/components/ui/slider';
 import { PillTabs } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import useToolHotkeys, { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
@@ -15,9 +17,11 @@ import toast from '@/utils/toast';
 import HeaderBlock from '../../common/header-block';
 import LabelBar from '../../common/label-bar';
 import SectionGap from '../../common/section-gap';
+import Base64ModeSwitcher from '../base64-mode-switcher';
 import ImagePreviewStage from '../image-preview-stage';
 
 type OutputFormat = 'raw' | 'html' | 'css';
+type OptimizeFormat = 'original' | 'image/webp' | 'image/jpeg' | 'image/png';
 
 const OUTPUT_FORMAT_TABS: OutputFormat[] = ['raw', 'html', 'css'];
 
@@ -27,12 +31,28 @@ const OUTPUT_FORMAT_LABELS: Record<OutputFormat, string> = {
   css: 'CSS url()',
 };
 
+const OPTIMIZE_FORMAT_OPTIONS = [
+  { label: 'Original File', value: 'original' },
+  { label: 'WebP (Smallest)', value: 'image/webp' },
+  { label: 'JPEG', value: 'image/jpeg' },
+  { label: 'PNG', value: 'image/png' },
+];
+
+const MAX_WIDTH_OPTIONS = [
+  { label: 'Original Size', value: '0' },
+  { label: 'Max 1920px', value: '1920' },
+  { label: 'Max 1280px', value: '1280' },
+  { label: 'Max 800px', value: '800' },
+  { label: 'Max 512px', value: '512' },
+];
+
 type ImageInfo = {
   image: HTMLImageElement | null;
   width: number;
   height: number;
   error: boolean;
   blob: Blob | null;
+  originalBytes: number;
   fileName: string;
   mimeType: string;
 };
@@ -43,6 +63,7 @@ const defaultImageInfo: ImageInfo = {
   height: 0,
   error: false,
   blob: null,
+  originalBytes: 0,
   fileName: '',
   mimeType: '',
 };
@@ -50,28 +71,97 @@ const defaultImageInfo: ImageInfo = {
 export default function ImageToBase64() {
   const [base64, setBase64] = useState<string>('');
   const [outputFormat, setOutputFormat] = useState<OutputFormat>('raw');
+  const [optimizeFormat, setOptimizeFormat] =
+    useState<OptimizeFormat>('original');
+  const [maxWidth, setMaxWidth] = useState<number>(0);
+  const [quality, setQuality] = useState<number>(0.85);
   const [imageInfo, setImageInfo] = useState<ImageInfo>(defaultImageInfo);
+
+  const sourceFileRef = useRef<File | null>(null);
+  const sourceImageRef = useRef<HTMLImageElement | null>(null);
+
+  const encodeWithSettings = useCallback(
+    async (
+      file: File,
+      image: HTMLImageElement,
+      nextFormat: OptimizeFormat,
+      nextMaxWidth: number,
+      nextQuality: number
+    ) => {
+      const shouldTransform =
+        nextFormat !== 'original' ||
+        (nextMaxWidth > 0 && image.width > nextMaxWidth);
+
+      if (!shouldTransform) {
+        const encoded = await imageUtils.blobToBase64(file);
+        setBase64(encoded);
+        setImageInfo({
+          image,
+          width: image.width,
+          height: image.height,
+          error: false,
+          blob: file,
+          originalBytes: file.size,
+          fileName: file.name,
+          mimeType: file.type || 'image/png',
+        });
+        return;
+      }
+
+      const targetW =
+        nextMaxWidth > 0 && image.width > nextMaxWidth
+          ? nextMaxWidth
+          : image.width;
+      const targetH = Math.max(
+        1,
+        Math.round((image.height * targetW) / Math.max(1, image.width))
+      );
+
+      const canvas = document.createElement('canvas');
+      canvas.width = targetW;
+      canvas.height = targetH;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const mime =
+        nextFormat === 'original' ? file.type || 'image/png' : nextFormat;
+      if (mime === 'image/jpeg') {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, targetW, targetH);
+      }
+      ctx.drawImage(image, 0, 0, targetW, targetH);
+
+      const encoded = canvas.toDataURL(mime, nextQuality);
+      const blob = await (await fetch(encoded)).blob();
+      const previewImg = await imageUtils.newImageFromBase64(encoded);
+
+      setBase64(encoded);
+      setImageInfo({
+        image: previewImg,
+        width: targetW,
+        height: targetH,
+        error: false,
+        blob,
+        originalBytes: file.size,
+        fileName: file.name,
+        mimeType: mime,
+      });
+    },
+    []
+  );
 
   const transferToBase64 = async (file: File) => {
     if (isNull(file)) return;
     setImageInfo(defaultImageInfo);
     try {
-      const encoded = await imageUtils.blobToBase64(file);
       const image = await imageUtils.newImageFromBlob(file);
-      const { width, height } = image;
-      setBase64(encoded);
-      setImageInfo({
-        image,
-        width,
-        height,
-        error: false,
-        blob: file,
-        fileName: file.name,
-        mimeType: file.type || 'image/png',
-      });
+      sourceFileRef.current = file;
+      sourceImageRef.current = image;
+      await encodeWithSettings(file, image, optimizeFormat, maxWidth, quality);
       toast.success('Image converted to Base64 successfully');
-    } catch (e) {
-      console.log('[ERROR] convert image:', e);
+    } catch {
+      sourceFileRef.current = null;
+      sourceImageRef.current = null;
       setBase64('');
       setImageInfo({
         ...defaultImageInfo,
@@ -83,7 +173,20 @@ export default function ImageToBase64() {
     }
   };
 
+  const reEncodeIfLoaded = (
+    nextFormat: OptimizeFormat,
+    nextMaxWidth: number,
+    nextQuality: number
+  ) => {
+    const file = sourceFileRef.current;
+    const image = sourceImageRef.current;
+    if (!file || !image) return;
+    void encodeWithSettings(file, image, nextFormat, nextMaxWidth, nextQuality);
+  };
+
   const handleClear = () => {
+    sourceFileRef.current = null;
+    sourceImageRef.current = null;
     setBase64('');
     setImageInfo(defaultImageInfo);
   };
@@ -106,14 +209,23 @@ export default function ImageToBase64() {
     outputFormat,
   ]);
 
+  const savingsPercent =
+    imageInfo.originalBytes > 0 && imageInfo.blob
+      ? Math.round(
+          ((imageInfo.originalBytes - imageInfo.blob.size) /
+            imageInfo.originalBytes) *
+            100
+        )
+      : 0;
+
   useToolHotkeys({
     onCopy: async () => {
       if (!formattedOutput) return;
       try {
         await navigator.clipboard.writeText(formattedOutput);
         toast.success('Copied output to clipboard');
-      } catch (_e) {
-        // ignore clipboard error
+      } catch {
+        // Ignore clipboard error
       }
     },
     onClear: handleClear,
@@ -131,7 +243,84 @@ export default function ImageToBase64() {
 
       <SectionGap />
 
+      <Base64ModeSwitcher active="image-to-base64" />
+
+      <SectionGap size="sm" />
+
       <FilePicker onFileChange={transferToBase64} />
+
+      <SectionGap size="sm" />
+
+      {/* Pre-Encode Optimization Strip */}
+      <div className="space-y-3 rounded-xl border border-neutral-200/80 bg-white/70 p-4 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-900/40">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+            <SlidersHorizontal className="h-3.5 w-3.5 text-sky-500" />
+            <span>Optimize Before Encoding (Optional)</span>
+          </span>
+
+          {imageInfo.blob && savingsPercent > 0 && (
+            <span className="rounded-full border border-emerald-200/80 bg-emerald-50/90 px-2.5 py-0.5 font-mono text-[11px] font-semibold text-emerald-700 dark:border-emerald-800/70 dark:bg-emerald-950/40 dark:text-emerald-300">
+              -{savingsPercent}% smaller payload
+            </span>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <div className="space-y-1">
+            <span className="block text-[11px] font-medium text-neutral-500 dark:text-neutral-400">
+              Target Format
+            </span>
+            <Selector
+              size="sm"
+              options={OPTIMIZE_FORMAT_OPTIONS}
+              value={optimizeFormat}
+              onChange={(val) => {
+                const next = val as OptimizeFormat;
+                setOptimizeFormat(next);
+                reEncodeIfLoaded(next, maxWidth, quality);
+              }}
+            />
+          </div>
+
+          <div className="space-y-1">
+            <span className="block text-[11px] font-medium text-neutral-500 dark:text-neutral-400">
+              Max Width
+            </span>
+            <Selector
+              size="sm"
+              options={MAX_WIDTH_OPTIONS}
+              value={String(maxWidth)}
+              onChange={(val) => {
+                const next = Number(val);
+                setMaxWidth(next);
+                reEncodeIfLoaded(optimizeFormat, next, quality);
+              }}
+            />
+          </div>
+
+          {(optimizeFormat === 'image/webp' ||
+            optimizeFormat === 'image/jpeg') && (
+            <div className="flex items-end">
+              <div className="w-full">
+                <Slider
+                  title="Quality"
+                  min={0.5}
+                  max={1}
+                  step={0.05}
+                  value={quality}
+                  showValueBadge
+                  onChange={(e) => {
+                    const next = parseFloat(e.target.value);
+                    setQuality(next);
+                    reEncodeIfLoaded(optimizeFormat, maxWidth, next);
+                  }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
 
       <SectionGap />
 

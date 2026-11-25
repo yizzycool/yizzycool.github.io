@@ -1,4 +1,4 @@
-import type { CardData } from '../types';
+import type { CardData } from './types';
 
 import { Keyboard, SquareSlash, LayoutDashboard, BookOpen } from 'lucide-react';
 

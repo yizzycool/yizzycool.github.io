@@ -1,10 +1,12 @@
-import type { CardData } from '../../types';
+'use client';
 
-import { Eye } from 'lucide-react';
+import type { CardData } from '../types';
 
-import { cn } from '@/utils/cn';
-import { Card } from '@/components/ui/card';
+import { Copy, Eye } from 'lucide-react';
+
 import { SearchHighlight } from '@/components/ui/search-highlight';
+import { cn } from '@/utils/cn';
+import toast from '@/utils/toast';
 
 import { DashboardTagList } from './dashboard-tag-list';
 
@@ -28,21 +30,44 @@ export function DashboardCardItem({
   onTagClick,
 }: DashboardCardItemProps) {
   const versionCount = card.contents?.length || 0;
+  const primaryText = card.contents?.[0]?.text || '';
+
+  const handleQuickCopy = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!primaryText) {
+      toast.info('This card has no content yet');
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(primaryText);
+      toast.success(`Copied "${card.title}" to clipboard`);
+    } catch {
+      toast.error('Failed to copy to clipboard');
+    }
+  };
 
   return (
-    <Card
-      rounded="2xl"
+    <div
+      role="button"
+      tabIndex={0}
       onClick={() => onCardClick(card.id)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onCardClick(card.id);
+        }
+      }}
       className={cn(
-        'group relative flex transform cursor-pointer flex-col justify-between text-left transition-all duration-200',
+        'group relative flex transform cursor-pointer flex-col justify-between rounded-2xl border text-left outline-none backdrop-blur-md transition-all duration-200 focus-visible:ring-2 focus-visible:ring-sky-500/60',
+        'border-neutral-200/80 bg-white/75 shadow-sm dark:border-neutral-800 dark:bg-neutral-900/50',
         isCompact ? 'p-3.5' : 'p-5',
         isFocused
           ? 'border-sky-500 shadow-lg shadow-sky-500/10 ring-2 ring-sky-500/40'
-          : 'hover:-translate-y-1 hover:border-sky-400/60 hover:shadow-md hover:shadow-sky-500/5 dark:hover:border-sky-500/60 dark:hover:shadow-black/60'
+          : 'hover:-translate-y-0.5 hover:border-sky-400/60 hover:shadow-md hover:shadow-sky-500/5 dark:hover:border-sky-500/60 dark:hover:shadow-black/60'
       )}
     >
       <div>
-        {/* Header: Title, Keycap Badge & Quick Copy */}
+        {/* Header: Title, Quick Copy & Tactile Keycap */}
         <div
           className={cn(
             'flex items-start justify-between gap-2.5',
@@ -60,11 +85,19 @@ export function DashboardCardItem({
             </h3>
           </div>
 
-          {/* Hotkey Keycap & Quick Copy Action */}
           <div className="flex shrink-0 items-center gap-1.5">
-            {/* Quick Copy Button */}
+            {primaryText && (
+              <button
+                type="button"
+                onClick={(e) => void handleQuickCopy(e)}
+                title="Quick copy primary content"
+                aria-label={`Quick copy ${card.title}`}
+                className="flex h-6 w-6 items-center justify-center rounded-lg border border-neutral-200/80 bg-white/80 text-neutral-400 opacity-100 transition-all hover:border-sky-400 hover:text-sky-600 sm:opacity-0 sm:group-hover:opacity-100 dark:border-neutral-700/80 dark:bg-neutral-800/80 dark:text-neutral-400 dark:hover:border-sky-500 dark:hover:text-sky-400"
+              >
+                <Copy className="h-3 w-3" />
+              </button>
+            )}
 
-            {/* 3D Tactile Keycap Badge */}
             {card.key && (
               <kbd
                 className={cn(
@@ -82,7 +115,6 @@ export function DashboardCardItem({
           </div>
         </div>
 
-        {/* Tag List Badges */}
         <DashboardTagList
           tagsString={card.tags}
           selectedTag={selectedTag}
@@ -92,12 +124,11 @@ export function DashboardCardItem({
         />
       </div>
 
-      {/* Bottom Metadata & Version Indicator */}
       {!isCompact && (
         <div
           className={cn(
             'mt-auto flex items-center justify-between border-t pt-2.5 text-xs',
-            'border-neutral-100 dark:border-neutral-800/80',
+            'border-neutral-200/60 dark:border-neutral-800/80',
             'text-slate-400 dark:text-slate-500'
           )}
         >
@@ -105,7 +136,7 @@ export function DashboardCardItem({
             <Eye size={12} className="text-slate-400" />
             <span>Details</span>
             {versionCount > 1 && (
-              <span className="py-0.2 ml-1 rounded-full bg-neutral-100 px-1.5 text-[9px] font-semibold text-slate-600 dark:bg-neutral-800 dark:text-slate-300">
+              <span className="ml-1 rounded-full bg-neutral-100 px-1.5 py-0.5 text-[9px] font-semibold text-slate-600 dark:bg-neutral-800 dark:text-slate-300">
                 {versionCount} tabs
               </span>
             )}
@@ -121,6 +152,6 @@ export function DashboardCardItem({
           )}
         </div>
       )}
-    </Card>
+    </div>
   );
 }

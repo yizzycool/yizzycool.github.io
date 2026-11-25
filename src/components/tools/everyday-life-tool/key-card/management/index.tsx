@@ -1,7 +1,7 @@
 'use client';
 
 import type { DragEndEvent } from '@dnd-kit/react';
-import type { CardData, ContentVersion, SortOrderOption } from '../../types';
+import type { CardData, ContentVersion, SortOrderOption } from '../types';
 
 import { useRef, useState } from 'react';
 import { DragDropProvider } from '@dnd-kit/react';
