@@ -200,7 +200,7 @@ export default function CanvasLayout({
       <PillTabs
         tabs={layoutPresets}
         tabIcons={layoutIcons}
-        defaultActiveTab={isGridLayout ? layoutPresets[1] : layoutPresets[0]}
+        activeTab={isGridLayout ? layoutPresets[1] : layoutPresets[0]}
         onChange={handleModeSelect}
         size="sm"
         fullWidth

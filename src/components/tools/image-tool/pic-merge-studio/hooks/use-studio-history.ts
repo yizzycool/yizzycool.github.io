@@ -534,7 +534,19 @@ export default function useStudioHistory({
     hasHydratedRef.current = true;
 
     const hydrate = async () => {
-      if (isDbSupported) {
+      let pendingHandoff: Awaited<ReturnType<typeof consumeStudioHandoff>> =
+        null;
+      if (isDbSupported && hasHandoffQueryParam()) {
+        pendingHandoff = await consumeStudioHandoff(
+          getValue,
+          deleteValue,
+          'pic-merge-studio'
+        );
+        clearHandoffQueryParam();
+      }
+
+      const restoreExistingDraft = async (): Promise<boolean> => {
+        if (!isDbSupported) return false;
         try {
           const draft = await getValue<PersistedStudioDraft>(
             'drafts',
@@ -557,93 +569,126 @@ export default function useStudioHistory({
             historyIndexRef.current = 0;
             serializedTopRef.current = JSON.stringify(draft.snapshot);
             syncHistoryMeta();
-            toast.info('Restored your last studio draft');
-            return;
+            return true;
           }
         } catch {
           // Fall back cleanly to fresh canvas if IndexedDB read fails
         }
-      }
+        return false;
+      };
 
-      if (fabricCanvasRef.current) {
-        if (isDbSupported && hasHandoffQueryParam()) {
-          const payload = await consumeStudioHandoff(
-            getValue,
-            deleteValue,
-            'pic-merge-studio'
-          );
-          clearHandoffQueryParam();
-          if (payload && payload.items.length > 0) {
-            const canvas = fabricCanvasRef.current;
-            const nextSize = { width: payload.width, height: payload.height };
-            canvasConfigRef.current = {
-              ...canvasConfigRef.current,
-              layout: 'free',
-              size: nextSize,
-              ...(payload.backgroundColor
-                ? {
-                    background: {
-                      type: 'color',
-                      color: { color: payload.backgroundColor, opacity: 1 },
+      if (
+        pendingHandoff &&
+        pendingHandoff.items.length > 0 &&
+        fabricCanvasRef.current
+      ) {
+        const canvas = fabricCanvasRef.current;
+        const isAppend = pendingHandoff.mode === 'append';
+
+        if (isAppend) {
+          await restoreExistingDraft();
+        } else {
+          canvas.discardActiveObject();
+          canvas.remove(...canvas.getObjects());
+          gridRef.current = null;
+          const nextSize = {
+            width: pendingHandoff.width,
+            height: pendingHandoff.height,
+          };
+          const nextConfig: CanvasConfig = {
+            ...structuredClone(DEFAULT_CANVAS_CONFIG),
+            layout: 'free',
+            size: nextSize,
+            ...(pendingHandoff.backgroundColor
+              ? {
+                  background: {
+                    type: 'color',
+                    color: {
+                      color: pendingHandoff.backgroundColor,
+                      opacity: 1,
                     },
-                  }
-                : {}),
-            };
-            setCanvasConfig(canvasConfigRef.current);
-            canvas.setDimensions(nextSize);
-            if (payload.backgroundColor) {
-              canvas.set({ backgroundColor: payload.backgroundColor });
-            }
-
-            const shortEdge = Math.min(nextSize.width, nextSize.height);
-            for (const item of payload.items) {
-              const assetId = `asset_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-              const url = registerAssetBlob(assetId, item.blob);
-              const img = await fabric.FabricImage.fromURL(url, {
-                crossOrigin: 'anonymous',
-              });
-              attachImageAssetMeta(img, {
-                assetId,
-                fileName: item.name,
-                layerName: item.name,
-              });
-              const scale = Math.min(
-                (shortEdge * 0.78) / (img.width || 1),
-                (shortEdge * 0.78) / (img.height || 1),
-                1
-              );
-              img.set({
-                left: nextSize.width / 2,
-                top: nextSize.height / 2,
-                originX: 'center',
-                originY: 'center',
-                scaleX: scale,
-                scaleY: scale,
-                ...FABRIC_IMAGE_CONFIG,
-              });
-              img.setCoords();
-              canvas.add(img);
-              canvas.setActiveObject(img);
-            }
-
-            resizeDisplay();
-            canvas.requestRenderAll();
-            const handoffSnap = captureStudioSnapshot(
-              canvas,
-              gridRef.current,
-              canvasConfigRef.current,
-              globalImageConfigRef.current
-            );
-            historyStackRef.current = [handoffSnap];
-            historyIndexRef.current = 0;
-            serializedTopRef.current = JSON.stringify(handoffSnap);
-            syncHistoryMeta();
-            customEventUtils.emit(CustomEvents.tools.fabricRecalcSelection);
-            toast.success('Imported artwork from Photo Editor Studio');
-            return;
+                  },
+                }
+              : {}),
+          };
+          const nextGlobalConfig = structuredClone(DEFAULT_GLOBAL_IMAGE_CONFIG);
+          canvasConfigRef.current = nextConfig;
+          globalImageConfigRef.current = nextGlobalConfig;
+          setCanvasConfig(nextConfig);
+          setGlobalImageConfig(nextGlobalConfig);
+          canvas.setDimensions(nextSize);
+          const bg = nextConfig.background.color;
+          if (bg) {
+            const rgba = colorUtils.hexToRgba(bg.color);
+            canvas.set({
+              backgroundColor: colorUtils.rgbaToHex({
+                ...rgba,
+                a: bg.opacity,
+              }),
+            });
           }
         }
 
+        const activeSize = canvasConfigRef.current.size;
+        const shortEdge = Math.min(activeSize.width, activeSize.height);
+        for (const item of pendingHandoff.items) {
+          const assetId = `asset_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+          const url = registerAssetBlob(assetId, item.blob);
+          const img = await fabric.FabricImage.fromURL(url, {
+            crossOrigin: 'anonymous',
+          });
+          attachImageAssetMeta(img, {
+            assetId,
+            fileName: item.name,
+            layerName: item.name,
+          });
+          const scale = Math.min(
+            (shortEdge * 0.78) / (img.width || 1),
+            (shortEdge * 0.78) / (img.height || 1),
+            1
+          );
+          img.set({
+            left: activeSize.width / 2,
+            top: activeSize.height / 2,
+            originX: 'center',
+            originY: 'center',
+            scaleX: scale,
+            scaleY: scale,
+            ...FABRIC_IMAGE_CONFIG,
+          });
+          img.setCoords();
+          canvas.add(img);
+          canvas.setActiveObject(img);
+        }
+
+        resizeDisplay();
+        canvas.requestRenderAll();
+        const handoffSnap = captureStudioSnapshot(
+          canvas,
+          gridRef.current,
+          canvasConfigRef.current,
+          globalImageConfigRef.current
+        );
+        historyStackRef.current = [handoffSnap];
+        historyIndexRef.current = 0;
+        serializedTopRef.current = JSON.stringify(handoffSnap);
+        syncHistoryMeta();
+        scheduleDraftPersist(handoffSnap);
+        customEventUtils.emit(CustomEvents.tools.fabricRecalcSelection);
+        toast.success(
+          isAppend
+            ? 'Added layer from Photo Editor Studio'
+            : 'Imported artwork from Photo Editor Studio'
+        );
+        return;
+      }
+
+      if (await restoreExistingDraft()) {
+        toast.info('Restored your last studio draft');
+        return;
+      }
+
+      if (fabricCanvasRef.current) {
         const initialSnapshot = captureStudioSnapshot(
           fabricCanvasRef.current,
           gridRef.current,
@@ -670,7 +715,9 @@ export default function useStudioHistory({
     registerAssetBlob,
     resizeDisplay,
     restoreSnapshot,
+    scheduleDraftPersist,
     setCanvasConfig,
+    setGlobalImageConfig,
     syncHistoryMeta,
   ]);
 

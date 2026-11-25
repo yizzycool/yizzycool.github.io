@@ -11,10 +11,13 @@ import type {
 } from './types/studio';
 
 import {
+  AlignCenter,
   AlignCenterHorizontal,
   AlignCenterVertical,
   AlignEndHorizontal,
   AlignEndVertical,
+  AlignLeft,
+  AlignRight,
   AlignStartHorizontal,
   AlignStartVertical,
   Bold,
@@ -581,6 +584,47 @@ export default function InspectorDesignTab({
                   { underline: !selectedProps.underline },
                   'Toggle Underline'
                 )
+              }
+            />
+          </div>
+          <div className="grid grid-cols-3 gap-1.5">
+            <Button
+              size="xs"
+              variant={
+                selectedProps.textAlign === 'left' ? 'primary' : 'secondary'
+              }
+              bordered={selectedProps.textAlign !== 'left'}
+              icon={AlignLeft}
+              title="Align Text Left"
+              aria-label="Align Text Left"
+              onClick={() =>
+                onUpdateProp({ textAlign: 'left' }, 'Align Text Left')
+              }
+            />
+            <Button
+              size="xs"
+              variant={
+                selectedProps.textAlign === 'center' ? 'primary' : 'secondary'
+              }
+              bordered={selectedProps.textAlign !== 'center'}
+              icon={AlignCenter}
+              title="Align Text Center"
+              aria-label="Align Text Center"
+              onClick={() =>
+                onUpdateProp({ textAlign: 'center' }, 'Align Text Center')
+              }
+            />
+            <Button
+              size="xs"
+              variant={
+                selectedProps.textAlign === 'right' ? 'primary' : 'secondary'
+              }
+              bordered={selectedProps.textAlign !== 'right'}
+              icon={AlignRight}
+              title="Align Text Right"
+              aria-label="Align Text Right"
+              onClick={() =>
+                onUpdateProp({ textAlign: 'right' }, 'Align Text Right')
               }
             />
           </div>

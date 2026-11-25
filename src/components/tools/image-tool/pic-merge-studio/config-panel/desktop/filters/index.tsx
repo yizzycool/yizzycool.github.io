@@ -25,11 +25,17 @@ type Props = {
   filters: filters.BaseFilter<string>[];
   setFilters: (filters: string[], params?: FabricFilterValuesMap) => void;
   onChangeEnd?: () => void;
+  horizontalPresets?: boolean;
 };
 
 type TabType = 'presets' | 'adjustments';
 
-export default function Filters({ filters, setFilters, onChangeEnd }: Props) {
+export default function Filters({
+  filters,
+  setFilters,
+  onChangeEnd,
+  horizontalPresets = false,
+}: Props) {
   const [activeTab, setActiveTab] = useState<TabType>('presets');
 
   const activePresetTypes = filters
@@ -181,13 +187,20 @@ export default function Filters({ filters, setFilters, onChangeEnd }: Props) {
 
       {activeTab === 'presets' && (
         <div className="space-y-3">
-          <div className="grid grid-cols-3 gap-2.5">
+          <div
+            className={
+              horizontalPresets
+                ? 'no-scrollbar flex items-start gap-2.5 overflow-x-auto px-0.5 pb-1 pt-3'
+                : 'grid grid-cols-3 gap-2.5'
+            }
+          >
             {PRESET_FILTER_TYPES.map((type) => (
               <PresetCard
                 key={type}
                 type={type}
                 activePresetTypes={activePresetTypes}
                 onToggle={handleTogglePreset}
+                className={horizontalPresets ? 'w-16 shrink-0' : undefined}
               />
             ))}
           </div>

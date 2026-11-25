@@ -6,24 +6,27 @@ import type {
   ImageConfig,
 } from './types/config';
 import type { ConfigHelper } from './types/config-helper';
+import type { MobileStudioDrawerId } from './mobile-studio-sheet';
 
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
-import { cn } from '@/utils/cn';
 import { ConfirmDialog, useConfirmDialog } from '@/components/ui/dialog';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
 
-import useFabric from './hooks/use-fabric';
-import useStudioHotkeys from './hooks/use-studio-hotkeys';
 import {
   PRESET_BACKGROUND_COLORS,
   PRESET_BORDER_COLORS,
 } from './config-panel/data/background';
+import useFabric from './hooks/use-fabric';
+import useStudioHotkeys from './hooks/use-studio-hotkeys';
 import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
-import CanvasHudBar from './canvas-hud-bar';
-import Config from './config-panel';
+import CanvasStage from './canvas-stage';
+import ConfigPanelDesktop from './config-panel/desktop';
 import ExportModal from './export-modal';
+import MobileStudioBar from './mobile-studio-bar';
+import MobileStudioSheet from './mobile-studio-sheet';
+import StudioHeaderBar from './studio-header-bar';
 
 export const DEFAULT_CANVAS_CONFIG: CanvasConfig = {
   layout: 'free',
@@ -97,6 +100,7 @@ export default function PicMergeStudio() {
   const [imageConfig, setImageConfig] = useState(defaultImageConfig);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [snapGuidesEnabled, setSnapGuidesEnabled] = useState(true);
+  const [mobileDrawer, setMobileDrawer] = useState<MobileStudioDrawerId>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -126,6 +130,77 @@ export default function PicMergeStudio() {
     configHelper,
     snapGuidesEnabled,
   });
+
+  const isGridLayout = canvasConfig.layout === 'grid';
+  const { hasImageSelection, hasImageSrc, selectedCount } = fabricHelper.states;
+
+  // Derive valid mobile drawer without cascading setState inside useEffect
+  const effectiveMobileDrawer = useMemo<MobileStudioDrawerId>(() => {
+    if (!mobileDrawer) return null;
+    if (!hasImageSelection) {
+      return mobileDrawer.startsWith('canvas-') ? mobileDrawer : null;
+    }
+    if (selectedCount > 1) {
+      if (!mobileDrawer.startsWith('batch-')) return null;
+      if (
+        isGridLayout &&
+        (mobileDrawer === 'batch-border' || mobileDrawer === 'batch-order')
+      ) {
+        return null;
+      }
+      return mobileDrawer;
+    }
+    if (!hasImageSrc || !mobileDrawer.startsWith('image-')) return null;
+    if (
+      isGridLayout &&
+      (mobileDrawer === 'image-border' || mobileDrawer === 'image-order')
+    ) {
+      return null;
+    }
+    return mobileDrawer;
+  }, [
+    mobileDrawer,
+    hasImageSelection,
+    selectedCount,
+    hasImageSrc,
+    isGridLayout,
+  ]);
+
+  const handleAddImages = (files: FileList) => {
+    if (isGridLayout) {
+      fabricHelper.gridUpdater.handleImagesUpload(files);
+    } else {
+      fabricHelper.canvasUpdater.handleImagesUpload(files);
+    }
+  };
+
+  const handleReplaceImage = (file: File) => {
+    if (isGridLayout) {
+      fabricHelper.gridUpdater.replaceImage(file);
+    } else {
+      fabricHelper.imageUpdater.replaceImage(file);
+    }
+  };
+
+  const handleDeleteSingle = () => {
+    if (isGridLayout) {
+      fabricHelper.gridUpdater.deleteImage();
+    } else {
+      fabricHelper.imageUpdater.deleteImage();
+    }
+  };
+
+  const handleSwitchLayout = (nextLayout: CanvasConfig['layout']) => {
+    if (nextLayout === canvasConfig.layout) return;
+    if (nextLayout === 'free') {
+      void fabricHelper.canvasUpdater.switchToFreeLayout();
+    } else {
+      fabricHelper.gridUpdater.switchToGridLayout(
+        canvasConfig.gridConfig.rows,
+        canvasConfig.gridConfig.cols
+      );
+    }
+  };
 
   const handleRequestBatchDelete = (onAfterConfirm?: () => void) => {
     const count =
@@ -160,13 +235,27 @@ export default function PicMergeStudio() {
     });
   };
 
+  const handleRequestSendToPhotoEditor = () => {
+    void confirm({
+      title: 'Open in Photo Editor Studio',
+      message:
+        'Transfer your current collage to Photo Editor Studio for advanced layers, masks, curves, and local AI tools? This will replace the current canvas in Photo Editor Studio, while your PicMerge draft remains saved locally.',
+      confirmText: 'Continue to Photo Editor',
+      cancelText: 'Cancel',
+      confirmVariant: 'primary',
+      onConfirm: () => {
+        void fabricHelper.canvasUpdater.sendToPhotoEditor();
+      },
+    });
+  };
+
   // Global Hotkeys & Keyboard Navigation (Export, Undo/Redo, Paste, Deselect, Delete, Arrow Nudge)
   useStudioHotkeys({
     fabricHelper,
     configHelper,
     onOpenExport: () => setIsExportModalOpen(true),
     onRequestBatchDelete: () => handleRequestBatchDelete(),
-    suppressHotkeys: isConfirmDialogOpen,
+    suppressHotkeys: isConfirmDialogOpen || isExportModalOpen,
   });
 
   return (
@@ -187,54 +276,67 @@ export default function PicMergeStudio() {
 
       <SectionGap />
 
-      <div
-        className={cn(
-          'lg:relative lg:overflow-hidden',
-          'lg:rounded-3xl lg:border lg:border-neutral-200/80 lg:dark:border-neutral-800/80',
-          'lg:bg-[radial-gradient(#e5e7eb_1.5px,transparent_1.5px)] lg:[background-size:28px_28px] lg:dark:bg-[radial-gradient(#262626_1.5px,transparent_1.5px)]',
-          'lg:bg-neutral-50/40 lg:dark:bg-neutral-950/40'
-        )}
-      >
-        {/* Main Canvas Workspace Card */}
-        <div className="w-full min-w-0">
-          <div
-            ref={containerRef}
-            className="group relative h-[calc(100dvh_-_320px)] w-full overflow-hidden transition-all duration-300 lg:h-[calc(100dvh_-_200px)]"
-          >
-            {/* Canvas Mounting Node: Perfectly Centered with Artboard styling on desktop, top-aligned on mobile */}
-            <div className="absolute inset-0 flex items-start justify-center px-4 pb-4 pt-10 sm:px-6 sm:pb-6 sm:pt-12 lg:items-center lg:p-8">
-              <canvas ref={canvasRef} />
-            </div>
+      {/* Unified Studio Shell matching Photo Editor Studio */}
+      <div className="relative flex h-[calc(100dvh_-_156px)] min-h-[540px] flex-col overflow-hidden rounded-2xl border border-neutral-200/90 shadow-lg lg:h-[calc(100dvh_-_176px)] lg:min-h-[620px] dark:border-neutral-800/90">
+        <StudioHeaderBar
+          width={canvasConfig.size.width}
+          height={canvasConfig.size.height}
+          layout={canvasConfig.layout}
+          snapGuidesEnabled={snapGuidesEnabled}
+          canUndo={fabricHelper.historyUpdater.canUndo}
+          canRedo={fabricHelper.historyUpdater.canRedo}
+          canReset={fabricHelper.historyUpdater.canReset}
+          onToggleSnapGuides={setSnapGuidesEnabled}
+          onAddImages={handleAddImages}
+          onSwitchLayout={handleSwitchLayout}
+          onUndo={() => void fabricHelper.historyUpdater.undo()}
+          onRedo={() => void fabricHelper.historyUpdater.redo()}
+          onRequestReset={handleRequestResetStudio}
+          onRequestSendToPhotoEditor={handleRequestSendToPhotoEditor}
+          onOpenExport={() => setIsExportModalOpen(true)}
+        />
 
-            <CanvasHudBar
-              width={configHelper.canvasConfig.size.width}
-              height={configHelper.canvasConfig.size.height}
-              isFreeLayout={configHelper.canvasConfig.layout === 'free'}
-              snapGuidesEnabled={snapGuidesEnabled}
-              onToggleSnapGuides={setSnapGuidesEnabled}
-              viewportZoom={fabricHelper.states.viewportZoom}
-              onChangeViewportZoom={fabricHelper.states.setViewportZoom}
-              editingCellId={fabricHelper.states.editingCellId}
-              onExitCellFocus={fabricHelper.states.exitCellFocus}
-              onSendToPhotoEditor={() =>
-                void fabricHelper.canvasUpdater.sendToPhotoEditor()
-              }
-              canUndo={fabricHelper.historyUpdater.canUndo}
-              canRedo={fabricHelper.historyUpdater.canRedo}
-              canReset={fabricHelper.historyUpdater.canReset}
-              onUndo={() => void fabricHelper.historyUpdater.undo()}
-              onRedo={() => void fabricHelper.historyUpdater.redo()}
-              onRequestReset={handleRequestResetStudio}
-            />
-          </div>
+        <div className="flex min-h-0 flex-1">
+          <CanvasStage
+            containerRef={containerRef}
+            canvasRef={canvasRef}
+            viewportZoom={fabricHelper.states.viewportZoom}
+            editingCellId={fabricHelper.states.editingCellId}
+            hasLayers={fabricHelper.layersUpdater.layers.length > 0}
+            onChangeViewportZoom={fabricHelper.states.setViewportZoom}
+            onExitCellFocus={fabricHelper.states.exitCellFocus}
+            onDropImages={handleAddImages}
+          />
+
+          <ConfigPanelDesktop
+            fabricHelper={fabricHelper}
+            configHelper={configHelper}
+            onRequestBatchDelete={handleRequestBatchDelete}
+          />
         </div>
 
-        {/* Studio Inspector Floating Card / Mobile Drawer Panel */}
-        <Config
+        <MobileStudioSheet
+          activeDrawer={effectiveMobileDrawer}
           fabricHelper={fabricHelper}
           configHelper={configHelper}
+          onClose={() => setMobileDrawer(null)}
+        />
+
+        <MobileStudioBar
+          activeDrawer={effectiveMobileDrawer}
+          isGridLayout={isGridLayout}
+          hasImageSelection={hasImageSelection}
+          hasImageSrc={hasImageSrc}
+          selectedCount={selectedCount}
+          onSelectDrawer={setMobileDrawer}
+          onAddImages={handleAddImages}
+          onReplaceImage={handleReplaceImage}
+          onDeselect={fabricHelper.canvasUpdater.discardActiveObject}
+          onDeleteSingle={handleDeleteSingle}
+          onRequestBatchDelete={() =>
+            handleRequestBatchDelete(() => setMobileDrawer(null))
+          }
           onOpenExport={() => setIsExportModalOpen(true)}
-          onRequestBatchDelete={handleRequestBatchDelete}
         />
       </div>
 
@@ -244,9 +346,10 @@ export default function PicMergeStudio() {
         onClose={() => setIsExportModalOpen(false)}
         fabricHelper={fabricHelper}
         configHelper={configHelper}
+        onRequestSendToPhotoEditor={handleRequestSendToPhotoEditor}
       />
 
-      {/* Batch Delete Confirmation */}
+      {/* Shared Confirmation Dialog (Reset, Batch Delete, Pro Edit Handoff) */}
       <ConfirmDialog {...confirmDialogProps} />
     </>
   );

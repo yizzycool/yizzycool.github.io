@@ -576,6 +576,7 @@ export default function useCanvasUpdater({
       version: 1,
       createdAt: Date.now(),
       source: 'pic-merge-studio',
+      mode: 'replace',
       width: currentCfg.size.width,
       height: currentCfg.size.height,
       backgroundColor: currentCfg.background.color?.color,

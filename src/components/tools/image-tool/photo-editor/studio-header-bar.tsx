@@ -35,7 +35,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { ColorPicker } from '@/components/ui/color-picker';
 import { Selector } from '@/components/ui/selector';
-import { Switch } from '@/components/ui/switch';
 import {
   TooltipPopup,
   TooltipRoot,
@@ -243,43 +242,40 @@ export default function StudioHeaderBar({
           <Button
             variant="secondary"
             size="xs"
+            bordered
             icon={ImagePlus}
             onClick={() => imageInputRef.current?.click()}
-            title="Import Image, SVG, HEIC, TIFF, or PSD Layer"
-            className="whitespace-nowrap"
-          >
-            Add Layer
-          </Button>
+            title="Add Layer (Image, SVG, HEIC, TIFF, or PSD)"
+            aria-label="Add Layer"
+            className="!h-7 !min-h-7 !w-7 !min-w-7 !p-0"
+          />
           <Button
             variant="ghost"
             size="xs"
             icon={LayoutTemplate}
             onClick={onOpenTemplates}
             title="Starter Templates"
-            className="whitespace-nowrap"
-          >
-            Templates
-          </Button>
+            aria-label="Starter Templates"
+            className="!h-7 !min-h-7 !w-7 !min-w-7 !p-0"
+          />
           <Button
             variant="ghost"
             size="xs"
             icon={FolderOpen}
             onClick={() => projectInputRef.current?.click()}
             title="Open .pes Archive or Photoshop .psd"
-            className="whitespace-nowrap"
-          >
-            Open
-          </Button>
+            aria-label="Open Project"
+            className="!h-7 !min-h-7 !w-7 !min-w-7 !p-0"
+          />
           <Button
             variant="ghost"
             size="xs"
             icon={Save}
             onClick={onSavePes}
             title="Save Portable .pes Project"
-            className="whitespace-nowrap"
-          >
-            Save
-          </Button>
+            aria-label="Save Project"
+            className="!h-7 !min-h-7 !w-7 !min-w-7 !p-0"
+          />
 
           <input
             ref={imageInputRef}
@@ -318,15 +314,20 @@ export default function StudioHeaderBar({
         <div className="flex shrink-0 items-center gap-1.5">
           <TooltipRoot delay={{ open: 150, close: 100 }}>
             <TooltipTrigger>
-              <span className="inline-flex shrink-0 items-center px-1">
-                <Switch
+              <span className="inline-flex shrink-0 items-center">
+                <Button
+                  variant={snapGuidesEnabled ? 'secondary' : 'ghost'}
                   size="xs"
                   icon={Magnet}
-                  label="Snap"
-                  highlightIconOnChecked
-                  checked={snapGuidesEnabled}
-                  onChange={onToggleSnapGuides}
-                  labelClassName="text-[11px] whitespace-nowrap"
+                  bordered={snapGuidesEnabled}
+                  onClick={() => onToggleSnapGuides(!snapGuidesEnabled)}
+                  aria-pressed={snapGuidesEnabled}
+                  aria-label="Toggle Smart Alignment Guides"
+                  className={
+                    snapGuidesEnabled
+                      ? '!h-7 !min-h-7 !w-7 !min-w-7 border-sky-300/80 bg-sky-50/90 !p-0 text-sky-600 dark:border-sky-700/70 dark:bg-sky-950/50 dark:text-sky-400'
+                      : '!h-7 !min-h-7 !w-7 !min-w-7 !p-0 text-neutral-400 dark:text-neutral-500'
+                  }
                 />
               </span>
             </TooltipTrigger>
@@ -335,7 +336,16 @@ export default function StudioHeaderBar({
               className="max-w-[235px] px-2.5 py-2 text-left text-xs leading-relaxed"
             >
               <div className="font-semibold text-slate-900 dark:text-white">
-                Smart Alignment Guides
+                Smart Alignment Guides:{' '}
+                <span
+                  className={
+                    snapGuidesEnabled
+                      ? 'text-sky-600 dark:text-sky-400'
+                      : 'text-neutral-500 dark:text-neutral-400'
+                  }
+                >
+                  {snapGuidesEnabled ? 'On' : 'Off'}
+                </span>
               </div>
               <div className="mt-0.5 font-normal text-slate-600 dark:text-slate-300">
                 Hold{' '}
@@ -391,10 +401,9 @@ export default function StudioHeaderBar({
             icon={isComparingOriginal ? EyeOff : Eye}
             onClick={onToggleCompare}
             title="Compare Original vs. Filtered"
-            className="whitespace-nowrap"
-          >
-            Compare
-          </Button>
+            aria-label="Compare Original vs. Filtered"
+            className="!h-7 !min-h-7 !w-7 !min-w-7 !p-0"
+          />
 
           <Button
             variant="ghost"

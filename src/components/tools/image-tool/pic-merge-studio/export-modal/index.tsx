@@ -22,6 +22,7 @@ type Props = {
   onClose: () => void;
   fabricHelper: FabricHelper;
   configHelper: ConfigHelper;
+  onRequestSendToPhotoEditor: () => void;
 };
 
 export default function ExportModal({
@@ -29,6 +30,7 @@ export default function ExportModal({
   onClose,
   fabricHelper,
   configHelper,
+  onRequestSendToPhotoEditor,
 }: Props) {
   const [format, setFormat] = useState<CanvasExportFormat>(
     configHelper.canvasConfig.exportFormat || 'png'
@@ -208,7 +210,7 @@ export default function ExportModal({
           icon={Sparkles}
           onClick={() => {
             onClose();
-            void fabricHelper.canvasUpdater.sendToPhotoEditor();
+            onRequestSendToPhotoEditor();
           }}
           className="w-full font-semibold text-sky-600 dark:text-sky-400"
         >

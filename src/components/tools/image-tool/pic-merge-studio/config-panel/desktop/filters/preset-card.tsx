@@ -10,12 +10,14 @@ type Props = {
   type: PresetFilterType;
   activePresetTypes: PresetFilterType[];
   onToggle: (type: PresetFilterType) => void;
+  className?: string;
 };
 
 export default function PresetCard({
   type,
   activePresetTypes,
   onToggle,
+  className,
 }: Props) {
   const isActive = activePresetTypes.includes(type);
   const orderNumber = isActive
@@ -25,7 +27,10 @@ export default function PresetCard({
   return (
     <div
       onClick={() => onToggle(type)}
-      className="relative cursor-pointer space-y-1.5 transition-transform"
+      className={cn(
+        'relative cursor-pointer space-y-1.5 transition-transform',
+        className
+      )}
     >
       <div
         className={cn(

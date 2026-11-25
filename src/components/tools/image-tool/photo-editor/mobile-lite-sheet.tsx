@@ -6,7 +6,16 @@ import type {
   ImageFilterValues,
 } from './types/studio';
 
-import { Check, ScanFace, Sparkles, Type, X } from 'lucide-react';
+import {
+  AlignCenter,
+  AlignLeft,
+  AlignRight,
+  Check,
+  ScanFace,
+  Sparkles,
+  Type,
+  X,
+} from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -34,6 +43,8 @@ type Props = {
     nextValues: ImageFilterValues,
     commitLabel?: string
   ) => void;
+  selectedTextAlign: 'left' | 'center' | 'right' | null;
+  onUpdateTextAlign: (align: 'left' | 'center' | 'right') => void;
   onAddQuickText: (text: string) => void;
   onSetMosaicBrushSize: (size: number) => void;
   onFacePrivacyMosaic: () => void;
@@ -56,6 +67,8 @@ export default function MobileLiteSheet({
   onApplyCrop,
   onCancelCrop,
   onUpdateFilters,
+  selectedTextAlign,
+  onUpdateTextAlign,
   onAddQuickText,
   onSetMosaicBrushSize,
   onFacePrivacyMosaic,
@@ -232,25 +245,66 @@ export default function MobileLiteSheet({
       )}
 
       {activeDrawer === 'text' && (
-        <div className="flex items-center gap-2">
-          <Input
-            value={captionText}
-            onChange={(e) => setCaptionText(e.target.value)}
-            placeholder="Enter text overlay..."
-            className="flex-1 text-xs"
-          />
-          <Button
-            variant="primary"
-            size="xs"
-            icon={Type}
-            onClick={() => {
-              onAddQuickText(captionText.trim() || 'Quick Caption');
-              onClose();
-            }}
-            className="shrink-0 whitespace-nowrap"
-          >
-            Add Text
-          </Button>
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <Input
+              value={captionText}
+              onChange={(e) => setCaptionText(e.target.value)}
+              placeholder="Enter text overlay..."
+              className="flex-1 text-xs"
+            />
+            <Button
+              variant="primary"
+              size="xs"
+              icon={Type}
+              onClick={() => {
+                onAddQuickText(captionText.trim() || 'Quick Caption');
+                onClose();
+              }}
+              className="shrink-0 whitespace-nowrap"
+            >
+              Add Text
+            </Button>
+          </div>
+          {selectedTextAlign !== null && (
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[11px] font-medium text-neutral-500 dark:text-neutral-400">
+                Selected Text Alignment
+              </span>
+              <div className="grid grid-cols-3 gap-1">
+                <Button
+                  variant={
+                    selectedTextAlign === 'left' ? 'primary' : 'secondary'
+                  }
+                  size="xs"
+                  bordered={selectedTextAlign !== 'left'}
+                  icon={AlignLeft}
+                  aria-label="Align Text Left"
+                  onClick={() => onUpdateTextAlign('left')}
+                />
+                <Button
+                  variant={
+                    selectedTextAlign === 'center' ? 'primary' : 'secondary'
+                  }
+                  size="xs"
+                  bordered={selectedTextAlign !== 'center'}
+                  icon={AlignCenter}
+                  aria-label="Align Text Center"
+                  onClick={() => onUpdateTextAlign('center')}
+                />
+                <Button
+                  variant={
+                    selectedTextAlign === 'right' ? 'primary' : 'secondary'
+                  }
+                  size="xs"
+                  bordered={selectedTextAlign !== 'right'}
+                  icon={AlignRight}
+                  aria-label="Align Text Right"
+                  onClick={() => onUpdateTextAlign('right')}
+                />
+              </div>
+            </div>
+          )}
         </div>
       )}
 

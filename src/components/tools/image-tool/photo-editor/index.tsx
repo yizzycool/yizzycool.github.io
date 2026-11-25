@@ -73,6 +73,28 @@ export default function PhotoEditorStudio() {
     });
   };
 
+  const handleRequestSendToPicMerge = (
+    scope: 'canvas' | 'selected' = 'canvas'
+  ) => {
+    const isSelectedScope = scope === 'selected';
+    void confirm({
+      title: isSelectedScope
+        ? 'Add Layer to PicMerge Studio'
+        : 'Open in PicMerge Studio',
+      message: isSelectedScope
+        ? 'Add the selected layer to your PicMerge Studio collage? Your current Photo Editor document remains saved locally.'
+        : 'Transfer your current artwork to PicMerge Studio for quick grids and photo collages? This will replace the current canvas in PicMerge Studio, while your Photo Editor document remains saved locally.',
+      confirmText: isSelectedScope
+        ? 'Send to PicMerge'
+        : 'Continue to PicMerge',
+      cancelText: 'Cancel',
+      confirmVariant: 'primary',
+      onConfirm: () => {
+        void engine.sendToPicMerge(scope);
+      },
+    });
+  };
+
   const handleFocusLayerSearch = () => {
     setActiveTab('layers');
     window.setTimeout(() => {
@@ -172,7 +194,7 @@ export default function PhotoEditorStudio() {
             }
           }}
           onOpenTemplates={() => setIsTemplatesOpen(true)}
-          onSendToPicMerge={() => void engine.sendToPicMerge('canvas')}
+          onSendToPicMerge={() => handleRequestSendToPicMerge('canvas')}
           onSavePes={() => void engine.savePesProject()}
           onOpenExport={() => setIsExportOpen(true)}
           onUndo={() => void engine.history.undo()}
@@ -227,7 +249,7 @@ export default function PhotoEditorStudio() {
 
           <CompanionRail
             hasSelection={Boolean(engine.states.selectedProps)}
-            onSendToPicMerge={(scope) => void engine.sendToPicMerge(scope)}
+            onSendToPicMerge={handleRequestSendToPicMerge}
           />
         </div>
 
@@ -252,6 +274,14 @@ export default function PhotoEditorStudio() {
           onApplyCrop={engine.applyCrop}
           onCancelCrop={engine.cancelCrop}
           onUpdateFilters={engine.updateSelectedFilters}
+          selectedTextAlign={
+            engine.states.selectedProps?.kind === 'text'
+              ? engine.states.selectedProps.textAlign
+              : null
+          }
+          onUpdateTextAlign={(textAlign) =>
+            engine.updateSelectedProp({ textAlign }, 'Align Text')
+          }
           onAddQuickText={(text) => engine.addTextLayer(text)}
           onSetMosaicBrushSize={engine.setMosaicBrushSize}
           onFacePrivacyMosaic={() => void engine.applyFacePrivacyMosaic()}
@@ -284,7 +314,7 @@ export default function PhotoEditorStudio() {
         hasSelection={Boolean(engine.states.selectedProps)}
         onExport={engine.exportDocument}
         onCopyPng={engine.copyPngToClipboard}
-        onSendToPicMerge={(scope) => void engine.sendToPicMerge(scope)}
+        onSendToPicMerge={handleRequestSendToPicMerge}
       />
 
       <TemplatesDialog

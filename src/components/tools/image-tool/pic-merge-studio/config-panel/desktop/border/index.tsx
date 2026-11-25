@@ -21,6 +21,7 @@ type Props = {
   shadow?: ImageShadowConfig;
   setShadow?: (patch: Partial<ImageShadowConfig>) => void;
   onChangeEnd?: () => void;
+  horizontalSwatches?: boolean;
 };
 
 export default function Border({
@@ -32,6 +33,7 @@ export default function Border({
   shadow,
   setShadow,
   onChangeEnd,
+  horizontalSwatches = false,
 }: Props) {
   const { color, opacity, width, showOuter } = border;
 
@@ -97,13 +99,22 @@ export default function Border({
 
       <div>
         <PanelLabel className="mb-2">Border Color</PanelLabel>
-        <div className="grid grid-cols-7 gap-1.5">
+        <div
+          className={
+            horizontalSwatches
+              ? 'no-scrollbar flex items-center gap-2 overflow-x-auto px-0.5 py-1'
+              : 'grid grid-cols-7 gap-1.5'
+          }
+        >
           {/* Color Picker */}
           <ColorPicker
             variant="swatch"
             value={color || '#000000'}
             onColorChange={handlePickerChange}
             onChangeEnd={onChangeEnd}
+            className={
+              horizontalSwatches ? 'h-8 w-8 shrink-0 p-0.5' : undefined
+            }
           />
           {/* Ban */}
           <ColorSwatch
@@ -112,6 +123,7 @@ export default function Border({
             title="No Border"
             isActive={isColorActive('')}
             onClick={resetBorder}
+            className={horizontalSwatches ? 'h-8 w-8 shrink-0' : undefined}
           />
           {/* Preset Colors */}
           {PRESET_BORDER_COLORS.map((hex) => (
@@ -120,6 +132,7 @@ export default function Border({
               color={hex}
               isActive={isColorActive(hex)}
               onClick={handleSwatchSelect}
+              className={horizontalSwatches ? 'h-8 w-8 shrink-0' : undefined}
             />
           ))}
         </div>

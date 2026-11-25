@@ -13,12 +13,14 @@ type Props = {
   background: CanvasBackground;
   setBackgroundColor: (color: string, opacity: number) => void;
   onChangeEnd?: () => void;
+  horizontalSwatches?: boolean;
 };
 
 export default function Background({
   background,
   setBackgroundColor,
   onChangeEnd,
+  horizontalSwatches = false,
 }: Props) {
   const { type, color: colorObj } = background;
   const { color, opacity } = colorObj || {};
@@ -69,13 +71,22 @@ export default function Background({
 
       <div>
         <PanelLabel className="mb-2">Colors</PanelLabel>
-        <div className="grid grid-cols-7 gap-1.5">
+        <div
+          className={
+            horizontalSwatches
+              ? 'no-scrollbar flex items-center gap-2 overflow-x-auto px-0.5 py-1'
+              : 'grid grid-cols-7 gap-1.5'
+          }
+        >
           {/* Color Picker */}
           <ColorPicker
             variant="swatch"
             value={color || '#ffffff'}
             onColorChange={handlePickerChange}
             onChangeEnd={onChangeEnd}
+            className={
+              horizontalSwatches ? 'h-8 w-8 shrink-0 p-0.5' : undefined
+            }
           />
           {/* Preset Colors */}
           {PRESET_BACKGROUND_COLORS.map((hex) => (
@@ -84,6 +95,7 @@ export default function Background({
               color={hex}
               isActive={isColorActive(hex)}
               onClick={handleSwatchSelect}
+              className={horizontalSwatches ? 'h-8 w-8 shrink-0' : undefined}
             />
           ))}
         </div>

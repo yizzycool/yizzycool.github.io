@@ -20,6 +20,7 @@ export type StudioHandoffPayload = {
   version: 1;
   createdAt: number;
   source: StudioHandoffTarget;
+  mode?: 'replace' | 'append';
   width: number;
   height: number;
   backgroundColor?: string;

@@ -1,67 +1,66 @@
 'use client';
 
-import type { FabricHelper } from '../../types/fabric-helper';
 import type { ConfigHelper } from '../../types/config-helper';
+import type { FabricHelper } from '../../types/fabric-helper';
 
-import { CheckCheck, Layers, Minimize2 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useRef, useState } from 'react';
+import {
+  CheckCheck,
+  ChevronLeft,
+  ImagePlus,
+  Layers,
+  RefreshCw,
+  SlidersHorizontal,
+  Sparkles,
+  Trash2,
+  Type,
+} from 'lucide-react';
 
-import { cn } from '@/utils/cn';
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { PillTabs } from '@/components/ui/tabs';
 
+import Alignment from './alignment';
+import Arrangement from './arrangement';
 import AspectRatio from './aspect-ratio';
-import CanvasLayout from './canvas-layout';
 import Background from './background';
 import Border from './border';
-import Geometry from './geometry';
-import Filters from './filters';
-import Arrangement from './arrangement';
-import Alignment from './alignment';
+import CanvasLayout from './canvas-layout';
 import CaptionWatermark from './caption-watermark';
-import Opacity from './opacity';
-import ActionToolbar, { type ActionToolId } from './action-toolbar';
+import Filters from './filters';
+import Geometry from './geometry';
 import LayerStack from './layers-panel/layer-stack';
+import Opacity from './opacity';
+
+type InspectorTabId = 'design' | 'filters' | 'text' | 'layers';
+
+const TABS: InspectorTabId[] = ['design', 'filters', 'text', 'layers'];
 
 type ConfigPanelDesktopProps = {
   fabricHelper: FabricHelper;
   configHelper: ConfigHelper;
-  onOpenExport?: () => void;
   onRequestBatchDelete: (onAfterConfirm?: () => void) => void;
 };
 
+/**
+ * Right dockable studio inspector (>= lg) matching Photo Editor Studio's InspectorPanel:
+ * houses contextual Design controls (Canvas / Image / Batch), Filters, Text/Watermark, and Layers.
+ */
 export default function ConfigPanelDesktop({
   fabricHelper,
   configHelper,
-  onOpenExport,
   onRequestBatchDelete,
 }: ConfigPanelDesktopProps) {
-  const [isOpen, setIsOpen] = useState(true);
-  const [activeToolId, setActiveToolId] = useState<ActionToolId | null>(null);
+  const [activeTab, setActiveTab] = useState<InspectorTabId>('design');
+  const addInputRef = useRef<HTMLInputElement>(null);
+  const replaceInputRef = useRef<HTMLInputElement>(null);
 
   const isGridLayout = configHelper.canvasConfig.layout === 'grid';
   const { layers, selectedCount } = fabricHelper.layersUpdater;
-  const { hasCaptionSelection, selectedCaption } = fabricHelper.states;
+  const { hasCaptionSelection, selectedCaption, hasImageSrc } =
+    fabricHelper.states;
 
-  // Derive effective active tool cleanly without cascading setState in effects
-  const effectiveActiveToolId = useMemo(() => {
-    if (hasCaptionSelection) {
-      return 'canvas-caption';
-    }
-    if (selectedCount === 0) {
-      if (activeToolId && !activeToolId.startsWith('canvas-')) {
-        return null;
-      }
-    } else if (selectedCount === 1) {
-      if (activeToolId && !activeToolId.startsWith('image-')) {
-        return null;
-      }
-    } else if (selectedCount >= 2) {
-      if (activeToolId && !activeToolId.startsWith('batch-')) {
-        return null;
-      }
-    }
-    return activeToolId;
-  }, [hasCaptionSelection, selectedCount, activeToolId]);
+  const effectiveTab: InspectorTabId = hasCaptionSelection ? 'text' : activeTab;
 
   const handleAddImages = (files: FileList) => {
     if (isGridLayout) {
@@ -85,196 +84,77 @@ export default function ConfigPanelDesktop({
     } else {
       fabricHelper.imageUpdater.deleteImage();
     }
-    setActiveToolId(null);
-  };
-
-  const handleDeleteBatch = () => {
-    onRequestBatchDelete(() => setActiveToolId(null));
-  };
-
-  const handleExport = () => {
-    if (onOpenExport) {
-      onOpenExport();
-    } else {
-      fabricHelper.canvasUpdater.export();
-    }
   };
 
   const handleCommitHistory = () => {
     fabricHelper.historyUpdater.commitHistory('immediate');
   };
 
-  if (!isOpen) {
-    return (
-      <div className="absolute right-4 top-4 z-40">
-        <button
-          type="button"
-          onClick={() => setIsOpen(true)}
-          className={cn(
-            'flex items-center gap-2 rounded-full border px-3.5 py-2 shadow-xl backdrop-blur-xl transition-colors duration-200',
-            'bg-white/90 dark:bg-neutral-900/90',
-            'hover:bg-neutral-50 dark:hover:bg-neutral-800',
-            'border-neutral-200/90 dark:border-neutral-800/90',
-            'text-neutral-800 dark:text-neutral-200'
-          )}
-        >
-          <Layers className="h-4 w-4" />
-          <span className="text-xs font-bold">Layers</span>
-        </button>
-      </div>
-    );
-  }
-
-  const getToolTitle = (toolId: ActionToolId | null) => {
-    switch (toolId) {
-      case 'canvas-aspect-ratio':
-        return 'Canvas Size & Ratio';
-      case 'canvas-layout':
-        return 'Canvas Layout';
-      case 'canvas-background':
-        return 'Canvas Background';
-      case 'canvas-border':
-        return 'Canvas Border';
-      case 'canvas-caption':
-        return 'Captions & Watermark';
-      case 'image-geometry':
-        return 'Geometry & Transform';
-      case 'image-arrangement':
-      case 'batch-arrangement':
-        return 'Layer Order';
-      case 'image-border':
-        return 'Image Border';
-      case 'batch-border':
-        return 'Batch Border';
-      case 'image-opacity':
-      case 'batch-opacity':
-        return 'Opacity';
-      case 'image-filters':
-        return 'Filters';
-      case 'image-align':
-      case 'batch-align':
-        return 'Alignment & Fit';
-      default:
-        return 'Layers';
-    }
-  };
-
   return (
     <aside
-      aria-label="Studio Layers & Inspector"
-      className={cn(
-        'absolute right-4 top-4 z-40 flex max-h-80 w-60 min-w-60 max-w-60 shrink-0 flex-col overflow-hidden',
-        'rounded-xl border border-neutral-200/90 bg-white/90 shadow-2xl backdrop-blur-2xl',
-        'dark:border-neutral-800/90 dark:bg-neutral-900/90 dark:shadow-black/40'
-      )}
+      aria-label="Studio Inspector"
+      className="hidden w-[320px] shrink-0 flex-col border-l border-neutral-200/80 bg-white/95 lg:flex dark:border-neutral-800/80 dark:bg-neutral-900/95"
     >
-      {/* Panel Header */}
-      <div className="flex h-11 shrink-0 items-center justify-between border-b border-neutral-200/80 px-3.5 dark:border-neutral-800/80">
-        {effectiveActiveToolId === null ? (
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-neutral-800 dark:text-neutral-200">
-              Layers
-            </span>
-            <span className="rounded-full bg-neutral-100 px-2 py-0.5 font-mono text-[10px] font-semibold text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
-              {layers.length}
-            </span>
-          </div>
-        ) : (
-          <span className="max-w-[150px] truncate text-xs font-semibold text-neutral-800 dark:text-neutral-200">
-            {getToolTitle(effectiveActiveToolId)}
-          </span>
-        )}
-
-        {/* Header Right Actions */}
-        <div className="flex items-center gap-1">
-          {layers.length > 0 && (
-            <Button
-              variant={selectedCount === layers.length ? 'ghost-sky' : 'ghost'}
-              size="sm"
-              icon={CheckCheck}
-              iconClassName="h-4 w-4"
-              title={
-                selectedCount === layers.length ? 'Deselect All' : 'Select All'
-              }
-              onClick={() => {
-                if (selectedCount === layers.length) {
-                  fabricHelper.layersUpdater.selectBackground();
-                } else {
-                  fabricHelper.layersUpdater.selectAll();
-                }
-              }}
-              className={cn(
-                '!h-7 !min-h-7 !w-7 !min-w-7 !p-0 transition-colors',
-                selectedCount === layers.length
-                  ? 'bg-sky-50 text-sky-600 dark:bg-sky-950/40 dark:text-sky-400'
-                  : 'text-neutral-400 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-neutral-100'
-              )}
-            />
-          )}
-          <Button
-            variant="ghost"
-            size="sm"
-            icon={Minimize2}
-            iconClassName="h-4 w-4"
-            title="Minimize Panel"
-            onClick={() => setIsOpen(false)}
-            className="!h-7 !min-h-7 !w-7 !min-w-7 !p-0 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
-          />
-        </div>
-      </div>
-
-      {/* Contextual Action Toolbar */}
-      <ActionToolbar
-        selectedCount={selectedCount}
-        activeToolId={effectiveActiveToolId}
-        onSelectTool={setActiveToolId}
-        onAddImages={handleAddImages}
-        onReplaceImage={selectedCount === 1 ? handleReplaceImage : undefined}
-        onDeleteSingle={selectedCount === 1 ? handleDeleteSingle : undefined}
-        onDeleteBatch={selectedCount >= 2 ? handleDeleteBatch : undefined}
-        onExport={handleExport}
+      <input
+        ref={addInputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        className="hidden"
+        onChange={(e) => {
+          if (e.target.files && e.target.files.length > 0) {
+            handleAddImages(e.target.files);
+          }
+          e.target.value = '';
+        }}
+      />
+      <input
+        ref={replaceInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) handleReplaceImage(file);
+          e.target.value = '';
+        }}
       />
 
-      {/* Separator */}
-      <div className="border-b border-neutral-200/80 dark:border-neutral-800/80" />
+      {/* Top PillTabs Bar */}
+      <div className="border-b border-neutral-200/80 p-2 dark:border-neutral-800/80">
+        <PillTabs<InspectorTabId>
+          tabs={TABS}
+          activeTab={effectiveTab}
+          onChange={(tab) => {
+            if (hasCaptionSelection && tab !== 'text') {
+              fabricHelper.canvasUpdater.discardActiveObject();
+            }
+            setActiveTab(tab);
+          }}
+          tabLabels={{
+            design: 'Design',
+            filters: 'Filters',
+            text: 'Text',
+            layers: 'Layers',
+          }}
+          tabIcons={{
+            design: SlidersHorizontal,
+            filters: Sparkles,
+            text: Type,
+            layers: Layers,
+          }}
+          size="xs"
+          fullWidth
+          className="w-full gap-1"
+          tabClassName="shrink-0 whitespace-nowrap px-2"
+        />
+      </div>
 
-      {/* Inspector / Content Area */}
-      <div className="scrollbar-thin flex-1 overflow-y-auto px-2 py-3.5">
-        {effectiveActiveToolId === null ? (
-          /* Layer Stack */
-          <LayerStack
-            layers={layers}
-            selectedCount={selectedCount}
-            canvasSize={configHelper.canvasConfig.size}
-            canvasBackground={configHelper.canvasConfig.background}
-            onSelectLayer={(img, isToggle) =>
-              fabricHelper.layersUpdater.selectLayer(img, isToggle)
-            }
-            onSelectBackground={() =>
-              fabricHelper.layersUpdater.selectBackground()
-            }
-            onToggleVisibility={(img) =>
-              fabricHelper.layersUpdater.toggleVisibility(img)
-            }
-            onReorderLayers={(newLayers) =>
-              fabricHelper.layersUpdater.reorderLayers(newLayers)
-            }
-          />
-        ) : (
-          /* Tool View */
-          <div className="space-y-4">
-            {effectiveActiveToolId === 'canvas-aspect-ratio' && (
-              <AspectRatio
-                size={configHelper.canvasConfig.size}
-                setSize={
-                  isGridLayout
-                    ? fabricHelper.gridUpdater.setSize
-                    : fabricHelper.canvasUpdater.setSize
-                }
-              />
-            )}
-
-            {effectiveActiveToolId === 'canvas-layout' && (
+      {/* Scrollable Inspector Body */}
+      <div className="scrollbar-thin flex-1 overflow-y-auto p-3.5">
+        {effectiveTab === 'design' && selectedCount === 0 && (
+          <div className="space-y-5">
+            <div>
               <CanvasLayout
                 configHelper={configHelper}
                 switchToGridLayout={fabricHelper.gridUpdater.switchToGridLayout}
@@ -285,9 +165,26 @@ export default function ConfigPanelDesktop({
                   fabricHelper.canvasUpdater.switchToFreeLayout
                 }
               />
-            )}
+            </div>
 
-            {effectiveActiveToolId === 'canvas-background' && (
+            <div className="space-y-2.5 border-t border-neutral-200/80 pt-4 dark:border-neutral-800/80">
+              <Label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                Canvas Dimensions
+              </Label>
+              <AspectRatio
+                size={configHelper.canvasConfig.size}
+                setSize={
+                  isGridLayout
+                    ? fabricHelper.gridUpdater.setSize
+                    : fabricHelper.canvasUpdater.setSize
+                }
+              />
+            </div>
+
+            <div className="space-y-2.5 border-t border-neutral-200/80 pt-4 dark:border-neutral-800/80">
+              <Label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                Canvas Background
+              </Label>
               <Background
                 background={configHelper.canvasConfig.background}
                 setBackgroundColor={
@@ -295,9 +192,12 @@ export default function ConfigPanelDesktop({
                 }
                 onChangeEnd={handleCommitHistory}
               />
-            )}
+            </div>
 
-            {effectiveActiveToolId === 'canvas-border' && (
+            <div className="space-y-2.5 border-t border-neutral-200/80 pt-4 dark:border-neutral-800/80">
+              <Label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                {isGridLayout ? 'Grid Spacing & Border' : 'Canvas Border'}
+              </Label>
               <Border
                 border={
                   isGridLayout
@@ -326,129 +226,332 @@ export default function ConfigPanelDesktop({
                 }
                 onChangeEnd={handleCommitHistory}
               />
+            </div>
+          </div>
+        )}
+
+        {effectiveTab === 'design' && selectedCount === 1 && (
+          <div className="space-y-5">
+            {/* Selection Action Strip */}
+            <div className="flex items-center justify-between gap-2 rounded-xl border border-sky-200/80 bg-sky-50/60 px-2.5 py-2 dark:border-sky-800/60 dark:bg-sky-950/30">
+              <Button
+                variant="ghost"
+                size="xs"
+                icon={ChevronLeft}
+                onClick={fabricHelper.canvasUpdater.discardActiveObject}
+                className="!h-6 !min-h-6 !px-1.5 text-[11px] font-semibold text-neutral-600 dark:text-neutral-300"
+              >
+                Canvas
+              </Button>
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="secondary"
+                  size="xs"
+                  bordered
+                  icon={hasImageSrc ? RefreshCw : ImagePlus}
+                  onClick={() => replaceInputRef.current?.click()}
+                  className="!h-6 !min-h-6 !px-2 text-[11px]"
+                >
+                  {hasImageSrc ? 'Replace' : 'Upload'}
+                </Button>
+                {hasImageSrc && (
+                  <Button
+                    variant="ghost"
+                    size="xs"
+                    icon={Trash2}
+                    onClick={handleDeleteSingle}
+                    title="Delete Selected Image"
+                    aria-label="Delete Selected Image"
+                    className="!h-6 !min-h-6 !w-6 !min-w-6 !p-0 text-red-500 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
+                  />
+                )}
+              </div>
+            </div>
+
+            {hasImageSrc ? (
+              <>
+                <div className="space-y-2.5">
+                  <Label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                    Alignment &amp; Fit
+                  </Label>
+                  <Alignment
+                    setAlignment={
+                      isGridLayout
+                        ? fabricHelper.gridUpdater.setAlignment
+                        : fabricHelper.imageUpdater.setAlignment
+                    }
+                    setObjectFit={
+                      isGridLayout
+                        ? fabricHelper.gridUpdater.setObjectFit
+                        : fabricHelper.imageUpdater.setObjectFit
+                    }
+                    selectedCount={1}
+                  />
+                </div>
+
+                <div className="space-y-2.5 border-t border-neutral-200/80 pt-4 dark:border-neutral-800/80">
+                  <Label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                    Geometry &amp; Crop
+                  </Label>
+                  <Geometry
+                    imageConfig={configHelper.imageConfig}
+                    isGridLayout={isGridLayout}
+                    setGeometry={fabricHelper.imageUpdater.setGeometry}
+                    setSize={fabricHelper.imageUpdater.setSize}
+                    setClipMask={fabricHelper.imageUpdater.setClipMask}
+                    resetOriginalSize={
+                      fabricHelper.imageUpdater.resetOriginalSize
+                    }
+                    resetAspectRatio={
+                      fabricHelper.imageUpdater.resetAspectRatio
+                    }
+                    onChangeEnd={handleCommitHistory}
+                  />
+                </div>
+
+                <div className="space-y-2.5 border-t border-neutral-200/80 pt-4 dark:border-neutral-800/80">
+                  <Label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                    Appearance
+                  </Label>
+                  <Opacity
+                    opacity={configHelper.imageConfig.opacity}
+                    setImageOpacity={fabricHelper.imageUpdater.setOpacity}
+                    onChangeEnd={handleCommitHistory}
+                  />
+                </div>
+
+                {!isGridLayout && (
+                  <>
+                    <div className="space-y-2.5 border-t border-neutral-200/80 pt-4 dark:border-neutral-800/80">
+                      <Label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                        Border &amp; Shadow
+                      </Label>
+                      <Border
+                        border={configHelper.imageConfig.border}
+                        setBorderWidth={
+                          fabricHelper.imageUpdater.setBorderWidth
+                        }
+                        setBorderColor={
+                          fabricHelper.imageUpdater.setBorderColor
+                        }
+                        resetBorder={fabricHelper.imageUpdater.resetBorder}
+                        shadow={configHelper.imageConfig.shadow}
+                        setShadow={fabricHelper.imageUpdater.setShadow}
+                        onChangeEnd={handleCommitHistory}
+                      />
+                    </div>
+
+                    <div className="space-y-2.5 border-t border-neutral-200/80 pt-4 dark:border-neutral-800/80">
+                      <Label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                        Layer Order
+                      </Label>
+                      <Arrangement
+                        setLayer={fabricHelper.imageUpdater.setLayer}
+                      />
+                    </div>
+                  </>
+                )}
+              </>
+            ) : (
+              <div className="rounded-xl border border-dashed border-neutral-300/80 bg-neutral-50/70 p-4 text-center text-xs text-neutral-500 dark:border-neutral-700/80 dark:bg-neutral-900/50 dark:text-neutral-400">
+                Empty grid cell selected. Click{' '}
+                <span className="font-semibold text-neutral-700 dark:text-neutral-200">
+                  Upload
+                </span>{' '}
+                above to place a photo in this slot.
+              </div>
             )}
+          </div>
+        )}
 
-            {effectiveActiveToolId === 'canvas-caption' && (
-              <CaptionWatermark
-                selectedCaption={selectedCaption}
-                watermark={
-                  configHelper.canvasConfig.watermark ?? {
-                    enabled: false,
-                    text: '© PicMerge Studio',
-                    color: '#ffffff',
-                    opacity: 0.28,
-                    fontSize: 32,
-                    angle: -30,
-                  }
-                }
-                onAddCaption={fabricHelper.canvasUpdater.addCaption}
-                onUpdateCaption={
-                  fabricHelper.canvasUpdater.updateSelectedCaption
-                }
-                onDeleteCaption={
-                  fabricHelper.canvasUpdater.deleteSelectedCaption
-                }
-                onUpdateWatermark={fabricHelper.canvasUpdater.setWatermark}
-                onChangeEnd={handleCommitHistory}
-              />
-            )}
+        {effectiveTab === 'design' && selectedCount >= 2 && (
+          <div className="space-y-5">
+            {/* Batch Selection Strip */}
+            <div className="flex items-center justify-between gap-2 rounded-xl border border-sky-200/80 bg-sky-50/60 px-2.5 py-2 dark:border-sky-800/60 dark:bg-sky-950/30">
+              <Button
+                variant="ghost"
+                size="xs"
+                icon={ChevronLeft}
+                onClick={fabricHelper.canvasUpdater.discardActiveObject}
+                className="!h-6 !min-h-6 !px-1.5 text-[11px] font-semibold text-neutral-600 dark:text-neutral-300"
+              >
+                Canvas
+              </Button>
+              <Button
+                variant="ghost"
+                size="xs"
+                icon={Trash2}
+                onClick={() => onRequestBatchDelete()}
+                className="!h-6 !min-h-6 !px-2 text-[11px] font-semibold text-red-500 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
+              >
+                Delete ({selectedCount})
+              </Button>
+            </div>
 
-            {/* Image Tools */}
-
-            {effectiveActiveToolId === 'image-align' && (
-              <Alignment
-                setAlignment={
-                  isGridLayout
-                    ? fabricHelper.gridUpdater.setAlignment
-                    : fabricHelper.imageUpdater.setAlignment
-                }
-                setObjectFit={
-                  isGridLayout
-                    ? fabricHelper.gridUpdater.setObjectFit
-                    : fabricHelper.imageUpdater.setObjectFit
-                }
-                selectedCount={1}
-              />
-            )}
-
-            {effectiveActiveToolId === 'image-arrangement' && (
-              <Arrangement setLayer={fabricHelper.imageUpdater.setLayer} />
-            )}
-
-            {effectiveActiveToolId === 'image-geometry' && (
-              <Geometry
-                imageConfig={configHelper.imageConfig}
-                isGridLayout={isGridLayout}
-                setGeometry={fabricHelper.imageUpdater.setGeometry}
-                setSize={fabricHelper.imageUpdater.setSize}
-                setClipMask={fabricHelper.imageUpdater.setClipMask}
-                resetOriginalSize={fabricHelper.imageUpdater.resetOriginalSize}
-                resetAspectRatio={fabricHelper.imageUpdater.resetAspectRatio}
-                onChangeEnd={handleCommitHistory}
-              />
-            )}
-
-            {effectiveActiveToolId === 'image-opacity' && (
-              <Opacity
-                opacity={configHelper.imageConfig.opacity}
-                setImageOpacity={fabricHelper.imageUpdater.setOpacity}
-                onChangeEnd={handleCommitHistory}
-              />
-            )}
-
-            {effectiveActiveToolId === 'image-border' && (
-              <Border
-                border={configHelper.imageConfig.border}
-                setBorderWidth={fabricHelper.imageUpdater.setBorderWidth}
-                setBorderColor={fabricHelper.imageUpdater.setBorderColor}
-                resetBorder={fabricHelper.imageUpdater.resetBorder}
-                shadow={configHelper.imageConfig.shadow}
-                setShadow={fabricHelper.imageUpdater.setShadow}
-                onChangeEnd={handleCommitHistory}
-              />
-            )}
-
-            {effectiveActiveToolId === 'image-filters' && (
-              <Filters
-                filters={configHelper.imageConfig.filters}
-                setFilters={fabricHelper.imageUpdater.setFilters}
-                onChangeEnd={handleCommitHistory}
-              />
-            )}
-
-            {/* Batch Tools */}
-            {effectiveActiveToolId === 'batch-align' && (
+            <div className="space-y-2.5">
+              <Label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                Batch Alignment
+              </Label>
               <Alignment
                 setAlignment={fabricHelper.imagesUpdater.setAlignment}
                 setObjectFit={fabricHelper.imagesUpdater.setObjectFit}
                 distributeSpacing={fabricHelper.imagesUpdater.distributeSpacing}
                 selectedCount={selectedCount}
               />
-            )}
+            </div>
 
-            {effectiveActiveToolId === 'batch-arrangement' && (
-              <Arrangement
-                setLayer={fabricHelper.layersUpdater.batchSetLayer}
-              />
-            )}
-
-            {effectiveActiveToolId === 'batch-opacity' && (
+            <div className="space-y-2.5 border-t border-neutral-200/80 pt-4 dark:border-neutral-800/80">
+              <Label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                Batch Opacity
+              </Label>
               <Opacity
                 opacity={configHelper.imageConfig.opacity}
                 setImageOpacity={fabricHelper.layersUpdater.batchSetOpacity}
                 onChangeEnd={handleCommitHistory}
               />
-            )}
+            </div>
 
-            {effectiveActiveToolId === 'batch-border' && (
-              <Border
-                border={configHelper.imageConfig.border}
-                setBorderWidth={fabricHelper.layersUpdater.batchSetBorderWidth}
-                setBorderColor={fabricHelper.layersUpdater.batchSetBorderColor}
-                resetBorder={fabricHelper.layersUpdater.batchResetBorder}
-                onChangeEnd={handleCommitHistory}
-              />
+            {!isGridLayout && (
+              <>
+                <div className="space-y-2.5 border-t border-neutral-200/80 pt-4 dark:border-neutral-800/80">
+                  <Label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                    Batch Border
+                  </Label>
+                  <Border
+                    border={configHelper.imageConfig.border}
+                    setBorderWidth={
+                      fabricHelper.layersUpdater.batchSetBorderWidth
+                    }
+                    setBorderColor={
+                      fabricHelper.layersUpdater.batchSetBorderColor
+                    }
+                    resetBorder={fabricHelper.layersUpdater.batchResetBorder}
+                    onChangeEnd={handleCommitHistory}
+                  />
+                </div>
+
+                <div className="space-y-2.5 border-t border-neutral-200/80 pt-4 dark:border-neutral-800/80">
+                  <Label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                    Batch Layer Order
+                  </Label>
+                  <Arrangement
+                    setLayer={fabricHelper.layersUpdater.batchSetLayer}
+                  />
+                </div>
+              </>
             )}
+          </div>
+        )}
+
+        {effectiveTab === 'filters' &&
+          (selectedCount === 1 && hasImageSrc ? (
+            <Filters
+              filters={configHelper.imageConfig.filters}
+              setFilters={fabricHelper.imageUpdater.setFilters}
+              onChangeEnd={handleCommitHistory}
+            />
+          ) : (
+            <div className="rounded-xl border border-dashed border-neutral-300/80 bg-neutral-50/70 p-4 text-center text-xs text-neutral-500 dark:border-neutral-700/80 dark:bg-neutral-900/50 dark:text-neutral-400">
+              <Sparkles className="mx-auto mb-2 h-5 w-5 text-sky-500" />
+              <p className="font-medium text-neutral-700 dark:text-neutral-300">
+                Select a single image
+              </p>
+              <p className="mt-1 text-[11px] leading-relaxed">
+                Click any photo on the canvas or in the Layers tab to apply
+                filter presets and fine-tune color adjustments.
+              </p>
+            </div>
+          ))}
+
+        {effectiveTab === 'text' && (
+          <CaptionWatermark
+            selectedCaption={selectedCaption}
+            watermark={
+              configHelper.canvasConfig.watermark ?? {
+                enabled: false,
+                text: '© PicMerge Studio',
+                color: '#ffffff',
+                opacity: 0.28,
+                fontSize: 32,
+                angle: -30,
+              }
+            }
+            onAddCaption={fabricHelper.canvasUpdater.addCaption}
+            onUpdateCaption={fabricHelper.canvasUpdater.updateSelectedCaption}
+            onDeleteCaption={fabricHelper.canvasUpdater.deleteSelectedCaption}
+            onUpdateWatermark={fabricHelper.canvasUpdater.setWatermark}
+            onChangeEnd={handleCommitHistory}
+          />
+        )}
+
+        {effectiveTab === 'layers' && (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5">
+                <Label className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                  Photo Stack
+                </Label>
+                <span className="rounded-full bg-neutral-100 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+                  {layers.length}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1">
+                {layers.length > 0 && (
+                  <Button
+                    variant={
+                      selectedCount === layers.length ? 'ghost-sky' : 'ghost'
+                    }
+                    size="xs"
+                    icon={CheckCheck}
+                    onClick={() => {
+                      if (selectedCount === layers.length) {
+                        fabricHelper.layersUpdater.selectBackground();
+                      } else {
+                        fabricHelper.layersUpdater.selectAll();
+                      }
+                    }}
+                    title={
+                      selectedCount === layers.length
+                        ? 'Deselect All'
+                        : 'Select All Layers'
+                    }
+                    className="!h-6 !min-h-6 !px-1.5 text-[10px]"
+                  >
+                    {selectedCount === layers.length ? 'None' : 'All'}
+                  </Button>
+                )}
+                <Button
+                  variant="secondary"
+                  size="xs"
+                  bordered
+                  icon={ImagePlus}
+                  onClick={() => addInputRef.current?.click()}
+                  className="!h-6 !min-h-6 !px-2 text-[10px]"
+                >
+                  Add
+                </Button>
+              </div>
+            </div>
+
+            <LayerStack
+              layers={layers}
+              selectedCount={selectedCount}
+              canvasSize={configHelper.canvasConfig.size}
+              canvasBackground={configHelper.canvasConfig.background}
+              onSelectLayer={(img, isToggle) =>
+                fabricHelper.layersUpdater.selectLayer(img, isToggle)
+              }
+              onSelectBackground={() =>
+                fabricHelper.layersUpdater.selectBackground()
+              }
+              onToggleVisibility={(img) =>
+                fabricHelper.layersUpdater.toggleVisibility(img)
+              }
+              onReorderLayers={(newLayers) =>
+                fabricHelper.layersUpdater.reorderLayers(newLayers)
+              }
+            />
           </div>
         )}
       </div>

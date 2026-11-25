@@ -355,6 +355,7 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
   const activeToolRef = useRef<StudioToolId>(activeTool);
   const isPanningRef = useRef(false);
   const isSpacePanRef = useRef(false);
+  const hasUserAdjustedViewportRef = useRef(false);
   const lastPanPointRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const isExportingRef = useRef(false);
   const checkerPatternRef = useRef<CanvasPattern | null>(null);
@@ -499,6 +500,7 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
       const canvas = fabricCanvasRef.current;
       if (!canvas) return;
 
+      hasUserAdjustedViewportRef.current = true;
       exitCompareIfNeeded();
       const clamped = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, nextZoom));
       const point =
@@ -523,6 +525,7 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
     const vh = canvas.getHeight();
     if (vw <= 20 || vh <= 20) return;
 
+    hasUserAdjustedViewportRef.current = false;
     exitCompareIfNeeded();
     const { width: dw, height: dh } = docConfigRef.current;
     const padding = 64;
@@ -1110,6 +1113,7 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
       e.preventDefault();
       e.stopPropagation();
 
+      hasUserAdjustedViewportRef.current = true;
       exitCompareIfNeeded();
       const factor = 0.9985 ** e.deltaY;
       const currentZoom = canvas.getZoom();
@@ -1614,6 +1618,7 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
         };
         const vpt = canvas.viewportTransform;
         if (vpt) {
+          hasUserAdjustedViewportRef.current = true;
           vpt[4] += dx;
           vpt[5] += dy;
           canvas.setViewportTransform(vpt);
@@ -1808,12 +1813,28 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
       const w = Math.floor(entry.contentRect.width);
       const h = Math.floor(entry.contentRect.height);
       if (w < 40 || h < 40) return;
-      if (w === canvas.getWidth() && h === canvas.getHeight()) return;
+      const prevW = canvas.getWidth();
+      const prevH = canvas.getHeight();
+      if (w === prevW && h === prevH) return;
       canvas.setDimensions({ width: w, height: h });
       setStageSize({ width: w, height: h });
-      setViewportTransformState([
-        ...(canvas.viewportTransform || [1, 0, 0, 1, 0, 0]),
-      ]);
+
+      if (!hasUserAdjustedViewportRef.current) {
+        fitToScreen();
+        return;
+      }
+
+      const currentVpt = canvas.viewportTransform || [1, 0, 0, 1, 0, 0];
+      const nextVpt = [
+        currentVpt[0],
+        currentVpt[1],
+        currentVpt[2],
+        currentVpt[3],
+        currentVpt[4] + (w - prevW) / 2,
+        currentVpt[5] + (h - prevH) / 2,
+      ] as fabric.TMat2D;
+      canvas.setViewportTransform(nextVpt);
+      setViewportTransformState([...nextVpt]);
       canvas.requestRenderAll();
     });
     resizeObserver.observe(stageEl);
@@ -4008,6 +4029,7 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
         version: 1,
         createdAt: Date.now(),
         source: 'photo-editor',
+        mode: scope === 'selected' ? 'append' : 'replace',
         width,
         height,
         backgroundColor:
@@ -4049,6 +4071,11 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
         1,
         maxEdge / Math.max(payload.width, payload.height, 1)
       );
+      canvas.discardActiveObject();
+      for (const existing of canvas.getObjects().slice()) {
+        canvas.remove(existing);
+      }
+
       const nextDoc: DocumentConfig = {
         width: Math.max(100, Math.round(payload.width * ratio)),
         height: Math.max(100, Math.round(payload.height * ratio)),

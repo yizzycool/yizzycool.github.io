@@ -17,6 +17,7 @@ import {
   DEFAULT_DOCUMENT_CONFIG,
   MAX_HISTORY_ENTRIES,
 } from '../constants';
+import { hasHandoffQueryParam } from '../../studio-handoff';
 import { generateUid } from '../utils/fabric-layer-mapper';
 import {
   collectAssetIdsFromJson,
@@ -404,7 +405,7 @@ export default function useHistoryStack({
     hasHydratedRef.current = true;
 
     const hydrate = async () => {
-      if (isDbSupported) {
+      if (isDbSupported && !hasHandoffQueryParam()) {
         try {
           const draft = await getValue<PersistedPhotoEditorDraft>(
             'drafts',

@@ -204,19 +204,21 @@ export default function useFabric({
     refs: { fabricCanvasRef },
   });
 
-  // To resize canvas element when window resized
+  // To resize canvas element when container or window resized
   const resizeDisplay = useCallback(() => {
     if (!containerRef.current || !fabricCanvasRef.current) return;
 
-    const containerWidth = containerRef.current.clientWidth;
-    const containerHeight = containerRef.current.clientHeight;
+    const container = containerRef.current;
+    const containerWidth = container.clientWidth;
+    const containerHeight = container.clientHeight;
+    if (containerWidth <= 0 || containerHeight <= 0) return;
 
     const canvasSize = canvasConfigRef.current.size;
 
-    // Provide comfortable breathing room around the canvas
-    const horizontalPadding = containerWidth < 640 ? 16 : 36;
-    const paddingTop = containerWidth < 640 ? 44 : 36;
-    const paddingBottom = containerWidth < 640 ? 16 : 36;
+    // Provide comfortable breathing room around the artboard & bottom Zoom HUD
+    const horizontalPadding = containerWidth < 640 ? 16 : 32;
+    const paddingTop = containerWidth < 640 ? 16 : 24;
+    const paddingBottom = containerWidth < 640 ? 48 : 56;
     const availableWidth = Math.max(containerWidth - horizontalPadding * 2, 80);
     const availableHeight = Math.max(
       containerHeight - paddingTop - paddingBottom,
@@ -230,21 +232,21 @@ export default function useFabric({
     const scale = baseScale * viewportZoomRef.current;
 
     // Update canvas wrapper
-    const wrapper = document.querySelector('.canvas-container') as HTMLElement;
+    const wrapper = container.querySelector('.canvas-container') as HTMLElement;
     if (wrapper) {
       wrapper.style.width = `${canvasSize.width * scale}px`;
       wrapper.style.height = `${canvasSize.height * scale}px`;
     }
 
     // Update lower canvas
-    const lowerCanvas = document.querySelector('.lower-canvas') as HTMLElement;
+    const lowerCanvas = container.querySelector('.lower-canvas') as HTMLElement;
     if (lowerCanvas) {
       lowerCanvas.style.width = `${canvasSize.width * scale}px`;
       lowerCanvas.style.height = `${canvasSize.height * scale}px`;
     }
 
     // Update upper canvas
-    const upperCanvas = document.querySelector('.upper-canvas') as HTMLElement;
+    const upperCanvas = container.querySelector('.upper-canvas') as HTMLElement;
     if (upperCanvas) {
       upperCanvas.style.width = `${canvasSize.width * scale}px`;
       upperCanvas.style.height = `${canvasSize.height * scale}px`;
@@ -844,15 +846,24 @@ export default function useFabric({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Update canvas while window size changed
+  // Update canvas when container or window size changes (including mobile tray toggle)
   useEffect(() => {
     if (!isFabricReady) return;
 
     resizeDisplay();
     window.addEventListener('resize', resizeDisplay);
 
+    let observer: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined' && containerRef.current) {
+      observer = new ResizeObserver(() => {
+        resizeDisplay();
+      });
+      observer.observe(containerRef.current);
+    }
+
     return () => {
       window.removeEventListener('resize', resizeDisplay);
+      observer?.disconnect();
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
