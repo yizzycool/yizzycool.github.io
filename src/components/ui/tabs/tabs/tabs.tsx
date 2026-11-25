@@ -179,7 +179,7 @@ function TabItem<const T extends ReactNode = string>({
       disabled={isDisabled}
       onClick={() => onClick(mode)}
       className={cn(
-        'relative z-0 flex shrink-0 cursor-pointer select-none items-center justify-center whitespace-nowrap font-medium outline-none transition-colors duration-200',
+        'relative flex shrink-0 cursor-pointer select-none items-center justify-center whitespace-nowrap font-medium outline-none transition-colors duration-200',
         currentRounded.item,
         currentSize.padding,
         currentSize.text,
@@ -197,7 +197,7 @@ function TabItem<const T extends ReactNode = string>({
           layoutId={indicatorLayoutId}
           transition={{ type: 'spring', stiffness: 440, damping: 34 }}
           className={cn(
-            'absolute inset-0 -z-10',
+            'absolute inset-0',
             currentRounded.item,
             currentVariant.indicator
           )}

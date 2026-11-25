@@ -31,6 +31,11 @@ const RELATED_TOOLS_MAP: Record<string, readonly string[]> = {
     ToolKeys.chromeBarcodeDetector,
     ToolKeys.picMergeStudio,
   ],
+  [ToolKeys.pomodoroFocusTimer]: [
+    ToolKeys.markdownNotes,
+    ToolKeys.wordCounter,
+    ToolKeys.keyCard,
+  ],
   [ToolKeys.signatureStampMaker]: [
     ToolKeys.photoEditorStudio,
     ToolKeys.picMergeStudio,

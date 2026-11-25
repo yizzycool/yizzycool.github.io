@@ -51,6 +51,23 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.pomodoroFocusTimer]: {
+    title:
+      'Pomodoro Focus Timer & Ambient Soundscape – Free Online Focus Tool | Yizzy Peasy',
+    description:
+      'Distraction-free Pomodoro focus timer with a real-time Web Audio ambient noise mixer (Brown noise, Pink noise, Rainfall, Ocean waves, and Alpha binaural beats). Zero audio downloads, 100% private.',
+    openGraph: {
+      title: 'Pomodoro Focus Timer & Ambient Soundscape',
+      description:
+        'Stay focused with a Zen Pomodoro timer and procedural Web Audio white noise, rain, ocean waves, and binaural beats directly in your browser.',
+    },
+    twitter: {
+      title: 'Pomodoro Focus Timer & Ambient Soundscape',
+      description:
+        '100% browser-based Pomodoro focus timer with synthesized ambient soundscapes and keyboard shortcuts.',
+    },
+  },
+
   [ToolKeys.qrCodeGenerator]: {
     title: 'QR Code Generator – Generate QR Codes Online | Yizzy Peasy',
     description:
@@ -655,6 +672,19 @@ export const ToolJsonLdSoftwareApplication = {
       'Local paper-photo signature and stamp extraction with shadow normalization, soft-alpha ramp, edge cropping, and ink recoloring',
       'Customizable round, square, and oval stamp generator with CJK vertical seal layout and ink-pad texture',
       '100% client-side transparent PNG (1x/2x/3x), clipboard copy, and scalable SVG export with automatic margin trimming',
+    ],
+  },
+
+  [ToolKeys.pomodoroFocusTimer]: {
+    name: 'Pomodoro Focus Timer',
+    applicationCategory: 'UtilitiesApplication',
+    description:
+      'A distraction-free Pomodoro focus timer paired with a procedural Web Audio API soundscape mixer generating Brown noise, Pink noise, Rainfall, Ocean waves, and Alpha binaural beats completely offline.',
+    featureList: [
+      'Drift-resistant Focus, Short Break, and Long Break countdowns with tab title display',
+      'Pure Web Audio procedural soundscape mixer with zero external MP3 downloads',
+      'Mix presets including Deep Code, Rainy Studio, Ocean Calm, and Alpha Flow',
+      'Customizable cycle intervals, auto-start options, completion chimes, and desktop alerts',
     ],
   },
 

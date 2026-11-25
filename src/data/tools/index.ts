@@ -33,6 +33,7 @@ import {
   Signature,
   SpellCheck,
   StickyNote,
+  Timer,
   WandSparkles,
   Wifi,
 } from 'lucide-react';
@@ -96,6 +97,7 @@ export const ToolKeys = {
   signatureStampMaker: 'signatureStampMaker',
   qrCodeGenerator: 'qrCodeGenerator',
   wifiCardGenerator: 'wifiCardGenerator',
+  pomodoroFocusTimer: 'pomodoroFocusTimer',
   wordCounter: 'wordCounter',
   keyCard: 'keyCard',
 
@@ -155,6 +157,7 @@ export const ToolGroupItems = {
     ToolKeys.signatureStampMaker,
     ToolKeys.qrCodeGenerator,
     ToolKeys.wifiCardGenerator,
+    ToolKeys.pomodoroFocusTimer,
     ToolKeys.wordCounter,
     ToolKeys.keyCard,
   ],
@@ -208,6 +211,7 @@ export const ToolTitles = {
   [ToolKeys.signatureStampMaker]: 'Signature & Stamp Maker',
   [ToolKeys.qrCodeGenerator]: 'QR Code Generator',
   [ToolKeys.wifiCardGenerator]: 'Wi-Fi Card Generator',
+  [ToolKeys.pomodoroFocusTimer]: 'Pomodoro Focus Timer',
   [ToolKeys.wordCounter]: 'Word Counter',
   [ToolKeys.keyCard]: 'KeyCard',
 
@@ -277,6 +281,8 @@ export const ToolDescriptions = {
     'Generate custom QR codes instantly with personalized colors, contrast presets, adjustable error correction, and 1-click PNG export.',
   [ToolKeys.wifiCardGenerator]:
     'Create printable Wi-Fi QR code guest cards and table tents with Nordic, cafe, dark, and botanical themes, password masking, dashed cut guides, PNG export, and 100% browser privacy.',
+  [ToolKeys.pomodoroFocusTimer]:
+    'Distraction-free Pomodoro focus timer paired with a real-time Web Audio ambient soundscape mixer (Brown noise, Pink noise, Rainfall, Ocean waves, and 10 Hz Alpha binaural beats) and zero external audio files.',
   [ToolKeys.wordCounter]:
     'Accurately count words, characters, and UTF-8 bytes for Chinese and English text, with real-time social media limits and text formatting tools.',
   [ToolKeys.keyCard]:
@@ -352,6 +358,7 @@ export const ToolSlugs = {
   [ToolKeys.signatureStampMaker]: 'signature-stamp-maker',
   [ToolKeys.qrCodeGenerator]: 'qr-code-generator',
   [ToolKeys.wifiCardGenerator]: 'wifi-card-generator',
+  [ToolKeys.pomodoroFocusTimer]: 'pomodoro-focus-timer',
   [ToolKeys.wordCounter]: 'word-counter',
   [ToolKeys.keyCard]: 'key-card',
 
@@ -412,6 +419,7 @@ export const ToolIcons = {
   [ToolKeys.signatureStampMaker]: Signature,
   [ToolKeys.qrCodeGenerator]: QrCode,
   [ToolKeys.wifiCardGenerator]: Wifi,
+  [ToolKeys.pomodoroFocusTimer]: Timer,
   [ToolKeys.wordCounter]: FileText,
   [ToolKeys.keyCard]: Keyboard,
 
@@ -459,6 +467,7 @@ export const ToolGroupBadges: Record<string, string> = {
  * Optional highlight badges displayed beside individual tool entries (e.g. "New", "Popular").
  */
 export const ToolBadges: Record<string, string> = {
+  [ToolKeys.pomodoroFocusTimer]: 'New',
   [ToolKeys.wifiCardGenerator]: 'New',
   [ToolKeys.signatureStampMaker]: 'New',
   [ToolKeys.photoEditorStudio]: 'New',

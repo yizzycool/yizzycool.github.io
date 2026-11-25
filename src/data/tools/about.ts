@@ -47,6 +47,19 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
     bottomNote:
       'Your handwriting and stamp designs stay completely inside your local browser session and are never transmitted over the network.',
   },
+  [ToolKeys.pomodoroFocusTimer]: {
+    overview:
+      'Staying in deep work often means juggling separate timer apps, noisy browser tabs, and bloated ambient audio sites that stream large MP3 loops. Pomodoro Focus Timer pairs a drift-resistant Focus / Short Break / Long Break countdown stage with an algorithmic Web Audio API soundscape mixer synthesized directly inside your browser.',
+    features: [
+      '100% Client-Side Audio Synthesis: Brown noise, Pink noise, Rainfall, Ocean Waves, and 10 Hz Alpha binaural beats are generated procedurally in real time with zero external downloads.',
+      'Drift-Resistant Focus Cycles: Uses wall-clock timestamp tracking so countdowns stay accurate even when browser tabs throttle in the background, plus live countdown display in the browser tab title.',
+      'Multi-Track Mixer & Instant Presets: Blend five independent ambient channels with smooth click-free volume curves, master mute/gain controls, and one-click presets like Deep Code and Rainy Studio.',
+      'Customizable Intervals & Automation: Configure Focus, Short Break, Long Break durations, sessions per cycle, auto-start transitions, and soft synthesized completion chimes.',
+      'Keyboard Controls & Daily Focus Counter: Control sessions hands-free with Space (Start/Pause), Alt+N (Next Phase), and Esc (Reset) while tracking daily completed sessions in localStorage.',
+    ],
+    bottomNote:
+      'All timer settings, daily session counts, and synthesized ambient audio stay 100% locally in your browser with zero tracking or external audio streams.',
+  },
   [ToolKeys.qrCodeGenerator]: {
     overview:
       'Quick Response (QR) codes are indispensable for instantly connecting physical media to digital experiences, links, contact details, and plain text. This QR Code Generator enables users to convert any URL or text into an interactive, high-contrast QR code with instant visual feedback.',

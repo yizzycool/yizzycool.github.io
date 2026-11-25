@@ -20,6 +20,7 @@ export const TOOLS_WITH_HOTKEY = [
   ToolKeys.signatureStampMaker,
   ToolKeys.qrCodeGenerator,
   ToolKeys.wifiCardGenerator,
+  ToolKeys.pomodoroFocusTimer,
   ToolKeys.wordCounter,
   ToolKeys.keyCard,
 
