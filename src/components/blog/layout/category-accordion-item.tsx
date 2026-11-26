@@ -51,7 +51,7 @@ export default function CategoryAccordionItem({
         aria-expanded={isOpen}
         aria-controls={panelId}
         className={cn(
-          'group mt-1 flex w-full items-center justify-between rounded-md p-2 text-left font-bold',
+          'group mt-1 flex w-full items-center justify-between gap-2 rounded-md p-2 text-left font-bold',
           'text-slate-800 dark:text-slate-300',
           'hover:bg-sky-600/10',
           'data-[active=true]:bg-sky-600/10 data-[active-article=true]:text-sky-500',
@@ -62,14 +62,19 @@ export default function CategoryAccordionItem({
         data-active-article={isActive}
         onClick={handleCategoryClick}
       >
-        {category.name}
-        <ChevronDown
-          size={16}
-          className={cn(
-            'text-slate-400 transition-transform duration-300',
-            isOpen && 'rotate-180'
-          )}
-        />
+        <span className="truncate">{category.name}</span>
+        <span className="flex shrink-0 items-center gap-1.5">
+          <span className="text-xs font-normal text-slate-400 dark:text-slate-500">
+            {category.articles?.length ?? 0}
+          </span>
+          <ChevronDown
+            size={16}
+            className={cn(
+              'text-slate-400 transition-transform duration-300',
+              isOpen && 'rotate-180'
+            )}
+          />
+        </span>
       </button>
       <motion.div
         id={panelId}
