@@ -102,6 +102,23 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.decisionWheel]: {
+    title:
+      'Decision Wheel – Fair Random Picker & Weighted Spinner | Yizzy Peasy',
+    description:
+      'Free ad-free random decision wheel with customizable weights, Web Crypto unbiased RNG, no-repeat draw mode, Web Audio sound effects, and quick lunch/party presets.',
+    openGraph: {
+      title: 'Decision Wheel & Fair Random Picker',
+      description:
+        'Spin a 60 FPS weighted random wheel with no-repeat elimination, bulk list import, and local presets.',
+    },
+    twitter: {
+      title: 'Decision Wheel & Fair Random Picker',
+      description:
+        'Fair crypto-random spinning wheel with weights, presets, and no-repeat draws.',
+    },
+  },
+
   [ToolKeys.qrCodeGenerator]: {
     title: 'QR Code Generator – Generate QR Codes Online | Yizzy Peasy',
     description:
@@ -745,6 +762,19 @@ export const ToolJsonLdSoftwareApplication = {
       'Zero-backend shareable URL encoding title, date, gradient theme, and aspect ratio',
       'Curated gradient poster themes with 1080x1920, 1080x1080, and 1600x900 PNG export',
       'Local milestone bookmark list stored privately in browser storage',
+    ],
+  },
+
+  [ToolKeys.decisionWheel]: {
+    name: 'Decision Wheel',
+    applicationCategory: 'UtilitiesApplication',
+    description:
+      'A 100% client-side weighted random decision wheel featuring Web Crypto RNG, smooth physics deceleration, synthesized Web Audio ticks, no-repeat draw elimination, and quick presets.',
+    featureList: [
+      'Unbiased Web Crypto random angle selection with 3 spin speed modes',
+      'Per-option 1x-10x probability weighting, custom slice colors, and bulk text import',
+      'No-Repeat Draw mode with eliminated item tracking and one-click restore',
+      'Zero-dependency Web Audio API peg ticks and win chime with instant presets',
     ],
   },
 

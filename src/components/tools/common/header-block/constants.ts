@@ -23,6 +23,7 @@ export const TOOLS_WITH_HOTKEY = [
   ToolKeys.pomodoroFocusTimer,
   ToolKeys.bakingCookingConverter,
   ToolKeys.daysMatter,
+  ToolKeys.decisionWheel,
   ToolKeys.wordCounter,
   ToolKeys.keyCard,
 

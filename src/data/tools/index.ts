@@ -11,6 +11,7 @@ import {
   CaseUpper,
   Clock,
   CodeXml,
+  Dices,
   FileArchive,
   FileImage,
   FileText,
@@ -102,6 +103,7 @@ export const ToolKeys = {
   pomodoroFocusTimer: 'pomodoroFocusTimer',
   bakingCookingConverter: 'bakingCookingConverter',
   daysMatter: 'daysMatter',
+  decisionWheel: 'decisionWheel',
   wordCounter: 'wordCounter',
   keyCard: 'keyCard',
 
@@ -164,6 +166,7 @@ export const ToolGroupItems = {
     ToolKeys.pomodoroFocusTimer,
     ToolKeys.bakingCookingConverter,
     ToolKeys.daysMatter,
+    ToolKeys.decisionWheel,
     ToolKeys.wordCounter,
     ToolKeys.keyCard,
   ],
@@ -220,6 +223,7 @@ export const ToolTitles = {
   [ToolKeys.pomodoroFocusTimer]: 'Pomodoro Focus Timer',
   [ToolKeys.bakingCookingConverter]: 'Baking & Cooking Converter',
   [ToolKeys.daysMatter]: 'Days Matter Countdown',
+  [ToolKeys.decisionWheel]: 'Decision Wheel',
   [ToolKeys.wordCounter]: 'Word Counter',
   [ToolKeys.keyCard]: 'KeyCard',
 
@@ -295,6 +299,8 @@ export const ToolDescriptions = {
     'Convert cups, tablespoons, grams, ounces, and oven temperatures (°C, °F, Convection, Gas Mark) accurately using real baking ingredient densities and recipe batch scaling.',
   [ToolKeys.daysMatter]:
     'Track upcoming countdowns and past milestones with live second counters, zero-backend shareable URLs, local saved milestones, and 9:16 IG Story / 1:1 / 16:9 gradient PNG posters.',
+  [ToolKeys.decisionWheel]:
+    'Spin a physics-eased customizable prize and lunch wheel powered by Web Crypto randomness, weighted slice probabilities, Web Audio peg ticks, and no-repeat elimination.',
   [ToolKeys.wordCounter]:
     'Accurately count words, characters, and UTF-8 bytes for Chinese and English text, with real-time social media limits and text formatting tools.',
   [ToolKeys.keyCard]:
@@ -373,6 +379,7 @@ export const ToolSlugs = {
   [ToolKeys.pomodoroFocusTimer]: 'pomodoro-focus-timer',
   [ToolKeys.bakingCookingConverter]: 'baking-cooking-converter',
   [ToolKeys.daysMatter]: 'days-matter',
+  [ToolKeys.decisionWheel]: 'decision-wheel',
   [ToolKeys.wordCounter]: 'word-counter',
   [ToolKeys.keyCard]: 'key-card',
 
@@ -436,6 +443,7 @@ export const ToolIcons = {
   [ToolKeys.pomodoroFocusTimer]: Timer,
   [ToolKeys.bakingCookingConverter]: Scale,
   [ToolKeys.daysMatter]: CalendarHeart,
+  [ToolKeys.decisionWheel]: Dices,
   [ToolKeys.wordCounter]: FileText,
   [ToolKeys.keyCard]: Keyboard,
 
@@ -483,9 +491,9 @@ export const ToolGroupBadges: Record<string, string> = {
  * Optional highlight badges displayed beside individual tool entries (e.g. "New", "Popular").
  */
 export const ToolBadges: Record<string, string> = {
+  [ToolKeys.decisionWheel]: 'New',
   [ToolKeys.daysMatter]: 'New',
   [ToolKeys.bakingCookingConverter]: 'New',
-  [ToolKeys.pomodoroFocusTimer]: 'New',
   [ToolKeys.expenseSplitter]: 'Popular',
   [ToolKeys.qrCodeGenerator]: 'Popular',
   [ToolKeys.photoEditorStudio]: 'Popular',

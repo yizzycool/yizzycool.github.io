@@ -86,6 +86,19 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
     bottomNote:
       'All milestone calculations, shareable URL encoding, and PNG poster rendering happen locally inside your browser.',
   },
+  [ToolKeys.decisionWheel]: {
+    overview:
+      'Deciding where to eat lunch, who picks up the check, or choosing a fair raffle winner should feel fun without ad-cluttered popups or rigid animations. Decision Wheel combines a responsive 60 FPS weighted canvas spinner with Web Crypto randomness, Web Audio peg ticks, and instant bulk list editing 100% locally in your browser.',
+    features: [
+      '100% Client-Side & Fair RNG: Uses Web Crypto (crypto.getRandomValues) in your browser so spins remain unbiased, offline-ready, and completely private.',
+      'Weighted Slices & Bulk Editing: Assign custom odds multipliers (1x–10x), cycle slice colors, shuffle or sort options, and paste multiline lists directly in Bulk Edit.',
+      'No-Repeat Draw Mode: Automatically eliminate winners after each draw until every participant has been picked, with one-click Restore All.',
+      '60 FPS Physics & Web Audio Ticks: Smooth deceleration curve with 12 o’clock pointer deflection and synthesized peg ticks / win chimes requiring zero external audio files.',
+      'Instant Presets & Shortcuts: Switch between "What to Eat", "Who Pays?", "Yes or No", and "Party Dare" presets or press Space anytime to spin.',
+    ],
+    bottomNote:
+      'All option lists, weights, spin draws, and audio synthesis run strictly locally in your browser with localStorage persistence.',
+  },
   [ToolKeys.qrCodeGenerator]: {
     overview:
       'Quick Response (QR) codes are indispensable for instantly connecting physical media to digital experiences, links, contact details, and plain text. This QR Code Generator enables users to convert any URL or text into an interactive, high-contrast QR code with instant visual feedback.',
