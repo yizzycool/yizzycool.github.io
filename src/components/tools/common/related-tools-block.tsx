@@ -41,6 +41,11 @@ const RELATED_TOOLS_MAP: Record<string, readonly string[]> = {
     ToolKeys.expenseSplitter,
     ToolKeys.markdownNotes,
   ],
+  [ToolKeys.daysMatter]: [
+    ToolKeys.pomodoroFocusTimer,
+    ToolKeys.wifiCardGenerator,
+    ToolKeys.picMergeStudio,
+  ],
   [ToolKeys.signatureStampMaker]: [
     ToolKeys.photoEditorStudio,
     ToolKeys.picMergeStudio,

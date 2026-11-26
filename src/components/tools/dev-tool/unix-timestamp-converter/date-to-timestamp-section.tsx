@@ -8,8 +8,8 @@ import { DeleteAction, PasteAction } from '@/components/shared/action-button';
 import LabelBar from '@/components/tools/common/label-bar';
 import { PropertyRow } from '@/components/tools/common/property-row';
 import { Button } from '@/components/ui/button';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Tabs } from '@/components/ui/tabs';
-import { cn } from '@/utils/cn';
 import useIsClient from '@/hooks/lifecycle/use-is-client';
 
 import {
@@ -54,7 +54,7 @@ export default function DateToTimestampSection({
         label="Human Date to Unix Timestamp"
         icon={CalendarDays}
         htmlFor="datetime-local-input"
-        description="Select date & time via native calendar or paste custom datetime string"
+        description="Select date & time via the calendar picker or paste any datetime string"
       >
         <Button
           variant="surface"
@@ -108,23 +108,15 @@ export default function DateToTimestampSection({
           </div>
         </div>
 
-        {/* Native Datetime-Local Picker Input */}
-        <div className="relative w-full">
-          <input
-            id="datetime-local-input"
-            type="datetime-local"
-            step="1"
-            value={dateTimeString}
-            onChange={(e) => onDateTimeChange(e.target.value)}
-            suppressHydrationWarning
-            className={cn(
-              'w-full rounded-xl border border-neutral-200/90 px-4 py-2.5 font-mono text-sm outline-none transition-all sm:text-base',
-              'bg-white/70 backdrop-blur-md dark:border-neutral-700/80 dark:bg-neutral-900/60 dark:text-neutral-100',
-              'focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:focus:border-blue-400 dark:focus:ring-blue-400/20',
-              '[&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-70 [&::-webkit-calendar-picker-indicator]:hover:opacity-100'
-            )}
-          />
-        </div>
+        {/* Date & Time Picker */}
+        <DatePicker
+          id="datetime-local-input"
+          showTime
+          showSeconds
+          size="base"
+          value={dateTimeString}
+          onChange={onDateTimeChange}
+        />
 
         {/* Dual Results Output: Seconds & Milliseconds */}
         <div className="divide-y divide-neutral-200/70 overflow-hidden rounded-xl border border-neutral-200/80 bg-white/70 backdrop-blur-md sm:grid sm:grid-cols-2 sm:divide-x sm:divide-y-0 dark:divide-neutral-800 dark:border-neutral-800 dark:bg-neutral-900/40">

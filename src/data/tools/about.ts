@@ -73,6 +73,19 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
     bottomNote:
       'All culinary density conversions, batch multipliers, and oven calculations run 100% locally in your browser with zero external requests.',
   },
+  [ToolKeys.daysMatter]: {
+    overview:
+      'Countdowns for exams, weddings, anniversaries, product launches, or meaningful life dates often come wrapped in ad-heavy sites or require account logins just to share a link. Days Matter Countdown calculates both future countdowns and past elapsed days directly in your browser—combining zero-backend URL parameter sharing with crisp social gradient poster exports.',
+    features: [
+      '100% Client-Side Privacy: Your milestones, custom notes, and saved event history remain strictly in your browser URL or localStorage with zero cloud databases.',
+      'Future Countdown & Days-Since Tracking: Automatically detects upcoming dates, exact anniversaries happening today, and past milestones with live HH:MM:SS clock breakdowns and week spans.',
+      'Zero-Backend URL Parameter Sharing: Encode title, target date, gradient palette, aspect ratio, and note directly into a shareable URL that opens identically for anyone.',
+      'Social Gradient Poster Workshop: Design and download crisp PNG posters in 9:16 Story (1080×1920), 1:1 Square (1080×1080), and 16:9 Banner (1600×900) across six curated palettes.',
+      'Local Saved Milestones: Bookmark multiple important events in localStorage with instant load switching and confirmation-protected bulk clearing.',
+    ],
+    bottomNote:
+      'All milestone calculations, shareable URL encoding, and PNG poster rendering happen locally inside your browser.',
+  },
   [ToolKeys.qrCodeGenerator]: {
     overview:
       'Quick Response (QR) codes are indispensable for instantly connecting physical media to digital experiences, links, contact details, and plain text. This QR Code Generator enables users to convert any URL or text into an interactive, high-contrast QR code with instant visual feedback.',

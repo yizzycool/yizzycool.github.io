@@ -85,6 +85,23 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.daysMatter]: {
+    title:
+      'Days Matter Countdown – Milestone & Social Poster Maker | Yizzy Peasy',
+    description:
+      'Free 100% private event countdown and days-since tracker with live timers, URL sharing without accounts, local milestone bookmarks, and 9:16 / 1:1 / 16:9 gradient PNG poster downloads.',
+    openGraph: {
+      title: 'Days Matter Countdown & Poster Maker',
+      description:
+        'Count down to upcoming events or track days since special milestones and export crisp gradient social posters locally.',
+    },
+    twitter: {
+      title: 'Days Matter Countdown & Poster Maker',
+      description:
+        'Private event countdown & social gradient poster workshop with zero-backend URL sharing.',
+    },
+  },
+
   [ToolKeys.qrCodeGenerator]: {
     title: 'QR Code Generator – Generate QR Codes Online | Yizzy Peasy',
     description:
@@ -715,6 +732,19 @@ export const ToolJsonLdSoftwareApplication = {
       'Bidirectional conversion across g, kg, oz, lb, US cups, Metric cups, tbsp, tsp, ml, and fl oz',
       'Recipe batch multiplier and circular cake pan area scaling presets',
       'Conventional °C / °F, Fan Convection, and UK Gas Mark oven converter',
+    ],
+  },
+
+  [ToolKeys.daysMatter]: {
+    name: 'Days Matter Countdown',
+    applicationCategory: 'UtilitiesApplication',
+    description:
+      'A 100% client-side milestone countdown and days-since tracker with live HH:MM:SS clocks, URL parameter sharing, localStorage event bookmarks, and 9:16, 1:1, and 16:9 gradient PNG poster export.',
+    featureList: [
+      'Bidirectional future countdown and past days-since tracking with week span',
+      'Zero-backend shareable URL encoding title, date, gradient theme, and aspect ratio',
+      'Curated gradient poster themes with 1080x1920, 1080x1080, and 1600x900 PNG export',
+      'Local milestone bookmark list stored privately in browser storage',
     ],
   },
 

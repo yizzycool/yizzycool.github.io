@@ -22,6 +22,7 @@ export const TOOLS_WITH_HOTKEY = [
   ToolKeys.wifiCardGenerator,
   ToolKeys.pomodoroFocusTimer,
   ToolKeys.bakingCookingConverter,
+  ToolKeys.daysMatter,
   ToolKeys.wordCounter,
   ToolKeys.keyCard,
 
