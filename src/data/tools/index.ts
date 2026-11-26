@@ -28,6 +28,7 @@ import {
   ReceiptText,
   RefreshCcw,
   Regex,
+  Scale,
   ScanFace,
   ShieldCheck,
   Signature,
@@ -98,6 +99,7 @@ export const ToolKeys = {
   qrCodeGenerator: 'qrCodeGenerator',
   wifiCardGenerator: 'wifiCardGenerator',
   pomodoroFocusTimer: 'pomodoroFocusTimer',
+  bakingCookingConverter: 'bakingCookingConverter',
   wordCounter: 'wordCounter',
   keyCard: 'keyCard',
 
@@ -158,6 +160,7 @@ export const ToolGroupItems = {
     ToolKeys.qrCodeGenerator,
     ToolKeys.wifiCardGenerator,
     ToolKeys.pomodoroFocusTimer,
+    ToolKeys.bakingCookingConverter,
     ToolKeys.wordCounter,
     ToolKeys.keyCard,
   ],
@@ -212,6 +215,7 @@ export const ToolTitles = {
   [ToolKeys.qrCodeGenerator]: 'QR Code Generator',
   [ToolKeys.wifiCardGenerator]: 'Wi-Fi Card Generator',
   [ToolKeys.pomodoroFocusTimer]: 'Pomodoro Focus Timer',
+  [ToolKeys.bakingCookingConverter]: 'Baking & Cooking Converter',
   [ToolKeys.wordCounter]: 'Word Counter',
   [ToolKeys.keyCard]: 'KeyCard',
 
@@ -283,6 +287,8 @@ export const ToolDescriptions = {
     'Create printable Wi-Fi QR code guest cards and table tents with Nordic, cafe, dark, and botanical themes, password masking, dashed cut guides, PNG export, and 100% browser privacy.',
   [ToolKeys.pomodoroFocusTimer]:
     'Distraction-free Pomodoro focus timer paired with a real-time Web Audio ambient soundscape mixer (Brown noise, Pink noise, Rainfall, Ocean waves, and 10 Hz Alpha binaural beats) and zero external audio files.',
+  [ToolKeys.bakingCookingConverter]:
+    'Convert cups, tablespoons, grams, ounces, and oven temperatures (°C, °F, Convection, Gas Mark) accurately using real baking ingredient densities and recipe batch scaling.',
   [ToolKeys.wordCounter]:
     'Accurately count words, characters, and UTF-8 bytes for Chinese and English text, with real-time social media limits and text formatting tools.',
   [ToolKeys.keyCard]:
@@ -359,6 +365,7 @@ export const ToolSlugs = {
   [ToolKeys.qrCodeGenerator]: 'qr-code-generator',
   [ToolKeys.wifiCardGenerator]: 'wifi-card-generator',
   [ToolKeys.pomodoroFocusTimer]: 'pomodoro-focus-timer',
+  [ToolKeys.bakingCookingConverter]: 'baking-cooking-converter',
   [ToolKeys.wordCounter]: 'word-counter',
   [ToolKeys.keyCard]: 'key-card',
 
@@ -420,6 +427,7 @@ export const ToolIcons = {
   [ToolKeys.qrCodeGenerator]: QrCode,
   [ToolKeys.wifiCardGenerator]: Wifi,
   [ToolKeys.pomodoroFocusTimer]: Timer,
+  [ToolKeys.bakingCookingConverter]: Scale,
   [ToolKeys.wordCounter]: FileText,
   [ToolKeys.keyCard]: Keyboard,
 
@@ -467,12 +475,12 @@ export const ToolGroupBadges: Record<string, string> = {
  * Optional highlight badges displayed beside individual tool entries (e.g. "New", "Popular").
  */
 export const ToolBadges: Record<string, string> = {
+  [ToolKeys.bakingCookingConverter]: 'New',
   [ToolKeys.pomodoroFocusTimer]: 'New',
   [ToolKeys.wifiCardGenerator]: 'New',
-  [ToolKeys.signatureStampMaker]: 'New',
-  [ToolKeys.photoEditorStudio]: 'New',
+  [ToolKeys.expenseSplitter]: 'Popular',
   [ToolKeys.qrCodeGenerator]: 'Popular',
-  [ToolKeys.picMergeStudio]: 'Popular',
+  [ToolKeys.photoEditorStudio]: 'Popular',
   [ToolKeys.jsonFormatter]: 'Popular',
 };
 

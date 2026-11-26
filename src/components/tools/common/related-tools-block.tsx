@@ -36,6 +36,11 @@ const RELATED_TOOLS_MAP: Record<string, readonly string[]> = {
     ToolKeys.wordCounter,
     ToolKeys.keyCard,
   ],
+  [ToolKeys.bakingCookingConverter]: [
+    ToolKeys.pomodoroFocusTimer,
+    ToolKeys.expenseSplitter,
+    ToolKeys.markdownNotes,
+  ],
   [ToolKeys.signatureStampMaker]: [
     ToolKeys.photoEditorStudio,
     ToolKeys.picMergeStudio,

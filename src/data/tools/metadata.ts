@@ -68,6 +68,23 @@ export const ToolMetadata = {
     },
   },
 
+  [ToolKeys.bakingCookingConverter]: {
+    title:
+      'Baking & Cooking Converter – Cups to Grams & Oven Temp | Yizzy Peasy',
+    description:
+      'Free ingredient-specific baking converter for cups, grams, ounces, tablespoons, recipe scaling, and Celsius/Fahrenheit/Convection oven temperatures. 30+ ingredient densities built in.',
+    openGraph: {
+      title: 'Baking & Cooking Converter',
+      description:
+        'Convert cups, tablespoons, grams, ounces, cake pan sizes, and oven temperatures accurately using real ingredient densities.',
+    },
+    twitter: {
+      title: 'Baking & Cooking Converter',
+      description:
+        'Instant ingredient-aware kitchen unit converter (cups to grams, batch scaler, Celsius to Fahrenheit oven guide).',
+    },
+  },
+
   [ToolKeys.qrCodeGenerator]: {
     title: 'QR Code Generator – Generate QR Codes Online | Yizzy Peasy',
     description:
@@ -685,6 +702,19 @@ export const ToolJsonLdSoftwareApplication = {
       'Pure Web Audio procedural soundscape mixer with zero external MP3 downloads',
       'Mix presets including Deep Code, Rainy Studio, Ocean Calm, and Alpha Flow',
       'Customizable cycle intervals, auto-start options, completion chimes, and desktop alerts',
+    ],
+  },
+
+  [ToolKeys.bakingCookingConverter]: {
+    name: 'Baking & Cooking Converter',
+    applicationCategory: 'UtilitiesApplication',
+    description:
+      'An ingredient-density-aware kitchen unit converter supporting bidirectional conversions between US/Metric cups, tablespoons, teaspoons, ml, grams, ounces, pounds, recipe batch/pan scaling, and oven temperatures.',
+    featureList: [
+      '30 curated baking and cooking ingredient densities (flours, sugars, syrups, butter, oils, dairy, leaveners)',
+      'Bidirectional conversion across g, kg, oz, lb, US cups, Metric cups, tbsp, tsp, ml, and fl oz',
+      'Recipe batch multiplier and circular cake pan area scaling presets',
+      'Conventional °C / °F, Fan Convection, and UK Gas Mark oven converter',
     ],
   },
 

@@ -60,6 +60,19 @@ export const ToolAbout: Record<string, ToolAboutContent> = {
     bottomNote:
       'All timer settings, daily session counts, and synthesized ambient audio stay 100% locally in your browser with zero tracking or external audio streams.',
   },
+  [ToolKeys.bakingCookingConverter]: {
+    overview:
+      'Converting cups of all-purpose flour, powdered sugar, butter, or honey into kitchen scale grams requires ingredient-specific density—1 cup of flour weighs roughly 120g while 1 cup of sugar weighs 200g. Baking & Cooking Converter combines 30 curated ingredient densities with instant bidirectional weight, volume, cake pan scaling, and oven temperature conversion.',
+    features: [
+      'Ingredient-Specific Density Lookup: Accurately converts US Cups, Metric Cups, tablespoons, teaspoons, ml, fl oz, grams, kg, ounces, and pounds across 30 baking and kitchen staples.',
+      'Smart Kitchen Fraction Readouts: Automatically suggests familiar fractional cup measurements (e.g., 1¼ cups, ½ cup) alongside exact decimal equivalents.',
+      'Recipe Batch & Round Pan Scaler: Multiply any ingredient from 0.25× to 4× or apply round pan area presets (6" to 8", 8" to 9") in one click.',
+      'Oven Temperature & Gas Mark Guide: Switch between Celsius, Fahrenheit, Fan Convection (-20°C rule), and UK Gas Mark equivalents with common baking heat presets.',
+      '100% Instant Client-Side Lookup: Instant zero-latency filtering, one-click row copying, and batch summary clipboard export directly in your browser.',
+    ],
+    bottomNote:
+      'All culinary density conversions, batch multipliers, and oven calculations run 100% locally in your browser with zero external requests.',
+  },
   [ToolKeys.qrCodeGenerator]: {
     overview:
       'Quick Response (QR) codes are indispensable for instantly connecting physical media to digital experiences, links, contact details, and plain text. This QR Code Generator enables users to convert any URL or text into an interactive, high-contrast QR code with instant visual feedback.',
