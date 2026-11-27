@@ -11,6 +11,7 @@ import {
   AlignLeft,
   AlignRight,
   Check,
+  RotateCcw,
   ScanFace,
   Sparkles,
   Type,
@@ -34,10 +35,12 @@ type Props = {
   filterValues: ImageFilterValues;
   cropAspect: CropAspectRatio;
   cropRect: CropRect | null;
+  canResetCrop?: boolean;
   mosaicBrushSize: number;
   hasFaceDetector: boolean;
   onSetCropAspect: (aspect: CropAspectRatio) => void;
   onApplyCrop: () => void;
+  onResetCrop?: () => void;
   onCancelCrop: () => void;
   onUpdateFilters: (
     nextValues: ImageFilterValues,
@@ -61,10 +64,12 @@ export default function MobileLiteSheet({
   filterValues,
   cropAspect,
   cropRect,
+  canResetCrop = false,
   mosaicBrushSize,
   hasFaceDetector,
   onSetCropAspect,
   onApplyCrop,
+  onResetCrop,
   onCancelCrop,
   onUpdateFilters,
   selectedTextAlign,
@@ -89,7 +94,7 @@ export default function MobileLiteSheet({
     <div className="shrink-0 border-t border-neutral-200/80 bg-white/95 px-3 py-2.5 backdrop-blur-md lg:hidden dark:border-neutral-800/80 dark:bg-neutral-900/95">
       <div className="mb-2 flex items-center justify-between">
         <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
-          {activeDrawer === 'crop' && 'Crop & Aspect Ratio'}
+          {activeDrawer === 'crop' && 'Crop Image'}
           {activeDrawer === 'adjust' && 'Presets & Quick Adjust'}
           {activeDrawer === 'text' && 'Add Quick Caption'}
           {activeDrawer === 'mosaic' && 'Mosaic & Face Privacy'}
@@ -104,47 +109,61 @@ export default function MobileLiteSheet({
         />
       </div>
 
-      {activeDrawer === 'crop' && (
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="w-28">
-            <Selector
-              size="xs"
-              options={CROP_ASPECT_OPTIONS}
-              value={cropAspect}
-              onChange={(v) => onSetCropAspect(v as CropAspectRatio)}
-            />
-          </div>
-          {cropRect && (
+      {activeDrawer === 'crop' &&
+        (cropRect ? (
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="w-28">
+              <Selector
+                size="xs"
+                options={CROP_ASPECT_OPTIONS}
+                value={cropAspect}
+                onChange={(v) => onSetCropAspect(v as CropAspectRatio)}
+              />
+            </div>
             <span className="font-mono text-[11px] font-semibold text-neutral-600 dark:text-neutral-300">
               {cropRect.width}×{cropRect.height}
             </span>
-          )}
-          <div className="ml-auto flex gap-1.5">
-            <Button
-              variant="ghost"
-              size="xs"
-              icon={X}
-              onClick={() => {
-                onCancelCrop();
-                onClose();
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="primary"
-              size="xs"
-              icon={Check}
-              onClick={() => {
-                onApplyCrop();
-                onClose();
-              }}
-            >
-              Apply
-            </Button>
+            {canResetCrop && onResetCrop && (
+              <Button
+                variant="ghost"
+                size="xs"
+                icon={RotateCcw}
+                onClick={onResetCrop}
+                className="!px-1.5 text-[11px]"
+              >
+                Reset
+              </Button>
+            )}
+            <div className="ml-auto flex gap-1.5">
+              <Button
+                variant="ghost"
+                size="xs"
+                icon={X}
+                onClick={() => {
+                  onCancelCrop();
+                  onClose();
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                size="xs"
+                icon={Check}
+                onClick={() => {
+                  onApplyCrop();
+                  onClose();
+                }}
+              >
+                Apply
+              </Button>
+            </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <p className="text-[11px] text-amber-600 dark:text-amber-400">
+            Select or add an image layer first to crop.
+          </p>
+        ))}
 
       {activeDrawer === 'adjust' && (
         <div className="space-y-2.5">

@@ -18,6 +18,7 @@ import InspectorAiTab from './inspector-ai-tab';
 import InspectorDesignTab from './inspector-design-tab';
 import InspectorHistoryTab from './inspector-history-tab';
 import InspectorLayersTab from './inspector-layers-tab';
+import InspectorToolOptions from './inspector-tool-options';
 
 type StudioEngine = ReturnType<typeof usePhotoEditorEngine>;
 
@@ -75,6 +76,40 @@ export default function InspectorPanel({
         />
       </div>
 
+      <InspectorToolOptions
+        activeTool={states.activeTool}
+        brushSettings={states.brushSettings}
+        maskBrushSettings={states.maskBrushSettings}
+        shapeSettings={states.shapeSettings}
+        cropAspect={states.cropAspect}
+        cropRect={states.cropRect}
+        cropImageBounds={states.cropImageBounds}
+        penAnchorCount={states.penAnchorCount}
+        samPointsCount={states.samPointsCount}
+        samHasMask={states.samHasMask}
+        magicEraserSize={states.magicEraserSize}
+        magicEraserHasStrokes={states.magicEraserHasStrokes}
+        mosaicBrushSize={states.mosaicBrushSize}
+        sampledColor={states.sampledColor}
+        onExitTool={() => engine.setActiveTool('select')}
+        onUpdateBrush={engine.updateBrushSettings}
+        onUpdateMaskBrush={engine.updateMaskBrushSettings}
+        onUpdateShape={engine.updateShapeSettings}
+        onSetCropAspect={engine.setCropAspect}
+        onApplyCrop={engine.applyCrop}
+        onResetCrop={engine.resetImageCrop}
+        onCancelCrop={engine.cancelCrop}
+        onFinishPenPath={engine.finishPenPath}
+        onCancelPenPath={engine.cancelPenPath}
+        onApplySamAsMask={() => void engine.applySamAsMask()}
+        onExtractSamLayer={() => void engine.extractSamLayer()}
+        onClearSamSelection={engine.clearSamSelection}
+        onSetMagicEraserSize={engine.setMagicEraserSize}
+        onSetMosaicBrushSize={engine.setMosaicBrushSize}
+        onRunMagicErase={(mode) => void engine.runMagicErase(mode)}
+        onClearMagicEraserMask={engine.clearMagicEraserMask}
+      />
+
       <div className="scrollbar-thin flex-1 overflow-y-auto p-3.5">
         {activeTab === 'design' && (
           <InspectorDesignTab
@@ -99,6 +134,8 @@ export default function InspectorPanel({
             onRemoveLayerMask={engine.removeSelectedMask}
             onToggleClipToBelow={() => void engine.toggleClipToLayerBelow()}
             onAlign={engine.alignSelected}
+            onReplaceImage={(file) => void engine.replaceSelectedImage(file)}
+            onCropImage={() => engine.setActiveTool('crop')}
             onDuplicate={() => void engine.duplicateSelected()}
             onDelete={engine.deleteSelected}
           />

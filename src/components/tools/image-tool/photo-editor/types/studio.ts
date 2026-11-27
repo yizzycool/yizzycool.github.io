@@ -219,7 +219,9 @@ export type AlignmentEdge =
   | 'right'
   | 'top'
   | 'center-v'
-  | 'bottom';
+  | 'bottom'
+  | 'fit'
+  | 'cover';
 
 export type LayerOrderAction = 'front' | 'forward' | 'backward' | 'back';
 

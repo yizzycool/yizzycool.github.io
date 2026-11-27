@@ -127,7 +127,7 @@ export const STUDIO_TOOLS: Array<{
 }> = [
   { id: 'select', label: 'Select & Transform', hotkey: 'V' },
   { id: 'hand', label: 'Hand / Pan Canvas', hotkey: 'H' },
-  { id: 'crop', label: 'Crop Canvas', hotkey: 'C' },
+  { id: 'crop', label: 'Crop Image', hotkey: 'C' },
   { id: 'brush', label: 'Brush Draw', hotkey: 'B' },
   { id: 'eraser', label: 'Eraser Brush', hotkey: 'E' },
   { id: 'mask', label: 'Layer Mask Brush', hotkey: 'K' },

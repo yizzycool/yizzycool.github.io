@@ -22,11 +22,15 @@ import {
   AlignStartVertical,
   Bold,
   CopyPlus,
+  Crop,
+  Expand,
   FlipHorizontal,
   FlipVertical,
   Italic,
   Layers,
   Paintbrush,
+  RefreshCw,
+  Scan,
   Spline,
   Trash2,
   Underline,
@@ -87,6 +91,8 @@ type Props = {
   onRemoveLayerMask: () => void;
   onToggleClipToBelow: () => void;
   onAlign: (edge: AlignmentEdge) => void;
+  onReplaceImage: (file: File) => void;
+  onCropImage: () => void;
   onDuplicate: () => void;
   onDelete: () => void;
 };
@@ -122,10 +128,13 @@ export default function InspectorDesignTab({
   onRemoveLayerMask,
   onToggleClipToBelow,
   onAlign,
+  onReplaceImage,
+  onCropImage,
   onDuplicate,
   onDelete,
 }: Props) {
   const fontInputRef = useRef<HTMLInputElement>(null);
+  const replaceImageInputRef = useRef<HTMLInputElement>(null);
   const [prevDocSize, setPrevDocSize] = useState({
     width: docConfig.width,
     height: docConfig.height,
@@ -317,6 +326,47 @@ export default function InspectorDesignTab({
 
   return (
     <div className="space-y-5">
+      {selectedProps.kind === 'image' && selectedProps.selectedCount === 1 && (
+        <div className="space-y-2 border-b border-neutral-200/80 pb-4 dark:border-neutral-800/80">
+          <Label className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+            Image Source
+          </Label>
+          <div className="grid grid-cols-2 gap-1.5">
+            <Button
+              variant="secondary"
+              bordered
+              size="xs"
+              icon={RefreshCw}
+              onClick={() => replaceImageInputRef.current?.click()}
+              title="Replace image while keeping position, filters, and clip shape"
+            >
+              Replace
+            </Button>
+            <Button
+              variant="secondary"
+              bordered
+              size="xs"
+              icon={Crop}
+              onClick={onCropImage}
+              title="Crop selected image non-destructively (C)"
+            >
+              Crop
+            </Button>
+          </div>
+          <input
+            ref={replaceImageInputRef}
+            type="file"
+            accept="image/*,.heic,.heif,.tif,.tiff,.svg"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) onReplaceImage(file);
+              e.target.value = '';
+            }}
+          />
+        </div>
+      )}
+
       {/* Alignment Row */}
       <div className="space-y-2">
         <Label className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
@@ -371,6 +421,28 @@ export default function InspectorDesignTab({
             title="Align Bottom"
             className="!px-0"
           />
+        </div>
+        <div className="grid grid-cols-2 gap-1.5">
+          <Button
+            variant="secondary"
+            bordered
+            size="xs"
+            icon={Scan}
+            onClick={() => onAlign('fit')}
+            title="Fit to Artboard (Contain)"
+          >
+            Fit
+          </Button>
+          <Button
+            variant="secondary"
+            bordered
+            size="xs"
+            icon={Expand}
+            onClick={() => onAlign('cover')}
+            title="Cover Artboard (Fill)"
+          >
+            Cover
+          </Button>
         </div>
       </div>
 

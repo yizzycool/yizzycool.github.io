@@ -69,7 +69,9 @@ import {
   applyCropDrag,
   createInitialCropRect,
   hitTestCropHandle,
+  parseCropAspectValue,
   renderCropOverlay,
+  scenePointToImagePixel,
 } from '../utils/crop-overlay';
 import {
   buildForegroundAlphaFromDepth,
@@ -271,6 +273,21 @@ async function downsampleFileIfNeeded(
   }
 }
 
+type ImageCropSession = {
+  target: fabric.FabricImage;
+  origWidth: number;
+  origHeight: number;
+  prevCropX: number;
+  prevCropY: number;
+  prevWidth: number;
+  prevHeight: number;
+  prevLeft: number;
+  prevTop: number;
+  prevOriginX: fabric.TOriginX;
+  prevOriginY: fabric.TOriginY;
+  prevClipPath: fabric.FabricImage['clipPath'];
+};
+
 export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
   const router = useRouter();
   const {
@@ -325,6 +342,10 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
   const [compareSplitPercent, setCompareSplitPercent] = useState(50);
   const [cropAspect, setCropAspectState] = useState<CropAspectRatio>('free');
   const [cropRect, setCropRectState] = useState<CropRect | null>(null);
+  const [cropImageBounds, setCropImageBounds] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
   const [penAnchorCount, setPenAnchorCount] = useState(0);
   const [customFonts, setCustomFonts] = useState<
     Array<{ label: string; value: string }>
@@ -398,6 +419,7 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
   const isPenDraggingHandleRef = useRef(false);
   const cropAspectRef = useRef<CropAspectRatio>('free');
   const cropRectRef = useRef<CropRect | null>(null);
+  const cropSessionRef = useRef<ImageCropSession | null>(null);
   const cropDragRef = useRef<{
     handle: Exclude<CropHandleKind, null>;
     startPt: { x: number; y: number };
@@ -583,8 +605,70 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
     []
   );
 
+  const restoreCropSession = useCallback((reselect: boolean) => {
+    const canvas = fabricCanvasRef.current;
+    const session = cropSessionRef.current;
+    cropSessionRef.current = null;
+    cropRectRef.current = null;
+    cropDragRef.current = null;
+    setCropRectState(null);
+    setCropImageBounds(null);
+
+    if (!session) return;
+    const { target } = session;
+    target.set({
+      cropX: session.prevCropX,
+      cropY: session.prevCropY,
+      width: session.prevWidth,
+      height: session.prevHeight,
+      originX: session.prevOriginX,
+      originY: session.prevOriginY,
+      left: session.prevLeft,
+      top: session.prevTop,
+      clipPath: session.prevClipPath,
+      dirty: true,
+    });
+    target.setCoords();
+
+    if (reselect && canvas && canvas.getObjects().includes(target)) {
+      canvas.setActiveObject(target);
+    }
+  }, []);
+
   const setActiveTool = useCallback(
     (tool: StudioToolId) => {
+      if (
+        tool === 'crop' &&
+        activeToolRef.current === 'crop' &&
+        cropSessionRef.current
+      ) {
+        return;
+      }
+
+      const canvas = fabricCanvasRef.current;
+      let nextCropTarget: fabric.FabricImage | null = null;
+      if (tool === 'crop') {
+        if (!canvas) return;
+        const active = canvas.getActiveObject();
+        if (active instanceof fabric.FabricImage) {
+          nextCropTarget = active;
+        } else {
+          const images = canvas
+            .getObjects()
+            .filter(
+              (obj): obj is fabric.FabricImage =>
+                obj instanceof fabric.FabricImage
+            );
+          if (images.length === 1) {
+            nextCropTarget = images[0];
+          }
+        }
+        if (!nextCropTarget) {
+          toast.info('Select an image layer first to crop');
+          return;
+        }
+      }
+
       if (activeToolRef.current === 'pen' && tool !== 'pen') {
         penAnchorsRef.current = [];
         penHoverPtRef.current = null;
@@ -592,9 +676,7 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
         setPenAnchorCount(0);
       }
       if (activeToolRef.current === 'crop' && tool !== 'crop') {
-        cropRectRef.current = null;
-        cropDragRef.current = null;
-        setCropRectState(null);
+        restoreCropSession(false);
       }
       if (activeToolRef.current === 'magic-select' && tool !== 'magic-select') {
         samPointsRef.current = [];
@@ -623,7 +705,6 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
         aiRef.current.notifySamToolActive(true);
       }
 
-      const canvas = fabricCanvasRef.current;
       if (!canvas) return;
 
       syncBrushToCanvas(tool, brushRef.current);
@@ -650,14 +731,70 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
       canvas.defaultCursor = cursorMap[tool];
       canvas.setCursor(cursorMap[tool]);
 
-      if (tool === 'crop') {
-        const nextCrop = createInitialCropRect(
-          docConfigRef.current.width,
-          docConfigRef.current.height,
-          cropAspectRef.current
+      if (tool === 'crop' && nextCropTarget) {
+        const orig = nextCropTarget.getOriginalSize();
+        const origWidth = Math.max(
+          1,
+          Math.round(orig.width || nextCropTarget.width || 1)
         );
-        cropRectRef.current = nextCrop;
-        setCropRectState(nextCrop);
+        const origHeight = Math.max(
+          1,
+          Math.round(orig.height || nextCropTarget.height || 1)
+        );
+        const prevCropX = Math.max(0, nextCropTarget.cropX ?? 0);
+        const prevCropY = Math.max(0, nextCropTarget.cropY ?? 0);
+        const prevWidth = Math.max(
+          1,
+          Math.min(origWidth - prevCropX, nextCropTarget.width || origWidth)
+        );
+        const prevHeight = Math.max(
+          1,
+          Math.min(origHeight - prevCropY, nextCropTarget.height || origHeight)
+        );
+
+        cropSessionRef.current = {
+          target: nextCropTarget,
+          origWidth,
+          origHeight,
+          prevCropX,
+          prevCropY,
+          prevWidth,
+          prevHeight,
+          prevLeft: nextCropTarget.left ?? 0,
+          prevTop: nextCropTarget.top ?? 0,
+          prevOriginX: nextCropTarget.originX ?? 'center',
+          prevOriginY: nextCropTarget.originY ?? 'center',
+          prevClipPath: nextCropTarget.clipPath,
+        };
+
+        const dxLocal = origWidth / 2 - (prevCropX + prevWidth / 2);
+        const dyLocal = origHeight / 2 - (prevCropY + prevHeight / 2);
+        const fullCenterScene = new fabric.Point(dxLocal, dyLocal).transform(
+          nextCropTarget.calcTransformMatrix()
+        );
+
+        nextCropTarget.set({
+          cropX: 0,
+          cropY: 0,
+          width: origWidth,
+          height: origHeight,
+          clipPath: undefined,
+          dirty: true,
+        });
+        nextCropTarget.setPositionByOrigin(fullCenterScene, 'center', 'center');
+        nextCropTarget.setCoords();
+
+        cropAspectRef.current = 'free';
+        setCropAspectState('free');
+        const initialRect: CropRect = {
+          x: Math.round(prevCropX),
+          y: Math.round(prevCropY),
+          width: Math.max(1, Math.round(prevWidth)),
+          height: Math.max(1, Math.round(prevHeight)),
+        };
+        cropRectRef.current = initialRect;
+        setCropRectState(initialRect);
+        setCropImageBounds({ width: origWidth, height: origHeight });
         canvas.discardActiveObject();
       } else if (
         !isInteractiveSelect &&
@@ -671,7 +808,7 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
 
       canvas.requestRenderAll();
     },
-    [syncBrushToCanvas]
+    [restoreCropSession, syncBrushToCanvas]
   );
 
   const finishPenPath = useCallback(
@@ -811,11 +948,33 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
         }
         ctx.restore();
 
+        // 1.5) Clip or dim overflow outside the artboard (hidden when idle, dimmed when selected)
+        const invZoom = 1 / (v[0] || 1);
+        const pad = 2 * invZoom;
+        const viewLeft = -v[4] * invZoom - pad;
+        const viewTop = -v[5] * invZoom - pad;
+        const viewWidth = canvas.getWidth() * invZoom + pad * 2;
+        const viewHeight = canvas.getHeight() * invZoom + pad * 2;
+        const hasActiveSelection =
+          Boolean(canvas.getActiveObject()) || activeToolRef.current === 'crop';
+
+        ctx.save();
+        ctx.transform(v[0], v[1], v[2], v[3], v[4], v[5]);
+        ctx.beginPath();
+        ctx.rect(viewLeft, viewTop, viewWidth, viewHeight);
+        ctx.rect(0, 0, dw, dh);
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.fillStyle = hasActiveSelection ? 'rgba(0, 0, 0, 0.72)' : '#000000';
+        ctx.fill('evenodd');
+        ctx.restore();
+
         // 2) Draw subtle artboard boundary outline on top
         ctx.save();
         ctx.transform(v[0], v[1], v[2], v[3], v[4], v[5]);
-        ctx.strokeStyle = 'rgba(148, 163, 184, 0.55)';
-        ctx.lineWidth = 1 / (v[0] || 1);
+        ctx.strokeStyle = hasActiveSelection
+          ? 'rgba(148, 163, 184, 0.8)'
+          : 'rgba(148, 163, 184, 0.55)';
+        ctx.lineWidth = invZoom;
         ctx.strokeRect(0, 0, dw, dh);
         ctx.restore();
 
@@ -850,12 +1009,18 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
             penHoverPtRef.current
           );
         }
-        if (activeToolRef.current === 'crop' && cropRectRef.current) {
+        if (
+          activeToolRef.current === 'crop' &&
+          cropRectRef.current &&
+          cropSessionRef.current
+        ) {
           renderCropOverlay(
             ctx,
             canvas,
             cropRectRef.current,
-            docConfigRef.current
+            cropSessionRef.current.target,
+            cropSessionRef.current.origWidth,
+            cropSessionRef.current.origHeight
           );
         }
 
@@ -1084,11 +1249,17 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
         active.set({ ...FABRIC_OBJECT_CONTROLS_STYLE });
       }
       syncCanvasUi();
+      canvas.requestRenderAll();
+    };
+
+    const handleSelectionCleared = () => {
+      syncCanvasUi();
+      canvas.requestRenderAll();
     };
 
     canvas.on('selection:created', handleSelectionEvent);
     canvas.on('selection:updated', handleSelectionEvent);
-    canvas.on('selection:cleared', syncCanvasUi);
+    canvas.on('selection:cleared', handleSelectionCleared);
     canvas.on('object:added', (opt) => {
       if (opt.target) {
         applyControlsStyleRecursive(opt.target);
@@ -1151,16 +1322,30 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
 
       const scenePt = canvas.getScenePoint(pointerEvent);
 
-      if (activeToolRef.current === 'crop' && cropRectRef.current) {
+      if (
+        activeToolRef.current === 'crop' &&
+        cropRectRef.current &&
+        cropSessionRef.current
+      ) {
+        const session = cropSessionRef.current;
         const handle = hitTestCropHandle(
           scenePt,
           cropRectRef.current,
+          session.target,
+          session.origWidth,
+          session.origHeight,
           canvas.getZoom()
         );
         if (handle) {
+          const pixelPt = scenePointToImagePixel(
+            scenePt,
+            session.target,
+            session.origWidth,
+            session.origHeight
+          );
           cropDragRef.current = {
             handle,
-            startPt: { x: scenePt.x, y: scenePt.y },
+            startPt: pixelPt,
             startRect: { ...cropRectRef.current },
           };
         }
@@ -1630,16 +1815,35 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
 
       const scenePt = canvas.getScenePoint(pointerEvent);
 
-      if (activeToolRef.current === 'crop' && cropDragRef.current) {
+      if (
+        activeToolRef.current === 'crop' &&
+        cropDragRef.current &&
+        cropSessionRef.current
+      ) {
         const drag = cropDragRef.current;
+        const session = cropSessionRef.current;
+        const pixelPt = scenePointToImagePixel(
+          scenePt,
+          session.target,
+          session.origWidth,
+          session.origHeight
+        );
+        const parsedRatio = parseCropAspectValue(cropAspectRef.current);
+        const sx = Math.abs(session.target.scaleX || 1);
+        const sy = Math.abs(session.target.scaleY || 1);
+        const ratioOverride =
+          parsedRatio !== null ? parsedRatio * (sy / sx) : null;
         const next = applyCropDrag(
           drag.startRect,
           drag.handle,
-          scenePt.x - drag.startPt.x,
-          scenePt.y - drag.startPt.y,
-          cropAspectRef.current
+          pixelPt.x - drag.startPt.x,
+          pixelPt.y - drag.startPt.y,
+          cropAspectRef.current,
+          { width: session.origWidth, height: session.origHeight },
+          ratioOverride
         );
         cropRectRef.current = next;
+        setCropRectState(next);
         canvas.requestRenderAll();
         return;
       }
@@ -2375,11 +2579,9 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
   // Document Config Updates
   const updateDocumentConfig = useCallback(
     (patch: Partial<DocumentConfig>, commitLabel?: string, refit = false) => {
-      setDocConfig((prev) => {
-        const next = { ...prev, ...patch };
-        docConfigRef.current = next;
-        return next;
-      });
+      const next: DocumentConfig = { ...docConfigRef.current, ...patch };
+      docConfigRef.current = next;
+      setDocConfig(next);
       if (refit) {
         fitToScreen();
       } else {
@@ -2581,12 +2783,38 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
     }
   }, [beforeSnapshotUrl, syncCanvasUi]);
 
-  // Phase 2 Actions: Crop, Path Node Editing, Boolean, Curves Text, Fonts, Masks, Clipping, LUT, Rulers & Guides
+  // Phase 2 Actions: Image Crop, Path Node Editing, Boolean, Curves Text, Fonts, Masks, Clipping, LUT, Rulers & Guides
   const setCropAspect = useCallback((aspect: CropAspectRatio) => {
     cropAspectRef.current = aspect;
     setCropAspectState(aspect);
-    const { width: dw, height: dh } = docConfigRef.current;
-    const next = createInitialCropRect(dw, dh, aspect);
+    const session = cropSessionRef.current;
+    if (!session) return;
+    const parsedRatio = parseCropAspectValue(aspect);
+    const sx = Math.abs(session.target.scaleX || 1);
+    const sy = Math.abs(session.target.scaleY || 1);
+    const ratioOverride = parsedRatio !== null ? parsedRatio * (sy / sx) : null;
+    const next = createInitialCropRect(
+      session.origWidth,
+      session.origHeight,
+      aspect,
+      ratioOverride
+    );
+    cropRectRef.current = next;
+    setCropRectState(next);
+    fabricCanvasRef.current?.requestRenderAll();
+  }, []);
+
+  const resetImageCrop = useCallback(() => {
+    const session = cropSessionRef.current;
+    if (!session) return;
+    cropAspectRef.current = 'free';
+    setCropAspectState('free');
+    const next: CropRect = {
+      x: 0,
+      y: 0,
+      width: session.origWidth,
+      height: session.origHeight,
+    };
     cropRectRef.current = next;
     setCropRectState(next);
     fabricCanvasRef.current?.requestRenderAll();
@@ -2595,37 +2823,68 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
   const applyCrop = useCallback(() => {
     const canvas = fabricCanvasRef.current;
     const crop = cropRectRef.current;
-    if (!canvas || !crop) return;
+    const session = cropSessionRef.current;
+    if (!canvas || !crop || !session) return;
 
-    for (const obj of canvas.getObjects()) {
-      obj.set({
-        left: (obj.left ?? 0) - crop.x,
-        top: (obj.top ?? 0) - crop.y,
-      });
-      obj.setCoords();
-    }
+    const { target, origWidth, origHeight, prevClipPath } = session;
+    const clampedX = Math.max(0, Math.min(origWidth - 1, Math.round(crop.x)));
+    const clampedY = Math.max(0, Math.min(origHeight - 1, Math.round(crop.y)));
+    const clampedW = Math.max(
+      1,
+      Math.min(origWidth - clampedX, Math.round(crop.width))
+    );
+    const clampedH = Math.max(
+      1,
+      Math.min(origHeight - clampedY, Math.round(crop.height))
+    );
 
-    const nextW = Math.max(32, Math.round(crop.width));
-    const nextH = Math.max(32, Math.round(crop.height));
-    setDocConfig((prev) => {
-      const next = { ...prev, width: nextW, height: nextH };
-      docConfigRef.current = next;
-      return next;
+    const cxLocal = clampedX + clampedW / 2 - origWidth / 2;
+    const cyLocal = clampedY + clampedH / 2 - origHeight / 2;
+    const newCenterScene = new fabric.Point(cxLocal, cyLocal).transform(
+      target.calcTransformMatrix()
+    );
+
+    target.set({
+      cropX: clampedX,
+      cropY: clampedY,
+      width: clampedW,
+      height: clampedH,
+      dirty: true,
     });
+    target.setPositionByOrigin(newCenterScene, 'center', 'center');
 
+    const ext = target as ExtendedFabricObject;
+    if (ext._clipShape && ext._clipShape !== 'none') {
+      applyClipShapeToObject(target, ext._clipShape);
+    } else if (prevClipPath) {
+      target.set({ clipPath: prevClipPath });
+    }
+    target.setCoords();
+
+    cropSessionRef.current = null;
     cropRectRef.current = null;
     cropDragRef.current = null;
     setCropRectState(null);
+    setCropImageBounds(null);
     setActiveTool('select');
-    fitToScreen();
+    if (canvas.getObjects().includes(target)) {
+      canvas.setActiveObject(target);
+    }
+    canvas.requestRenderAll();
     syncCanvasUi();
-    commitHistoryRef.current(`Crop Canvas (${nextW}×${nextH})`, 'immediate');
-    toast.success(`Cropped artboard to ${nextW} × ${nextH} px`);
-  }, [fitToScreen, setActiveTool, syncCanvasUi]);
+    commitHistoryRef.current(
+      `Crop Image (${clampedW}×${clampedH})`,
+      'immediate'
+    );
+    toast.success(`Cropped image to ${clampedW} × ${clampedH} px`);
+  }, [setActiveTool, syncCanvasUi]);
 
   const cancelCrop = useCallback(() => {
+    restoreCropSession(true);
     setActiveTool('select');
-  }, [setActiveTool]);
+    fabricCanvasRef.current?.requestRenderAll();
+    syncCanvasUi();
+  }, [restoreCropSession, setActiveTool, syncCanvasUi]);
 
   const cancelPenPath = useCallback(() => {
     penAnchorsRef.current = [];
@@ -3267,6 +3526,41 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
       active.setCoords();
       const bounds = active.getBoundingRect();
 
+      if (edge === 'fit' || edge === 'cover') {
+        if (bounds.width <= 0 || bounds.height <= 0) return;
+
+        const factor =
+          edge === 'fit'
+            ? Math.min(dw / bounds.width, dh / bounds.height)
+            : Math.max(dw / bounds.width, dh / bounds.height);
+
+        active.set({
+          scaleX: (active.scaleX ?? 1) * factor,
+          scaleY: (active.scaleY ?? 1) * factor,
+        });
+        active.setCoords();
+
+        const nextBounds = active.getBoundingRect();
+        active.set({
+          left:
+            (active.left ?? 0) +
+            (dw / 2 - (nextBounds.left + nextBounds.width / 2)),
+          top:
+            (active.top ?? 0) +
+            (dh / 2 - (nextBounds.top + nextBounds.height / 2)),
+        });
+        active.setCoords();
+        canvas.requestRenderAll();
+        syncCanvasUi();
+        commitHistoryRef.current(
+          edge === 'fit'
+            ? 'Fit Layer to Artboard'
+            : 'Cover Artboard with Layer',
+          'immediate'
+        );
+        return;
+      }
+
       let dx = 0;
       let dy = 0;
       if (edge === 'left') dx = -bounds.left;
@@ -3333,6 +3627,135 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
   useEffect(() => {
     replaceImageWithBlobRef.current = replaceImageWithBlob;
   }, [replaceImageWithBlob]);
+
+  const replaceSelectedImage = useCallback(
+    async (rawFile: File) => {
+      const canvas = fabricCanvasRef.current;
+      const active = canvas?.getActiveObject();
+      if (!canvas || !(active instanceof fabric.FabricImage)) return;
+
+      const lower = rawFile.name.toLowerCase();
+      const isSpecialImage =
+        lower.endsWith('.heic') ||
+        lower.endsWith('.heif') ||
+        lower.endsWith('.tif') ||
+        lower.endsWith('.tiff');
+
+      if (
+        lower.endsWith('.psd') ||
+        (!rawFile.type.startsWith('image/') &&
+          !lower.endsWith('.svg') &&
+          !isSpecialImage)
+      ) {
+        toast.error('Please select a supported image file');
+        return;
+      }
+
+      let file = rawFile;
+      if (isSpecialImage) {
+        try {
+          toast.info(`Decoding ${rawFile.name}...`);
+          file = await decodeSpecialImageFile(rawFile);
+        } catch (err) {
+          toast.error(
+            err instanceof Error
+              ? err.message
+              : `Failed to decode ${rawFile.name}`
+          );
+          return;
+        }
+      }
+
+      if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+        const check = await downsampleFileIfNeeded(
+          file,
+          MOBILE_MAX_IMPORT_EDGE
+        );
+        file = check.file;
+        if (check.resized) {
+          toast.info(
+            `Resized to ${MOBILE_MAX_IMPORT_EDGE}px max for smooth mobile editing`
+          );
+        }
+      }
+
+      active.setCoords();
+      const prevBounds = active.getBoundingRect();
+      const prevCenterX = prevBounds.left + prevBounds.width / 2;
+      const prevCenterY = prevBounds.top + prevBounds.height / 2;
+      const prevDisplayW = Math.max(
+        1,
+        (active.width || 1) * (active.scaleX ?? 1)
+      );
+      const prevDisplayH = Math.max(
+        1,
+        (active.height || 1) * (active.scaleY ?? 1)
+      );
+
+      const ext = active as ExtendedFabricObject;
+      const prevClipShape = ext._clipShape;
+      const { assetId, url } = registerAssetFile(file);
+
+      try {
+        await active.setSrc(url, { crossOrigin: 'anonymous' });
+      } catch (err) {
+        toast.error(
+          err instanceof Error
+            ? err.message
+            : `Failed to replace image with ${rawFile.name}`
+        );
+        return;
+      }
+
+      ext._assetId = assetId;
+      ext._layerName = rawFile.name;
+
+      const orig = active.getOriginalSize();
+      const newW = orig.width || active.width || 1;
+      const newH = orig.height || active.height || 1;
+      const nextScale = Math.max(prevDisplayW / newW, prevDisplayH / newH);
+
+      active.set({
+        cropX: 0,
+        cropY: 0,
+        width: newW,
+        height: newH,
+        scaleX: nextScale,
+        scaleY: nextScale,
+        dirty: true,
+      });
+      active.setCoords();
+
+      const nextBounds = active.getBoundingRect();
+      active.set({
+        left:
+          (active.left ?? 0) +
+          (prevCenterX - (nextBounds.left + nextBounds.width / 2)),
+        top:
+          (active.top ?? 0) +
+          (prevCenterY - (nextBounds.top + nextBounds.height / 2)),
+      });
+
+      if (prevClipShape && prevClipShape !== 'none') {
+        applyClipShapeToObject(active, prevClipShape);
+      }
+      if (active.filters && active.filters.length > 0) {
+        active.applyFilters();
+      }
+
+      const el = active.getElement();
+      setActiveImageEl(el instanceof HTMLVideoElement ? null : (el ?? null));
+      setFilterRevision((r) => r + 1);
+
+      exitCompareIfNeeded();
+      active.setCoords();
+      canvas.requestRenderAll();
+      syncCanvasUi();
+      commitHistoryRef.current('Replace Image', 'immediate');
+      toast.success('Image replaced');
+    },
+    [exitCompareIfNeeded, registerAssetFile, syncCanvasUi]
+  );
 
   const applyRemoveBackground = useCallback(
     async (quality: 'fast' | 'hd') => {
@@ -4158,6 +4581,7 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
       compareSplitPercent,
       cropAspect,
       cropRect,
+      cropImageBounds,
       penAnchorCount,
       customFonts,
       samPointsCount,
@@ -4183,6 +4607,7 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
     zoomOut: () => applyZoomToViewport(zoom / 1.2),
     zoomTo100: () => applyZoomToViewport(1),
     addImages,
+    replaceSelectedImage,
     openPesFile,
     openPsdFile,
     savePesProject,
@@ -4196,6 +4621,7 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
     toggleCompareOriginal,
     setCompareSplitPercent,
     setCropAspect,
+    resetImageCrop,
     applyCrop,
     cancelCrop,
     finishPenPath,

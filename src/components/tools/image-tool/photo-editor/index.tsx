@@ -102,6 +102,15 @@ export default function PhotoEditorStudio() {
     }, 50);
   };
 
+  const canResetCrop = Boolean(
+    engine.states.cropRect &&
+      engine.states.cropImageBounds &&
+      (engine.states.cropRect.x !== 0 ||
+        engine.states.cropRect.y !== 0 ||
+        engine.states.cropRect.width !== engine.states.cropImageBounds.width ||
+        engine.states.cropRect.height !== engine.states.cropImageBounds.height)
+  );
+
   const hasFaceDetector =
     typeof window !== 'undefined' && 'FaceDetector' in window;
 
@@ -148,20 +157,7 @@ export default function PhotoEditorStudio() {
       {/* Unified Studio Shell: Desktop Pro (>= lg) & Mobile Lite (< lg) */}
       <div className="flex h-[calc(100dvh_-_156px)] min-h-[540px] flex-col overflow-hidden rounded-2xl border border-neutral-200/90 shadow-lg lg:h-[calc(100dvh_-_176px)] lg:min-h-[620px] dark:border-neutral-800/90">
         <StudioHeaderBar
-          activeTool={engine.states.activeTool}
           docConfig={engine.states.docConfig}
-          brushSettings={engine.states.brushSettings}
-          maskBrushSettings={engine.states.maskBrushSettings}
-          shapeSettings={engine.states.shapeSettings}
-          cropAspect={engine.states.cropAspect}
-          cropRect={engine.states.cropRect}
-          penAnchorCount={engine.states.penAnchorCount}
-          samPointsCount={engine.states.samPointsCount}
-          samHasMask={engine.states.samHasMask}
-          magicEraserSize={engine.states.magicEraserSize}
-          magicEraserHasStrokes={engine.states.magicEraserHasStrokes}
-          mosaicBrushSize={engine.states.mosaicBrushSize}
-          sampledColor={engine.states.sampledColor}
           snapGuidesEnabled={engine.states.snapGuidesEnabled}
           rulersVisible={engine.states.rulersVisible}
           isComparingOriginal={engine.states.isComparingOriginal}
@@ -170,21 +166,6 @@ export default function PhotoEditorStudio() {
           canReset={engine.history.canReset}
           onToggleSnapGuides={engine.setSnapGuidesEnabled}
           onToggleRulers={engine.toggleRulers}
-          onUpdateBrush={engine.updateBrushSettings}
-          onUpdateMaskBrush={engine.updateMaskBrushSettings}
-          onUpdateShape={engine.updateShapeSettings}
-          onSetCropAspect={engine.setCropAspect}
-          onApplyCrop={engine.applyCrop}
-          onCancelCrop={engine.cancelCrop}
-          onFinishPenPath={engine.finishPenPath}
-          onCancelPenPath={engine.cancelPenPath}
-          onApplySamAsMask={() => void engine.applySamAsMask()}
-          onExtractSamLayer={() => void engine.extractSamLayer()}
-          onClearSamSelection={engine.clearSamSelection}
-          onSetMagicEraserSize={engine.setMagicEraserSize}
-          onSetMosaicBrushSize={engine.setMosaicBrushSize}
-          onRunMagicErase={(mode) => void engine.runMagicErase(mode)}
-          onClearMagicEraserMask={engine.clearMagicEraserMask}
           onAddImages={(files) => void engine.addImages(files)}
           onOpenProjectFile={(file) => {
             if (file.name.toLowerCase().endsWith('.psd')) {
@@ -268,10 +249,12 @@ export default function PhotoEditorStudio() {
           filterValues={engine.states.filterValues}
           cropAspect={engine.states.cropAspect}
           cropRect={engine.states.cropRect}
+          canResetCrop={canResetCrop}
           mosaicBrushSize={engine.states.mosaicBrushSize}
           hasFaceDetector={hasFaceDetector}
           onSetCropAspect={engine.setCropAspect}
           onApplyCrop={engine.applyCrop}
+          onResetCrop={engine.resetImageCrop}
           onCancelCrop={engine.cancelCrop}
           onUpdateFilters={engine.updateSelectedFilters}
           selectedTextAlign={

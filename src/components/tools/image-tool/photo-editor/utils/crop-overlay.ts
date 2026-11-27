@@ -1,9 +1,6 @@
-import type * as fabric from 'fabric';
-import type {
-  CropAspectRatio,
-  CropRect,
-  DocumentConfig,
-} from '../types/studio';
+import * as fabric from 'fabric';
+
+import type { CropAspectRatio, CropRect } from '../types/studio';
 
 export type CropHandleKind =
   | 'nw'
@@ -26,35 +23,66 @@ export function parseCropAspectValue(aspect: CropAspectRatio): number | null {
 }
 
 export function createInitialCropRect(
-  docWidth: number,
-  docHeight: number,
-  aspect: CropAspectRatio
+  boundsWidth: number,
+  boundsHeight: number,
+  aspect: CropAspectRatio,
+  ratioOverride?: number | null
 ): CropRect {
-  const ratio = parseCropAspectValue(aspect);
+  const safeW = Math.max(1, Math.round(boundsWidth));
+  const safeH = Math.max(1, Math.round(boundsHeight));
+  const ratio =
+    ratioOverride !== undefined ? ratioOverride : parseCropAspectValue(aspect);
   if (!ratio) {
-    return { x: 0, y: 0, width: docWidth, height: docHeight };
+    return { x: 0, y: 0, width: safeW, height: safeH };
   }
 
-  let w = docWidth;
+  let w = safeW;
   let h = w / ratio;
-  if (h > docHeight) {
-    h = docHeight;
+  if (h > safeH) {
+    h = safeH;
     w = h * ratio;
   }
+  const minW = Math.min(16, safeW);
+  const minH = Math.min(16, safeH);
   return {
-    x: Math.round((docWidth - w) / 2),
-    y: Math.round((docHeight - h) / 2),
-    width: Math.max(32, Math.round(w)),
-    height: Math.max(32, Math.round(h)),
+    x: Math.max(0, Math.round((safeW - w) / 2)),
+    y: Math.max(0, Math.round((safeH - h) / 2)),
+    width: Math.min(safeW, Math.max(minW, Math.round(w))),
+    height: Math.min(safeH, Math.max(minH, Math.round(h))),
+  };
+}
+
+/**
+ * Convert a scene point to image-pixel coordinates `[0..origWidth, 0..origHeight]`.
+ */
+export function scenePointToImagePixel(
+  scenePt: { x: number; y: number },
+  target: fabric.FabricObject,
+  origWidth: number,
+  origHeight: number
+): { x: number; y: number } {
+  const inv = fabric.util.invertTransform(target.calcTransformMatrix());
+  const localPt = new fabric.Point(scenePt.x, scenePt.y).transform(inv);
+  return {
+    x: localPt.x + origWidth / 2,
+    y: localPt.y + origHeight / 2,
   };
 }
 
 export function hitTestCropHandle(
-  pt: { x: number; y: number },
+  scenePt: { x: number; y: number },
   rect: CropRect,
+  target: fabric.FabricObject,
+  origWidth: number,
+  origHeight: number,
   zoom: number
 ): CropHandleKind {
   const tol = Math.max(8, 12 / Math.max(0.1, zoom));
+  const mat = target.calcTransformMatrix();
+
+  const toScene = (px: number, py: number) =>
+    new fabric.Point(px - origWidth / 2, py - origHeight / 2).transform(mat);
+
   const left = rect.x;
   const right = rect.x + rect.width;
   const top = rect.y;
@@ -62,17 +90,38 @@ export function hitTestCropHandle(
   const midX = rect.x + rect.width / 2;
   const midY = rect.y + rect.height / 2;
 
-  if (Math.hypot(pt.x - left, pt.y - top) <= tol) return 'nw';
-  if (Math.hypot(pt.x - right, pt.y - top) <= tol) return 'ne';
-  if (Math.hypot(pt.x - right, pt.y - bottom) <= tol) return 'se';
-  if (Math.hypot(pt.x - left, pt.y - bottom) <= tol) return 'sw';
+  const corners: Array<
+    [Exclude<CropHandleKind, 'move' | null>, number, number]
+  > = [
+    ['nw', left, top],
+    ['ne', right, top],
+    ['se', right, bottom],
+    ['sw', left, bottom],
+    ['n', midX, top],
+    ['e', right, midY],
+    ['s', midX, bottom],
+    ['w', left, midY],
+  ];
 
-  if (Math.hypot(pt.x - midX, pt.y - top) <= tol) return 'n';
-  if (Math.hypot(pt.x - right, pt.y - midY) <= tol) return 'e';
-  if (Math.hypot(pt.x - midX, pt.y - bottom) <= tol) return 's';
-  if (Math.hypot(pt.x - left, pt.y - midY) <= tol) return 'w';
+  for (const [kind, px, py] of corners) {
+    const sp = toScene(px, py);
+    if (Math.hypot(scenePt.x - sp.x, scenePt.y - sp.y) <= tol) {
+      return kind;
+    }
+  }
 
-  if (pt.x >= left && pt.x <= right && pt.y >= top && pt.y <= bottom) {
+  const pixelPt = scenePointToImagePixel(
+    scenePt,
+    target,
+    origWidth,
+    origHeight
+  );
+  if (
+    pixelPt.x >= left &&
+    pixelPt.x <= right &&
+    pixelPt.y >= top &&
+    pixelPt.y <= bottom
+  ) {
     return 'move';
   }
   return null;
@@ -83,121 +132,237 @@ export function applyCropDrag(
   handle: Exclude<CropHandleKind, null>,
   dx: number,
   dy: number,
-  aspect: CropAspectRatio
+  aspect: CropAspectRatio,
+  bounds: { width: number; height: number },
+  ratioOverride?: number | null
 ): CropRect {
-  const minSize = 32;
+  const maxW = Math.max(1, bounds.width);
+  const maxH = Math.max(1, bounds.height);
+  const minSize = Math.min(16, maxW, maxH);
+
   if (handle === 'move') {
+    const clampedX = Math.max(
+      0,
+      Math.min(maxW - startRect.width, Math.round(startRect.x + dx))
+    );
+    const clampedY = Math.max(
+      0,
+      Math.min(maxH - startRect.height, Math.round(startRect.y + dy))
+    );
     return {
       ...startRect,
-      x: Math.round(startRect.x + dx),
-      y: Math.round(startRect.y + dy),
+      x: clampedX,
+      y: clampedY,
     };
   }
 
-  let left = startRect.x;
-  let top = startRect.y;
-  let right = startRect.x + startRect.width;
-  let bottom = startRect.y + startRect.height;
+  const ratio =
+    ratioOverride !== undefined ? ratioOverride : parseCropAspectValue(aspect);
 
-  if (handle.includes('w')) left = Math.min(right - minSize, left + dx);
-  if (handle.includes('e')) right = Math.max(left + minSize, right + dx);
-  if (handle.includes('n')) top = Math.min(bottom - minSize, top + dy);
-  if (handle.includes('s')) bottom = Math.max(top + minSize, bottom + dy);
+  if (!ratio) {
+    let left = startRect.x;
+    let top = startRect.y;
+    let right = startRect.x + startRect.width;
+    let bottom = startRect.y + startRect.height;
 
-  let width = right - left;
-  let height = bottom - top;
-
-  const ratio = parseCropAspectValue(aspect);
-  if (ratio) {
-    if (handle === 'n' || handle === 's') {
-      width = height * ratio;
-      const cx = startRect.x + startRect.width / 2;
-      left = cx - width / 2;
-    } else {
-      const targetH = width / ratio;
-      if (handle.includes('n')) {
-        top = bottom - targetH;
-      } else {
-        bottom = top + targetH;
-      }
-      height = bottom - top;
+    if (handle.includes('w')) {
+      left = Math.max(0, Math.min(right - minSize, left + dx));
     }
+    if (handle.includes('e')) {
+      right = Math.min(maxW, Math.max(left + minSize, right + dx));
+    }
+    if (handle.includes('n')) {
+      top = Math.max(0, Math.min(bottom - minSize, top + dy));
+    }
+    if (handle.includes('s')) {
+      bottom = Math.min(maxH, Math.max(top + minSize, bottom + dy));
+    }
+
+    const rLeft = Math.max(0, Math.round(left));
+    const rTop = Math.max(0, Math.round(top));
+    const rRight = Math.min(maxW, Math.round(right));
+    const rBottom = Math.min(maxH, Math.round(bottom));
+
+    return {
+      x: rLeft,
+      y: rTop,
+      width: Math.max(minSize, rRight - rLeft),
+      height: Math.max(minSize, rBottom - rTop),
+    };
   }
 
+  // Aspect-locked dragging strictly clamped within [0..maxW, 0..maxH]
+  if (handle === 'n' || handle === 's') {
+    let top = startRect.y;
+    let bottom = startRect.y + startRect.height;
+    if (handle === 'n') {
+      top = Math.max(0, Math.min(bottom - minSize, top + dy));
+    } else {
+      bottom = Math.min(maxH, Math.max(top + minSize, bottom + dy));
+    }
+    let height = Math.min(bottom - top, maxW / ratio);
+    height = Math.max(minSize, height);
+    const width = Math.min(maxW, height * ratio);
+    if (handle === 'n') {
+      top = bottom - height;
+    } else {
+      bottom = top + height;
+    }
+    const cx = startRect.x + startRect.width / 2;
+    const left = Math.max(0, Math.min(maxW - width, cx - width / 2));
+    return {
+      x: Math.round(left),
+      y: Math.round(top),
+      width: Math.max(minSize, Math.round(width)),
+      height: Math.max(minSize, Math.round(height)),
+    };
+  }
+
+  if (handle === 'e' || handle === 'w') {
+    let left = startRect.x;
+    let right = startRect.x + startRect.width;
+    if (handle === 'w') {
+      left = Math.max(0, Math.min(right - minSize, left + dx));
+    } else {
+      right = Math.min(maxW, Math.max(left + minSize, right + dx));
+    }
+    let width = Math.min(right - left, maxH * ratio);
+    width = Math.max(minSize, width);
+    const height = Math.min(maxH, width / ratio);
+    if (handle === 'w') {
+      left = right - width;
+    } else {
+      right = left + width;
+    }
+    const cy = startRect.y + startRect.height / 2;
+    const top = Math.max(0, Math.min(maxH - height, cy - height / 2));
+    return {
+      x: Math.round(left),
+      y: Math.round(top),
+      width: Math.max(minSize, Math.round(width)),
+      height: Math.max(minSize, Math.round(height)),
+    };
+  }
+
+  // Corner handle with opposite corner anchored
+  const anchorRight = handle.includes('w');
+  const anchorBottom = handle.includes('n');
+  const anchorX = anchorRight ? startRect.x + startRect.width : startRect.x;
+  const anchorY = anchorBottom ? startRect.y + startRect.height : startRect.y;
+
+  const availW = anchorRight ? anchorX : maxW - anchorX;
+  const availH = anchorBottom ? anchorY : maxH - anchorY;
+  const maxAllowedW = Math.min(availW, availH * ratio);
+
+  const rawW = anchorRight
+    ? anchorX - (startRect.x + dx)
+    : startRect.x + startRect.width + dx - anchorX;
+  const width = Math.max(minSize, Math.min(maxAllowedW, rawW));
+  const height = Math.max(minSize, Math.min(availH, width / ratio));
+
+  const x = anchorRight ? anchorX - width : anchorX;
+  const y = anchorBottom ? anchorY - height : anchorY;
+
   return {
-    x: Math.round(left),
-    y: Math.round(top),
+    x: Math.max(0, Math.round(x)),
+    y: Math.max(0, Math.round(y)),
     width: Math.max(minSize, Math.round(width)),
     height: Math.max(minSize, Math.round(height)),
   };
 }
 
 /**
- * Draw dimmed surround mask, rule-of-thirds grid, and 8 resize handles for Crop Mode.
+ * Draw image-local dimmed surround mask, rule-of-thirds grid, and 8 screen-aligned handles.
  */
 export function renderCropOverlay(
   ctx: CanvasRenderingContext2D,
   canvas: fabric.Canvas,
   crop: CropRect,
-  doc: DocumentConfig
+  target: fabric.FabricObject,
+  origWidth: number,
+  origHeight: number
 ): void {
   const v = canvas.viewportTransform || [1, 0, 0, 1, 0, 0];
-  const invZoom = 1 / (v[0] || 1);
+  const fullMat = fabric.util.multiplyTransformMatrices(
+    v,
+    target.calcTransformMatrix()
+  );
+  const scaleFactor = Math.max(0.05, Math.hypot(fullMat[0], fullMat[1]));
+  const invScale = 1 / scaleFactor;
+
+  const halfW = origWidth / 2;
+  const halfH = origHeight / 2;
+  const lx = crop.x - halfW;
+  const ly = crop.y - halfH;
+  const lw = crop.width;
+  const lh = crop.height;
 
   ctx.save();
-  ctx.transform(v[0], v[1], v[2], v[3], v[4], v[5]);
+  ctx.transform(
+    fullMat[0],
+    fullMat[1],
+    fullMat[2],
+    fullMat[3],
+    fullMat[4],
+    fullMat[5]
+  );
 
-  // Scrim outside crop region over artboard bounds
-  const minX = Math.min(0, crop.x) - 2000;
-  const minY = Math.min(0, crop.y) - 2000;
-  const maxW = Math.max(doc.width, crop.x + crop.width) + 4000;
-  const maxH = Math.max(doc.height, crop.y + crop.height) + 4000;
-
+  // Scrim outside crop box within full uncropped image bounds
   ctx.beginPath();
-  ctx.rect(minX, minY, maxW, maxH);
-  ctx.rect(crop.x, crop.y, crop.width, crop.height);
-  ctx.fillStyle = 'rgba(15, 23, 42, 0.55)';
+  ctx.rect(-halfW, -halfH, origWidth, origHeight);
+  ctx.rect(lx, ly, lw, lh);
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.58)';
   ctx.fill('evenodd');
 
-  // Rule of thirds lines
+  // Subtle dashed outline showing full uncropped image boundary
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+  ctx.lineWidth = 1 * invScale;
+  ctx.setLineDash([4 * invScale, 4 * invScale]);
+  ctx.strokeRect(-halfW, -halfH, origWidth, origHeight);
+  ctx.setLineDash([]);
+
+  // Rule of thirds lines inside crop rect
   ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
-  ctx.lineWidth = 1 * invZoom;
+  ctx.lineWidth = 1 * invScale;
   ctx.beginPath();
   for (let i = 1; i <= 2; i++) {
-    const gx = crop.x + (crop.width * i) / 3;
-    const gy = crop.y + (crop.height * i) / 3;
-    ctx.moveTo(gx, crop.y);
-    ctx.lineTo(gx, crop.y + crop.height);
-    ctx.moveTo(crop.x, gy);
-    ctx.lineTo(crop.x + crop.width, gy);
+    const gx = lx + (lw * i) / 3;
+    const gy = ly + (lh * i) / 3;
+    ctx.moveTo(gx, ly);
+    ctx.lineTo(gx, ly + lh);
+    ctx.moveTo(lx, gy);
+    ctx.lineTo(lx + lw, gy);
   }
   ctx.stroke();
 
   // Crop border
   ctx.strokeStyle = '#38bdf8';
-  ctx.lineWidth = 2 * invZoom;
-  ctx.strokeRect(crop.x, crop.y, crop.width, crop.height);
+  ctx.lineWidth = 2 * invScale;
+  ctx.strokeRect(lx, ly, lw, lh);
 
-  // Corner & midpoint handles
-  const hs = 5 * invZoom;
-  const handlePts = [
-    [crop.x, crop.y],
-    [crop.x + crop.width / 2, crop.y],
-    [crop.x + crop.width, crop.y],
-    [crop.x + crop.width, crop.y + crop.height / 2],
-    [crop.x + crop.width, crop.y + crop.height],
-    [crop.x + crop.width / 2, crop.y + crop.height],
-    [crop.x, crop.y + crop.height],
-    [crop.x, crop.y + crop.height / 2],
+  ctx.restore();
+
+  // Screen-space uniform corner & edge midpoint handles
+  const hs = 5;
+  const handleLocals: Array<[number, number]> = [
+    [lx, ly],
+    [lx + lw / 2, ly],
+    [lx + lw, ly],
+    [lx + lw, ly + lh / 2],
+    [lx + lw, ly + lh],
+    [lx + lw / 2, ly + lh],
+    [lx, ly + lh],
+    [lx, ly + lh / 2],
   ];
 
+  ctx.save();
   ctx.fillStyle = '#ffffff';
   ctx.strokeStyle = '#0284c7';
-  ctx.lineWidth = 1.6 * invZoom;
-  for (const [hx, hy] of handlePts) {
-    ctx.fillRect(hx - hs, hy - hs, hs * 2, hs * 2);
-    ctx.strokeRect(hx - hs, hy - hs, hs * 2, hs * 2);
+  ctx.lineWidth = 1.6;
+  for (const [px, py] of handleLocals) {
+    const sp = new fabric.Point(px, py).transform(fullMat);
+    ctx.fillRect(sp.x - hs, sp.y - hs, hs * 2, hs * 2);
+    ctx.strokeRect(sp.x - hs, sp.y - hs, hs * 2, hs * 2);
   }
-
   ctx.restore();
 }
