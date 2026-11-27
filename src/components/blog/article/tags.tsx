@@ -2,12 +2,12 @@
 
 import type { BlogArticle } from '@/types/blog';
 
-import { cn } from '@/utils/cn';
-import urlJoin from 'url-join';
 import Link from 'next/link';
 import { get, map } from 'lodash';
 
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
+import { cn } from '@/utils/cn';
+import strapiUtils from '@/utils/strapi-utils';
 import { Badge } from '@/components/ui/badge';
 
 type Props = { article: BlogArticle };
@@ -31,7 +31,7 @@ export default function Tags({ article }: Props) {
         ({ name, slug }) =>
           !!slug && (
             <li key={name}>
-              <Link href={urlJoin('/blog/tag', slug) || ''}>
+              <Link href={strapiUtils.toBlogTagUrl(slug)}>
                 <Badge
                   variant="blue"
                   bordered

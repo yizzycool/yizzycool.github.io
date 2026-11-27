@@ -64,6 +64,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: meta.og.description,
       type: 'article',
       url: meta.url,
+      locale: 'zh_TW',
       publishedTime: meta.og.publishedTime,
       modifiedTime: meta.og.modifiedTime,
 

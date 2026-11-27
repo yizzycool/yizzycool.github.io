@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import urlJoin from 'url-join';
 import seoUtils from '@/utils/seo-utils';
-import strapiUtils from '@/utils/strapi-utils';
+import { fetchAllArticles } from '@/utils/strapi-utils';
 import Articles from '@/components/blog/articles';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN || '/';
@@ -38,6 +38,7 @@ export const metadata: Metadata = {
     url: meta.url,
     siteName: meta.og.siteName,
     images: [meta.og.image],
+    locale: 'zh_TW',
     type: 'website',
   },
   twitter: {
@@ -46,26 +47,6 @@ export const metadata: Metadata = {
     description: meta.og.description,
     images: [meta.og.image.url],
   },
-};
-
-const fetchAllArticles = async () => {
-  try {
-    const queryString = strapiUtils.fetch.generateArticlesQueryString();
-    const response = await fetch(
-      `${process.env.STRAPI_URL}/api/articles?${queryString}`
-    );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.warn('Error fetching all articles:', error);
-    return {
-      data: [],
-      meta: { pagination: { page: 1, pageSize: 10, pageCount: 0, total: 0 } },
-    };
-  }
 };
 
 export default async function Page() {

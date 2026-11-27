@@ -5,7 +5,7 @@ import { get, map } from 'lodash';
 
 import Articles from '@/components/blog/articles';
 import seoUtils from '@/utils/seo-utils';
-import strapiUtils from '@/utils/strapi-utils';
+import strapiUtils, { fetchAllArticles } from '@/utils/strapi-utils';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN as string;
 
@@ -49,6 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: meta.url,
       siteName: meta.og.siteName,
       images: [meta.og.image],
+      locale: 'zh_TW',
       type: 'website',
     },
     twitter: {
@@ -82,32 +83,13 @@ export async function generateStaticParams() {
 }
 
 const fetchArticles = async (categorySlug: string) => {
-  try {
-    const queryString = strapiUtils.fetch.generateArticlesQueryString({
-      category: {
-        slug: {
-          '$eq': categorySlug,
-        },
+  return fetchAllArticles({
+    category: {
+      slug: {
+        '$eq': categorySlug,
       },
-    });
-    const response = await fetch(
-      `${process.env.STRAPI_URL}/api/articles?${queryString}`
-    );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.warn(
-      `Error fetching articles for category ${categorySlug}:`,
-      error
-    );
-    return {
-      data: [],
-      meta: { pagination: { page: 1, pageSize: 10, pageCount: 0, total: 0 } },
-    };
-  }
+    },
+  });
 };
 
 export default async function Page({ params }: Props) {

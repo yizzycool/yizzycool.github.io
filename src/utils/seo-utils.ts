@@ -1,9 +1,8 @@
 import type { BlogArticle } from '@/types/blog';
 import type { BlogCategoryData } from '@/types/blog/category';
-import type { BlogTagData } from '@/types/blog/tag';
 
 import urlJoin from 'url-join';
-import { get, find, defaultsDeep } from 'lodash';
+import { get, defaultsDeep } from 'lodash';
 
 import strapiUtils from './strapi-utils';
 import dataProcessUtils from './tools/data/data-process-utils';
@@ -79,10 +78,9 @@ const seoUtils = {
   },
 
   // For /blog/page.tsx
-  // For /blog/page/[page]/page.tsx
-  generateBlogJsonLd: (page = 1) => {
-    const name = page === 1 ? 'Blog' : `Blog - Page ${page}`;
-    const url = urlJoin(domain, 'blog', page === 1 ? '' : `page/${page}`);
+  generateBlogJsonLd: () => {
+    const name = 'Blog';
+    const url = urlJoin(domain, 'blog');
 
     return {
       '@context': 'https://schema.org',
@@ -101,55 +99,13 @@ const seoUtils = {
     };
   },
 
-  // For /blog/[tag]/page.tsx
-  // For /blog/[tag]/page/[page]/page.tsx
-  generateBlogTagJsonLd: (
-    articles: BlogArticle,
-    tagSlug: string,
-    page: number = 1
-  ) => {
-    const tags = get(articles, ['data', 0, 'tags']);
-    const tag = find(tags, (t) => t.slug === tagSlug) || {};
-    const { name: tagName } = tag as BlogTagData;
-
-    const name =
-      page === 1 ? `${tagName} Articles` : `${tagName} Articles - Page ${page}`;
-    const url = urlJoin(
-      domain,
-      'blog/tag',
-      tagSlug,
-      page === 1 ? '' : `page/${page}`
-    );
-
-    return {
-      '@context': 'https://schema.org',
-      '@type': 'CollectionPage',
-      name,
-      url,
-      isPartOf: {
-        '@type': 'WebSite',
-        name: websiteName,
-        url: domain,
-      },
-    };
-  },
-
   // For /blog/category/[category]/page.tsx
-  // For /blog/category/[category]/page/[page]/page.tsx
-  generateBlogCategoryJsonLd: (articles: BlogArticle, page: number = 1) => {
+  generateBlogCategoryJsonLd: (articles: BlogArticle) => {
     const category = get(articles, ['data', 0, 'category'], {});
     const { name: categoryName = '', slug = '' } = category as BlogCategoryData;
 
-    const name =
-      page === 1
-        ? `${categoryName} Articles`
-        : `${categoryName} Articles - Page ${page}`;
-    const url = urlJoin(
-      domain,
-      'blog/category',
-      slug,
-      page === 1 ? '' : `page/${page}`
-    );
+    const name = `${categoryName} Articles`;
+    const url = urlJoin(domain, 'blog/category', slug);
 
     return {
       '@context': 'https://schema.org',
@@ -294,9 +250,9 @@ const seoUtils = {
     };
   },
 
-  // For /blog/page.tsx & /blog/page/[page]/page.tsx
-  generateBlogBreadcrumbJsonLd: (page = 1) => {
-    const breadcrumbList = {
+  // For /blog/page.tsx
+  generateBlogBreadcrumbJsonLd: () => {
+    return {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
       itemListElement: [
@@ -314,17 +270,6 @@ const seoUtils = {
         },
       ],
     };
-
-    if (page > 1) {
-      breadcrumbList.itemListElement.push({
-        '@type': 'ListItem',
-        position: 3,
-        name: `Blog - Page ${page}`,
-        item: urlJoin(domain, `blog/page/${page}`),
-      });
-    }
-
-    return breadcrumbList;
   },
 
   // For /blog/[category]/[article]/page.tsx

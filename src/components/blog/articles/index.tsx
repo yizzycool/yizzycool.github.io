@@ -2,64 +2,29 @@
 
 import type { BlogArticle } from '@/types/blog';
 
-import { cn } from '@/utils/cn';
-import { useMemo } from 'react';
-import { get, find } from 'lodash';
+import { Suspense } from 'react';
 
-import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import HeaderBlock from './header-block';
-import ArticleCard from './article-card';
-import Pagination from './pagination';
+import ArticlesClient from './articles-client';
+import ArticlesContent from './articles-content';
 
 type Props = {
   articles: BlogArticle;
-  categorySlug?: string | undefined;
-  tagSlug?: string | undefined;
+  categorySlug?: string;
 };
 
-export default function Articles({ articles, categorySlug, tagSlug }: Props) {
-  const { data, meta } = articles || {};
-
-  const categoryName = useMemo(() => {
-    if (categorySlug) {
-      return get(data, [0, 'category', 'name'], '');
-    } else if (tagSlug) {
-      const tags = get(data, [0, 'tags']);
-      const tag = find(tags, (t) => t.slug === tagSlug);
-      return get(tag, 'name', '');
-    } else {
-      return 'All articles';
-    }
-  }, [data, categorySlug, tagSlug]);
-
-  const { getFadeUpClass } = useGetTransitionClass();
-
+export default function Articles({ articles, categorySlug }: Props) {
   return (
-    <div className="mx-auto flex-grow overflow-hidden px-5 pb-20 pt-4 lg:max-w-screen-lg lg:px-10">
-      <HeaderBlock />
-
-      {/* All articles, <Category>, or <Tag> */}
-      <div
-        className={cn(
-          'mb-6 mt-12 flex items-center justify-between',
-          getFadeUpClass('animate-delay-300')
-        )}
-      >
-        <h2 className="text-xl font-medium text-slate-900 dark:text-white">
-          {categoryName}
-          <span className="ml-3 text-sm font-normal text-slate-400 dark:text-slate-500">
-            {get(meta, ['pagination', 'total'], 0)} articles
-          </span>
-        </h2>
-      </div>
-
-      <div className="grid gap-6">
-        {data.map((article, index) => (
-          <ArticleCard key={index} article={article} priority={index === 0} />
-        ))}
-      </div>
-
-      <Pagination articles={articles} />
-    </div>
+    <Suspense
+      fallback={
+        <ArticlesContent
+          articles={articles}
+          categorySlug={categorySlug}
+          activeTagSlug={null}
+          currentPage={1}
+        />
+      }
+    >
+      <ArticlesClient articles={articles} categorySlug={categorySlug} />
+    </Suspense>
   );
 }

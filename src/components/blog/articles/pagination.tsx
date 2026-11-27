@@ -1,46 +1,38 @@
 'use client';
 
-import type { BlogArticle } from '@/types/blog';
-
-import { cn } from '@/utils/cn';
-import urlJoin from 'url-join';
 import { useMemo } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
 import {
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
-  LucideIcon,
 } from 'lucide-react';
 import { range } from 'lodash';
 
+import { cn } from '@/utils/cn';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
+import { Button } from '@/components/ui/button';
 import { RevealSection } from '@/components/ui/reveal-section';
 
 type Props = {
-  articles: BlogArticle;
+  currentPage: number;
+  pageCount: number;
+  onPageChange: (nextPage: number) => void;
 };
 
-export default function Pagination({ articles }: Props) {
-  const { meta } = articles;
-  const { pagination } = meta;
-  const { page, pageCount } = pagination;
-
-  const router = useRouter();
-  const pathname = usePathname();
-
+export default function Pagination({
+  currentPage,
+  pageCount,
+  onPageChange,
+}: Props) {
   const { getFadeUpClass } = useGetTransitionClass();
 
-  // 2 3 `4` 5 6
-  // `1` 2 3 4 5
   const pageRange = useMemo(() => {
     const maxVisible = 5;
-
     const half = Math.floor(maxVisible / 2);
 
-    let start = page - half;
-    let end = page + half;
+    let start = currentPage - half;
+    let end = currentPage + half;
 
     if (start < 1) {
       start = 1;
@@ -53,49 +45,55 @@ export default function Pagination({ articles }: Props) {
     }
 
     return range(start, end + 1);
-  }, [page, pageCount]);
+  }, [currentPage, pageCount]);
 
-  const redirectToPage = (nextPage: number) => {
-    if (page === nextPage || nextPage < 1 || nextPage > pageCount) return;
+  if (pageCount <= 1) {
+    return null;
+  }
 
-    const rootPath = pathname.replace(/\/page\/[0-9]+$/, '');
-    if (nextPage === 1) {
-      router.push(rootPath);
-    } else {
-      router.push(urlJoin(rootPath, '/page', nextPage.toString()));
+  const handlePageSelect = (nextPage: number) => {
+    if (nextPage === currentPage || nextPage < 1 || nextPage > pageCount) {
+      return;
     }
+    onPageChange(nextPage);
   };
 
   return (
     <RevealSection>
-      <div
+      <nav
+        aria-label="Articles pagination"
         className={cn(
           'mt-12 flex items-center justify-center gap-2 py-8',
           getFadeUpClass('animate-delay-100')
         )}
       >
-        {/* 1st Page */}
-        <LeftRightButton
-          onClick={() => redirectToPage(1)}
-          disabled={page === 1}
+        <Button
+          variant="outline"
+          size="sm"
           icon={ChevronsLeft}
+          ariaLabel="First page"
+          disabled={currentPage === 1}
+          onClick={() => handlePageSelect(1)}
         />
-        {/* Previous Page */}
-        <LeftRightButton
-          onClick={() => redirectToPage(Math.max(1, page - 1))}
-          disabled={page === 1}
+        <Button
+          variant="outline"
+          size="sm"
           icon={ChevronLeft}
+          ariaLabel="Previous page"
+          disabled={currentPage === 1}
+          onClick={() => handlePageSelect(Math.max(1, currentPage - 1))}
         />
 
-        {/* Page Numbers */}
         <div className="flex gap-2 px-2">
           {pageRange.map((p) => (
             <button
               key={p}
-              onClick={() => redirectToPage(p)}
+              type="button"
+              aria-current={p === currentPage ? 'page' : undefined}
+              onClick={() => handlePageSelect(p)}
               className={cn(
                 'flex h-10 w-10 items-center justify-center rounded-lg font-bold transition-all',
-                p === page
+                p === currentPage
                   ? 'scale-110 bg-blue-600 text-white shadow-lg shadow-blue-500/25'
                   : 'bg-white text-slate-600 hover:bg-neutral-100 dark:bg-neutral-800 dark:text-slate-400 dark:hover:bg-neutral-700/50'
               )}
@@ -105,43 +103,23 @@ export default function Pagination({ articles }: Props) {
           ))}
         </div>
 
-        {/* Next Page */}
-        <LeftRightButton
-          onClick={() => redirectToPage(Math.min(pageCount, page + 1))}
-          disabled={page === pageCount}
+        <Button
+          variant="outline"
+          size="sm"
           icon={ChevronRight}
+          ariaLabel="Next page"
+          disabled={currentPage === pageCount}
+          onClick={() => handlePageSelect(Math.min(pageCount, currentPage + 1))}
         />
-        {/* Last Page */}
-        <LeftRightButton
-          onClick={() => redirectToPage(pageCount)}
-          disabled={page === pageCount}
+        <Button
+          variant="outline"
+          size="sm"
           icon={ChevronsRight}
+          ariaLabel="Last page"
+          disabled={currentPage === pageCount}
+          onClick={() => handlePageSelect(pageCount)}
         />
-      </div>
+      </nav>
     </RevealSection>
   );
 }
-
-const LeftRightButton = ({
-  onClick,
-  disabled,
-  icon: Icon,
-}: {
-  onClick: () => void;
-  disabled: boolean;
-  icon: LucideIcon;
-}) => {
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={cn(
-        'rounded-lg p-2 transition-all disabled:opacity-30',
-        'border border-neutral-200 dark:border-neutral-800',
-        'hover:[&:not(:disabled)]:bg-neutral-100 dark:hover:[&:not(:disabled)]:bg-neutral-800'
-      )}
-    >
-      <Icon size={20} />
-    </button>
-  );
-};

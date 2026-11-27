@@ -1,3 +1,5 @@
+import type { BlogArticle } from '@/types/blog';
+import type { BlogArticleData } from '@/types/blog/article';
 import type {
   BlogMediaData,
   BlogMediaFormat,
@@ -131,6 +133,9 @@ const strapiUtils = {
   toBlogCategoryUrl: (categorySlug: string) => {
     return urlJoin('/blog/category', categorySlug);
   },
+  toBlogTagUrl: (tagSlug: string) => {
+    return `/blog?tag=${encodeURIComponent(tagSlug)}`;
+  },
   toBlogCategoryArticleUrl: (categorySlug: string, articleSlug: string) => {
     return urlJoin('/blog', categorySlug, articleSlug);
   },
@@ -175,16 +180,14 @@ const strapiUtils = {
     },
 
     // /blog/page.tsx
-    // /blog/[category]/page.tsx
-    // /blog/tag/[tag]/page.tsx
-    // /blog/page/[page]/page.tsx
+    // /blog/category/[category]/page.tsx
     generateArticlesQueryString: (
       filters?: object | undefined,
       pagination?: object | undefined
     ) => {
       const queryObject: QueryObject = {
         status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
-        populate: ['banner', 'tags', 'author', 'category'],
+        populate: ['banner', 'tags', 'category'],
         fields: [
           'title',
           'description',
@@ -283,31 +286,6 @@ const strapiUtils = {
       };
       return qs.stringify(queryObject);
     },
-
-    // /blog/tag/[tag]/page.tsx
-    generateTagsQueryStringForTagPage: (filters?: object | undefined) => {
-      const queryObject: QueryObject = {
-        status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
-        fields: ['slug'],
-        pagination: defaults({ pageSize: 9999 }, PAGINATION),
-        filters,
-      };
-      return qs.stringify(queryObject);
-    },
-
-    // /blog/page/[page]/page.tsx
-    generateArticlesQueryStringForPagePage: (
-      filters?: object | undefined,
-      pagination?: object | undefined
-    ) => {
-      const queryObject: QueryObject = {
-        status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
-        fields: ['slug'],
-        pagination: defaults(pagination, PAGINATION),
-        filters,
-      };
-      return qs.stringify(queryObject);
-    },
   },
 
   // Used for static route handler
@@ -327,6 +305,62 @@ const strapiUtils = {
       return qs.stringify(queryObject);
     },
   },
+};
+
+export const fetchAllArticles = async (
+  filters?: object
+): Promise<BlogArticle> => {
+  const pageSize = 100;
+  const allData: BlogArticleData[] = [];
+
+  try {
+    let page = 1;
+    let pageCount = 1;
+
+    while (page <= pageCount) {
+      const queryString = strapiUtils.fetch.generateArticlesQueryString(
+        filters,
+        { page, pageSize }
+      );
+      const response = await fetch(
+        `${process.env.STRAPI_URL}/api/articles?${queryString}`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result: BlogArticle = await response.json();
+      if (Array.isArray(result.data)) {
+        allData.push(...result.data);
+      }
+      pageCount = result.meta?.pagination?.pageCount ?? 1;
+      page += 1;
+    }
+
+    return {
+      data: allData,
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: allData.length || pageSize,
+          pageCount: allData.length > 0 ? 1 : 0,
+          total: allData.length,
+        },
+      },
+    };
+  } catch (error) {
+    console.warn('Error fetching all articles:', error);
+    return {
+      data: [],
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 10,
+          pageCount: 0,
+          total: 0,
+        },
+      },
+    };
+  }
 };
 
 export const fetchCategoryArticles = async () => {
