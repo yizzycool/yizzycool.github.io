@@ -2,14 +2,14 @@
 
 import type { BlogArticleData } from '@/types/blog/article';
 
-import { ArrowRight, Clock, Folder, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
+import { Clock, Folder, RefreshCw } from 'lucide-react';
 
-import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
-import strapiUtils from '@/utils/strapi-utils';
 import { cn } from '@/utils/cn';
+import strapiUtils from '@/utils/strapi-utils';
+import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
 import { RevealSection } from '@/components/ui/reveal-section';
-import { Badge } from '@/components/ui/badge';
+
 import Banner from './banner';
 
 type Props = {
@@ -28,76 +28,57 @@ export default function ArticleCard({ article, priority = false }: Props) {
   const { getFadeUpClass } = useGetTransitionClass();
 
   return (
-    <RevealSection>
+    <RevealSection className="h-full">
       <Link
-        key={article.documentId}
         href={strapiUtils.toBlogCategoryArticleUrl(
           article.category.slug,
           article.slug
         )}
+        className="block h-full"
       >
         <article
-          key={article.id}
           className={cn(
-            'group relative overflow-hidden rounded-2xl border',
+            'group relative flex h-full flex-col overflow-hidden rounded-2xl border',
             'transition-all duration-300',
-            'bg-white dark:bg-neutral-900/40',
-            'border-neutral-200 dark:border-neutral-700',
-            'hover:shadow-lg',
+            'bg-white/95 dark:bg-neutral-800/55 dark:backdrop-blur-sm',
+            'border-neutral-300/75 ring-1 ring-black/[0.03] dark:border-neutral-700/80 dark:ring-white/[0.06]',
+            'shadow-sm shadow-slate-900/[0.06] dark:shadow-md dark:shadow-black/40',
+            'hover:-translate-y-0.5 hover:border-sky-500/50 hover:shadow-lg hover:shadow-slate-900/10 dark:hover:border-sky-500/50 dark:hover:shadow-black/60',
             getFadeUpClass()
           )}
         >
-          <div className="h-full md:flex">
-            {/* Image Container */}
-            <div className="relative h-48 overflow-hidden md:h-auto md:w-1/3">
-              <Banner article={article} priority={priority} />
+          {/* Cover Image */}
+          <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden border-b border-neutral-200/80 bg-neutral-100 dark:border-neutral-700/70 dark:bg-neutral-800/60">
+            <Banner article={article} priority={priority} />
+          </div>
+
+          {/* Card Body */}
+          <div className="flex flex-1 flex-col px-5 pb-6 pt-5">
+            {/* Metadata */}
+            <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-slate-500 dark:text-slate-400">
+              <span className="flex items-center gap-1">
+                <Folder size={12} />
+                {article.category.name}
+              </span>
+              <span className="flex items-center gap-1">
+                <RefreshCw size={12} />
+                {dateString}
+              </span>
+              <span className="flex items-center gap-1">
+                <Clock size={12} />
+                {article.readTime} min
+              </span>
             </div>
 
-            {/* Content Container */}
-            <div className="flex flex-col justify-between p-6 md:w-2/3">
-              <div>
-                {/* Metadata */}
-                <div className="mb-3 flex flex-wrap items-center gap-3 text-xs font-medium text-slate-500 dark:text-slate-400">
-                  <span className="flex items-center gap-1">
-                    <Folder size={12} />
-                    {article.category.name}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <RefreshCw size={12} />
-                    {dateString}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Clock size={12} />
-                    {article.readTime} min
-                  </span>
-                </div>
+            {/* Article Title */}
+            <h3 className="mb-3 line-clamp-2 text-lg font-semibold leading-snug text-slate-900 transition-colors group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
+              {article.title}
+            </h3>
 
-                {/* Article Title */}
-                <h3 className="mb-3 text-xl font-medium text-slate-900 transition-colors group-hover:text-blue-600 md:text-2xl dark:text-slate-100 dark:group-hover:text-blue-400">
-                  {article.title}
-                </h3>
-
-                {/* Short Description */}
-                <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-slate-600 md:line-clamp-3 dark:text-slate-400">
-                  {article.description}
-                </p>
-              </div>
-
-              {/* Tags */}
-              <div className="mt-4 flex flex-col justify-between gap-6">
-                <div className="flex flex-wrap gap-2">
-                  {article.tags.map((tag) => (
-                    <Badge key={tag.name} variant="outline" rounded="md">
-                      {tag.name}
-                    </Badge>
-                  ))}
-                </div>
-
-                <div className="flex items-center gap-2 self-end text-sm font-semibold text-blue-600 transition-all group-hover:translate-x-2 dark:text-blue-400">
-                  Read Article <ArrowRight size={16} />
-                </div>
-              </div>
-            </div>
+            {/* Short Description */}
+            <p className="line-clamp-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+              {article.description}
+            </p>
           </div>
         </article>
       </Link>

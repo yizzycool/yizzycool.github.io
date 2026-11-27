@@ -14,7 +14,7 @@ import ArticleCard from './article-card';
 import HeaderBlock from './header-block';
 import Pagination from './pagination';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 12;
 
 type Props = {
   articles: BlogArticle;
@@ -74,7 +74,7 @@ export default function ArticlesContent({
   };
 
   return (
-    <div className="mx-auto flex-grow overflow-hidden px-5 pb-20 pt-4 lg:max-w-screen-lg lg:px-10">
+    <div className="mx-auto flex-grow overflow-hidden px-5 pb-20 pt-4 lg:px-10 xl:max-w-screen-xl">
       <HeaderBlock />
 
       {/* All articles, <Category>, or # <Tag> */}
@@ -105,12 +105,12 @@ export default function ArticlesContent({
       </div>
 
       {visibleArticles.length > 0 ? (
-        <div className="grid gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
           {visibleArticles.map((article, index) => (
             <ArticleCard
               key={article.documentId || article.slug}
               article={article}
-              priority={index === 0}
+              priority={index < 3}
             />
           ))}
         </div>
