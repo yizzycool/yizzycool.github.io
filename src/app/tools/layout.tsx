@@ -1,6 +1,4 @@
 import '@/styles/globals.css';
-import { GlimmerBackground } from '@/components/ui/glimmer-background';
-import GlimmerBackgroundConfigs from '@/data/glimmer-background-config/tools';
 import FeaturePanel from '@/components/tools/layout/feature-panel';
 import { CollapsibleSidebar } from '@/components/shared/collapsible-sidebar';
 import AboutBlock from '@/components/tools/common/about-block';
@@ -15,7 +13,6 @@ export default function RootLayout({
 }>) {
   return (
     <div className="mx-auto flex min-h-dvh pt-[101px]">
-      <GlimmerBackground configs={GlimmerBackgroundConfigs} />
       <CollapsibleSidebar scope="tools" title="Tools">
         <FeaturePanel />
       </CollapsibleSidebar>

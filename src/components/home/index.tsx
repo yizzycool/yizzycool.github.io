@@ -51,36 +51,31 @@ export default function Home({ avatar = null }: Props) {
             {/* Status Badge */}
             <div
               className={cn(
-                'flex items-center gap-2 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-widest',
-                'rounded-full border',
-                'border-indigo-300/80 dark:border-indigo-600/50',
-                'bg-indigo-50/30 dark:bg-indigo-950/30',
-                'text-indigo-600 dark:text-indigo-300',
-                'shadow-sm shadow-indigo-100/30 dark:shadow-none',
-                'transition-all duration-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/50',
+                'inline-flex items-center rounded-full border px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-widest',
+                'border-neutral-200/90 bg-white/70 text-slate-600',
+                'transition-colors duration-200 hover:border-neutral-300',
+                'dark:border-neutral-800 dark:bg-neutral-900/60 dark:text-slate-300 dark:hover:border-neutral-700',
                 getFadeUpClass('animate-delay-100')
               )}
             >
-              COFFEE, CODE & CHILL
+              COFFEE, CODE &amp; CHILL
             </div>
 
             {/* Headlines */}
             <div className="flex w-full flex-col items-center space-y-4 lg:items-start">
-              <h2
+              <h1
                 className={cn(
                   'text-4xl font-black tracking-tight text-slate-900 md:text-5xl lg:text-7xl dark:text-white',
                   getFadeUpClass('animate-delay-200')
                 )}
               >
-                Hi There, <br />I am{' '}
-                <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400">
-                  Yizzy.
-                </span>
-              </h2>
+                Hi There, <br />I am Yizzy
+                <span className="text-sky-500">.</span>
+              </h1>
 
               <div
                 className={cn(
-                  'flex h-12 items-center justify-center font-mono text-xl font-semibold tracking-tight text-slate-800 md:text-2xl lg:justify-start dark:text-slate-100',
+                  'flex h-12 items-center justify-center font-mono text-xl font-medium tracking-tight text-slate-500 md:text-2xl lg:justify-start dark:text-slate-300',
                   getFadeUpClass('animate-delay-300')
                 )}
               >
@@ -116,13 +111,13 @@ export default function Home({ avatar = null }: Props) {
             >
               <Link
                 href="/tools"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:from-indigo-500 hover:to-purple-500 hover:shadow-xl hover:shadow-indigo-500/35 active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-800 active:scale-[0.98] dark:bg-white dark:text-slate-950 dark:hover:bg-neutral-200"
               >
                 Explore Tools <MoveRight />
               </Link>
               <Link
                 href="/blog"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white/20 px-6 py-3.5 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/60 dark:border-neutral-700 dark:bg-neutral-900/20 dark:text-slate-300 dark:hover:bg-neutral-900/60"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-neutral-200/90 bg-white/60 px-6 py-3.5 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-neutral-300 hover:bg-white dark:border-neutral-800 dark:bg-neutral-900/40 dark:text-slate-300 dark:hover:border-neutral-700 dark:hover:bg-neutral-900"
               >
                 Read Blog
               </Link>

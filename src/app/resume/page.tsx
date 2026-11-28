@@ -3,8 +3,6 @@ import type { Metadata } from 'next';
 import urlJoin from 'url-join';
 
 import seoUtils from '@/utils/seo-utils';
-import { GlimmerBackground } from '@/components/ui/glimmer-background';
-import GlimmerBackgroundConfigs from '@/data/glimmer-background-config/resume';
 import Resume from '@/components/resume';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN || '';
@@ -65,7 +63,6 @@ export default function ResumePage() {
           __html: JSON.stringify(seoUtils.generateResumeBreadcrumbJsonLd()),
         }}
       />
-      <GlimmerBackground configs={GlimmerBackgroundConfigs} />
       <Resume />
     </>
   );

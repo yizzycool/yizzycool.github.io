@@ -1,6 +1,4 @@
 import { fetchCategoryArticles } from '@/utils/strapi-utils';
-import { GlimmerBackground } from '@/components/ui/glimmer-background';
-import GlimmerBackgroundConfigs from '@/data/glimmer-background-config/blog';
 import LeftPanel from '@/components/blog/layout/left-panel';
 import { CollapsibleSidebar } from '@/components/shared/collapsible-sidebar';
 import { ScrollToTop } from '@/components/shared/scroll-to-top';
@@ -17,7 +15,6 @@ export default async function Layout({
       lang="zh-TW"
       className="mx-auto flex min-h-dvh w-full max-w-full overflow-x-clip pt-[101px]"
     >
-      <GlimmerBackground configs={GlimmerBackgroundConfigs} />
       <CollapsibleSidebar scope="blog" title="Blog">
         <LeftPanel categoryArticles={categoryArticles} />
       </CollapsibleSidebar>

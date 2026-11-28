@@ -3,8 +3,6 @@ import type { Metadata } from 'next';
 import urlJoin from 'url-join';
 
 import seoUtils from '@/utils/seo-utils';
-import { GlimmerBackground } from '@/components/ui/glimmer-background';
-import GlimmerBackgroundConfigs from '@/data/glimmer-background-config/resume';
 import PrivacyPolicy from '@/components/privacy';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN || '';
@@ -59,7 +57,6 @@ export default function PrivacyPage() {
           __html: JSON.stringify(seoUtils.generatePrivacyBreadcrumbJsonLd()),
         }}
       />
-      <GlimmerBackground configs={GlimmerBackgroundConfigs} />
       <PrivacyPolicy />
     </>
   );

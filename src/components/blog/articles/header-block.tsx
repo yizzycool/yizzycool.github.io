@@ -7,27 +7,22 @@ export default function HeaderBlock() {
   const { getFadeUpClass } = useGetTransitionClass();
 
   return (
-    <div className="text-center md:text-left">
+    <div className="text-left">
       <h1
         className={cn(
-          'text-3xl font-extrabold tracking-tight md:text-4xl',
-          'dark:text-slate-300',
+          'text-3xl font-black tracking-tight text-slate-900 md:text-4xl dark:text-white',
           getFadeUpClass('animate-delay-100')
         )}
       >
-        Writing &{' '}
-        <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400">
-          Thinking
-        </span>
+        開發筆記
       </h1>
       <p
         className={cn(
-          'mt-3 text-lg font-light text-slate-600 dark:text-slate-400',
+          'mt-3 max-w-2xl text-base font-light text-slate-500 sm:text-lg dark:text-slate-400',
           getFadeUpClass('animate-delay-200')
         )}
       >
-        Exploration notes on Front-end technologies, Web APIs, and Software
-        Engineering.
+        整理前端工程、Web API、AI、MarTech 與演算法的原理拆解與實作紀錄。
       </p>
     </div>
   );
