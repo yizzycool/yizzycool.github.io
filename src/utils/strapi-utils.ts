@@ -1,5 +1,6 @@
-import type { BlogArticle } from '@/types/blog';
+import type { BlogArticle, BlogCategory } from '@/types/blog';
 import type { BlogArticleData } from '@/types/blog/article';
+import type { BlogCategoryData } from '@/types/blog/category';
 import type {
   BlogMediaData,
   BlogMediaFormat,
@@ -39,6 +40,31 @@ type QueryObject = {
 const PAGINATION = {
   page: 1,
   pageSize: 10,
+};
+
+const STRAPI_MAX_PAGE_SIZE = 100;
+
+type StrapiPaginatedResponse<T> = {
+  data?: T[];
+  meta?: {
+    pagination?: {
+      page?: number;
+      pageSize?: number;
+      pageCount?: number;
+      total?: number;
+    };
+  };
+};
+
+type CategoryStaticParamItem = {
+  slug?: string | null;
+};
+
+type ArticleStaticParamItem = {
+  slug?: string | null;
+  category?: {
+    slug?: string | null;
+  } | null;
 };
 
 const DEFAULT_SRCSET_FORMATS: ReadonlyArray<BlogMediaFormatKey> = [
@@ -163,7 +189,8 @@ const strapiUtils = {
   fetch: {
     // /blog/layout.tsx
     generateCategoriesQueryStringForLeftPanel: (
-      filters?: object | undefined
+      filters?: object | undefined,
+      pagination?: object | undefined
     ) => {
       const queryObject: QueryObject = {
         status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
@@ -173,6 +200,10 @@ const strapiUtils = {
             // sort: ['shortTitle'],
           },
         },
+        pagination: defaults(pagination, {
+          page: 1,
+          pageSize: STRAPI_MAX_PAGE_SIZE,
+        }),
         filters,
         sort: ['order'],
       };
@@ -255,21 +286,25 @@ const strapiUtils = {
 
   // Used for generateStaticParams
   staticParams: {
-    // /blog/[category]/page.tsx
+    // /blog/category/[category]/page.tsx
     generateCategoriesQueryStringForCategorPage: (
-      filters?: object | undefined
+      filters?: object | undefined,
+      pagination?: object | undefined
     ) => {
       const queryObject: QueryObject = {
         status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
         fields: ['slug'],
-        pagination: defaults({ pageSize: 9999 }, PAGINATION),
+        pagination: defaults(pagination, {
+          page: 1,
+          pageSize: STRAPI_MAX_PAGE_SIZE,
+        }),
         filters,
       };
       return qs.stringify(queryObject);
     },
 
-    // /blog/[category]/[artcle]/page.tsx
-    generateCategoriesQueryStringForCategorArticlePage: (
+    // /blog/[category]/[article]/page.tsx
+    generateArticlesQueryStringForStaticParams: (
       filters?: object | undefined,
       pagination?: object | undefined
     ) => {
@@ -277,11 +312,14 @@ const strapiUtils = {
         status: process.env.NEXT_PUBLIC_ENV === 'prod' ? 'published' : 'draft',
         fields: ['slug'],
         populate: {
-          articles: {
+          category: {
             fields: ['slug'],
           },
         },
-        pagination: defaults(pagination, PAGINATION),
+        pagination: defaults(pagination, {
+          page: 1,
+          pageSize: STRAPI_MAX_PAGE_SIZE,
+        }),
         filters,
       };
       return qs.stringify(queryObject);
@@ -307,41 +345,52 @@ const strapiUtils = {
   },
 };
 
+async function fetchPaginatedStrapiCollection<T>(
+  endpoint: string,
+  buildQueryString: (pagination: { page: number; pageSize: number }) => string
+): Promise<T[]> {
+  const allData: T[] = [];
+  let page = 1;
+  let pageCount = 1;
+
+  while (page <= pageCount) {
+    const queryString = buildQueryString({
+      page,
+      pageSize: STRAPI_MAX_PAGE_SIZE,
+    });
+    const response = await fetch(
+      `${process.env.STRAPI_URL}${endpoint}?${queryString}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const result: StrapiPaginatedResponse<T> = await response.json();
+    if (Array.isArray(result.data)) {
+      allData.push(...result.data);
+    }
+    pageCount = result.meta?.pagination?.pageCount ?? 1;
+    page += 1;
+  }
+
+  return allData;
+}
+
 export const fetchAllArticles = async (
   filters?: object
 ): Promise<BlogArticle> => {
-  const pageSize = 100;
-  const allData: BlogArticleData[] = [];
-
   try {
-    let page = 1;
-    let pageCount = 1;
-
-    while (page <= pageCount) {
-      const queryString = strapiUtils.fetch.generateArticlesQueryString(
-        filters,
-        { page, pageSize }
-      );
-      const response = await fetch(
-        `${process.env.STRAPI_URL}/api/articles?${queryString}`
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const result: BlogArticle = await response.json();
-      if (Array.isArray(result.data)) {
-        allData.push(...result.data);
-      }
-      pageCount = result.meta?.pagination?.pageCount ?? 1;
-      page += 1;
-    }
+    const allData = await fetchPaginatedStrapiCollection<BlogArticleData>(
+      '/api/articles',
+      (pagination) =>
+        strapiUtils.fetch.generateArticlesQueryString(filters, pagination)
+    );
 
     return {
       data: allData,
       meta: {
         pagination: {
           page: 1,
-          pageSize: allData.length || pageSize,
+          pageSize: allData.length || STRAPI_MAX_PAGE_SIZE,
           pageCount: allData.length > 0 ? 1 : 0,
           total: allData.length,
         },
@@ -363,21 +412,85 @@ export const fetchAllArticles = async (
   }
 };
 
-export const fetchCategoryArticles = async () => {
+export const fetchCategoryArticles = async (): Promise<BlogCategory> => {
   try {
-    const queryString =
-      strapiUtils.fetch.generateCategoriesQueryStringForLeftPanel();
-    const response = await fetch(
-      `${process.env.STRAPI_URL}/api/categories?${queryString}`
+    const allData = await fetchPaginatedStrapiCollection<BlogCategoryData>(
+      '/api/categories',
+      (pagination) =>
+        strapiUtils.fetch.generateCategoriesQueryStringForLeftPanel(
+          undefined,
+          pagination
+        )
     );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
+
+    return {
+      data: allData,
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: allData.length || STRAPI_MAX_PAGE_SIZE,
+          pageCount: allData.length > 0 ? 1 : 0,
+          total: allData.length,
+        },
+      },
+    };
   } catch (error) {
     console.warn('Error fetching category articles:', error);
-    return { data: [] };
+    return {
+      data: [],
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 10,
+          pageCount: 0,
+          total: 0,
+        },
+      },
+    };
+  }
+};
+
+export const fetchAllCategoryStaticParams = async (): Promise<
+  Array<{ category: string }>
+> => {
+  try {
+    const categories =
+      await fetchPaginatedStrapiCollection<CategoryStaticParamItem>(
+        '/api/categories',
+        (pagination) =>
+          strapiUtils.staticParams.generateCategoriesQueryStringForCategorPage(
+            undefined,
+            pagination
+          )
+      );
+
+    return categories.flatMap(({ slug }) => (slug ? [{ category: slug }] : []));
+  } catch (error) {
+    console.warn('Error generating static params for category:', error);
+    return [];
+  }
+};
+
+export const fetchAllArticleStaticParams = async (): Promise<
+  Array<{ category: string; article: string }>
+> => {
+  try {
+    const articles =
+      await fetchPaginatedStrapiCollection<ArticleStaticParamItem>(
+        '/api/articles',
+        (pagination) =>
+          strapiUtils.staticParams.generateArticlesQueryStringForStaticParams(
+            undefined,
+            pagination
+          )
+      );
+
+    return articles.flatMap(({ slug, category }) =>
+      category?.slug && slug ? [{ category: category.slug, article: slug }] : []
+    );
+  } catch (error) {
+    console.warn('Error generating static params for articles:', error);
+    return [];
   }
 };
 

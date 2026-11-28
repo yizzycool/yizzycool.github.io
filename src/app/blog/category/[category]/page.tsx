@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
 
 import urlJoin from 'url-join';
-import { get, map } from 'lodash';
+import { get } from 'lodash';
 
 import Articles from '@/components/blog/articles';
 import seoUtils from '@/utils/seo-utils';
-import strapiUtils, { fetchAllArticles } from '@/utils/strapi-utils';
+import {
+  fetchAllArticles,
+  fetchAllCategoryStaticParams,
+} from '@/utils/strapi-utils';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN as string;
 
@@ -62,24 +65,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  try {
-    const queryString =
-      strapiUtils.staticParams.generateCategoriesQueryStringForCategorPage();
-    const response = await fetch(
-      `${process.env.STRAPI_URL}/api/categories?${queryString}`
-    );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const categories = await response.json();
-
-    return map(categories.data || [], ({ slug }) => ({
-      category: slug,
-    }));
-  } catch (error) {
-    console.warn('Error generating static params for category:', error);
-    return [];
-  }
+  return fetchAllCategoryStaticParams();
 }
 
 const fetchArticles = async (categorySlug: string) => {

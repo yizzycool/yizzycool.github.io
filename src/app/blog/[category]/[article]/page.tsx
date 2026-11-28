@@ -12,7 +12,10 @@ import { get, size, flatMap, map, findIndex } from 'lodash';
 
 import Article from '@/components/blog/article';
 import seoUtils from '@/utils/seo-utils';
-import strapiUtils, { fetchCategoryArticles } from '@/utils/strapi-utils';
+import strapiUtils, {
+  fetchAllArticleStaticParams,
+  fetchCategoryArticles,
+} from '@/utils/strapi-utils';
 
 const domain = process.env.NEXT_PUBLIC_DOMAIN || '/';
 
@@ -80,31 +83,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  try {
-    const queryString =
-      strapiUtils.staticParams.generateCategoriesQueryStringForCategorArticlePage(
-        undefined,
-        { pageCount: 9999 }
-      );
-    const response = await fetch(
-      `${process.env.STRAPI_URL}/api/categories?${queryString}`
-    );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const categories = await response.json();
-    const { data } = categories;
-
-    return flatMap(data || [], ({ slug: categorySlug, articles }) =>
-      map(articles, ({ slug }) => ({
-        category: categorySlug,
-        article: slug,
-      }))
-    );
-  } catch (error) {
-    console.warn('Error generating static params for articles:', error);
-    return [];
-  }
+  return fetchAllArticleStaticParams();
 }
 
 const fetchArticle = async (articleSlug: string): Promise<BlogArticle> => {
