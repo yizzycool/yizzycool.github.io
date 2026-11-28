@@ -3,10 +3,13 @@
 import type { MobileLiteDrawerId } from './mobile-lite-sheet';
 import type { InspectorTabId } from './types/studio';
 
+import { Monitor, X } from 'lucide-react';
 import { useRef, useState } from 'react';
 
+import { Button } from '@/components/ui/button';
 import { ConfirmDialog, useConfirmDialog } from '@/components/ui/dialog';
 import { TOOL_HOTKEYS } from '@/hooks/tools/use-tool-hotkeys';
+import toast from '@/utils/toast';
 
 import HeaderBlock from '../../common/header-block';
 import SectionGap from '../../common/section-gap';
@@ -36,6 +39,7 @@ export default function PhotoEditorStudio() {
   const [isExportOpen, setIsExportOpen] = useState(false);
   const [isTemplatesOpen, setIsTemplatesOpen] = useState(false);
   const [mobileDrawer, setMobileDrawer] = useState<MobileLiteDrawerId>(null);
+  const [isLiteBannerDismissed, setIsLiteBannerDismissed] = useState(false);
 
   const engine = usePhotoEditorEngine({ stageRef, canvasElRef });
 
@@ -102,6 +106,16 @@ export default function PhotoEditorStudio() {
     }, 50);
   };
 
+  const handleCopyDesktopLink = async () => {
+    if (typeof window === 'undefined' || !navigator.clipboard) return;
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success('Copied link to open full studio on desktop');
+    } catch {
+      toast.error('Unable to copy link');
+    }
+  };
+
   const canResetCrop = Boolean(
     engine.states.cropRect &&
       engine.states.cropImageBounds &&
@@ -154,6 +168,36 @@ export default function PhotoEditorStudio() {
 
       <SectionGap />
 
+      {/* Dismissible Mobile Lite Notice outside studio shell (< lg) */}
+      {!isLiteBannerDismissed && (
+        <div className="mb-2 flex items-center justify-between gap-2 rounded-xl border border-sky-200/80 bg-sky-50/85 px-3 py-1.5 text-[11px] text-sky-800 lg:hidden dark:border-sky-800/60 dark:bg-sky-950/40 dark:text-sky-200">
+          <div className="flex min-w-0 items-center gap-1.5">
+            <Monitor className="h-3.5 w-3.5 shrink-0 text-sky-600 dark:text-sky-400" />
+            <span className="truncate font-medium">
+              Mobile Lite · Desktop for full Layers &amp; HD AI
+            </span>
+          </div>
+          <div className="flex shrink-0 items-center gap-1">
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={() => void handleCopyDesktopLink()}
+              className="!h-6 !px-1.5 text-[10px] font-semibold text-sky-700 hover:bg-sky-100 dark:text-sky-300 dark:hover:bg-sky-900/50"
+            >
+              Copy Link
+            </Button>
+            <Button
+              variant="ghost"
+              size="xs"
+              icon={X}
+              onClick={() => setIsLiteBannerDismissed(true)}
+              aria-label="Dismiss notice"
+              className="!h-6 !min-h-6 !w-6 !min-w-6 !p-0 text-sky-600 hover:bg-sky-100 dark:text-sky-400 dark:hover:bg-sky-900/50"
+            />
+          </div>
+        </div>
+      )}
+
       {/* Unified Studio Shell: Desktop Pro (>= lg) & Mobile Lite (< lg) */}
       <div className="flex h-[calc(100dvh_-_156px)] min-h-[540px] flex-col overflow-hidden rounded-2xl border border-neutral-200/90 shadow-lg lg:h-[calc(100dvh_-_176px)] lg:min-h-[620px] dark:border-neutral-800/90">
         <StudioHeaderBar
@@ -182,6 +226,9 @@ export default function PhotoEditorStudio() {
           onRedo={() => void engine.history.redo()}
           onToggleCompare={engine.toggleCompareOriginal}
           onRequestReset={handleRequestReset}
+          onOpenMobileCanvas={() =>
+            setMobileDrawer((prev) => (prev === 'canvas' ? null : 'canvas'))
+          }
         />
 
         <div className="flex min-h-0 flex-1">
@@ -207,6 +254,9 @@ export default function PhotoEditorStudio() {
             compareSplitPercent={engine.states.compareSplitPercent}
             cursorPos={engine.states.cursorPos}
             hasLayers={engine.states.layers.length > 0}
+            selectedKind={engine.states.selectedProps?.kind ?? null}
+            selectedCount={engine.states.selectedProps?.selectedCount ?? 0}
+            activeTool={engine.states.activeTool}
             onZoomIn={engine.zoomIn}
             onZoomOut={engine.zoomOut}
             onFitToScreen={engine.fitToScreen}
@@ -218,6 +268,16 @@ export default function PhotoEditorStudio() {
             onDropPesFile={(file) => void engine.openPesFile(file)}
             onDropLutFile={(file) => void engine.loadCubeLutFile(file)}
             onOpenTemplates={() => setIsTemplatesOpen(true)}
+            onQuickReplaceImage={(file) =>
+              void engine.replaceSelectedImage(file)
+            }
+            onQuickCropImage={() => {
+              engine.setActiveTool('crop');
+              setMobileDrawer('crop');
+            }}
+            onQuickAlign={engine.alignSelected}
+            onQuickDuplicate={() => void engine.duplicateSelected()}
+            onQuickDelete={engine.deleteSelected}
           />
 
           <InspectorPanel
@@ -245,26 +305,36 @@ export default function PhotoEditorStudio() {
             }
             setMobileDrawer(null);
           }}
-          isImageSelected={engine.states.selectedProps?.kind === 'image'}
+          docConfig={engine.states.docConfig}
+          selectedProps={engine.states.selectedProps}
+          layers={engine.states.layers}
           filterValues={engine.states.filterValues}
           cropAspect={engine.states.cropAspect}
           cropRect={engine.states.cropRect}
           canResetCrop={canResetCrop}
           mosaicBrushSize={engine.states.mosaicBrushSize}
           hasFaceDetector={hasFaceDetector}
+          onUpdateDocument={engine.updateDocumentConfig}
+          onUpdateProp={engine.updateSelectedProp}
+          onUpdateBlendMode={engine.updateSelectedBlendMode}
+          onUpdateClipShape={engine.updateSelectedClipShape}
+          onAlign={engine.alignSelected}
+          onReplaceImage={(file) => void engine.replaceSelectedImage(file)}
+          onStartCrop={() => {
+            engine.setActiveTool('crop');
+            setMobileDrawer('crop');
+          }}
+          onDuplicate={() => void engine.duplicateSelected()}
+          onDelete={engine.deleteSelected}
+          onSelectLayer={engine.selectLayerById}
+          onToggleVisibility={engine.toggleLayerVisibility}
+          onDeleteLayer={engine.deleteLayerById}
+          onOrderSelected={engine.reorderSelectedOrder}
           onSetCropAspect={engine.setCropAspect}
           onApplyCrop={engine.applyCrop}
           onResetCrop={engine.resetImageCrop}
           onCancelCrop={engine.cancelCrop}
           onUpdateFilters={engine.updateSelectedFilters}
-          selectedTextAlign={
-            engine.states.selectedProps?.kind === 'text'
-              ? engine.states.selectedProps.textAlign
-              : null
-          }
-          onUpdateTextAlign={(textAlign) =>
-            engine.updateSelectedProp({ textAlign }, 'Align Text')
-          }
           onAddQuickText={(text) => engine.addTextLayer(text)}
           onSetMosaicBrushSize={engine.setMosaicBrushSize}
           onFacePrivacyMosaic={() => void engine.applyFacePrivacyMosaic()}
@@ -286,7 +356,6 @@ export default function PhotoEditorStudio() {
           onStartCrop={() => engine.setActiveTool('crop')}
           onActivateMosaic={() => engine.setActiveTool('mosaic')}
           onRunFastCutout={() => void engine.applyRemoveBackground('fast')}
-          onOpenExport={() => setIsExportOpen(true)}
         />
       </div>
 

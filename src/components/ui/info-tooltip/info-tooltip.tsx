@@ -54,7 +54,7 @@ export function InfoTooltip({
   );
 
   return (
-    <TooltipRoot delay={delay}>
+    <TooltipRoot delay={delay} touchBehavior="tap">
       <TooltipTrigger>
         <button
           type="button"

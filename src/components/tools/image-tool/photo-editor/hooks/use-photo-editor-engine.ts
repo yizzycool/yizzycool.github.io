@@ -235,6 +235,81 @@ async function downsampleFileIfNeeded(
   if (typeof window === 'undefined' || maxEdge <= 0) {
     return { file, resized: false };
   }
+
+  const preserveAlpha =
+    file.type === 'image/png' ||
+    file.type === 'image/webp' ||
+    file.type === 'image/gif' ||
+    /\.(png|webp|gif)$/i.test(file.name);
+  const outMime = preserveAlpha ? 'image/png' : 'image/jpeg';
+  const outQuality = preserveAlpha ? undefined : 0.92;
+  const outExt = preserveAlpha ? '.png' : '.jpg';
+
+  const renderResizedFile = async (
+    source: CanvasImageSource,
+    natW: number,
+    natH: number,
+    onDone?: () => void
+  ): Promise<{ file: File; resized: boolean }> => {
+    const longest = Math.max(natW, natH);
+    if (longest <= maxEdge || natW <= 0 || natH <= 0) {
+      onDone?.();
+      return { file, resized: false };
+    }
+    const scale = maxEdge / longest;
+    const w = Math.max(1, Math.round(natW * scale));
+    const h = Math.max(1, Math.round(natH * scale));
+    const offscreen = document.createElement('canvas');
+    offscreen.width = w;
+    offscreen.height = h;
+    try {
+      const oCtx = offscreen.getContext('2d');
+      if (!oCtx) {
+        onDone?.();
+        return { file, resized: false };
+      }
+      oCtx.drawImage(source, 0, 0, w, h);
+      onDone?.();
+      const blob = await new Promise<Blob | null>((resolve) =>
+        offscreen.toBlob((b) => resolve(b), outMime, outQuality)
+      );
+      if (!blob) return { file, resized: false };
+      const baseName = /\.[^.]+$/.test(file.name)
+        ? file.name.replace(/\.[^.]+$/, outExt)
+        : `${file.name}${outExt}`;
+      const resizedFile = new File([blob], baseName, { type: outMime });
+      return { file: resizedFile, resized: true };
+    } finally {
+      offscreen.width = 0;
+      offscreen.height = 0;
+    }
+  };
+
+  if (typeof createImageBitmap === 'function') {
+    try {
+      const bitmap = await createImageBitmap(file);
+      let closed = false;
+      const closeBitmap = () => {
+        if (!closed) {
+          closed = true;
+          bitmap.close();
+        }
+      };
+      try {
+        return await renderResizedFile(
+          bitmap,
+          bitmap.width,
+          bitmap.height,
+          closeBitmap
+        );
+      } finally {
+        closeBitmap();
+      }
+    } catch {
+      // Fallback to HTMLImageElement decoding below
+    }
+  }
+
   const url = URL.createObjectURL(file);
   try {
     const imgEl = await new Promise<HTMLImageElement>((resolve, reject) => {
@@ -245,29 +320,7 @@ async function downsampleFileIfNeeded(
     });
     const natW = imgEl.naturalWidth || imgEl.width;
     const natH = imgEl.naturalHeight || imgEl.height;
-    const longest = Math.max(natW, natH);
-    if (longest <= maxEdge) {
-      return { file, resized: false };
-    }
-    const scale = maxEdge / longest;
-    const w = Math.max(1, Math.round(natW * scale));
-    const h = Math.max(1, Math.round(natH * scale));
-    const offscreen = document.createElement('canvas');
-    offscreen.width = w;
-    offscreen.height = h;
-    const oCtx = offscreen.getContext('2d');
-    if (!oCtx) return { file, resized: false };
-    oCtx.drawImage(imgEl, 0, 0, w, h);
-    const blob = await new Promise<Blob | null>((resolve) =>
-      offscreen.toBlob((b) => resolve(b), 'image/png')
-    );
-    if (!blob) return { file, resized: false };
-    const resizedFile = new File(
-      [blob],
-      file.name.replace(/\.[^.]+$/, '.png'),
-      { type: 'image/png' }
-    );
-    return { file: resizedFile, resized: true };
+    return await renderResizedFile(imgEl, natW, natH);
   } finally {
     URL.revokeObjectURL(url);
   }
@@ -896,8 +949,8 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
 
     fabric.config.textureSize = 4096;
 
-    const initialW = Math.max(stageEl.clientWidth, 400);
-    const initialH = Math.max(stageEl.clientHeight, 320);
+    const initialW = Math.max(stageEl.clientWidth, 240);
+    const initialH = Math.max(stageEl.clientHeight, 240);
 
     const canvas = new fabric.Canvas(canvasEl, {
       width: initialW,
@@ -2247,11 +2300,16 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
           continue;
         }
 
+        const isMobile =
+          typeof window !== 'undefined' && window.innerWidth < 1024;
         const isSpecialImage =
           lower.endsWith('.heic') ||
           lower.endsWith('.heif') ||
           lower.endsWith('.tif') ||
-          lower.endsWith('.tiff');
+          lower.endsWith('.tiff') ||
+          rawFile.type === 'image/heic' ||
+          rawFile.type === 'image/heif' ||
+          rawFile.type === 'image/tiff';
 
         if (
           !rawFile.type.startsWith('image/') &&
@@ -2265,7 +2323,9 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
         if (isSpecialImage) {
           try {
             toast.info(`Decoding ${rawFile.name}...`);
-            file = await decodeSpecialImageFile(rawFile);
+            file = await decodeSpecialImageFile(rawFile, {
+              maxEdge: isMobile ? MOBILE_MAX_IMPORT_EDGE : undefined,
+            });
           } catch (err) {
             toast.error(
               err instanceof Error
@@ -2277,58 +2337,76 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
         }
 
         if (file.name.toLowerCase().endsWith('.svg')) {
-          const svgText = await file.text();
-          const result = await fabric.loadSVGFromString(svgText);
-          const validObjects = result.objects.filter(
-            (o): o is fabric.FabricObject => o !== null
-          );
-          if (validObjects.length > 0) {
-            const group = fabric.util.groupSVGElements(
-              validObjects,
-              result.options
+          try {
+            const svgText = await file.text();
+            const result = await fabric.loadSVGFromString(svgText);
+            const validObjects = result.objects.filter(
+              (o): o is fabric.FabricObject => o !== null
             );
-            const scale = Math.min(
-              (dw * 0.65) / (group.width || 1),
-              (dh * 0.65) / (group.height || 1),
-              1
-            );
-            group.set({
-              left: dw / 2 + i * 24,
-              top: dh / 2 + i * 24,
-              originX: 'center',
-              originY: 'center',
-              scaleX: scale,
-              scaleY: scale,
-              ...FABRIC_OBJECT_CONTROLS_STYLE,
-            });
-            stampLayerMeta(group, {
-              kind: 'group',
-              name: file.name.replace(/\.[^.]+$/, ''),
-            });
-            canvas.add(group);
-            canvas.setActiveObject(group);
-            addedCount += 1;
+            if (validObjects.length > 0) {
+              const group = fabric.util.groupSVGElements(
+                validObjects,
+                result.options
+              );
+              const scale = Math.min(
+                (dw * 0.65) / (group.width || 1),
+                (dh * 0.65) / (group.height || 1),
+                1
+              );
+              group.set({
+                left: dw / 2 + i * 24,
+                top: dh / 2 + i * 24,
+                originX: 'center',
+                originY: 'center',
+                scaleX: scale,
+                scaleY: scale,
+                ...FABRIC_OBJECT_CONTROLS_STYLE,
+              });
+              stampLayerMeta(group, {
+                kind: 'group',
+                name: file.name.replace(/\.[^.]+$/, ''),
+              });
+              canvas.add(group);
+              canvas.setActiveObject(group);
+              addedCount += 1;
+            }
+          } catch {
+            toast.error(`Failed to parse SVG ${rawFile.name}`);
           }
           continue;
         }
 
-        if (typeof window !== 'undefined' && window.innerWidth < 1024) {
-          const check = await downsampleFileIfNeeded(
-            file,
-            MOBILE_MAX_IMPORT_EDGE
-          );
-          file = check.file;
-          if (check.resized) {
-            toast.info(
-              `Resized to ${MOBILE_MAX_IMPORT_EDGE}px max for smooth mobile editing`
+        if (isMobile) {
+          try {
+            const check = await downsampleFileIfNeeded(
+              file,
+              MOBILE_MAX_IMPORT_EDGE
+            );
+            file = check.file;
+            if (check.resized) {
+              toast.info(
+                `Resized to ${MOBILE_MAX_IMPORT_EDGE}px max for smooth mobile editing`
+              );
+            }
+          } catch {
+            toast.error(
+              `Unable to resize ${rawFile.name}; attempting direct load`
             );
           }
         }
 
         const { assetId, url } = registerAssetFile(file);
-        const img = await fabric.FabricImage.fromURL(url, {
-          crossOrigin: 'anonymous',
-        });
+        let img: fabric.FabricImage;
+        try {
+          img = await fabric.FabricImage.fromURL(url, {
+            crossOrigin: 'anonymous',
+          });
+        } catch {
+          toast.error(
+            `Failed to load ${rawFile.name}. Try a smaller or standard JPEG/PNG image.`
+          );
+          continue;
+        }
 
         const scale = Math.min(
           (dw * 0.8) / (img.width || 1),
@@ -2342,6 +2420,7 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
           originY: 'center',
           scaleX: scale,
           scaleY: scale,
+          objectCaching: !isMobile,
           ...FABRIC_OBJECT_CONTROLS_STYLE,
         });
         stampLayerMeta(img, {
@@ -3634,12 +3713,17 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
       const active = canvas?.getActiveObject();
       if (!canvas || !(active instanceof fabric.FabricImage)) return;
 
+      const isMobile =
+        typeof window !== 'undefined' && window.innerWidth < 1024;
       const lower = rawFile.name.toLowerCase();
       const isSpecialImage =
         lower.endsWith('.heic') ||
         lower.endsWith('.heif') ||
         lower.endsWith('.tif') ||
-        lower.endsWith('.tiff');
+        lower.endsWith('.tiff') ||
+        rawFile.type === 'image/heic' ||
+        rawFile.type === 'image/heif' ||
+        rawFile.type === 'image/tiff';
 
       if (
         lower.endsWith('.psd') ||
@@ -3655,7 +3739,9 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
       if (isSpecialImage) {
         try {
           toast.info(`Decoding ${rawFile.name}...`);
-          file = await decodeSpecialImageFile(rawFile);
+          file = await decodeSpecialImageFile(rawFile, {
+            maxEdge: isMobile ? MOBILE_MAX_IMPORT_EDGE : undefined,
+          });
         } catch (err) {
           toast.error(
             err instanceof Error
@@ -3666,15 +3752,21 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
         }
       }
 
-      if (typeof window !== 'undefined' && window.innerWidth < 1024) {
-        const check = await downsampleFileIfNeeded(
-          file,
-          MOBILE_MAX_IMPORT_EDGE
-        );
-        file = check.file;
-        if (check.resized) {
-          toast.info(
-            `Resized to ${MOBILE_MAX_IMPORT_EDGE}px max for smooth mobile editing`
+      if (isMobile) {
+        try {
+          const check = await downsampleFileIfNeeded(
+            file,
+            MOBILE_MAX_IMPORT_EDGE
+          );
+          file = check.file;
+          if (check.resized) {
+            toast.info(
+              `Resized to ${MOBILE_MAX_IMPORT_EDGE}px max for smooth mobile editing`
+            );
+          }
+        } catch {
+          toast.error(
+            `Unable to resize ${rawFile.name}; attempting direct load`
           );
         }
       }
@@ -3722,6 +3814,7 @@ export default function usePhotoEditorEngine({ stageRef, canvasElRef }: Props) {
         height: newH,
         scaleX: nextScale,
         scaleY: nextScale,
+        objectCaching: !isMobile,
         dirty: true,
       });
       active.setCoords();

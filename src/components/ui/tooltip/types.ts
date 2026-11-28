@@ -17,18 +17,26 @@ export type TooltipDelay =
       close?: number;
     };
 
+export type TooltipTouchBehavior = 'long-press' | 'tap' | 'none';
+
 /**
- * Props for TooltipRoot which manages hover delay state and open state.
+ * Props for TooltipRoot which manages hover delay state, touch gesture behavior, and open state.
  */
 export type TooltipRootProps = {
   /** Target trigger element and popup content */
   children: ReactNode;
   /** Hover delay before opening and closing in ms, or number for both */
   delay?: TooltipDelay;
+  /** Touch interaction mode on touch/pen devices (default: 'long-press') */
+  touchBehavior?: TooltipTouchBehavior;
+  /** Press duration in ms before revealing tooltip on touch devices (default: 450) */
+  longPressDelay?: number;
+  /** Auto-hide delay in ms after releasing a long-press tooltip (default: 1200) */
+  touchAutoHideDelay?: number;
 };
 
 /**
- * Props for TooltipTrigger which binds hover/focus events to the trigger element.
+ * Props for TooltipTrigger which binds hover/focus/touch events to the trigger element.
  */
 export type TooltipTriggerProps = {
   /** Single child element to attach tooltip events and ref to */

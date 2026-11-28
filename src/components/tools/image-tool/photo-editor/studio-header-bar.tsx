@@ -5,6 +5,7 @@ import type { DocumentConfig } from './types/studio';
 import { useRef } from 'react';
 import {
   ArrowLeftRight,
+  ChevronDown,
   Download,
   Eye,
   EyeOff,
@@ -12,7 +13,6 @@ import {
   ImagePlus,
   LayoutTemplate,
   Magnet,
-  Monitor,
   Redo2,
   RotateCcw,
   Ruler,
@@ -26,7 +26,6 @@ import {
   TooltipRoot,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import toast from '@/utils/toast';
 
 type Props = {
   docConfig: DocumentConfig;
@@ -48,6 +47,7 @@ type Props = {
   onRedo: () => void;
   onToggleCompare: () => void;
   onRequestReset: () => void;
+  onOpenMobileCanvas?: () => void;
 };
 
 /**
@@ -74,37 +74,29 @@ export default function StudioHeaderBar({
   onRedo,
   onToggleCompare,
   onRequestReset,
+  onOpenMobileCanvas,
 }: Props) {
   const imageInputRef = useRef<HTMLInputElement>(null);
   const projectInputRef = useRef<HTMLInputElement>(null);
 
-  const handleCopyDesktopLink = async () => {
-    if (typeof window === 'undefined') return;
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      toast.success('Copied link to open full studio on desktop');
-    } catch {
-      toast.error('Unable to copy link');
-    }
-  };
-
   return (
     <header className="flex shrink-0 flex-col border-b border-neutral-200/80 bg-white/95 backdrop-blur-md dark:border-neutral-800/80 dark:bg-neutral-900/95">
       {/* Slim Mobile Lite Header (< lg) */}
-      <div className="flex h-11 items-center justify-between gap-2 px-2.5 lg:hidden">
+      <div className="flex h-11 items-center justify-between gap-1.5 px-2 lg:hidden">
         <button
           type="button"
-          onClick={() => void handleCopyDesktopLink()}
-          title="Copy link for full Desktop Pro mode"
-          className="inline-flex min-w-0 items-center gap-1.5 rounded-full border border-sky-200/80 bg-sky-50/90 px-2.5 py-1 text-[10px] font-semibold text-sky-700 dark:border-sky-800/70 dark:bg-sky-950/50 dark:text-sky-300"
+          onClick={onOpenMobileCanvas}
+          title="Canvas Size & Background"
+          aria-label="Canvas Size and Background"
+          className="inline-flex min-w-0 items-center gap-1 rounded-lg border border-neutral-200/90 bg-neutral-100/80 px-2 py-1 font-mono text-[11px] font-semibold text-neutral-700 transition-colors hover:border-sky-300 hover:text-sky-600 dark:border-neutral-700/80 dark:bg-neutral-800/80 dark:text-neutral-200 dark:hover:border-sky-700 dark:hover:text-sky-400"
         >
-          <Monitor className="h-3 w-3 shrink-0" />
           <span className="truncate">
-            Lite Mode · Desktop for Layers &amp; HD AI
+            {docConfig.width}×{docConfig.height}
           </span>
+          <ChevronDown className="h-3 w-3 shrink-0 opacity-70" />
         </button>
 
-        <div className="flex shrink-0 items-center gap-1">
+        <div className="flex shrink-0 items-center gap-0.5">
           <Button
             variant="ghost"
             size="xs"
@@ -124,6 +116,25 @@ export default function StudioHeaderBar({
             className="!h-7 !min-h-7 !w-7 !min-w-7 !p-0"
           />
           <Button
+            variant={isComparingOriginal ? 'amber' : 'ghost'}
+            size="xs"
+            icon={isComparingOriginal ? EyeOff : Eye}
+            onClick={onToggleCompare}
+            title="Compare Original vs. Filtered"
+            aria-label="Compare Original"
+            className="!h-7 !min-h-7 !w-7 !min-w-7 !p-0"
+          />
+          <Button
+            variant="ghost"
+            size="xs"
+            icon={RotateCcw}
+            disabled={!canReset}
+            onClick={onRequestReset}
+            title="Reset Document"
+            aria-label="Reset Document"
+            className="!h-7 !min-h-7 !w-7 !min-w-7 !p-0 hover:text-red-500 dark:hover:text-red-400"
+          />
+          <Button
             variant="ghost"
             size="xs"
             icon={ArrowLeftRight}
@@ -138,7 +149,7 @@ export default function StudioHeaderBar({
             icon={Download}
             onClick={onOpenExport}
             aria-label="Export"
-            className="!h-7 !min-h-7 whitespace-nowrap !px-2 text-[11px]"
+            className="ml-0.5 !h-7 !min-h-7 whitespace-nowrap !px-2 text-[11px]"
           >
             Export
           </Button>

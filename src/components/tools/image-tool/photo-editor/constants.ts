@@ -341,7 +341,7 @@ export const FABRIC_OBJECT_CONTROLS_STYLE = {
 export const MIN_ZOOM = 0.05;
 export const MAX_ZOOM = 16;
 export const MAX_HISTORY_ENTRIES = 40;
-export const MOBILE_MAX_IMPORT_EDGE = 2048;
+export const MOBILE_MAX_IMPORT_EDGE = 1600;
 export const MOBILE_MAX_EXPORT_EDGE = 2048;
 
 export const STARTER_TEMPLATES: StarterTemplateSpec[] = [
