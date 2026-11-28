@@ -139,8 +139,8 @@ const seoUtils = {
         .join(', '),
       author: {
         '@type': 'Person',
-        name: authorName,
-        url: domain,
+        name: data.author?.name || authorName,
+        url: urlJoin(domain, 'resume'),
       },
       publisher: {
         '@type': 'Organization',

@@ -2,19 +2,22 @@
 
 import type { BlogArticle } from '@/types/blog';
 
-import { Calendar, Clock, RefreshCw } from 'lucide-react';
+import Link from 'next/link';
+import { CircleUserRound, Clock, RefreshCw } from 'lucide-react';
 import { get } from 'lodash';
 import { useSyncExternalStore } from 'react';
 
 import { cn } from '@/utils/cn';
 import useGetTransitionClass from '@/hooks/animation/use-get-transition-class';
+import { ResponsiveStrapiImage } from '@/components/shared/responsive-strapi-image';
 import { Separator } from '@/components/ui/separator';
 
 type Props = { article: BlogArticle };
 
 export default function Metadata({ article }: Props) {
   const data = get(article, 'data.0') || {};
-  const { createdAt, updatedAt, publishedAt, readTime } = data;
+  const { author, createdAt, updatedAt, publishedAt, readTime } = data;
+  const authorName = author?.name || process.env.NEXT_PUBLIC_AUTHOR_NAME || '';
 
   const locale = useSyncExternalStore(
     subscribe,
@@ -22,19 +25,18 @@ export default function Metadata({ article }: Props) {
     getServerSnapshot
   );
 
-  const createDate = new Date(createdAt as string);
-  const createDateString = createDate.toLocaleDateString(locale, {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-
-  const updateDate = new Date((publishedAt ?? updatedAt) as string);
-  const updateDateString = updateDate.toLocaleDateString(locale, {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
+  const updateDateSource = (publishedAt ?? updatedAt ?? createdAt) as
+    | string
+    | undefined;
+  const updateDate = updateDateSource ? new Date(updateDateSource) : null;
+  const updateDateString =
+    updateDate && !Number.isNaN(updateDate.getTime())
+      ? updateDate.toLocaleDateString(locale, {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        })
+      : '';
 
   const { getFadeUpClass } = useGetTransitionClass();
 
@@ -47,24 +49,56 @@ export default function Metadata({ article }: Props) {
         getFadeUpClass('animate-delay-200')
       )}
     >
-      <time className="flex items-center gap-2" title="Last updated">
+      {authorName && (
+        <>
+          <Link
+            href="/resume"
+            rel="author"
+            className="group inline-flex items-center gap-2 font-medium transition-colors hover:text-slate-900 dark:hover:text-slate-100"
+          >
+            <ResponsiveStrapiImage
+              media={author?.avatar}
+              width={22}
+              height={22}
+              sizes="22px"
+              alt={author?.avatar?.alternativeText || `${authorName} avatar`}
+              objectFit="cover"
+              rounded="full"
+              className="h-[22px] w-[22px] shrink-0 ring-1 ring-slate-200 transition-transform group-hover:scale-105 dark:ring-slate-700"
+              srcSetOptions={{
+                formats: ['thumbnail', 'small'],
+                includeOriginal: false,
+                fallbackFormat: 'thumbnail',
+              }}
+              fallback={
+                <CircleUserRound
+                  size={18}
+                  className="shrink-0 text-slate-400 dark:text-slate-500"
+                />
+              }
+            />
+            <span>{authorName}</span>
+          </Link>
+
+          <Separator orientation="vertical" className="hidden h-3.5 sm:block" />
+        </>
+      )}
+
+      <time
+        dateTime={updateDateSource}
+        className="flex items-center gap-2"
+        title="Last updated"
+      >
         <RefreshCw size={14} className="shrink-0" />
         <span>{updateDateString}</span>
       </time>
 
-      <Separator orientation="vertical" className="my-1 hidden sm:block" />
+      <Separator orientation="vertical" className="hidden h-3.5 sm:block" />
 
       <span className="flex items-center gap-2" title="Estimated reading time">
         <Clock size={14} className="shrink-0" />
         <span>{readTime * 2} min read</span>
       </span>
-
-      <Separator orientation="vertical" className="my-1 hidden sm:block" />
-
-      <time className="flex items-center gap-2" title="Published on">
-        <Calendar size={14} className="shrink-0" />
-        <span>{createDateString}</span>
-      </time>
     </div>
   );
 }
